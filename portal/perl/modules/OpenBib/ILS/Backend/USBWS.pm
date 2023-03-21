@@ -2369,6 +2369,7 @@ sub get_mediastatus {
 		    };
 		    $item_ref->{'storage'} = {
 			content => $circ_ref->{AbteilName},
+			id      => "", # optional
 		    };
 		}
 		else {

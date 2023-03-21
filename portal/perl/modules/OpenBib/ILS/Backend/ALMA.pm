@@ -40,7 +40,6 @@ use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
 use MLDBM qw(DB_File Storable);
 use Net::LDAP;
-use SOAP::Lite;
 use Storable ();
 use YAML::Syck;
 
@@ -883,7 +882,7 @@ sub get_mediastatus {
 		$item_ref->{'remark'}          = $circ_ref->{'item_data'}{'description'};
 		$item_ref->{'boundcollection'} = ""; # In Alma gibt es keine Bindeeinheiten
 
-		my $process_type  = $circ_ref->{'item_data'}{'process_type'};
+		my $process_type  = $circ_ref->{'item_data'}{'process_type'}{'value'};
 		
 		my $department    = $circ_ref->{'item_data'}{'library'}{'desc'};
 		my $department_id = $circ_ref->{'item_data'}{'library'}{'value'};
@@ -933,10 +932,8 @@ sub get_mediastatus {
 		    $circulation_desk = 1 if ($ref);
 		}
 		
-		# Praesenzbestand
-#		if ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && !$this_circ_conf->{'loan'} && !$this_circ_conf->{'order'} && !$this_circ_conf->{'reservation'}){ # ggf. auch $policy = 8 = NotForLoan
 		# Bestell-/ausleihbar in den Lesesaal
-		if ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $circulation_desk && $this_circ_conf->{'order'} ){ # ggf. auch $policy = 14 = Reading Room
+		if ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $policy eq "L" ){ # ggf. auch $policy = L = Lesesaalausleihe
 		    push @$available_ref, {
 			service => 'order',
 			content => "bestellbar in Lesesaal",
@@ -958,6 +955,7 @@ sub get_mediastatus {
 			content => "ausleihbar",
 		    };
 		}
+		# Praesenzbestand
 		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $policy eq "X"){
 		    push @$available_ref, {
 			service => 'presence',
@@ -965,12 +963,12 @@ sub get_mediastatus {
 		    };
 		}
 		# Entliehen mit Vormerkmoeglichkeit
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0 && $this_circ_conf->{'reservation'}){ 
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0 && $process_type eq "LOAN" && $this_circ_conf->{'reservation'}){ 
 		    my $this_unavailable_ref = {
 			service => 'loan',
 			content => "entliehen",
-			expected => $circ_ref->{'item_data'}{'expected_arrival_date'},
-#			expected => $circ_ref->{'item_data'}{'due_date'},
+#			expected => $circ_ref->{'item_data'}{'expected_arrival_date'},
+			expected => $circ_ref->{'item_data'}{'due_date'},
 		    };
 		    
 		    if ($circ_ref->{VormerkAnzahl} >= 0){
@@ -981,12 +979,12 @@ sub get_mediastatus {
 		    
 		}
 		# Entliehen ohne Vormerkmoeglichkeit
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0 && !$this_circ_conf->{'reservation'}){
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0 && $process_type eq "LOAN" && !$this_circ_conf->{'reservation'}){
 		    my $this_unavailable_ref = {
 			service => 'loan',
 			content => "entliehen",
-			expected => $circ_ref->{'item_data'}{'expected_arrival_date'},
-#			expected => $circ_ref->{'item_data'}{'due_date'},
+#			expected => $circ_ref->{'item_data'}{'expected_arrival_date'},
+			expected => $circ_ref->{'item_data'}{'due_date'},
 		    };
 
 		    # no queue = no reservation!

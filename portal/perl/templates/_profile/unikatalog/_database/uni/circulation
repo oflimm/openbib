@@ -51,9 +51,9 @@
        availability_info = thiscirculation.unavailability_info.first.content ;
      END;
      
-     IF thiscirculation.department_id == "0"; # Abteilung bei entliehenen Exemplaren der Hauptabteilung ausblenden, da diese nach einer Vormerkung nicht in der Abteilung, sondern in den Abholregalen bereitgestellt werden
+     IF thiscirculation.department_id == "38"; # Abteilung bei entliehenen Exemplaren der Hauptabteilung ausblenden, da diese nach einer Vormerkung nicht in der Abteilung, sondern in den Abholregalen bereitgestellt werden
        IF thiscirculation.availability == 'lent' ;
-          standort = standort.replace('^Hauptabt.* \/ .*','Hauptabteilung');
+          standort = standort.replace('^Universitäts- und Stadtbibliothek Köln \/ .*','Hauptabteilung');
        END;
      END ;
 
@@ -77,8 +77,8 @@
        library_isil = "DE-38";
      ELSIF standort.match('Humanwiss. Abteilung') ;
        library_isil = "DE-38-HWA";     
-     ELSIF thiscirculation.department_id.match('^[0-9][0-9][0-9]');
-       kuerzel = thiscirculation.department_id.match("^([0-9][0-9][0-9])").first ;
+     ELSIF thiscirculation.department_id.match('^38-[0-9][0-9][0-9]');
+       kuerzel = thiscirculation.department_id.match("^38-([0-9][0-9][0-9])").first ;
        IF kuerzel ;
           library_isil = "DE-38-${kuerzel}";
        END ;
@@ -122,7 +122,7 @@
        library_isil = "DE-38-461";
      END;
 
-     IF database.match('inst[0-9][0-9][0-9]') && NOT database.match('inst001');
+     IF database.match('inst[0-9][0-9][0-9]') && NOT database.match('uni');
        library_isil = database.replace('inst','');
        library_isil = "DE-38-${library_isil}";
        thiscirculation.department.id = 0;
@@ -217,7 +217,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 <td><strong>[% thiscirculation.location_mark %]</strong>
 [% IF thiscirculation.remark %] [% thiscirculation.remark %][% END %]
 [% IF thiscirculation.boundcollection == "Y" %]<img src="/USB/img/bindeeinheit.gif" width="28px" height="26px" title="Dieser Titel ist Teil einer Bindeeinheit, die verschiedene Medien zusammenfasst." alt="Bindeeinheit" style="vertical-align:middle;" />[% END %]
-[% IF NOT thiscirculation.department_id.match('^(19|20|204|212|213|214|217|219|223|228|230|308|319|321|325|328|403|405|420|422|423|425|431|134|108|125|222|465|119|314|315|317)$') # Mediennummer fuer Zweigstellen 19, 20, 405, ... immer unterdruecken %]
+[% IF NOT thiscirculation.department_id.match('^(19|20|38-204|38-212|38-213|38-214|38-217|38-219|38-223|38-228|38-230|38-308|38-319|38-321|38-325|38-328|38-403|38-405|38-420|38-422|38-423|38-425|38-431|38-134|38-108|38-125|38-222|38-465|38-119|38-314|38-315|38-317)$') # Mediennummer fuer Zweigstellen 19, 20, 405, ... immer unterdruecken %]
 [%   IF thiscirculation.location_mark != thiscirculation.holdingid # Anzeige der Mediennummer fuer USB-Treffer, falls ungleich Signatur %] 
 [%     IF NOT thiscirculation.location_mark.match('^(JUR|BWL|VERSW)$') %]
 <br /><span style="color:silver">[% thiscirculation.barcode %]</span>
@@ -235,7 +235,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
     corona = 0;
 
     # Ggf. anhand konkreter Anforderungen ueberarbeiten
-    IF thiscirculation.department_id.match('^(15|506)$') && thiscirculation.availability.match('^(order|lent)$') && NOT thiscirculation.availability_info.first.limitation;
+    IF thiscirculation.department_id.match('^(15|38-506)$') && thiscirculation.availability.match('^(order|lent)$') && NOT thiscirculation.availability_info.first.limitation;
       corona = 1;
     END
 -%]
@@ -257,7 +257,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [%    END %]
 [%############### HANDAPPARAT ################# %]
 [% ELSIF standort.match('Handapp.') %]
-[%   IF thiscirculation.department_id.match('^(0|6|10|15|18|406)$') ; # Handapp. der Hauptabteilung und FBs: Bestellformular einblenden, z.B. ID=6445402, ID=6781850 %]
+[%   IF thiscirculation.department_id.match('^(0|6|10|15|18|38-406)$') ; # Handapp. der Hauptabteilung und FBs: Bestellformular einblenden, z.B. ID=6445402, ID=6781850 %]
 <strong>entliehen</strong>
 [%    IF config.get('active_ils') %]
 [%      IF    thiscirculation.department_id.match('^6$') ;
@@ -268,7 +268,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
           realm = "slav";
 	ELSIF thiscirculation.department_id.match('^18$') ;
           realm = "bwl";
-	ELSIF thiscirculation.department_id.match('^406$') ;
+	ELSIF thiscirculation.department_id.match('^38-406$') ;
           realm = "nl";
 	ELSE;
 	  realm = "usb";
@@ -359,9 +359,9 @@ Präsenzbestand
 Präsenzbestand
 [%     ELSIF thiscirculation.location_mark.match('^ZBM/') %]
 Bestände zur Zeit nicht verfügbar
-[%     ELSIF thiscirculation.department_id.match('^(19|222)$') %]
+[%     ELSIF thiscirculation.department_id.match('^(19|38-222)$') %]
 Präsenzbestand
-[%     ELSIF thiscirculation.department_id.match('^(420)$') %]
+[%     ELSIF thiscirculation.department_id.match('^(38-420)$') %]
 [%       IF standort.match('Magazin') %]
 Bitte nutzen Sie das <a href="https://neuere-geschichte.phil-fak.uni-koeln.de/bibliothek/benutzung/ausleihmodalitaeten/bestellformular">Bestellformular</a>.
 [%       ELSE %]
@@ -414,7 +414,7 @@ Präsenzbestand
    <input type="submit" value="Bestellen" class="btn btn-primary mb-1" title="Dieses Buch steht in einem nicht-öffentlichen Bereich. Wir suchen es für Sie heraus." />
 [%     END %]
 [%   ELSE %]
-[%     IF thiscirculation.department_id.match('^(16|506)$') %]
+[%     IF thiscirculation.department_id.match('^(16|38-506)$') %]
 <b style='color:red'>Infolge der aktuellen Corona-Maßnahmen sind derzeit keine Ausleihen oder Bestellungen von Medien  möglich!</b>
 [%     ELSIF thiscirculation.department_id.match('^(15)$') %]
 <b style='color:red'>Kein Zugriff auf Bestell- und Vormerkfunktionen.</b>
@@ -422,11 +422,11 @@ Präsenzbestand
 [%   END %]
 </form>
 [%############### VORMERKBUTTON ######### %]
-[% ELSIF thiscirculation.availability.match('^(lent)$') && thiscirculation.unavailability_info.first.queue.defined %]
+[% ELSIF thiscirculation.availability.match('^(lent)$') && thiscirculation.unavailability_info.first.defined('queue') %]
 [%   
      vormerkbutton = 1 ;
 
-     IF thiscirculation.department_id == "0" && (standort.match('Lehrbuchsammlung') || record.id == 8224428);
+     IF thiscirculation.department_id == "38" && (standort.match('Lehrbuchsammlung') || record.id == 8224428);
        # Kein Vormerkbutton bei ausgeliehenen LBS-Ex., falls andere LBS-Ex. in ZW 0 verfuegbar sind
        # Kein Vormerkbutton bei bei ipads, falls andere Geraete verfuegbar sind (katkey: 8224428)
        FOREACH checkcirculation IN circulation ;

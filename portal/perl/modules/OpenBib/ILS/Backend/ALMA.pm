@@ -522,40 +522,323 @@ sub get_zfl_orders {
 sub get_orders {
     my ($self,$username) = @_;
 
-    my $response_ref = {};
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
     
-    # todo
-
-    return $response_ref;
+    return $self->get_alma_request($username,'HOLD');
 }
 
 sub get_reservations {
     my ($self,$username) = @_;
 
-    my $response_ref = {};
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
     
-    # todo
-
-    return $response_ref;
+    return $self->get_alma_request($username,'BOOKING');
 }
 
 sub get_fees {
     my ($self,$username) = @_;
 
-    my $response_ref = {};
-    
-    # todo
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
+    my $config      = $self->get_config;
+    my $database    = $self->get_database;
+    my $ua          = $self->get_client;
+    my $circ_config = $self->get_circulation_config;
+    
+    my $response_ref = {};
+
+    $username = $self->get_externalid_of_user($username);
+    
+    unless ($username){
+	$response_ref = {
+	    timestamp   => $self->get_timestamp,
+	    error => 'error',
+	    error_description       => "missing or wrong parameters",
+	};
+	
+	return $response_ref;
+    }
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    my $locinfotable  = OpenBib::Config::LocationInfoTable->new;
+
+    my $items_ref = [];
+
+    # Ausleihinformationen der Exemplare
+    {
+	my $json_result_ref = {};
+
+	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+	    
+	    $logger->debug("Getting Circulation info via ALMA API");
+	    
+	    my $api_key = $config->get('alma')->{'api_key'};
+	    
+	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/fees?user_id_type=all_unique&status=ACTIVE&apikey=$api_key";
+	    
+	    if ($logger->is_debug()){
+		$logger->debug("Request URL: $url");
+	    }
+	    
+	    my $request = HTTP::Request->new('GET' => $url);
+	    $request->header('accept' => 'application/json');
+	    
+	    my $response = $ua->request($request);
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Response: ".$response->content);
+	    }
+	    
+	    if (!$response->is_success && $response->code != 400) {
+		$logger->info($response->code . ' - ' . $response->message);
+		return;
+	    }
+	    
+	    
+	    eval {
+		$json_result_ref = decode_json $response->content;
+	    };
+	    
+	    if ($@){
+		$logger->error('Decoding error: '.$@);
+	    }
+	    
+	    
+	}
+	
+	# Allgemeine Fehler
+	if (defined $json_result_ref->{'errorsExist'} && $json_result_ref->{'errorsExist'} eq "true" ){
+	    $response_ref = {
+		"code" => 400,
+		    "error" => "error",
+		    "error_description" => $json_result_ref->{'errorList'}{'error'}[0]{'errorMessage'},
+	    };
+	    
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $json_result_ref;
+	    }
+	    
+	    return $response_ref;
+	}
+
+	# Keine Gebuehren?
+
+	if (defined $json_result_ref->{'total_record_count'} && defined $json_result_ref->{'total_sum'} && !$json_result_ref->{'total_sum'} ){
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $json_result_ref;
+	    }
+	    $response_ref->{no_fees} = 1;
+
+	    return $response_ref;
+	}
+	
+	if (defined $json_result_ref->{'fee'}) {
+
+	    my $total_amount = $json_result_ref->{'total_sum'}." ".$json_result_ref->{'currency'};
+
+	    $response_ref->{amount} = $total_amount;
+
+	    foreach my $item_ref (@{$json_result_ref->{'fee'}}){
+
+		my $about = $item_ref->{'title'};
+
+		my $label     = $item_ref->{barcode}{value};
+		
+		my $this_response_ref = {
+		    about   => $about,
+		    edition => '', # Keine mms_id
+		    item    => $item_ref->{'id'}, # Hier Fee ID
+		    reason  => $item_ref->{'type'}{'desc'},
+		    label   => $label,
+		    amount  => $item_ref->{'original_vat_amount'}." ".$json_result_ref->{'currency'},
+		    date    => $item_ref->{'creation_time'},
+		};
+
+		if ($logger->is_debug){
+		    $this_response_ref->{debug} = $json_result_ref;
+		}
+		
+		if (defined $item_ref->{'owner'}){
+		    $this_response_ref->{'department'} = {
+			id => $item_ref->{'owner'}{'value'},
+			about => $item_ref->{'owner'}{'desc'},
+		    };
+		}
+
+		push @{$response_ref->{items}}, $this_response_ref;
+	    }
+	}
+    }
+    
+    $logger->debug("Loan: ".YAML::Dump($response_ref));
+            
     return $response_ref;
 }
 
 sub get_loans {
     my ($self,$username) = @_;
 
-    my $response_ref = {};
-    
-    # todo
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
+    my $config      = $self->get_config;
+    my $database    = $self->get_database;
+    my $ua          = $self->get_client;
+    my $circ_config = $self->get_circulation_config;
+    
+    my $response_ref = {};
+
+    $username = $self->get_externalid_of_user($username);
+    
+    unless ($username){
+	$response_ref = {
+	    timestamp   => $self->get_timestamp,
+	    error => 'error',
+	    error_description       => "missing or wrong parameters",
+	};
+	
+	return $response_ref;
+    }
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    my $locinfotable  = OpenBib::Config::LocationInfoTable->new;
+
+    my $items_ref = [];
+
+    # Ausleihinformationen der Exemplare
+    {
+	my $json_result_ref = {};
+
+	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+	    
+	    $logger->debug("Getting Circulation info via ALMA API");
+	    
+	    my $api_key = $config->get('alma')->{'api_key'};
+	    
+	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/loans?user_id_type=all_unique&limit=100&offset=0&order_by=id&direction=ASC&loan_status=Active&apikey=$api_key";
+	    
+	    if ($logger->is_debug()){
+		$logger->debug("Request URL: $url");
+	    }
+	    
+	    my $request = HTTP::Request->new('GET' => $url);
+	    $request->header('accept' => 'application/json');
+	    
+	    my $response = $ua->request($request);
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Response: ".$response->content);
+	    }
+	    
+	    if (!$response->is_success && $response->code != 400) {
+		$logger->info($response->code . ' - ' . $response->message);
+		return;
+	    }
+	    
+	    
+	    eval {
+		$json_result_ref = decode_json $response->content;
+	    };
+	    
+	    if ($@){
+		$logger->error('Decoding error: '.$@);
+	    }
+	    
+	    
+	}
+	
+	# Allgemeine Fehler
+	if (defined $json_result_ref->{'errorsExist'} && $json_result_ref->{'errorsExist'} eq "true" ){
+	    $response_ref = {
+		"code" => 400,
+		    "error" => "error",
+		    "error_description" => $json_result_ref->{'errorList'}{'error'}[0]{'errorMessage'},
+	    };
+	    
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $json_result_ref;
+	    }
+	    
+	    return $response_ref;
+	}
+	
+	if (defined $json_result_ref->{'item_loan'}) {
+	    
+	    foreach my $item_ref (@{$json_result_ref->{'item_loan'}}){
+		
+		$logger->debug(YAML::Dump($item_ref));
+		
+		my $about = $item_ref->{'title'} || $item_ref->{'item_barcode'};
+		
+		my $label     = $item_ref->{item_barcode}; # Signatur wird nicht zurueckgeliefert, muss aus PostgreSQL geholt werden...
+		
+		my $this_response_ref = {
+		    about    => $about,
+		    edition  => $item_ref->{'mms_id'},
+		    item     => $item_ref->{'loan_id'},
+		    renewals => '',
+		    status   => $item_ref->{'process_type'},
+		    label    => $label,
+		};
+		
+		if (defined $item_ref->{'library'}){
+		    $this_response_ref->{'department'} = {
+			id => $item_ref->{'library'}{'value'},
+			about => $item_ref->{'library'}{'desc'},
+		    };
+		}
+
+		if (defined $item_ref->{'location_code'}){
+		    $this_response_ref->{'storage'} = {
+			id => $item_ref->{'location_code'}{'value'},
+			about => $item_ref->{'location_code'}{'name'},
+		    };
+		}
+		
+		# if (defined $item_ref->{LesesaalNr} && $item_ref->{LesesaalNr} >= 0 && $item_ref->{LesesaalTxt} ){
+		#     $this_response_ref->{pickup_location} = {
+		# 	about => $item_ref->{LesesaalTxt},
+		# 	id => $item_ref->{LesesaalNr}
+		#     }
+		# }
+		    
+
+		$this_response_ref->{starttime} = $item_ref->{'loan_date'};
+		$this_response_ref->{endtime}   = $item_ref->{'due_date'};
+
+		# Zurueckgefordert?
+		# if ($item_ref->{Rueckgef} eq "J"){
+		#     $this_response_ref->{reclaimed} = 1;
+		# }
+		
+		# # Verlaengerbar?
+		# if ($item_ref->{VlBar} eq "1"){
+		#     $this_response_ref->{renewable} = 1;
+		# }
+			
+		if (defined $item_ref->{VlText}){
+		    $this_response_ref->{renewable_remark} = $item_ref->{VlText};
+		}
+		
+		if (defined $item_ref->{Star}){
+		    $this_response_ref->{emergency_remark} = $item_ref->{Star};
+		}
+		
+		# Infotext?
+		if (defined $item_ref->{Text}){
+		    $this_response_ref->{info} = $item_ref->{Text};
+		}
+
+		push @{$response_ref->{items}}, $this_response_ref;
+	    }
+	}
+    }
+    
+    $logger->debug("Loan: ".YAML::Dump($response_ref));
+            
     return $response_ref;
 }
 
@@ -1227,6 +1510,187 @@ sub get_externalid_of_user {
     
     return ($externalid)?$externalid:undef;
 }
+
+sub get_alma_request {
+    my ($self,$username,$request_type) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config      = $self->get_config;
+    my $database    = $self->get_database;
+    my $ua          = $self->get_client;
+    my $circ_config = $self->get_circulation_config;
+    
+    my $response_ref = {};
+
+    $username = $self->get_externalid_of_user($username);
+    
+    unless ($username){
+	$response_ref = {
+	    timestamp   => $self->get_timestamp,
+	    error => 'error',
+	    error_description       => "missing or wrong parameters",
+	};
+	
+	return $response_ref;
+    }
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    my $locinfotable  = OpenBib::Config::LocationInfoTable->new;
+
+    my $items_ref = [];
+
+    # Ausleihinformationen der Exemplare
+    {
+	my $json_result_ref = {};
+
+	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+	    
+	    $logger->debug("Getting Circulation info via ALMA API");
+	    
+	    my $api_key = $config->get('alma')->{'api_key'};
+	    
+	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/requests?user_id_type=all_unique&limit=100&request_type=$request_type&offset=0&status=active&apikey=$api_key";
+	    
+	    if ($logger->is_debug()){
+		$logger->debug("Request URL: $url");
+	    }
+	    
+	    my $request = HTTP::Request->new('GET' => $url);
+	    $request->header('accept' => 'application/json');
+	    
+	    my $response = $ua->request($request);
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Response: ".$response->content);
+	    }
+	    
+	    if (!$response->is_success && $response->code != 400) {
+		$logger->info($response->code . ' - ' . $response->message);
+		return;
+	    }
+	    
+	    
+	    eval {
+		$json_result_ref = decode_json $response->content;
+	    };
+	    
+	    if ($@){
+		$logger->error('Decoding error: '.$@);
+	    }
+	    
+	    
+	}
+	
+	# Allgemeine Fehler
+	if (defined $json_result_ref->{'errorsExist'} && $json_result_ref->{'errorsExist'} eq "true" ){
+	    $response_ref = {
+		"code" => 400,
+		    "error" => "error",
+		    "error_description" => $json_result_ref->{'errorList'}{'error'}[0]{'errorMessage'},
+	    };
+	    
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $json_result_ref;
+	    }
+	    
+	    return $response_ref;
+	}
+	
+	if (defined $json_result_ref->{'user_request'} && $json_result_ref->{'total_record_count'}) {
+	    
+	    foreach my $item_ref (@{$json_result_ref->{'user_request'}}){
+
+		$logger->debug(YAML::Dump($item_ref));		
+
+		my @titleinfo = ();
+		
+		push @titleinfo, $item_ref->{'author'} if ($item_ref->{'author'});
+		push @titleinfo, $item_ref->{'title'} if ($item_ref->{'title'});
+		
+		my $about = join(': ',@titleinfo);
+
+		$about.=" Band: ".$item_ref->{'volume'}.")" if ($item_ref->{'volume'});
+		$about.=" Teil: ".$item_ref->{'part'}.")" if ($item_ref->{'part'});
+		
+		my $label     = $item_ref->{'barcode'}; # Signatur wird nicht zurueckgeliefert, muss aus PostgreSQL geholt werden...
+		
+		my $this_response_ref = {
+		    about    => $about,
+		    edition  => $item_ref->{'mms_id'},
+		    item     => $item_ref->{'item_id'},
+		    renewals => '',
+		    status   => $item_ref->{'request_status'},
+		    label    => $label,
+		};
+
+		if ($logger->is_debug){
+		    $this_response_ref->{debug} = $item_ref;
+		}
+		
+		if (defined $item_ref->{'managed_by_library'} && defined $item_ref->{'managed_by_library_code'}){
+		    $this_response_ref->{'department'} = {
+			id => $item_ref->{'managed_by_library_code'},
+			about => $item_ref->{'managed_by_library'},
+		    };
+		}
+
+		# if (defined $item_ref->{'location_code'}){
+		#     $this_response_ref->{'storage'} = {
+		# 	id => $item_ref->{'location_code'}{'value'},
+		# 	about => $item_ref->{'location_code'}{'name'},
+		#     };
+		# }
+		
+		if (defined $item_ref->{'pickup_locaton'} && $item_ref->{'pickup_location'} && $item_ref->{'pickup_location_library'} ){
+		    $this_response_ref->{pickup_location} = {
+			about => $item_ref->{'pickup_location'},
+			id    => $item_ref->{'pickup_location_library'}
+		    }
+		}
+
+		if (defined $item_ref->{'booking_start_date'} && defined $item_ref->{'due_back_date'}){
+		    $this_response_ref->{starttime} = $item_ref->{'booking_start_date'};
+		    $this_response_ref->{endtime}   = $item_ref->{'due_back_date'};
+		}
+		else {
+		    $this_response_ref->{starttime} = $item_ref->{'request_date'};
+		    $this_response_ref->{endtime}   = $item_ref->{'expiry_date'};
+		}
+		# Zurueckgefordert?
+		# if ($item_ref->{Rueckgef} eq "J"){
+		#     $this_response_ref->{reclaimed} = 1;
+		# }
+		
+		# # Verlaengerbar?
+		# if ($item_ref->{VlBar} eq "1"){
+		#     $this_response_ref->{renewable} = 1;
+		# }
+			
+		# if (defined $item_ref->{VlText}){
+		#     $this_response_ref->{renewable_remark} = $item_ref->{VlText};
+		# }
+		
+		# if (defined $item_ref->{Star}){
+		#     $this_response_ref->{emergency_remark} = $item_ref->{Star};
+		# }
+		
+		# Infotext?
+		if (defined $item_ref->{'description'}){
+		    $this_response_ref->{info} = $item_ref->{'description'};
+		}
+
+		push @{$response_ref->{items}}, $this_response_ref;
+	    }
+	}
+    }
+    
+    $logger->debug("Loan: ".YAML::Dump($response_ref));
+            
+    return $response_ref;
+}
+    
 
 1;
 __END__

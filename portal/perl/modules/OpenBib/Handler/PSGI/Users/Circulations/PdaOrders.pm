@@ -186,12 +186,12 @@ sub create_record {
 	# sondern aus dem Bibliothekskonto des Nutzers via $userinfo_ref.
 	
 	# Production
-	#my $response_make_pda_order_ref = $ils->make_pda_order({ title => $title, titleid => $titleid, database => $database, author => $author, coporation => $corporation, publisher => $publisher, year => $year, isbn => $isbn, price => $price, classification => $classification, userid => $userinfo_ref->{username}, username => $userinfo_ref->{fullname}, reservation => $reservation, receipt => $receipt, email => $userinfo_ref->{email}});
+	my $response_make_pda_order_ref = $ils->make_pda_order({ title => $title, titleid => $titleid, database => $database, author => $author, coporation => $corporation, publisher => $publisher, year => $year, isbn => $isbn, price => $price, classification => $classification, userid => $userinfo_ref->{username}, username => $userinfo_ref->{fullname}, reservation => $reservation, receipt => $receipt, email => $userinfo_ref->{email}});
 
 	# Test
-	my $response_make_pda_order_ref = {
-	    successful => 1,
-	};
+	# my $response_make_pda_order_ref = {
+	#     successful => 1,
+	# };
     	
 	if ($logger->is_debug){
 	    $logger->debug("Result make_order:".YAML::Dump($response_make_pda_order_ref));	

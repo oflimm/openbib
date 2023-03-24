@@ -305,12 +305,12 @@ sub create_record {
 	# sondern aus dem Bibliothekskonto des Nutzers via $userinfo_ref.
 	
 	# Production
-	# my $response_make_campus_order_ref = $ils->make_campus_order({ title => $title, titleid => $titleid, author => $author, coporation => $corporation, publisher => $publisher, year => $year, numbering => $numbering, label => $label, isbn => $isbn, issn => $issn, articleauthor => $articleauthor, articletitle => $articletitle, volume => $volume, issue => $issue, pages => $pages, refid => $refid, userid => $userinfo_ref->{username}, username => $userinfo_ref->{fullname}, receipt => $receipt, email => $userinfo_ref->{email}, remark => $remark, unit => $unit, location => $unit_desc, domain => $domain, subdomain => $subdomain });
+	my $response_make_campus_order_ref = $ils->make_campus_order({ title => $title, titleid => $titleid, author => $author, coporation => $corporation, publisher => $publisher, year => $year, numbering => $numbering, label => $label, isbn => $isbn, issn => $issn, articleauthor => $articleauthor, articletitle => $articletitle, volume => $volume, issue => $issue, pages => $pages, refid => $refid, userid => $userinfo_ref->{username}, username => $userinfo_ref->{fullname}, receipt => $receipt, email => $userinfo_ref->{email}, remark => $remark, unit => $unit, location => $unit_desc, domain => $domain, subdomain => $subdomain });
 
 	# Test
-	my $response_make_campus_order_ref = {
-	    successful => 1,
-	};
+#	my $response_make_campus_order_ref = {
+#	    successful => 1,
+#	};
     	
 	if ($logger->is_debug){
 	    $logger->debug("Result make_order:".YAML::Dump($response_make_campus_order_ref));	

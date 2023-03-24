@@ -312,30 +312,32 @@
                 <mods:recordInfo>
                     <mods:recordIdentifier source="DE-38">[%- super_data.id %]</mods:recordIdentifier>
                 </mods:recordInfo>
+                [%- IF super_data.fields.${'0331'} %]
                 <mods:titleInfo>
-                    <mods:title>[%- super_title %]</mods:title>
+                    <mods:title>[%- super_data.fields.${'0331'}.first.content %]</mods:title>
                 </mods:titleInfo>
-                [%- IF loop.first %]
-                [%- IF normdata.${"T0456"} %]
-                <mods:part order='[%- normdata.${"T0456"}.first.content %]'>
-                    [%- ELSE %]
-                    <mods:part order='[%- normdata.${"T0455"}.first.content %]'>
-                        [%- END %]
+                [%- END %]
+                <mods:part>
                         <mods:detail type="volume">
-                            <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
+                        [%- IF normdata.${"T0456"} %]    
+                        <mods:number>[% normdata.${"T0456"}.first.content %]</mods:number>
+                        [%- ELSIF normdata.${"T0455"} %]  
+                        <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
+                        [%- END %]
                         </mods:detail>
                     </mods:part>
-                    [%- END %]
-            </mods:relatedItem>
+              </mods:relatedItem>
             [%- ELSIF super_data.fields.${'0036'}.first.content =="n" || super_data.fields.${'0036'}.first.content =="p"
             || super_data.fields.${'0036'}.first.content =="z" || super_data.fields.${'0036'}.first.content =="t" %]
             <mods:relatedItem type="host">
                 <mods:recordInfo>
                     <mods:recordIdentifier source="DE-38">[%- super_data.id %]</mods:recordIdentifier>
                 </mods:recordInfo>
+                [%- IF super_data.fields.${'0331'} %]
                 <mods:titleInfo>
-                    <mods:title>[%- super_title %]</mods:title>
+                    <mods:title>[%- super_data.fields.${'0331'}.first.content %]</mods:title>
                 </mods:titleInfo>
+                [%- END %]
             </mods:relatedItem>
             [%- IF loop.first %]
             [%- IF normdata.${"T0090"} || normdata.${"T0089"} %]

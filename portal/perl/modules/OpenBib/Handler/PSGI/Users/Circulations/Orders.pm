@@ -169,9 +169,11 @@ sub create_record {
     # Aktive Aenderungen des Nutzerkontos
     my $validtarget     = ($query->param('validtarget'    ))?$query->param('validtarget'):undef;
     my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
-    my $pickup_location = ($query->param('pickup_location') >= 0)?$query->param('pickup_location'):undef;
+    my $pickup_location = ($query->param('pickup_location') || $query->param('pickup_location') >= 0)?$query->param('pickup_location'):undef;
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
+    my $titleid         = ($query->param('titleid'        ))?$query->param('titleid'):undef;
 
+    
     unless ($config->get('active_ils')){
 	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
     }
@@ -203,6 +205,10 @@ sub create_record {
     
     my $database              = $sessionauthenticator;
 
+    if ($logger->is_debug){
+	$logger->debug("database: $database - titleid: $titleid - unit: $unit - holdingid: $holdingid - validtarget: $validtarget - pickup_locaton: $pickup_location");
+    }
+    
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
     my $authenticator = $session->get_authenticator;
@@ -210,7 +216,7 @@ sub create_record {
     if (!defined $pickup_location){
 	$logger->debug("Checking order for pickup locations");
 	
-	my $response_check_order_ref = $ils->check_order({ username => $username, holdingid => $holdingid, unit => $unit});
+	my $response_check_order_ref = $ils->check_order({ username => $username, titleid => $titleid, holdingid => $holdingid, unit => $unit});
 
 	if ($logger->is_debug){
 	    $logger->debug("Result check_order:".YAML::Dump($response_check_order_ref));
@@ -224,6 +230,7 @@ sub create_record {
 	    my $ttdata={
 		database      => $database,
 		unit          => $unit,
+		titleid       => $titleid,
 		holdingid     => $holdingid,
 		validtarget   => $validtarget,
 		pickup_locations => $response_check_order_ref->{pickup_locations},
@@ -236,7 +243,7 @@ sub create_record {
     else {
 	$logger->debug("Making order");
 	
-	my $response_make_order_ref = $ils->make_order({ username => $username, holdingid => $holdingid, unit => $unit, pickup_location => $pickup_location});
+	my $response_make_order_ref = $ils->make_order({ username => $username, titleid => $titleid, holdingid => $holdingid, unit => $unit, pickup_location => $pickup_location});
 
 	if ($logger->is_debug){
 	    $logger->debug("Result make_order:".YAML::Dump($response_make_order_ref));	
@@ -289,6 +296,7 @@ sub delete_record {
     # Aktive Aenderungen des Nutzerkontos
     my $validtarget     = ($query->param('validtarget'    ))?$query->param('validtarget'):undef;
     my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
+    my $requestid       = ($query->param('requestid'      ))?$query->param('requestid'):undef; # Requestid (fuer Alma)
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
     my $unitname        = ($query->param('unitname'       ))?$query->param('unitname'):undef;
     my $titleid         = ($query->param('titleid'        ))?$query->param('titleid'):undef;
@@ -306,8 +314,8 @@ sub delete_record {
 	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
     }
     
-    unless ($validtarget && $holdingid && $unit >= 0){
-	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, holdingid:$holdingid, unit:$unit)");
+    unless ($validtarget && ($holdingid || $requestid ) && $unit >= 0){
+	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, requestid: $requestid, holdingid: $holdingid, unit:$unit)");
     }
     
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
@@ -351,7 +359,7 @@ sub delete_record {
 	return $self->print_warning($msg->maketext("Es existiert keine E-Mail-Addresse für eine Kopie der Stornierungs-Mail an Sie."));
     }
     
-    my $response_cancel_order_ref = $ils->cancel_order({ title => $title, author => $author, holdingid => $holdingid, unit => $unit, unitname => $unitname, date => $date, username => $username, username_full => $username_full, email => $email, remark => $remark, receipt => $receipt });
+    my $response_cancel_order_ref = $ils->cancel_order({ title => $title, author => $author, requestid => $requestid, holdingid => $holdingid, unit => $unit, unitname => $unitname, date => $date, username => $username, username_full => $username_full, email => $email, remark => $remark, receipt => $receipt });
     
     if ($logger->is_debug){
 	$logger->debug("Result cancel_order:".YAML::Dump($response_cancel_order_ref));
@@ -371,6 +379,7 @@ sub delete_record {
 	    userid        => $userid,
 	    database      => $database,
 	    unit          => $unit,
+	    requestid     => $requestid,
 	    holdingid     => $holdingid,
 	    validtarget   => $validtarget,
 	    cancel_order  => $response_cancel_order_ref,
@@ -421,6 +430,7 @@ sub confirm_delete_record {
     # Aktive Aenderungen des Nutzerkontos
     my $validtarget     = ($query->param('validtarget'    ))?$query->param('validtarget'):undef;
     my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
+    my $requestid       = ($query->param('requestid'      ))?$query->param('requestid'):undef; # Requestid (fuer Alma)
     my $titleid         = ($query->param('titleid'        ))?$query->param('titleid'):undef; # Katkey
     my $date            = ($query->param('date'           ))?$query->param('date'):''; # Bestelldatum
     my $unitname        = ($query->param('unitname'       ))?$query->param('unitname'):''; 
@@ -436,7 +446,7 @@ sub confirm_delete_record {
 	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
     }
     
-    unless ($validtarget && $titleid && $holdingid && $unit >= 0){
+    unless ($validtarget && $titleid && ( $holdingid || $requestid) && $unit >= 0){
 	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, holdingid:$holdingid, unit:$unit)");
     }
     
@@ -481,6 +491,7 @@ sub confirm_delete_record {
 	unit      => $unit,
 	unitname  => $unitname,
 	holdingid => $holdingid,
+	requestid => $requestid,
 	date      => $date,
         userid    => $userid,
     };

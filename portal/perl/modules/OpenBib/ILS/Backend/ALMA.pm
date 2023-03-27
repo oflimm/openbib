@@ -653,7 +653,7 @@ sub get_fees {
 		    item    => $item_ref->{'id'}, # Hier Fee ID
 		    reason  => $item_ref->{'type'}{'desc'},
 		    label   => $label,
-		    amount  => $item_ref->{'original_vat_amount'}." ".$json_result_ref->{'currency'},
+		    amount  => $item_ref->{'original_amount'}." ".$json_result_ref->{'currency'},
 		    date    => $item_ref->{'creation_time'},
 		};
 

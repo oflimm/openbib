@@ -17,7 +17,7 @@
 <div class="card-body">
 
 <p>
-[% msg.maketext("Sie finden ein bestimmtes aktuelles Buch nicht im USB-Portal? Dann machen Sie uns einen Anschaffungsvorschlag! ") %]
+[% msg.maketext("Sie finden ein bestimmtes aktuelles Buch nicht im Kölner Universitätskatalog? Dann machen Sie uns einen Anschaffungsvorschlag! ") %]
 </p>
 
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/suggestions">

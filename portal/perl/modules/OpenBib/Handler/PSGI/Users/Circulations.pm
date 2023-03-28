@@ -448,6 +448,7 @@ sub renew_single_loan {
 
     # CGI Args
     my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
+    my $loanid          = ($query->param('loanid'         ))?$query->param('loanid'):undef; # Loanid (fuer Alma)
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0; # Zweigstelle
 
     $holdingid = uri_unescape($holdingid);
@@ -458,7 +459,7 @@ sub renew_single_loan {
 	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
     }
 
-    unless ($holdingid && $unit >= 0){
+    unless (( $loanid || $holdingid ) && ($unit || $unit >= 0)){
 	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (holdingid:$holdingid, unit:$unit)");
     }
     
@@ -485,7 +486,7 @@ sub renew_single_loan {
 	$logger->debug("Trying to renew single loan for user $loginname via ils for $database with holdingid $holdingid in unit $unit");
     }
     
-    my $response_renew_single_loan_ref = $ils->renew_single_loan($loginname,$holdingid,$unit);
+    my $response_renew_single_loan_ref = $ils->renew_single_loan($loginname,$holdingid,$unit,$loanid);
 
     if ($logger->is_debug){
 	$logger->debug("Result renew loans: ".YAML::Dump($response_renew_single_loan_ref));
@@ -503,6 +504,7 @@ sub renew_single_loan {
 	# TT-Data erzeugen
 	my $ttdata={
 	    userid        => $userid,
+	    loanid        => $loanid,
 	    database      => $database,
 	    renew_single_loan   => $response_renew_single_loan_ref,
 	};

@@ -768,6 +768,10 @@ sub get_loans {
 	}
 	
 	if (defined $json_result_ref->{'item_loan'}) {
+
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $json_result_ref;
+	    }
 	    
 	    foreach my $item_ref (@{$json_result_ref->{'item_loan'}}){
 		
@@ -780,7 +784,8 @@ sub get_loans {
 		my $this_response_ref = {
 		    about    => $about,
 		    edition  => $item_ref->{'mms_id'},
-		    item     => $item_ref->{'loan_id'},
+		    item     => $item_ref->{'holding_id'}."|".$item_ref->{'item_id'},
+		    loanid   => $item_ref->{'loan_id'},
 		    renewals => '',
 		    status   => $item_ref->{'process_type'},
 		    label    => $label,
@@ -1029,21 +1034,157 @@ sub cancel_alma_request {
 sub renew_loans {
     my ($self,$username) = @_;
     
-    my $response_ref = {};
-    
-    # todo
+    my $response_ref = {
+		"code" => 400,
+		    "error" => "error",
+		    "error_description" => "Das Bibliothekssystem Alma bietet keine Gesamtkontoverlängerung an",
+    };
 
     return $response_ref;
 }
 
 sub renew_single_loan {
-    my ($self,$username,$holdingid,$unit) = @_;
+    my ($self,$username,$holdingid,$unit,$loanid) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config      = $self->get_config;
+    my $database    = $self->get_database;
+    my $ua          = $self->get_client;
+    my $circ_config = $self->get_circulation_config;
     
     my $response_ref = {};
-    
-    # todo
 
-    return $response_ref;
+    $logger->debug("username: $username - holdingid: $holdingid - unit: $unit - loanid: $loanid");
+    
+    $username = $self->get_externalid_of_user($username);
+    
+    unless ($username && $loanid){
+	$response_ref =  {
+	    timestamp   => $self->get_timestamp,	    
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    my $json_result_ref = {};
+    
+    {
+	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+	    
+	    $logger->debug("Making order via Alma-API");
+	    
+	    my $api_key = $config->get('alma')->{'api_key'};
+	    
+	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/loans/$loanid";
+
+	    # Default args
+	    my $args = "op=renew&user_id_type=all_unique&apikey=$api_key";
+
+	    $url.="?$args";
+	    	    
+	    if ($logger->is_debug()){
+		$logger->debug("Request URL: $url");
+	    }
+	    
+	    my $request = HTTP::Request->new('POST', $url, [ 'Accept' => 'application/json', 'Content-Type' => 'application/json' ]);
+	    
+	    my $response = $ua->request($request);
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Response Headers: ".$response->headers_as_string);
+		$logger->debug("Response: ".$response->content);
+	    }
+	    
+	    if (!$response->is_success && $response->code != 400) {
+		$logger->info($response->code . ' - ' . $response->message);
+		return;
+	    }
+	    
+	    
+	    eval {
+		$json_result_ref = decode_json $response->content;
+	    };
+	    
+	    if ($@){
+		$logger->error('Decoding error: '.$@);
+	    }
+	    
+	    
+	}
+	
+	# Allgemeine Fehler
+	if (defined $json_result_ref->{'errorsExist'} && $json_result_ref->{'errorsExist'} eq "true" ){
+	    $response_ref = {
+		"code" => 400,
+		    "error" => "error",
+		    "error_description" => $json_result_ref->{'errorList'}{'error'}[0]{'errorMessage'},
+	    };
+	    
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $json_result_ref;
+	    }
+	    
+	    return $response_ref;
+	}
+	
+	if (defined $json_result_ref->{'loan_id'}) {
+	    
+	    my @titleinfo = ();
+	    push @titleinfo, $json_result_ref->{author} if ($json_result_ref->{author});
+	    if ($json_result_ref->{title}){
+		push @titleinfo, $json_result_ref->{title} 
+	    }
+	    elsif ($json_result_ref->{item_barcode}){
+		push @titleinfo, $json_result_ref->{item_barcode}; 
+	    }
+	    
+	    my $about = join(': ',@titleinfo);
+	    
+	    my $label     = $json_result_ref->{item_barcode}; # Keine Signatur, muss ggf. aus PostgreSQL geholt werden	    
+	    $response_ref->{about}           = $about;
+	    $response_ref->{edition}         = $json_result_ref->{mms_id};
+	    $response_ref->{item}            = $json_result_ref->{holding_id}."|".$json_result_ref->{item_id};
+	    $response_ref->{label}           = $label;
+#	    $response_ref->{info}            = $json_result_ref->{OK};	
+#	    $response_ref->{num_renewals}    = $json_result_ref->{AnzVl};	
+#	    $response_ref->{renewal_message} = $json_result_ref->{Ergebnismeldung};
+#	    $response_ref->{reminder_level}  = $json_result_ref->{MahnStufe};
+	
+
+	    if (defined $json_result_ref->{library}){
+		$response_ref->{department} = {
+		    id => $json_result_ref->{library}{value},
+		    about => $json_result_ref->{library}{desc},
+		};
+	    }
+	    
+	    
+	    $response_ref->{"endtime"}  = $json_result_ref->{due_date};
+	    
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $json_result_ref;
+	    }
+	    
+	    return $response_ref;
+	}
+    }
+    
+    $response_ref = {
+	"code" => 405,
+	    "error" => "unknown error",
+	    "error_description" => "Unbekannter Fehler",
+    };
+    
+    if ($logger->is_debug){
+	$response_ref->{debug} = $json_result_ref;
+    }
+    
+    return $response_ref;    
 }
 
 sub get_mediastatus {

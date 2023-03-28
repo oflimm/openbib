@@ -33,7 +33,7 @@
 [% END %]
 
 
-[% USE dumper;dumper.dump(loans) %]
+[%# USE dumper;dumper.dump(loans) %]
 <div class="table-responsive">
 <table class="table table-striped ">
 <thead>

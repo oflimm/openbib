@@ -1474,6 +1474,8 @@ sub load_circulation {
 
 		my $storage            = $mediastatus_ref->{items}[$i]{storage}{content};
 
+		my $storage_id         = $mediastatus_ref->{items}[$i]{storage}{id};
+		
 		my $barcode            = $mediastatus_ref->{items}[$i]{barcode};
 		
 		my $boundcollection    = $mediastatus_ref->{items}[$i]{boundcollection};
@@ -1505,6 +1507,7 @@ sub load_circulation {
 #		    department_url => $department_url,
 		    location_mark  => $location_mark,
 		    storage        => $storage,
+		    storage_id     => $storage_id,
 		    availability   => $availability,
 		    availability_info   => $availability_ref,
 		    unavailability_info => $unavailability_ref,
@@ -4403,6 +4406,9 @@ sub get_availability {
 		if (!defined $this_unavailability_ref->{expected} || $this_unavailability_ref->{expected} eq "lost"){
 		    $availability = "missing";
 		}
+	    }
+	    elsif ($this_unavailability_ref->{service} eq "order"){
+		$availability = "ordered";
 	    }
 	}
     }

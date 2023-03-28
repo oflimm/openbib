@@ -28,7 +28,7 @@
 <div class="table-responsive">
 <table class="table table-striped ">
 <thead>
-<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %] / [% msg.maketext("Bestellnr.") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Bestelldatum") %]</th><th>[% msg.maketext("Aktion") %]</th></tr>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %] / [% msg.maketext("Bestellnr.") %]</th><th>[% msg.maketext("Standort") %]</th><!-- <th>[% msg.maketext("Bestelldatum") %]</th> --><th>[% msg.maketext("Aktion") %]</th></tr>
 </thead>
 <tbody>
 [%- FOREACH order = orders.items ;
@@ -46,14 +46,14 @@
 </td>
 <td>
 [%#- Die Signatur wird nur dann ausgeben, falls sie nicht Teil der Mediennummer ist -%]
-[% IF order.label && order.item && NOT order.item.match(order.label) %]
-[% order.label %][% IF order.item %]&nbsp;/&nbsp;[% order.item %][% END %]
-[% ELSIF order.item %]
-[% order.item %]
+[% IF order.label && order.requestid && NOT order.requestid.match(order.label) %]
+[% order.label %][% IF order.requestid %]&nbsp;/&nbsp;[% order.requestid %][% END %]
+[% ELSIF order.label %]
+[% order.label %]
 [% END %]
 </td>
 <td>[% order.department.about %][% IF order.pickup_location.about %] / [% order.pickup_location.about %][% END %]</td>
-<td>[% order.starttime %]</td>
+<!-- <td>[% order.starttime %]</td> -->
 <td>
 [% IF is_ill %]
 [% msg.maketext("Fernleihbestellung nicht stornierbar!") %]

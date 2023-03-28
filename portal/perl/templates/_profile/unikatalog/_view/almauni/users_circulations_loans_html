@@ -50,20 +50,20 @@
 </td>
 <td>
 [%#- Die Signatur wird nur dann ausgeben, falls sie nicht Teil der Mediennummer ist -%]
-[% IF loan.label && loan.item && NOT loan.item.match(loan.label) %]
-[% loan.label %][% IF loan.item %]&nbsp;/&nbsp;[% loan.item %][% END %]
+[% IF loan.label && loan.loanid && NOT loan.loanid.match(loan.label) %]
+[% loan.label %][% IF loan.loanid %]&nbsp;/&nbsp;[% loan.loanid %][% END %]
 [% ELSIF loan.item %]
-[% loan.item %]
+[% loan.label %]
 [% END %]
 </td>
 <td>[% loan.department.about %][% IF loan.pickup_location.about %] / [% loan.pickup_location.about %][% END %]</td>
 <td>[% loan.renewals %]</td>
 <td>[% IF loan.emergency_remark %]<span style="font-weight:bold;color:red;">[% END %][% loan.starttime %]-[% loan.endtime %][% IF loan.emergency_remark %]</span>[% END %]</td>
 <td>
-[% IF loan.loanid %]
+[% IF loan.renewable %]
 <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/renew_single_loan?loanid=[% loan.loanid %];unit=[% loan.department.id %];holdingid=[% loan.item %]" title="[% msg.maketext("Verlängerung durchführen") %]">[% msg.maketext("Verlängerung durchführen") %]</a>
 [% ELSE %]
-[% msg.maketext("Keine Aktion möglich") %]
+[% msg.maketext("Keine Verlängerung möglich") %]
 [% END %]
 </td>
 </tr>

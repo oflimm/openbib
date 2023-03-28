@@ -60,7 +60,7 @@
 <td>[% IF loan.emergency_remark %]<span style="font-weight:bold;color:red;">[% END %][% loan.starttime %]-[% loan.endtime %][% IF loan.emergency_remark %]</span>[% END %]</td>
 <td>
 [% IF loan.loanid %]
-<a class="btn btn-primary" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/renew_single_loan?loanid=[% loan.loanid %];unit=[% loan.department.id %];holdingid=[% loan.item %]" title="[% msg.maketext("Verlängerung durchführen") %]">[% msg.maketext("Verlängerung durchführen") %]</a>
+<a class="btn btn-primary" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/renew_single_loan?loanid=[% loan.loanid %];unit=[% loan.department.id %];holdingid=[% loan.item %]" title="[% msg.maketext("Verlängerung versuchen") %]">[% msg.maketext("Verlängerung versuchen") %]</a>
 [% ELSE %]
 [% msg.maketext("Keine Aktion möglich") %]
 [% END %]

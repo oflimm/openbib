@@ -20,7 +20,7 @@
 [% msg.maketext("Sie finden ein bestimmtes aktuelles Buch nicht im USB-Portal? Dann machen Sie uns einen Anschaffungsvorschlag! ") %]
 </p>
 
- <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/circulations">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/suggestions">
  
 <legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
 

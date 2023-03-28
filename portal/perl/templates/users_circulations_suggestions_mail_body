@@ -8,7 +8,7 @@
  Vormerkung: [% reservation %]
 
        Name: [% userinfo.fullname %]
-        BNR: [% userinfo.userid %]      
+        BNR: [% userinfo.username %]      
 
-E-Mail-Adr.: [% email %]
+E-Mail-Adr.: [% userinfo.email %]
 

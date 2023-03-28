@@ -23,7 +23,7 @@
 [% msg.maketext("Liste Ihrer bestellten Bücher (ohne Aufsatzbestellungen).") %]
 </p>
 
-[% USE dumper;dumper.dump(orders) %]
+[%# USE dumper;dumper.dump(orders) %]
 
 <div class="table-responsive">
 <table class="table table-striped ">

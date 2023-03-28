@@ -37,6 +37,8 @@ use utf8;
 use DBI;
 use Digest::MD5;
 use Email::Valid;
+use Email::Stuffer;
+use File::Slurper 'read_binary';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use SOAP::Lite;
@@ -161,8 +163,6 @@ sub create_record {
 
     # CGI Args
     my $title          = $input_data_ref->{'title'};
-    my $titleid        = $input_data_ref->{'titleid'};
-    my $database       = $input_data_ref->{'database'};
     my $author         = $input_data_ref->{'author'};
     my $corporation    = $input_data_ref->{'corporation'};
     my $publisher      = $input_data_ref->{'publisher'};
@@ -182,7 +182,7 @@ sub create_record {
 	$logger->debug("Input: ".YAML::Dump($input_data_ref));
     }
     
-    unless ($database && $titleid){
+    unless ($title && $year && $publisher){
 	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt"));
     }
     
@@ -280,7 +280,7 @@ sub create_record {
     
     unlink $anschfile;
         
-    return $self->print_page($config->{tt_users_circulations_suggestion_success_tname},$ttdata);
+    return $self->print_page($config->{tt_users_circulations_suggestions_success_tname},$ttdata);
 
 }
 

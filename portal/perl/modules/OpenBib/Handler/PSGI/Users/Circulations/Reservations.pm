@@ -186,7 +186,7 @@ sub create_record {
 	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
     }
     
-    unless ($validtarget && $holdingid && $unit >= 0){
+    unless ($validtarget && $holdingid && ( $unit || $unit >= 0)){
 	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, holdingid:$holdingid, unit:$unit)");
     }
     
@@ -223,7 +223,7 @@ sub create_record {
     if (!defined $pickup_location){
 	$logger->debug("Checking reservation for pickup locations");
 	
-	my $response_check_reservation_ref = $ils->check_reservation({ username => $username, holdingid => $holdingid, unit => $unit });
+	my $response_check_reservation_ref = $ils->check_reservation({ username => $username, titleid => $titleid, holdingid => $holdingid, unit => $unit });
 
 	if ($logger->is_debug){
 	    $logger->debug("Result check_reservation:".YAML::Dump($response_check_reservation_ref));
@@ -304,6 +304,7 @@ sub delete_record {
     my $authenticatorid = ($query->param('authenticatorid'))?$query->param('authenticatorid'):undef;
     # Aktive Aenderungen des Nutzerkontos
     my $validtarget     = ($query->param('validtarget'    ))?$query->param('validtarget'):undef;
+    my $requestid       = ($query->param('requestid'      ))?$query->param('requestid'):undef; # Requestid (fuer Alma)
     my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
 
@@ -315,7 +316,7 @@ sub delete_record {
 	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
     }
     
-    unless ($validtarget && $holdingid && $unit >= 0){
+    unless ($validtarget && ( $holdingid || $requestid ) && ( $unit || $unit >= 0) ){
 	return $self->print_warning($msg->maketext("Notwendige Parameter nicht besetzt")." (validtarget: $validtarget, holdingid:$holdingid, unit:$unit)");
     }
     
@@ -350,7 +351,7 @@ sub delete_record {
 
     $logger->debug("Canceling reservation for $holdingid in unit $unit for $username");
 	
-    my $response_cancel_reservation_ref = $ils->cancel_reservation({ username => $username, holdingid => $holdingid, unit => $unit });
+    my $response_cancel_reservation_ref = $ils->cancel_reservation({ username => $username, requestid => $requestid, holdingid => $holdingid, unit => $unit });
     
     if ($logger->is_debug){
 	$logger->debug("Result cancel_reservation:".YAML::Dump($response_cancel_reservation_ref));
@@ -367,6 +368,7 @@ sub delete_record {
 	    database      => $database,
 	    unit          => $unit,
 	    holdingid     => $holdingid,
+	    requestid     => $requestid,
 	    validtarget   => $validtarget,
 	    cancel_reservation  => $response_cancel_reservation_ref,
 	};

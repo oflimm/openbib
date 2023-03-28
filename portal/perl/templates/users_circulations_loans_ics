@@ -17,13 +17,13 @@ VERSION:2.0
 PRODID:-//OpenBib.org//NONSGML Borrows Calendar//EN
 X-WR-CALNAME:Fällige Ausleihen
 X-WR-TIMEZONE:Europe/Berlin
-[% FOREACH borrow = borrows.items ;
-      borrowdate = borrow.starttime.split('\.').reverse.join('');
-      returndate = borrow.endtime.split('\.').reverse.join('');
-      desc       = borrow.about;
-      desc       = "${desc} - ${borrow.label}";
+[% FOREACH loan = loans.items ;
+      borrowdate = loan.starttime.split('\.').reverse.join('');
+      returndate = loan.endtime.split('\.').reverse.join('');
+      desc       = loan.about;
+      desc       = "${desc} - ${loan.label}";
       desc       = desc.replace(',','\\,').replace(':','\\:');      
-      uid        = "${borrow.label}";
+      uid        = "${loan.label}";
 -%]
 BEGIN:VEVENT
 UID:[% uid | truncate(60) %]

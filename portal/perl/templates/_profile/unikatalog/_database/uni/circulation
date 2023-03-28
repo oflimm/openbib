@@ -19,7 +19,7 @@
 <tr><th>[% msg.maketext("Standort") %]</th><th>QR</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Ausleihstatus") %]</th></tr>
 </thead>
 <tbody>
-[%# USE dumper;dumper.dump(circulation)%]
+[% USE dumper;dumper.dump(circulation)%]
 [%-
    # First pass
    FOREACH thiscirculation IN circulation ;
@@ -423,7 +423,7 @@ Präsenzbestand
 [%   END %]
 </form>
 [%############### VORMERKBUTTON ######### %]
-[% ELSIF thiscirculation.availability.match('^(lent)$') && thiscirculation.unavailability_info.first.defined('queue') %]
+[% ELSIF thiscirculation.availability.match('^(lent|ordered)$') && thiscirculation.unavailability_info.first.defined('queue') %]
 [%   
      vormerkbutton = 1 ;
 
@@ -460,8 +460,8 @@ Präsenzbestand
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/reservations">
    <input type="hidden" name="l"             value="[% lang %]" />
    <input type="hidden" name="validtarget"   value="[% database %]" />
-   <input type="hidden" name="holdingid"     value="[% uri_escape(thiscirculation.holdingid)  %]" />
    <input type="hidden" name="titleid"       value="[% record.id %]" />
+   <input type="hidden" name="holdingid"     value="[% thiscirculation.holdingid  %]" />
    <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
    <input type="hidden" name="unit_desc"     value="[% standort %]" />
    <input type="hidden" name="num_holdings_in_unit"  value="[% num_holdings_in_unit %]" />

@@ -719,7 +719,7 @@ sub get_loans {
 	    
 	    my $api_key = $config->get('alma')->{'api_key'};
 	    
-	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/loans?user_id_type=all_unique&limit=100&offset=0&order_by=id&direction=ASC&loan_status=Active&apikey=$api_key";
+	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/loans?user_id_type=all_unique&expand=renewable&limit=100&offset=0&order_by=id&direction=ASC&loan_status=Active&apikey=$api_key";
 	    
 	    if ($logger->is_debug()){
 		$logger->debug("Request URL: $url");
@@ -821,10 +821,9 @@ sub get_loans {
 		#     $this_response_ref->{reclaimed} = 1;
 		# }
 		
-		# # Verlaengerbar?
-		# if ($item_ref->{VlBar} eq "1"){
-		#     $this_response_ref->{renewable} = 1;
-		# }
+		if (defined $item_ref->{renewable} && $item_ref->{renewable}){
+		    $this_response_ref->{renewable} = 1;
+		}
 			
 		if (defined $item_ref->{VlText}){
 		    $this_response_ref->{renewable_remark} = $item_ref->{VlText};

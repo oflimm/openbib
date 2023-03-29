@@ -128,18 +128,6 @@
 
     <title>[% IF layout_param.page_title %][% layout_param.page_title %][% ELSE %][% config.get_viewdesc_from_viewname(view) %][% END %]</title>
 
-<!--[if lt IE 7.]>
-<script defer type="text/javascript" src="/js/pngfix.js"></script>
-<![endif]-->
-
-<!--[if lt IE 9]>
-  <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-
-<!-- Fix Bootstrap 5.x for IE -->
-<!-- <script nomodule>window.MSInputMethodContext && document.documentMode && document.write('<link rel="stylesheet" href="/css/bootstrap-ie11-5.2.3/bootstrap-ie11.min.css"><script src="/js/bootstrap-ie11-5.2.3/ie11bs5fix.js"><\/script><script crossorigin="anonymous" src="/js/bootstrap-ie11-5.2.3/polyfill.min.js"><\/script>');</script> -->
-
-<script nomodule>window.MSInputMethodContext && document.documentMode && document.write('<link rel="stylesheet" href="/css/bootstrap-ie11.min.css"><script src="https://cdn.jsdelivr.net/combine/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js,npm/ie11-custom-properties@4,npm/element-qsa-scope@1"><\/script><script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?features=default%2CNumber.parseInt%2CNumber.parseFloat%2CArray.prototype.find%2CArray.prototype.includes"><\/script>');</script>
 
    </head>
 

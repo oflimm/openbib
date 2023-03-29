@@ -153,6 +153,12 @@
   <!-- END Bootstrap-Cookie-Alert -->
 
   <!-- START Bootstrap-IE-Browser-Alert -->
+<script>
+if (window.document.documentMode) {
+   var browserAlert = document.querySelector(".browseralert");
+   browserAlert.style.display = null;
+}
+</script>
   <div class="alert text-center browseralert ob-bg-secondary text-white" role="alert">
     <h3>Sie verwenden den Internet Explorer</h3>
     <p>

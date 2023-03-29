@@ -149,8 +149,18 @@
       <button type="button" class="btn btn-primary btn-sm acceptcookies mt-3 ob-bg" aria-label="Close">
         Ich stimme der Verwendung von Cookies zu.
       </button>
-    </div>
-    <!-- END Bootstrap-Cookie-Alert -->
+  </div>
+  <!-- END Bootstrap-Cookie-Alert -->
+
+  <!-- START Bootstrap-IE-Browser-Alert -->
+  <div class="alert text-center browseralert ob-bg-secondary text-white" role="alert">
+    <h3>Sie verwenden den Internet Explorer</h3>
+    <p>
+    <b>Der Kölner Universitätskatalog nutzt moderne Web-Techniken und funktioniert nur mit modernen und sicheren Web-Browsern. Der Internet Explorer wird nicht mehr unterstützt. Die letzte Version 11 des Internet Explorers wurde 2013 veröffentlicht und wird seit 15.6.2022 von Microsoft nicht mehr unterstützt.</b></p>
+    <p>Bitte nutzen Sie stattdessen <a class="exturl" href="https://www.google.com/intl/de/chrome/" target="_blank">Chrome</a>, <a class="exturl" href="https://www.microsoft.com/de-de/edge/download?form=MA13FJ" target="_blank">Edge</a>, <a class="exturl" href="https://www.mozilla.org/de/firefox/new/" target="_blank">Firefox</a> oder Safari.</p>
+     <p>Diese Browser können in ihrer aktuellsten Version auch auf älteren Betriebssystemen genutzt werden.</p>
+  </div>
+  <!-- END Bootstrap-IE-Browser-Alert -->
 
 
 <script type="text/javascript" src="/js/cookiealert.js"></script>

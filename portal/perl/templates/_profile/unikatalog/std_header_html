@@ -135,5 +135,9 @@
 <!--[if lt IE 9]>
   <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
+
+<!-- Fix Bootstrap 5.x for IE -->
+<script nomodule>window.MSInputMethodContext && document.documentMode && document.write('<link rel="stylesheet" href="/css/bootstrap-ie11-5.2.3/bootstrap-ie11.min.css"><script src="/js/bootstrap-ie11-5.2.3/ie11bs5fix.js"><\/script><script crossorigin="anonymous" src="/js/bootstrap-ie11-5.2.3/polyfill.min.js"><\/script>');</script>
+
    </head>
 

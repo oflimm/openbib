@@ -154,11 +154,13 @@
 
   <!-- START Bootstrap-IE-Browser-Alert -->
 <script>
+$(document).ready(function(){
 if (window.document.documentMode) {
-   var browserAlert = document.querySelector(".browseralert");
-   browserAlert.style.display = null;
-}
+  $('.browseralert').css('display','block');
+}  
+});
 </script>
+
   <div class="alert text-center browseralert ob-bg-secondary text-white" role="alert">
     <h3>Sie verwenden den Internet Explorer</h3>
     <p>

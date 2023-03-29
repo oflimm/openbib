@@ -89,7 +89,7 @@ function update_collection(yourform, checked, item) {
 
 <div class="d-flex ob-fulltitle_actions pb-3 pt-3 ps-2">
 
-[% IF format == 'short' %]
+[% IF 0 == 1 && format == 'short' %]
 <div class="pe-1">
   <button class="btn btn-primary" type="submit" name="do_cartitems_delentry" value="1"><i class="fas fa-trash"></i> [% msg.maketext("Ausgewählte Titel löschen") %]</button>
 </div>
@@ -110,7 +110,7 @@ function update_collection(yourform, checked, item) {
 <button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
 
 <div class="pe-1">
-  <button class="ob-sidebar_button sidebar-toggler d-none d-md-block" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
+  <button class="ob-sidebar_button sidebar-toggler d-none d-md-block mb-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
 </div>
 
 [% ELSE %]

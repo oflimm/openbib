@@ -301,7 +301,15 @@
     
     /* other settings */
 
-
+    .browseralert {
+	position: absolute;
+	top: 400px;
+	left: 50px;
+	right: 50px; 
+	z-index: 2000;
+	display: none;
+    }
+    
     .ob-bottominfo {
 	padding-top: 20px;
 /*	padding-right: 10px; */
@@ -387,7 +395,7 @@
     }
 
     
-    text-black {
+    .text-black {
 	color: #000;
     }
 

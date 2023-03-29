@@ -87,7 +87,7 @@ function update_collection(yourform, checked, item) {
 [%-  PROCESS common/subtemplate name="cartitems_html_as_mla" -%]
 [%   END %]
 
-<div class="d-flex ob-fulltitle_actions pb-3 pt-3">
+<div class="d-flex ob-fulltitle_actions pb-3 pt-3 ps-2">
 
 [% IF format == 'short' %]
 <div class="pe-1">
@@ -102,6 +102,11 @@ function update_collection(yourform, checked, item) {
 </div>
 [% END %]
 
+</div>
+
+</div><!-- End maincontent -->
+</form>
+
 <button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
 
 <div class="pe-1">
@@ -112,6 +117,6 @@ function update_collection(yourform, checked, item) {
 <div class="ob-jumbotron">
   <h1 class="display-4">[% msg.maketext("Derzeit ist Ihre Merkliste leer") %]</h1>
 </div>
-[% END %]
 </div><!-- End maincontent -->
 </form>
+[% END %]

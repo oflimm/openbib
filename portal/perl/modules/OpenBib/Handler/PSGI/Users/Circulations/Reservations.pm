@@ -177,6 +177,7 @@ sub create_record {
     
     my $pickup_location = ($query->param('pickup_location') >= 0)?$query->param('pickup_location'):undef;
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
+    my $storage         = ($query->param('storage'        ))?$query->param('storage'):undef;
 
     my $type            = ($query->param('type'           ))?$query->param('type'):'';
 
@@ -223,7 +224,7 @@ sub create_record {
     if (!defined $pickup_location){
 	$logger->debug("Checking reservation for pickup locations");
 	
-	my $response_check_reservation_ref = $ils->check_reservation({ username => $username, titleid => $titleid, holdingid => $holdingid, unit => $unit });
+	my $response_check_reservation_ref = $ils->check_reservation({ username => $username, titleid => $titleid, holdingid => $holdingid, unit => $unit, storage => $storage });
 
 	if ($logger->is_debug){
 	    $logger->debug("Result check_reservation:".YAML::Dump($response_check_reservation_ref));
@@ -238,6 +239,7 @@ sub create_record {
 	    my $ttdata={
 		database      => $database,
 		unit          => $unit,
+		storage       => $storage,
 		holdingid     => $holdingid,
 		titleid       => $titleid,
 		validtarget   => $validtarget,
@@ -252,7 +254,7 @@ sub create_record {
     else {
 	$logger->debug("Making reservation");
 	
-	my $response_make_reservation_ref = $ils->make_reservation({ username => $username, holdingid => $holdingid, titleid => $titleid, unit => $unit, pickup_location => $pickup_location, type => $type});
+	my $response_make_reservation_ref = $ils->make_reservation({ username => $username, holdingid => $holdingid, titleid => $titleid, unit => $unit, storage => $storage, pickup_location => $pickup_location, type => $type});
 
 	if ($logger->is_debug){
 	    $logger->debug("Result make_reservation:".YAML::Dump($response_make_reservation_ref));	
@@ -266,6 +268,7 @@ sub create_record {
 	    my $ttdata={
 		database        => $database,
 		unit            => $unit,
+		storage         => $storage,
 		holdingid       => $holdingid,
 		pickup_location => $pickup_location,
 		validtarget     => $validtarget,

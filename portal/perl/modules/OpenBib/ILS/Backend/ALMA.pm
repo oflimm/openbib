@@ -1493,6 +1493,9 @@ sub check_alma_request {
     my $department_id   = exists $arg_ref->{unit}     # Alma: library
         ? $arg_ref->{unit}           : undef;
 
+    my $storage_id      = exists $arg_ref->{storage}  # Alma: location
+        ? $arg_ref->{storage}        : undef;
+    
     my $mmsid           = exists $arg_ref->{titleid}  # Katkey fuer teilqualifizierte Vormerkung
         ? $arg_ref->{titleid}        : undef;
 
@@ -1709,6 +1712,9 @@ sub make_alma_request {
     my $department_id   = exists $arg_ref->{unit}     # Alma: library
         ? $arg_ref->{unit}           : undef;
     
+    my $storage_id      = exists $arg_ref->{storage}  # Alma: location
+        ? $arg_ref->{storage}        : undef;
+
     my $pickup_location = exists $arg_ref->{pickup_location} # Ausgabeort
         ? $arg_ref->{pickup_location}       : undef;
 
@@ -1729,7 +1735,7 @@ sub make_alma_request {
     
     $username = $self->get_externalid_of_user($username);
     
-    unless ($username && ( $combinedid || $mmsid) && $department_id && $pickup_location){
+    unless ($username && ( $combinedid || $mmsid) && $department_id && $storage_id && $pickup_location){
 	$response_ref =  {
 	    timestamp   => $self->get_timestamp,	    
 	    error => "missing parameter",
@@ -1768,8 +1774,49 @@ sub make_alma_request {
 	    my $data_ref = {};
 
 	    $data_ref->{request_type} = "HOLD";
-	    $data_ref->{pickup_location_type} = $pickup_location;
-	    $data_ref->{pickup_location_library} = $department_id;
+
+	    my $pickup_data_ref = {};
+
+	    my $valid_pickup_location = 0;
+			    
+	    if (defined $circ_config->{$department_id}{$storage_id}{pickup_locations}){
+		foreach my $pickup_ref (@{$circ_config->{$department_id}{$storage_id}{pickup_locations}}){
+		    if ($pickup_ref->{id} eq $pickup_location){
+			$pickup_data_ref = $pickup_ref;
+			$valid_pickup_location = 1;
+			last;
+		    }
+		}
+	    }
+
+	    unless ($valid_pickup_location){
+		$response_ref =  {
+		    timestamp   => $self->get_timestamp,	    
+		    error => "invalid pickup location",
+		};
+		
+		return $response_ref;
+	    }
+
+	    if ($pickup_data_ref->{type} eq "CIRCULATION_DESK"){
+		$data_ref->{pickup_location_type}             = "CIRCULATION_DESK";
+		$data_ref->{pickup_location_library}          = $department_id;
+		$data_ref->{pickup_location_circulation_desk} = $pickup_location;
+#		$data_ref->{pickup_location_institution}      = $storage_id;
+	    }
+	    elsif ($pickup_data_ref->{type} eq "LIBARY"){
+		$data_ref->{pickup_location_type}             = "LIBRARY";
+		$data_ref->{pickup_location_library}          = $department_id;
+#		$data_ref->{pickup_location_institution}      = $storage_id;
+	    }
+	    else {
+		$response_ref =  {
+		    timestamp   => $self->get_timestamp,	    
+		    error => "invalid pickup location type",
+		};
+		
+		return $response_ref;
+	    }
 	    
 	    if ($logger->is_debug()){
 		$logger->debug("Request URL: $url");
@@ -1777,7 +1824,6 @@ sub make_alma_request {
 	    }
 	    
 	    my $request = HTTP::Request->new('POST', $url, [ 'Accept' => 'application/json', 'Content-Type' => 'application/json' ]);
-#	    $request->header('accept' => 'application/json');
 	    $request->content(encode_json($data_ref));
 	    
 	    my $response = $ua->request($request);

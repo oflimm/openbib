@@ -171,6 +171,7 @@ sub create_record {
     my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
     my $pickup_location = ($query->param('pickup_location') || $query->param('pickup_location') >= 0)?$query->param('pickup_location'):undef;
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
+    my $storage         = ($query->param('storage'        ))?$query->param('storage'):undef;
     my $titleid         = ($query->param('titleid'        ))?$query->param('titleid'):undef;
 
     
@@ -206,7 +207,7 @@ sub create_record {
     my $database              = $sessionauthenticator;
 
     if ($logger->is_debug){
-	$logger->debug("database: $database - titleid: $titleid - unit: $unit - holdingid: $holdingid - validtarget: $validtarget - pickup_locaton: $pickup_location");
+	$logger->debug("database: $database - titleid: $titleid - unit: $unit - storage: $storage - holdingid: $holdingid - validtarget: $validtarget - pickup_location: $pickup_location");
     }
     
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
@@ -216,7 +217,7 @@ sub create_record {
     if (!defined $pickup_location){
 	$logger->debug("Checking order for pickup locations");
 	
-	my $response_check_order_ref = $ils->check_order({ username => $username, titleid => $titleid, holdingid => $holdingid, unit => $unit});
+	my $response_check_order_ref = $ils->check_order({ username => $username, titleid => $titleid, holdingid => $holdingid, unit => $unit, storage => $storage});
 
 	if ($logger->is_debug){
 	    $logger->debug("Result check_order:".YAML::Dump($response_check_order_ref));
@@ -230,6 +231,7 @@ sub create_record {
 	    my $ttdata={
 		database      => $database,
 		unit          => $unit,
+		storage       => $storage,
 		titleid       => $titleid,
 		holdingid     => $holdingid,
 		validtarget   => $validtarget,
@@ -243,7 +245,7 @@ sub create_record {
     else {
 	$logger->debug("Making order");
 	
-	my $response_make_order_ref = $ils->make_order({ username => $username, titleid => $titleid, holdingid => $holdingid, unit => $unit, pickup_location => $pickup_location});
+	my $response_make_order_ref = $ils->make_order({ username => $username, titleid => $titleid, holdingid => $holdingid, unit => $unit, storage => $storage, pickup_location => $pickup_location});
 
 	if ($logger->is_debug){
 	    $logger->debug("Result make_order:".YAML::Dump($response_make_order_ref));	
@@ -257,6 +259,7 @@ sub create_record {
 	    my $ttdata={
 		database      => $database,
 		unit          => $unit,
+		storage       => $storage,
 		holdingid     => $holdingid,
 		pickup_location => $pickup_location,
 		validtarget   => $validtarget,

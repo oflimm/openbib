@@ -23,6 +23,7 @@
    <input type="hidden" name="holdingid"     value="[% holdingid  %]" />
    <input type="hidden" name="unit"          value="[% unit %]" />
    <input type="hidden" name="unit_desc"     value="[% standort %]" />
+   <input type="hidden" name="storage"       value="[% storage %]" />
 
 [% checked = 0 %]
 [% FOREACH pickup_location IN pickup_locations %]

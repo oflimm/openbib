@@ -34,6 +34,7 @@ use base qw(OpenBib::ILS);
 
 use Cache::Memcached::Fast;
 use Encode qw(decode_utf8 encode_utf8);
+use HTTP::Cookies;
 use HTTP::Request;
 use JSON::XS qw/decode_json encode_json/;
 use Log::Log4perl qw(get_logger :levels);
@@ -291,30 +292,37 @@ sub authenticate {
 
 sub update_email {
     my ($self,$username,$email) = @_;
-    
-    my $response_ref = {};
-    
-    # todo
 
-    return $response_ref;
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->update_sis({ type => 'email', username => $username, new_data => $email });    
 }
 
-sub update_phone {
-    my ($self,$username,$phone) = @_;
+sub update_pin {
+    my ($self,$username,$pin) = @_;
     
-    my $response_ref = {};
-    
-    # todo
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
-    return $response_ref;
+    return $self->update_sis({ type => 'pin', username => $username, new_data => $pin });    
 }
 
 sub update_password {
     my ($self,$username,$oldpassword,$newpassword) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->update_sis({ type => 'password', username => $username, new_data => $newpassword, old_data => $oldpassword });
+}
+
+sub update_phone {
+    my ($self) = @_;
     
     my $response_ref = {};
     
-    # todo
+    # In Alma nicht vorhanden
 
     return $response_ref;
 }
@@ -1804,7 +1812,7 @@ sub make_alma_request {
 		$data_ref->{pickup_location_circulation_desk} = $pickup_location;
 #		$data_ref->{pickup_location_institution}      = $storage_id;
 	    }
-	    elsif ($pickup_data_ref->{type} eq "LIBARY"){
+	    elsif ($pickup_data_ref->{type} eq "LIBRARY"){
 		$data_ref->{pickup_location_type}             = "LIBRARY";
 		$data_ref->{pickup_location_library}          = $department_id;
 #		$data_ref->{pickup_location_institution}      = $storage_id;
@@ -2090,7 +2098,195 @@ sub get_alma_request {
             
     return $response_ref;
 }
+
+sub update_sis {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $type        = exists $arg_ref->{type}
+        ? $arg_ref->{type}         : undef;
+
+    my $username    = exists $arg_ref->{username}
+        ? $arg_ref->{username}     : undef;
+
+    my $new_data        = exists $arg_ref->{new_data}
+        ? $arg_ref->{new_data}     : undef;
+
+    my $old_data        = exists $arg_ref->{old_data}
+        ? $arg_ref->{old_data}     : undef;
     
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config      = $self->get_config;
+    my $database    = $self->get_database;
+    my $ua          = $self->get_client;
+
+    my $response_ref = {};
+
+    my $uid = $self->get_externalid_of_user($username);
+    
+    unless ($uid || $new_data){
+	$response_ref = {
+	    timestamp   => $self->get_timestamp,
+	    error => 'error',
+	    error_description       => "missing or wrong parameters",
+	};
+	
+	return $response_ref;
+    }
+    
+    if ($type eq "password"){	
+	if (!$old_data){
+	    $response_ref = {
+		timestamp   => $self->get_timestamp,
+		error => 'error',
+		error_description       => "missing or wrong parameters",
+	    };
+	    
+	    return $response_ref;
+	}
+
+	my $authresult_ref = $self->authenticate({ username => $username, password => $old_data });
+
+	if (!defined $authresult_ref->{successful} || !$authresult_ref->{successful}){
+	    $response_ref = {
+		timestamp   => $self->get_timestamp,
+		error => 'error',
+		error_description       => "Falsche Eingabe des aktuellen Passworts",
+	    };
+
+	    return $response_ref;
+	}
+    }
+
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    my $locinfotable  = OpenBib::Config::LocationInfoTable->new;
+
+    {
+	my $json_result_ref = {};
+
+	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+	    
+	    $logger->debug("Updating $type via SIS API for Alma");
+
+	    my $authcookies = HTTP::Cookies->new();
+	    
+	    $ua->cookie_jar($authcookies);   
+	    
+	    my $authdata_ref = {
+		username => $config->get('sis')->{'api_user'},
+		password => $config->get('sis')->{'api_password'},
+	    };
+	    
+	    my $auth_url = $config->get('sis')->{'api_authurl'};
+
+	    if ($logger->is_debug()){
+		$logger->debug("Request URL: $auth_url");
+	    }
+	    
+	    my $authrequest = HTTP::Request->new('POST', $auth_url, [ 'Accept' => 'application/json', 'Content-Type' => 'application/json' ]);
+	    my $authinfo = encode_json($authdata_ref);
+
+	    if ($logger->is_debug){
+		$logger->debug("Auth Info: ".$authinfo);
+	    }
+	    
+	    $authrequest->content($authinfo);
+
+	    my $authresponse = $ua->request($authrequest);
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Auth Response Headers: ".$authresponse->headers_as_string);
+		$logger->debug("Auth Response: ".$authresponse->content);
+		$logger->debug("Auth Response Code: ".$authresponse->code);
+	    }
+	    
+	    if (!$authresponse->is_success) {
+		$logger->info($authresponse->code . ' - ' . $authresponse->message);
+		$response_ref = {
+		    "code" => 405,
+			"error" => "authentication error",
+			"error_description" => "Interner SIS-API Authentifizierungsfehler",
+		};
+		
+		return $response_ref;
+	    }
+	    
+	    my $api_call_ref = {
+		'email'    => "/setEmail/",
+		'pin'      => "/setPin/",
+		'password' => "/setPassword/",
+	    };
+
+	    my $url     = $config->get('sis')->{'api_baseurl'}.$api_call_ref->{$type};
+	    
+	    if ($logger->is_debug()){
+		$logger->debug("Request URL: $url");
+	    }
+
+	    my $data_ref = {
+		uid => $uid,
+		$type => $new_data,
+	    };
+	    
+	    my $request = HTTP::Request->new('PUT', $url, [ 'Accept' => 'application/json', 'Content-Type' => 'application/json' ]);
+	    my $datainfo = encode_json($data_ref);
+	    $request->content($datainfo);
+	    
+	    my $response = $ua->request($request);
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Response Code: ".$response->code);				
+		$logger->debug("Response Headers: ".$response->headers_as_string);
+		$logger->debug("Response: ".$response->content);
+	    }
+	    
+	    if (!$response->is_success) {
+		$logger->info($response->code . ' - ' . $response->message);
+		
+		$response_ref = {
+		    "code" => 400,
+		    "error" => "error",
+		    "error_description" => "Fehler bei Aktualisierung der Kontoinformationen",
+		};
+		
+		return $response_ref;
+	    }
+	    
+	    if ($response->code == 200){
+		eval {
+		    $json_result_ref = decode_json $response->content;
+		};
+		
+		if ($@){
+		    $logger->error('Decoding error: '.$@);
+		}
+		
+		if ($logger->is_debug){
+		    $response_ref->{debug} = $json_result_ref;
+		}
+		
+		$response_ref = {
+		    "successful" => 1,
+			"message" => "Kontoinformationen erfolgreich aktualisiert",
+		};
+		
+		return $response_ref;
+	    }
+	}
+    }
+
+    $response_ref = {
+	"code" => 405,
+	    "error" => "unknown error",
+	    "error_description" => "Unbekannter Fehler",
+    };
+    
+    return $response_ref;
+}
+
 
 1;
 __END__

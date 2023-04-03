@@ -188,6 +188,8 @@ sub update_ilsaccount {
     my $email2         = $input_data_ref->{email2};
     my $phone1         = $input_data_ref->{phone1};
     my $phone2         = $input_data_ref->{phone2};
+    my $pin1           = $input_data_ref->{pin1};
+    my $pin2           = $input_data_ref->{pin2};
 
     # Aktive Aenderungen des Nutzerkontos
     unless ($config->get('active_ils')){
@@ -240,12 +242,12 @@ sub update_ilsaccount {
 	    
 	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
 	}
-	elsif (length(decode_utf8($oldpassword)) != 6 ){
-	    my $code   = -1;
-	    my $reason = $msg->maketext("Ihr neues Passwort muss 6-stellig sein.");
+	# elsif (length(decode_utf8($password1)) != 6 ){
+	#     my $code   = -1;
+	#     my $reason = $msg->maketext("Ihr neues Passwort muss 6-stellig sein.");
 	    
-	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
-	}
+	#     return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+	# }
 	elsif ($password1 !~ /^[a-zA-Z0-9]+$/ or $password1 !~ /[0-9]/ or $password1 !~ /[a-zA-Z]/){
 	    my $code   = -1;
 	    my $reason = $msg->maketext("Bitte geben Sie ein Passwort ein, welches den Vorgaben entspricht.");
@@ -299,6 +301,32 @@ sub update_ilsaccount {
 	}
 
 	$response_ref = $ils->update_phone($loginname,$phone1);
+
+	if ($response_ref->{error}) {
+	    my $code   = -1;
+	    my $reason = $response_ref->{error_description};
+	    
+	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+	}
+	
+    }
+
+    elsif ($field eq "pin"){
+    
+	if ($pin1 ne $pin2) {
+	    my $code   = -1;
+	    my $reason = $msg->maketext("Sie haben entweder keine Ausleih-PIN eingegeben oder die beiden PINs stimmen nicht überein");
+	    
+	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+	}
+	elsif ($pin1 !~ m/^\d\d\d\d/) {
+	    my $code   = -1;
+	    my $reason = $msg->maketext("Sie haben keine 4 Ziffern für die Ausleih-PIN eingegeben");
+	    
+	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+	}
+
+	$response_ref = $ils->update_pin($loginname,$pin1);
 
 	if ($response_ref->{error}) {
 	    my $code   = -1;
@@ -582,6 +610,16 @@ sub get_input_definition_ilsaccount {
             type     => 'scalar',
 	},
 	phone2 => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	pin1 => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+	},
+	pin2 => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',

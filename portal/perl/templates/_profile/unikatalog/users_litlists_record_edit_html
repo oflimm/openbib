@@ -74,6 +74,13 @@
   
   <div class="ob-resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 
+[%-
+
+   recordlist = litlist.recordlist;
+   title      = "&nbsp;";
+
+-%]
+
 [% IF format == 'Text' %]
 
 [% PROCESS common/subtemplate name="litlists_record_html_as_text" %]

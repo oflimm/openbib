@@ -9,8 +9,8 @@
 	    
 	    <div class="form-floating mb-3">
 	      <select class="form-select" name="format" id="litlist_format_print">
-		<option value="short">[% msg.maketext("Kurzübersicht") %]</option>
-		<option value="full">[% msg.maketext("Vollanzeige") %]</option>
+<!--		<option value="short">[% msg.maketext("Kurzübersicht") %]</option>
+		<option value="full">[% msg.maketext("Vollanzeige") %]</option> -->
 		<option value="Text">[% msg.maketext("Einfacher Text") %]</option>
 		<option value="BibTeX">[% msg.maketext("BibTeX (z.B. Citavi)") %]</option>
 		<option value="EndNote">[% msg.maketext("EndNote") %]</option>

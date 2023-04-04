@@ -647,7 +647,7 @@ sub print_record {
     # Dispatches Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
-    my $litlistid      = $self->strip_suffix($self->decode_id($self->param('litlistid')));
+    my $litlistid      = $self->param('litlistid');
 
     # Shared Args
     my $query          = $self->query();
@@ -723,8 +723,8 @@ sub save_record {
     
     # Dispatched_args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
-    my $id             = $self->strip_suffix($self->decode_id($self->param('titleid')));
+    my $userid         = $self->param('userid');    
+    my $litlistid      = $self->param('litlistid');
 
     # Shared Args
     my $query          = $self->query();
@@ -740,41 +740,65 @@ sub save_record {
 
     # CGI Args
     my $format                  = $query->param('format')                || '';
-    
+
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
     $logger->info("SessionID: $session->{ID}");
-
+    
     my $username=$user->get_username();
-    
-    my $recordlist = new OpenBib::RecordList::Title();
-    
-    if ($id && $database) {
-        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
+
+    my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
+    my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
+
+    my $userrole_ref = $user->get_roles_of_user($user->{ID}) if ($user_owns_litlist);
+
+    if (!$litlist_is_public && !$user_owns_litlist){            
+	return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
-    else {
-        $recordlist = $self->get_items_in_collection()
-    }
-    
-    $recordlist->load_full_records;
-    
+
+    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid, view => $view});
+        
+    my $targettype    = $user->get_targettype_of_session($session->{ID});
+        
+    my $singlelitlist = {
+        id         => $litlistid,
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt'), view => $view}),
+        properties => $litlist_properties_ref,
+    };
+        
+        
+    # Thematische Einordnung
+        
+    my $litlist_topics_ref   = $user->get_topics_of_litlist({id => $litlistid});
+    my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid, view => $view});
+
+    my $filename = "Literaturliste ".$litlist_properties_ref->{title}." ".$format;
+
+    $filename =~s/\W/_/g;
+
     # TT-Data erzeugen
     my $ttdata={
-        qopts       => $queryoptions->get_options,		
-        format      => $format,
-        recordlist  => $recordlist,
+        user_owns_litlist => $user_owns_litlist,
+        thistopics     => $litlist_topics_ref,
+        query          => $query,
+        qopts          => $queryoptions->get_options,
+        userrole       => $userrole_ref,
+        format         => $format,
+        litlist        => $singlelitlist,
+        other_litlists => $other_litlists_of_user,
+        targettype     => $targettype,
 
 	highlightquery    => \&highlightquery,
 	sort_circulation => \&sort_circulation,
-	
     };
     
     $self->param('content_type','text/plain');
-    $self->header_add("Content-Disposition" => "attachment;filename=\"merkliste.txt\"");
-    return $self->print_page($config->{tt_cartitems_save_plain_tname},$ttdata);
+    $self->header_add("Content-Disposition" => "attachment;filename=\"${filename}.txt\"");
+    return $self->print_page($config->{tt_litlists_record_save_tname},$ttdata);
 
 }
+
 
 sub mail_record {
     my $self = shift;

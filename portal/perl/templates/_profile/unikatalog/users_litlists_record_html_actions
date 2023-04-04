@@ -79,7 +79,7 @@
 	    <i class="fas fa-download"></i><a class="ps-2" href="#" data-bs-toggle="modal" data-bs-target="#litlistsSaveModal">[% msg.maketext("Literaturliste speichern") %]</a>
 	  </div>
 	  
-[% IF user.ID %]
+[% IF 0 == 1 && user.ID %]
 	  <div class="pt-2 pb-2">
 	    <i class="far fa-envelope"></i><a class="ps-2" href="#" data-bs-toggle="modal" data-bs-target="#litlistsMailModal">[% msg.maketext("Literaturliste als E-Mail") %]</a>
 	  </div>

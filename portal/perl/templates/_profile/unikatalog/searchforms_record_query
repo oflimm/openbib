@@ -64,7 +64,7 @@
 
 <p>
 <a data-bs-toggle="collapse" href="#collapseAdditionalSearchOptions" role="button" aria-expanded="false" aria-controls="collapseAdditionalSearchOptions">
-    [% msg.maketext("Mehr Suchoptionen") %] >>
+    [% msg.maketext("Mehr Suchfelder") %] >>
 </a>
 </p>
 

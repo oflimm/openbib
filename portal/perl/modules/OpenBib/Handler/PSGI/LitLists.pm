@@ -36,6 +36,9 @@ use utf8;
 
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
+use Email::Valid;
+use Email::Stuffer;
+use File::Slurper 'read_binary';
 use DBI;
 use JSON::XS;
 use Data::Pageset;
@@ -808,8 +811,8 @@ sub mail_record {
 
     # Dispatched Args
     my $view           = $self->param('view');
-    my $database       = $self->param('database');
-    my $id             = $self->strip_suffix($self->decode_id($self->param('titleid')));
+    my $userid         = $self->param('userid');    
+    my $litlistid      = $self->param('litlistid');
 
     # Shared Args
     my $query          = $self->query();
@@ -830,19 +833,28 @@ sub mail_record {
     # die Session nicht authentifiziert ist
 
     $logger->info("SessionID: $session->{ID}");
-
+    
     my $username=$user->get_username();
-    
-    my $recordlist = new OpenBib::RecordList::Title();
-    
-    if ($id && $database) {
-        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
+
+    my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
+    my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
+
+    my $userrole_ref = $user->get_roles_of_user($user->{ID}) if ($user_owns_litlist);
+
+    if (!$litlist_is_public && !$user_owns_litlist){            
+	return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
-    else {
-        $recordlist = $self->get_items_in_collection()
-    }
-    
-    $recordlist->load_full_records;
+
+    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid, view => $view});
+        
+    my $targettype    = $user->get_targettype_of_session($session->{ID});
+        
+    my $singlelitlist = {
+        id         => $litlistid,
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt'), view => $view}),
+        properties => $litlist_properties_ref,
+    };
+
     
     # TT-Data erzeugen
     my $ttdata={
@@ -850,16 +862,15 @@ sub mail_record {
         format      => $format,
 
         username    => $username,
-        titleid     => $id,
-        database    => $database,
-        recordlist  => $recordlist,
+	properties  => $litlist_properties_ref,
+        litlist     => $singlelitlist,
 
 	highlightquery    => \&highlightquery,
 	sort_circulation => \&sort_circulation,
 	
     };
     
-    return $self->print_page($config->{tt_cartitems_mail_tname},$ttdata);
+    return $self->print_page($config->{tt_litlists_record_mail_tname},$ttdata);
 }
 
 sub mail_record_send {
@@ -870,8 +881,8 @@ sub mail_record_send {
 
     # Dispatched Args
     my $view           = $self->param('view')           || '';
-    my $database       = $self->param('database');
-    my $id             = $self->strip_suffix($self->decode_id($self->param('titleid')));
+    my $userid         = $self->param('userid');    
+    my $litlistid      = $self->param('litlistid');
 
     # Shared Args
     my $query          = $self->query();
@@ -887,11 +898,9 @@ sub mail_record_send {
    
     # CGI Args
     my $email     = ($query->param('email'))?$query->param('email'):'';
-    my $subject   = ($query->param('subject'))?$query->param('subject'):'Ihre Merkliste';
-    $id        = $query->param('id');
+    my $subject   = ($query->param('subject'))?$query->param('subject'):'Ihre Literaturliste';
     my $mail      = $query->param('mail');
-    $database  = $query->param('db');
-    my $format    = $query->param('format')||'full';
+    my $format    = $query->param('format')||'';
 
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
@@ -905,17 +914,32 @@ sub mail_record_send {
 
     my $sysprofile= $config->get_profilename_of_view($view);
 
-    my $recordlist = new OpenBib::RecordList::Title();
+    # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
+    # die Session nicht authentifiziert ist
+
+    $logger->info("SessionID: $session->{ID}");
     
-    if ($id && $database) {
-        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
-    }
-    else {
-        $recordlist = $self->get_items_in_collection();
+    my $username=$user->get_username();
+
+    my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
+    my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;
+
+    my $userrole_ref = $user->get_roles_of_user($user->{ID}) if ($user_owns_litlist);
+
+    if (!$litlist_is_public && !$user_owns_litlist){            
+	return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
 
-    $recordlist->load_full_records;
-    
+    my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid, view => $view});
+        
+    my $targettype    = $user->get_targettype_of_session($session->{ID});
+        
+    my $singlelitlist = {
+        id         => $litlistid,
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt'), view => $view}),
+        properties => $litlist_properties_ref,
+    };
+
     # TT-Data erzeugen
     
     my $ttdata={
@@ -925,19 +949,20 @@ sub mail_record_send {
         sessionID   => $session->{ID},
 	qopts       => $queryoptions->get_options,
         format      => $format,
-        recordlist  => $recordlist,
+	properties  => $litlist_properties_ref,
+        litlist     => $singlelitlist,
         
         config      => $config,
         user        => $user,
         msg         => $msg,
 
 	highlightquery    => \&highlightquery,
-	sort_circulation => \&sort_circulation,
+	sort_circulation  => \&sort_circulation,
 	
     };
 
     my $maildata="";
-    my $ofile="merkliste-" . $$ .".txt";
+    my $ofile="literaturliste-" . $$ .".txt";
 
     my $datatemplate = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -955,8 +980,8 @@ sub mail_record_send {
   
 
     my $mimetype="text/html";
-    my $filename="kug-merkliste";
-    my $datatemplatename=$config->{tt_cartitems_mail_html_tname};
+    my $filename="unikatalog-literaturliste";
+    my $datatemplatename=$config->{tt_litlists_record_mail_html_tname};
 
     $logger->debug("Using view $view in profile $sysprofile");
     
@@ -966,7 +991,7 @@ sub mail_record_send {
     else {
         $mimetype="text/plain";
         $filename.=".txt";
-        $datatemplatename=$config->{tt_cartitems_mail_plain_tname};
+        $datatemplatename=$config->{tt_litlists_record_mail_plain_tname};
     }
 
     $datatemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
@@ -986,8 +1011,7 @@ sub mail_record_send {
     my $afile = "an." . $$;
 
     my $mainttdata = {
-	msg => $msg,
-	
+	msg => $msg,	
     };
 
     my $maintemplate = Template->new({
@@ -1004,7 +1028,7 @@ sub mail_record_send {
         OUTPUT        => $afile,
     });
 
-    my $messagetemplatename = $config->{tt_cartitems_mail_message_tname};
+    my $messagetemplatename = $config->{tt_litlists_record_mail_message_tname};
     
     $messagetemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
         view         => $ttdata->{view},
@@ -1030,7 +1054,7 @@ sub mail_record_send {
     unlink $anschfile;
     unlink $mailfile;
 
-    return $self->print_page($config->{tt_cartitems_mail_success_tname},$ttdata);
+    return $self->print_page($config->{tt_litlists_record_mail_success_tname},$ttdata);
 }
 
 sub highlightquery {

@@ -16,7 +16,7 @@
 <div class="row">
 <div class="col-md-12 ps-4 pe-4">
 
-<h4>[% msg.maketext("Merkliste im EndNote-Format") %]</h4>
+[% IF NOT representation == 'include' %]<h3>[% IF title %][% title %][% ELSE %][% msg.maketext("Merkliste im Endnote-Format") %][% END %]</h3>[% END %]
 
 <pre>
 [% END %]
@@ -28,4 +28,5 @@
 </pre>
 </div>
 </div>
+[% IF representation == 'include' %]<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("EndNote-Format") %]</div>[% END %]
 [% END %]

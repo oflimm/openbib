@@ -1,8 +1,9 @@
 [% IF NOT hide_options %]
 <div class="ob-cartitems ob-reuse_data"><!-- Begin Reuse -->
   
+[% IF 0 == 1 %]
   <div id="ob-title_actions" class="accordion"><!-- Begin Litlist -->
-    
+
     <div class="card">
       <div class="card-header" id="headingActions">
 	<h5 class="mb-0">
@@ -57,13 +58,9 @@
 </div>
 
 <p/>
+[% END %]
 
 [% IF user.ID && format == 'short' %]
-
-<h4>[% msg.maketext("Ausgewählte Titel") %]</h4>
-
-
-  <p />
 
 [%    IF config.get('litlists') %]
 <div id="ob-litlists" class="accordion"><!-- Begin Litlist -->
@@ -71,13 +68,13 @@
   <div class="card">
     <div class="card-header" id="headingLitlists">
       <h5 class="mb-0">
-        <a class="card-link" href="#collapseLitlists" data-bs-toggle="collapse" data-bs-target="#collapseLitlists" aria-expanded="false" aria-controls="collapseLitlists">
+        <a class="card-link" href="#collapseLitlists" data-bs-toggle="collapse" data-bs-target="#collapseLitlists" aria-expanded="true" aria-controls="collapseLitlists">
           [% msg.maketext("Literaturliste") %]
         </a>
       </h5>
     </div>
     
-    <div id="collapseLitlists" class="collapse" aria-labelledby="headingLitlists" data-parent="#ob-litlists">
+    <div id="collapseLitlists" class="collapse show" aria-labelledby="headingLitlists" data-parent="#ob-litlists">
       <div class="card-body">
 [% 
        litlists = [] ;

@@ -20,6 +20,8 @@
     };
 -%]
 [%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="cartitems_include" -%]
 [%- ELSIF representation == 'rdf' -%]
 [%- PROCESS common/subtemplate name="cartitems_rdf" -%]
 [%- ELSIF representation == 'json' -%]

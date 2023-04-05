@@ -117,6 +117,39 @@
 
   </div>
 
+  <div class="d-flex ob-fulltitle_actions pb-3 pt-3 text-white">
+	  <div class="btn btn-primary ms-2">
+	    <a href="#" data-bs-toggle="modal" data-bs-target="#litlistsSaveModal"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Speichern") %]</span></a>
+	  </div>
+	  
+[% IF user.ID %]
+	  <div class="btn btn-primary ms-2">
+	    <a href="#" data-bs-toggle="modal" data-bs-target="#litlistsMailModal"><i class="far fa-envelope"></i><span class="d-none d-sm-inline ps-2">[% msg.maketext("E-Mail") %]</span></a>
+	  </div>
+[% END %]
+
+	  <div class="btn btn-primary ms-2">
+	    <a href="#" data-bs-toggle="modal" data-bs-target="#litlistsPrintModal"><i class="fas fa-print"></i><span class="d-none d-sm-inline ps-2">[% msg.maketext("Drucken") %]</span></a>
+	  </div>
+	  
+          <div class="ms-2">
+ <div class="dropdown">
+   <button class="btn btn-primary dropdown-toggle" type="button" id="citationMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fas fa-quote-right"></i><span class="d-none d-sm-inline ps-2">[% msg.maketext("Zitat") %]</span>
+  </button>
+  <ul class="dropdown-menu text-black" aria-labelledby="citationMenuButton">
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=apa" title="[% msg.maketext("APA") %]">[% msg.maketext("APA") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=harvard" title="[% msg.maketext("Harvard") %]">[% msg.maketext("Harvard") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=mla" title="[% msg.maketext("MLA") %]">[% msg.maketext("MLA") %]</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=BibTeX" title="[% msg.maketext("BibTeX") %]">[% msg.maketext("BibTeX") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=EndNote" title="[% msg.maketext("EndNote") %]">[% msg.maketext("EndNote") %]</a></li>
+  </ul>
+ </div>
+             </div>
+
+  </div>
+
   <div class="pt-3 mb-3">
     <button class="ob-floating_sidebar_button sidebar-toggler d-md-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
     

@@ -4,13 +4,13 @@
     <div class="card">
       <div class="card-header" id="headingOne">
 	<h5 class="mb-0">
-          <a class="card-link collapsed" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          <a class="card-link collapsed" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
             [% msg.maketext("Einstellungen &auml;ndern") %]
           </a>
 	</h5>
       </div>
 
-      <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#edit_item">
+      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#edit_item">
 	<div class="card-body">
 
 	  <form method="post" action="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]">
@@ -56,7 +56,8 @@
       </div>
     </div>
   </div>
-  
+
+[% IF 0 == 1 %]
   <div id="ob-title_actions" class="accordion"><!-- Begin Litlist -->
     
     <div class="card">
@@ -79,7 +80,7 @@
 	    <i class="fas fa-download"></i><a class="ps-2" href="#" data-bs-toggle="modal" data-bs-target="#litlistsSaveModal">[% msg.maketext("Literaturliste speichern") %]</a>
 	  </div>
 	  
-[% IF 0 == 1 && user.ID %]
+[% IF user.ID %]
 	  <div class="pt-2 pb-2">
 	    <i class="far fa-envelope"></i><a class="ps-2" href="#" data-bs-toggle="modal" data-bs-target="#litlistsMailModal">[% msg.maketext("Literaturliste als E-Mail") %]</a>
 	  </div>
@@ -113,6 +114,7 @@
 
   </div>
 
+[% END # 0 == 1 %]
   <p/>
 
 

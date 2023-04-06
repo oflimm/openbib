@@ -49,7 +49,7 @@ title:
   'Verlag': '0412'
   'Online-Adresse': '0662'
 holding:
-  'Signatur': '0014'
+  'Signatur (= Freitext 2)': '0014'
   'Standort': '0016'
   
 #filter:

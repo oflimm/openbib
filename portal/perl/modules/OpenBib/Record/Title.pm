@@ -2089,9 +2089,11 @@ sub to_endnote {
 
     my $fields_ref = $self->to_abstract_fields();
 
+    # https://www1.citavi.com/sub/manual-citaviweb/de/index.html?importing_an_endnote_tagged_file.html
+    
     my $endnote_category_map_ref = {
         'authors' => '%A',   # Author
-        'editors' => '%A',   # Person
+        'editors' => '%E',   # Editor of book containing article
         'corp'    => '%C',   # Corporate Author
         'creator' => '%C',   # Corporate Creator
         'title'   => '%T',   # Title of the article or book
@@ -2100,16 +2102,15 @@ sub to_endnote {
         'T0519'   => '%R',   # Report, paper, or thesis type
         'source_volume' => '%V',    # Volume 
         'volume'  => '%N',    # Number with volume
-#        '7'      => '%E',    # Editor of book containing article
         'pages'     => '%P',  # Page number(s)
         'publisher' => '%I',  # Issuer. This is the publisher
         'place' => '%C',    # City where published. This is the publishers address
         'year' => '%D',    # Date of publication
 #        '11'    => '%O',    # Other information which is printed after the reference
-#        '12'    => '%K',    # Keywords used by refer to help locate the reference
+         'keywords' => '%K',    # Keywords used by refer to help locate the reference
 #        '13'    => '%L',    # Label used to number references when the -k flag of refer is used
-        'isbn' => '%X',    # Abstract. This is not normally printed in a reference
-        'issn' => '%X',    # Abstract. This is not normally printed in a reference
+        'isbn' => '%@',    # Abstract. This is not normally printed in a reference
+        'issn' => '%@',    # Abstract. This is not normally printed in a reference
         'abstract' => '%X',    # Abstract. This is not normally printed in a reference
 #        '15'    => '%W',    # Where the item can be found (physical location of item)
         'pages' => '%Z',    # Pages in the entire document. Tib reserves this for special use
@@ -2133,7 +2134,7 @@ sub to_endnote {
     # Titelkategorien
     foreach my $category (keys %{$endnote_category_map_ref}) {
         if (defined $fields_ref->{$category} && $fields_ref->{$category}) {
-	    if ($category =~m/(authors|editors|corp|creator)/){
+	    if ($category =~m/(authors|editors|corp|creator|keywords)/){
 		foreach my $field_content (@{$fields_ref->{$category}}){
 		    my $content = $endnote_category_map_ref->{$category}." ".$field_content;
 		    push @{$endnote_ref}, $content;
@@ -2152,6 +2153,18 @@ sub to_endnote {
         }
     }
 
+    # Urls
+
+    if (defined $fields_ref->{'urls'}){
+	foreach my $url_ref (@{$fields_ref->{'urls'}}){
+	    my $content = '%U '.$url_ref->{'url'};
+	    if ($url_ref->{'desc'}){
+		$content.=" (".$url_ref->{desc}.")";
+	    }
+	    push @{$endnote_ref}, $content;
+	}
+    }
+    
     # Exemplardaten
     my @holdingnormset = (defined $self->{_holding} && @{$self->{_holding}})?@{$self->{_holding}}:();
 

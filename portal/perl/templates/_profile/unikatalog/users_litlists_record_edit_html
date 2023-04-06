@@ -148,14 +148,15 @@
  </div>
              </div>
 
-  </div>
-
   <div class="pt-3 mb-3">
     <button class="ob-floating_sidebar_button sidebar-toggler d-md-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
     
     <button class="ob-sidebar_button sidebar-toggler d-none d-md-block" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
   </div>
-  
+
+  </div>
+
+
 </div>
 <!-- Titlelist ends here -->
 

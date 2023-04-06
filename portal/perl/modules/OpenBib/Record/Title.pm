@@ -2092,30 +2092,30 @@ sub to_endnote {
     # https://www1.citavi.com/sub/manual-citaviweb/de/index.html?importing_an_endnote_tagged_file.html
     
     my $endnote_category_map_ref = {
-        'authors' => '%A',   # Author
-        'editors' => '%E',   # Editor of book containing article
-        'corp'    => '%C',   # Corporate Author
-        'creator' => '%C',   # Corporate Creator
-        'title'   => '%T',   # Title of the article or book
-        'series' => '%S',    # Title of the serie
         'source_journal' => '%J',    # Journal containing the article
-        'T0519'   => '%R',   # Report, paper, or thesis type
-        'source_volume' => '%V',    # Volume 
-        'volume'  => '%N',    # Number with volume
-        'pages'     => '%P',  # Page number(s)
-        'publisher' => '%I',  # Issuer. This is the publisher
-        'place' => '%C',    # City where published. This is the publishers address
-        'year' => '%D',    # Date of publication
-#        '11'    => '%O',    # Other information which is printed after the reference
-         'keywords' => '%K',    # Keywords used by refer to help locate the reference
-#        '13'    => '%L',    # Label used to number references when the -k flag of refer is used
-        'isbn' => '%@',    # Abstract. This is not normally printed in a reference
-        'issn' => '%@',    # Abstract. This is not normally printed in a reference
-        'abstract' => '%X',    # Abstract. This is not normally printed in a reference
-#        '15'    => '%W',    # Where the item can be found (physical location of item)
-        'pages' => '%Z',    # Pages in the entire document. Tib reserves this for special use
-        'edition' => '%7',    # Edition
-#        '17'    => '%Y',    # Series Editor
+        'source_volume'  => '%V',    # Volume 
+        'authors'   => '%A',   # Author
+        'editors'   => '%E',   # Editor of book containing article
+        'corp'      => '%A',   # Corporate Author
+        'creator'   => '%E',   # Corporate Creator
+        'title'     => '%T',   # Title of the article or book
+        'series'    => '%S',   # Title of the serie
+        'T0519'     => '%R',   # Report, paper, or thesis type
+        'volume'    => '%N',   # Number with volume
+        'pages'     => '%P',   # Page number(s)
+        'publisher' => '%I',   # Issuer. This is the publisher
+        'place'     => '%C',   # City where published. This is the publishers address
+        'year'      => '%D',   # Date of publication
+        'keywords'  => '%K',   # Keywords used by refer to help locate the reference
+        'isbn'      => '%@',   # Abstract. This is not normally printed in a reference
+        'issn'      => '%@',   # Abstract. This is not normally printed in a reference
+        'abstract'  => '%X',   # Abstract. This is not normally printed in a reference
+        'pages'     => '%Z',   # Pages in the entire document. Tib reserves this for special use
+        'edition'   => '%7',   # Edition
+#        ''         => '%Y',   # Series Editor
+#        ''         => '%L',   # Label used to number references when the -k flag of refer is used
+#        ''         => '%O',   # Other information which is printed after the reference
+#        ''         => '%W',   # Where the item can be found (physical location of item)
     };
 
     my $endnote_ref=[];

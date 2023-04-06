@@ -2119,6 +2119,17 @@ sub to_endnote {
 
     my $endnote_ref=[];
 
+    my $type_ref = {
+	'book' => 'Book',
+	    'article' => 'Journal Article',
+	    
+    };
+
+    # Typ
+    if (defined $fields_ref->{'type'} && defined $type_ref->{$fields_ref->{'type'}} && $type_ref->{$fields_ref->{'type'}}){
+	push @{$endnote_ref}, '%0 '.$type_ref->{$fields_ref->{'type'}}; 
+    }
+    
     # Titelkategorien
     foreach my $category (keys %{$endnote_category_map_ref}) {
         if (defined $fields_ref->{$category} && $fields_ref->{$category}) {

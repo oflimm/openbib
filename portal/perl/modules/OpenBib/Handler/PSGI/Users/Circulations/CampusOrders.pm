@@ -42,7 +42,7 @@ use POSIX;
 use SOAP::Lite;
 use Socket;
 use Template;
-use URI::Escape;
+use URI::Escape qw(uri_unescape);
 
 use OpenBib::API::HTTP::JOP;
 use OpenBib::Common::Util;
@@ -305,7 +305,7 @@ sub create_record {
 	# sondern aus dem Bibliothekskonto des Nutzers via $userinfo_ref.
 	
 	# Production
-	my $response_make_campus_order_ref = $ils->make_campus_order({ title => $title, titleid => $titleid, author => $author, coporation => $corporation, publisher => $publisher, year => $year, numbering => $numbering, label => $label, isbn => $isbn, issn => $issn, articleauthor => $articleauthor, articletitle => $articletitle, volume => $volume, issue => $issue, pages => $pages, refid => $refid, userid => $userinfo_ref->{username}, username => $userinfo_ref->{fullname}, receipt => $receipt, email => $userinfo_ref->{email}, remark => $remark, unit => $unit, location => $unit_desc, domain => $domain, subdomain => $subdomain });
+	my $response_make_campus_order_ref = $ils->make_campus_order({ title => uri_unescape($title), titleid => $titleid, author => uri_unescape($author), coporation => uri_unescape($corporation), publisher => uri_unescape($publisher), year => $year, numbering => $numbering, label => uri_unescape($label), isbn => $isbn, issn => $issn, articleauthor => uri_unescape($articleauthor), articletitle => uri_unescape($articletitle), volume => $volume, issue => $issue, pages => $pages, refid => $refid, userid => uri_unescape($userinfo_ref->{username}), username => $userinfo_ref->{fullname}, receipt => $receipt, email => $userinfo_ref->{email}, remark => uri_unescape($remark), unit => $unit, location => $unit_desc, domain => $domain, subdomain => $subdomain });
 
 	# Test
 #	my $response_make_campus_order_ref = {

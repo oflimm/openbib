@@ -94,7 +94,7 @@ function update_collection(yourform, checked, item) {
 <div class="d-flex ob-fulltitle_actions pb-3 pt-3 ps-2">
 
 	  <div>
-	    <a class="btn btn-primary ps-2" href="#" data-bs-toggle="modal" data-bs-target="#cartitemsSaveModal"><i class="fas fa-download"></i><span class="d-none d-sm-inline ms-2">[% msg.maketext("Speichern") %]</span></a>
+	    <a class="btn btn-primary ps-2" href="#" data-bs-toggle="modal" data-bs-target="#cartitemsSaveModal"><i class="fas fa-download"></i><span class="d-none d-sm-inline ms-2">[% msg.maketext("Export") %]</span></a>
 	  </div>
 
 [% IF user.ID %]

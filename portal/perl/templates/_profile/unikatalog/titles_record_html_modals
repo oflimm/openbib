@@ -9,6 +9,48 @@ function copy_to_clipboard(formatid) {
 } 
 </script>
 
+<div class="modal fade" id="titleSaveModal" tabindex="-1" role="dialog" aria-labelledby="titleSaveModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+	<form method="GET" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/save.html">
+	  <input type="hidden" name="l" value="[% lang%]" />
+
+	  <div class="modal-header">
+            <h5 class="modal-title" id="titleSaveModalLabel">[% msg.maketext("Titel exportieren") %]</h5>
+	  </div>
+	  <div class="modal-body" id="cartitem_savemessage">
+	    
+	    
+	    <div class="form-floating mb-3">
+	      <select class="form-select" name="format" id="format_save">
+		<optgroup label="Systeme">
+                  <option value="Citavi" selected="selected">[% msg.maketext("Citavi") %]</option>
+                  <option value="Zotero">[% msg.maketext("Zotero") %]</option>
+		</optgroup>
+		<optgroup label="Formate">		
+                  <option value="BibTeX">[% msg.maketext("BibTeX") %]</option>
+                  <option value="EndNote">[% msg.maketext("EndNote") %]</option>
+                  <option value="Text">[% msg.maketext("Text") %]</option>
+		</optgroup>
+                <optgroup label="Zitierstile">
+		   <option value="apa">[% msg.maketext("Zitat: APA") %]</option>
+		   <option value="harvard">[% msg.maketext("Zitat: Harvard") %]</option>    
+		   <option value="mla">[% msg.maketext("Zitat: MLA") %]</option>
+		</optgroup> 
+	      </select>
+	      <label for="format_save">[% msg.maketext("Exportformat") %]</label>
+	    </div>
+	    
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn btn-primary pe-3" data-bs-dismiss="modal" onclick="submitForm()">[% msg.maketext("Export") %]</button>
+	    
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>	
+	  </div>
+	</form>
+      </div>
+  </div>
+</div>
 <div class="modal fade" id="apaModal" tabindex="-1" role="dialog" aria-labelledby="apaModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">

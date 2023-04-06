@@ -653,6 +653,14 @@ sub save_collection {
 	
     };
 
+    my $filename = "merkliste";
+
+    if ($id && $database){
+	$filename = "titel_${database}_$id";
+    }
+
+    $filename =~s/\W/_/g;
+    
     my $formatinfo_ref = $config->get('export_formats');
 
     my $content_type = "text/plain";
@@ -664,7 +672,7 @@ sub save_collection {
     }
 
     $self->param('content_type',$content_type);
-    $self->header_add("Content-Disposition" => "attachment;filename=\"merkliste.$filesuffix\"");
+    $self->header_add("Content-Disposition" => "attachment;filename=\"${filename}.$filesuffix\"");
     return $self->print_page($config->{tt_cartitems_save_plain_tname},$ttdata);
 
 }

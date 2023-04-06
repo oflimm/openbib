@@ -623,7 +623,7 @@ sub save_collection {
 
     # CGI Args
     my $format                  = $query->param('format')                || '';
-    
+
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
@@ -652,9 +652,19 @@ sub save_collection {
 	sort_circulation => \&sort_circulation,
 	
     };
+
+    my $formatinfo_ref = $config->get('export_formats');
+
+    my $content_type = "text/plain";
+    my $filesuffix   = "txt";
     
-    $self->param('content_type','text/plain');
-    $self->header_add("Content-Disposition" => "attachment;filename=\"merkliste.txt\"");
+    if (defined $formatinfo_ref->{$format} && $formatinfo_ref->{$format}){
+	$content_type = $formatinfo_ref->{$format}{'content-type'};
+	$filesuffix   = $formatinfo_ref->{$format}{'suffix'};
+    }
+
+    $self->param('content_type',$content_type);
+    $self->header_add("Content-Disposition" => "attachment;filename=\"merkliste.$filesuffix\"");
     return $self->print_page($config->{tt_cartitems_save_plain_tname},$ttdata);
 
 }

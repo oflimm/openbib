@@ -36,7 +36,7 @@
 <div class="table-responsive">
 <table class="table table-striped ">
 <thead>
-<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %] / [% msg.maketext("Bestellnr.") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Verlängerungen") %]</th><th>[% msg.maketext("Leihfrist") %]</th><th>[% msg.maketext("Aktion") %]</th></tr>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Verlängerungen") %]</th><th>[% msg.maketext("Leihfrist") %]</th><th>[% msg.maketext("Aktion") %]</th></tr>
 </thead>
 <tbody>
 [%- FOREACH loan = loans.items -%]
@@ -50,14 +50,14 @@
 <td>
 [%#- Die Signatur wird nur dann ausgeben, falls sie nicht Teil der Mediennummer ist -%]
 [% IF loan.label && loan.item && NOT loan.item.match(loan.label) %]
-[% loan.label %][% IF loan.item %]&nbsp;/&nbsp;[% loan.item %][% END %]
+[% loan.label %]
 [% ELSIF loan.item %]
 [% loan.item %]
 [% END %]
 </td>
 <td>[% loan.department.about %][% IF loan.pickup_location.about %] / [% loan.pickup_location.about %][% END %]</td>
 <td>[% loan.renewals %]</td>
-<td>[% IF loan.emergency_remark %]<span style="font-weight:bold;color:red;">[% END %][% loan.starttime %]-[% loan.endtime %][% IF loan.emergency_remark %]</span>[% END %]</td>
+<td>[% IF loan.emergency_remark %]<span style="font-weight:bold;color:red;">[% END %][% loan.starttime.replace('T.*','') %] [% msg.maketext("bis") %] [% loan.endtime.replace('T.*','') %][% IF loan.emergency_remark %]</span>[% END %]</td>
 <td>
 [% IF loan.renewable %]
 <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/renew_single_loan?loanid=[% loan.loanid %];unit=[% loan.department.id %];holdingid=[% loan.item %]" title="[% msg.maketext("Verlängerung durchführen") %]">[% msg.maketext("Verlängerung durchführen") %]</a>

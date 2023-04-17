@@ -300,6 +300,8 @@
         title = "${title} (${super_title})";
      END;
 
+     title = title.replace('¬','');
+     
      # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?
      IF NOT title ;
        title = "Keine Titelangabe vorhanden";

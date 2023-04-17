@@ -491,7 +491,10 @@ FOREACH field IN normdata;
 	    title_supplement = normdata.${"T0335"}.first.content;
 	    content = "${content} : ${title_supplement}";
 	 END;
-	 
+
+         # Nichtsortierzeichen entfernen
+         content = content.replace('¬','');
+
          content   = "<b>${highlightquery(searchquery,content)}</b>";
          IF NOT content_map.${'T0331'} ;
 	    content_map.${'T0331'} = [];

@@ -60,7 +60,10 @@ function copy_to_clipboard(formatid) {
         </button>
       </div>
       <div class="modal-body" id="apa_citation">
-[% apa_citation = record.to_apa_citation %]
+[%
+   apa_citation = record.to_apa_citation;
+   apa_citation = apa_citation.replace('¬','');
+%]
 [% IF apa_citation %]
 [% apa_citation %]
 [% ELSE %]
@@ -84,7 +87,10 @@ function copy_to_clipboard(formatid) {
         </button>
       </div>
       <div class="modal-body" id="harvard_citation">
-[% harvard_citation = record.to_harvard_citation %]
+[%
+   harvard_citation = record.to_harvard_citation;
+   harvard_citation = harvard_citation.replace('¬','');
+%]
 [% IF harvard_citation %]
 [% harvard_citation %]
 [% ELSE %]
@@ -107,7 +113,10 @@ function copy_to_clipboard(formatid) {
         </button>
       </div>
       <div class="modal-body" id="mla_citation">
-[% mla_citation = record.to_mla_citation %]
+[%
+     mla_citation = record.to_mla_citation;
+     mla_citation = mla_citation.replace('¬','');     
+%]
 [% IF mla_citation %]
 [% mla_citation %]
 [% ELSE %]
@@ -131,7 +140,7 @@ function copy_to_clipboard(formatid) {
       </div>
       <div class="modal-body" id="bibtex_format">
       <pre>
-[% record.to_bibtex %]
+[% record.to_bibtex.replace('¬',''); %]
       </pre>
       </div>
       <div class="modal-footer">
@@ -151,7 +160,7 @@ function copy_to_clipboard(formatid) {
       </div>
       <div class="modal-body" id="endnote_format">
       <pre>
-[% record.to_endnote %]
+[% record.to_endnote.replace('¬',''); %]
       </pre>
       </div>
       <div class="modal-footer">

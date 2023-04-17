@@ -47,7 +47,7 @@
 <td>
 [%#- Die Signatur wird nur dann ausgeben, falls sie nicht Teil der Mediennummer ist -%]
 [% IF reservation.label && reservation.item && NOT reservation.item.match(reservation.label) %]
-[% reservation.label %][% IF reservation.item %] / [% reservation.item %][% END %]
+[% reservation.label %]
 [% ELSIF reservation.item %]
 [% reservation.item %]
 [% END %]

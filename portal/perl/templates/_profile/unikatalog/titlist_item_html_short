@@ -300,6 +300,7 @@
         title = "${title} (${super_title})";
      END;
 
+     # Nichtsortierzeichen entfernen
      title = title.replace('¬','');
      
      # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?

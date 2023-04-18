@@ -113,7 +113,7 @@ sub show {
         if ($unapiid) {
             my ( $database, $idn, $record );
 
-            if ( $unapiid =~ /^(\w+):(\d+)$/ ) {
+            if ( $unapiid =~ /^(.+?):(.+?)$/ ) {
                 $database = $1;
                 $idn      = $2;
 
@@ -157,6 +157,7 @@ sub show {
             }
 
             if ( !$record || !$record->record_exists ) {
+		$logger->debug("Record $database / $idn not found!");
                 $self->header_add( 'Status', 404 );    # not found
                 return;
             }

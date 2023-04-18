@@ -458,7 +458,7 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'Weitere Titel'}.push(content);
 
-    CASE "T4120";
+    CASE "T2662";
          thiscontent   = content;
 	 content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\"><b>${thiscontent}</b></a>";
 
@@ -562,6 +562,29 @@ FOREACH field IN normdata;
          content   = highlightquery(searchquery,item.content);
    END;
   END;
+END;
+# USE dumper;dumper.dump(normdata.${'T3662'});
+# Lizensierte Zeitraeume verarbeiten
+FOREACH item IN normdata.${'T3662'} ;
+    warpto_link = item.content.warpto_link ;
+    readme_link = item.content.readme_link ;
+    label = item.content.label ;
+    
+    ampel = item.subfield;
+    icon  = access_icon_ref.${ampel};
+    
+    NEXT UNLESS ampel == 'y';
+    
+    IF label ;
+         thiscontent = label;
+	 IF readme_link ;
+	   thiscontent = "${thiscontent} [<a class=\"exturl\" href=\"https://ezb.ur.de/ezeit/${readme_link}\" target=\"_blank\">Readme</a>]";
+	 END;
+         IF NOT content_map.${'Lizensierter Zeitraum'} ;
+	    content_map.${'Lizensierter Zeitraum'} = [];
+	 END;
+         content_map.${'Lizensierter Zeitraum'}.push(thiscontent);
+    END;
 END;
 
 # Lokale JOP Druckausgaben hinzufuegen

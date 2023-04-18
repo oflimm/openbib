@@ -2445,6 +2445,9 @@ sub to_bibtex {
     # Sprache
     my $language = (defined $fields_ref->{language})?utf2bibtex($fields_ref->{language},$utf8):'';
 
+    # Volltext URL
+    my $fulltext_url = (defined $fields_ref->{onlineurl})?utf2bibtex($fields_ref->{onlineurl},$utf8):'';
+    
     # (1st) URL
     my $url = (defined $fields_ref->{urls})?utf2bibtex($fields_ref->{urls}[0]{url},$utf8):'';
 
@@ -2453,6 +2456,12 @@ sub to_bibtex {
 
     # Pages
     my $pages = (defined $fields_ref->{pages})?utf2bibtex($fields_ref->{pages},$utf8):'';
+
+    # DOI
+    my $doi = (defined $fields_ref->{doi})?utf2bibtex($fields_ref->{doi},$utf8):'';
+
+    # Note
+    my $note = (defined $fields_ref->{note})?utf2bibtex($fields_ref->{note},$utf8):'';
     
     # Source Journal
     my $source_journal = (defined $fields_ref->{source_journal})?utf2bibtex($fields_ref->{source_journal},$utf8):'';
@@ -2460,6 +2469,9 @@ sub to_bibtex {
     # Source Volume
     my $source_volume = (defined $fields_ref->{source_volume})?utf2bibtex($fields_ref->{source_volume},$utf8):'';
 
+    # Source Issue
+    my $source_issue = (defined $fields_ref->{source_issue})?utf2bibtex($fields_ref->{source_issue},$utf8):'';
+    
     # Source Pages
     my $source_pages = (defined $fields_ref->{source_pages})?utf2bibtex($fields_ref->{source_pages},$utf8):'';
 
@@ -2485,15 +2497,24 @@ sub to_bibtex {
         push @$bibtex_ref, "title     = \"$title\"";
     }
     if ($isbn){
-        push @$bibtex_ref, "ISBN      = \"$isbn\"";
+        push @$bibtex_ref, "isbn      = \"$isbn\"";
     }
     if ($issn){
-        push @$bibtex_ref, "ISSN      = \"$issn\"";
+        push @$bibtex_ref, "issn      = \"$issn\"";
+    }
+    if ($doi){
+        push @$bibtex_ref, "doi       = \"$doi\"";
     }
     if ($keyword){
         push @$bibtex_ref, "keywords  = \"$keyword\"";
     }
-    if ($url){
+    if ($note){
+        push @$bibtex_ref, "note      = \"$note\"";
+    }
+    if ($fulltext_url && !$doi){
+        push @$bibtex_ref, "url       = \"$fulltext_url\"";
+    }    
+    elsif ($url){
         push @$bibtex_ref, "url       = \"$url\"";
     }
     if ($language){
@@ -2517,6 +2538,11 @@ sub to_bibtex {
             push @$bibtex_ref, "volume    = \"$source_volume\"";
         }
 
+        # Issue
+        if ($source_issue){
+            push @$bibtex_ref, "number     = \"$source_issue\"";
+        }
+	
         # Year
         if ($source_year){
             push @$bibtex_ref, "year    = \"$source_year\"";
@@ -3241,7 +3267,7 @@ sub to_abstract_fields_mab2 {
     $abstract_fields_ref->{isbn} = (exists $self->{_fields}->{T0540})?$self->{_fields}->{T0540}[0]{content}:'';
 
     # ISSN
-    $abstract_fields_ref->{issn} = (exists $self->{_fields}->{T0543})?$self->{_fields}->{T0543}[0]{content}:'';
+    $abstract_fields_ref->{issn} = (exists $self->{_fields}->{T0543})?$self->{_fields}->{T0543}[0]{content}:(exists $self->{_fields}->{T0585})?$self->{_fields}->{T0585}[0]{content}:'';
 
     # Sprache
     $abstract_fields_ref->{language} = (exists $self->{_fields}->{T0015})?$self->{_fields}->{T0015}[0]{content}:
@@ -3298,6 +3324,7 @@ sub to_abstract_fields_mab2 {
 
 	    if ($thisdesc =~m/DOI/){
 		$abstract_fields_ref->{onlineurl} = $part_ref->{content};
+		$abstract_fields_ref->{doi} = $part_ref->{content};
 		$abstract_fields_ref->{availability} = "online";
 	    }
 	    elsif ($thisdesc =~m/Volltext/){
@@ -3329,7 +3356,7 @@ sub to_abstract_fields_mab2 {
 
     # Information in T0596, else parse Source/Series Pages (e.g. EDS)
     if (exists $self->{_fields}->{T0596}){
-	$abstract_fields_ref->{source_journal} = $abstract_fields_ref->{series};
+	$abstract_fields_ref->{source_journal} = (exists $self->{_fields}->{T0376})?$self->{_fields}->{T0376}[0]{content}:$abstract_fields_ref->{series};
 	
         foreach my $part_ref (@{$self->{_fields}->{T0596}}){
 	    if    ($part_ref->{subfield} eq "b"){
@@ -3401,7 +3428,20 @@ sub to_abstract_fields_mab2 {
 
     # Edition
     $abstract_fields_ref->{edition} = (exists $self->{_fields}->{T0403})?$self->{_fields}->{T0403}[0]{content}:'';
-        
+
+    # Note
+    $abstract_fields_ref->{note} = "";
+
+    if (exists $self->{_fields}->{T0501}){
+	my @notes = ();
+	foreach my $note_ref (@{$self->{_fields}->{T0501}}){
+	    push @notes, $note_ref->{content};
+	}
+	if (@notes){
+	    $abstract_fields_ref->{note} = join('; ',@notes);
+	}
+    }
+    
     if ($logger->is_debug){
 	$logger->debug("Abstract Fields: ".YAML::Dump($abstract_fields_ref));
     }

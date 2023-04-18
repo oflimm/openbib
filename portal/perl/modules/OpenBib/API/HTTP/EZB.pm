@@ -196,7 +196,7 @@ sub get_titles_record {
 
 	my $jourid = "";
 	
-	my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=$self->{colors}&bibid=$self->{bibid}&jq_type1=ZD&jq_term1=$zdbid&hits_per_page=1&offset=0&lang=de&xmloutput=1";
+	my $url="http://ezb.ur.de/ezeit/searchres.phtml?colors=$self->{colors}&bibid=$self->{bibid}&jq_type1=ZD&jq_term1=$zdbid&hits_per_page=1&offset=0&lang=de&xmloutput=1";
 
 	my $memc_key = "ezb:title:$url";
 	
@@ -242,7 +242,7 @@ sub get_titles_record {
 	$id = $jourid;
     }
     
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/detail.phtml?colors=".((defined $arg_ref->{colors})?$arg_ref->{colors}:$config->{ezb_colors})."&bibid=".((defined $arg_ref->{bibid})?$arg_ref->{bibid}:$config->{ezb_bibid})."&lang=".((defined $arg_ref->{lang})?$arg_ref->{lang}:"de")."&jour_id=$id&xmloutput=1";
+    my $url="http://ezb.ur.de/ezeit/detail.phtml?colors=".((defined $arg_ref->{colors})?$arg_ref->{colors}:$config->{ezb_colors})."&bibid=".((defined $arg_ref->{bibid})?$arg_ref->{bibid}:$config->{ezb_bibid})."&lang=".((defined $arg_ref->{lang})?$arg_ref->{lang}:"de")."&jour_id=$id&xmloutput=1";
         
     my $titles_ref = [];
 
@@ -429,11 +429,11 @@ sub get_titles_record {
 
 	    my $image = $config->get('dbis_green_yellow_red_img');
 	    
-	    if    ($color == 'green'){
+	    if    ($color eq 'green'){
 		$image = $config->get('dbis_green_img');
 		$access_type = "g";
 	    }
-	    elsif ($color == 'yellow'){
+	    elsif ($color eq 'yellow'){
 		$image = $config->get('dbis_yellow_img');
 		$access_type = "y";
 	    }
@@ -441,7 +441,7 @@ sub get_titles_record {
 		$image = $config->get('dbis_green_yellow_img');
 		$access_type = "f"; # fulltext available
 	    }
-	    elsif ($color == 'red'){
+	    elsif ($color eq 'red'){
 		$image = $config->get('dbis_red_img');
 		$access_type = "r";	    
 	    }
@@ -468,6 +468,7 @@ sub get_titles_record {
 
 	    #	$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "<img src=\"$image\" alt=\"$color\"/> $label" });
 
+	    $logger->debug("Final Accesstype: $access_type");
 	    
 	    $record->set_field({field => 'T4120', subfield => $access_type, mult => $mult_fulltext++, content => $warpto_link });
 	    
@@ -553,7 +554,7 @@ sub _get_readme {
 
     my $ua     = $self->get_client;
     
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/show_readme.phtml?bibid=$self->{bibid}&lang=$self->{lang}&jour_id=$id&xmloutput=1";
+    my $url="http://ezb.ur.de/ezeit/show_readme.phtml?bibid=$self->{bibid}&lang=$self->{lang}&jour_id=$id&xmloutput=1";
 
     $logger->debug("Request: $url");
 
@@ -588,7 +589,7 @@ sub _get_readme {
     if ($location){
         # Lokaler Link in der EZB
         unless ($location=~m/^http/){
-            $location="http://rzblx1.uni-regensburg.de/ezeit/$location";
+            $location="http://ezb.ur.de/ezeit/$location";
         }
         
         return {
@@ -611,10 +612,10 @@ sub _get_readme {
         $this_period_ref->{warpto_link} = uri_unescape($period_node->findvalue('warpto_link/@url'));
 
         unless ($this_period_ref->{readme_link}=~m/^http/){
-            $this_period_ref->{readme_link}="http://rzblx1.uni-regensburg.de/ezeit/$this_period_ref->{readme_link}";
+            $this_period_ref->{readme_link}="http://ezb.ur.de/ezeit/$this_period_ref->{readme_link}";
         }
         unless ($this_period_ref->{warpto_link}=~m/^http/){
-            $this_period_ref->{warpto_link}="http://rzblx1.uni-regensburg.de/ezeit/$this_period_ref->{readme_link}";
+            $this_period_ref->{warpto_link}="http://ezb.ur.de/ezeit/$this_period_ref->{readme_link}";
         }
 
         if ($logger->is_debug){
@@ -639,7 +640,7 @@ sub get_classifications {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?colors=$self->{colors}&bibid=$self->{bibid}&lang=$self->{lang}&xmloutput=1";
+    my $url="http://ezb.ur.de/ezeit/fl.phtml?colors=$self->{colors}&bibid=$self->{bibid}&lang=$self->{lang}&xmloutput=1";
 
     my $classifications_ref = [];
 
@@ -753,7 +754,7 @@ sub search {
 
     $self->parse_query($searchquery);
 
-    my $url="http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?colors=$self->{colors}&bibid=$self->{bibid}&sc=$self->{sc}&lc=$self->{lc}&sindex=$self->{sindex}&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=".((defined $self->{lang})?$self->{lang}:"de")."&xmloutput=1";
+    my $url="http://ezb.ur.de/ezeit/searchres.phtml?colors=$self->{colors}&bibid=$self->{bibid}&sc=$self->{sc}&lc=$self->{lc}&sindex=$self->{sindex}&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=".((defined $self->{lang})?$self->{lang}:"de")."&xmloutput=1";
 
     my $titles_ref = [];
 

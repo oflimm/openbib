@@ -44,6 +44,8 @@ use OpenBib::Common::Util;
 use OpenBib::L10N;
 use OpenBib::Record::Title;
 use OpenBib::Record::Person;
+use OpenBib::Record::CorporateBody;
+use OpenBib::Record::Subject;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 use Data::Dumper;
@@ -121,40 +123,47 @@ sub show {
 
                 $record = new OpenBib::Record::Title(
                     { database => $database, id => $idn } )->load_full_record;
-                $main_title_data =
-                  $self->get_main_title_data( $record, $database );
-                $super_title =
-                  $self->get_super_title_data( $record, $database );
-                $title_list = $self->collect_title_data( $record, $database );
-                $contained_works =
-                  $self->collect_contained_works( $record, $database );
-                $personlist = $self->collect_person_data( $record, $database );
-                $corporation_list =
-                  $self->collect_corporation_data( $record, $database );
-                $place_list = $self->collect_place_data( $record, $database, 'record' );
-                if (! @{$place_list} ){
-                    $place_list = $self->collect_place_data( $record, $database, 'super' );
-                   
-                }
-                $related_zdb_titles = $self->collect_related_zdb_titles( $record, $database );
-                $uniform_publisher_list =
-                  $self->collect_publisher_data( $record, $database );
-                $rswk_keyword_list =
-                  $self->collect_rswk_data( $record, $database );
-                
-                $additional_physical_notes =  $self->collect_physical_notes( $record, $database );
 
-                $provenance_data = undef;
-                my $provenance_elements =
-                  $self->collect_provenance_data( $record, $database );
 
-                if ( @{$provenance_elements} != 0 ) {
-                    $provenance_data =
-                      JSON::XS->new->latin1->encode($provenance_elements);
-                }
-                $date_values = $self->get_date_values( $record, $database );
+		my $system = $config->get_system_of_db($database);
+		
+		$main_title_data =
+		    $self->get_main_title_data( $record, $database );
+		$super_title =
+		    $self->get_super_title_data( $record, $database );
+		$title_list = $self->collect_title_data( $record, $database );
+		$contained_works =
+		    $self->collect_contained_works( $record, $database );
 
-            }
+		# Normdaten ueberhaupt vorhanden oder via API? Falls ja:
+		if (defined $config->get('source_systems')->{$system} && $config->get('source_systems')->{$system}{has_authorities}){  
+		
+		    $personlist        = $self->collect_person_data( $record, $database );
+		    $corporation_list  = $self->collect_corporation_data( $record, $database );
+		    $rswk_keyword_list = $self->collect_rswk_data( $record, $database );
+		}
+		
+		$place_list = $self->collect_place_data( $record, $database, 'record' );
+		if (! @{$place_list} ){
+		    $place_list = $self->collect_place_data( $record, $database, 'super' );
+		    
+		}
+		$related_zdb_titles = $self->collect_related_zdb_titles( $record, $database );
+		$uniform_publisher_list =
+		    $self->collect_publisher_data( $record, $database );
+		
+		$additional_physical_notes =  $self->collect_physical_notes( $record, $database );
+		
+		$provenance_data = undef;
+		my $provenance_elements =
+		    $self->collect_provenance_data( $record, $database );
+		
+		if ( @{$provenance_elements} != 0 ) {
+		    $provenance_data =
+			JSON::XS->new->latin1->encode($provenance_elements);
+		}
+		$date_values = $self->get_date_values( $record, $database );
+	    }
 
             if ( !$record || !$record->record_exists ) {
 		$logger->debug("Record $database / $idn not found!");

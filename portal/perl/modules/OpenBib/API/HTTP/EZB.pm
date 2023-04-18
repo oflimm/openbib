@@ -414,14 +414,15 @@ sub get_titles_record {
 	    $logger->debug("Homepages: ".YAML::Dump($homepages_ref));
 	}
 
+	my $mult_homepage = 1;
 	my $mult_fulltext = 1;
 	foreach my $homepage (@$homepages_ref){
-	    $record->set_field({field => 'T4120', subfield => $access_type, mult => $mult_fulltext++, content => $homepage });
+	    # $record->set_field({field => 'T4120', subfield => $access_type, mult => $mult_fulltext++, content => $homepage });
 
-	    #        $record->set_field({field => 'T2662', subfield => '', mult => 1, content => $homepage});
+	    $record->set_field({field => 'T2662', subfield => '', mult => $mult_homepage++, content => $homepage});
 	}
 
-	$mult = 1;
+	$mult = 2;
 	foreach my $period (@periods){
 	    my $color = $period->findvalue('journal_color/@color');
 	    
@@ -470,10 +471,15 @@ sub get_titles_record {
 
 	    $logger->debug("Final Accesstype: $access_type");
 	    
-	    $record->set_field({field => 'T4120', subfield => $access_type, mult => $mult_fulltext++, content => $warpto_link });
+	    $record->set_field({field => 'T4120', subfield => $access_type, mult => $mult, content => $warpto_link }) if ($warpto_link);
+
+	    my $period_ref = {
+		readme_link => $readme_link,
+		warpto_link => $warpto_link,
+		label       => $label,
+	    };
 	    
-	    $record->set_field({field => 'T0662', subfield => '', mult => $mult, content => $readme_link });
-	    $record->set_field({field => 'T0663', subfield => '', mult => $mult, content => "ReadMe: $label" });
+	    $record->set_field({field => 'T3662', subfield => $access_type, mult => $mult, content => $period_ref });
 	    $mult++;
 	}
 

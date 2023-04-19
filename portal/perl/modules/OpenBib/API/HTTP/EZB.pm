@@ -419,7 +419,7 @@ sub get_titles_record {
 	my $mult_homepage = 1;
 	my $mult_fulltext = 1;
 	foreach my $homepage (@$homepages_ref){
-	    # $record->set_field({field => 'T4120', subfield => $access_type, mult => $mult_fulltext++, content => $homepage });
+	    $record->set_field({field => 'T4120', subfield => $access_type, mult => $mult_fulltext++, content => $homepage }) if ($journal_color eq "green");
 
 	    $record->set_field({field => 'T2662', subfield => '', mult => $mult_homepage++, content => $homepage});
 	}

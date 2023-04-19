@@ -576,8 +576,10 @@ FOREACH field IN normdata;
    END;
   END;
 END;
-# USE dumper;dumper.dump(normdata.${'T3662'});
+
 # Lizensierte Zeitraeume verarbeiten
+licensed_timespans = [];
+
 FOREACH item IN normdata.${'T3662'} ;
     warpto_link = item.content.warpto_link ;
     readme_link = item.content.readme_link ;
@@ -586,18 +588,33 @@ FOREACH item IN normdata.${'T3662'} ;
     ampel = item.subfield;
     icon  = access_icon_ref.${ampel};
 
-    NEXT UNLESS ampel == 'y';
+    IF NOT readme_link.match('^http');
+      readme_link = "https://ezb.ur.de/ezeit/${readme_link}";
+    END;
 
-    IF label ;
-         thiscontent = label;
-	 IF readme_link ;
-	   thiscontent = "<img src=\"${icon}\" alt=\"${ampel}\"/> <span class=\"ps-2 fw-bold\">${thiscontent}</span> [<a class=\"exturl\" href=\"https://ezb.ur.de/ezeit/${readme_link}\" target=\"_blank\">Readme</a>]";
+    warpto_desc = msg.maketext("Volltext");
+
+    IF ampel == 'y';
+      licensed_timespans.push({ warpto_link = warpto_link, readme_link = readme_link, label = label, ampel = ampel, icon = icon});
+    END;
+END;
+
+# USE dumper;dumper.dump(licensed_timespans);
+
+IF licensed_timespans.size > 0;
+  FOREACH timespan IN licensed_timespans;
+    IF timespan.label ;
+	 thiscontent = "<a class=\"btn btn-primary mb-2\" href=\"${timespan.warpto_link}\" target=\"_blank\"><i class=\"pe-2 fas fa-download\"></i> <span class=\"d-none d-sm-inline\">${warpto_desc}</span><img class=\"ps-2\" src=\"${timespan.icon}\" alt=\"${warpto_desc} ${ampel}\"/></a> <span class=\"ps-2 fw-bold\">${timespan.label}</span>";
+	 
+	 IF timespan.readme_link ;
+	   thiscontent = "${thiscontent} [<a class=\"exturl\" href=\"${timespan.readme_link}\" target=\"_blank\">Readme</a>]";
 	 END;
          IF NOT content_map.${'Lizensierter Zeitraum'} ;
 	    content_map.${'Lizensierter Zeitraum'} = [];
 	 END;
          content_map.${'Lizensierter Zeitraum'}.push(thiscontent);
     END;
+  END;
 END;
 
 # Lokale JOP Druckausgaben hinzufuegen
@@ -615,6 +632,7 @@ display_types = {
    'T0700' => 'list',
    'Hinweise' => 'list',
    'Druckausgabe' => 'list',
+   'Lizensierter Zeitraum' => 'list',
 #   'Schlagwörter' => 'list',
 #   'Fachgebiete' => 'list',   
    
@@ -634,7 +652,7 @@ FOREACH category IN categories;
    IF content_map.${category}.first;
       IF display_types.${category} == 'list' ;
         IF content_map.${category}.size > 1 ;
-          content = "<ul>";
+          content = "<ul class=\"mt-2 mb-1\">";
           FOREACH thiscontent IN content_map.${category};
 	    content="${content}<li>${thiscontent}</li>";
 	  END;

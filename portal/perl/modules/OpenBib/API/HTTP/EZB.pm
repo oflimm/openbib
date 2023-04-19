@@ -474,7 +474,7 @@ sub get_titles_record {
 
 	    $logger->debug("Final Accesstype: $access_type");
 	    
-	    $record->set_field({field => 'T4120', subfield => $access_type, mult => $mult, content => $warpto_link }) if ($warpto_link);
+	    #$record->set_field({field => 'T4120', subfield => $access_type, mult => $mult, content => $warpto_link }) if ($warpto_link);
 
 	    my $period_ref = {
 		readme_link => $readme_link,

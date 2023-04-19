@@ -26,14 +26,21 @@
    access_icon = "";
    
    access_icon_ref = {
+       # Values from T0517
+      'green'      = config.get('ezb_green_img')
+      'yellow'     = config.get('ezb_yellow_img')
+      'yellow_red' = config.get('ezb_yellow_red_img')
+      'national'   = config.get('ezb_de_img')
+      'red'        = config.get('ezb_red_img')
+       # Short values from T4120
       'g' = config.get('ezb_green_img')
       'y' = config.get('ezb_yellow_img')
       'n' = config.get('ezb_de_img')
       'r' = config.get('ezb_red_img')
    };
 
-   IF normdata.${"T4120"} ;
-     access = normdata.${"T4120"}.first.subfield;
+   IF normdata.${"T0517"} ;
+     access = normdata.${"T0517"}.first.content;
 
      IF access_icon_ref.${access};
         access_icon = access_icon_ref.${access};

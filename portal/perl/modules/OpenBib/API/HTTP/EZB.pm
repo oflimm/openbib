@@ -406,6 +406,8 @@ sub get_titles_record {
 		'red'      => 'r', # red
 	};
 
+	$record->set_field({field => 'T0517', subfield => '', mult => 1, content => $journal_color}) if ($journal_color);
+
 	my $access_type = $type_mapping_ref->{$journal_color};
 
 	$logger->debug("journal_color: $journal_color ; access_type: $access_type");
@@ -424,7 +426,8 @@ sub get_titles_record {
 
 	$mult = 2;
 	foreach my $period (@periods){
-	    my $color = $period->findvalue('journal_color/@color');
+	    my $color      = $period->findvalue('journal_color/@color');
+	    my $color_code = $period->findvalue('journal_color/@color_code');
 	    
 	    $logger->debug("Color: $color");
 
@@ -438,7 +441,7 @@ sub get_titles_record {
 		$image = $config->get('dbis_yellow_img');
 		$access_type = "y";
 	    }
-	    elsif ($color == 3){
+	    elsif ($color_code == 3){
 		$image = $config->get('dbis_green_yellow_img');
 		$access_type = "f"; # fulltext available
 	    }
@@ -446,12 +449,12 @@ sub get_titles_record {
 		$image = $config->get('dbis_red_img');
 		$access_type = "r";	    
 	    }
-	    elsif ($color == 5){
+	    elsif ($color_code == 5){
 		$image = $config->get('dbis_green_green_red_img');
 	    }
-	    elsif ($color == 6){
+	    elsif ($color eq 'yellow_red'){
 		$image = $config->get('dbis_yellow_red_img');
-		$access_type = "y";	    
+		$access_type = "l";	    
 	    }
 
 	    my $label = $period->findvalue('label');

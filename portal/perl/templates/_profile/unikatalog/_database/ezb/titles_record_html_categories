@@ -601,7 +601,27 @@ END;
 
 # USE dumper;dumper.dump(licensed_timespans);
 
-IF licensed_timespans.size > 0;
+IF licensed_timespans.size == 1;
+  FOREACH timespan IN licensed_timespans;
+    IF timespan.label ;
+	 thiscontent = "<img class=\"ps-2\" src=\"${timespan.icon}\" alt=\"${warpto_desc} ${ampel}\"/> <span class=\"ps-2 fw-bold\">${timespan.label}</span>";
+	 
+	 IF timespan.readme_link ;
+	   thiscontent = "${thiscontent} [<a class=\"exturl\" href=\"${timespan.readme_link}\" target=\"_blank\">Readme</a>]";
+	 END;
+         IF NOT content_map.${'Lizensierter Zeitraum'} ;
+	    content_map.${'Lizensierter Zeitraum'} = [];
+	 END;
+         content_map.${'Lizensierter Zeitraum'}.push(thiscontent);
+    END;
+
+    # Standard Download-Button definieren
+    fulltext = timespan.warpto_link;
+    fulltext_desc = warpto_desc;
+    fulltext_icon = timespan.icon;
+    
+  END;
+ELSIF licensed_timespans > 1;
   FOREACH timespan IN licensed_timespans;
     IF timespan.label ;
 	 thiscontent = "<a class=\"btn btn-primary mb-2\" href=\"${timespan.warpto_link}\" target=\"_blank\"><i class=\"pe-2 fas fa-download\"></i> <span class=\"d-none d-sm-inline\">${warpto_desc}</span><img class=\"ps-2\" src=\"${timespan.icon}\" alt=\"${warpto_desc} ${ampel}\"/></a> <span class=\"ps-2 fw-bold\">${timespan.label}</span>";

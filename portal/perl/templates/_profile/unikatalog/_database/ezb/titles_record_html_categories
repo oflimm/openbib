@@ -595,6 +595,7 @@ FOREACH item IN normdata.${'T3662'} ;
     warpto_desc = msg.maketext("Volltext");
 
     IF ampel == 'y';
+      is_licensed = 1;
       licensed_timespans.push({ warpto_link = warpto_link, readme_link = readme_link, label = label, ampel = ampel, icon = icon});
     END;
 END;

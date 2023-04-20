@@ -56,3 +56,5 @@ system("cd $pooldir/$pool; yaz-marcdump -o json $filename  | jq -S -c . > ${file
 
 print "### $pool: Konvertierung von $filename\n";
 system("cd $pooldir/$pool; $marc2metaexe --database=$pool -reduce-mem --inputfile=${filename}.processed --configfile=/opt/openbib/conf/uni.yml; gzip meta.*");
+
+system("cd $pooldir/$pool ; rm pool.mrc.processed");

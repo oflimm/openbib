@@ -405,6 +405,26 @@ FOREACH field IN [ "T0902", "T0907", "T0912", "T0917", "T0922", "T0927", "T0932"
 
 END;
 
+# Preprocessing Hinweise in RDA-Feldern
+
+# Erscheinungsjahr in Vorlageform
+IF normdata.defined('T7419');
+  years = [];
+  FOREACH item IN normdata.${"T7419"};
+    IF item.subfield == 'c';
+      years.push(item.content);
+    END;
+  END;
+
+  IF years.size > 0;
+    IF NOT content_map.${'Hinweise'} ;
+      content_map.${'Hinweise'} = [];
+    END;
+    content_map.${'Hinweise'}.push("Erscheinungsjahr in Vorlageform: ${years.join(' ; ')}");
+  END;
+  
+END;
+
 # Preprocessing spezielle Kategorien
 
 have_doi = {};
@@ -541,6 +561,24 @@ FOREACH field IN normdata;
 	    content_map.${'T0433'} = [];
 	 END;
          content_map.${'T0433'}.push(content);
+
+    CASE "T0065" ;
+         IF NOT content_map.${'Hinweise'} ;
+	    content_map.${'Hinweise'} = [];
+	 END;
+         content_map.${'Hinweise'}.push("Art des Inhalts: ${content}");
+	 
+    CASE "T0371" ;
+         IF NOT content_map.${'Hinweise'} ;
+	    content_map.${'Hinweise'} = [];
+	 END;
+         content_map.${'Hinweise'}.push("Früherer Titel: ${content}");
+
+    CASE "T0376" ;
+         IF NOT content_map.${'Hinweise'} ;
+	    content_map.${'Hinweise'} = [];
+	 END;
+         content_map.${'Hinweise'}.push("Abkürzungstitel: ${content}");
 
     CASE [ "T0501" "T0600" ] ;
          IF NOT content_map.${'Hinweise'} ;

@@ -1650,6 +1650,8 @@ sub process_marc {
         }
     }
 
+    # Analyse von Leader-Felder und Duplizierung in eigene Felder
+    
     # Locations in Kategorie 4230 ablegen
 
     foreach my $location (@$locations_ref){
@@ -2760,7 +2762,10 @@ sub process_marc {
 
 	my ($year,$month,$day) = $date =~m/^(\d\d)(\d\d)(\d\d)$/;
 	if ($day && $month && $year){
-	    $year = ($year < 70)?$year + 2000:$year + 1900;	    
+	    $year = ($year < 70)?$year + 2000:$year + 1900;
+	    $month  = "01"   if ($month < 1 || $month > 12);
+	    $day    = "01"   if ($day < 1 || $day > 32);
+
 	    $create_tstamp = "$year-$month-$day 12:00:00";
 	}
     }

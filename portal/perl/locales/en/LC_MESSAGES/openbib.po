@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 #
-# Oliver Flimm <flimm@openbib.org>, 2006, 2009, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022.
+# Oliver Flimm <flimm@openbib.org>, 2006, 2009, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2022-12-19 15:38+0100\n"
+"PO-Revision-Date: 2023-04-21 13:30+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -844,7 +844,7 @@ msgid ""
 msgstr ""
 "The main link <i>RSS</i> will take you to a page where you can subscribe to "
 "general RSS-feeds (i.e. feeds unconnected to a specific search query, e.g."
-"the most recent 50 entries in a catalog)."
+"the most recent 50 entries in a catalogue)."
 
 #: ../templates/_profile/bootstrap5/admin_databases_rss_record_html:336
 #: ../templates/_profile/rheinlandbib_yaml4/admin_databases_rss_record_html:345
@@ -1337,7 +1337,8 @@ msgid ""
 "<b>Top 20</b> Pro Katalog lassen sich die 20 meist aufgerufenen\n"
 "Titel unter dem Reiter %1&Uuml;bersichten%2 anzeigen. %3"
 msgstr ""
-"<b>Top 20</b>: The most popular 20 entries for each catalog can be displayed "
+"<b>Top 20</b>: The most popular 20 entries for each catalogue can be"
+" displayed "
 "by   clicking on the tab %1Overviews%2. %3"
 
 #: ../templates/_profile/bootstrap5/info_help:397
@@ -1844,7 +1845,7 @@ msgid ""
 "Achtung: Ein Katalog-Profil kann erst dann gelöscht werden, wenn es von "
 "keinen Views mehr genutzt wird!"
 msgstr ""
-"Attention! You have to delete every view of a catalog profile before "
+"Attention! You have to delete every view of a catalogue profile before "
 "deleting the corresponding profile."
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/admin_navigation_dropdown:15
@@ -2627,7 +2628,7 @@ msgstr "All types"
 #: ../templates/searchprofiles_session:77
 #: ../templates/users_searchprofiles_record_edit_html:44
 msgid "Alle Kataloge"
-msgstr "All catalogs"
+msgstr "All catalogues"
 
 #: ../templates/classifications:28
 msgid "Alle Klassifikationen"
@@ -3148,7 +3149,7 @@ msgstr "Further informations on the services at USB Köln."
 #: ../templates/_profile/unikatalog/admin_databases_record_edit_html:18
 #: ../templates/admin_databases_record_edit_html:18
 msgid "Allgemeine Kataloginformationen"
-msgstr "General catalog information"
+msgstr "General catalogue information"
 
 #: ../templates/_profile/bootstrap5/admin_statistics_html:17
 #: ../templates/_profile/unikatalog/admin_statistics_html:17
@@ -3193,7 +3194,7 @@ msgstr "Generic search profiles"
 #: ../templates/_profile/sammlungen_yaml4/admin_databases_record_edit:64
 #: ../templates/_profile/yaml4/admin_databases_record_edit:64
 msgid "Allgemeines Kataloginformationen"
-msgstr "General catalog information"
+msgstr "General catalogue information"
 
 #: ../templates/_profile/unikatalog/admin_databases_record_edit_html:213
 #: ../templates/admin_databases_record_edit_html:215
@@ -3213,10 +3214,10 @@ msgid ""
 msgstr ""
 "Your search results are displayed on a results page. If you click on an "
 "entry you will be directed to its entry page inside the corresponding "
-"catalog. On that page, if you click on the author's name, for example, all "
-"other entries by that author listed in all catalogs will be displayed."
+"catalogue. On that page, if you click on the author's name, for example, all "
+"other entries by that author listed in all catalogues will be displayed."
 "Clicking on the link <i>all results</i> brings up a list of other works by "
-"that author, however only in the selected catalog. "
+"that author, however only in the selected catalogue. "
 
 #: ../templates/_profile/bootstrap5/info_help:122
 #: ../templates/_profile/rheinlandbib_yaml4/info_help:122
@@ -3240,15 +3241,16 @@ msgid ""
 "b>\n"
 "      recherchieren."
 msgstr ""
-"Your search results are displayed on a results page, sorted by catalog. If "
+"Your search results are displayed on a results page, sorted by catalogue. If "
 "you click onan entry you will be directed to its entry page inside the "
-"corresponding catalog. On that page, if you click on the author's name, for "
-"example, all other entries by that author listed in that catalog will be "
+"corresponding catalogue. On that page, if you click on the author's name, for "
+"example, all other entries by that author listed in that catalogue will be "
 "displayed.Clicking on the link <i>all results</i> brings up a list of other "
-"works by that author, however only in the selected catalog. To perform a "
-"search in all catalogs, click on the capital <b>G</b> (G=global search in "
-"all catalogs %1) located next to an author's name. This gives you the choice "
-"to search either<b>catalog-specifically</b> or <b>globally</b>."
+"works by that author, however only in the selected catalogue. To perform a "
+"search in all catalogues, click on the capital <b>G</b> (G=global search in "
+"all catalogues %1) located next to an author's name. This gives you the"
+" choice "
+"to search either<b>catalogue-specifically</b> or <b>globally</b>."
 
 #: ../templates/_profile/bootstrap/_view/fidphil/titles_record_html_actions:44
 #: ../templates/_profile/bootstrap5/_view/unikatalog/cartitems_html_actions:30
@@ -4193,8 +4195,8 @@ msgid ""
 msgstr ""
 "Enhancement with ISBN10 and ISBN13. A given title with a ISBN10 can also be "
 "retrieved with the corresponding ISBN13 and vice versa. So you can now find "
-"titles with ISBN13, eg. used in catalogs of publishers since 1.1.2007, that "
-"were catalogd at a time when only a ISBN10 was known."
+"titles with ISBN13, eg. used in catalogues of publishers since 1.1.2007, that "
+"were catalogued at a time when only a ISBN10 was known."
 
 #: ../templates/_profile/unikatalog/users_circulations_html:118
 msgid "Anschaffungsvorschlag"
@@ -4338,7 +4340,7 @@ msgstr "Number of requests: Redirections to title in Google books"
 #: ../templates/_profile/yaml4/admin_statistics_redirect_html:81
 #: ../templates/admin_statistics_redirect_html:38
 msgid "Anzahl Aufrufe der Kartenkataloge/PhilFak"
-msgstr "Number of Requests: Digital card catalog/PhilFak"
+msgstr "Number of Requests: Digital card catalogue/PhilFak"
 
 #: ../templates/_profile/bootstrap5/admin_statistics_redirect_html:39
 #: ../templates/_profile/rheinlandbib_yaml4/admin_statistics_redirect_html:82
@@ -4473,7 +4475,7 @@ msgstr "Number of sessions"
 #: ../templates/_profile/yaml4/admin_statistics_html:65
 #: ../templates/admin_statistics_html:22
 msgid "Anzahl der Kataloge (aktiv/gesamt)"
-msgstr "Number of catalogs (active/total)"
+msgstr "Number of catalogues (active/total)"
 
 #: ../templates/_profile/bootstrap5/admin_statistics_html:25
 #: ../templates/_profile/rheinlandbib_yaml4/admin_statistics_html:68
@@ -4576,7 +4578,7 @@ msgstr "Show ressource in DFG-Viewer"
 #: ../templates/_profile/unikatalog/info_help:970
 #: ../templates/_profile/yaml4/info_help:970 ../templates/info_help:970
 msgid "Anzeige der Top 20 meist aufgerufenen Titel im entsprechenden Katalog"
-msgstr "Show the Top 20 Most Viewed Entries in this catalog"
+msgstr "Show the Top 20 Most Viewed Entries in this catalogue"
 
 #: ../templates/_database/dbis/classifications_html:21
 #: ../templates/_database/ezb/classifications_html:20
@@ -4887,7 +4889,7 @@ msgid ""
 "RSS-Feeds abonnieren. Dazu kopieren Sie bitte den jeweiligen URL von\n"
 "dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm."
 msgstr ""
-"On this page you can subscribe to RSS-feeds of several catalogs. To do so, "
+"On this page you can subscribe to RSS-feeds of several catalogues. To do so, "
 "please copy the corresponding URL from this page to your RSS-reader program."
 
 #: ../templates/_profile/bootstrap5/rssfeeds_html:18
@@ -4899,7 +4901,7 @@ msgid ""
 "RSS-Feeds abonnieren. Wählen Sie bitte den jeweiligen URL von\n"
 "dieser Seite aus und kopieren ihn in Ihr RSS-Leseprogramm."
 msgstr ""
-"On this page you can subscribe to RSS-feeds of several catalogs. To do so, "
+"On this page you can subscribe to RSS-feeds of several catalogues. To do so, "
 "please copy the corresponding URL from this page to your RSS-reader program."
 
 #: ../templates/_database/einbaende/titles_record_html:346
@@ -5103,7 +5105,7 @@ msgstr "Borrowed"
 #: ../templates/_profile/yaml4/users_searchprofiles_html:84
 #: ../templates/users_searchprofiles_html:53
 msgid "Ausgew&auml;hlte Kataloge"
-msgstr "Selected catalogs"
+msgstr "Selected catalogues"
 
 #: ../templates/_profile/sammlungen_yaml4/_view/richter/resultlists_choice:52
 msgid "Ausgew&auml;hlte Recherche"
@@ -5613,7 +5615,7 @@ msgid ""
 "      im Online-Katalog aufnehmen."
 msgstr ""
 "Please note that not all libraries enter single articles into their online "
-"catalogs."
+"catalogues."
 
 #: ../templates/_profile/bootstrap5/admin_exploresessions_list:47
 #: ../templates/_profile/bootstrap5/admin_sessions_active_html:23
@@ -5769,7 +5771,7 @@ msgstr "Start a new search request"
 #: ../templates/titles_record_html_categories:51
 #: ../templates/titles_record_mobile_categories:25
 msgid "Begriff in allen Katalogen suchen"
-msgstr "Search this term in all catalogs"
+msgstr "Search this term in all catalogues"
 
 #: ../templates/_profile/unikatalog/users_circulations_suggestions_html:56
 msgid "Begründung und weitere Angaben (Herkunft, Quelle etc.)"
@@ -6265,7 +6267,7 @@ msgstr "Already existing cluster"
 #: ../templates/_profile/yaml4/admin_profiles_html:94
 #: ../templates/admin_profiles_html:55
 msgid "Bereits existierende Katalog-Profile"
-msgstr "Already existing catalog profiles"
+msgstr "Already existing catalogue profiles"
 
 #: ../templates/_profile/bootstrap5/admin_databases_html:84
 #: ../templates/_profile/rheinlandbib_yaml4/admin_databases_html:122
@@ -6274,7 +6276,7 @@ msgstr "Already existing catalog profiles"
 #: ../templates/_profile/yaml4/admin_databases_html:122
 #: ../templates/admin_databases_html:84
 msgid "Bereits existierende Kataloge"
-msgstr "Already existing catalogs"
+msgstr "Already existing catalogues"
 
 #: ../templates/_profile/bootstrap5/users_litlists_html:69
 #: ../templates/_profile/rheinlandbib_yaml4/users_litlists_html:96
@@ -6301,7 +6303,7 @@ msgstr "Already existing organizational units"
 #: ../templates/_profile/yaml4/users_searchprofiles_html:81
 #: ../templates/users_searchprofiles_html:48
 msgid "Bereits existierende Profile"
-msgstr "Already existing catalog profiles"
+msgstr "Already existing catalogue profiles"
 
 #: ../templates/_profile/bootstrap5/admin_databases_rss_html:93
 #: ../templates/_profile/rheinlandbib_yaml4/admin_databases_rss_html:127
@@ -8602,7 +8604,7 @@ msgstr "DBIS"
 
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/home_html:58
 msgid "DER KARTENKATALOG DER PHILOSOPHISCHEN FAKULTÄT"
-msgstr "THE CARD CATALOG OF THE FACULTY OF PHILOSOPHY"
+msgstr "THE CARD catalogue OF THE FACULTY OF PHILOSOPHY"
 
 #: ../templates/_profile/sammlungen/_view/muenzenproto/home_html:64
 msgid "DIE MÜNZSAMMLUNG AM INSTITUT FÜR ALTERTUMSKUNDE DER UNIVERSITÄT ZU KÖLN"
@@ -8657,14 +8659,16 @@ msgid ""
 "      ersparen, k&ouml;nnen Sie diese dauerhaft in <i>Mein OpenBib</i> als\n"
 "      Katalogprofil festlegen."
 msgstr ""
-"As most users wish to search in all catalogs, this option is pre-selected.By "
-"clicking twice on the box <i>All Catalogs</i> (on the right side under "
-"<i>Catalog Selection</i>) or choosing the option <i>Deselect All</i>, all "
-"catalogs can be deselected and you can either select catalogs individually "
+"As most users wish to search in all catalogues, this option is"
+" pre-selected.By "
+"clicking twice on the box <i>All catalogues</i> (on the right side under "
+"<i>catalogue Selection</i>) or choosing the option <i>Deselect All</i>, all "
+"catalogues can be deselected and you can either select catalogues"
+" individually "
 "or by picking a pre-existing profile from the drop-down menu. Then fill out "
-"the search form and click on <i>search in selected catalogs</i>. To spare "
+"the search form and click on <i>search in selected catalogues</i>. To spare "
 "yourself excess scrolling you can permanently save your selection in <i>My "
-"KUG</i> as a catalog profile."
+"KUG</i> as a catalogue profile."
 
 #: ../templates/_profile/rheinlandbib_yaml4/users_passwords:50
 #: ../templates/_profile/sammlungen_yaml4/_view/richter/users_passwords:50
@@ -8818,7 +8822,7 @@ msgid ""
 msgstr ""
 "Your <b>search profile</b> displays your database selections. Also, you "
 "can   choose from a range of faculty profiles or your own personalized "
-"search   profiles (see: %1My KUG%2) for the 'search in individual catalogs' "
+"search   profiles (see: %1My KUG%2) for the 'search in individual catalogues' "
 "settings."
 
 #. ("<a href=\"${path_prefix}/${config.get('info_loc')
@@ -8835,7 +8839,7 @@ msgid ""
 msgstr ""
 "Your <b>search profile</b> displays your database selections. Also, you "
 "can   choose from a range of faculty profiles or your own personalized "
-"search   profiles (see: %1My KUG%2) for the 'search in individual catalogs' "
+"search   profiles (see: %1My KUG%2) for the 'search in individual catalogues' "
 "settings."
 
 #: ../templates/_profile/sammlungen/_view/jesuiten/home_html:77
@@ -9207,7 +9211,7 @@ msgid ""
 "%2G%3 lobale Suche auf alle\n"
 "vorhandenen Kataloge aus."
 msgstr ""
-"Search for <i>%1</i> with our %2G%3 lobal Search in all available catalogs."
+"Search for <i>%1</i> with our %2G%3 lobal Search in all available catalogues."
 
 #: ../templates/_profile/bootstrap5/search_more_tips:46
 #: ../templates/_profile/kug_yaml4/search_more_tips:44
@@ -9217,7 +9221,7 @@ msgid ""
 "Katalog aufnehmen"
 msgstr ""
 "Please note that not all libraries enter single articles into their online "
-"catalogs."
+"catalogues."
 
 #: ../templates/_profile/bootstrap5/admin_users_record_edit_html:73
 #: ../templates/_profile/unikatalog/admin_users_record_edit_html:73
@@ -9231,7 +9235,7 @@ msgid ""
 "zur Suche im Index ausgewählt wurde."
 msgstr ""
 "This search term has to consist of at least 3 characters if more than one "
-"catalog has been selected for your search request."
+"catalogue has been selected for your search request."
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/info_leitmedium:15
 msgid "Der Brief als vormodernes Leitmedium um 1800"
@@ -9266,7 +9270,7 @@ msgstr ""
 #: ../modules/OpenBib/Handler/PSGI/Users/LibraryCardRegistrations.pm:335
 #: ../modules/OpenBib/Handler/PSGI/Users/UCCardActivations.pm:337
 msgid "Der Katalogname fehlt."
-msgstr "The catalog name is missing."
+msgstr "The catalogue name is missing."
 
 #: ../templates/_profile/bootstrap5/info_help:574
 #: ../templates/_profile/kug_yaml4/info_help:497
@@ -9287,9 +9291,10 @@ msgid ""
 msgstr ""
 "The link <i>Hit List</i> shows you the current search query and underneath "
 "it, the number of hits globally and per database. From here you can click on "
-"a catalog to display the respective list of search results. You can sort the "
+"a catalogue to display the respective list of search results. You can sort"
+" the "
 "results differently by adjusting the sorting parameters (author/name, title "
-"etc. and display <i>by catalog</i> or <i>globally</i>) confirming your "
+"etc. and display <i>by catalogue</i> or <i>globally</i>) confirming your "
 "selection by clicking <i>Go</i>."
 
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/PdaOrders.pm:117
@@ -9320,7 +9325,7 @@ msgid ""
 "Der Titel wurde im Katalog gelöscht. Sie sehen die ursprünglichen "
 "Informationen."
 msgstr ""
-"The title has been deleted from the catalog. You will see the original "
+"The title has been deleted from the catalogue. You will see the original "
 "information."
 
 #: ../templates/_profile/bootstrap5/users_circulations_make_campus_order_html:17
@@ -9631,7 +9636,7 @@ msgstr "Top 20 most viewed titles in the last 6 months"
 #: ../templates/_profile/yaml4/databases_popular_html:61
 #: ../templates/databases_popular_html:19
 msgid "Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe"
-msgstr "The 20 most used catalogs regarding title access"
+msgstr "The 20 most used catalogues regarding title access"
 
 #: ../templates/_profile/bootstrap5/searchforms_record_bottom_right:16
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_bottom_right:16
@@ -10140,7 +10145,7 @@ msgstr ""
 #: ../templates/_profile/unikatalog/info_help:764
 #: ../templates/_profile/yaml4/info_help:764 ../templates/info_help:764
 msgid "Die letzten 50 Neuzug&auml;nge in einem Katalog"
-msgstr "50  Most Recent Entries in a Catalog"
+msgstr "50  Most Recent Entries in a catalogue"
 
 #: ../templates/_profile/bootstrap5/info_help:770
 #: ../templates/_profile/kug_yaml4/info_help:676
@@ -10151,7 +10156,7 @@ msgstr "50  Most Recent Entries in a Catalog"
 msgid ""
 "Die letzten 50 Neuzug&auml;nge in einem Katalog von einem\n"
 "          Verfasser oder einer Person"
-msgstr "50 Most Recent Entries in a Catalog by an Author"
+msgstr "50 Most Recent Entries in a catalogue by an Author"
 
 #: ../templates/_profile/bootstrap5/info_help:776
 #: ../templates/_profile/kug_yaml4/info_help:682
@@ -10162,7 +10167,7 @@ msgstr "50 Most Recent Entries in a Catalog by an Author"
 msgid ""
 "Die letzten 50 Neuzug&auml;nge in einem Katalog von einer \n"
 "           K&ouml;rperschaft oder einer Institution"
-msgstr "50 Most Recent Entries in a Catalog from an Institution"
+msgstr "50 Most Recent Entries in a catalogue from an Institution"
 
 #: ../templates/_profile/bootstrap5/info_help:781
 #: ../templates/_profile/kug_yaml4/info_help:687
@@ -10173,7 +10178,7 @@ msgstr "50 Most Recent Entries in a Catalog from an Institution"
 msgid ""
 "Die letzten 50 Neuzug&auml;nge in einem Katalog zu einem\n"
 "          Schlagwort"
-msgstr "50 Most Recent Entries in a Catalog under a Subject Heading"
+msgstr "50 Most Recent Entries in a catalogue under a Subject Heading"
 
 #: ../templates/_profile/bootstrap5/info_help:787
 #: ../templates/_profile/kug_yaml4/info_help:693
@@ -10184,7 +10189,8 @@ msgstr "50 Most Recent Entries in a Catalog under a Subject Heading"
 msgid ""
 "Die letzten 50 Neuzug&auml;nge in einem Katalog zu einer\n"
 "          Notation (Systematik)"
-msgstr "50 Most Recent Entries in a Catalog under a notation (classificatory)"
+msgstr ""
+"50 Most Recent Entries in a catalogue under a notation (classificatory)"
 
 #: ../templates/_profile/kug_yaml4/_view/kug/home_html_bottom_right:17
 msgid "Dienste an der Universit&auml;t"
@@ -10379,13 +10385,13 @@ msgstr "This title"
 #: ../templates/_profile/unikatalog/_view/bcw1/titlist_item_html_short:459
 #: ../templates/_profile/unikatalog/titlist_item_html_short:456
 msgid "Dieser Titel existiert nicht mehr im Katalog!"
-msgstr "This title no longer exists in the catalog!"
+msgstr "This title no longer exists in the catalogue!"
 
 #: ../templates/_profile/bootstrap5/titles_record_same_records_html:32
 #: ../templates/_profile/unikatalog/titles_record_same_records_html:32
 #: ../templates/titles_record_same_records_html:32
 msgid "Dieser Titel ist in keinen anderen Katalogen vorhanden."
-msgstr "Titles with this ISBN are not available in any other catalog."
+msgstr "Titles with this ISBN are not available in any other catalogue."
 
 #: ../templates/_profile/unikatalog/titles_record_html_actions:417
 msgid "Dieser Titel wurde noch nicht getaggt"
@@ -10565,7 +10571,7 @@ msgstr "Digital Library/ Journals (for delivery of journal articles)"
 #: ../templates/_profile/unikatalog/info_help:625
 #: ../templates/_profile/yaml4/info_help:625 ../templates/info_help:625
 msgid "Digitaler Kartenkatalog der Philosophischen Fakutl&auml;t %1"
-msgstr "Digital Card Catalog of the Philosophical Faculty %1"
+msgstr "Digital Card catalogue of the Philosophical Faculty %1"
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:84
 msgid "Digitalisat"
@@ -10601,7 +10607,7 @@ msgstr "Digitalized Tables of Content"
 #: ../templates/home_html_bottom_right:33 ../templates/info_cardcatalogs:13
 #: ../templates/info_cardcatalogs_html:14
 msgid "Digitalisierte Kartenkataloge"
-msgstr "Digital Card Catalog"
+msgstr "Digital Card catalogue"
 
 #: ../templates/_profile/sammlungen_yaml4/_view/fotobuecher/info_digitalisierung:38
 #: ../templates/_profile/sammlungen_yaml4/_view/fotobuecher/subnavigation_project_items:3
@@ -11785,7 +11791,7 @@ msgstr ""
 #: ../modules/OpenBib/Handler/PSGI/Admin/Profiles.pm:175
 #: ../modules/OpenBib/Handler/PSGI/Admin/Profiles.pm:274
 msgid "Ein Profil dieses Namens existiert bereits."
-msgstr "A catalog profile with this name already exists."
+msgstr "A catalogue profile with this name already exists."
 
 #: ../modules/OpenBib/Handler/PSGI/Admin/Topics.pm:223
 msgid "Ein Themenbebiet diesen Namens existiert bereits."
@@ -11826,12 +11832,13 @@ msgstr "A topic with this name already exists."
 #: ../templates/titles_record_fields_include:83
 #: ../templates/titles_record_html:116
 msgid "Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden."
-msgstr "A title with this ID is not/no longer available in this catalog."
+msgstr "A title with this ID is not/no longer available in this catalogue."
 
 #: ../templates/_profile/sammlungen/_view/totenzettel/titles_record_html:107
 msgid ""
 "Ein Totenzettel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden."
-msgstr "A death note with this ID is not/no longer available in this catalog."
+msgstr ""
+"A death note with this ID is not/no longer available in this catalogue."
 
 #: ../modules/OpenBib/Handler/PSGI/Admin/Views.pm:124
 #: ../modules/OpenBib/Handler/PSGI/Viewadmin/Views.pm:91
@@ -13737,7 +13744,7 @@ msgstr "There already exists a authentication target with this name"
 
 #: ../modules/OpenBib/Handler/PSGI/Admin/Databases.pm:134
 msgid "Es existiert bereits ein Katalog unter diesem Namen"
-msgstr "There already exists a catalog with this name"
+msgstr "There already exists a catalogue with this name"
 
 #: ../modules/OpenBib/Handler/PSGI/Users/Searchprofiles.pm:353
 msgid "Es existiert bereits ein Profil unter diesem Namen!"
@@ -13778,7 +13785,7 @@ msgstr "There already exists an organizational unit with this name"
 #: ../modules/OpenBib/Handler/PSGI/Databases/RSS.pm:141
 #: ../modules/OpenBib/Handler/PSGI/Databases/RSS.pm:96
 msgid "Es existiert kein Katalog unter diesem Namen"
-msgstr "There does not exists a catalog with this name"
+msgstr "There does not exists a catalogue with this name"
 
 #: ../modules/OpenBib/Handler/PSGI/Users/Searchprofiles.pm:304
 msgid "Es existiert kein Profil mit der ID $profileid"
@@ -14034,7 +14041,7 @@ msgstr "No fees generated."
 #: ../templates/_profile/yaml4/databases_rss_html:108
 #: ../templates/admin_databases_rss_html:123 ../templates/databases_rss_html:66
 msgid "Es sind noch keine RSS-Feeds f&uuml;r diesen Katalog eingerichtet."
-msgstr "Right now there are no RSS-feed for this catalog."
+msgstr "Right now there are no RSS-feed for this catalogue."
 
 #: ../modules/OpenBib/Handler/PSGI/Users/Registrations.pm:394
 msgid ""
@@ -14043,7 +14050,7 @@ msgstr "You either didn't enter a username or less than two passwords "
 
 #: ../modules/OpenBib/Handler/PSGI.pm:1358
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
-msgstr "No hits available in the catalog for your search request"
+msgstr "No hits available in the catalogue for your search request"
 
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations.pm:199
 msgid ""
@@ -14064,13 +14071,13 @@ msgstr "No default search mask selected"
 #: ../templates/_profile/yaml4/profiles_html:72
 #: ../templates/admin_profiles_html:113
 msgid "Es wurde noch kein Katalog-Profil angelegt"
-msgstr "There is no catalog profile yet."
+msgstr "There is no catalogue profile yet."
 
 #: ../templates/_profile/bootstrap5/profiles_html:33
 #: ../templates/_profile/unikatalog/profiles_html:33
 #: ../templates/profiles_html:33
 msgid "Es wurde noch kein Katalog-Profil angelegt."
-msgstr "No catalog profiles defined yet."
+msgstr "No catalogue profiles defined yet."
 
 #: ../templates/_profile/bootstrap5/search_title_end_html:20
 #: ../templates/_profile/rheinlandbib_yaml4/search_title_end_html:20
@@ -14276,7 +14283,7 @@ msgid ""
 msgstr ""
 "It is possible to perform an index search for the categories author/name, "
 "institution und subject heading. This displays a list of possible terms from "
-"the KUG index, listed by catalog. All queries entered here undergo a full-"
+"the KUG index, listed by catalogue. All queries entered here undergo a full-"
 "text search, i.e. subject heading chains are searched as well. If you would "
 "like to limit your search to the beginning of a word, please type the symbol "
 "<b>^</b> ahead of your search query (e.g. ^education*). As before, you can "
@@ -14357,7 +14364,7 @@ msgid ""
 "t besteht die M&ouml;glichkeit der Suche in einem %1Online-Kartenkatalog%2"
 msgstr ""
 "Several institutes of the faculty of arts offer a search in their online "
-"%1card catalogs%2"
+"%1card catalogues%2"
 
 #: ../templates/_profile/bootstrap5/admin_databases_record_edit_html:123
 #: ../templates/_profile/rheinlandbib_yaml4/admin_databases_record_edit:164
@@ -15299,7 +15306,7 @@ msgstr ""
 #: ../modules/OpenBib/Handler/PSGI/Users/Passwords.pm:348
 #: ../modules/OpenBib/Handler/PSGI/Users/Passwords.pm:452
 msgid "Für diese Authentifizierungsmethode ist kein Katalog definiert"
-msgstr "No catalog is defined for this authentication method"
+msgstr "No catalogue is defined for this authentication method"
 
 #: ../templates/_profile/bootstrap5/rssfeeds_html:43
 #: ../templates/_profile/unikatalog/rssfeeds_html:43
@@ -15321,7 +15328,7 @@ msgid ""
 "      verschlagwortet wurden, umso grösser wird das zugehörige\n"
 "      Schlagwort dargestellt."
 msgstr ""
-"Every catalog that uses subject headings has a tag cloud of its 200 most "
+"Every catalogue that uses subject headings has a tag cloud of its 200 most "
 "common ones. The more entries are linked to a certain tag, the larger it "
 "will appear in the cloud."
 
@@ -16287,7 +16294,7 @@ msgstr "Search in this collection"
 #: ../templates/searchforms_record_simple:280
 msgid "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 msgstr ""
-"Here you can search in your choice of catalog,  catalog profiles, resp."
+"Here you can search in your choice of catalogue,  catalogue profiles, resp."
 
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_query:239
 #: ../templates/_profile/sammlungen_yaml4/_view/digitalis/searchforms_record_query:151
@@ -16602,7 +16609,7 @@ msgstr "Business hours"
 #: ../templates/_profile/yaml4/searchforms_record_bottom_left:26
 #: ../templates/searchforms_record_bottom_left:26
 msgid "I0230"
-msgstr "Online cataloging"
+msgstr "Online catalogueing"
 
 #: ../templates/_profile/bootstrap5/searchforms_record_bottom_left:27
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_bottom_left:27
@@ -16611,7 +16618,7 @@ msgstr "Online cataloging"
 #: ../templates/_profile/yaml4/searchforms_record_bottom_left:27
 #: ../templates/searchforms_record_bottom_left:27
 msgid "I0235"
-msgstr "Online cataloging since year of acquisition"
+msgstr "Online catalogueing since year of acquisition"
 
 #: ../templates/_profile/rheinlandbib_yaml4/search_title_field:11
 #: ../templates/_profile/sammlungen_yaml4/_view/portrait/search_title_field:11
@@ -17286,7 +17293,7 @@ msgid ""
 msgstr ""
 "Your queries are run through all possible categories and all available "
 "databases with search engine technology. Should you wish to single out "
-"certain catalogs for your search, please use the database choice menu entry."
+"certain catalogues for your search, please use the database choice menu entry."
 
 #: ../templates/_profile/kug_yaml4/info_help:142
 msgid ""
@@ -17302,7 +17309,7 @@ msgid ""
 msgstr ""
 "Your queries are run through all possible categories and all available "
 "databases with search engine technology. Should you wish to single out "
-"certain catalogs for your search, please create your own search profile as "
+"certain catalogues for your search, please create your own search profile as "
 "an authenticated user."
 
 #: ../templates/_profile/unikatalog/users_circulations_fees_include:50
@@ -17394,10 +17401,10 @@ msgid ""
 "      organisieren. Bei den separaten KUG-Institutsportalen ist der\n"
 "      jeweilige Katalog vorausgewählt."
 msgstr ""
-"KUG allows you to simultaneously search the catalogs of all participating "
+"KUG allows you to simultaneously search the catalogues of all participating "
 "libraries or predefined search profiles, eg. faculties. If you have already "
 "used the login function to access your KUG-account, you can store your "
-"preferred catalogs in permanently savable search profiles."
+"preferred catalogues in permanently savable search profiles."
 
 #: ../templates/_profile/kug_yaml4/info_help:667
 msgid "Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:"
@@ -17460,7 +17467,8 @@ msgid ""
 "Untergebiete, deren Buchtitel in Kurzform aufgelistet sind. Genauere Angaben "
 "zum Titel und Bestand erhalten Sie im Vollformat."
 msgstr ""
-"In the Systematic Catalog you will find the complete holdings of the textbook"
+"In the Systematic catalogue you will find the complete holdings of the"
+" textbook"
 " collection sorted by subject. Each subject area has subfields, whose book"
 " titles are listed in short form. More detailed information on titles and"
 " holdings can be found in the full format."
@@ -17472,7 +17480,7 @@ msgid ""
 "Buchtitel in Kurzform aufgelistet sind. Genauere Angaben zum Titel und "
 "Bestand erhalten Sie im Vollformat."
 msgstr ""
-"In the Systematic Catalog you will find the complete holdings of the Reading"
+"In the Systematic catalogue you will find the complete holdings of the Reading"
 " Room sorted by subject. Each subject area has sub-areas whose titles are"
 " listed in short form. More detailed information on the title and holdings"
 " are available in the full format."
@@ -17679,10 +17687,10 @@ msgid ""
 "      dar&uuml;ber hinaus auch in dauerhaft gespeicherten Suchprofilen\n"
 "      organisieren."
 msgstr ""
-"OpenBib allows you to simultaneously search the catalogs of all "
+"OpenBib allows you to simultaneously search the catalogues of all "
 "participating libraries or individual ones of your choosing. If you have "
 "already used the login function to access your OpenBib-account, you can "
-"store your preferred catalogs in permanently savable search profiles."
+"store your preferred catalogues in permanently savable search profiles."
 
 #: ../templates/_profile/bootstrap5/info_help:761
 #: ../templates/_profile/rheinlandbib_yaml4/info_help:761
@@ -17723,7 +17731,7 @@ msgstr "OpenBib currently offers the following types of RSS-Feeds:"
 #: ../templates/_profile/yaml4/titles_record_include:269
 #: ../templates/titles_record_html:187
 msgid "In anderen Katalogen"
-msgstr "In other catalogs"
+msgstr "In other catalogues"
 
 #: ../templates/_profile/rheinlandbib_yaml4/searchforms_record_bottom_center:14
 #: ../templates/_profile/sammlungen_yaml4/searchforms_record_bottom_center:14
@@ -17737,7 +17745,7 @@ msgstr "Dive into the structure and contents of the data"
 #: ../templates/_profile/yaml4/searchforms_record_bottom_center:14
 #: ../templates/searchforms_record_bottom_center:14
 msgid "In den Gesamtbestand eintauchen"
-msgstr "Dive into the structure and contents of our catalogs"
+msgstr "Dive into the structure and contents of our catalogues"
 
 #: ../templates/_profile/kug_yaml4/info_help:860
 msgid ""
@@ -18092,7 +18100,7 @@ msgstr ""
 msgid ""
 "In diesem Profil existiert bereits eine Organisationseinheit diesen Namens"
 msgstr ""
-"There already exists an organizational unit with this name in this catalog "
+"There already exists an organizational unit with this name in this catalogue "
 "profile."
 
 #: ../templates/_profile/bootstrap5/titles_record_html_modals:72
@@ -18116,8 +18124,8 @@ msgid ""
 "Funktionselement %3, das mit dem\n"
 "entsprechenden RSS-Feed verlinkt ist."
 msgstr ""
-"%1RSS Feeds%2 are offered in your selected catalog or on a given KUG page. "
-"If you subscribe to one of these you can see the catalog's 50 most recent "
+"%1RSS Feeds%2 are offered in your selected catalogue or on a given KUG page. "
+"If you subscribe to one of these you can see the catalogue's 50 most recent "
 "entries (globally or limited to the contents of a category). You can find "
 "them by clicking on the %3 icon links to the respective RSS-feed. "
 
@@ -18136,8 +18144,8 @@ msgid ""
 "Funktionselement %3, das mit dem\n"
 "entsprechenden RSS-Feed verlinkt ist."
 msgstr ""
-"%1RSS Feeds%2 are offered in your selected catalog or on a given "
-"OpenBibpage. If you subscribe to one of these you can see the catalog's 50 "
+"%1RSS Feeds%2 are offered in your selected catalogue or on a given "
+"OpenBibpage. If you subscribe to one of these you can see the catalogue's 50 "
 "most recent entries (globally or limited to the contents of a category). You "
 "can find them by clicking on the %3 icon links to the respective RSS-feed. "
 
@@ -18146,7 +18154,7 @@ msgstr ""
 #: ../templates/_profile/yaml4/_database/bibsonomy/titlist_item_html_short:220
 #: ../templates/_profile/yaml4/_database/bibsonomy/titlist_item_html_short:221
 msgid "In lokalen Katalogen verf&uuml;gbar"
-msgstr "Available in local catalogs"
+msgstr "Available in local catalogues"
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:250
 msgid "Incipit"
@@ -18378,7 +18386,7 @@ msgstr "Information about all libraries at the University of Cologne."
 #: ../templates/_profile/yaml4/home_html_bottom_center:30
 #: ../templates/home_html_bottom_center:33
 msgid "Informationen zu den Katalogen"
-msgstr "Information about the catalogs"
+msgstr "Information about the catalogues"
 
 #: ../templates/_profile/bootstrap5/libraries_html:59
 #: ../templates/_profile/rheinlandbib_yaml4/libraries_html:59
@@ -20450,13 +20458,13 @@ msgstr "Map"
 
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/searchforms_record_query:21
 msgid "Kartenkatalog"
-msgstr "Card catalog"
+msgstr "Card catalogue"
 
 #: ../templates/_profile/rheinlandbib_yaml4/info_tutorials:65
 #: ../templates/_profile/sammlungen_yaml4/info_tutorials:65
 #: ../templates/_profile/yaml4/info_tutorials:65 ../templates/info_tutorials:65
 msgid "Kartenkataloge der Philosophischen Fakultät"
-msgstr "Digital card catalog (faculty of arts)"
+msgstr "Digital card catalogue (faculty of arts)"
 
 #: ../templates/_database/bibsonomy/titlist_item_html_short:339
 #: ../templates/_database/dbis/titlist_item_html_short:341
@@ -20730,7 +20738,7 @@ msgstr "Digital card catalog (faculty of arts)"
 #: ../templates/titlist_item_html_short:375
 #: ../templates/titlist_item_mobile_short:217
 msgid "Katalog"
-msgstr "Catalog"
+msgstr "catalogue"
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/admin_navigation_dropdown:31
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/admin_navigation_dropdown:31
@@ -20741,7 +20749,7 @@ msgstr "Catalog"
 #: ../templates/_profile/unikatalog/admin_navigation_dropdown:31
 #: ../templates/admin_navigation:45 ../templates/admin_navigation:48
 msgid "Katalog-Konsistenz"
-msgstr "Catalog consistency"
+msgstr "catalogue consistency"
 
 #: ../templates/_profile/bootstrap5/admin_views_record_html:30
 #: ../templates/_profile/bootstrap5/profiles_record_html:15
@@ -20758,7 +20766,7 @@ msgstr "Catalog consistency"
 #: ../templates/admin_views_record_html:30 ../templates/profiles_record_html:15
 #: ../templates/viewadmin_views_record_html:30
 msgid "Katalog-Profil"
-msgstr "Catalog profile"
+msgstr "catalogue profile"
 
 #: ../templates/_profile/bootstrap5/admin_profiles_record_edit_html:18
 #: ../templates/_profile/rheinlandbib_yaml4/admin_profiles_record_edit:64
@@ -20767,7 +20775,7 @@ msgstr "Catalog profile"
 #: ../templates/_profile/yaml4/admin_profiles_record_edit:64
 #: ../templates/admin_profiles_record_edit_html:18
 msgid "Katalog-Profil bearbeiten"
-msgstr "Edit catalog profile"
+msgstr "Edit catalogue profile"
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/admin_navigation_dropdown:85
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/admin_navigation_dropdown:85
@@ -20853,7 +20861,7 @@ msgstr "Edit catalog profile"
 #: ../templates/viewadmin_views_record_edit_html:31
 #: ../templates/views_record_html:22
 msgid "Katalog-Profile"
-msgstr "Catalog profile"
+msgstr "catalogue profile"
 
 #: ../templates/_profile/bootstrap/_view/kubibooks/subnavigation:66
 #: ../templates/_profile/bootstrap/_view/kubibooks/subnavigation:68
@@ -20914,7 +20922,7 @@ msgstr "Catalog profile"
 #: ../templates/searchprofiles_session:52 ../templates/subnavigation:69
 #: ../templates/subnavigation:71
 msgid "Katalogauswahl"
-msgstr "Choice of catalogs"
+msgstr "Choice of catalogues"
 
 #: ../templates/_profile/bootstrap5/admin_orgunits_record_edit_html:41
 #: ../templates/_profile/rheinlandbib_yaml4/admin_orgunits_record_edit:90
@@ -20923,7 +20931,7 @@ msgstr "Choice of catalogs"
 #: ../templates/_profile/yaml4/admin_orgunits_record_edit:90
 #: ../templates/admin_orgunits_record_edit_html:41
 msgid "Katalogauswahl der Organisationseinheit"
-msgstr "Choice of catalogs for this organizational unit"
+msgstr "Choice of catalogues for this organizational unit"
 
 #: ../templates/_profile/bootstrap5/admin_views_record_edit_html:85
 #: ../templates/_profile/bootstrap5/admin_views_record_html:59
@@ -20950,7 +20958,7 @@ msgstr "Choice of catalogs for this organizational unit"
 #: ../templates/viewadmin_views_record_html:59
 #: ../templates/views_record_html:32
 msgid "Katalogauswahl zu diesem View"
-msgstr "Choice of catalogs for this view"
+msgstr "Choice of catalogues for this view"
 
 #: ../templates/_database/dbis/classifications:21
 #: ../templates/_database/ezb/classifications:22
@@ -21134,7 +21142,7 @@ msgstr "Choice of catalogs for this view"
 #: ../templates/titles_popular_by_database:22 ../templates/usage_navigation:13
 #: ../templates/usage_navigation:15
 msgid "Kataloge"
-msgstr "Catalogs"
+msgstr "catalogues"
 
 #: ../templates/_profile/bootstrap5/clouds_html:28
 #: ../templates/_profile/unikatalog/clouds_html:28
@@ -21159,7 +21167,7 @@ msgstr ""
 #: ../templates/_profile/yaml4/info_other_portals:73 ../templates/info_15:61
 #: ../templates/info_other_portals:73
 msgid "Kataloge dieser Spezial-Sicht"
-msgstr "catalogs of this view"
+msgstr "catalogues of this view"
 
 #: ../templates/_profile/bootstrap5/home_html_bottom_center:29
 #: ../templates/_profile/rheinlandbib_yaml4/home_html_bottom_center:26
@@ -21168,7 +21176,7 @@ msgstr "catalogs of this view"
 #: ../templates/_profile/yaml4/home_html_bottom_center:26
 #: ../templates/home_html_bottom_center:29
 msgid "Kataloge, Standorte und Bestand"
-msgstr "Catalogs, locations and holdings"
+msgstr "catalogues, locations and holdings"
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/users_navigation:90
 #: ../templates/_profile/bootstrap5/_view/unikatalog/users_navigation:98
@@ -21193,7 +21201,7 @@ msgstr "Catalogs, locations and holdings"
 #: ../templates/_profile/yaml4/users_searchprofiles_record_html:55
 #: ../templates/users_navigation:85 ../templates/users_navigation:93
 msgid "Katalogprofile"
-msgstr "Catalog profiles"
+msgstr "catalogue profiles"
 
 #: ../templates/_profile/bootstrap5/browse_topics_record_html:29
 #: ../templates/_profile/rheinlandbib_yaml4/browse_topics_record_html:75
@@ -21201,7 +21209,7 @@ msgstr "Catalog profiles"
 #: ../templates/_profile/yaml4/browse_topics_record_html:75
 #: ../templates/browse_topics_record_html:29
 msgid "Katalogtitel nach Bibliothekssystematik"
-msgstr "Catalog title according to library classification"
+msgstr "catalogue title according to library classification"
 
 #: ../templates/_database/wikisource_de/persons_record_html:69
 #: ../templates/_profile/kug_yaml4/_database/wikisource_de/persons_record_html:69
@@ -22130,7 +22138,7 @@ msgstr "Kölner Gymnasial- und Stiftungsfonds"
 
 #: ../templates/_profile/unikatalog/_view/unikatalog/mainnavigation_html:280
 msgid "Kölner Universitätskatalog"
-msgstr "Cologne University Catalog"
+msgstr "Cologne University catalogue"
 
 #: ../templates/_profile/bootstrap5/subnavigation:50
 #: ../templates/_profile/bootstrap5/users_circulations_cancel_order_confirm_html:82
@@ -22204,7 +22212,7 @@ msgstr "Corporate Information"
 #: ../templates/_profile/yaml4/corporatebodies_record_html:20
 #: ../templates/corporatebodies_record:11
 msgid "Körperschafts-Information: %1 in Katalog %2"
-msgstr "Information about corporate body: %1 in catalog %2"
+msgstr "Information about corporate body: %1 in catalogue %2"
 
 #: ../templates/_profile/sammlungen_yaml4/_view/landschaft/clouds_databases_record_html:62
 #: ../templates/_profile/sammlungen_yaml4/_view/landschaft/clouds_html:59
@@ -23053,7 +23061,7 @@ msgstr "Type of library system"
 #: ../templates/visible_categories_location:42
 #: ../templates/visible_categories_location_admin:43
 msgid "L0230"
-msgstr "Online cataloging"
+msgstr "Online catalogueing"
 
 #: ../templates/_profile/kug_yaml4/_view/abwl/home_html_bottom_left:30
 #: ../templates/_profile/kug_yaml4/_view/altmitneulat/home_html_bottom_left:30
@@ -23094,7 +23102,7 @@ msgstr "Online cataloging"
 #: ../templates/visible_categories_location:43
 #: ../templates/visible_categories_location_admin:44
 msgid "L0235"
-msgstr "Online cataloging since year of acquisition"
+msgstr "Online catalogueing since year of acquisition"
 
 #: ../templates/_profile/rheinlandbib_yaml4/visible_categories_location:44
 #: ../templates/_profile/rheinlandbib_yaml4/visible_categories_location_admin:45
@@ -23205,7 +23213,7 @@ msgstr "Geographic coordinates"
 #: ../templates/visible_categories_location:22
 #: ../templates/visible_categories_location_admin:23
 msgid "L0290"
-msgstr "Other catalogs"
+msgstr "Other catalogues"
 
 #: ../templates/_profile/sammlungen/_view/jesuiten/info_lam:13
 msgid "LAM Projekt"
@@ -23415,7 +23423,7 @@ msgid ""
 "Wolke der Erscheinungsjahre anbieten."
 msgstr ""
 "Unfortunately we cannot present a cloud of publication years for this "
-"catalog."
+"catalogue."
 
 #: ../templates/_profile/sammlungen/_view/jesuiten/clouds_provenancecorporatebody_html:61
 msgid ""
@@ -23423,7 +23431,7 @@ msgid ""
 "Körperschaft anbieten."
 msgstr ""
 "Unfortunately we cannot present a cloud of provenance/corporate body for "
-"this catalog."
+"this catalogue."
 
 #: ../templates/_profile/sammlungen/_view/jesuiten/clouds_provenanceperson_html:62
 msgid ""
@@ -23431,7 +23439,7 @@ msgid ""
 "Person anbieten."
 msgstr ""
 "Unfortunately we cannot present a cloud of provenance/person for this "
-"catalog."
+"catalogue."
 
 #: ../templates/_profile/sammlungen/_view/jesuiten/clouds_publisherprinter_html:61
 msgid ""
@@ -23439,7 +23447,7 @@ msgid ""
 "anbieten."
 msgstr ""
 "Unfortunately we cannot present a cloud of publisher/printer for this "
-"catalog."
+"catalogue."
 
 #: ../templates/_profile/bootstrap5/clouds_year_html:61
 #: ../templates/_profile/rheinlandbib_yaml4/clouds_year_html:102
@@ -23454,14 +23462,14 @@ msgid ""
 "Erscheinungsjahre anbieten."
 msgstr ""
 "Unfortunately we cannot present a cloud of publication years for this "
-"catalog."
+"catalogue."
 
 #: ../templates/_profile/sammlungen/_view/totenzettel/clouds_year_html:61
 msgid ""
 "Leider k&ouml;nnen wir Ihnen für diesen Katalog keine Wolke der Sterbejahre "
 "anbieten."
 msgstr ""
-"Unfortunately we cannot present a cloud of years of death for this catalog."
+"Unfortunately we cannot present a cloud of years of death for this catalogue."
 
 #: ../templates/_profile/sammlungen/_view/jesuiten/clouds_placeofpublication_html:61
 #: ../templates/_profile/sammlungen/_view/jesuiten/clouds_yearofaddition_html:61
@@ -23469,7 +23477,7 @@ msgid ""
 "Leider k&ouml;nnen wir Ihnen für diesen Katalog keine Wolke der Zugangsjahre "
 "anbieten."
 msgstr ""
-"Unfortunately we cannot present a cloud of entry years for this catalog."
+"Unfortunately we cannot present a cloud of entry years for this catalogue."
 
 #: ../templates/_profile/bootstrap/_view/muenzen/clouds_corporatebody_html:103
 #: ../templates/_profile/bootstrap/_view/muenzen/clouds_person_html:103
@@ -23588,7 +23596,8 @@ msgstr ""
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r von "
 "Nutzern vergebene Tags anbieten."
-msgstr "Unfortunately we cannot present a cloud of user tags for this catalog."
+msgstr ""
+"Unfortunately we cannot present a cloud of user tags for this catalogue."
 
 #: ../templates/_profile/bootstrap/_view/muenzen/clouds_litlist_html:95
 #: ../templates/_profile/bootstrap5/clouds_litlist_html:52
@@ -23656,7 +23665,7 @@ msgstr "Read"
 #: ../templates/_profile/yaml4/rssfeeds_html:104
 #: ../templates/_profile/yaml4/rssfeeds_html:79 ../templates/rssfeeds_html:15
 msgid "Letzte 50 Neuaufnahmen"
-msgstr "Newest 50 catalog entries"
+msgstr "Newest 50 catalogue entries"
 
 #: ../templates/_database/einbaende/titles_record_html:261
 #: ../templates/_profile/bootstrap/_view/fidphil/titles_record_html:187
@@ -23693,7 +23702,7 @@ msgstr "Most recent articles"
 
 #: ../templates/titles_recent_by_database:32
 msgid "Letzte Neuzugänge"
-msgstr "Newest catalog entries"
+msgstr "Newest catalogue entries"
 
 #: ../templates/_profile/bootstrap5/users_circulations_mail_kmbcopy_html:230
 #: ../templates/_profile/unikatalog/users_circulations_mail_kmbcopy_html:231
@@ -25858,7 +25867,8 @@ msgid ""
 "beliebige Katalogkombinationen ein Katalogprofil%2, dass Sie dann bei jeder\n"
 "Recherche auswählen können."
 msgstr ""
-"Login to KUG and %1create a catalog profile for any combination of catalogs"
+"Login to KUG and %1create a catalogue profile for any combination of"
+" catalogues"
 "%2, that you can use in your search requests."
 
 #: ../templates/_profile/bootstrap5/cartitems_add_html:15
@@ -26399,7 +26409,7 @@ msgstr "Do you really want to delete cluster <b>%1</b>?"
 #: ../templates/_profile/unikatalog/admin_profiles_record_delete_confirm_html:17
 #: ../templates/admin_profiles_record_delete_confirm_html:17
 msgid "Möchten Sie wirklich das Katalog-Profil <b>%1</b> löschen?"
-msgstr "Do you really want to delete catalog profile <b>%1</b>?"
+msgstr "Do you really want to delete catalogue profile <b>%1</b>?"
 
 #. (profileid)
 #: ../templates/_profile/bootstrap5/users_searchlocations_delete_confirm_html:17
@@ -26430,7 +26440,7 @@ msgstr "Do you really want to delete topic <b>%1</b>?"
 #: ../templates/_profile/unikatalog/admin_databases_record_delete_confirm_html:17
 #: ../templates/admin_databases_record_delete_confirm_html:17
 msgid "Möchten Sie wirklich den Katalog <b>%1</b> löschen?"
-msgstr "Do you really want to delete catalog <b>%1</b>?"
+msgstr "Do you really want to delete catalogue <b>%1</b>?"
 
 #. (serverinfo.description)
 #: ../templates/_profile/bootstrap5/admin_servers_record_delete_confirm_html:17
@@ -26952,7 +26962,7 @@ msgid ""
 "      KUG-Varianten werden an dieser zentralen Stelle aufgeführt."
 msgstr ""
 "Besides the standard-KUG there are a number of special entry points that may "
-"offer certain catalogs as the default selection, provide additional "
+"offer certain catalogues as the default selection, provide additional "
 "information on a subject or function as a quasi-independent department "
 "portal. These entry points into different KUG-variants, which are often "
 "invisible to the user, are centrally listed here."
@@ -26972,7 +26982,7 @@ msgid ""
 "      OpenBib-Varianten werden an dieser zentralen Stelle aufgeführt."
 msgstr ""
 "Besides the standard-OpenBib there are a number of special entry points that "
-"may offer certain catalogs as the default selection, provide additional "
+"may offer certain catalogues as the default selection, provide additional "
 "information on a subject or function as a quasi-independent department "
 "portal. These entry points into different OpenBib-variants, which are often "
 "invisible to the user, are centrally listed here."
@@ -26992,7 +27002,7 @@ msgid ""
 "eine &Uuml;bersicht aller vorhandenen Spezial-Sichten."
 msgstr ""
 "Apart from the standard OpenBib portal with some open bibliographic data "
-"there exist some other special views with preselected catalogs and "
+"there exist some other special views with preselected catalogues and "
 "additional information. Some of these even present a separate portal. On "
 "this page we give you an overview of all available special views."
 
@@ -27008,8 +27018,8 @@ msgid ""
 "eigenst&auml;ndiges Fach-Portal bilden. Auf dieser Seite finden Sie\n"
 "eine &Uuml;bersicht aller vorhandenen Spezial-Sichten."
 msgstr ""
-"Apart from the standard portal with all catalogs there exist a lot of "
-"special views with preselected catalogs and additional information. Some of "
+"Apart from the standard portal with all catalogues there exist a lot of "
+"special views with preselected catalogues and additional information. Some of "
 "these even present a separate portal. On this page we give you an overview "
 "of all available special views."
 
@@ -27971,7 +27981,7 @@ msgstr "Create new cluster"
 #: ../templates/_profile/yaml4/admin_databases_html:65
 #: ../templates/admin_databases_html:24
 msgid "Neuen Katalog anlegen"
-msgstr "Create new catalog"
+msgstr "Create new catalogue"
 
 #: ../templates/_profile/bootstrap5/admin_databases_rss_html:51
 #: ../templates/_profile/rheinlandbib_yaml4/admin_databases_rss_html:93
@@ -28130,19 +28140,19 @@ msgstr "Create new cluster"
 #: ../templates/_profile/yaml4/admin_profiles_html:64
 #: ../templates/admin_profiles_html:22
 msgid "Neues Katalog-Profil anlegen"
-msgstr "Create new catalog profile"
+msgstr "Create new catalogue profile"
 
 #: ../templates/_profile/bootstrap5/admin_profiles_record_edit_html:30
 #: ../templates/_profile/unikatalog/admin_profiles_record_edit_html:30
 #: ../templates/admin_profiles_record_edit_html:30
 msgid "Neues Katalog-Profil mit diesen Daten erzeugen"
-msgstr "Create new catalog profile with current data"
+msgstr "Create new catalogue profile with current data"
 
 #: ../templates/_profile/rheinlandbib_yaml4/users_searchprofiles_html:59
 #: ../templates/_profile/sammlungen_yaml4/users_searchprofiles_html:59
 #: ../templates/_profile/yaml4/users_searchprofiles_html:59
 msgid "Neues Katalogprofil anlegen"
-msgstr "Create new catalog profile"
+msgstr "Create new catalogue profile"
 
 #: ../modules/OpenBib/Handler/PSGI/Users/Passwords.pm:273
 #: ../templates/_profile/bootstrap5/admin_users_record_edit_html:51
@@ -28211,7 +28221,7 @@ msgstr "Newsletter management"
 #: ../templates/_profile/kug/_view/kugproto/search_more_tips:5
 #: ../templates/_profile/unikatalog/search_more_tips:5
 msgid "Nicht das Gesuchte gefunden?"
-msgstr "Could not find what you were looking for?"
+msgstr "Found nothing relevant?"
 
 #: ../templates/_profile/bootstrap5/info_impressum_mobile:36
 #: ../templates/_profile/rheinlandbib_yaml4/info_impressum_html:64
@@ -30194,7 +30204,7 @@ msgstr "Personal information"
 #: ../templates/_profile/yaml4/persons_record_html:21
 #: ../templates/persons_record:13
 msgid "Personen-Information: %1 in Katalog %2"
-msgstr "Information about person: %1 in catalog %2"
+msgstr "Information about person: %1 in catalogue %2"
 
 #: ../templates/_profile/bootstrap5/admin_users_record_html:15
 #: ../templates/_profile/bootstrap5/viewadmin_users_record_edit_html:15
@@ -31478,7 +31488,7 @@ msgstr "Search the USB portal"
 #: ../templates/_profile/kug_yaml4/search_more_tips:21
 #: ../templates/search_more_tips:23
 msgid "Recherche in beliebigen Katalogen"
-msgstr "Search in arbitrary catalogs"
+msgstr "Search in arbitrary catalogues"
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/admin_navigation_dropdown:154
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/admin_navigation_dropdown:154
@@ -31716,7 +31726,7 @@ msgstr "Browse all available %1free and licensed databases%2 by subject."
 #: ../templates/mainnavigation_html:200
 #: ../templates/searchforms_record_simple:135
 msgid "Recherchieren Sie in %1 Titeln und %2 Katalogen"
-msgstr "Search in %1 titles and %2 catalogs"
+msgstr "Search in %1 titles and %2 catalogues"
 
 #. ("${alldbcount.articles.chunk(-3)
 #. ("${alldbcount.articlecount.chunk(-3)
@@ -31726,7 +31736,7 @@ msgstr "Search in %1 titles and %2 catalogs"
 #: ../templates/_profile/yaml4/searchforms_record_simple:221
 #: ../templates/searchforms_record_simple:221
 msgid "Recherchieren Sie nach %1 Aufs&auml;tzen in %2 Katalogen"
-msgstr "Search for %1 articles in %2 catalogs"
+msgstr "Search for %1 articles in %2 catalogues"
 
 #. ("${alldbcount.online.chunk(-3)
 #. ("${alldbcount.digitalcount.chunk(-3)
@@ -31736,7 +31746,7 @@ msgstr "Search for %1 articles in %2 catalogs"
 #: ../templates/_profile/yaml4/searchforms_record_simple:265
 #: ../templates/searchforms_record_simple:265
 msgid "Recherchieren Sie nach %1 E-Medien mit Online-Zugriff in %2 Katalogen"
-msgstr "Search for %1 electronically available media in %2 catalogs"
+msgstr "Search for %1 electronically available media in %2 catalogues"
 
 #. ("${alldbcount.serials.chunk(-3)
 #. ("${alldbcount.journalcount.chunk(-3)
@@ -31746,7 +31756,7 @@ msgstr "Search for %1 electronically available media in %2 catalogs"
 #: ../templates/_profile/yaml4/searchforms_record_simple:179
 #: ../templates/searchforms_record_simple:179
 msgid "Recherchieren Sie nach %1 Zeitschriften/Serien in %2 Katalogen"
-msgstr "Search for %1 journals/series in %2 catalogs"
+msgstr "Search for %1 journals/series in %2 catalogues"
 
 #: ../templates/_profile/bootstrap5/users_preferences_html:158
 #: ../templates/_profile/bootstrap5/users_preferences_html:232
@@ -32769,7 +32779,7 @@ msgstr "Subject headings information"
 #: ../templates/_profile/yaml4/subjects_record_html:21
 #: ../templates/subjects_record:12
 msgid "Schlagwort-Information: %1 in Katalog %2"
-msgstr "Informatio about subject heading: %1 in catalog %2"
+msgstr "Informatio about subject heading: %1 in catalogue %2"
 
 #: ../templates/_profile/bootstrap/_view/kubikoeln/searchforms_record_query:76
 #: ../templates/_profile/bootstrap5/_view/unikatalog/searchforms_record_authority_html:143
@@ -33597,7 +33607,7 @@ msgid ""
 "Sie benötigen ein Buch, das Sie bei uns nicht finden können? Machen Sie "
 "einen Anschaffungsvorschlag."
 msgstr ""
-"Need a book you can't find in our catalogue? Make an acquisition suggestion."
+"Need a book you can't find in our catalogueue? Make an acquisition suggestion."
 
 #: ../templates/_profile/unikatalog/users_circulations_check_pda_order_html:23
 #: ../templates/users_circulations_check_pda_order_html:23
@@ -33916,7 +33926,7 @@ msgid ""
 "Kurztitel-Liste aller Titel, die sie mit dem jeweiligen Tag versehen\n"
 "haben."
 msgstr ""
-"You can give every title in the catalogs its own <b>tag</b> (=subject "
+"You can give every title in the catalogues its own <b>tag</b> (=subject "
 "heading).   These tags are words that have to be typed in separated by "
 "spaces. In   order to standardize the tags the system automatically norms "
 "them, i.e.   umlauts are broken down, impermissible symbols are eliminated "
@@ -33949,7 +33959,7 @@ msgid ""
 "Kurztitel-Liste aller Titel, die sie mit dem jeweiligen Tag versehen\n"
 "haben."
 msgstr ""
-"You can give every title in the catalogs its own <b>tag</b> (=subject "
+"You can give every title in the catalogues its own <b>tag</b> (=subject "
 "heading).   These tags are words that have to be typed in separated by "
 "spaces. In   order to standardize the tags the system automatically norms "
 "them, i.e.   umlauts are broken down, impermissible symbols are eliminated "
@@ -34130,7 +34140,7 @@ msgstr "You have to enter at least an identifier, its type and a description."
 #: ../modules/OpenBib/Handler/PSGI/Admin/Databases.pm:130
 msgid ""
 "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
-msgstr "You have to enter at least a catalog name and a description."
+msgstr "You have to enter at least a catalogue name and a description."
 
 #: ../modules/OpenBib/Handler/PSGI/Admin/Topics.pm:219
 msgid "Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."
@@ -34149,7 +34159,7 @@ msgid ""
 "Sie müssen mindestens einen Viewnamen, eine Beschreibung sowie ein Katalog-"
 "Profil eingeben."
 msgstr ""
-"You have to enter at least a view name, a description and a catalog profile."
+"You have to enter at least a view name, a description and a catalogue profile."
 
 #: ../templates/_profile/bootstrap5/users_registrations_success_html:17
 #: ../templates/_profile/rheinlandbib_yaml4/users_registrations_success:44
@@ -36593,7 +36603,7 @@ msgstr "Information about library"
 #: ../templates/_profile/kug/_view/openlibrary/home_html_bottom_left:15
 #: ../templates/_profile/kug_yaml4/_view/openlibrary/home_html_bottom_left:16
 msgid "Steckbrief des Katalogs"
-msgstr "Information about catalog"
+msgstr "Information about catalogue"
 
 #: ../templates/_profile/bootstrap5/users_circulations_reservations_html:24
 #: ../templates/_profile/rheinlandbib_yaml4/users_circulations_reservations_html:63
@@ -36716,7 +36726,7 @@ msgstr "Structure of collection"
 #: ../templates/_profile/yaml4/home_html_bottom_center:29
 #: ../templates/home_html_bottom_center:32
 msgid "Struktur des Katalogbestandes als Wortwolken"
-msgstr "Catalogs structure as tag clouds"
+msgstr "catalogues structure as tag clouds"
 
 #: ../templates/_profile/unikatalog/std_footer_html:177
 msgid "Studieninteressierte"
@@ -36912,7 +36922,7 @@ msgstr "Search"
 #: ../templates/_profile/unikatalog/info_help:976
 #: ../templates/_profile/yaml4/info_help:976 ../templates/info_help:976
 msgid "Suche &uuml;ber alle Kataloge"
-msgstr "Search in all Catalogs"
+msgstr "Search in all catalogues"
 
 #: ../templates/_profile/unikatalog/_view/gvi/search_title_combined_html:52
 msgid "Suche im GVI"
@@ -36923,7 +36933,7 @@ msgstr "Search GVI"
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/mainnavigation_html:64
 #: ../templates/_profile/sammlungen/_view/kartenkatalog/searchforms_record_query:3
 msgid "Suche in einzelnem Katalog"
-msgstr "Search in single catalog"
+msgstr "Search in single catalogue"
 
 #: ../templates/_database/dbis/classifications_sidebar:3
 #: ../templates/_database/dbis/search_title_item_html:98
@@ -37235,8 +37245,8 @@ msgid ""
 "Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;"
 "ber den KUG recherchierbar."
 msgstr ""
-"Consult the traditional card catalog of the specific library. Unfortunately "
-"not all books are cataloged and searchable via KUG."
+"Consult the traditional card catalogue of the specific library. Unfortunately "
+"not all books are catalogueed and searchable via KUG."
 
 #. ("<a href=\"${path_prefix}/${config.get('databases_loc')
 #: ../templates/_profile/bootstrap5/search_more_tips:47
@@ -37955,7 +37965,7 @@ msgstr "Classification groups"
 #: ../templates/_profile/yaml4/classifications_record_html:21
 #: ../templates/classifications_record:13
 msgid "Systematik-Information: %1 in Katalog %2"
-msgstr "Information about classification: %1 in catalog %2"
+msgstr "Information about classification: %1 in catalogue %2"
 
 #: ../templates/_profile/bootstrap5/cloudss_navigation:17
 #: ../templates/_profile/rheinlandbib_yaml4/cloudss_navigation:17
@@ -37968,11 +37978,11 @@ msgstr "Classification"
 
 #: ../templates/_profile/unikatalog/browse_lbs_html:15
 msgid "Systematischer Katalog der Lehrbuchsammlung"
-msgstr "Systematic catalog of the textbook collection"
+msgstr "Systematic catalogue of the textbook collection"
 
 #: ../templates/_profile/unikatalog/browse_ls_html:15
 msgid "Systematischer Katalog des Lesesaals"
-msgstr "Systematic catalog of the reading room"
+msgstr "Systematic catalogue of the reading room"
 
 #: ../templates/_profile/rheinlandbib_yaml4/info_50:29
 #: ../templates/_profile/sammlungen_yaml4/info_50:29
@@ -48142,7 +48152,7 @@ msgstr "Subject headings"
 #: ../templates/_profile/yaml4/visible_categories_title:122
 #: ../templates/visible_categories_title:122
 msgid "T1024"
-msgstr "Unique union catalog ID"
+msgstr "Unique union catalogue ID"
 
 #: ../templates/_database/landschaft/visible_categories_title:83
 #: ../templates/_profile/sammlungen_yaml4/_database/landschaft/visible_categories_title:83
@@ -50504,7 +50514,7 @@ msgstr "Team Gentz Online"
 #: ../templates/_profile/yaml4/admin_databases_record_edit:82
 #: ../templates/admin_databases_record_edit_html:36
 msgid "Teilbestand von Katalog"
-msgstr "Subset of catalog"
+msgstr "Subset of catalogue"
 
 #: ../templates/_profile/unikatalog/users_circulations_html_modals:26
 msgid "Telefon-Nummer"
@@ -50673,7 +50683,7 @@ msgstr "Calendar"
 #: ../templates/_profile/kug/_view/kugproto/searchforms_record_profile:35
 #: ../templates/_profile/unikatalog/searchforms_record_profile:36
 msgid "Testkatalog: E-Medien USB-Katalog"
-msgstr "Test catalog: E-media USB catalog"
+msgstr "Test catalogue: E-media USB catalogue"
 
 #: ../templates/_profile/bootstrap5/testsystem_info:15
 #: ../templates/_profile/rheinlandbib_yaml4/testsystem_info:15
@@ -51354,7 +51364,7 @@ msgstr "Timestamp"
 
 #: ../templates/_profile/kug_yaml4/_view/engportrom/home_html_bottom_right:17
 msgid "Tip: Digitaler Kartenkatalog"
-msgstr "Hint: Digital Card Catalog"
+msgstr "Hint: Digital Card catalogue"
 
 #: ../templates/_profile/unikatalog/_view/bcw1/search_title_combined_html:69
 #: ../templates/_profile/unikatalog/_view/dante/search_title_combined_html:69
@@ -51368,7 +51378,7 @@ msgstr "Tips"
 
 #: ../templates/_profile/unikatalog/info_tipps:13
 msgid "Tipps zum Unikatalog"
-msgstr "University catalog tips"
+msgstr "University catalogue tips"
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/search_more_tips:17
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/search_more_tips:17
@@ -51692,7 +51702,7 @@ msgstr "Title in other editions"
 #: ../templates/titles_record_navigation:31
 #: ../templates/titles_record_same_records:23
 msgid "Titel in anderen Katalogen"
-msgstr "Title in other catalogs"
+msgstr "Title in other catalogues"
 
 #: ../templates/_profile/bootstrap5/info_help:963
 #: ../templates/_profile/kug_yaml4/info_help:865
@@ -51716,7 +51726,7 @@ msgstr "Add to List of Interest"
 #: ../templates/_profile/yaml4/subjects_record_html:97
 #: ../templates/subjects_record_html:40 ../templates/subjects_record_include:55
 msgid "Titel ist in diesem Katalog mit dem Schlagwort verknüpft"
-msgstr "title in this catalog is connected to this subject heading"
+msgstr "title in this catalogue is connected to this subject heading"
 
 #: ../templates/_database/muenzen/classifications_record_include:58
 #: ../templates/_profile/bootstrap/_view/kubikoeln/classifications_record_include:39
@@ -51731,7 +51741,7 @@ msgstr "title in this catalog is connected to this subject heading"
 #: ../templates/classifications_record_html:39
 #: ../templates/classifications_record_include:47
 msgid "Titel ist in diesem Katalog mit der Klassifikation verknüpft"
-msgstr "title in this catalog is connected to this classification"
+msgstr "title in this catalogue is connected to this classification"
 
 #: ../templates/_profile/bootstrap/_view/kubikoeln/corporatebodies_record_include:44
 #: ../templates/_profile/bootstrap5/corporatebodies_record_html:42
@@ -51747,7 +51757,7 @@ msgstr "title in this catalog is connected to this classification"
 #: ../templates/corporatebodies_record_html:42
 #: ../templates/corporatebodies_record_include:58
 msgid "Titel ist in diesem Katalog mit der Körperschaft verknüpft"
-msgstr "title in this catalog is connected to this corporate body"
+msgstr "title in this catalogue is connected to this corporate body"
 
 #: ../templates/_database/gentzdigital/persons_record_html:118
 #: ../templates/_database/gentzdigital/persons_record_include:115
@@ -51781,7 +51791,7 @@ msgstr "title in this catalog is connected to this corporate body"
 #: ../templates/persons_record_include:167
 #: ../templates/subjects_record_include:95
 msgid "Titel ist in diesem Katalog mit der Person verknüpft"
-msgstr "title in this catalog is connected to this person"
+msgstr "title in this catalogue is connected to this person"
 
 #: ../templates/_profile/bootstrap5/titles_record_same_records_html:22
 #: ../templates/_profile/rheinlandbib_yaml4/titles_record_same_records_html:65
@@ -51798,7 +51808,8 @@ msgstr ""
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-"
 "Katalogen vorhanden"
-msgstr "Titles with this ISBN are also available in the following KUG-catalogs"
+msgstr ""
+"Titles with this ISBN are also available in the following KUG-catalogues"
 
 #: ../templates/_database/einbaende/titles_record_html:394
 #: ../templates/_profile/bootstrap5/titles_record_same_records_include:8
@@ -51819,7 +51830,7 @@ msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen Katalogen "
 "vorhanden"
 msgstr ""
-"Titles with this ISBN are also available in the following other catalogs"
+"Titles with this ISBN are also available in the following other catalogues"
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/titles_record_html_images:40
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titles_record_html_images:40
@@ -51834,7 +51845,7 @@ msgstr "Title without cache"
 #: ../templates/_profile/yaml4/browse_bks_record_databases_html:59
 #: ../templates/browse_bks_record_databases_html:15
 msgid "Titel pro Katalog"
-msgstr "Titles per catalog"
+msgstr "Titles per catalogue"
 
 #: ../templates/_profile/bootstrap/_view/kubikoeln/subjects_record_include:42
 #: ../templates/_profile/bootstrap5/subjects_record_html:42
@@ -51849,7 +51860,7 @@ msgstr "Titles per catalog"
 #: ../templates/_profile/yaml4/subjects_record_html:99
 #: ../templates/subjects_record_html:42 ../templates/subjects_record_include:57
 msgid "Titel sind in diesem Katalog mit dem Schlagwort verknüpft"
-msgstr "titles in this catalog are connected to this subject heading"
+msgstr "titles in this catalogue are connected to this subject heading"
 
 #: ../templates/_database/muenzen/classifications_record_include:60
 #: ../templates/_profile/bootstrap/_view/kubikoeln/classifications_record_include:41
@@ -51873,7 +51884,7 @@ msgstr "titles in this catalog are connected to this subject heading"
 #: ../templates/corporatebodies_record_include:100
 #: ../templates/subjects_record_include:97
 msgid "Titel sind in diesem Katalog mit der Klassifikation verknüpft"
-msgstr "titles in this catalog are connected to this classification"
+msgstr "titles in this catalogue are connected to this classification"
 
 #: ../templates/_profile/bootstrap/_view/kubikoeln/corporatebodies_record_include:46
 #: ../templates/_profile/bootstrap5/corporatebodies_record_html:44
@@ -51889,7 +51900,7 @@ msgstr "titles in this catalog are connected to this classification"
 #: ../templates/corporatebodies_record_html:44
 #: ../templates/corporatebodies_record_include:60
 msgid "Titel sind in diesem Katalog mit der Körperschaft verknüpft"
-msgstr "titles in this catalog are connected to this corporate body"
+msgstr "titles in this catalogue are connected to this corporate body"
 
 #: ../templates/_database/gentzdigital/persons_record_html:120
 #: ../templates/_database/gentzdigital/persons_record_include:117
@@ -51914,7 +51925,7 @@ msgstr "titles in this catalog are connected to this corporate body"
 #: ../templates/persons_record_html:114 ../templates/persons_record_include:129
 #: ../templates/persons_record_include:169
 msgid "Titel sind in diesem Katalog mit der Person verknüpft"
-msgstr "titles in this catalog are connected to this person"
+msgstr "titles in this catalogue are connected to this person"
 
 #: ../templates/_profile/kug/_view/kugproto/titles_record:20
 msgid "Titel speichern &amp; weiterverarbeiten"
@@ -52029,7 +52040,7 @@ msgstr "Title data"
 #: ../templates/titles_record_html:47 ../templates/titles_record_mobile:33
 #: ../templates/users_titles_record_searchindex_html:15
 msgid "Titel-Information: %1 in Katalog %2"
-msgstr "Information about title: %1 in catalog %2"
+msgstr "Information about title: %1 in catalogue %2"
 
 #: ../templates/_profile/bootstrap5/users_preferences_html:112
 #: ../templates/_profile/kug_yaml4/users_preferences_html:220
@@ -52057,7 +52068,7 @@ msgstr "Title/subject headings not available in BibSonomy"
 #: ../templates/_profile/yaml4/search_title_field:46
 #: ../templates/search_title_field:52
 msgid "TitelID im hbz"
-msgstr "Title-ID in hbz catalog"
+msgstr "Title-ID in hbz catalogue"
 
 #: ../templates/_profile/rheinlandbib_yaml4/search_title_field:47
 #: ../templates/_profile/sammlungen_yaml4/_view/portrait/search_title_field:44
@@ -52289,7 +52300,7 @@ msgstr "Top 20"
 
 #: ../templates/databases_popular:40
 msgid "Top 20 Kataloge"
-msgstr "Top 20 catalogs"
+msgstr "Top 20 catalogues"
 
 #: ../templates/titles_popular:24
 msgid "Top 20 Titel"
@@ -53023,7 +53034,7 @@ msgstr "USB-Info"
 
 #: ../templates/_profile/unikatalog/_view/ilias/home_html:75
 msgid "USB-Katalog: Buch- bzw. Zeitschriftentitel"
-msgstr "USB catalog: Book or journal titles"
+msgstr "USB catalogue: Book or journal titles"
 
 #: ../templates/_profile/unikatalog/admin_databases_record_edit_html:215
 #: ../templates/admin_databases_record_edit_html:217
@@ -53044,7 +53055,7 @@ msgid ""
 "Um ein bereits existierendes Katalog-Profil zu bearbeiten klicken Sie bitte "
 "auf den Profil-Namen."
 msgstr ""
-"To edit an already existing catalog profile please select the profile name."
+"To edit an already existing catalogue profile please select the profile name."
 
 #: ../templates/_profile/bootstrap5/users_reviews_html:101
 #: ../templates/_profile/unikatalog/users_reviews_html:101
@@ -53249,13 +53260,13 @@ msgstr "Invalid session"
 #: ../templates/_profile/unikatalog/search_title_combined_include:47
 msgid "Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website"
 msgstr ""
-"University catalog (books, e-media, essays &amp; more) and USB website."
+"University catalogue (books, e-media, essays &amp; more) and USB website."
 
 #: ../templates/_profile/unikatalog/_view/bcw1/mainnavigation_html:316
 #: ../templates/_profile/unikatalog/_view/ilias/mainnavigation_html:307
 #: ../templates/_profile/unikatalog/mainnavigation_html:316
 msgid "Unikatalog - Bücher, E-Medien, Aufsätze &amp; mehr"
-msgstr "University catalog - books, e-media, articles &amp; more"
+msgstr "University catalogue - books, e-media, articles &amp; more"
 
 #: ../templates/_profile/unikatalog/std_footer_html:201
 msgid "Universität"
@@ -53277,7 +53288,7 @@ msgstr "University and City Library of Cologne"
 
 #: ../templates/_profile/unikatalog/_view/unikatalog/mainnavigation_html:280
 msgid "Universitätskatalog"
-msgstr "University Catalog"
+msgstr "University catalogue"
 
 #: ../templates/_profile/unikatalog/users_circulations_html:137
 msgid ""
@@ -53329,7 +53340,7 @@ msgid ""
 msgstr ""
 "With the option <b>sort by</b> you can rearrange your search results by   "
 "person/institution, title, numbering, year, publisher, location mark and   "
-"popularity (in ascending or descending order), sorted by catalog or   "
+"popularity (in ascending or descending order), sorted by catalogue or   "
 "globally."
 
 #: ../templates/_profile/rheinlandbib_yaml4/titles_fields_record_html:70
@@ -53365,7 +53376,7 @@ msgstr ""
 "The tab <b>User Account</b> contains detailed information regarding your   "
 "current loans, (book titles with due date), orders, reservations and   fees. "
 "However, you cannot extend your media or cancel a reservation from   here. "
-"To do so, please log in to the catalog of the respective library."
+"To do so, please log in to the catalogue of the respective library."
 
 #. ("")
 #: ../templates/_profile/bootstrap5/info_help:531
@@ -53389,12 +53400,13 @@ msgid ""
 "Profildefinitionen und Suchfeldeinstellungen bleiben gespeichert, auch für\n"
 "zukünftige Recherchen."
 msgstr ""
-"The tab <b>Catalog Profiles</b> %1 allows for you to compile selections of   "
-"catalogs of your choosing and to save them under a name. In the Advanced   "
+"The tab <b>catalogue Profiles</b> %1 allows for you to compile selections of "
+"  "
+"catalogues of your choosing and to save them under a name. In the Advanced   "
 "Search you can access them under <b>Profile</b>. If you would like to modify "
-"or   delete them, pick your profile from the select box (tab: Catalog   "
+"or   delete them, pick your profile from the select box (tab: catalogue   "
 "Profiles) and click on Display Profile. The profile name will be   "
-"automatically placed in the Save As... field. The respective catalog   "
+"automatically placed in the Save As... field. The respective catalogue   "
 "selection will be displayed which you can modify as you see fit. When you   "
 "are finished you can save your new selection under the same name or a   "
 "different name. Your profile definitions and search field settings will   "
@@ -53784,7 +53796,7 @@ msgstr "Misc"
 #: ../templates/_profile/sammlungen_yaml4/titles_record_include:637
 #: ../templates/_profile/yaml4/titles_record_include:637
 msgid "Verschlagwortung anderer Kataloge"
-msgstr "Subject headings from other catalogs"
+msgstr "Subject headings from other catalogues"
 
 #: ../templates/_profile/bootstrap/_view/fidphil/titles_record_html_actions:468
 #: ../templates/_profile/bootstrap5/titles_record_html_actions:479
@@ -53796,7 +53808,7 @@ msgstr "Subject headings from other catalogs"
 #: ../templates/_profile/yaml4/titles_record_html_actions:361
 #: ../templates/titles_record_html_actions:479
 msgid "Verschlagwortung dieses Titels in anderen Katalogen"
-msgstr "Subject headings of this title in other catalogs"
+msgstr "Subject headings of this title in other catalogues"
 
 #: ../templates/_profile/bootstrap/_view/games/search_facet:925
 #: ../templates/_profile/bootstrap/_view/kubikoeln/search_facet:1149
@@ -54648,7 +54660,7 @@ msgstr "Pre transcription"
 msgid ""
 "W&auml;hlen Sie einen Katalog aus, um Informationen &uuml;ber dessen\n"
 "Nutzung zu erhalten."
-msgstr "Please select a catalog to get information about its usage."
+msgstr "Please select a catalogue to get information about its usage."
 
 #. ("<img src=\"${config.get_icon('wikipedia',view,sysprofile)
 #. ("<img src=\"${config.get('wikipedia_img')
@@ -54669,7 +54681,7 @@ msgid ""
 "einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der "
 "zugehörige Normdaten-Eintrag dargestellt."
 msgstr ""
-"Please select a catalog to see an overview of its <b>200 most used tems in "
+"Please select a catalogue to see an overview of its <b>200 most used tems in "
 "several categories as a tag cloud (%1&nbsp;%2)</b>.  The more titles are "
 "connected to a term the bigger the corresponding term is displayed."
 
@@ -54991,7 +55003,7 @@ msgstr "Other Types of Content Enrichment"
 
 #: ../templates/_profile/kug_yaml4/_view/engportrom/home_html_bottom_right:17
 msgid "Weitere Best&auml;nde im Digitalen Kartenkatalog"
-msgstr "More titles in the digital cardcatalog"
+msgstr "More titles in the digital cardcatalogue"
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/search_more_tips:30
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/search_more_tips:30
@@ -55303,7 +55315,7 @@ msgid ""
 msgstr ""
 "If you require a book from the University Library of Cologne (USB), pull up "
 "the detailed entry and use the link %1 Continue (under Library Loan System) "
-"to gain access to the online catalog of the University and City Library. "
+"to gain access to the online catalogue of the University and City Library. "
 "From here you can order media located in the closed stacks. You can also "
 "place a reservation on currently checked out media."
 
@@ -56262,7 +56274,7 @@ msgid ""
 "Katalogkarten-Bilder erschlossen."
 msgstr ""
 "A lot of older holdings of several institutes are not searchable "
-"electronically. They are available as digitized catalog cards."
+"electronically. They are available as digitized catalogue cards."
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/titles_record_html_categories:530
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/titles_record_html_categories:530
@@ -56581,7 +56593,7 @@ msgid ""
 "Auflage usw.) in den KUG-Katalogen"
 msgstr ""
 "For this title the following other manifestations (other language, other "
-"edition, ...) exist in all KUG-catalogs"
+"edition, ...) exist in all KUG-catalogues"
 
 #: ../templates/_database/einbaende/titles_record_html:408
 #: ../templates/_profile/rheinlandbib_yaml4/titles_record_include:287
@@ -56596,7 +56608,7 @@ msgid ""
 "Auflage usw.) in den Katalogen"
 msgstr ""
 "For this title the following other manifestations (other language, other "
-"edition, ...) exist in all catalogs"
+"edition, ...) exist in all catalogues"
 
 #: ../templates/_profile/bootstrap5/titles_record_related_records_html:43
 #: ../templates/_profile/unikatalog/titles_record_related_records_html:43
@@ -57098,7 +57110,7 @@ msgid ""
 "Verbundkataloge) recherchieren."
 msgstr ""
 "Apart from KUG the central library USB Köln offers a seperate %1search entry "
-"point%2 with additional information resources (databases, union catalogs, "
+"point%2 with additional information resources (databases, union catalogues, "
 "inter library loan). "
 
 #: ../templates/_profile/sammlungen/_view/gentzbriefe/titles_record_html:276
@@ -58039,7 +58051,7 @@ msgid ""
 "      dem E-Book erworbenen Beschränkungen (nur vom Campus)."
 msgstr ""
 "with links to e-books, when they were aquired by the USB K&ouml;ln. So in "
-"every institute catalog that owns the print edition the corresponding link "
+"every institute catalogue that owns the print edition the corresponding link "
 "to the e-book is automatically added. Access restrictions might apply to e-"
 "books (only accessible from campus)."
 
@@ -58105,7 +58117,7 @@ msgid ""
 "      einem Katalog andere thematisch benachbarte Titel finden."
 msgstr ""
 "Enhancement with basic classification. Now you can find related titles in a "
-"given catalog."
+"given catalogue."
 
 #: ../templates/_database/dbis/classifications_sidebar:16
 #: ../templates/_database/dbis/search_title_item_html:112
@@ -58340,7 +58352,7 @@ msgstr "by corporate body"
 #: ../templates/_profile/yaml4/search_facet:206
 #: ../templates/authority_search_facet:222 ../templates/search_facet:474
 msgid "nach Katalog"
-msgstr "by catalog"
+msgstr "by catalogue"
 
 #: ../templates/_profile/sammlungen_yaml4/_view/landschaft/search_facet:242
 msgid "nach Künstler"

@@ -91,9 +91,9 @@
     provenances = record.get_provenances_of_media(signatur);
     
     # ZBM-Meldung kurzern
-    IF bemerkung.match('vormals 38M; Bestände zur Zeit nicht einsehbar oder bestellbar') ;
-      bemerkung = "Bestände zur Zeit nicht verfügbar";
-    END;
+    # IF bemerkung.match('vormals 38M; Bestände zur Zeit nicht einsehbar oder bestellbar') ;
+    #  bemerkung = "Bestände zur Zeit nicht verfügbar";
+    # END;
 
     IF NOT processed_holding_by_sigel.defined(sigel);
       processed_holding_by_sigel.${sigel} = {
@@ -154,10 +154,13 @@
 <ul>
 [% FOREACH this_item IN this_cluster.items %]
 <li>
-<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.bemerkung %] ([% this_item.bemerkung %])[% END %]</strong><br/>
+<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %]</strong><br/>
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
 [% IF this_item.standort != '-' %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
+[% END %]
+[% IF this_item.bemerkung %]
+<emph>[% msg.maketext("Hinweis") %]:</emph> [% this_item.bemerkung %]<br/>
 [% END %]
 </li>
 [% END %]

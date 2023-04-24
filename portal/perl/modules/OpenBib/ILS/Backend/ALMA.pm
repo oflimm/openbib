@@ -1520,8 +1520,8 @@ sub check_alma_request {
 
     my $pickup_locations_ref = [];
     
-    if (defined $circ_config->{$department_id} && defined $circ_config->{$department_id}{'default'} && defined $circ_config->{$department_id}{'default'}{'pickup_locations'}){
-	$pickup_locations_ref = $circ_config->{$department_id}{'default'}{'pickup_locations'};
+    if (defined $circ_config->{$department_id} && defined $circ_config->{$department_id}{$storage_id} && defined $circ_config->{$department_id}{$storage_id}{'pickup_locations'}){
+	$pickup_locations_ref = $circ_config->{$department_id}{$storage_id}{'pickup_locations'};
     }
 
     if ($logger->is_debug){

@@ -1,0 +1,75 @@
+[%-
+
+   fl_all_args = [];
+
+   fl_all_title = []; 
+   IF searchquery.get_searchfield('freesearch').val;
+     fl_all_title.push(searchquery.get_searchfield('freesearch').val);
+   END;
+   IF searchquery.get_searchfield('title').val;
+     fl_all_title.push(searchquery.get_searchfield('title').val);
+   END;
+   IF fl_all_title.size > 0;
+     fl_title = fl_all_title.join(' ');
+     fl_all_args.push("q-ti=${fl_title}");
+   END;
+   
+   IF searchquery.get_searchfield('person').val;
+     fl_person = searchquery.get_searchfield('person').val;
+     fl_all_args.push("q-au=${fl_person}");
+   END;
+
+   IF searchquery.get_searchfield('yearstring').val;
+     fl_year = searchquery.get_searchfield('yearstring').val;
+     fl_all_args.push("q-yr=${fl_year}");     
+   END;
+
+   IF searchquery.get_searchfield('isbn').val;
+     fl_isbn = searchquery.get_searchfield('isbn').val;
+     fl_all_args.push("q-ib=${fl_isbn}");     
+   END;
+
+-%]
+<div class="container pt-2 pb-5">
+  <div class="row">
+    <div class="col-md-4 ps-1 pe-1 pb-1">
+      <div class="card mt-1 h-100">
+	<div class="card-header pb-2 text-center"><h5>[% msg.maketext("Nicht das Gesuchte gefunden?") %]</h5></div>
+	<div class="card-body">
+	  [% msg.maketext("Bestellen Sie Literatur aus anderen Bibliotheken per Fernleihe: ") %]
+	  <ul style="margin-top:0.5em;">
+            <li><a href="https://usb-koeln.devel.digibib.net/ill/books[% IF fl_all_args.size > 0 %]?[% fl_all_args.join('&') %][% END %]" target="monofernleihsuche">Buch bestellen</a></li>
+            <li><a href="https://usb-koeln.devel.digibib.net/ill/articles[% IF fl_all_args.size > 0 %]?[% fl_all_args.join('&') %][% END %]">Zeitschriftenartikel bestellen</a></li>
+          </ul>
+	</div>
+      </div>
+    </div>
+    <div class="col-md-4 ps-1 pe-1 pb-1">
+      <div class="card mt-1 h-100">
+	<div class="card-header pb-2 text-center"><h5>[% msg.maketext("Tipps zur Suche") %]</h5></div>
+	<div class="card-body">
+	  <ul>
+            <li>Suchen Sie mit wenigen Begriffen, z.&nbsp;B. mit einem Wort aus dem Titel und dem Nachnamen des Autors.</li>
+            
+            <li>Verwenden Sie am Wortende das Sternchen&nbsp;<strong>*</strong>&nbsp;als Platzhalter.</li>
+            
+          </ul>
+	</div>
+      </div>
+    </div>
+    <div class="col-md-4 ps-1 pe-1 pb-1">
+      <div class="card mt-1 h-100">
+	<div class="card-header pb-2 text-center"><h5>[% msg.maketext("Weitere Informationen") %]</h5></div>
+	<div class="card-body">
+	  <ul>
+            <li><a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/index_ger.html">Effektiv Suchen</a></li>
+            <li><a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/index_ger.html">Suche nach Medienarten</a></li>           
+            <li><a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/anschaffungsvorschlag/index_ger.html">Anschaffungsvorschlag</a></li>
+            <li><a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/ueberregional/index_ger.html">Hinweise zur Fernleihe</a></li>
+            <li><a href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/audio/index_ger.html"><img src="/images/openbib/uzk15/youtube_icon.jpg" width="20px" alt="YouTube-Icon" title="Bibliothek erkunden" class="imageyt" style="margin-right:0.6em;" />Bibliothek erkunden</a></li>
+          </ul>
+	</div>
+      </div>
+    </div>
+  </div>
+</div>

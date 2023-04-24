@@ -19,7 +19,7 @@
 <tr><th>[% msg.maketext("Standort") %]</th><th>QR</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Ausleihstatus") %]</th></tr>
 </thead>
 <tbody>
-[% USE dumper;dumper.dump(circulation) %]
+[%# USE dumper;dumper.dump(circulation) %]
 [%-
    # First pass
    FOREACH thiscirculation IN circulation ;

@@ -584,14 +584,6 @@ $(document).on("click", ".ob-less_button", function () {
 <!-- End subject facet -->
 
 <!-- Begin year facet -->
-<script>
-let userQuery = {
-    "limit" : 50,
-    "filter" : "",
-    "id" :  1
-}
-
-</script>
 [% IF qopts.get_option('sb') == "eds" || searchprofileid_of_articles == searchquery.get_searchprofile %]
         <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% facet_prefix %][% idsuffix %]" aria-expanded="true">
            [% msg.maketext("Erscheinungsjahr") %] 

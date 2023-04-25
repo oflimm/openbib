@@ -327,27 +327,41 @@ sub update_phone {
     return $response_ref;
 }
 
+# Bestellungen, Vormerkungen und Ausleihen in einer Abfrage
 sub get_items {
     my ($self,$username) = @_;
 
-    my $response_ref = {};
-    
-    # todo
+    # In Alma nicht vorhanden und Modellierung mit einzelnen Requests
+    # (get_loans, get_reservations, get_orders) wegen des concurrent
+    # request API-Limits kritisch
+
+    my $response_ref = {
+	"code" => 400,
+	    "error" => "error",
+	    "error_description" => "Das Bibliothekssystem Alma bietet keine Abfrage der Bestellungen, Vormerkungen und Ausleihen in einer Abfrage an",
+    };
 
     return $response_ref;
 }
 
+# Accountinformationen (Anzahl Ausleihen, Vormerkungen, Bestellungen, Gebuehren)
 sub get_accountinfo {
     my ($self,$username) = @_;
 
-    my $response_ref = {};
-    
-    # todo
+    # In Alma nicht vorhanden und Modellierung mit einzelnen Requests
+    # (get_loans, get_reservations, get_orders) wegen des concurrent
+    # request API-Limits kritisch
 
+    my $response_ref = {
+	"code" => 400,
+	    "error" => "error",
+	    "error_description" => "Das Bibliothekssystem Alma bietet keine Abfrage der Zahl an Bestellungen, Vormerkungen und Ausleihen in einer Abfrage an",
+    };
+    
     return $response_ref;
 }
 
-# Accountinformationen
+# Accountinformationen (Adresse, E-Mail, etc.)
 sub get_userdata {
     my ($self,$username) = @_;
 
@@ -512,7 +526,7 @@ sub get_article_orders {
     
     my $response_ref = {};
     
-    # todo
+    # Ersetzt durch und integriert in Fernleihportal des hbz
 
     return $response_ref;
 }
@@ -521,8 +535,8 @@ sub get_zfl_orders {
     my ($self,$username,$start,$count) = @_;
     
     my $response_ref = {};
-    
-    # todo
+
+    # Ersetzt durch und integriert in Fernleihportal des hbz    
 
     return $response_ref;
 }

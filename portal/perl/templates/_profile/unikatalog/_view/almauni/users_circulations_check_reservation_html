@@ -15,7 +15,7 @@
 [%# USE dumper; dumper.dump(pickup_locations) %]
 
 <div class="card mt-5 mb-5 me-5">
-<div class="card-header">[% msg.maketext("Auswahl") %]</div>
+<div class="card-header">[% msg.maketext("Anzeige des Abholorts") %]</div>
 <div class="card-body">
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations">
    <input type="hidden" name="validtarget"   value="[% database %]" />

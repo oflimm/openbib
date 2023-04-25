@@ -2338,15 +2338,21 @@ Erzeugung des Objektes
 
 =item authenticate
 
-Authentifizierung am ILS
+Authentifizierung am SIS
 
 =item update_email
 
-Aktualisierung der Mail-Adress im ILS
+Aktualisierung der Mail-Adresse im SIS und ILS
 
 =item update_phone
 
 Aktualisierung der Telefonnummer im ILS
+
+Entfaellt: Diese Information wird aus Datenschutzgruenden nicht mehr gespeichert
+
+=item update_pin
+
+Aktualisierung der Ausleih-PIN im SIS und ILS
 
 =item update_password
 
@@ -2356,21 +2362,33 @@ Aktualisierung des Passworts im ILS
 
 Bestellungen, Vormerkungen und Ausleihen in einer Abfrage aus dem ILS holen
 
+Entfaellt: Alma stellt keine derartige API-Abfrage bereit und
+Modellierung mit mehreren Requests wegen des concurrent request
+API-Limits kritisch
+
 =item get_accountinfo
 
 Zusammenfassung des Nutzers aus ILS holen (Zahl Ausleihen, Vormerkunge, etc.)
 
+Entfaellt: Alma stellt keine derartige API-Abfrage bereit und
+Modellierung mit mehreren Requests wegen des concurrent request
+API-Limits kritisch
+
 =item get_userdata
 
-Adressinformationen des Nutzer aus dem ILS holen
+Adressinformationen des Nutzer aus dem SIS holen
 
 =item get_article_orders
 
 Artikel-Fernleihbestellung aus dem ILS oder Medea holen
 
+Entfaellt: Ausgelagert in Fernleihportal
+
 =item get_zfl_orders
 
 Buch-Fernleihbestellungen aus dem ILS oder ZFL holen
+
+Entfaellt: Ausgelagert in Fernleihportal
 
 =item get_orders
 
@@ -2407,6 +2425,10 @@ Eine Bestellung im ILS oder per Mail stornieren
 =item renew_loans
 
 Eine Gesamtkontoverlaengerung im ILS durchfuehren
+
+Entfaellt: Alma stellt keine derartige API-Abfrage bereit und
+Modellierung mit mehreren Requests wegen des concurrent request
+API-Limits kritisch
 
 =item renew_single_loan
 

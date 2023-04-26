@@ -173,6 +173,7 @@ sub create_record {
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
     my $storage         = ($query->param('storage'        ))?$query->param('storage'):undef;
     my $titleid         = ($query->param('titleid'        ))?$query->param('titleid'):undef;
+    my $limitation      = ($query->param('limitation'     ))?$query->param('limitation'):undef;
 
     
     unless ($config->get('active_ils')){
@@ -217,7 +218,7 @@ sub create_record {
     if (!defined $pickup_location){
 	$logger->debug("Checking order for pickup locations");
 	
-	my $response_check_order_ref = $ils->check_order({ username => $username, titleid => $titleid, holdingid => $holdingid, unit => $unit, storage => $storage});
+	my $response_check_order_ref = $ils->check_order({ username => $username, titleid => $titleid, holdingid => $holdingid, unit => $unit, storage => $storage, limitation => $limitation});
 
 	if ($logger->is_debug){
 	    $logger->debug("Result check_order:".YAML::Dump($response_check_order_ref));
@@ -234,6 +235,7 @@ sub create_record {
 		storage       => $storage,
 		titleid       => $titleid,
 		holdingid     => $holdingid,
+		limitation    => $limitation,
 		validtarget   => $validtarget,
 		pickup_locations => $response_check_order_ref->{pickup_locations},
 	    };

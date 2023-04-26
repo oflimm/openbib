@@ -178,6 +178,7 @@ sub create_record {
     my $pickup_location = ($query->param('pickup_location') >= 0)?$query->param('pickup_location'):undef;
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
     my $storage         = ($query->param('storage'        ))?$query->param('storage'):undef;
+    my $limitation      = ($query->param('limitation'     ))?$query->param('limitation'):undef;
 
     my $type            = ($query->param('type'           ))?$query->param('type'):'';
 
@@ -224,7 +225,7 @@ sub create_record {
     if (!defined $pickup_location){
 	$logger->debug("Checking reservation for pickup locations");
 	
-	my $response_check_reservation_ref = $ils->check_reservation({ username => $username, titleid => $titleid, holdingid => $holdingid, unit => $unit, storage => $storage });
+	my $response_check_reservation_ref = $ils->check_reservation({ username => $username, titleid => $titleid, holdingid => $holdingid, unit => $unit, storage => $storage, limitation => $limitation });
 
 	if ($logger->is_debug){
 	    $logger->debug("Result check_reservation:".YAML::Dump($response_check_reservation_ref));
@@ -242,6 +243,7 @@ sub create_record {
 		storage       => $storage,
 		holdingid     => $holdingid,
 		titleid       => $titleid,
+		limitation    => $limitation,
 		validtarget   => $validtarget,
 		pickup_locations => $response_check_reservation_ref->{pickup_locations},
 		num_holdings_in_unit => $num_holdings_in_unit, 

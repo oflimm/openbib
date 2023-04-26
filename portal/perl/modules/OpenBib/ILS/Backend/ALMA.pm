@@ -599,7 +599,7 @@ sub get_fees {
 	    
 	    my $api_key = $config->get('alma')->{'api_key'};
 	    
-	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/fees?user_id_type=all_unique&status=ACTIVE&apikey=$api_key";
+	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/fees?user_id_type=all_unique&status=ACTIVE&lang=de&apikey=$api_key";
 	    
 	    if ($logger->is_debug()){
 		$logger->debug("Request URL: $url");

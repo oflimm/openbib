@@ -1804,40 +1804,28 @@ sub make_alma_request {
 	    if (defined $circ_config->{$department_id}{$storage_id}{pickup_locations}){
 		foreach my $pickup_ref (@{$circ_config->{$department_id}{$storage_id}{pickup_locations}}){
 		    if ($pickup_ref->{id} eq $pickup_location){
-			$pickup_data_ref = $pickup_ref;
+			$pickup_data_ref       = $pickup_ref;
 			$valid_pickup_location = 1;
 			last;
 		    }
 		}
 	    }
 
-	    unless ($valid_pickup_location){
+	    if (!$valid_pickup_location || ($pickup_data_ref->{type} ne "CIRCULATION_DESK" && $pickup_data_ref->{type} ne "LIBRARY")){
 		$response_ref =  {
-		    timestamp   => $self->get_timestamp,	    
-		    error => "invalid pickup location",
+		    timestamp => $self->get_timestamp,	    
+		    error     => "invalid pickup location",
 		};
 		
 		return $response_ref;
 	    }
 
+	    $data_ref->{pickup_location_type}             = $pickup_data_ref->{type}; # LIBRARY or CIRCULATION_DESC
+	    $data_ref->{pickup_location_library}          = $department_id;
+	    
 	    if ($pickup_data_ref->{type} eq "CIRCULATION_DESK"){
-		$data_ref->{pickup_location_type}             = "CIRCULATION_DESK";
-		$data_ref->{pickup_location_library}          = $department_id;
 		$data_ref->{pickup_location_circulation_desk} = $pickup_location;
 #		$data_ref->{pickup_location_institution}      = $storage_id;
-	    }
-	    elsif ($pickup_data_ref->{type} eq "LIBRARY"){
-		$data_ref->{pickup_location_type}             = "LIBRARY";
-		$data_ref->{pickup_location_library}          = $department_id;
-#		$data_ref->{pickup_location_institution}      = $storage_id;
-	    }
-	    else {
-		$response_ref =  {
-		    timestamp   => $self->get_timestamp,	    
-		    error => "invalid pickup location type",
-		};
-		
-		return $response_ref;
 	    }
 	    
 	    if ($logger->is_debug()){
@@ -2052,8 +2040,8 @@ sub get_alma_request {
 		#     };
 		# }
 		
-		if (defined $item_ref->{'pickup_locaton'} && $item_ref->{'pickup_location'} && $item_ref->{'pickup_location_library'} ){
-		    $this_response_ref->{pickup_location} = {
+		if (defined $item_ref->{'pickup_location'} && $item_ref->{'pickup_location'} && $item_ref->{'pickup_location_library'} ){
+		    $this_response_ref->{'pickup_location'} = {
 			about => $item_ref->{'pickup_location'},
 			id    => $item_ref->{'pickup_location_library'}
 		    }

@@ -99,15 +99,20 @@
 
 <script>
   // Flushing existing content with pure JS
-  const genericModal = document.getElementById('genericModal')
-  genericModal.addEventListener('hidden.bs.modal', event => {
-  // Update the modal's content.
-  const modalTitle = genericModal.querySelector('#genericModalLabel')
-  const modalBody  = genericModal.querySelector('#generic_message')
 
-  modalTitle.textContent = ''
-  modalBody.innerHTML    = '<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>'
-  });
+  if (!document.getElementById('genericModal').getAttribute('data-initialized')){
+
+    const genericModal = document.getElementById('genericModal')
+    genericModal.setAttribute('data-initialized', true);
+    genericModal.addEventListener('hidden.bs.modal', event => {
+    // Update the modal's content.
+    const modalTitle = genericModal.querySelector('#genericModalLabel')
+    const modalBody  = genericModal.querySelector('#generic_message')
+
+    modalTitle.textContent = ''
+    modalBody.innerHTML    = '<div class="spinner-border" role="status" data-initialized="true"><span class="sr-only">Loading...</span></div>'
+    });
+   }
 </script>
 
   <div class="wrapper container-fluid">

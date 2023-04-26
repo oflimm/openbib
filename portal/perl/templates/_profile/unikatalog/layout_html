@@ -14,7 +14,7 @@
 
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
 
-<body id="ob-page_top" [% IF layout_param.body_css_classes %]class="[% layout_param.body_css_classes %]" [% END %]>
+<body id="ob-page_top" [% IF layout_param.body_css_classes %]class="[% layout_param.body_css_classes %]"[% END %]  hx-history-elt>
 <!-- Modals -->
 [%   PROCESS common/subtemplate name="cartitems_html_modals" %]
 
@@ -39,15 +39,19 @@
 
 <script>
   // Flushing existing content with pure JS
-  const genericModal = document.getElementById('genericModal')
-  genericModal.addEventListener('hidden.bs.modal', event => {
-  // Update the modal's content.
+  if (!document.getElementById('genericModal').getAttribute('data-initialized')){
+
+    const genericModal = document.getElementById('genericModal')
+    genericModal.setAttribute('data-initialized', true);
+    genericModal.addEventListener('hidden.bs.modal', event => {
+    // Update the modal's content.
     const modalTitle = genericModal.querySelector('#genericModalLabel')
     const modalBody  = genericModal.querySelector('#generic_message')
 
     modalTitle.textContent = ''
-    modalBody.innerHTML    = '<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>'
-  });
+    modalBody.innerHTML    = '<div class="spinner-border" role="status" data-initialized="true"><span class="sr-only">Loading...</span></div>'
+    });
+   }
 </script>
 
 [% IF show_modal_template && NOT hide_detail && NOT hide_hit %]
@@ -180,8 +184,6 @@ if (window.document.documentMode) {
 
 
 <script type="text/javascript" src="/js/cookiealert.js"></script>
-<script type="text/javascript" src="/js/htmx.min.js"></script>
-
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <!-- <script src="/js/jquery-3.3.1.min.js"></script>

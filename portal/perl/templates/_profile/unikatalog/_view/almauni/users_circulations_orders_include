@@ -50,7 +50,7 @@
 [% order.label %]
 [% END %]
 </td>
-<td>[% order.department.about %][% IF order.pickup_location.about %] / [% order.pickup_location.about %][% END %]</td>
+<td>[% order.department.about %][% IF order.pickup_location.about %] / [% IF order.pickup_location.about.match('Universitäts- und Stadtbibliothek Köln') %][% msg.maketext("Abholregale") %][% ELSE %][% order.pickup_location.about %][% END %][% END %]</td>
 <!-- <td>[% order.starttime %]</td> -->
 <td>
 [% IF is_ill %]

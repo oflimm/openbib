@@ -1,0 +1,50 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_circulations_fees_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller gemahnten Medien
+#
+#######################################################################
+-%]
+
+[%# USE dumper;dumper.dump(fees)%]
+
+[% IF fees.no_fees || fees.items.size == 0 %]
+<div class="ob-jumbotron">
+<h1 class="display-4">[% msg.maketext("Es sind keine Gebühren angefallen.") %]</h1>
+</div>
+[% ELSIF fees.items %]
+
+<div class="table-responsive">
+<table class="table table-striped ">
+<thead>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Grund") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Gebühr") %]</th><th>[% msg.maketext("Entstehungsdatum") %]</th></tr>
+</thead>
+<tbody>
+[%- FOREACH fee = fees.items -%]
+
+<tr>
+<td><i>[% fee.about %]</i></td>
+<td><i>[% fee.reason %]</i>[% IF fee.reason && fee.item %], [% END %][% fee.item %]</td>
+<td><i>[% fee.department.about %]</i></td>
+<td><span style="color:red">[% fee.amount %]</span></td>
+<td><span style="color:red">[% fee.date.replace('T.+Z','') %]</span></td>
+</tr>
+[%- END -%]
+</tbody>
+</table>
+</div>
+
+<!-- Todo: epc QR-Code fuer automatische Uebernahme der Zahlungsinformationen in Ueberweisung -->
+
+<p/ >
+[% ELSE %]
+[% msg.maketext("Es ist ein unerwarteter Fehler aufgetreten") %]
+[% END %]
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Ihre offenen Gebühren") %]</div>

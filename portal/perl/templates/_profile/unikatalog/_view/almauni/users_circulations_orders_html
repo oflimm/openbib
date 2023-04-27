@@ -28,7 +28,7 @@
 <div class="table-responsive">
 <table class="table table-striped ">
 <thead>
-<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Standort") %]</th><!-- <th>[% msg.maketext("Bestelldatum") %]</th> --><th>[% msg.maketext("Aktion") %]</th></tr>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Abholort") %]</th><th>[% msg.maketext("Bestelldatum") %]</th><th>[% msg.maketext("Aktion") %]</th></tr>
 </thead>
 <tbody>
 [%- FOREACH order = orders.items ;
@@ -53,7 +53,7 @@
 [% END %]
 </td>
 <td>[% order.department.about %][% IF order.pickup_location.about %] / [% IF order.pickup_location.about.match('Universitäts- und Stadtbibliothek Köln') %][% msg.maketext("Abholregale") %][% ELSE %][% order.pickup_location.about %][% END %][% END %]</td>
-<!-- <td>[% order.starttime %]</td> -->
+<td>[% order.starttime %]</td>
 <td>
 [% IF is_ill %]
 [% msg.maketext("Fernleihbestellung nicht stornierbar!") %]

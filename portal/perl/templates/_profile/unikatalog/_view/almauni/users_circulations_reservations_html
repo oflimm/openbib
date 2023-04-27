@@ -31,7 +31,7 @@
 <div class="table-responsive">
 <table class="table table-striped ">
 <thead>
-<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Vormerkdatum") %]</th><th>[% msg.maketext("Aktion") %]</th></tr>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Abholort") %]</th><th>[% msg.maketext("Vormerkdatum") %]</th><th>[% msg.maketext("Aktion") %]</th></tr>
 </thead>
 <tbody>
 [%- FOREACH reservation = reservations.items -%]
@@ -39,12 +39,10 @@
 <tr>
 <td>
 <i><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% reservation.edition %].html?l=[% lang %]">[% reservation.about %]</a></i>
-[%#- Anzeige des Vormerkrangs nur bei vollqualifizierten VMs. Bei teilqualifizierten VMs (T) kann der Rang sehr hoch sein. -%]
-[% IF NOT reservation.item.match(' \(T\)$') %]
+[%#- Obsolet, da USBWS: Anzeige des Vormerkrangs nur bei vollqualifizierten VMs. Bei teilqualifizierten VMs (T) kann der Rang sehr hoch sein. -%]
 [%   IF reservation.queue %]
 <br/>([% msg.maketext("Status: vorgemerkt an") %] [% reservation.queue %]. [% msg.maketext("Position") %])
 [%   END %]
-[% END %]
 </td>
 <td>
 [%#- Die Signatur wird nur dann ausgeben, falls sie nicht Teil der Mediennummer ist -%]
@@ -54,7 +52,7 @@
 [% reservation.item %]
 [% END %]
 </td>
-<td>[% reservation.department.about %][% IF reservation.pickup_location.about %] / [% reservation.pickup_location.about %][% END %]
+<td>[% IF reservation.pickup_location.about %][% reservation.pickup_location.about %][% END %]
 </td>
 <td>[% reservation.starttime %]</td>
 <td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations?_method=DELETE;requestid=[% reservation.requestid %];unit=[% reservation.department.id %];[% IF reservation.item.match(' \(T\)$')%]titleid=[% reservation.edition %][% ELSE %]holdingid=[% uri_escape(reservation.item) %][% END %];validtarget=[% database %]" title="[% msg.maketext("Stornieren") %]" class="btn btn-primary">[% msg.maketext("Stornieren") %]</a></td>

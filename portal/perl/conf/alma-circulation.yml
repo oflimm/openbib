@@ -20,5 +20,14 @@
     'order': 0           # order = bestellbar, wenn am Ort
     'loan': 1            # loan  = generell vor Ort Ausleihbar, wenn am Ort 
     'reservation': 0     # reservation = vormerkbar, wenn nicht am Ort
+'38-HLS':
+  '38-HLS-MAG':
+    'order': 1           # order = bestellbar, wenn am Ort
+    'loan': 0            # loan  = generell vor Ort Ausleihbar, wenn am Ort 
+    'reservation': 0     # reservation = vormerkbar, wenn nicht am Ort
+    'pickup_locations':  # Reihenfolge der moeglichen Ausgabeorte mit ID und Beschreibungstext fuer die Ausgabe
+      - type: 'CIRCULATION_DESK'                                     # Alma-Types: LIBRARY, CIRCULATION_DESK, INSTITUTION, USER_HOME_ADDRESS, USER_WORK_ADDRESS
+        id: 'DEFAULT_CIRC_DESK'                                      # Entsprechend der Definiton der Ciruclation Desks fuer 38 in Alma
+        desc: 'USB Hauptabteilung: Lesesaal Historische Sammlungen'  # Selbstgewaehlter Text zur Anzeige
 # Einsehbar muss nicht parametrisiert werden, da policy = X (nicht ausleihbar) MSSID: 991032012949706476
 

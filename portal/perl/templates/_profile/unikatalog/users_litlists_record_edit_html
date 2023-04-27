@@ -119,7 +119,7 @@
 
   <div class="d-flex ob-fulltitle_actions pb-3 pt-3 text-white">
 	  <div class="btn btn-primary ms-2">
-	    <a href="#" data-bs-toggle="modal" data-bs-target="#litlistsSaveModal"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Speichern") %]</span></a>
+	    <a href="#" data-bs-toggle="modal" data-bs-target="#litlistsSaveModal"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Export") %]</span></a>
 	  </div>
 	  
 [% IF user.ID %]

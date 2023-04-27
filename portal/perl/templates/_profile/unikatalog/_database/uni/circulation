@@ -470,6 +470,9 @@ Präsenzbestand
    <input type="hidden" name="unit_desc"     value="[% standort %]" />
    <input type="hidden" name="storage"       value="[% thiscirculation.storage_id %]" />
    <input type="hidden" name="num_holdings_in_unit"  value="[% num_holdings_in_unit %]" />
+[% IF thiscirculation.availability_info.first.defined('limitation') %]
+   <input type="hidden" name="limitation"    value="[% thiscirculation.availability_info.first.limitation %]" />
+[% END %]
    <!-- Kein Parameter pickup_location = Ausgabeort bestimmen -->
    <input type="submit" value="Vormerken" class="btn btn-primary mb-1" />
 </form>

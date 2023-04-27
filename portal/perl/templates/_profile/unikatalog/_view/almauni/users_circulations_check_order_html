@@ -26,7 +26,7 @@
    <input type="hidden" name="storage"       value="[% storage %]" />
 
 [%  checked = 0 %]
-[% IF unit == '38' && storage == '38-MAG' %]
+[% IF unit == '38' && ( storage == '38-MAG' || storage == '38-AWM' )%]
 [%  FOREACH pickup_location IN pickup_locations %]
 [%   IF limitation && limitation.match('Lesesaal') && pickup_location.name.match('LS-Ausgabe') %]
 <div class="form-check">

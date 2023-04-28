@@ -40,6 +40,7 @@ use MLDBM qw(DB_File Storable);
 use Storable ();
 
 use OpenBib::Config;
+use OpenBib::L10N;
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -53,6 +54,9 @@ sub new {
 
     my $database  = exists $arg_ref->{database}
         ? $arg_ref->{database}     : undef;
+
+    my $lang      = exists $arg_ref->{lang}
+        ? $arg_ref->{lang}         : 'de';
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -63,9 +67,14 @@ sub new {
 
     bless ($self, $class);
 
-    $self->{database}= $database;    
-    $self->{ils}     = $ils_ref;
-    $self->{_config} = $config;
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
+    $self->{database} = $database;
+    $self->{msg}      = $msg;    
+    $self->{ils}      = $ils_ref;
+    $self->{_config}  = $config;
     
     return $self;
 }
@@ -619,6 +628,12 @@ sub get_database {
     my $self = shift;
 
     return $self->{database};    
+}
+
+sub get_msg {
+    my $self = shift;
+
+    return $self->{msg};    
 }
 
 sub get {

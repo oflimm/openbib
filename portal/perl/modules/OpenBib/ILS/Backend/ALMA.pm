@@ -47,6 +47,7 @@ use YAML::Syck;
 use OpenBib::Config;
 use OpenBib::Config::File;
 use OpenBib::Config::CirculationInfoTable;
+use OpenBib::L10N;
 
 ######################################################################
 # Authentication
@@ -64,6 +65,9 @@ sub new {
 
     my $database  = exists $arg_ref->{database}
         ? $arg_ref->{database}     : undef;
+
+    my $lang      = exists $arg_ref->{lang}
+        ? $arg_ref->{lang}         : 'de';
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -78,11 +82,16 @@ sub new {
     $ua->agent('USB Koeln/1.0');
     $ua->timeout(30);
 
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
     my $circulation_config = $config->load_yaml('/opt/openbib/conf/alma-circulation.yml');
     
     $self->{client}       = $ua;    
     $self->{database}     = $database;    
     $self->{ils}          = $ils_ref;
+    $self->{msg}          = $msg;
     $self->{_config}      = $config;
     $self->{_circ_config} = $circulation_config;
     
@@ -106,6 +115,7 @@ sub authenticate {
 
     my $config  = $self->get_config;
     my $dbname  = $self->get_database;
+    my $msg     = $self->get_msg;
 
     my $response_ref = {
 	database => $dbname,
@@ -335,6 +345,8 @@ sub get_items {
     # (get_loans, get_reservations, get_orders) wegen des concurrent
     # request API-Limits kritisch
 
+    my $msg         = $self->get_msg;
+
     my $response_ref = {
 	"code" => 400,
 	    "error" => "error",
@@ -352,6 +364,8 @@ sub get_accountinfo {
     # (get_loans, get_reservations, get_orders) wegen des concurrent
     # request API-Limits kritisch
 
+    my $msg         = $self->get_msg;
+    
     my $response_ref = {
 	"code" => 400,
 	    "error" => "error",
@@ -372,6 +386,7 @@ sub get_userdata {
 
     my $config  = $self->get_config;
     my $dbname  = $self->get_database;
+    my $msg     = $self->get_msg;
     
     my $response_ref = {};
         
@@ -569,6 +584,7 @@ sub get_fees {
     my $database    = $self->get_database;
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
+    my $msg         = $self->get_msg;
     
     my $response_ref = {};
 
@@ -711,6 +727,7 @@ sub get_loans {
     my $database    = $self->get_database;
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
+    my $msg         = $self->get_msg;
     
     my $response_ref = {};
 
@@ -940,6 +957,7 @@ sub cancel_alma_request {
     my $database    = $self->get_database;
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
+    my $msg         = $self->get_msg;
     
     my $response_ref = {};
 
@@ -1054,6 +1072,8 @@ sub cancel_alma_request {
     
 sub renew_loans {
     my ($self,$username) = @_;
+
+    my $msg         = $self->get_msg;
     
     my $response_ref = {
 		"code" => 400,
@@ -1074,6 +1094,7 @@ sub renew_single_loan {
     my $database    = $self->get_database;
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
+    my $msg         = $self->get_msg;
     
     my $response_ref = {};
 
@@ -1218,6 +1239,7 @@ sub get_mediastatus {
     my $database    = $self->get_database;
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
+    my $msg         = $self->get_msg;
     
     my $response_ref = {};
     
@@ -1531,6 +1553,7 @@ sub check_alma_request {
     my $config      = $self->get_config;
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
+    my $msg         = $self->get_msg;
 
     my $pickup_locations_ref = [];
     
@@ -1722,24 +1745,27 @@ sub make_alma_request {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $username        = exists $arg_ref->{username} # Nutzername im Bibliothekssystem
+    my $username          = exists $arg_ref->{username} # Nutzername im Bibliothekssystem
         ? $arg_ref->{username}       : undef;
     
-    my $mmsid           = exists $arg_ref->{titleid}  # Katkey
+    my $mmsid             = exists $arg_ref->{titleid}  # Katkey
         ? $arg_ref->{titleid}        : undef;
 
-    my $combinedid      = exists $arg_ref->{holdingid} # Alma: holdingid|item_id
+    my $combinedid        = exists $arg_ref->{holdingid} # Alma: holdingid|item_id
         ? $arg_ref->{holdingid}      : undef;
 
-    my $department_id   = exists $arg_ref->{unit}     # Alma: library
+    my $department_id     = exists $arg_ref->{unit}     # Alma: library
         ? $arg_ref->{unit}           : undef;
     
-    my $storage_id      = exists $arg_ref->{storage}  # Alma: location
+    my $storage_id        = exists $arg_ref->{storage}  # Alma: location
         ? $arg_ref->{storage}        : undef;
 
-    my $pickup_location = exists $arg_ref->{pickup_location} # Ausgabeort
+    my $pickup_location   = exists $arg_ref->{pickup_location} # Ausgabeort
         ? $arg_ref->{pickup_location}       : undef;
 
+    my $alma_request_type = exists $arg_ref->{alma_request_type} # Request Type: order | reservation
+        ? $arg_ref->{alma_request_type}     : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -1747,6 +1773,7 @@ sub make_alma_request {
     my $database    = $self->get_database;
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
+    my $msg         = $self->get_msg;
     
     my $response_ref = {};
 
@@ -1876,9 +1903,14 @@ sub make_alma_request {
 	}
 	
 	if (defined $json_result_ref->{'request_id'}) {
+	    my $success_message = $msg->maketext("Das Medium wurde bestellt.");
+	    if ($alma_request_type eq "reservation"){
+		$success_message = $msg->maketext("Das Medium wurde vorgemerkt.");
+	    }
+	    
 	    $response_ref = {
 		"successful" => 1,
-		    "message" => "Das Medium wurde bestellt",
+		    "message" => $success_message,
 		    "title"   => $json_result_ref->{title},
 		    "author"  => $json_result_ref->{author},
 	    };
@@ -1914,6 +1946,7 @@ sub get_alma_request {
     my $database    = $self->get_database;
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
+    my $msg         = $self->get_msg;
     
     my $response_ref = {};
 
@@ -2055,6 +2088,11 @@ sub get_alma_request {
 		    $this_response_ref->{starttime} = $item_ref->{'request_date'};
 		    $this_response_ref->{endtime}   = $item_ref->{'expiry_date'};
 		}
+
+		# Nur Datum des Zeitstempels
+		$this_response_ref->{starttime} =~s/(\d\d\d\d-\d\d-\d\d).*/$1/;
+		$this_response_ref->{endtime}   =~s/(\d\d\d\d-\d\d-\d\d).*/$1/;
+
 		# Zurueckgefordert?
 		# if ($item_ref->{Rueckgef} eq "J"){
 		#     $this_response_ref->{reclaimed} = 1;
@@ -2123,16 +2161,19 @@ sub update_sis {
     my $config      = $self->get_config;
     my $database    = $self->get_database;
     my $ua          = $self->get_client;
+    my $msg         = $self->get_msg;
 
     my $response_ref = {};
 
     my $uid = $self->get_externalid_of_user($username);
     
     unless ($uid || $new_data){
+	my $error_message = $msg->maketext("Fehlende oder falsche Parameter.");
+	
 	$response_ref = {
 	    timestamp   => $self->get_timestamp,
 	    error => 'error',
-	    error_description       => "missing or wrong parameters",
+	    error_description       => $error_message,
 	};
 	
 	return $response_ref;
@@ -2140,10 +2181,12 @@ sub update_sis {
     
     if ($type eq "password"){	
 	if (!$old_data){
+	    my $error_message = $msg->maketext("Fehlende oder falsche Parameter.");
+	    
 	    $response_ref = {
 		timestamp   => $self->get_timestamp,
 		error => 'error',
-		error_description       => "missing or wrong parameters",
+		error_description       => $error_message,
 	    };
 	    
 	    return $response_ref;
@@ -2152,10 +2195,12 @@ sub update_sis {
 	my $authresult_ref = $self->authenticate({ username => $username, password => $old_data });
 
 	if (!defined $authresult_ref->{successful} || !$authresult_ref->{successful}){
+	    my $error_message = $msg->maketext("Falsche Eingabe des aktuellen Passworts.");
+	    
 	    $response_ref = {
 		timestamp   => $self->get_timestamp,
 		error => 'error',
-		error_description       => "Falsche Eingabe des aktuellen Passworts",
+		error_description       => $error_message,
 	    };
 
 	    return $response_ref;
@@ -2269,10 +2314,12 @@ sub update_sis {
 		if ($logger->is_debug){
 		    $response_ref->{debug} = $json_result_ref;
 		}
-		
+
+		my $success_message = $msg->maketext("Kontoinformationen erfolgreich aktualisiert.");
+
 		$response_ref = {
 		    "successful" => 1,
-			"message" => "Kontoinformationen erfolgreich aktualisiert",
+			"message" => $success_message,
 		};
 		
 		return $response_ref;

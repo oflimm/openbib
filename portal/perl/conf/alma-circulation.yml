@@ -56,5 +56,41 @@
       - type: 'CIRCULATION_DESK' # Beispiel: bestellbar MSSID: 991011906269706476 
         id: 'DEFAULT_CIRC_DESK'
         desc: 'USB Hauptabteilung: Lesesaal Historische Sammlungen'
+'38-HWA':
+  '38-HWA-MAG':
+    'order': 1
+    'loan': 0
+    'reservation': 1
+    'pickup_locations':
+      - type: 'LIBRARY'
+        id: 'Ausgabe'
+        desc: 'Humanwiss. Abteilung: Ausgabe'
+'38-101':
+  '38-101-MAG':
+    'order': 1
+    'loan': 0
+    'reservation': 1
+    'pickup_locations':
+      - type: 'LIBRARY'
+        id: 'Ausgabe'
+        desc: 'Gemeinsame Fachbibliothek VWL: Ausgabe'
+'38-106':
+  '38-106-MAG':
+    'order': 1
+    'loan': 0
+    'reservation': 1
+    'pickup_locations':
+      - type: 'LIBRARY'
+        id: 'Ausgabe'
+        desc: 'Gemeinsame Fachbibliothek BWL: Ausgabe'
+'38-132':
+  '38-132-BIB':
+    'order': 1
+    'loan': 0
+    'reservation': 1
+    'pickup_locations':
+      - type: 'LIBRARY'
+        id: 'Ausgabe'
+        desc: 'Gemeinsame Fachbibliothek Soziologie: Ausgabe'
 
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2023-04-21 13:30+0100\n"
+"PO-Revision-Date: 2023-04-28 07:30+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -20738,7 +20738,7 @@ msgstr "Digital card catalogue (faculty of arts)"
 #: ../templates/titlist_item_html_short:375
 #: ../templates/titlist_item_mobile_short:217
 msgid "Katalog"
-msgstr "catalogue"
+msgstr "Catalogue"
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/admin_navigation_dropdown:31
 #: ../templates/_profile/bootstrap5/_view/unikatalog5/admin_navigation_dropdown:31
@@ -20749,7 +20749,7 @@ msgstr "catalogue"
 #: ../templates/_profile/unikatalog/admin_navigation_dropdown:31
 #: ../templates/admin_navigation:45 ../templates/admin_navigation:48
 msgid "Katalog-Konsistenz"
-msgstr "catalogue consistency"
+msgstr "Catalogue consistency"
 
 #: ../templates/_profile/bootstrap5/admin_views_record_html:30
 #: ../templates/_profile/bootstrap5/profiles_record_html:15
@@ -20766,7 +20766,7 @@ msgstr "catalogue consistency"
 #: ../templates/admin_views_record_html:30 ../templates/profiles_record_html:15
 #: ../templates/viewadmin_views_record_html:30
 msgid "Katalog-Profil"
-msgstr "catalogue profile"
+msgstr "Catalogue profile"
 
 #: ../templates/_profile/bootstrap5/admin_profiles_record_edit_html:18
 #: ../templates/_profile/rheinlandbib_yaml4/admin_profiles_record_edit:64
@@ -20861,7 +20861,7 @@ msgstr "Edit catalogue profile"
 #: ../templates/viewadmin_views_record_edit_html:31
 #: ../templates/views_record_html:22
 msgid "Katalog-Profile"
-msgstr "catalogue profile"
+msgstr "Catalogue profiles"
 
 #: ../templates/_profile/bootstrap/_view/kubibooks/subnavigation:66
 #: ../templates/_profile/bootstrap/_view/kubibooks/subnavigation:68
@@ -21142,7 +21142,7 @@ msgstr "Choice of catalogues for this view"
 #: ../templates/titles_popular_by_database:22 ../templates/usage_navigation:13
 #: ../templates/usage_navigation:15
 msgid "Kataloge"
-msgstr "catalogues"
+msgstr "Catalogues"
 
 #: ../templates/_profile/bootstrap5/clouds_html:28
 #: ../templates/_profile/unikatalog/clouds_html:28
@@ -21167,7 +21167,7 @@ msgstr ""
 #: ../templates/_profile/yaml4/info_other_portals:73 ../templates/info_15:61
 #: ../templates/info_other_portals:73
 msgid "Kataloge dieser Spezial-Sicht"
-msgstr "catalogues of this view"
+msgstr "Catalogues of this view"
 
 #: ../templates/_profile/bootstrap5/home_html_bottom_center:29
 #: ../templates/_profile/rheinlandbib_yaml4/home_html_bottom_center:26
@@ -21176,7 +21176,7 @@ msgstr "catalogues of this view"
 #: ../templates/_profile/yaml4/home_html_bottom_center:26
 #: ../templates/home_html_bottom_center:29
 msgid "Kataloge, Standorte und Bestand"
-msgstr "catalogues, locations and holdings"
+msgstr "Catalogues, locations and holdings"
 
 #: ../templates/_profile/bootstrap5/_view/unikatalog/users_navigation:90
 #: ../templates/_profile/bootstrap5/_view/unikatalog/users_navigation:98
@@ -21201,7 +21201,7 @@ msgstr "catalogues, locations and holdings"
 #: ../templates/_profile/yaml4/users_searchprofiles_record_html:55
 #: ../templates/users_navigation:85 ../templates/users_navigation:93
 msgid "Katalogprofile"
-msgstr "catalogue profiles"
+msgstr "Catalogue profiles"
 
 #: ../templates/_profile/bootstrap5/browse_topics_record_html:29
 #: ../templates/_profile/rheinlandbib_yaml4/browse_topics_record_html:75
@@ -21209,7 +21209,7 @@ msgstr "catalogue profiles"
 #: ../templates/_profile/yaml4/browse_topics_record_html:75
 #: ../templates/browse_topics_record_html:29
 msgid "Katalogtitel nach Bibliothekssystematik"
-msgstr "catalogue title according to library classification"
+msgstr "Catalogue title according to library classification"
 
 #: ../templates/_database/wikisource_de/persons_record_html:69
 #: ../templates/_profile/kug_yaml4/_database/wikisource_de/persons_record_html:69
@@ -22138,7 +22138,7 @@ msgstr "Kölner Gymnasial- und Stiftungsfonds"
 
 #: ../templates/_profile/unikatalog/_view/unikatalog/mainnavigation_html:280
 msgid "Kölner Universitätskatalog"
-msgstr "Cologne University catalogue"
+msgstr "Cologne University Catalogue"
 
 #: ../templates/_profile/bootstrap5/subnavigation:50
 #: ../templates/_profile/bootstrap5/users_circulations_cancel_order_confirm_html:82

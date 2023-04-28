@@ -795,9 +795,20 @@ sub save_record {
 	highlightquery    => \&highlightquery,
 	sort_circulation => \&sort_circulation,
     };
+
+    my $formatinfo_ref = $config->get('export_formats');
+
+    my $content_type = "text/plain";
+    my $filesuffix   = "txt";
     
-    $self->param('content_type','text/plain');
-    $self->header_add("Content-Disposition" => "attachment;filename=\"${filename}.txt\"");
+    if (defined $formatinfo_ref->{$format} && $formatinfo_ref->{$format}){
+	$content_type = $formatinfo_ref->{$format}{'content-type'};
+	$filesuffix   = $formatinfo_ref->{$format}{'suffix'};
+    }
+
+    $self->param('content_type',$content_type);
+    $self->header_add("Content-Disposition" => "attachment;filename=\"${filename}.$filesuffix\"");
+    
     return $self->print_page($config->{tt_litlists_record_save_tname},$ttdata);
 
 }

@@ -1432,6 +1432,13 @@ sub get_mediastatus {
 		    push @$unavailable_ref, $this_unavailable_ref;
 		    
 		}
+		# Sonst, wenn am Ort: Praesenzbestand
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1){
+		    push @$available_ref, {
+			service => 'presence',
+			content => "Präsenzbestand",
+		    };
+		}
 		# Entliehen mit Vormerkmoeglichkeit
 		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0 && $process_type eq "LOAN" && $this_circ_conf->{'reservation'}){ 
 		    my $this_unavailable_ref = {
@@ -1464,7 +1471,7 @@ sub get_mediastatus {
 		    push @$unavailable_ref, $this_unavailable_ref;
 		    
 		}
-		# 
+		# Sonst, wenn nicht am Ort: entliehen
 		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0 ){
 		    my $this_unavailable_ref = {
 			service => 'loan',

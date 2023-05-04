@@ -644,6 +644,18 @@
 #####################################################################
 # Konnektoren
 
+- # connector_alma_loc: 
+   module: 'OpenBib::Handler::PSGI::Connector::ALMA'
+   rule: '/portal/:view/connector/alma[get]'
+   runmode: 'show_record'
+   args:
+      disable_content_negotiation: 1
+- # connector_alma_loc: 
+   module: 'OpenBib::Handler::PSGI::Connector::ALMA'
+   rule: '/portal/:view/connector/alma[post]'
+   runmode: 'create_record'
+   args:
+      disable_content_negotiation: 1
 - # connector_availabilityimage_loc: 
    module: 'OpenBib::Handler::PSGI::Connector::AvailabilityImage'
    rule: '/portal/:view/connector/availabilityimage/:rm/:id'

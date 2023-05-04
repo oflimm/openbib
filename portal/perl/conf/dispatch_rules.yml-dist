@@ -647,7 +647,7 @@
 - # connector_alma_loc: 
    module: 'OpenBib::Handler::PSGI::Connector::ALMA'
    rule: '/portal/:view/connector/alma[get]'
-   runmode: 'show_record'
+   runmode: 'challenge'
    args:
       disable_content_negotiation: 1
 - # connector_alma_loc: 

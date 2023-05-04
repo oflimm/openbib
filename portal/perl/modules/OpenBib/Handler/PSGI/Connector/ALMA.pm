@@ -98,6 +98,7 @@ sub create_record {
     }
     
     eval {
+	$logger->("Webhook Result body: $body");
 	$logger->("Webhook Result: ".YAML::Dump(decode_json($body)));
     };
 
@@ -142,19 +143,25 @@ sub challenge {
 sub check_signature {
     my ($self,$args_ref) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     my $signature = $args_ref->{signature} || '';
     my $body      = $args_ref->{body} || '';
     
     # Shared Args
-    my $query          = $self->query();
-    my $config         = $self->param('config');
+    my $config    = $self->param('config');
 
     my $secret = $config->get('alma')->{webhook_secret};
 
+    $logger->logger("Checking body $body with signature $signature");
+    
     my $sha = Digest::SHA->new();
     
     my $digest = $sha->hmac_sha256_hex($body, $secret);
 
+    $logger->logger("Digest is $digest");
+    
     return ($digest eq $signature);
 }
 

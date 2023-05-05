@@ -36,10 +36,10 @@ use warnings;
 no warnings 'redefine';
 
 use Benchmark;
-use Digest::SHA;
+use Digest::SHA qw(hmac_sha256_base64);
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
-use Template;
+use MIME::Base64;
 use YAML::Syck;
 
 use OpenBib::Config;
@@ -68,6 +68,10 @@ sub setup {
 #    $self->tmpl_path('./');
 }
 
+# Beschreibung Alma Webhooks: https://developers.exlibrisgroup.com/alma/integrations/webhooks/anatomy/
+# Anlegen in Alma unter: Konfiguration -> Allgemein -> Externe Systeme -> Integrationsprofile
+# SHA256 Digests in versch. Sprachen: https://www.jokecamp.com/blog/examples-of-creating-base64-hashes-using-hmac-sha256-in-different-languages/
+
 sub create_record {
     my $self = shift;
 
@@ -89,17 +93,17 @@ sub create_record {
     my $path_prefix    = $self->param('path_prefix');
 
     my $signature      = $r->header('X-Exl-Signature') || '';
-    my $body           = $r->body();
-    
+    my $body           = $r->content();
+
     unless ( $self->check_signature({ signature => $signature, body => $body })) {
-	$logger->error("No Challenge secret given");
-	$self->header_add( 'Status', 401 );    # Invalid Signature
-	return encode_json({ errorMessage => 'Invalid Signature'});
+    	$logger->error("No Challenge secret given");
+    	$self->header_add( 'Status', 401 );    # Invalid Signature
+    	return encode_json({ errorMessage => 'Invalid Signature'});
     }
     
     eval {
-	$logger->("Webhook Result body: $body");
-	$logger->("Webhook Result: ".YAML::Dump(decode_json($body)));
+	$logger->debug("Webhook Result body: $body");
+	$logger->debug("Webhook Result: ".YAML::Dump(decode_json($body)));
     };
 
     # No response content, just status 200    
@@ -153,14 +157,16 @@ sub check_signature {
     my $config    = $self->param('config');
 
     my $secret = $config->get('alma')->{webhook_secret};
-
-    $logger->logger("Checking body $body with signature $signature");
     
-    my $sha = Digest::SHA->new();
-    
-    my $digest = $sha->hmac_sha256_hex($body, $secret);
+    $logger->debug("Webhook: Checking body $body with signature $signature");
 
-    $logger->logger("Digest is $digest");
+    my $digest = hmac_sha256_base64($body, $secret);
+
+    while (length($digest) % 4) {
+	$digest .= '=';
+    }
+        
+    $logger->debug("Digest is $digest");
     
     return ($digest eq $signature);
 }

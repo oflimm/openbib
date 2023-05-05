@@ -135,6 +135,9 @@ $logger->info("Restoring Xapian index of database $database");
 
 system("cd $config->{'base_dir'}/ft/xapian/index/ ; tar xzf $tmpdir/index.tgz");
 
+unlink "$tmpdir/pool.dump";
+unlink "$tmpdir/index.tgz";
+
 sub print_help {
     print << "ENDHELP";
 import_pool.pl - Import eines Pools (DB+Index) aus einer OpenBib Pool Package Datei (.opp)

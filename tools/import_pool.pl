@@ -103,6 +103,8 @@ if (!-d $tmpdir){
     mkdir $tmpdir;
 }
 
+$logger->info("Importing $filename to database $database");
+
 system("tar --directory=$tmpdir -xf $filename");
 
 if (! -f "$tmpdir/pool.dump" || ! -f "$tmpdir/index.tgz"){

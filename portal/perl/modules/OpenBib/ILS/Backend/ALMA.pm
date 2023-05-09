@@ -37,6 +37,7 @@ use Encode qw(decode_utf8 encode_utf8);
 use HTTP::Cookies;
 use HTTP::Request;
 use JSON::XS qw/decode_json encode_json/;
+use List::MoreUtils qw(none);
 use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
 use MLDBM qw(DB_File Storable);
@@ -82,6 +83,9 @@ sub new {
     $ua->agent('USB Koeln/1.0');
     $ua->timeout(30);
 
+    # Only valid and defined languages. Fallback 'de'
+    $lang = "de" if (none { $_ eq $lang } @{$config->get('lang')});
+
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
@@ -92,8 +96,11 @@ sub new {
     $self->{database}     = $database;    
     $self->{ils}          = $ils_ref;
     $self->{msg}          = $msg;
+    $self->{lang}         = $lang;
     $self->{_config}      = $config;
     $self->{_circ_config} = $circulation_config;
+
+#    $self->connectMemcached();
     
     return $self;
 }
@@ -585,6 +592,7 @@ sub get_fees {
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
     my $msg         = $self->get_msg;
+    my $lang        = $self->get('lang');
     
     my $response_ref = {};
 
@@ -615,7 +623,7 @@ sub get_fees {
 	    
 	    my $api_key = $config->get('alma')->{'api_key'};
 	    
-	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/fees?user_id_type=all_unique&status=ACTIVE&lang=de&apikey=$api_key";
+	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/fees?user_id_type=all_unique&status=ACTIVE&lang=$lang&apikey=$api_key";
 	    
 	    if ($logger->is_debug()){
 		$logger->debug("Request URL: $url");
@@ -728,6 +736,7 @@ sub get_loans {
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
     my $msg         = $self->get_msg;
+    my $lang        = $self->get('lang');
     
     my $response_ref = {};
 
@@ -758,7 +767,7 @@ sub get_loans {
 	    
 	    my $api_key = $config->get('alma')->{'api_key'};
 	    
-	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/loans?user_id_type=all_unique&expand=renewable&limit=100&offset=0&order_by=due_date&direction=ASC&loan_status=Active&apikey=$api_key";
+	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/loans?user_id_type=all_unique&expand=renewable&limit=100&offset=0&order_by=due_date&direction=ASC&loan_status=Active&lang=$lang&apikey=$api_key";
 	    
 	    if ($logger->is_debug()){
 		$logger->debug("Request URL: $url");
@@ -958,6 +967,7 @@ sub cancel_alma_request {
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
     my $msg         = $self->get_msg;
+    my $lang        = $self->get('lang');
     
     my $response_ref = {};
 
@@ -990,7 +1000,7 @@ sub cancel_alma_request {
 	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/requests/$requestid";
 
 	    # Default args
-	    my $args = "reason=CancelledAtPatronRequest&notify_user=false&apikey=$api_key";
+	    my $args = "reason=CancelledAtPatronRequest&notify_user=false&lang=$lang&apikey=$api_key";
 
 	    $url.="?$args";
 	    	    
@@ -1095,6 +1105,7 @@ sub renew_single_loan {
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
     my $msg         = $self->get_msg;
+    my $lang        = $self->get('lang');
     
     my $response_ref = {};
 
@@ -1125,7 +1136,7 @@ sub renew_single_loan {
 	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/loans/$loanid";
 
 	    # Default args
-	    my $args = "op=renew&user_id_type=all_unique&apikey=$api_key";
+	    my $args = "op=renew&user_id_type=all_unique&lang=$lang&apikey=$api_key";
 
 	    $url.="?$args";
 	    	    
@@ -1240,6 +1251,7 @@ sub get_mediastatus {
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
     my $msg         = $self->get_msg;
+    my $lang        = $self->get('lang');
     
     my $response_ref = {};
     
@@ -1268,7 +1280,7 @@ sub get_mediastatus {
 	    
 	    my $api_key = $config->get('alma')->{'api_key'};
 	    
-	    my $url     = $config->get('alma')->{'api_baseurl'}."/bibs/$titleid/holdings/ALL/items?limit=100&offset=0&expand=due_date,due_date_policy,requests&view=brief&apikey=$api_key&order_by=library,location,enum_a,enum_b&direction=asc";
+	    my $url     = $config->get('alma')->{'api_baseurl'}."/bibs/$titleid/holdings/ALL/items?limit=100&offset=0&expand=due_date,due_date_policy,requests&view=brief&lang=$lang&apikey=$api_key&order_by=library,location,enum_a,enum_b&direction=asc";
 	    
 	    if ($logger->is_debug()){
 		$logger->debug("Request URL: $url");
@@ -1561,6 +1573,7 @@ sub check_alma_request {
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
     my $msg         = $self->get_msg;
+    my $lang        = $self->get('lang');
 
     my $pickup_locations_ref = [];
     
@@ -1612,7 +1625,7 @@ sub check_alma_request {
 	    my $url     = "";
 
 	    if ($type eq "by_title"){ # Teilqualifizierte Vormerkung
-		$url = $config->get('alma')->{'api_baseurl'}."/bibs/$mmsid/request-options?apikey=$api_key&user_id=$alma_userid";
+		$url = $config->get('alma')->{'api_baseurl'}."/bibs/$mmsid/request-options?lang=$lang&apikey=$api_key&user_id=$alma_userid";
 	    }
 	    else {
 		unless ($holdingid && $itempid){
@@ -1623,7 +1636,7 @@ sub check_alma_request {
 		    return $response_ref;
 		}
 		
-		$url = $config->get('alma')->{'api_baseurl'}."/bibs/$mmsid/holdings/$holdingid/items/$itempid/request-options?apikey=$api_key&user_id=$alma_userid";
+		$url = $config->get('alma')->{'api_baseurl'}."/bibs/$mmsid/holdings/$holdingid/items/$itempid/request-options?lang=$lang&apikey=$api_key&user_id=$alma_userid";
 	    }
 	    
 	    if ($logger->is_debug()){
@@ -1634,6 +1647,8 @@ sub check_alma_request {
 	    $request->header('accept' => 'application/json');
 	    
 	    my $response = $ua->request($request);
+
+	    $logger->debug("Response HTTP-Code: ".$response->code);
 	    
 	    if ($logger->is_debug){
 		$logger->debug("Response Headers: ".$response->headers_as_string);
@@ -1664,6 +1679,7 @@ sub check_alma_request {
 	    
 	    if ($logger->is_debug){
 		$response_ref->{debug} = $json_result_ref;
+		$logger->debug("Response failed: ".YAML::Dump($response_ref));
 	    }
 	    
 	    return $response_ref;
@@ -1691,7 +1707,7 @@ sub check_alma_request {
 		
 		if ($logger->is_debug){
 		    $response_ref->{debug} = $json_result_ref;
-		}
+		    $logger->debug("Response failed: ".YAML::Dump($response_ref));		}
 		
 		return $response_ref	
 	    }
@@ -1708,7 +1724,6 @@ sub check_alma_request {
 	    
 	    if ($logger->is_debug){
 		$response_ref->{debug} = $json_result_ref;
-
 		$logger->debug("Response: ".YAML::Dump($response_ref));
 	    }
 	    
@@ -1721,6 +1736,10 @@ sub check_alma_request {
 	    "error" => "error",
 	    "error_description" => "General error",
     };
+
+    if ($logger->is_debug){
+	$logger->debug("Response failed: ".YAML::Dump($response_ref));
+    }
     
     return $response_ref;
 }
@@ -1781,6 +1800,7 @@ sub make_alma_request {
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
     my $msg         = $self->get_msg;
+    my $lang        = $self->get('lang');
     
     my $response_ref = {};
 
@@ -1814,7 +1834,7 @@ sub make_alma_request {
 	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/requests";
 
 	    # Default args
-	    my $args = "user_id_type=all_unique&apikey=$api_key";
+	    my $args = "user_id_type=all_unique&lang=$lang&apikey=$api_key";
 
 	    # Vollqualifizierte Bestellung	    
 	    if ($itempid){
@@ -1854,7 +1874,7 @@ sub make_alma_request {
 		return $response_ref;
 	    }
 
-	    $data_ref->{pickup_location_type}             = $pickup_data_ref->{type}; # LIBRARY or CIRCULATION_DESC
+	    $data_ref->{pickup_location_type}             = $pickup_data_ref->{type}; # LIBRARY or CIRCULATION_DESK
 	    $data_ref->{pickup_location_library}          = $department_id;
 	    
 	    if ($pickup_data_ref->{type} eq "CIRCULATION_DESK"){
@@ -1954,6 +1974,7 @@ sub get_alma_request {
     my $ua          = $self->get_client;
     my $circ_config = $self->get_circulation_config;
     my $msg         = $self->get_msg;
+    my $lang        = $self->get('lang');
     
     my $response_ref = {};
 
@@ -1986,7 +2007,7 @@ sub get_alma_request {
 	    
 	    my $api_key = $config->get('alma')->{'api_key'};
 	    
-	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/requests?user_id_type=all_unique&limit=100&request_type=HOLD&offset=0&status=active&apikey=$api_key";
+	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/requests?user_id_type=all_unique&limit=100&request_type=HOLD&offset=0&status=active&lang=$lang&apikey=$api_key";
 	    
 	    if ($logger->is_debug()){
 		$logger->debug("Request URL: $url");
@@ -2341,6 +2362,52 @@ sub update_sis {
     };
     
     return $response_ref;
+}
+
+sub connectMemcached {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config  = $self->get_config;
+
+    if (!defined $config->{memcached}){
+      $logger->debug("No memcached configured");
+      return;
+    }
+
+    # Verbindung zu Memchached herstellen
+    $self->{memc} = new Cache::Memcached::Fast(
+	$self->{memcached},        
+	compress_methods => [
+            sub { ${$_[1]} = Compress::LZ4::compress(${$_[0]})   },
+            sub { ${$_[1]} = Compress::LZ4::decompress(${$_[0]}) },
+        ],
+	);
+
+    $logger->debug("Storing ".$self->{memc});
+
+    if (!$self->{memc}->set('isalive',1)){
+        $logger->fatal("Unable to connect to memcached");
+        $self->disconnectMemcached;
+    }
+
+    return;
+}
+
+sub disconnectMemcached {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Disconnecting memcached");
+    
+    $self->{memc}->disconnect_all if (defined $self->{memc});
+    delete $self->{memc};
+
+    return;
 }
 
 

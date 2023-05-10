@@ -339,7 +339,7 @@ sub update_phone {
     
     my $response_ref = {};
     
-    # In Alma nicht vorhanden
+    # Wird aus Gruenden der Datensparsamkeit nicht mehr erhoben. Wurde nur waehrend der Corona-Zeit 2020-2022 benoetigt
 
     return $response_ref;
 }
@@ -617,62 +617,27 @@ sub get_fees {
     {
 	my $json_result_ref = {};
 
-	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
-	    
-	    $logger->debug("Getting Circulation info via ALMA API");
-	    
-	    my $api_key = $config->get('alma')->{'api_key'};
-	    
-	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/fees?user_id_type=all_unique&status=ACTIVE&lang=$lang&apikey=$api_key";
-	    
-	    if ($logger->is_debug()){
-		$logger->debug("Request URL: $url");
-	    }
-	    
-	    my $request = HTTP::Request->new('GET' => $url);
-	    $request->header('accept' => 'application/json');
-	    
-	    my $response = $ua->request($request);
-	    
-	    if ($logger->is_debug){
-		$logger->debug("Response Headers: ".$response->headers_as_string);
-		$logger->debug("Response: ".$response->content);
-	    }
-	    
-	    if (!$response->is_success && $response->code != 400) {
-		$logger->info($response->code . ' - ' . $response->message);
-		return;
-	    }
-	    
-	    
-	    eval {
-		$json_result_ref = decode_json $response->content;
-	    };
-	    
-	    if ($@){
-		$logger->error('Decoding error: '.$@);
-	    }
-	    
-	    
-	}
+	$logger->debug("Getting Circulation info via ALMA API");
 	
-	# Allgemeine Fehler
-	if (defined $json_result_ref->{'errorsExist'} && $json_result_ref->{'errorsExist'} eq "true" ){
-	    $response_ref = {
-		"code" => 400,
-		    "error" => "error",
-		    "error_description" => $json_result_ref->{'errorList'}{'error'}[0]{'errorMessage'},
-	    };
-	    
-	    if ($logger->is_debug){
-		$response_ref->{debug} = $json_result_ref;
-	    }
-	    
-	    return $response_ref;
+	my $api_key = $config->get('alma')->{'api_key'};
+	
+	my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/fees?user_id_type=all_unique&status=ACTIVE&lang=$lang&apikey=$api_key";
+	
+	my $api_result_ref = $self->send_alma_api_call({ method => 'GET', url => $url });
+
+	# Preprocessed response? Return it
+	if (defined $api_result_ref->{'response'}){
+	    return $api_result_ref->{'response'}
 	}
 
-	# Keine Gebuehren?
+	# Result data? Use it for further processing
+	if (defined $api_result_ref->{'data'}){
+	    $json_result_ref = $api_result_ref->{'data'};
+	}
 
+	# Processing data
+	
+	# Keine Gebuehren?
 	if (defined $json_result_ref->{'total_record_count'} && defined $json_result_ref->{'total_sum'} && !$json_result_ref->{'total_sum'} ){
 	    if ($logger->is_debug){
 		$response_ref->{debug} = $json_result_ref;
@@ -760,63 +725,28 @@ sub get_loans {
     # Ausleihinformationen der Exemplare
     {
 	my $json_result_ref = {};
+	
+	$logger->debug("Getting Circulation info via ALMA API");
+	
+	my $api_key = $config->get('alma')->{'api_key'};
+	
+	my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/loans?user_id_type=all_unique&expand=renewable&limit=100&offset=0&order_by=due_date&direction=ASC&loan_status=Active&lang=$lang&apikey=$api_key";
+	
+	my $api_result_ref = $self->send_alma_api_call({ method => 'GET', url => $url });
+	
+	# Preprocessed response? Return it
+	if (defined $api_result_ref->{'response'}){
+	    return $api_result_ref->{'response'}
+	}
+	
+	# Result data? Use it for further processing
+	if (defined $api_result_ref->{'data'}){
+	    $json_result_ref = $api_result_ref->{'data'};
+	}
 
-	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
-	    
-	    $logger->debug("Getting Circulation info via ALMA API");
-	    
-	    my $api_key = $config->get('alma')->{'api_key'};
-	    
-	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/loans?user_id_type=all_unique&expand=renewable&limit=100&offset=0&order_by=due_date&direction=ASC&loan_status=Active&lang=$lang&apikey=$api_key";
-	    
-	    if ($logger->is_debug()){
-		$logger->debug("Request URL: $url");
-	    }
-	    
-	    my $request = HTTP::Request->new('GET' => $url);
-	    $request->header('accept' => 'application/json');
-	    
-	    my $response = $ua->request($request);
-	    
-	    if ($logger->is_debug){
-		$logger->debug("Response Headers: ".$response->headers_as_string);
-		$logger->debug("Response: ".$response->content);
-	    }
-	    
-	    if (!$response->is_success && $response->code != 400) {
-		$logger->info($response->code . ' - ' . $response->message);
-		return;
-	    }
-	    
-	    
-	    eval {
-		$json_result_ref = decode_json $response->content;
-	    };
-	    
-	    if ($@){
-		$logger->error('Decoding error: '.$@);
-	    }
-	    
-	    
-	}
-	
-	# Allgemeine Fehler
-	if (defined $json_result_ref->{'errorsExist'} && $json_result_ref->{'errorsExist'} eq "true" ){
-	    $response_ref = {
-		"code" => 400,
-		    "error" => "error",
-		    "error_description" => $json_result_ref->{'errorList'}{'error'}[0]{'errorMessage'},
-	    };
-	    
-	    if ($logger->is_debug){
-		$response_ref->{debug} = $json_result_ref;
-	    }
-	    
-	    return $response_ref;
-	}
-	
+	# Processing data
 	if (defined $json_result_ref->{'item_loan'}) {
-
+	    
 	    if ($logger->is_debug){
 		$response_ref->{debug} = $json_result_ref;
 	    }
@@ -988,77 +918,39 @@ sub cancel_alma_request {
 
     my $json_result_ref = {};
 
-    my $http_status_code;
-    
     {
-	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
-	    
-	    $logger->debug("Making order via Alma-API");
-	    
-	    my $api_key = $config->get('alma')->{'api_key'};
-	    
-	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/requests/$requestid";
-
-	    # Default args
-	    my $args = "reason=CancelledAtPatronRequest&notify_user=false&lang=$lang&apikey=$api_key";
-
-	    $url.="?$args";
-	    	    
-	    if ($logger->is_debug()){
-		$logger->debug("DELETE Request URL: $url");
-	    }
-	    
-	    my $request = HTTP::Request->new('DELETE', $url, [ 'Accept' => 'application/json', 'Content-Type' => 'application/json' ]);
-	    
-	    my $response = $ua->request($request);
-
-	    $http_status_code = $response->code();
-	    
-	    if ($logger->is_debug){
-		$logger->debug("Response Headers: ".$response->headers_as_string);
-		$logger->debug("Response: ".$response->content);
-	    }
-	    
-	    if (!$response->is_success && $response->code != 400) {
-		$logger->info($response->code . ' - ' . $response->message);
-		return;
-	    }
-	    
-	    
-	    eval {
-		$json_result_ref = decode_json $response->content;
-	    };
-	    
-	    if ($@){
-		$logger->error('Decoding error: '.$@);
-	    }
-	    
-	    
-	}
+	$logger->debug("Making order via Alma-API");
 	
-	# Allgemeine Fehler
-	if (defined $json_result_ref->{'errorsExist'} && $json_result_ref->{'errorsExist'} eq "true" ){
-	    $response_ref = {
-		"code" => 400,
-		    "error" => "error",
-		    "error_description" => $json_result_ref->{'errorList'}{'error'}[0]{'errorMessage'},
-	    };
-	    
-	    if ($logger->is_debug){
-		$response_ref->{debug} = $json_result_ref;
-	    }
-	    
-	    return $response_ref;
+	my $api_key = $config->get('alma')->{'api_key'};
+	
+	my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/requests/$requestid";
+	
+	# Default args
+	my $args = "reason=CancelledAtPatronRequest&notify_user=false&lang=$lang&apikey=$api_key";
+	
+	$url.="?$args";
+
+	my $api_result_ref = $self->send_alma_api_call({ method => 'DELETE', url => $url });
+
+	# Preprocessed response? Return it
+	if (defined $api_result_ref->{'response'}){
+	    return $api_result_ref->{'response'}
 	}
 
-	if ($http_status_code == 204) {
+	# Result data? Use it for further processing
+	if (defined $api_result_ref->{'data'}){
+	    $json_result_ref = $api_result_ref->{'data'};
+	}
+
+	# Processing data
+	if (defined $api_result_ref->{'http_status_code'} && $api_result_ref->{'http_status_code'} == 204) {
 	    $response_ref = {
 		"successful" => 1,
 		    "message" => "Die Bestellung wurde storniert",
 		    "title"   => $json_result_ref->{title},
 		    "author"  => $json_result_ref->{author},
 	    };
-
+	    
 	    if ($logger->is_debug){
 		$response_ref->{debug} = $json_result_ref;
 	    }
@@ -1066,7 +958,7 @@ sub cancel_alma_request {
 	    return $response_ref	
 	}
     }
-
+    
     $response_ref = {
 	"code" => 405,
 	    "error" => "unknown error",
@@ -1127,64 +1019,30 @@ sub renew_single_loan {
     my $json_result_ref = {};
     
     {
-	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
-	    
-	    $logger->debug("Making order via Alma-API");
-	    
-	    my $api_key = $config->get('alma')->{'api_key'};
-	    
-	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/loans/$loanid";
-
-	    # Default args
-	    my $args = "op=renew&user_id_type=all_unique&lang=$lang&apikey=$api_key";
-
-	    $url.="?$args";
-	    	    
-	    if ($logger->is_debug()){
-		$logger->debug("Request URL: $url");
-	    }
-	    
-	    my $request = HTTP::Request->new('POST', $url, [ 'Accept' => 'application/json', 'Content-Type' => 'application/json' ]);
-	    
-	    my $response = $ua->request($request);
-	    
-	    if ($logger->is_debug){
-		$logger->debug("Response Headers: ".$response->headers_as_string);
-		$logger->debug("Response: ".$response->content);
-	    }
-	    
-	    if (!$response->is_success && $response->code != 400) {
-		$logger->info($response->code . ' - ' . $response->message);
-		return;
-	    }
-	    
-	    
-	    eval {
-		$json_result_ref = decode_json $response->content;
-	    };
-	    
-	    if ($@){
-		$logger->error('Decoding error: '.$@);
-	    }
-	    
-	    
+	$logger->debug("Making order via Alma-API");
+	
+	my $api_key = $config->get('alma')->{'api_key'};
+	
+	my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/loans/$loanid";
+	
+	# Default args
+	my $args = "op=renew&user_id_type=all_unique&lang=$lang&apikey=$api_key";
+	
+	$url.="?$args";
+	
+	my $api_result_ref = $self->send_alma_api_call({ method => 'POST', url => $url });
+	
+	# Preprocessed response? Return it
+	if (defined $api_result_ref->{'response'}){
+	    return $api_result_ref->{'response'}
 	}
 	
-	# Allgemeine Fehler
-	if (defined $json_result_ref->{'errorsExist'} && $json_result_ref->{'errorsExist'} eq "true" ){
-	    $response_ref = {
-		"code" => 400,
-		    "error" => "error",
-		    "error_description" => $json_result_ref->{'errorList'}{'error'}[0]{'errorMessage'},
-	    };
-	    
-	    if ($logger->is_debug){
-		$response_ref->{debug} = $json_result_ref;
-	    }
-	    
-	    return $response_ref;
+	# Result data? Use it for further processing
+	if (defined $api_result_ref->{'data'}){
+	    $json_result_ref = $api_result_ref->{'data'};
 	}
-	
+
+	# Processing data	    
 	if (defined $json_result_ref->{'loan_id'}) {
 	    
 	    my @titleinfo = ();
@@ -1274,60 +1132,25 @@ sub get_mediastatus {
     {
 	my $json_result_ref = {};
 
-	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
-	    
-	    $logger->debug("Getting Circulation info via ALMA API");
-	    
-	    my $api_key = $config->get('alma')->{'api_key'};
-	    
-	    my $url     = $config->get('alma')->{'api_baseurl'}."/bibs/$titleid/holdings/ALL/items?limit=100&offset=0&expand=due_date,due_date_policy,requests&view=brief&lang=$lang&apikey=$api_key&order_by=library,location,enum_a,enum_b&direction=asc";
-	    
-	    if ($logger->is_debug()){
-		$logger->debug("Request URL: $url");
-	    }
-	    
-	    my $request = HTTP::Request->new('GET' => $url);
-	    $request->header('accept' => 'application/json');
-	    
-	    my $response = $ua->request($request);
-	    
-	    if ($logger->is_debug){
-		$logger->debug("Response Headers: ".$response->headers_as_string);
-		$logger->debug("Response: ".$response->content);
-	    }
-	    
-	    if (!$response->is_success && $response->code != 400) {
-		$logger->info($response->code . ' - ' . $response->message);
-		return;
-	    }
-	    
-	    
-	    eval {
-		$json_result_ref = decode_json $response->content;
-	    };
-	    
-	    if ($@){
-		$logger->error('Decoding error: '.$@);
-	    }
-	    
-	    
+	$logger->debug("Getting Circulation info via ALMA API");
+	
+	my $api_key = $config->get('alma')->{'api_key'};
+	
+	my $url     = $config->get('alma')->{'api_baseurl'}."/bibs/$titleid/holdings/ALL/items?limit=100&offset=0&expand=due_date,due_date_policy,requests&view=brief&lang=$lang&apikey=$api_key&order_by=library,location,enum_a,enum_b&direction=asc";
+	
+	my $api_result_ref = $self->send_alma_api_call({ method => 'GET', url => $url });
+	
+	# Preprocessed response? Return it
+	if (defined $api_result_ref->{'response'}){
+	    return $api_result_ref->{'response'}
 	}
 	
-	# Allgemeine Fehler
-	if (defined $json_result_ref->{'errorsExist'} && $json_result_ref->{'errorsExist'} eq "true" ){
-	    $response_ref = {
-		"code" => 400,
-		    "error" => "error",
-		    "error_description" => $json_result_ref->{'errorList'}{'error'}[0]{'errorMessage'},
-	    };
-	    
-	    if ($logger->is_debug){
-		$response_ref->{debug} = $json_result_ref;
-	    }
-	    
-	    return $response_ref;
+	# Result data? Use it for further processing
+	if (defined $api_result_ref->{'data'}){
+	    $json_result_ref = $api_result_ref->{'data'};
 	}
-	
+
+	# Processing data	    
 	if (defined $json_result_ref->{'item'}) {
 	    
 	    foreach my $circ_ref (@{$json_result_ref->{'item'}}){
@@ -1602,92 +1425,55 @@ sub check_alma_request {
 
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
+    my $http_status_code;
+
     {
 	my $json_result_ref = {};
 	
-	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+	$logger->debug("Making reservation via ALMA API");
+		
+	my $alma_userid = $self->get_externalid_of_user($username);
+	
+	unless ($alma_userid){
+	    $response_ref =  {
+		error => "No ALMA userid found",
+	    };
 	    
-	    $logger->debug("Making reservation via ALMA API");
-
-
-	    my $alma_userid = $self->get_externalid_of_user($username);
-
-	    unless ($alma_userid){
+	    return $response_ref;
+	}
+	
+	my $api_key = $config->get('alma')->{'api_key'};
+	
+	my $url     = "";
+	
+	if ($type eq "by_title"){ # Teilqualifizierte Vormerkung
+	    $url = $config->get('alma')->{'api_baseurl'}."/bibs/$mmsid/request-options?lang=$lang&apikey=$api_key&user_id=$alma_userid";
+	}
+	else {
+	    unless ($holdingid && $itempid){
 		$response_ref =  {
-		    error => "No ALMA userid found",
+		    error => "missing parameter (username: $username - department_id: $department_id - mmsid: $mmsid)",
 		};
 		
 		return $response_ref;
 	    }
 	    
-	    my $api_key = $config->get('alma')->{'api_key'};
-	    
-	    my $url     = "";
-
-	    if ($type eq "by_title"){ # Teilqualifizierte Vormerkung
-		$url = $config->get('alma')->{'api_baseurl'}."/bibs/$mmsid/request-options?lang=$lang&apikey=$api_key&user_id=$alma_userid";
-	    }
-	    else {
-		unless ($holdingid && $itempid){
-		    $response_ref =  {
-			error => "missing parameter (username: $username - department_id: $department_id - mmsid: $mmsid)",
-		    };
-		    
-		    return $response_ref;
-		}
-		
-		$url = $config->get('alma')->{'api_baseurl'}."/bibs/$mmsid/holdings/$holdingid/items/$itempid/request-options?lang=$lang&apikey=$api_key&user_id=$alma_userid";
-	    }
-	    
-	    if ($logger->is_debug()){
-		$logger->debug("Request URL: $url");
-	    }
-	    
-	    my $request = HTTP::Request->new('GET' => $url);
-	    $request->header('accept' => 'application/json');
-	    
-	    my $response = $ua->request($request);
-
-	    $logger->debug("Response HTTP-Code: ".$response->code);
-	    
-	    if ($logger->is_debug){
-		$logger->debug("Response Headers: ".$response->headers_as_string);
-		$logger->debug("Response: ".$response->content);
-	    }
-	    
-	    if (!$response->is_success && $response->code != 400) {
-		$logger->info($response->code . ' - ' . $response->message);
-		return;
-	    }
-	    
-	    eval {
-		$json_result_ref = decode_json $response->content;
-	    };
-	    
-	    if ($@){
-		$logger->error('Decoding error: '.$@);
-	    }
-	}
-	
-	# Allgemeine Fehler
-	if (defined $json_result_ref->{'errorsExist'} && $json_result_ref->{'errorsExist'} eq "true" ){
-	    $response_ref = {
-		"code" => 400,
-		    "error" => "error",
-		    "error_description" => $json_result_ref->{'errorList'}{'error'}[0]{'errorMessage'},
-	    };
-	    
-	    if ($logger->is_debug){
-		$response_ref->{debug} = $json_result_ref;
-		$logger->debug("Response failed: ".YAML::Dump($response_ref));
-	    }
-	    
-	    return $response_ref;
+	    $url = $config->get('alma')->{'api_baseurl'}."/bibs/$mmsid/holdings/$holdingid/items/$itempid/request-options?lang=$lang&apikey=$api_key&user_id=$alma_userid";
 	}
 
-	# Todo
+	my $api_result_ref = $self->send_alma_api_call({ method => 'GET', url => $url });
 	
+	# Preprocessed response? Return it
+	if (defined $api_result_ref->{'response'}){
+	    return $api_result_ref->{'response'}
+	}
+	
+	# Result data? Use it for further processing
+	if (defined $api_result_ref->{'data'}){
+	    $json_result_ref = $api_result_ref->{'data'};
+	}
 
+	# Processing data	    
 	if (defined $json_result_ref->{'request_option'}){
 	    my $hold_available = 0;
 	    
@@ -1820,115 +1606,78 @@ sub make_alma_request {
 	return $response_ref;
     }
 
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
     my $json_result_ref = {};
-    
+
     {
-	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
-	    
-	    $logger->debug("Making order via Alma-API");
-	    
-	    my $api_key = $config->get('alma')->{'api_key'};
-	    
-	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/requests";
-
-	    # Default args
-	    my $args = "user_id_type=all_unique&lang=$lang&apikey=$api_key";
-
-	    # Vollqualifizierte Bestellung	    
-	    if ($itempid){
-		$args.="&item_pid=$itempid";		
-	    }
-	    # Teilqualifizierte Bestellung
-	    elsif ($mmsid){
-		$args.="'mms_id=$mmsid";
-	    }
-
-	    $url.="?$args";
-	    
-	    my $data_ref = {};
-
-	    $data_ref->{request_type} = "HOLD";
-
-	    my $pickup_data_ref = {};
-
-	    my $valid_pickup_location = 0;
-			    
-	    if (defined $circ_config->{$department_id}{$storage_id}{pickup_locations}){
-		foreach my $pickup_ref (@{$circ_config->{$department_id}{$storage_id}{pickup_locations}}){
-		    if ($pickup_ref->{id} eq $pickup_location){
-			$pickup_data_ref       = $pickup_ref;
-			$valid_pickup_location = 1;
-			last;
-		    }
-		}
-	    }
-
-	    if (!$valid_pickup_location || ($pickup_data_ref->{type} ne "CIRCULATION_DESK" && $pickup_data_ref->{type} ne "LIBRARY")){
-		$response_ref =  {
-		    timestamp => $self->get_timestamp,	    
-		    error     => "invalid pickup location",
-		};
-		
-		return $response_ref;
-	    }
-
-	    $data_ref->{pickup_location_type}             = $pickup_data_ref->{type}; # LIBRARY or CIRCULATION_DESK
-	    $data_ref->{pickup_location_library}          = $department_id;
-	    
-	    if ($pickup_data_ref->{type} eq "CIRCULATION_DESK"){
-		$data_ref->{pickup_location_circulation_desk} = $pickup_location;
-#		$data_ref->{pickup_location_institution}      = $storage_id;
-	    }
-	    
-	    if ($logger->is_debug()){
-		$logger->debug("Request URL: $url");
-		$logger->debug("Request POST body data: ".YAML::Dump($data_ref));
-	    }
-	    
-	    my $request = HTTP::Request->new('POST', $url, [ 'Accept' => 'application/json', 'Content-Type' => 'application/json' ]);
-	    $request->content(encode_json($data_ref));
-	    
-	    my $response = $ua->request($request);
-	    
-	    if ($logger->is_debug){
-		$logger->debug("Response Headers: ".$response->headers_as_string);
-		$logger->debug("Response: ".$response->content);
-	    }
-	    
-	    if (!$response->is_success && $response->code != 400) {
-		$logger->info($response->code . ' - ' . $response->message);
-		return;
-	    }
-	    
-	    
-	    eval {
-		$json_result_ref = decode_json $response->content;
-	    };
-	    
-	    if ($@){
-		$logger->error('Decoding error: '.$@);
-	    }
-	    
-	    
+	$logger->debug("Making order via Alma-API");
+	
+	my $api_key = $config->get('alma')->{'api_key'};
+	
+	my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/requests";
+	
+	# Default args
+	my $args = "user_id_type=all_unique&lang=$lang&apikey=$api_key";
+	
+	# Vollqualifizierte Bestellung	    
+	if ($itempid){
+	    $args.="&item_pid=$itempid";		
+	}
+	# Teilqualifizierte Bestellung
+	elsif ($mmsid){
+	    $args.="'mms_id=$mmsid";
 	}
 	
-	# Allgemeine Fehler
-	if (defined $json_result_ref->{'errorsExist'} && $json_result_ref->{'errorsExist'} eq "true" ){
-	    $response_ref = {
-		"code" => 400,
-		    "error" => "error",
-		    "error_description" => $json_result_ref->{'errorList'}{'error'}[0]{'errorMessage'},
-	    };
-	    
-	    if ($logger->is_debug){
-		$response_ref->{debug} = $json_result_ref;
+	$url.="?$args";
+	
+	my $data_ref = {};
+	
+	$data_ref->{request_type} = "HOLD";
+	
+	my $pickup_data_ref = {};
+	
+	my $valid_pickup_location = 0;
+	
+	if (defined $circ_config->{$department_id}{$storage_id}{pickup_locations}){
+	    foreach my $pickup_ref (@{$circ_config->{$department_id}{$storage_id}{pickup_locations}}){
+		if ($pickup_ref->{id} eq $pickup_location){
+		    $pickup_data_ref       = $pickup_ref;
+		    $valid_pickup_location = 1;
+		    last;
+		}
 	    }
+	}
+	
+	if (!$valid_pickup_location || ($pickup_data_ref->{type} ne "CIRCULATION_DESK" && $pickup_data_ref->{type} ne "LIBRARY")){
+	    $response_ref =  {
+		timestamp => $self->get_timestamp,	    
+		error     => "invalid pickup location",
+	    };
 	    
 	    return $response_ref;
 	}
 	
+	$data_ref->{pickup_location_type}             = $pickup_data_ref->{type}; # LIBRARY or CIRCULATION_DESK
+	$data_ref->{pickup_location_library}          = $department_id;
+	
+	if ($pickup_data_ref->{type} eq "CIRCULATION_DESK"){
+	    $data_ref->{pickup_location_circulation_desk} = $pickup_location;
+	    #		$data_ref->{pickup_location_institution}      = $storage_id;
+	}
+
+	my $api_result_ref = $self->send_alma_api_call({ method => 'POST', url => $url, post_data => $data_ref });
+	
+	# Preprocessed response? Return it
+	if (defined $api_result_ref->{'response'}){
+	    return $api_result_ref->{'response'}
+	}
+	
+	# Result data? Use it for further processing
+	if (defined $api_result_ref->{'data'}){
+	    $json_result_ref = $api_result_ref->{'data'};
+	}
+	
+	# Processing data	    
 	if (defined $json_result_ref->{'request_id'}) {
 	    my $success_message = $msg->maketext("Das Medium wurde bestellt.");
 	    if ($alma_request_type eq "reservation"){
@@ -2001,60 +1750,25 @@ sub get_alma_request {
     {
 	my $json_result_ref = {};
 
-	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
-	    
-	    $logger->debug("Getting Circulation info via ALMA API");
-	    
-	    my $api_key = $config->get('alma')->{'api_key'};
-	    
-	    my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/requests?user_id_type=all_unique&limit=100&request_type=HOLD&offset=0&status=active&lang=$lang&apikey=$api_key";
-	    
-	    if ($logger->is_debug()){
-		$logger->debug("Request URL: $url");
-	    }
-	    
-	    my $request = HTTP::Request->new('GET' => $url);
-	    $request->header('accept' => 'application/json');
-	    
-	    my $response = $ua->request($request);
-	    
-	    if ($logger->is_debug){
-		$logger->debug("Response Headers: ".$response->headers_as_string);
-		$logger->debug("Response: ".$response->content);
-	    }
-	    
-	    if (!$response->is_success && $response->code != 400) {
-		$logger->info($response->code . ' - ' . $response->message);
-		return;
-	    }
-	    
-	    
-	    eval {
-		$json_result_ref = decode_json $response->content;
-	    };
-	    
-	    if ($@){
-		$logger->error('Decoding error: '.$@);
-	    }
-	    
-	    
+	$logger->debug("Getting Circulation info via ALMA API");
+	
+	my $api_key = $config->get('alma')->{'api_key'};
+	
+	my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/requests?user_id_type=all_unique&limit=100&request_type=HOLD&offset=0&status=active&lang=$lang&apikey=$api_key";
+	
+	my $api_result_ref = $self->send_alma_api_call({ method => 'GET', url => $url });
+	
+	# Preprocessed response? Return it
+	if (defined $api_result_ref->{'response'}){
+	    return $api_result_ref->{'response'}
 	}
 	
-	# Allgemeine Fehler
-	if (defined $json_result_ref->{'errorsExist'} && $json_result_ref->{'errorsExist'} eq "true" ){
-	    $response_ref = {
-		"code" => 400,
-		    "error" => "error",
-		    "error_description" => $json_result_ref->{'errorList'}{'error'}[0]{'errorMessage'},
-	    };
-	    
-	    if ($logger->is_debug){
-		$response_ref->{debug} = $json_result_ref;
-	    }
-	    
-	    return $response_ref;
+	# Result data? Use it for further processing
+	if (defined $api_result_ref->{'data'}){
+	    $json_result_ref = $api_result_ref->{'data'};
 	}
 	
+	# Processing data	    
 	if (defined $json_result_ref->{'user_request'} && $json_result_ref->{'total_record_count'}) {
 	    
 	    foreach my $item_ref (@{$json_result_ref->{'user_request'}}){
@@ -2364,6 +2078,100 @@ sub update_sis {
     return $response_ref;
 }
 
+sub send_alma_api_call {
+    my ($self,$arg_ref) = @_;
+
+    # Returns either 'response' for immediate response or 'data' for further processing
+    
+    # Set defaults
+    my $url        = exists $arg_ref->{url}
+        ? $arg_ref->{url}                     : undef;
+
+    my $method     = exists $arg_ref->{method}
+        ? $arg_ref->{method}                  : undef;
+    
+    my $post_data_ref  = exists $arg_ref->{post_data}
+        ? $arg_ref->{post_data}               : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config      = $self->get_config;
+    my $database    = $self->get_database;
+    my $ua          = $self->get_client;
+    my $circ_config = $self->get_circulation_config;
+    my $msg         = $self->get_msg;
+    my $lang        = $self->get('lang');
+
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    my $api_result_ref = {};
+
+    my $http_status_code;
+    
+    if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+	
+	if ($logger->is_debug()){
+	    $logger->debug("Request URL: $url");
+	    $logger->debug("Request POST body data: ".YAML::Dump($post_data_ref));
+
+	}
+
+	my $request = HTTP::Request->new($method, $url, [ 'Accept' => 'application/json', 'Content-Type' => 'application/json' ]);
+	
+	if ($method eq "POST" && defined $post_data_ref){
+	    $request->content(encode_json($post_data_ref));
+	}
+	
+	my $response = $ua->request($request);
+	
+	$api_result_ref->{'http_status_code'} = $response->code();
+
+	if ($logger->is_debug){
+	    $logger->debug("Response Headers: ".$response->headers_as_string);
+	    $logger->debug("Response: ".$response->content);
+	    $logger->debug("Status Code: ".$api_result_ref->{'http_status_code'});
+	}
+	
+	# Concurrent API-Limit reached
+	if ($api_result_ref->{'http_status_code'} == 419){
+	    $api_result_ref->{'response'} = {
+		"code" => $api_result_ref->{'http_status_code'},
+		    "error" => "error",
+		    "error_description" => $msg->maketext("Ihre Anfrage konnte nicht bearbeitet werden, da das Cloud-Bibliothekssystem Alma keine Anfragen mehr annimmt. Die Anfrage konnte nicht bearbeitet werden. Bitte versuchen Sie es später noch einmal."),
+	    };
+	    
+	    return $api_result_ref;
+	}
+	
+	if (!$response->is_success && $response->code != 400) {
+	    $logger->info($response->code . ' - ' . $response->message);
+	    return $api_result_ref;
+	}	    
+	
+	eval {
+	    $api_result_ref->{'data'} = decode_json $response->content;
+	};
+	
+	if ($@){
+	    $logger->error('Decoding error: '.$@);
+	}
+    }
+    
+    # Allgemeine Fehler
+    if (defined $api_result_ref->{'data'}{'errorsExist'} && $api_result_ref->{'data'}{'errorsExist'} eq "true" ){
+	$api_result_ref->{'response'} = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $api_result_ref->{'data'}{'errorList'}{'error'}[0]{'errorMessage'},
+	};
+	
+	return $api_result_ref;
+    }
+
+    return $api_result_ref;
+}
+
 sub connectMemcached {
     my $self = shift;
 
@@ -2409,7 +2217,6 @@ sub disconnectMemcached {
 
     return;
 }
-
 
 1;
 __END__
@@ -2547,10 +2354,6 @@ Die Verlaengerung eines einzelnen Mediums im ILS durchfuehren
 
 Liste der Exemplare mit Ausleihinformationen aus dem ILS holen
 
-=item get_timestamp
-
-Hilfsmethode: Aktuellen Timestamp generieren
-
 =item check_order
 
 Bestellung ueberpruefen
@@ -2558,6 +2361,35 @@ Bestellung ueberpruefen
 =item check_reservation
 
 Vormerkung ueberpruefen
+
+=item make_alma_request
+
+Hilfsmethode: Vereinheitlichtes Erzeugen eines Alma Requests
+fuer Vormerkungen und Bestellungen
+
+=item cancel_alma_request
+
+Hilfsmethode: Vereinheitlichtes Loeschen eines Alma Requests
+fuer Vormerkungen und Bestellungen
+
+=item update_sis
+
+Hilfsmethode: Absetzen eines API Request an die SIS-Anwendung der USB
+Koeln zur Aktualisierung von Informationen dort (E-Mail, Passwort,
+Ausleih-Pin) bzw. ueber die Anwendung parallel in Alma (E-Mail,
+Ausleih-Pin)
+
+=item send_alma_api_call
+
+Hilfsmethode: Absetzen eines Alma API Request. Liefert Hashref-Elment
+'response' fuer bereits vorverarbeitete Response, die direkt als
+Ergebnis zurueckgeliefert werden kann bzw. 'data' fuer vom API
+zurueckgelieferte Daten, die noch individuell prozessiert werden
+muessen
+
+=item get_timestamp
+
+Hilfsmethode: Aktuellen Timestamp generieren
 
 =back
 

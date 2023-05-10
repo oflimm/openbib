@@ -2431,11 +2431,11 @@ msgstr ""
 msgid "Das Mapping ist nicht definiert."
 msgstr ""
 
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1933
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1682
 msgid "Das Medium wurde bestellt."
 msgstr ""
 
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1935
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1684
 msgid "Das Medium wurde vorgemerkt."
 msgstr ""
 
@@ -4131,7 +4131,7 @@ msgstr ""
 msgid "Falls diese Nummer nicht mit der Ausweisnummer übereinstimmt, die auf der Rückseite Ihrer UCCard in Klarschrift und als Barcode aufgedruckt ist, wenden Sie sich bitte an unsere "
 msgstr ""
 
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2226
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1940
 msgid "Falsche Eingabe des aktuellen Passworts."
 msgstr ""
 
@@ -4143,7 +4143,7 @@ msgstr ""
 msgid "Feed abonnieren"
 msgstr ""
 
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2199 ../modules/OpenBib/ILS/Backend/ALMA.pm:2212
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1913 ../modules/OpenBib/ILS/Backend/ALMA.pm:1926
 msgid "Fehlende oder falsche Parameter."
 msgstr ""
 
@@ -4676,7 +4676,7 @@ msgid "Hinweis"
 msgstr ""
 
 #: ../templates/_profile/unikatalog/browse_topics_record_html:73
-msgid "Hinweis: Hier finden Sie nur die Titel, die nach einer Bibliothekssystematik klassifiziert wurden. Recherchieren Sie mit Suchbegriffen, um alle relevanten Titel zu finden!"
+msgid "Hinweis: Hier finden Sie nur die Titel, die nach der Bibliothekssystematik der USB (Basis-Klassifikation) sachlich erschlossen wurden. Recherchieren Sie mit Suchbegriffen, um alle relevanten Titel zu finden!"
 msgstr ""
 
 #: ../templates/_profile/bootstrap/_view/muenzen/searchforms_record_advanced_html:35 ../templates/_profile/sammlungen/_view/muenzenproto/searchforms_record_advanced_html_help:1 ../templates/_profile/sammlungen_yaml4/_view/muenzen/searchforms_record_advanced:46 ../templates/_profile/unikatalog/_database/alma/visible_categories_title_article_supplement:94 ../templates/_profile/unikatalog/_database/alma/visible_categories_title_journal_supplement:24 ../templates/_profile/unikatalog/_database/alma/visible_categories_title_mono_supplement:111 ../templates/_profile/unikatalog/_database/dbis/visible_categories_title:20 ../templates/_profile/unikatalog/_database/uni/visible_categories_title_article_supplement:94 ../templates/_profile/unikatalog/_database/uni/visible_categories_title_journal_supplement:24 ../templates/_profile/unikatalog/_database/uni/visible_categories_title_mono_supplement:111 ../templates/_profile/unikatalog/visible_categories_title_article_supplement:94 ../templates/_profile/unikatalog/visible_categories_title_journal_supplement:24 ../templates/_profile/unikatalog/visible_categories_title_mono_supplement:112 ../templates/_profile/unikatalog/visible_categories_title_supplement:102
@@ -4837,6 +4837,10 @@ msgid ""
 "welcher Identität (=Anmeldeziel) Sie sich anmelden wollen. Zur Auswahl stehen\n"
 "insbesondere Benutzernummern der USB oder der Institute, die eine\n"
 "Online-Ausleihe betreiben."
+msgstr ""
+
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2141
+msgid "Ihre Anfrage konnte nicht bearbeitet werden, da das Cloud-Bibliothekssystem Alma keine Anfragen mehr annimmt. Die Anfrage konnte nicht bearbeitet werden. Bitte versuchen Sie es später noch einmal."
 msgstr ""
 
 #: ../templates/_profile/unikatalog/_view/almauni/users_circulations_loans_html:20 ../templates/_profile/unikatalog/_view/almauni/users_circulations_loans_include:82 ../templates/_profile/unikatalog/users_circulations_loans_html:20 ../templates/_profile/unikatalog/users_circulations_loans_include:82
@@ -5785,7 +5789,7 @@ msgstr ""
 msgid "Konto-Migration"
 msgstr ""
 
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2346
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2060
 msgid "Kontoinformationen erfolgreich aktualisiert."
 msgstr ""
 
@@ -6323,11 +6327,11 @@ msgid "Medien"
 msgstr ""
 
 #: ../templates/_profile/unikatalog/browse_topics_record_html:52
-msgid "Medien im Lesesaal"
+msgid "Medien im USB Lesesaal"
 msgstr ""
 
 #: ../templates/_profile/unikatalog/browse_topics_record_html:40
-msgid "Medien in der Lehrbuchsammlung"
+msgid "Medien in der USB Lehrbuchsammlung"
 msgstr ""
 
 #: ../templates/_profile/unikatalog/browse_topics_record_html:62

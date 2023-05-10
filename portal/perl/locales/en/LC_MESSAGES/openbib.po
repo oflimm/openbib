@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2023-05-09 15:40+0100\n"
+"PO-Revision-Date: 2023-05-10 14:20+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -5971,9 +5971,9 @@ msgid ""
 "mit alle zugehörigen Daten (u.a. Merklisten, Literaturlisten) gelöscht, "
 "nicht aber die Kennung im Bibliothekssystem."
 msgstr ""
-"<em>Delete account</em> only deletes the account in the current discovery"
-" interface including all corresponding data (e.g. list of interest,"
-" literature lists), but not the account in the library system."
+"<em>Delete account</em> only deletes the account in the current discovery "
+"interface including all corresponding data (e.g. list of interest, "
+"literature lists), but not the account in the library system."
 
 #: ../templates/_profile/unikatalog/users_passwords_html:39
 msgid "Bei Anmeldung mit einem Benutzerausweis"
@@ -9115,11 +9115,11 @@ msgstr ""
 msgid "Das Mapping ist nicht definiert."
 msgstr "This mapping is not defined"
 
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1933
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1682
 msgid "Das Medium wurde bestellt."
 msgstr "This medium is ordered by you."
 
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1935
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1684
 msgid "Das Medium wurde vorgemerkt."
 msgstr "This medium is reserved for you."
 
@@ -9536,8 +9536,8 @@ msgid ""
 "Der Kölner Universitätskatalog ist ein Dienst der Universitäts- und "
 "Stadtbibliothek Köln"
 msgstr ""
-"The Cologne University Catalogue is a service ofUniversitäts- und"
-" Stadtbibliothek Köln"
+"The Cologne University Catalogue is a service ofUniversitäts- und "
+"Stadtbibliothek Köln"
 
 #: ../templates/_profile/bootstrap5/info_help:574
 #: ../templates/_profile/kug_yaml4/info_help:497
@@ -10709,8 +10709,8 @@ msgid ""
 "Dieser Titel ist über den Buchhandel lieferbar: Sie bestellen,  wir bezahlen "
 "und liefern! Bitte melden Sie sich mit Ihrer Benutzernummer an."
 msgstr ""
-"This title is available through the bookstore: you order, we pay and deliver!"
-" Please log in with your user number."
+"This title is available through the bookstore: you order, we pay and "
+"deliver! Please log in with your user number."
 
 #: ../templates/_profile/unikatalog/titles_record_html_actions:400
 msgid "Dieser Titel wurde noch nicht getaggt"
@@ -12334,8 +12334,8 @@ msgid ""
 "Eine Neuanschaffung ist möglich, wenn Ihr Benutzerausweis mit folgenden "
 "Buchstaben beginnet: A, B, C, K, R, S, T, V und W."
 msgstr ""
-"An acquisition is possible provided your user number starts with the"
-" following letters: A, B, C, K, R, S, T, V and W."
+"An acquisition is possible provided your user number starts with the "
+"following letters: A, B, C, K, R, S, T, V and W."
 
 #: ../modules/OpenBib/Handler/PSGI/Users/Circulations/Orders.pm:378
 msgid ""
@@ -15019,7 +15019,7 @@ msgstr ""
 "If this number does not correspond to the ID number printed on the back of "
 "your UCCard in clear text and as a barcode, please contact our"
 
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2226
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1940
 msgid "Falsche Eingabe des aktuellen Passworts."
 msgstr "Wrong password."
 
@@ -15045,8 +15045,8 @@ msgstr ""
 msgid "Feed abonnieren"
 msgstr "Subscribe to feed"
 
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2199
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2212
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1913
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1926
 msgid "Fehlende oder falsche Parameter."
 msgstr "Missing or wrong parameters."
 
@@ -17162,12 +17162,13 @@ msgstr "Hint"
 
 #: ../templates/_profile/unikatalog/browse_topics_record_html:73
 msgid ""
-"Hinweis: Hier finden Sie nur die Titel, die nach einer Bibliothekssystematik "
-"klassifiziert wurden. Recherchieren Sie mit Suchbegriffen, um alle "
-"relevanten Titel zu finden!"
+"Hinweis: Hier finden Sie nur die Titel, die nach der Bibliothekssystematik "
+"der USB (Basis-Klassifikation) sachlich erschlossen wurden. Recherchieren "
+"Sie mit Suchbegriffen, um alle relevanten Titel zu finden!"
 msgstr ""
 "Note: Here you will find only the titles that have been classified according "
-"to a library system. Search with keywords to find all relevant titles!"
+"to the library system of the USB (Basis-Klassifikation). Search with "
+"keywords to find all relevant titles!"
 
 #: ../templates/_profile/bootstrap/_view/muenzen/searchforms_record_advanced_html:35
 #: ../templates/_profile/sammlungen/_view/muenzenproto/searchforms_record_advanced_html_help:1
@@ -17896,6 +17897,15 @@ msgstr ""
 "in the OpenBib-navigation bar. You will be directed to the login form and "
 "can decide which identity to log in under. You can select the University "
 "Library (USB) or institutes that conduct online reservations."
+
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2141
+msgid ""
+"Ihre Anfrage konnte nicht bearbeitet werden, da das Cloud-Bibliothekssystem "
+"Alma keine Anfragen mehr annimmt. Die Anfrage konnte nicht bearbeitet "
+"werden. Bitte versuchen Sie es später noch einmal."
+msgstr ""
+"Your request couldn't be processed, because the Cloud-Library System Alma "
+"currently rejects any requests. Your request failed. Please try again later."
 
 #: ../templates/_profile/unikatalog/_view/almauni/users_circulations_loans_html:20
 #: ../templates/_profile/unikatalog/_view/almauni/users_circulations_loans_include:82
@@ -22869,7 +22879,7 @@ msgstr "Move login"
 msgid "Konto-Migration"
 msgstr "Login migration"
 
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2346
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2060
 msgid "Kontoinformationen erfolgreich aktualisiert."
 msgstr "Successfully updated account information."
 
@@ -25860,12 +25870,12 @@ msgid "Medien"
 msgstr "Media"
 
 #: ../templates/_profile/unikatalog/browse_topics_record_html:52
-msgid "Medien im Lesesaal"
-msgstr "Media in the reading room"
+msgid "Medien im USB Lesesaal"
+msgstr "Media in the USB reading room"
 
 #: ../templates/_profile/unikatalog/browse_topics_record_html:40
-msgid "Medien in der Lehrbuchsammlung"
-msgstr "Media in the Textbook Collection"
+msgid "Medien in der USB Lehrbuchsammlung"
+msgstr "Media in the USB Textbook Collection"
 
 #: ../templates/_profile/unikatalog/browse_topics_record_html:62
 msgid "Medien nach Bibliothekssystematik"

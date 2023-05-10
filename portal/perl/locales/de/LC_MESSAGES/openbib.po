@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2023-05-09 15:45+0100\n"
+"PO-Revision-Date: 2023-05-10 14:20+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -9195,11 +9195,11 @@ msgstr ""
 msgid "Das Mapping ist nicht definiert."
 msgstr "Das Mapping ist nicht definiert."
 
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1933
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1682
 msgid "Das Medium wurde bestellt."
 msgstr "Das Medium wurde bestellt."
 
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1935
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1684
 msgid "Das Medium wurde vorgemerkt."
 msgstr "Das Medium wurde vorgemerkt."
 
@@ -15201,7 +15201,7 @@ msgstr ""
 "Rückseite Ihrer UCCard in Klarschrift und als Barcode aufgedruckt ist, "
 "wenden Sie sich bitte an unsere "
 
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2226
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1940
 msgid "Falsche Eingabe des aktuellen Passworts."
 msgstr "Falsche Eingabe des aktuellen Passworts."
 
@@ -15228,8 +15228,8 @@ msgstr ""
 msgid "Feed abonnieren"
 msgstr "Feed abonnieren"
 
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2199
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2212
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1913
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:1926
 msgid "Fehlende oder falsche Parameter."
 msgstr "Fehlende oder falsche Parameter."
 
@@ -17364,13 +17364,13 @@ msgstr "Hinweis"
 
 #: ../templates/_profile/unikatalog/browse_topics_record_html:73
 msgid ""
-"Hinweis: Hier finden Sie nur die Titel, die nach einer Bibliothekssystematik "
-"klassifiziert wurden. Recherchieren Sie mit Suchbegriffen, um alle "
-"relevanten Titel zu finden!"
+"Hinweis: Hier finden Sie nur die Titel, die nach der Bibliothekssystematik "
+"der USB (Basis-Klassifikation) sachlich erschlossen wurden. Recherchieren "
+"Sie mit Suchbegriffen, um alle relevanten Titel zu finden!"
 msgstr ""
-"Hinweis: Hier finden Sie nur die Titel, die nach einer Bibliothekssystematik "
-"klassifiziert wurden. Recherchieren Sie mit Suchbegriffen, um alle "
-"relevanten Titel zu finden!"
+"Hinweis: Hier finden Sie nur die Titel, die nach der Bibliothekssystematik "
+"der USB (Basis-Klassifikation) sachlich erschlossen wurden. Recherchieren "
+"Sie mit Suchbegriffen, um alle relevanten Titel zu finden!"
 
 #: ../templates/_profile/bootstrap/_view/muenzen/searchforms_record_advanced_html:35
 #: ../templates/_profile/sammlungen/_view/muenzenproto/searchforms_record_advanced_html_help:1
@@ -18107,6 +18107,16 @@ msgstr ""
 "stehen\n"
 "insbesondere Benutzernummern der USB oder der Institute, die eine\n"
 "Online-Ausleihe betreiben."
+
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2141
+msgid ""
+"Ihre Anfrage konnte nicht bearbeitet werden, da das Cloud-Bibliothekssystem "
+"Alma keine Anfragen mehr annimmt. Die Anfrage konnte nicht bearbeitet "
+"werden. Bitte versuchen Sie es später noch einmal."
+msgstr ""
+"Ihre Anfrage konnte nicht bearbeitet werden, da das Cloud-Bibliothekssystem "
+"Alma keine Anfragen mehr annimmt. Die Anfrage konnte nicht bearbeitet "
+"werden. Bitte versuchen Sie es später noch einmal."
 
 #: ../templates/_profile/unikatalog/_view/almauni/users_circulations_loans_html:20
 #: ../templates/_profile/unikatalog/_view/almauni/users_circulations_loans_include:82
@@ -23156,7 +23166,7 @@ msgstr "Konto migrieren"
 msgid "Konto-Migration"
 msgstr "Konto-Migration"
 
-#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2346
+#: ../modules/OpenBib/ILS/Backend/ALMA.pm:2060
 msgid "Kontoinformationen erfolgreich aktualisiert."
 msgstr "Kontoinformationen erfolgreich aktualisiert."
 
@@ -26152,12 +26162,12 @@ msgid "Medien"
 msgstr "Medien"
 
 #: ../templates/_profile/unikatalog/browse_topics_record_html:52
-msgid "Medien im Lesesaal"
-msgstr "Medien im Lesesaal"
+msgid "Medien im USB Lesesaal"
+msgstr "Medien im USB Lesesaal"
 
 #: ../templates/_profile/unikatalog/browse_topics_record_html:40
-msgid "Medien in der Lehrbuchsammlung"
-msgstr "Medien in der Lehrbuchsammlung"
+msgid "Medien in der USB Lehrbuchsammlung"
+msgstr "Medien in der USB Lehrbuchsammlung"
 
 #: ../templates/_profile/unikatalog/browse_topics_record_html:62
 msgid "Medien nach Bibliothekssystematik"

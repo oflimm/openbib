@@ -37,7 +37,7 @@
 <h3 class="mb-4">[% user.get_topic({ id = topicid }).name %]</h3>
 
 [% IF usblbs_topics.size > 0 %]
-<h4>[% msg.maketext("Medien in der Lehrbuchsammlung") %] </h4>
+<h4>[% msg.maketext("Medien in der USB Lehrbuchsammlung") %] </h4>
 
 <ul class="list-group mb-3">
 [% FOREACH classification IN usblbs_topics.sort %]
@@ -49,7 +49,7 @@
 [% END %]
 
 [% IF usbls_topics.size > 0 %]
-<h4>[% msg.maketext("Medien im Lesesaal") %]</h4>
+<h4>[% msg.maketext("Medien im USB Lesesaal") %]</h4>
 
 <ul class="list-group mb-3">
 [% FOREACH classification IN usbls_topics.sort %]
@@ -70,7 +70,7 @@
 <li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/bks.html?l=[% lang %]">[% msg.maketext("alle Fachgebiete") %]</a></li>
 </ul>
 
-<div class="alert alert-info">[% msg.maketext("Hinweis: Hier finden Sie nur die Titel, die nach einer Bibliothekssystematik klassifiziert wurden. Recherchieren Sie mit Suchbegriffen, um alle relevanten Titel zu finden!") %]
+<div class="alert alert-info">[% msg.maketext("Hinweis: Hier finden Sie nur die Titel, die nach der Bibliothekssystematik der USB (Basis-Klassifikation) sachlich erschlossen wurden. Recherchieren Sie mit Suchbegriffen, um alle relevanten Titel zu finden!") %]
 </div>
 
 <p />

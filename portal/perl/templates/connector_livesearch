@@ -1,0 +1,37 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_availability
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Verfuegbarkeitsinformationen
+#
+#######################################################################
+-%]
+[%-
+
+resultlist = [];
+
+FOREACH item IN recordlist.to_serialized_reference;
+  IF item.fields.${'P0800'}.first.content.defined;
+    resultlist.push(item.fields.${'P0800'}.first.content);
+  ELSIF item.fields.${'C0800'}.first.content.defined;
+    resultlist.push(item.fields.${'C0800'}.first.content);
+  ELSIF item.fields.${'S0800'}.first.content.defined;
+    resultlist.push(item.fields.${'S0800'}.first.content);
+  ELSIF item.fields.${'T0331'}.first.content.defined;
+    resultlist.push(item.fields.${'T0331'}.first.content);
+  END;
+
+
+END;
+
+# USE dumper;dumper.dump(recordlist.to_serialized_reference);
+# USE dumper;dumper.dump(resultlist);
+
+-%]
+
+[% resultlist.unique.join("\n")%]

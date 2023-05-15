@@ -41,6 +41,10 @@
 </table>
 </div>
 
+[% IF fees.amount %]
+<p>[% msg.maketext("Gebühren gesamt:") %] <span style="color:red;font-size: 1.2em;">[% fees.amount %]</span></p>
+[% END %]
+
 <!-- Todo: epc QR-Code fuer automatische Uebernahme der Zahlungsinformationen in Ueberweisung -->
 
 <p/ >

@@ -23,13 +23,14 @@
 <div class="table-responsive">
 <table class="table table-striped ">
 <thead>
-<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Grund") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Gebühr") %]</th><th>[% msg.maketext("Entstehungsdatum") %]</th></tr>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Grund") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Gebühr") %]</th><th>[% msg.maketext("Entstehungsdatum") %]</th></tr>
 </thead>
 <tbody>
 [%- FOREACH fee = fees.items -%]
 
 <tr>
 <td><i>[% fee.about %]</i></td>
+<td>[% fee.label %]</td>
 <td><i>[% fee.reason %]</i>[% IF fee.reason && fee.item %], [% END %][% fee.item %]</td>
 <td><i>[% fee.department.about %]</i></td>
 <td><span style="color:red">[% fee.amount %]</span></td>

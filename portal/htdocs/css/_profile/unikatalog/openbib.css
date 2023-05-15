@@ -1826,6 +1826,18 @@
     .ob-searchform_bottom_left {
 	padding: 5px;
     }
+
+    .ob-alphabetic_index li.nav-item a.nav-link.inturl {
+	font-size: 1.2em;
+	color: #000;
+	text-decoration: none;
+    }
+    
+    .ob-alphabetic_index li.nav-item.active a.nav-link.inturl {
+	font-weight: bold;
+	font-size: 1.2em;
+    }
+
 }
 
 .ym-fbox-button {

@@ -148,10 +148,14 @@
 
   <!-- START Bootstrap-Cookie-Alert -->
   <div class="alert text-center cookiealert ob-bg-secondary" role="alert">
-    <b>Um unsere Webseite für Sie optimal zu gestalten und fortlaufend verbessern zu können, verwenden wir Cookies. Durch die weitere Nutzung der Webseite stimmen Sie der Verwendung von Cookies zu. Weitere Informationen zu Cookies erhalten Sie in unserer <a class="inturl" href="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.html?l=[% lang %]">Datenschutzerklärung</a>. Unser Impressum finden Sie <a class="inturl" href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">hier</a>.</b>
+[% IF lang == 'en' %]
+<b>In order for this website to be used by you and to function properly, we need to use cookies. By continuing to use the website, you acknowledge this. For more information about cookies, please see our <a class="inturl" href="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.html?l=[% lang %]">privacy policy</a>. You can find our imprint <a class="inturl" href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">here<a/>.
+[% ELSE %]
+    <b>Damit diese Webseite von Ihnen genutzt werden kann und funktioniert müssen wir Cookies einsetzen. Durch die weitere Nutzung der Webseite nehmen Sie dies zur Kenntnis. Weitere Informationen zu Cookies erhalten Sie in unserer <a class="inturl" href="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.html?l=[% lang %]">Datenschutzerklärung</a>. Unser Impressum finden Sie <a class="inturl" href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">hier</a>.</b>
+[% END %]    
 
       <button type="button" class="btn btn-primary btn-sm acceptcookies mt-3 ob-bg" aria-label="Close">
-        Ich stimme der Verwendung von Cookies zu.
+        [% msg.maketext("Ich habe verstanden") %]
       </button>
   </div>
   <!-- END Bootstrap-Cookie-Alert -->

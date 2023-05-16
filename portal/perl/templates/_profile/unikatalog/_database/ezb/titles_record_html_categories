@@ -603,6 +603,7 @@ END;
 # USE dumper;dumper.dump(licensed_timespans);
 
 IF licensed_timespans.size == 1;
+  # Genau ein Zeitraum: Lizensierter Zeitraum nur als Text, Button mit Link zur Zeitschrift unten
   FOREACH timespan IN licensed_timespans;
     IF timespan.label ;
 	 thiscontent = "<img class=\"ps-2\" src=\"${timespan.icon}\" alt=\"${warpto_desc} ${ampel}\"/> <span class=\"ps-2 fw-bold\">${timespan.label}</span>";
@@ -623,6 +624,7 @@ IF licensed_timespans.size == 1;
     
   END;
 ELSIF licensed_timespans > 1;
+  # Mehrere Zeitraeume: Lizensierte Zeitraeume mit Button mit Link zur Zeitschrift und Text inline. Kein Button unten
   FOREACH timespan IN licensed_timespans;
     IF timespan.label ;
 	 thiscontent = "<a class=\"btn btn-primary mb-2\" href=\"${timespan.warpto_link}\" target=\"_blank\"><i class=\"pe-2 fas fa-download\"></i> <span class=\"d-none d-sm-inline\">${warpto_desc}</span><img class=\"ps-2\" src=\"${timespan.icon}\" alt=\"${warpto_desc} ${ampel}\"/></a> <span class=\"ps-2 fw-bold\">${timespan.label}</span>";

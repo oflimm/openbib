@@ -42,15 +42,15 @@
   '38-SAB':                      # Beispiel: ausleihbar (vor Ort) MSSID: 991020012009706476
     'order': 0
     'loan': 1
-    'reservation': 0
-  '38-LBS':                      # Beispiel: ausleihbar (vor Ort) bzw. vormerkbar MSSID: 991023368469706476
-    'order': 0
-    'loan': 1
     'reservation': 1
     'pickup_locations':
       - type: 'LIBRARY'
         id: 'Abholregal'
-        desc: 'USB Hauptabteilung: Abholregale'
+        desc: 'USB Hauptabteilung: Abholregale'    
+  '38-LBS':                      # Beispiel: ausleihbar (vor Ort) bzw. vormerkbar MSSID: 991023368469706476
+    'order': 0
+    'loan': 1
+    'reservation': 0
 '38-HLS':
   '38-HLS-MAG':
     'order': 1

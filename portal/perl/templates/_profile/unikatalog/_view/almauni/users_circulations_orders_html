@@ -52,7 +52,13 @@
 [% order.label %]
 [% END %]
 </td>
-<td>[% order.department.about %][% IF order.pickup_location.about %] / [% IF order.pickup_location.about.match('Universitäts- und Stadtbibliothek Köln') %][% msg.maketext("Abholregale") %][% ELSE %][% order.pickup_location.about %][% END %][% END %]</td>
+<td>[% order.department.about %][% IF order.pickup_location.about %] / [% IF order.pickup_location.about.match('Universitäts- und Stadtbibliothek Köln') %][% msg.maketext("Abholregale") %][% ELSE %][% order.pickup_location.about %][% END %][% END %]
+[% IF order.status == 'IN_PROCESS' %]
+<p><span style="color: red;"><i class="fas fa-hourglass-start"></i> [% msg.maketext("In Bearbeitung") %]</span></p>
+[% ELSIF order.status == 'ON_HOLD_SHELF' %]
+<p><span style="color: green;"><i class="fas fa-hourglass-end"></i> [% msg.maketext("Abholbereit") %]</span></p>
+[% END %]
+</td>
 <td>[% order.starttime %]</td>
 <td>
 [% IF is_ill %]

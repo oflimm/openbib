@@ -58,75 +58,37 @@
      END ;
 
      # Fix: Greinstr. wird auch bei HF ausgegeben ( 5 == FB Chemie )
-     IF thiscirculation.department_id != 5 && availability_info.match('(Fachbibl. Chemie, Greinstr. 4)');
+     IF thiscirculation.department_id != "38-507" && availability_info.match('(Fachbibl. Chemie, Greinstr. 4)');
         availability_info = availability_info.replace('\(Fachbibl. Chemie, Greinstr. 4\)','');
      END;
 
-     IF standort.match('Handapp.');
-       IF thiscirculation.department_id.match('^(0|6|10|15)$');
-          standort = "Handapp." ; #.replace('^(.*Handapp\.).*','$1'); # Handapp. der Hauptabteilung und FBs: Namen verbergen, z.B. ID=6445402
-       ELSIF thiscirculation.department_id.match('^20$');
-          standort = "KMB / Handapp.";
-        END;
-     END;
+     # IF standort.match('Handapp.');
+     #   IF thiscirculation.department_id.match('^(38|38-101|38-132|38-418)$');
+     #      standort = "Handapp." ; #.replace('^(.*Handapp\.).*','$1'); # Handapp. der Hauptabteilung und FBs: Namen verbergen, z.B. ID=6445402
+     #   ELSIF thiscirculation.department_id.match('^20$');
+     #      standort = "KMB / Handapp.";
+     #    END;
+     # END;
 
      # Bestimmung department_url
      library_isil = "";
 
-     IF standort.match('Hauptabt.') ;
+     IF thiscirculation.department_id.match('^(38|38-HLS)$');
        library_isil = "DE-38";
-     ELSIF standort.match('Humanwiss. Abteilung') ;
+     ELSIF thiscirculation.department_id.match('^38-HWA$') ;
        library_isil = "DE-38-HWA";     
      ELSIF thiscirculation.department_id.match('^38-[0-9][0-9][0-9]');
        kuerzel = thiscirculation.department_id.match("^38-([0-9][0-9][0-9])").first ;
        IF kuerzel ;
           library_isil = "DE-38-${kuerzel}";
        END ;
-     ELSIF standort.match('Bibliothek für Informatik und Wirtschaftsinformatik');
-       library_isil = "DE-38-526";
-     ELSIF standort.match('VWL');
-       library_isil = "DE-38-101";
-     ELSIF standort.match('HF-Bibliothek');
-       library_isil = "DE-38-307";
-     ELSIF standort.match('Archäologisches Institut');
-       library_isil = "DE-38-427";
-     ELSIF standort.match('Forschungsstelle Afrika');
-       library_isil = "DE-38-438";
-     ELSIF standort.match('Institut für Ur- u. Frühgeschichte');
-       library_isil = "DE-38-426";
-     ELSIF standort.match('China');
-       library_isil = "DE-38-450";
-     ELSIF standort.match('Japanologie');
-       library_isil = "DE-38-459";
-     ELSIF standort.match('Slavistik');
-       library_isil = "DE-38-418";
-     ELSIF standort.match('Soziologie');
-       library_isil = "DE-38-132";
-     ELSIF standort.match('Theaterwiss. Sammlung');
-       library_isil = "DE-38-429";
-     ELSIF standort.match('Inst. für Medienkultur u. Theater');
-       library_isil = "DE-38-448";
-     ELSIF standort.match('Philosophisches Seminar');
-       library_isil = "DE-38-401";
-     ELSIF standort.match('Fachbibliothek Chemie');
-       library_isil = "DE-38-507";
      END ;
 
-     IF standort.match('Historisches Institut \/ Osteuropäische Geschichte');
-       library_isil = "DE-38-425";
-     ELSIF standort.match('Kunstgeschichte \/ Architekturgeschichte');
-       library_isil = "DE-38-445";
-     ELSIF standort.match('Altertumskunde \/ Byzantinistik');
-       library_isil = "DE-38-460";
-    ELSIF standort.match('Altertumskunde \/ Mittellatein und Neulatein');
-       library_isil = "DE-38-461";
-     END;
-
-     IF database.match('inst[0-9][0-9][0-9]') && NOT database.match('uni');
-       library_isil = database.replace('inst','');
-       library_isil = "DE-38-${library_isil}";
-       thiscirculation.department.id = 0;
-     END;
+     # IF database.match('inst[0-9][0-9][0-9]') && NOT database.match('uni');
+     #   library_isil = database.replace('inst','');
+     #   library_isil = "DE-38-${library_isil}";
+     #   thiscirculation.department.id = 0;
+     # END;
 
      
      IF library_isil ;
@@ -206,21 +168,22 @@
         title = "${title} (${super_title})";
      END;
 
+     # Preprocessing location_mark
+     thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','');
+
 -%]
 <tr><td><strong>[% standort_with_url %][%# USE dumper;dumper.dump(thiscirculation) %]</strong></td>
 <td><a href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] [% thiscirculation.remark | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur" data-bs-toggle="modal" data-bs-target="#qrcodeModal" data-bs-modaltitle="QR-Code" data-bs-modalurl="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] [% thiscirculation.remark | uri %][% END %]"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
 [%-
 
-thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','');
-
 -%]
 <td><strong>[% thiscirculation.location_mark %]</strong>
 [% IF thiscirculation.remark %] [% thiscirculation.remark %][% END %]
 [% IF thiscirculation.boundcollection == "Y" %]<img src="/USB/img/bindeeinheit.gif" width="28px" height="26px" title="Dieser Titel ist Teil einer Bindeeinheit, die verschiedene Medien zusammenfasst." alt="Bindeeinheit" style="vertical-align:middle;" />[% END %]
-[% IF NOT thiscirculation.department_id.match('^(19|20|38-204|38-212|38-213|38-214|38-217|38-219|38-223|38-228|38-230|38-308|38-319|38-321|38-325|38-328|38-403|38-405|38-420|38-422|38-423|38-425|38-431|38-134|38-108|38-125|38-222|38-465|38-119|38-314|38-315|38-317)$') # Mediennummer fuer Zweigstellen 19, 20, 405, ... immer unterdruecken %]
-[%   IF thiscirculation.location_mark != thiscirculation.holdingid # Anzeige der Mediennummer fuer USB-Treffer, falls ungleich Signatur %] 
+[% IF NOT thiscirculation.department_id.match('^(38-201|KN3|38-204|38-212|38-213|38-214|38-217|38-219|38-223|38-228|38-230|38-308|38-319|38-321|38-325|38-328|38-403|38-405|38-420|38-422|38-423|38-425|38-431|38-134|38-108|38-125|38-222|38-465|38-119|38-314|38-315|38-317)$') # Mediennummer fuer Zweigstellen 19, 20, 405, ... immer unterdruecken %]
+[%   IF thiscirculation.location_mark != thiscirculation.barcode # Anzeige der Mediennummer fuer USB-Treffer, falls ungleich Signatur %] 
 [%     IF NOT thiscirculation.location_mark.match('^(JUR|BWL|VERSW)$') %]
-<br /><span style="color:silver">[% thiscirculation.barcode %]</span>
+<br /><span class="fst-italic" aria-label="[% msg.maketext("Mediennummer") %]" title="[% msg.maketext("Mediennummer") %]"><i class="fas fa-barcode pe-2"></i>[% thiscirculation.barcode %]</span>
 [%     END %]
 [%   END %]
 [% END %]

@@ -185,7 +185,7 @@
                 <mods:issuance>monographic</mods:issuance>
                 [%- type_is_set = "true" %]
                 [%- END %]
-                [%- IF (normdata.${"T0036"}.first.content == "p" || normdata.${"T0036"}.first.content =="z") &&
+                [%- IF (normdata.${"T0036"}.first.content == "p" || normdata.${"T0036"}.first.content =="z" || normdata.${"T0036"}.first.content =="r") &&
                 type_is_set == 'false' %]
                 <mods:issuance>serial</mods:issuance>
                 [%- type_is_set = "true" %]
@@ -230,9 +230,11 @@
                 [%- END %]
             </mods:originInfo>
             [%- IF normdata.${"T0036"}.first.content == "p"%]
-            <mods:genre>Zeitschrift</mods:genre>
+            <mods:genre>periodical</mods:genre>
+            [%- ELSIF normdata.${"T0036"}.first.content == "r" %]
+            <mods:genre>monographic series</mods:genre>
             [%- ELSIF normdata.${"T0036"}.first.content == "z" %]
-            <mods:genre>Zeitung</mods:genre>
+            <mods:genre>newspaper</mods:genre>
             [%- ELSIF super.fields.${'0036'}.first.content == "p" && normdata.${"T0089"}.first.content %]
             <mods:genre>Zeitschriftenband</mods:genre>
             [%- ELSIF super.fields.${'0036'}.first.content == "z" && normdata.${"T0089"}.first.content %]
@@ -307,50 +309,53 @@
             [%- IF all_super %]
             [%- FOREACH super_item IN all_super %]
             [%- super_data = from_json(super_item.content);%]
-            [%- IF super_data.fields.${'0036'}.first.content =="r" || normdata.${"T0036"} == "s" %]
-            <mods:relatedItem type="series">
-                <mods:recordInfo>
-                    <mods:recordIdentifier source="DE-38">[%- super_data.id %]</mods:recordIdentifier>
-                </mods:recordInfo>
+            [%- IF loop.first -%]
+              [%- IF super_data.fields.${'0036'}.first.content =="n" || super_data.fields.${'0036'}.first.content =="p"
+              || super_data.fields.${'0036'}.first.content =="z" || super_data.fields.${'0036'}.first.content =="t"
+              || super_data.fields.${'0036'}.first.content =="r" %]
+                <mods:relatedItem type="host">
+                    <mods:recordInfo>
+                        <mods:recordIdentifier source="DE-38">[%- super_data.id %]</mods:recordIdentifier>
+                    </mods:recordInfo>
                 [%- IF super_data.fields.${'0331'} %]
-                <mods:titleInfo>
-                    <mods:title>[%- super_data.fields.${'0331'}.first.content %]</mods:title>
-                </mods:titleInfo>
+                    <mods:titleInfo>
+                        <mods:title>[%- super_data.fields.${'0331'}.first.content %]</mods:title>
+                    </mods:titleInfo>
                 [%- END %]
-                <mods:part>
+                </mods:relatedItem>
+                [%- IF normdata.${"T0090"} || normdata.${"T0089"} %]
+                    <mods:part order='[%- normdata.${"T0024"}.first.content %]'>
                         <mods:detail type="volume">
-                        [%- IF normdata.${"T0456"} %]    
-                        <mods:number>[% normdata.${"T0456"}.first.content %]</mods:number>
-                        [%- ELSIF normdata.${"T0455"} %]  
-                        <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
-                        [%- END %]
-                        </mods:detail>
+                            [%- IF normdata.${"T0089"} %]
+                            <mods:number>[% normdata.${"T0089"}.first.content %]</mods:number>
+                            [%- ELSIF normdata.${"T0455"} %]
+                            <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
+                            [%- END %]
+                    </mods:detail>
                     </mods:part>
-              </mods:relatedItem>
-            [%- ELSIF super_data.fields.${'0036'}.first.content =="n" || super_data.fields.${'0036'}.first.content =="p"
-            || super_data.fields.${'0036'}.first.content =="z" || super_data.fields.${'0036'}.first.content =="t" %]
-            <mods:relatedItem type="host">
-                <mods:recordInfo>
-                    <mods:recordIdentifier source="DE-38">[%- super_data.id %]</mods:recordIdentifier>
-                </mods:recordInfo>
-                [%- IF super_data.fields.${'0331'} %]
-                <mods:titleInfo>
-                    <mods:title>[%- super_data.fields.${'0331'}.first.content %]</mods:title>
-                </mods:titleInfo>
                 [%- END %]
-            </mods:relatedItem>
-            [%- IF loop.first %]
-            [%- IF normdata.${"T0090"} || normdata.${"T0089"} %]
-            <mods:part order='[%- normdata.${"T0024"}.first.content %]'>
-                <mods:detail type="volume">
-                    [%- IF normdata.${"T0089"} %]
-                    <mods:number>[% normdata.${"T0089"}.first.content %]</mods:number>
-                    [%- ELSIF normdata.${"T0455"} %]
-                    <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
-                    [%- END %]
-                </mods:detail>
-            </mods:part>
-            [%- END %]
+            [% ELSE %]
+                [%- IF super_data.fields.${'0036'}.first.content =="r"%]
+                    <mods:relatedItem type="series">
+                        <mods:recordInfo>
+                            <mods:recordIdentifier source="DE-38">[%- super_data.id %]</mods:recordIdentifier>
+                        </mods:recordInfo>
+                        [%- IF super_data.fields.${'0331'} %]
+                        <mods:titleInfo>
+                            <mods:title>[%- super_data.fields.${'0331'}.first.content %]</mods:title>
+                        </mods:titleInfo>
+                        [%- END %]
+                        <mods:part>
+                                <mods:detail type="volume">
+                                [%- IF normdata.${"T0456"} %]    
+                                <mods:number>[% normdata.${"T0456"}.first.content %]</mods:number>
+                                [%- ELSIF normdata.${"T0455"} %]  
+                                <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
+                                [%- END %]
+                                </mods:detail>
+                        </mods:part>
+                    </mods:relatedItem>
+                [%- END -%]
             [%- END %]
             [%- END %]
             [%- END %]

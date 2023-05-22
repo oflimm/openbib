@@ -3643,6 +3643,7 @@ sub delete_locationinfo {
 
     eval {
         $locationinfo->databaseinfos->update({ locationid => \'NULL' });
+        $locationinfo->view_locations->delete;
         $locationinfo->locationinfo_fields->delete;
         $locationinfo->delete;
     };

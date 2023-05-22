@@ -10,7 +10,7 @@
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Informationen zum Unikatalog')
+	     desc = msg.maketext('Tipps zur Suche')
 	     url  = '#'
 	     current = 1
 	  }

@@ -165,13 +165,15 @@
     <div class="row">    
         <div class="col">
             <div class="input-group">
-                <input required="required" id="to_focus" class="form-control" type="search" name="fs" value="" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Bücher, E-Medien, Aufsätze &amp; mehr") %]" />
+                <input required="required" id="to_focus" class="form-control" type="search" name="fs" value="" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Bücher, E-Medien, Aufsätze &amp; mehr") %]"  hx-get="[% path_prefix%]/connector/livesearch" hx-trigger="keyup changed delay:800ms, q" hx-target="#livesearch"  />
                 <span class="input-group-btn ps-1">
                     <button class="btn btn-primary" type="submit" aria-label="[% msg.maketext("Anfrage abschicken") %]"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
                     <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>
                 </span>
             </div>
        </div>
+    </div>
+    <div id="livesearch"  style="position: absolute; top: 3.5em; z-index:1000;">
     </div>
     <div class="row pt-1 pb-0">     
       <div class="col collapse d-md-block p-0" id="search_options">
@@ -186,7 +188,7 @@
 	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
 	   </li>
             <li class="list-group-item pe-1 pt-3" style="border: none" >
-	     <a href="[% path_prefix %]/[% config.get('info_loc') %]/help.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/help.include?l=[% lang %]" title="[% msg.maketext("Hilfe") %]"><i class="fas fa-question-circle"></i></a>
+	     <a href="[% path_prefix %]/[% config.get('info_loc') %]/tipps.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/tipps.include?l=[% lang %]" title="[% msg.maketext("Hilfe") %]"><i class="fas fa-question-circle"></i></a>
 	   </li>
          </ul>
     </div><!-- col -->

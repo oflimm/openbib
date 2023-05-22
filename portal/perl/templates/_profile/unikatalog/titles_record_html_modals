@@ -9,7 +9,7 @@ function copy_to_clipboard(formatid) {
 } 
 </script>
 
-<div class="modal fade" id="titleSaveModal" tabindex="-1" role="dialog" aria-labelledby="titleSaveModalLabel" aria-hidden="true">
+<div class="modal fade" id="titleSaveModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="titleSaveModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
 	<form method="GET" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/save.html">
@@ -51,7 +51,7 @@ function copy_to_clipboard(formatid) {
       </div>
   </div>
 </div>
-<div class="modal fade" id="apaModal" tabindex="-1" role="dialog" aria-labelledby="apaModalLabel" aria-hidden="true">
+<div class="modal fade" id="apaModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="apaModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -78,7 +78,7 @@ function copy_to_clipboard(formatid) {
     </div>
   </div>
 </div>
-<div class="modal fade" id="harvardModal" tabindex="-1" role="dialog" aria-labelledby="harvardModalLabel" aria-hidden="true">
+<div class="modal fade" id="harvardModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="harvardModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -104,7 +104,7 @@ function copy_to_clipboard(formatid) {
     </div>
   </div>
 </div>
-<div class="modal fade" id="mlaModal" tabindex="-1" role="dialog" aria-labelledby="mlaModalLabel" aria-hidden="true">
+<div class="modal fade" id="mlaModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="mlaModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -130,7 +130,7 @@ function copy_to_clipboard(formatid) {
     </div>
   </div>
 </div>
-<div class="modal fade" id="bibtexModal" tabindex="-1" role="dialog" aria-labelledby="bibtexModalLabel" aria-hidden="true">
+<div class="modal fade" id="bibtexModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="bibtexModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -150,7 +150,7 @@ function copy_to_clipboard(formatid) {
     </div>
   </div>
 </div>
-<div class="modal fade" id="endnoteModal" tabindex="-1" role="dialog" aria-labelledby="endnoteModalLabel" aria-hidden="true">
+<div class="modal fade" id="endnoteModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="endnoteModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -170,7 +170,7 @@ function copy_to_clipboard(formatid) {
     </div>
   </div>
 </div>
-<div class="modal fade" id="qrcodeModal" tabindex="-1" role="dialog" aria-labelledby="qrcodeModalLabel" aria-hidden="true">
+<div class="modal fade" id="qrcodeModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="qrcodeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">

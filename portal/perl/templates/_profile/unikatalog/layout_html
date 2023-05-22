@@ -20,7 +20,7 @@
 
 [%   PROCESS common/subtemplate name="litlists_html_modals" %]
 
-<div class="modal fade" id="genericModal" tabindex="-1" role="dialog" aria-labelledby="genericModalLabel" aria-hidden="true">
+<div class="modal fade" id="genericModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="genericModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">

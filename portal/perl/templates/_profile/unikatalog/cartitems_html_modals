@@ -1,4 +1,4 @@
-<div class="modal fade" id="cartitemsPrintModal" tabindex="-1" role="dialog" aria-labelledby="cartitemsPrintModalLabel" aria-hidden="true">
+<div class="modal fade" id="cartitemsPrintModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="cartitemsPrintModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
 	<form method="GET" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/print" target="_blank">
@@ -30,7 +30,7 @@
       </div>
   </div>
 </div>
-<div class="modal fade" id="cartitemsModal" tabindex="-1" role="dialog" aria-labelledby="cartitemsModalLabel" aria-hidden="true">
+<div class="modal fade" id="cartitemsModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="cartitemsModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -44,7 +44,7 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="cartitemsSaveModal" tabindex="-1" role="dialog" aria-labelledby="cartitemsSaveModalLabel" aria-hidden="true">
+<div class="modal fade" id="cartitemsSaveModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="cartitemsSaveModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
 	<form method="GET" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/save">
@@ -84,7 +84,7 @@
       </div>
   </div>
 </div>
-<div class="modal fade" id="cartitemsMailModal" tabindex="-1" role="dialog" aria-labelledby="cartitemsMailModalLabel" aria-hidden="true">
+<div class="modal fade" id="cartitemsMailModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="cartitemsMailModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <form method="POST" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/mail" enctype="application/x-www-form-urlencoded">

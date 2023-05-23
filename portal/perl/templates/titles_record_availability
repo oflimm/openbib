@@ -17,7 +17,7 @@
 [% overall_mediastatus = {} ;
 
    FOREACH thiscirculation IN circulation ;
-     IF thiscirculation.availability == "lent";
+     IF thiscirculation.availability == "lent" || thiscirculation.availability == "ordered";
         overall_mediastatus.${"lent"} = 1;
      ELSIF thiscirculation.availability == "loan" || thiscirculation.availability == "order" || ( thiscirculation.availability == 'loan' && thiscirculation.availability_info.limitation.first.content == "nur Wochenende" ) ;
         overall_mediastatus.${"lendable"} = 1;

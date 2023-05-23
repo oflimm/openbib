@@ -12,10 +12,61 @@
 #######################################################################
 -%]
 
+[% IF user.has_right({scope = 'admin_users', right = 'right_create'}) %]
+
+<div id="new_item" class="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          [% msg.maketext("Neuen Nutzer anlegen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#new_item">
+      <div class="card-body">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]">
+
+<div class="form-group">
+<label for="dbname">[% msg.maketext("Kennung") %]</label>
+<input class="form-control" type="text" name="username" id="username" size="8" />
+</div>
+
+<div class="form-group">
+<label for="password">[% msg.maketext("Passwort") %]</label>
+<input class="form-control" type="password" name="password" id="password" size="20" />
+</div>
+
+<div class="form-group">
+<label for="password_again">[% msg.maketext("Passwort (wiederholt)") %]</label>
+<input class="form-control" type="password" name="password_again" id="password_again" size="20" />
+</div>
+
+<div class="form-group">
+<label for="view">[% msg.maketext("Portal") %]</label>
+<select class="form-control" name="viewid" size="15">
+[% FOREACH thisview IN views %]
+  <option value="[% thisview.id %]">[% thisview.viewname %] - [% thisview.description %]</option>
+[% END %]
+</select>
+</div>
+
+<button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
+
+</form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p />
+[% END # right_create %]
+
 <form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/search.html">
 <input type="hidden" name="l" value="[% lang %]"/>
 
-<h1 class="display-5">[% msg.maketext("Nutzer suchen") %]</h1>
+<h3>[% msg.maketext("Nutzer suchen") %]</h3>
 
 <div class="form-group">
 <label for="username">[% msg.maketext("Kennung") %]</label>

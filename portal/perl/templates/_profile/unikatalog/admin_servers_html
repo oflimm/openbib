@@ -83,6 +83,26 @@
 
 <h3>[% msg.maketext("Bereits existierende Rechner zur Lastverteilung") %]</h3>
 
+[%-
+
+   last_searchable_server        = 0;
+   num_searchable_servers        = 0;
+   num_active_searchable_servers = 0;
+   
+   FOREACH serverinfo IN serverinfos.all ;
+      IF serverinfo.status == 'searchable';
+        num_searchable_servers = num_searchable_servers + 1;
+        IF serverinfo.active ;
+          num_active_searchable_servers = num_active_searchable_servers + 1;	
+	END;
+      END;
+   END ;
+
+   IF num_active_searchable_servers == 1 ;
+      last_searchable_server = 1;
+   END ;
+-%]
+
 <div class="table-responsive text-nowrap">
 <table class="table table-striped ">
 <thead>
@@ -120,12 +140,12 @@
 <td>[%- IF serverinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td>
 <td>
 [%   IF user.has_right({scope = 'admin_servers', right = 'right_update'}) %]
-<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF NOT serverinfo.active %]true[% ELSE %]false[% END %]"/><button class="btn btn-primary mb-2" type="submit">[% IF NOT serverinfo.active %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]</button></form></td>
+<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]"><input type="hidden" name="_method" value="PUT"/><input type="hidden" name="active" value="[% IF NOT serverinfo.active %]true[% ELSE %]false[% END %]" /><button class="btn btn-primary mb-2" type="submit" [% IF serverinfo.active && serverinfo.status == 'searchable' && last_searchable_server %]disabled[% END %]>[% IF NOT serverinfo.active %][% msg.maketext("An") %][% ELSE %][% msg.maketext("Aus") %][% END %]</button></form></td>
 [%   END %]
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 <td>
 [%   IF user.has_right({scope = 'admin_servers', right = 'right_update'}) %]
-<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><button class="btn btn-primary mb-2" type="submit">[% msg.maketext("L&ouml;schen") %]</button></form>
+<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><button class="btn btn-primary mb-2" type="submit" [% IF serverinfo.active && serverinfo.status == 'searchable' && last_searchable_server %]disabled[% END %]>[% msg.maketext("L&ouml;schen") %]</button></form>
 [%   END %]
 </td></tr>
 [% END %]

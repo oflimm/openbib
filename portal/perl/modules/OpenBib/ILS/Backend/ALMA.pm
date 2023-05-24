@@ -1171,7 +1171,23 @@ sub get_mediastatus {
 		$item_ref->{'label'}           = $circ_ref->{'holding_data'}{'call_number'} || $circ_ref->{'item_data'}{'alternative_call_number'} || $circ_ref->{'item_data'}{'barcode'}; # Signatur
 		$item_ref->{'barcode'}         = $circ_ref->{'item_data'}{'barcode'}; # Mediennummer Neu fuer Alma
 		$item_ref->{'id'}              = $circ_ref->{'holding_data'}{'holding_id'}."|".$circ_ref->{'item_data'}{'pid'}; # holdingid|itemid
-		$item_ref->{'remark'}          = $circ_ref->{'item_data'}{'description'};
+
+		my @remarks = ();
+
+		if ($circ_ref->{'item_data'}{'description'}){
+		    push @remarks, $circ_ref->{'item_data'}{'description'};
+		}
+
+		if($circ_ref->{'item_data'}{'public_note'}){
+		    push @remarks, $circ_ref->{'item_data'}{'public_note'};
+		}
+
+		$item_ref->{'remark'} = '';
+		
+		if (@remarks){
+		    $item_ref->{'remark'}      = join(' ; ',@remarks);
+		}
+		
 		$item_ref->{'boundcollection'} = ""; # In Alma gibt es keine Bindeeinheiten
 
 		my $process_type  = $circ_ref->{'item_data'}{'process_type'}{'value'};
@@ -1204,6 +1220,7 @@ sub get_mediastatus {
 		#
 		# A: ausleihbar oder bestellbar
 		# X: nicht ausleihbar
+		# L: nur ausleihbar oder bestellbar in den Lesesaal
 		# LBS: Lehrbuchsammlug ausleihbar
 
 		my $base_status = $circ_ref->{'item_data'}{'base_status'}{'value'}; # 1: Am Ort / 0: Nicht am Ort

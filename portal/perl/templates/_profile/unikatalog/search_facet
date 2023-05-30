@@ -487,19 +487,18 @@ $(document).on("click", ".ob-less_button", function () {
         <h4 class="ob-facet-title [% IF facets.printlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-location[% idsuffix %][% facet_prefix %]" aria-expanded=[% IF facets.location.size > 0 %]"false"[% ELSE %]"true"[% END %]>
            [% msg.maketext("Print-Medien Standort") %] 
         </h4>
+
         <ul id="group-location[% idsuffix %][% facet_prefix %]" class="list-group in collapse [% IF facets.location.size <= 0 %]show[% END %]">
 [%             FOREACH termitem IN facets.printlocation ;
+#                  LAST IF loop.count > 25 ;
 
- %]
-
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').locationstring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
+                  searchterm    = termitem.0;
+                  searchprefix  = config.get('searchfield').locationstring.prefix;
+                  filterstring  = "${searchprefix}:${searchterm}";
 -%]
 <li class="ob-facet-item" [% IF facets.printlocation.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" hx-get-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% locinfo.get('identifier').${termitem.0}.description %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
 [%             END %]
-[% IF facets.printocation.size > 5 %]
+[% IF facets.printlocation.size > 5 %]
 <li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
 <li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
 [% END %]

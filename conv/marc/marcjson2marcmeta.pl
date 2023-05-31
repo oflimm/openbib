@@ -190,6 +190,15 @@ while (<DAT>){
 	}
     }
 
+    # Leader verarbeiten
+    my $leader = $record_ref->{leader};
+
+    push @{$title_ref->{'fields'}{'1000'}}, {
+	subfield => '', 
+	content  => $leader,
+	mult     => 1,
+    } if ($leader);
+    
     # Sonstige Felder umwandeln
     foreach my $field_ref (@{$record_ref->{fields}}){
 	foreach my $field (keys %$field_ref){

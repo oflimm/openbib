@@ -346,6 +346,7 @@ Präsenzbestand
 [%            textparts = availability_info.match('^(.*) (\(.*\).*?)$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
 [% textparts.first %]<br/>[% textparts.last %]
 [%         ELSE %]
+[%             IF availability_info == 'bestellt' ; availability_info = 'entliehen' ; END %]
 [%            availability_info %]
 [%         END %]
 [%     END %]

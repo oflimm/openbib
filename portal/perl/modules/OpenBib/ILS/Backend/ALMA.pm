@@ -1272,7 +1272,8 @@ sub get_mediastatus {
 		    };
 		}
 		# Bereits bestellt mit Vormerkmoeglichkeit
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && defined $circ_ref->{'item_data'}{'requested'} && $this_circ_conf->{'reservation'}){ 
+#		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && defined $circ_ref->{'item_data'}{'requested'} && $this_circ_conf->{'reservation'}){ 
+		elsif (defined $circ_ref->{'item_data'}{'requested'} && $circ_ref->{'item_data'}{'requested'} ){ 
 		    my $this_unavailable_ref = {
 			service => 'order',
 			content => "bestellt",

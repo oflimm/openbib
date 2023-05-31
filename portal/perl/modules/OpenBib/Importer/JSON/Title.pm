@@ -1859,25 +1859,27 @@ sub process_marc {
         }           
         # Zeitschriften/Serien:
         # ISSN und/oder ZDB-ID besetzt
-        elsif (defined $fields_ref->{'0773'} || defined $fields_ref->{'0022'}) {
-	    foreach my $item_ref (@{$fields_ref->{'0773'}}) {
-		unless (defined $have_type_ref->{'Zeitschrift/Serie'}){
-		    push @{$fields_ref->{'4410'}}, {
-			mult      => $type_mult++,
-			content   => 'Zeitschrift/Serie',
-			subfield  => 'e', # enriched
-		    } if ($item_ref->{subfield} =~m/^a$/);
-		}
-		foreach my $item_ref (@{$fields_ref->{'0022'}}) {
-		    unless (defined $have_type_ref->{'Zeitschrift/Serie'}){
-			push @{$fields_ref->{'4410'}}, {
-			    mult      => $type_mult++,
-			    content   => 'Zeitschrift/Serie',
-			    subfield  => 'e', # enriched
-			} if ($item_ref->{subfield} =~m/^a$/);
-		    }
+        elsif (defined $fields_ref->{'0035'} || defined $fields_ref->{'0022'}) {
+	    my $is_zsst_serie = 0;
+	    
+	    foreach my $item_ref (@{$fields_ref->{'0035'}}) {
+		if ($item_ref->{subfield} =~m/^a$/ && $item_ref->{content} =~m/DE-600/){ # DE-600 = ZDB
+		    $is_zsst_serie = 1;
 		}
 	    }
+	    
+	    foreach my $item_ref (@{$fields_ref->{'0022'}}) {
+		if ($item_ref->{subfield} =~m/^a$/) {
+		    $is_zsst_serie = 1;
+		}
+	    }
+	    
+	    push @{$fields_ref->{'4410'}}, {
+		mult      => $type_mult++,
+		content   => 'Zeitschrift/Serie',
+		subfield  => 'e', # enriched
+	    } if ($is_zsst_serie && !defined $have_type_ref->{'Zeitschrift/Serie'});
+	    
 	}
 	# Monographie:
         # Kollation 300a besetzt und enthaelt S. bzw. p.

@@ -17,7 +17,7 @@ my %title_hbzid2mmsid                = ();
 tie %title_hbzid2mmsid,             'MLDBM', "./title_linkage.db"
     or die "Could not tie title_linkage.\n";
 
-print STDERR "### inst001 Analysiere Titeldaten\n";
+print STDERR "### uni Analysiere Titeldaten\n";
 
 open(TITLE,"meta.title");
 

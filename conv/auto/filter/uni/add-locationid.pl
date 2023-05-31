@@ -326,7 +326,7 @@ tie %title_has_parent,             'MLDBM', "./title_has_parent.db"
 #     }
 # }
 
-print STDERR "### inst001 Erweitere Titeldaten anhand der bestimmten Markierungen\n";
+print STDERR "### uni Erweitere Titeldaten anhand der bestimmten Markierungen\n";
 
 #open(LOGGING,">location.log.new3");
 

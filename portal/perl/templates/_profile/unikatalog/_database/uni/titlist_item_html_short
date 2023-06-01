@@ -25,6 +25,8 @@
      popularity_i18n = msg.maketext("Popularität");
      
      item   = record.to_custom_field_scheme_1;
+     fields = record.get_fields;
+     
      listid = record.listid;
      all_locations = record.get_locations;
 
@@ -297,7 +299,7 @@
      # Ejahr konstruieren
      yearofpub = item.${'T0264'}.first.${'c'};
 
-     availability = item.${'T4400'}.first.content;
+     availability = fields.${'T4400'}.first.content;
 
      # Signaturen konstruieren
      signaturen = [];
@@ -325,8 +327,8 @@
 #    ];
 
     # E-Book/Inhaltsverzeichnis vorhanden
-    fulltext  = item.${'T4120'}.first.content ;
-    toc       = item.${'T4110'}.first.content ;
+    fulltext  = fields.${'T4120'}.first.content ;
+    toc       = fields.${'T4110'}.first.content ;
 
     # DBIS/EZB? Dann umleiten
 
@@ -344,13 +346,13 @@
     fulltext_availability  = "";
     fulltext_desc  = "Volltext";
 
-    IF item.${'T4120'}.first.subfield == "g";
+    IF fields.${'T4120'}.first.subfield == "g";
       fulltext_availability = "lawngreen";
       fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
-    ELSIF item.${'T4120'}.first.subfield == "y";
+    ELSIF fields.${'T4120'}.first.subfield == "y";
       fulltext_availability = "yellow";
       fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
-    ELSIF item.${'T4120'}.first.subfield == "f";
+    ELSIF fields.${'T4120'}.first.subfield == "f";
       fulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
     END;
 

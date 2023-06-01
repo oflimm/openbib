@@ -379,7 +379,7 @@
       fulltext_icon = config.get('ezb_yellow_img');
       fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
       availability = "online";      
-    ELSIF normdata.${'T4120'}.first.subfield == "l";
+    ELSIF item.${'T4120'}.first.subfield == "l";
       fulltext_icon = config.get('ezb_yellow_red_img');
       fulltext_desc = msg.maketext("Volltext mit eingeschränkten Zugang");;
       availability = "online";            

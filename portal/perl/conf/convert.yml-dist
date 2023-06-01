@@ -11562,6 +11562,16 @@ convtab:
           index:
             'markstring': 1
             'mark': 1
+      '1001':
+        'z':         # zdbid
+          index:
+            'zdbid': 1
+        'u':         # alte USB id/katkey
+          index:
+            'id': 1
+        'h':         # hbzid (alte ID, NZ-ID, CZ-ID)
+          index:
+            'hbzid': 1	    
       '4100':         # BK
         '':
           index:
@@ -12537,6 +12547,16 @@ convtab:
           index:
             'markstring': 1
             'mark': 1
+      '1001':
+        'z':         # zdbid
+          index:
+            'zdbid': 1
+        'u':         # alte USB id/katkey
+          index:
+            'id': 1
+        'h':         # hbzid (alte ID, NZ-ID, CZ-ID)
+          index:
+            'hbzid': 1	    
       '4100':         # BK
         '':
           index:

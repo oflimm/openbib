@@ -46,17 +46,13 @@ my $pooldir       = $rootdir."/pools";
 my $datadir       = $rootdir."/data";
 my $konvdir       = $config->{'conv_dir'};
 
-my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
-
-
 print "### $pool: Erweiterung um Zugriffsinformation online, Typ Digital und Themengebiet \n";
 
 system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Erweiterung um Standortinformationen, weiteres Processing\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/fix-linkage.pl | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/process_urls.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/fix-linkage.pl | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/process_urls.pl | $rootdir/filter/$pool/process_ids.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 #print "### $pool: Entfernen aller nicht GND-Fremdnummern sowie des (DE-588) GND-Prefixes \n";
 

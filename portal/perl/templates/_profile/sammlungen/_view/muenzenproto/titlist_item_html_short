@@ -311,19 +311,17 @@
     <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
 
     <div class="d-flex flex-row pb-2">
-      <div class="ob-thumbnail pt-3 pl-5 d-none d-md-block">
+      <div class="ob-thumbnail pt-3 pl-2 d-none d-md-block">
 <!-- Anfang Umschlagbilder -->
 [%# USE dumper;dumper.dump(item)%]
-[% IF item.${"T6052"}.0 %]
-<div style="position:absolute; left: 5px;">
-<a  class="cloud-zoom" rel="zoomWidth:650, zoomHeight:350, adjustX:180, adjustY: -120, position:'right'" href="[% item.${"T6051"}.0.content %]"><img src="[% item.${"T6052"}.0.content %]" alt="Vorderseite"/></a>
+<div class="row flex-md-row" style="max-width: 280px;">
+<div class="col-md-6">
+<a class="cloud-zoom" rel="zoomWidth:650, zoomHeight:350, adjustX:180, adjustY: -120, position:'right'" href="https://muenzportal.uni-koeln.de/JPG/[% record.id %]_O.jpg"><img class="img-fluid" src="https://muenzportal.uni-koeln.de/thumbnails/[% record.id %]_O.bmp" alt="Vorderseite"/></a>
 </div>
-[% END %]
-[% IF item.${"T6052"}.1 %]
-<div style="position:absolute; left: 140px;" >
-<a  class="cloud-zoom" rel="zoomWidth:650, zoomHeight:350, adjustX: 40, adjustY: -120, position:'right'" href="[% item.${"T6051"}.1.content %]"><img src="[% item.${"T6052"}.1.content %]" alt="Rückseite"/></a>
+<div class="col-md-6">
+<a class="cloud-zoom" rel="zoomWidth:650, zoomHeight:350, adjustX: 40, adjustY: -120, position:'right'" href="https://muenzportal.uni-koeln.de/JPG/[% record.id %]_R.jpg"><img class="img-fluid" src="https://muenzportal.uni-koeln.de/thumbnails/[% record.id %]_R.bmp" alt="Rückseite" /></a>
 </div>
-[% END %]
+</div>
 <!-- Ende Umschlagbilder -->
       </div>
       <div class="ob-brieftitle pl-5">

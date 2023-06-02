@@ -15,21 +15,18 @@
 #######################################################################
 -%]
 <!-- Anfang Umschlagbilder -->
-[% IF normdata.${"T6054"} %]
 <div class="row flex-md-row"><!-- Begin Images -->
-
+  
   <div class="col-md-6"><!-- Begin Single Image -->
-    <div class="ob-collection_image">
-     <a data-toggle="modal" data-target="#obverseModal" href="https://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.0.cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="https://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.0.cdm_ptr %]&DMSCALE=18.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" /></a><br/><a href="https://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.0.cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank">[% muenzen_img.0.description %]</a>
-     </div>
+    <div class="ob-collection_image p-5">
+      <a data-toggle="modal" data-target="#obverseModal" href="https://muenzportal.uni-koeln.de/JPG/[% record.id %]_O.jpg" target="_blank"><img class="img-fluid" style="max-width: 300px;" src="https://muenzportal.uni-koeln.de/JPG/[% record.id %]_O.jpg" /></a><br/><a href="https://muenzportal.uni-koeln.de/JPG/[% record.id %]_O.jpg" target="_blank">Vorderseite</a>
+    </div>
   </div>
-   <div class="col-md-6"><!-- Begin Single Image -->
-    <div class="ob-collection_image">
-     <a  data-toggle="modal" data-target="#reverseModal" href="https://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.1.cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank"><img src="https://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.1.cdm_ptr %]&DMSCALE=18.00000&DMWIDTH=1000&DMHEIGHT=1000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" /></a><br/><a href="https://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&CISOPTR=[% muenzen_img.1.cdm_ptr %]&DMSCALE=100.00000&DMWIDTH=4000&DMHEIGHT=4000&DMX=0&DMY=0&DMTEXT=&REC=2&DMTHUMB=1&DMROTATE=0" target="_blank">[% muenzen_img.1.description %]</a>
+  <div class="col-md-6"><!-- Begin Single Image -->
+    <div class="ob-collection_image p-5">
+      <a data-toggle="modal" data-target="#reverseModal" href="https://muenzportal.uni-koeln.de/JPG/[% record.id %]_R.jpg" target="_blank"><img class="img-fluid" style="max-width: 300px;" src="https://muenzportal.uni-koeln.de/JPG/[% record.id %]_R.jpg" /></a><br/><a href="https://muenzportal.uni-koeln.de/JPG/[% record.id %]_R.jpg" target="_blank">Rückseite</a>
     </div>
   </div>
 </div>
-[%
-   END ; %]
 <!-- Ende Umschlagbilder -->
 

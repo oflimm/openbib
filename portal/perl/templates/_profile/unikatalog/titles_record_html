@@ -406,7 +406,7 @@ Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es au
 [% END %]
 
 	  <div class="pe-1">
-	    <a class="btn btn-primary ps-2" aria-described-by="[% msg.maketext("Titeldaten exportieren") %]" title="[% msg.maketext("Export") %]" href="#" data-bs-toggle="modal" data-bs-target="#titleSaveModal"><i class="fas fa-download"></i> <span>[% msg.maketext("Export") %]</span></a>
+	    <a class="btn btn-primary ps-2" aria-described-by="[% msg.maketext("Titeldaten exportieren") %]" title="[% msg.maketext("Export") %]" href="#" data-bs-toggle="modal" data-bs-target="#titleSaveModal"><i class="fas fa-file-export"></i> <span>[% msg.maketext("Export") %]</span></a>
 	  </div>
 
 	    <div class="pe-1">

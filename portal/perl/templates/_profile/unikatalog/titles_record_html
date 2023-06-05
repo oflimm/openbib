@@ -395,23 +395,23 @@ Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es au
 
 [% IF fulltext %]
 	    <div class="pe-1">	    
-              <a class="btn btn-primary pe-2" aria-described-by="[% msg.maketext("Volltext aufrufen") %]" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span><img class="ps-2" src="[% fulltext_icon %]"  alt="[% msg.maketext("Volltext") %]"/></a>
+              <a class="btn btn-primary pe-2" aria-described-by="[% msg.maketext("Volltext aufrufen") %]" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span>[% msg.maketext("Volltext") %]</span><img class="ps-2" src="[% fulltext_icon %]"  alt="[% msg.maketext("Volltext") %]"/></a>
 	    </div>
 [% END %]
 
 [% IF toc %]
 	    <div class="pe-1">	    
-              <a class="btn btn-primary pe-2" aria-described-by="[% msg.maketext("Inhaltsverzeichnis aufrufen") %]" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span class="d-none d-sm-inline">[% toc_i18n %]</span></a>
+              <a class="btn btn-primary pe-2" aria-described-by="[% msg.maketext("Inhaltsverzeichnis aufrufen") %]" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span>[% toc_i18n %]</span></a>
 	    </div>
 [% END %]
 
 	  <div class="pe-1">
-	    <a class="btn btn-primary ps-2" aria-described-by="[% msg.maketext("Titeldaten exportieren") %]" href="#" data-bs-toggle="modal" data-bs-target="#titleSaveModal"><i class="fas fa-download"></i><span class="d-none d-sm-inline ms-2">[% msg.maketext("Export") %]</span></a>
+	    <a class="btn btn-primary ps-2" aria-described-by="[% msg.maketext("Titeldaten exportieren") %]" title="[% msg.maketext("Export") %]" href="#" data-bs-toggle="modal" data-bs-target="#titleSaveModal"><i class="fas fa-download"></i> <span>[% msg.maketext("Export") %]</span></a>
 	  </div>
 
 	    <div class="pe-1">
  <div class="dropdown">
-   <button class="btn btn-primary dropdown-toggle" type="button" id="citationMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   <button class="btn btn-primary dropdown-toggle" aria-described-by="[% msg.maketext("Titeldaten zitieren") %]" title="[% msg.maketext("Zitat") %]" type="button" id="citationMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <i class="fas fa-quote-right"></i> [% msg.maketext("Zitat") %]
   </button>
   <ul class="dropdown-menu" aria-labelledby="citationMenuButton">

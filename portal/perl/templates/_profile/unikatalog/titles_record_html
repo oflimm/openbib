@@ -383,35 +383,35 @@ Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es au
 </div>
 [% END %]
 
-<div class="d-flex ob-fulltitle_actions mt-4">
+<div class="d-flex flex-wrap ob-fulltitle_actions mt-4">
 
-   <div class="pe-1">
-         <a  class="btn btn-primary" aria-described-by="[% msg.maketext("Zurück") %]" href="javascript:history.back()" title="[% msg.maketext("Zurück") %]"><i class="fas fa-arrow-circle-left"></i> <span>[% msg.maketext("Zurück") %]</span></a>
+   <div class="pe-1 pb-3">
+         <a  class="btn btn-primary text-nowrap" aria-described-by="[% msg.maketext("Zurück") %]" href="javascript:history.back()" title="[% msg.maketext("Zurück") %]"><i class="fas fa-arrow-circle-left"></i> <span>[% msg.maketext("Zurück") %]</span></a>
   </div>
 
-   <div class="pe-1">
-         <a  class="btn btn-primary" aria-described-by="[% msg.maketext("In die Merkliste") %]" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span>[% msg.maketext("Merken") %]</span></a>
+   <div class="pe-1 pb-3">
+         <a  class="btn btn-primary text-nowrap" aria-described-by="[% msg.maketext("In die Merkliste") %]" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span>[% msg.maketext("Merken") %]</span></a>
   </div>
 
 [% IF fulltext %]
-	    <div class="pe-1">	    
-              <a class="btn btn-primary pe-2" aria-described-by="[% msg.maketext("Volltext aufrufen") %]" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span>[% msg.maketext("Volltext") %]</span><img class="ps-2" src="[% fulltext_icon %]"  alt="[% msg.maketext("Volltext") %]"/></a>
+	    <div class="pe-1 pb-3">	    
+              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Volltext aufrufen") %]" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span>[% msg.maketext("Volltext") %]</span><img class="ps-2" src="[% fulltext_icon %]"  alt="[% msg.maketext("Volltext") %]"/></a>
 	    </div>
 [% END %]
 
 [% IF toc %]
-	    <div class="pe-1">	    
-              <a class="btn btn-primary pe-2" aria-described-by="[% msg.maketext("Inhaltsverzeichnis aufrufen") %]" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span>[% toc_i18n %]</span></a>
+	    <div class="pe-1 pb-3">	    
+              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Inhaltsverzeichnis aufrufen") %]" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span>[% toc_i18n %]</span></a>
 	    </div>
 [% END %]
 
-	  <div class="pe-1">
-	    <a class="btn btn-primary ps-2" aria-described-by="[% msg.maketext("Titeldaten exportieren") %]" title="[% msg.maketext("Export") %]" href="#" data-bs-toggle="modal" data-bs-target="#titleSaveModal"><i class="fas fa-file-export"></i> <span>[% msg.maketext("Export") %]</span></a>
+	  <div class="pe-1 pb-3">
+	    <a class="btn btn-primary text-nowrap ps-2" aria-described-by="[% msg.maketext("Titeldaten exportieren") %]" title="[% msg.maketext("Export") %]" href="#" data-bs-toggle="modal" data-bs-target="#titleSaveModal"><i class="fas fa-file-export"></i> <span>[% msg.maketext("Export") %]</span></a>
 	  </div>
 
-	    <div class="pe-1">
+	    <div class="pe-1 pb-3">
  <div class="dropdown">
-   <button class="btn btn-primary dropdown-toggle" aria-described-by="[% msg.maketext("Titeldaten zitieren") %]" title="[% msg.maketext("Zitat") %]" type="button" id="citationMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   <button class="btn btn-primary text-nowrap dropdown-toggle" aria-described-by="[% msg.maketext("Titeldaten zitieren") %]" title="[% msg.maketext("Zitat") %]" type="button" id="citationMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     <i class="fas fa-quote-right"></i> [% msg.maketext("Zitat") %]
   </button>
   <ul class="dropdown-menu" aria-labelledby="citationMenuButton">
@@ -425,13 +425,13 @@ Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es au
  </div>
              </div>
 [% IF record.database == 'eds' # Verfuegbarkeit ermitteln %]
-	    <div class="pe-1">	    
-<!--              <a class="btn btn-primary pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="[% path_prefix %]/availability/search.html?issn=[% issn %];jrnl=[% journal %];vol=[% volume %];issue=[% issue %];tit=[% title %];per=[% person %]" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a> -->
-              <a class="btn btn-primary pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="https://usb-koeln.digibib.net/openurl?genre=[% q_openurltype %]&isbn=[% q_isbn %]&issn=[% q_issn %]&title=[% q_journal %]&volume=[% q_volume %]&issue=[% q_issue %]&date=[% q_year %]&atitle=[% q_title %]&aufirst=[% q_aufirst %]&aulast=[% q_aulast %]&spage=[% q_spage %]&pages=[% q_pages %]&sid=EBSCO:Academic%20Search%20Ultimate&pid=%3Clocation%3E038%3C%2Flocation%3E" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a>
+	    <div class="pe-1 pb-3">	    
+<!--              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="[% path_prefix %]/availability/search.html?issn=[% issn %];jrnl=[% journal %];vol=[% volume %];issue=[% issue %];tit=[% title %];per=[% person %]" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a> -->
+              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="https://usb-koeln.digibib.net/openurl?genre=[% q_openurltype %]&isbn=[% q_isbn %]&issn=[% q_issn %]&title=[% q_journal %]&volume=[% q_volume %]&issue=[% q_issue %]&date=[% q_year %]&atitle=[% q_title %]&aufirst=[% q_aufirst %]&aulast=[% q_aulast %]&spage=[% q_spage %]&pages=[% q_pages %]&sid=EBSCO:Academic%20Search%20Ultimate&pid=%3Clocation%3E038%3C%2Flocation%3E" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a>
 	    </div>
 [% END %]
 	     
-	     <div class="pe-1">
+	     <div class="pe-1 pb-3">
 	       <button class="ob-sidebar_button sidebar-toggler d-none d-md-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-described-by="[% msg.maketext("Mehr Aktionen mit dem Titel") %]" title="[% msg.maketext("Titelaktionen") %]"><i class="fas fa-plus fa-2x"></i></button>     
 	     </div>
 

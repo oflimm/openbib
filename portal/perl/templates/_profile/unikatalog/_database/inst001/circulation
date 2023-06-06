@@ -155,7 +155,6 @@
        IF standort.match('Heilpädagogik-LS');
          raumplan = "<a class=\"exturl\" href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaal_heilpaedagogik/index_ger.html\" target=\"_blank\">Raumplan</a>";
        END;
-     END;
      ELSIF library_isil.match('^DE-38-HWA$');
        IF standort.match('Lesesaal Humanwissenschaft');
          raumplan = "<a class=\"exturl\" href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaal_humanwissenschaft/index_ger.html\" target=\"_blank\">Raumplan</a>";

@@ -161,10 +161,10 @@
     
     #ob-startpage .landing-page-img {
 	padding-bottom: 40px;
-	/*background:url('/images/openbib/views/jesuiten/Ausschnitt_N2_52.jpg') left 100% no-repeat;
-        background-position: 10% 30%; */
-	background:url('/images/openbib/views/jesuiten/Startseite_Jesuitensammlung_ausstellung_2376.jpg') left 100% no-repeat;
-	background-position: 20% 90%;
+	background:url('/images/openbib/views/jesuiten/Ausschnitt_N2_52.jpg') left 100% no-repeat;
+        background-position: 10% 30%;
+	/* background:url('/images/openbib/views/jesuiten/Startseite_Jesuitensammlung_ausstellung_2376.jpg') left 100% no-repeat;
+	background-position: 20% 90%; */
 	background-size: cover;
 	height: 500px !important;
 	border-bottom-style: solid;

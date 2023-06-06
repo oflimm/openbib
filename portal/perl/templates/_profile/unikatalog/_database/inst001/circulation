@@ -151,8 +151,8 @@
        ELSIF standort.match('Sofortausleihbereich');
          raumplan = "<a class=\"exturl\" href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/sofortausleihbereich/index_ger.html\" target=\"_blank\">Raumplan</a>";
        END;
-     ELSIF library_isil.match('^DE-38-HWA$');
-       IF standort.match('Lesesaal Heilpädagogik');
+     ELSIF library_isil.match('^DE-38-307$');
+       IF standort.match('Heilpädagogik-LS');
          raumplan = "<a class=\"exturl\" href=\"https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaal_heilpaedagogik/index_ger.html\" target=\"_blank\">Raumplan</a>";
        END;
      END;

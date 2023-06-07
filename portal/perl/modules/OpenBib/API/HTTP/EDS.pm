@@ -86,7 +86,7 @@ sub new {
     
     my $ua = LWP::UserAgent->new();
     $ua->agent('USB Koeln/1.0');
-    $ua->timeout(30);
+    $ua->timeout(40);
 
     $self->{client}        = $ua;
         
@@ -368,7 +368,11 @@ sub get_record {
 	    content => "Datenquelle: " . $json_result_ref->{'Record'}{'Header'}{'DbLabel'},
 	} if ($json_result_ref->{'Record'}{'Header'}{'DbLabel'});
 
+	push @{$fields_ref->{'T0501'}}, {
+	    content => "Bei etwa 70% der in BASE enthaltenen Dokumente sind die Volltexte frei zugänglich (Open Access), die restlichen 30% sind Dokumente ohne Volltext oder Dokumente, bei denen der Volltext nicht frei zugänglich ist.",
+	} if ($json_result_ref->{Record}{Header}{DbId} eq 'edsbas');
 
+	
 	push @{$fields_ref->{'T0662'}}, {
 	    subfield => '', 
 	    mult     => $link_mult, 

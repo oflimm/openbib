@@ -895,19 +895,22 @@ sub get_record {
 		    
 		    if ($json_result_ref->{Record}{Header}{DbId} =~ /^(edsfis|edswao)$/) { # z.B. ID=edswao:edswao.035502584
 
-			push @{$fields_ref->{'T4120'}}, {
-			    subfield => 'g', # Freier Zugang / green
-			    mult     => $link_mult, 
-			    content  => $url};
-			
-			push @{$fields_ref->{'T0662'}}, {
-			    subfield     => '', 
-			    mult         => $link_mult, 
-			    content      => $url,
-			    availability => 'green',
-			};
-			# Todo: Zugriffstatus 'green' hinzufuegen
-			$link_mult++;
+			if ($url =~m/.*pdf$/g && $json_result_ref->{Record}{Header}{PubType} eq "Academic Journal"){ # Problem bei z.B. edsfis:edsfis.68604
+			    
+			    push @{$fields_ref->{'T4120'}}, {
+				subfield => 'g', # Freier Zugang / green
+				mult     => $link_mult, 
+				content  => $url};
+			    
+			    push @{$fields_ref->{'T0662'}}, {
+				subfield     => '', 
+				mult         => $link_mult, 
+				content      => $url,
+				availability => 'green',
+			    };
+			    # Todo: Zugriffstatus 'green' hinzufuegen
+			    $link_mult++;
+			}
 		    } 
 		    else {
 			# SSOAR, BASE, OLC, ...: Volltext-Link auslesen, z.B. ID=edsbas:edsbas.ftunivdortmund.oai.eldorado.tu.dortmund.de.2003.30139, ID=edsgoc:edsgoc.197587160X
@@ -1470,10 +1473,12 @@ sub process_matches {
 	my $available = "";
 	my $plink = "";
 	my $is_electronic_ressource = 0;
-
+	my $pubtype = "";
+	
 	eval {
 	    $available = $match->{'FullText'}{'Text'}{'Availability'};
 	    $plink = $match->{'PLink'};
+	    $pubtype = $match->{'Header'}{'PubType'};
 	};
 
 	my $link_mult = 1;
@@ -1696,20 +1701,22 @@ sub process_matches {
 			}
 			
 			if ($match->{Header}{DbId} =~ /^(edsfis|edswao)$/) { # z.B. ID=edswao:edswao.035502584
-			    
-			    push @{$fields_ref->{'T4120'}}, {
-				subfield => 'g', # Freier Zugang / green
-				mult     => $link_mult, 
-				content  => $url};
-			    
-			    push @{$fields_ref->{'T0662'}}, {
-				subfield     => '', 
-				mult         => $link_mult, 
-				content      => $url,
-				availability => 'green',
-			    };
-			    # Todo: Zugriffstatus 'green' hinzufuegen
-			    $link_mult++;
+
+			    if ($url =~m/.*pdf$/g && $pubtype eq "Academic Journal"){ # Problem bei z.B. edsfis:edsfis.68604
+				push @{$fields_ref->{'T4120'}}, {
+				    subfield => 'g', # Freier Zugang / green
+				    mult     => $link_mult, 
+				    content  => $url};
+				
+				push @{$fields_ref->{'T0662'}}, {
+				    subfield     => '', 
+				    mult         => $link_mult, 
+				    content      => $url,
+				    availability => 'green',
+				};
+				# Todo: Zugriffstatus 'green' hinzufuegen
+				$link_mult++;
+			    }
 			} 
 			else {
 			    # SSOAR, BASE, OLC, ...: Volltext-Link auslesen, z.B. ID=edsbas:edsbas.ftunivdortmund.oai.eldorado.tu.dortmund.de.2003.30139, ID=edsgoc:edsgoc.197587160X

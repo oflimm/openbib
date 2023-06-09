@@ -370,7 +370,7 @@ sub get_record {
 
 	push @{$fields_ref->{'T0501'}}, {
 	    content => "Bei etwa 70% der in BASE enthaltenen Dokumente sind die Volltexte frei zugänglich (Open Access), die restlichen 30% sind Dokumente ohne Volltext oder Dokumente, bei denen der Volltext nicht frei zugänglich ist.",
-	} if ($json_result_ref->{Record}{Header}{DbId} eq 'edsbas');
+	} if ($json_result_ref->{'Record'}{'Header'}{'DbId'} eq "edsbas");
 
 	
 	push @{$fields_ref->{'T0662'}}, {
@@ -489,7 +489,7 @@ sub get_record {
 	}
 	
 	# arXiv, DOAJ und OAIster: Publikationstyp einfuegen und CustomLink auslesen
-	if ($json_result_ref->{Header}{DbId} =~ /^(edsarx|edsdoj|edsoai)$/) {
+	if ($json_result_ref->{Record}{Header}{DbId} =~ /^(edsarx|edsdoj|edsoai)$/) {
 	    unless ($json_result_ref->{'Record'}{'Header'}{'PubType'}) {
 		push @{$fields_ref->{'T0800'}}, {
 		    subfield => '', 
@@ -510,7 +510,7 @@ sub get_record {
 
 		my $color    = "g";
                 my $linktext = "Volltext";
-		if ($json_result_ref->{Header}{DbId} eq "edsoai") {
+		if ($json_result_ref->{Record}{Header}{DbId} eq "edsoai") {
 		    $color = " " ; # urspruenglich green_on_red / Volltext eventuell nicht zugänglich (s. Hinweise)
 		    $linktext = "Volltext eventuell nicht zugänglich (s. Hinweise)";
 		}
@@ -539,8 +539,8 @@ sub get_record {
 	
 	# Science cititation index: hart verlinken
 	# Hinweis pkostaedt: Der Link "Citing Articles" funktioniert nicht in jedem Fall, z.B. ID=edswss:000312205100002
-	if ($json_result_ref->{Header}{DbId} =~ /^(edswsc|edswss)$/ && $json_result_ref->{Header}{An}) {
-	    my $url = "http://gateway.isiknowledge.com/gateway/Gateway.cgi?&GWVersion=2&SrcAuth=EBSCO&SrcApp=EDS&DestLinkType=CitingArticles&KeyUT=" . $json_result_ref->{Header}{An} . "&DestApp=WOS";
+	if ($json_result_ref->{Record}{Header}{DbId} =~ /^(edswsc|edswss)$/ && $json_result_ref->{Record}{Header}{An}) {
+	    my $url = "http://gateway.isiknowledge.com/gateway/Gateway.cgi?&GWVersion=2&SrcAuth=EBSCO&SrcApp=EDS&DestLinkType=CitingArticles&KeyUT=" . $json_result_ref->{Record}{Header}{An} . "&DestApp=WOS";
 
 	    push @{$fields_ref->{'T4120'}}, {
 		subfield => 'y', # Eingeschraenkter Zugang / yellow
@@ -824,7 +824,7 @@ sub get_record {
 		    if ($name eq 'Publisher') {
 			$data =~ s/,\s+\d{4}$//;                          # z.B. edsgsl:solis.00547468 (Hamburg : Diplomica Verl., 2009 -> Hamburg : Diplomica Verl.)
 		    } 
-		    elsif ($name eq 'TitleSource' && $json_result_ref->{Header}{DbId} eq 'edsoai' && $data =~ /urn:/) {
+		    elsif ($name eq 'TitleSource' && $json_result_ref->{Record}{Header}{DbId} eq 'edsoai' && $data =~ /urn:/) {
 			next;                                             # z.B. edsoai:edsoai.824612814
 		    }
 		    elsif ($name eq 'ISSN'){
@@ -893,7 +893,7 @@ sub get_record {
 			$url = $1;
 		    }
 		    
-		    if ($json_result_ref->{Header}{DbId} =~ /^(edsfis|edswao)$/) { # z.B. ID=edswao:edswao.035502584
+		    if ($json_result_ref->{Record}{Header}{DbId} =~ /^(edsfis|edswao)$/) { # z.B. ID=edswao:edswao.035502584
 
 			push @{$fields_ref->{'T4120'}}, {
 			    subfield => 'g', # Freier Zugang / green
@@ -932,7 +932,7 @@ sub get_record {
 			    # Todo: Zugriffstatus 'yellow' hinzufuegen
 			    $link_mult++;
 			    
-			    if ($json_result_ref->{Header}{DbId} eq 'edsgso') { # SSOAR
+			    if ($json_result_ref->{Record}{Header}{DbId} eq 'edsgso') { # SSOAR
 				# Todo: Zugriffsstatus 'green' hinzufuegen
 				push @{$fields_ref->{'T0800'}}, {
 				    subfield => '', 
@@ -978,13 +978,13 @@ sub get_record {
 			    $link_mult++;
 			} 
 			else {
-			    if ($json_result_ref->{Header}{DbId} =~ /^(edsbl)$/) {
+			    if ($json_result_ref->{Record}{Header}{DbId} =~ /^(edsbl)$/) {
 				next;
 			    }
 
 			    my $availability = "";
 
-			    if ($json_result_ref->{Header}{DbId} =~ /^(edsoao|edsomo|edsebo|edssvl)$/) { # Links aus Grove Art und Britannica Online, z.B. ID=edsoao:oao.T045764
+			    if ($json_result_ref->{Record}{Header}{DbId} =~ /^(edsoao|edsomo|edsebo|edssvl)$/) { # Links aus Grove Art und Britannica Online, z.B. ID=edsoao:oao.T045764
 				# Todo: Zugriffstatus 'yellow' hinzufuegen
 				$availability = "yellow";
 				
@@ -1465,124 +1465,536 @@ sub process_matches {
 	
 	# $logger->debug("Processing Record ".YAML::Dump($json_result_ref->{SearchResult}{Data}{Records}));
 
-	# Volltextlinks
-	my @links     = ();
-	my $link_mult = 1;
-	
+	# Online Verfuegbarkeit
+
+	my $available = "";
+	my $plink = "";
+	my $is_electronic_ressource = 0;
+
 	eval {
-	    @links = @{$json_result_ref->{'Record'}{'FullText'}{'Links'}};
+	    $available = $match->{'FullText'}{'Text'}{'Availability'};
+	    $plink = $match->{'PLink'};
 	};
 
-	if (@links){
-	    foreach my $link_ref (@links){
-		my $url = (defined $link_ref->{'Url'})?$link_ref->{'Url'}:'';
+	my $link_mult = 1;
+	    
+	# Volltextlinks
+	{
 
-		if (defined $link_ref->{'Type'} && $link_ref->{'Type'} =~m/^(ebook|pdflink|other)$/){
+	    # Zugriffstatus
+	    #
+	    # '' : Keine Ampel
+	    # ' ': Unbestimmt g oder y oder r
+	    # 'f': Unbestimmt, aber Volltext Zugriff g oder y (fulltext)
+	    # 'g': Freier Zugriff (green)
+	    # 'y': Lizensierter Zugriff (yellow)
+	    # 'l': Unbestimmt Eingeschraenkter Zugriff y oder r (limited)
+	    # 'r': Kein Zugriff (red)
+	    
+	    my $url = "";
+	    
+	    eval { 	
+		$url = $match->{'FullText'}{'Links'}[0]{'Link'}[0]{'Url'};
+		$logger->debug("Got first URL $url");
+	    };
+	    
+	    if ($url) { # ID=bth:94617232
+		push @{$fields_ref->{'T4120'}}, {
+		    subfield => 'y', # Eingeschraenkter Zugang / yellow
+		    mult     => $link_mult, 
+		    content  => $url};
+		
+		push @{$fields_ref->{'T0662'}}, {
+		    subfield => '', 
+		    mult     => $link_mult, 
+		    content  => $url};
+		
+		push @{$fields_ref->{'T0663'}}, {
+		    subfield => '',
+		    mult     => $link_mult, 
+		    content  => "Volltext"};
+		# Todo: Zugriffstatus 'yellow' hinzufuegen
+
+		$link_mult++;
+	    }
+	    else { 		
+		if ($available == 1 && $plink) {
 		    push @{$fields_ref->{'T4120'}}, {
 			subfield => 'y', # Eingeschraenkter Zugang / yellow
 			mult     => $link_mult, 
-			content  => $url,
+			content  => $plink};
+		    
+		    push @{$fields_ref->{'T0662'}}, {
+			subfield => '', 
+			mult     => $link_mult, 
+			content  => $plink};
+		    
+		    push @{$fields_ref->{'T0663'}}, {
+			subfield => '', 
+			mult     => $link_mult, 
+			content  => "HTML-Volltext"};
+		    # Todo: Zugriffstatus 'yellow' hinzufuegen
+		    $link_mult++;
+		}
+	    }
+
+	    my @links = ();
+	    
+	    eval {
+		@links = @{$match->{'FullText'}{'Links'}};
+	    };
+
+	    if (@links){
+		$logger->debug("Iterating links");
+		foreach my $link_ref (@links){
+		    my $url = (defined $link_ref->{'Url'})?$link_ref->{'Url'}:'';
+
+		    $logger->debug("Got URL $url");
+		    
+		    if (defined $link_ref->{'Type'} && $link_ref->{'Type'} =~m/^(ebook|pdflink|other)$/){
+			push @{$fields_ref->{'T4120'}}, {
+			    subfield => 'y', # Eingeschraenkter Zugang / yellow
+			    mult     => $link_mult, 
+			    content  => $url,
+			};
+			
+			push @{$fields_ref->{'T0662'}}, {
+			    subfield => '', 
+			    mult     => $link_mult, 
+			    content  => $url,
+			};
+			
+			push @{$fields_ref->{'T0663'}}, {
+			    subfield => '', 
+			    mult     => $link_mult, 
+			    content  => "Volltext"
+			};
+			# Todo: Zugriffstatus 'yellow' hinzufuegen
+			$link_mult++;
+		    }
+		}
+	    }
+	    
+	    # arXiv, DOAJ und OAIster: Publikationstyp einfuegen und CustomLink auslesen
+	    if ($match->{Header}{DbId} =~ /^(edsarx|edsdoj|edsoai)$/) {
+		$logger->debug("Checking edsarx, edsdoj, edsoai");
+		
+		unless ($match->{'Header'}{'PubType'}) {
+		    push @{$fields_ref->{'T0800'}}, {
+			subfield => '', 
+			mult     => 1, 
+			content  => "electronic resource"};
+		    $is_electronic_ressource = 1;
+		}
+		
+		$url = '';
+		
+		eval {
+		    $url = $match->{'FullText'}{'CustomLinks'}[0]{'Url'};
+		};
+		
+		if ($url) {
+		    $logger->debug("Got URL $url");
+		    $url =~ s!(.*)\#\?$!$1!; # OAIster: "#?" am Ende entfernen, z.B. ID=edsoai:edsoai.859893876 ; ID=edsoai:edsoai.690666320
+		    $url =~ s!(http://etheses.bham.ac.uk/[^/]+/).*ThumbnailVersion.*\.pdf!$1!; # Sonderanpassung fuer etheses.bham.ac.uk, z.B. ID=edsoai:edsoai.690666320
+
+		    my $color    = "g";
+		    my $linktext = "Volltext";
+		    if ($match->{Header}{DbId} eq "edsoai") {
+			$color = " " ; # urspruenglich green_on_red / Volltext eventuell nicht zugänglich (s. Hinweise)
+			$linktext = "Volltext eventuell nicht zugänglich (s. Hinweise)";
+		    }
+		    
+		    push @{$fields_ref->{'T4120'}}, {
+			subfield => $color,
+			mult     => $link_mult, 
+			content  => $url
 		    };
 		    
 		    push @{$fields_ref->{'T0662'}}, {
 			subfield => '', 
 			mult     => $link_mult, 
-			content  => $url,
+			content  => $url
 		    };
 		    
 		    push @{$fields_ref->{'T0663'}}, {
 			subfield => '', 
 			mult     => $link_mult, 
-			content  => "Volltext"
+			content  => $linktext
 		    };
-		    # Todo: Zugriffstatus 'yellow' hinzufuegen
 		    $link_mult++;
 		}
 	    }
-	}
-	
-	if (defined $match->{FullText} && defined $match->{FullText}{CustomLinks}){
-	    my $availability = '';
-	    if (defined $match->{FullText}{Text} && defined $match->{FullText}{Text}{Availability}){
-		if ($match->{FullText}{Text}{Availability}){
-		    $availability = 'y';
-		}
+	    
+	    
+	    # Science cititation index: hart verlinken
+	    # Hinweis pkostaedt: Der Link "Citing Articles" funktioniert nicht in jedem Fall, z.B. ID=edswss:000312205100002
+	    if ($match->{Header}{DbId} =~ /^(edswsc|edswss)$/ && $match->{Header}{An}) {
+		my $url = "http://gateway.isiknowledge.com/gateway/Gateway.cgi?&GWVersion=2&SrcAuth=EBSCO&SrcApp=EDS&DestLinkType=CitingArticles&KeyUT=" . $match->{Header}{An} . "&DestApp=WOS";
+
+		push @{$fields_ref->{'T4120'}}, {
+		    subfield => 'y', # Eingeschraenkter Zugang / yellow
+		    mult     => $link_mult, 
+		    content  => $url
+		};
 		
+		push @{$fields_ref->{'T0662'}}, {
+		    subfield => '', 
+		    mult     => $link_mult, 
+		    content  => $url
+		};
+		
+		push @{$fields_ref->{'T0663'}}, {
+		    subfield => '', 
+		    mult => $link_mult, 
+		    content => "Citing Articles (via Web of Science)"
+		};
+		# Todo: Zugriffstatus 'yellow' hinzufuegen
+		$link_mult++;
 	    }
-	    
-	    foreach my $thisitem_ref (@{$match->{FullText}{CustomLinks}}){
-		
-		if ($thisitem_ref->{Category} eq "fullText"){
-		    push @{$fields_ref->{'T4120'}}, {
-			subfield => $availability,
-			content => $thisitem_ref->{Url}
-		    };		    
-		}
-	    }	    
+
 	}
-	
-	foreach my $thisfield (keys %{$match->{RecordInfo}{BibRecord}{BibEntity}}){
+
+	# Titelfelder
+	{
+
+	    my $title_source = "";
 	    
-	    if ($thisfield eq "Titles"){
-		foreach my $item (@{$match->{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
-		    push @{$fields_ref->{'T0331'}}, {
-			content => $item->{TitleFull}
-		    } if ($item->{Type} eq "main");
+	    if (defined $match->{'Items'}){
+		foreach my $item (@{$match->{Items}}){
+		    my $label = $item->{Label};
+		    my $data  = $item->{Data};
+		    my $name  = $item->{Name};
+
+		    $logger->debug("Data pre:$data");
 		    
-		}
-	    }
-	}
+		    # &gt; &lt; auf <,> vereinfachen
+		    $data =~ s{&lt;}{<}g;
+		    $data =~ s{&gt;}{>}g;
+		    
+		    # Data breinigen. Hinweise pkostaedt
+		    $data =~ s{<br \/>}{ ; }g;
+		    $data =~ s{<relatesTo>[^<]+<\/relatesTo><i>[^<]+<\/i>}{}g; # z.B. <relatesTo>2</relatesTo><i> javierm@electrica.cujae.edu.cu</i>
+		    $data =~ s{<i>([^<]+)<\/i>}{$1}g;
+		    $data =~ s{<[^>]+>([^<]+)<\/[^>]+>}{$1}g;                  # z.B. <searchLink fieldCode="JN" term="%22Linux%22">Linux</searchLink>
+		    $data =~ s{&lt;.+?&gt;}{}g;                                # z.B. rih:2012-09413, pdx:0209854
+		    $data =~ s{&amp;amp;}{&amp;}g;                             # z.B. pdx:0209854
+		    
+		    $logger->debug("Item - Label:$label - Name:$name Data:$data");
 
-	if (defined $match->{RecordInfo}{BibRecord} && defined $match->{RecordInfo}{BibRecord}{BibRelationships}){
+		    next if ($name eq 'TitleSource' && $match->{Header}{DbId} eq 'edsoai' && $data =~ /urn:/);  # z.B. edsoai:edsoai.824612814
 
-	    if (defined $match->{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}){
-		foreach my $item (@{$match->{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}}){
-#		    $logger->debug("DebugRelationShips".YAML::Dump($item));
-		    if (defined $item->{PersonEntity} && defined $item->{PersonEntity}{Name} && defined $item->{PersonEntity}{Name}{NameFull}){
-			
-			push @{$fields_ref->{'P0100'}}, {
-			    content => $item->{PersonEntity}{Name}{NameFull},
-			}; 
-			
-			push @{$fields_ref->{'PC0001'}}, {
-			    content => $item->{PersonEntity}{Name}{NameFull},
-			}; 
+
+		    if ($name eq "TitleSource"){
+			$title_source = $data;
 		    }
-		}
-	    }
-
-
-	    if (defined $match->{RecordInfo}{BibRecord}{BibRelationships}{IsPartOfRelationships}){
-		foreach my $partof_item (@{$match->{RecordInfo}{BibRecord}{BibRelationships}{IsPartOfRelationships}}){
-		    if (defined $partof_item->{BibEntity}){
-		
-			foreach my $thisfield (keys %{$partof_item->{BibEntity}}){
+		    elsif ($name eq 'URL' && $label eq 'Access URL' && ! $is_electronic_ressource) { 
+			my $url = '';
+			
+			if ($data =~ /linkTerm=.*(http.*)&lt;/ or $data =~ /^(http[^\s]+)/){
+			    $url = $1;
+			}
+			
+			if ($match->{Header}{DbId} =~ /^(edsfis|edswao)$/) { # z.B. ID=edswao:edswao.035502584
 			    
-			    if ($thisfield eq "Titles"){
-				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
-				    push @{$fields_ref->{'T0451'}}, {
-					content => $item->{TitleFull}
-				    };
-				    
-				}
-			    }
+			    push @{$fields_ref->{'T4120'}}, {
+				subfield => 'g', # Freier Zugang / green
+				mult     => $link_mult, 
+				content  => $url};
 			    
-			    if ($thisfield eq "Dates"){
-				foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
-				    push @{$fields_ref->{'T0425'}}, {
-					content => $item->{'Y'}
-				    };
+			    push @{$fields_ref->{'T0662'}}, {
+				subfield     => '', 
+				mult         => $link_mult, 
+				content      => $url,
+				availability => 'green',
+			    };
+			    # Todo: Zugriffstatus 'green' hinzufuegen
+			    $link_mult++;
+			} 
+			else {
+			    # SSOAR, BASE, OLC, ...: Volltext-Link auslesen, z.B. ID=edsbas:edsbas.ftunivdortmund.oai.eldorado.tu.dortmund.de.2003.30139, ID=edsgoc:edsgoc.197587160X
+			    if ($url && $url !~ /gesis\.org\/sowiport/) { # Sowiport-Links funktionieren nicht mehr, z.B. ID=edsgsl:edsgsl.793796
+				push @{$fields_ref->{'T4120'}}, {
+				    subfield => 'y', # Eingeschraenkter Zugang / yellow
+				    mult     => $link_mult, 
+				    content  => $url};
+				
+				push @{$fields_ref->{'T0662'}}, {
+				    subfield     => '', 
+				    mult         => $link_mult, 
+				    content      => $url,
+				    availability => 'yellow',
 				    
+				};
+				push @{$fields_ref->{'T0663'}}, {
+				    subfield => '', 
+				    mult     => $link_mult, 
+				    content  => "Volltext"
+				};
+				# Todo: Zugriffstatus 'yellow' hinzufuegen
+				$link_mult++;
+				
+				if ($match->{Header}{DbId} eq 'edsgso') { # SSOAR
+				    # Todo: Zugriffsstatus 'green' hinzufuegen
+				    push @{$fields_ref->{'T0800'}}, {
+					subfield => '', 
+					mult     => 1, 
+					content  => "electronic resource"
+				    };
+				    $is_electronic_ressource = 1;
+				} 
+				else {
+				    # Todo: Zugriffsstatus 'unknown' hinzufuegen
 				}
+				push @{$fields_ref->{'T0800'}}, {
+				    subfield => '', 
+				    mult     => 1, 
+				    content  => "electronic resource"
+				} unless ($is_electronic_ressource);
 			    }
 			}
 		    }
-		    
+		    elsif ($name eq 'URL' && $label eq 'Availability') {
+			
+			$logger->debug("URL - Label:$label - Name:$name Data:$data");
+			
+			my @urls = split(' ; ', $data);
+			my $i = 2;
+			foreach my $url (@urls) {
+			    if ($url =~ /doi\.org/) {
+				my ($doi) = $url =~m/doi\.org\/(.+)$/ ;
+				push @{$fields_ref->{'T0552'}}, {
+				    subfield => '', 
+				    content  => $doi
+				};
+				push @{$fields_ref->{'T0662'}}, {
+				    subfield => '', 
+				    mult     => $link_mult, 
+				    content  => $url
+				};
+				push @{$fields_ref->{'T0663'}}, {
+				    subfield => '', 
+				    mult => $link_mult, 
+				    content => "DOI"
+				};
+				$link_mult++;
+			    } 
+			    else {
+				if ($match->{Header}{DbId} =~ /^(edsbl)$/) {
+				    next;
+				}
+				
+				my $availability = "";
+				
+				if ($match->{Header}{DbId} =~ /^(edsoao|edsomo|edsebo|edssvl)$/) { # Links aus Grove Art und Britannica Online, z.B. ID=edsoao:oao.T045764
+				    # Todo: Zugriffstatus 'yellow' hinzufuegen
+				    $availability = "yellow";
+				    
+				    push @{$fields_ref->{'T0800'}}, {
+					subfield => '', 
+					mult     => 1, 
+					content  => "electronic resource"
+				    };
+				} 
+				else {
+				    $availability = "unknown";
+				}
+				
+				my $thisfield_ref = {
+				    subfield => '', 
+				    mult     => $link_mult, 
+				    content  => $url
+				};
+				
+				if ($availability){
+				    $thisfield_ref->{availability} = $availability;
+				}
+				
+				my $availability_map_ref = {green => 'g', yellow => 'y', unknown => ' '};
+				push @{$fields_ref->{'T4120'}}, {
+				    subfield => $availability_map_ref->{$availability}, # Dynamisch
+				    mult     => $link_mult, 
+				    content  => $url};
+				
+				
+				push @{$fields_ref->{'T0662'}}, $thisfield_ref; 
+				push @{$fields_ref->{'T0663'}}, {
+				    subfield => '', 
+				    mult     => $link_mult, 
+				    content  => "Volltext"
+				};
+				
+				$link_mult++;
+			    }
+			    $i++;
+			}
+		    } 
+
 		}
 	    }
 	    
-	}
-	
+	    my $pagerange = "";
+	    
+	    foreach my $thisfield (keys %{$match->{RecordInfo}{BibRecord}{BibEntity}}){
+		
+		if ($thisfield eq "Titles"){
+		    foreach my $item (@{$match->{RecordInfo}{BibRecord}{BibEntity}{$thisfield}}){
+			push @{$fields_ref->{'T0331'}}, {
+			    content => $item->{TitleFull}
+			} if ($item->{Type} eq "main");
+			
+		    }
+		}
+
+		if ($thisfield eq "PhysicalDescription"){
+		    my $startpage;
+		    my $endpage;
+		    my $pagecount;
+		    
+		    eval {
+			$startpage = $match->{RecordInfo}{BibRecord}{BibEntity}{$thisfield}{Pagination}{StartPage};
+		    };
+		    
+		    eval {
+			$pagecount = $match->{RecordInfo}{BibRecord}{BibEntity}{$thisfield}{Pagination}{PageCount};
+		    };
+		    
+		    if ($startpage){
+			$startpage=~s{^0+}{}g;
+			
+			if ($pagecount && $pagecount > 1){
+			    $endpage = $startpage + $pagecount - 1;
+			}
+		    }
+		    
+		    $pagerange = $startpage if ($startpage);
+		    $pagerange .= " - $endpage" if ($endpage);
+		    
+		    $pagerange = "S. ".$pagerange if ($pagerange);
+		}
+	    }
+
+	    if (defined $match->{RecordInfo}{BibRecord} && defined $match->{RecordInfo}{BibRecord}{BibRelationships}){
+
+		if (defined $match->{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}){
+		    foreach my $item (@{$match->{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}}){
+			#		    $logger->debug("DebugRelationShips".YAML::Dump($item));
+			if (defined $item->{PersonEntity} && defined $item->{PersonEntity}{Name} && defined $item->{PersonEntity}{Name}{NameFull}){
+			    
+			    push @{$fields_ref->{'P0100'}}, {
+				content => $item->{PersonEntity}{Name}{NameFull},
+			    }; 
+			    
+			    push @{$fields_ref->{'PC0001'}}, {
+				content => $item->{PersonEntity}{Name}{NameFull},
+			    }; 
+			}
+		    }
+		}
+
+
+		if (defined $match->{RecordInfo}{BibRecord}{BibRelationships}{IsPartOfRelationships}){
+		    
+		    my $issue   = "";    
+		    my $volume  = "";
+		    my $journal = "";
+		    my $year    = "";
+		    
+		    foreach my $partof_item (@{$match->{RecordInfo}{BibRecord}{BibRelationships}{IsPartOfRelationships}}){
+			if (defined $partof_item->{BibEntity}){
+			    
+			    foreach my $thisfield (keys %{$partof_item->{BibEntity}}){
+				
+				if ($thisfield eq "Titles"){
+				    foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+					$journal = $item->{TitleFull};
+				    }
+				}
+				
+				if ($thisfield eq "Dates"){
+				    foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+					$year = $item->{'Y'};
+					push @{$fields_ref->{'T0425'}}, {
+					    content => $item->{'Y'}
+					};
+				    }
+				}
+				
+				if ($thisfield eq "Numbering"){
+				    foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+					my $type  = $item->{Type};
+					my $value = $item->{Value};
+					
+					if ($value && $type eq "volume"){
+					    $volume = $value;
+					}
+					elsif ($value && $type eq "issue"){
+					    $issue = $value;
+					}
+					
+				    }
+				    
+				    # if ($thisfield eq "Titles"){
+				    #     foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+				    # 	push @{$fields_ref->{'T0451'}}, {
+				    # 	    content => $item->{TitleFull}
+				    # 	};
+				    
+				    #     }
+				    # }
+				    
+				    # if ($thisfield eq "Dates"){
+				    #     foreach my $item (@{$partof_item->{BibEntity}{$thisfield}}){
+				    # 	push @{$fields_ref->{'T0425'}}, {
+				    # 	    content => $item->{'Y'}
+				    # 	};
+				    
+				    #     }
+				    # }
+				}
+			    }
+			    
+			    
+			}
+			
+		    }
+
+		    # T0590 erzeugen
+		    my $field_0590 = "";
+		    if ($journal){
+			$field_0590 = $journal;
+
+			if ($year){
+			    $field_0590.=", $year";
+			}
+
+			if ($volume){
+			    $field_0590.=", Vol. $volume";
+			}
+
+			if ($issue){
+			    $field_0590.=" ($issue)";
+			}
+
+			if ($pagerange){
+			    $field_0590.=", $pagerange";
+			}
+		    }
+
+		    if ($field_0590){
+			push @{$fields_ref->{'T0590'}}, {
+			    content => $field_0590,
+			};
+		    }
+		    elsif ($title_source){
+			push @{$fields_ref->{'T0590'}}, {
+			    content => $title_source,
+			};
+		    }
+		    
+		}
+	    }
+	}	
         push @matches, {
             database => $match->{Header}{DbId},
             id       => $match->{Header}{An},

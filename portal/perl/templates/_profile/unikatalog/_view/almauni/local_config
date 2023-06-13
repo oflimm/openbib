@@ -1,4 +1,38 @@
 [%-
+
+   cms_links = {
+    anmeldung        = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausweis/ohneuccard/index_ger.html"
+    anschaff         = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/anschaffungsvorschlag/index_ger.html"
+    ausweisverl      = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausweis/index_ger.html"
+    bezahlen         = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/kosten/index_ger.html"
+    paymend          = "https://www.ub.uni-koeln.de/finding_borrowing/borrowing/fees/index_eng.html"
+    bno              = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/regelung/index_ger.html"
+    bnr              = "https://www.ub.uni-koeln.de/fragen/ausweis/benutzernr/index_ger.html"
+    bnrgesperrt      = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausweis/sperre/index_ger.html"
+    edzdb            = "https://www.ub.uni-koeln.de/ueber_uns/dach/edz/datenbanken/index_ger.html"
+    fachauskunft     = "https://www.ub.uni-koeln.de/ueber_uns/ansprechpartner/fachreferate/index_ger.html"
+    fernleihe        = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/ueberregional/index_ger.html"
+    kontakt          = "https://www.ub.uni-koeln.de/lernen_arbeiten/arbeitenusb/oeffnungszeiten/index_ger.html"
+    kontaktezb       = "mailto:ezb@ub.uni-koeln.de"
+    kontaktdb        = "mailto:dbfragen@ub.uni-koeln.de"
+    kontaktfl        = "mailto:fernleihe@ub.uni-koeln.de"
+    kontaktol        = "mailto:ortsleihe@ub.uni-koeln.de"
+    kopierer         = "https://www.ub.uni-koeln.de/lernen_arbeiten/arbeitenusb/tech/index_ger.html"
+    neliabo          = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/neuerwerbungsliste/index_ger.html"
+    oeffzeit         = "https://www.ub.uni-koeln.de/lernen_arbeiten/arbeitenusb/oeffnungszeiten/index_ger.html"
+    oeffzeitausleihe = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausleihinfos/ausleihe/index_ger.html#text30451"
+    oeffzeithwa      = "https://www.ub.uni-koeln.de/lernen_arbeiten/arbeitenusb/oeffnungszeiten/oeffzeithwa/index_ger.html"
+    oeffzeithwamag   = "https://www.ub.uni-koeln.de/lernen_arbeiten/arbeitenusb/oeffnungszeiten/oeffzeithwa/index_ger.html"
+    pda              = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/anschaffungsvorschlag/index_ger.html"
+    paymend          = "https://www.ub.uni-koeln.de/finding_borrowing/borrowing/fees/index_eng.html"
+    registration     = "https://www.ub.uni-koeln.de/finding_borrowing/borrowing/card/withoutuccard/index_eng.html"
+    tipps            = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/portalsuche/index_ger.html"
+    usbinfo          = "https://www.ub.uni-koeln.de/res/newsletter/index_ger.html"
+    uccard           = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausweis/uccard/index_ger.html"
+    uccarden         = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausweis/uccard/index_eng.html"
+    vpn              = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/nutzungshinweise/index_ger.html"
+   };
+
    IF NOT viewdbs ;
        viewdbs = config.get_dbs_of_view(view);
    END ;
@@ -8,18 +42,46 @@
    IF NOT searchprofileid_of_view ;
       searchprofileid_of_view  = config.get_searchprofile_of_view(view);
    END ;
+   IF NOT searchprofileid_of_books ;
+      searchprofileid_of_books  = config.get_searchprofile_of_orgunit('unikatalog','almabooks') ;
+   END ;
+   IF NOT searchprofileid_of_articles ;
+      searchprofileid_of_articles = config.get_searchprofile_of_orgunit('unikatalog','articles');
+   END ;
+
+   IF database && NOT searchprofileid_of_title ;
+      searchprofileid_of_title = config.get_searchprofile_of_database(database);
+   ELSIF record && record.database && NOT searchprofileid_of_title ;
+      searchprofileid_of_title = config.get_searchprofile_of_database(record.database);
+   END ;
+
+   IF NOT searchprofileid_of_web ;
+      searchprofileid_of_web = config.get_searchprofile_of_orgunit('unikatalog','web');
+   END ;
 
    current_profile = "";
    IF query.param('profile');
      current_profile = escape_html(query.param('profile'));
+   ELSIF searchprofileid_of_title == searchprofileid_of_articles ;
+     current_profile = searchprofileid_of_articles ;
+   ELSIF searchprofileid_of_title == searchprofileid_of_web ;
+     current_profile = searchprofileid_of_web ;
+   ELSIF searchprofileid_of_title == searchprofileid_of_view ;
+     current_profile = searchprofileid_of_view ;
    ELSE;
-     current_profile = searchprofileid_of_view;
+     current_profile = searchprofileid_of_books;
    END;
 
    idsuffix = "";
 
-   IF current_profile == searchprofileid_of_view;
+   current_tab = escape_html(query.param('tab'));
+   
+   IF current_profile == searchprofileid_of_articles;
+     idsuffix = "_articles" ;
+     current_tab = 'articles';
+   ELSE;
      idsuffix = "_books";
+     current_tab = 'books';   
    END;
 
 -%]

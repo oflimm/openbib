@@ -14,6 +14,16 @@
 
 [%# USE dumper;dumper.dump(fees)%]
 
+[% IF fees.error %]
+<div class="alert alert-info">
+<h4>[% msg.maketext("Probleme mit der Kopplung zum Bibliothekssystem") %]</h4>
+
+<p>
+[% fees.error_description %]
+</p>
+
+</div>
+[% ELSE %]
 [% IF fees.no_fees || fees.items.size == 0 %]
 <div class="ob-jumbotron">
 <h1 class="display-4">[% msg.maketext("Es sind keine Gebühren angefallen.") %]</h1>
@@ -51,5 +61,7 @@
 [% ELSE %]
 [% msg.maketext("Es ist ein unerwarteter Fehler aufgetreten") %]
 [% END %]
+
+[% END # no error %]
 
 <div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Ihre offenen Gebühren") %]</div>

@@ -103,8 +103,8 @@
 </div>
 
 <div class="form-check">
-<input class="form-check-input" type="checkbox" name="markstring" id="markstring" value="1" [% IF searchfields.markstring.active %]checked="checked"[% END %]/>
-<label class="form-check-label" for="markstring">[% msg.maketext("Signatur") %]</label>
+<input class="form-check-input" type="checkbox" name="mark" id="mark" value="1" [% IF searchfields.mark.active %]checked="checked"[% END %]/>
+<label class="form-check-label" for="mark">[% msg.maketext("Signatur") %]</label>
 </div>
 
 <div class="form-check">

@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [%- circulation     = record.get_circulation -%] 
-[%# USE dumper; dumper.dump(circulation)%]
+[% USE dumper; dumper.dump(circulation)%]
 
 [% overall_mediastatus = {} ;
 

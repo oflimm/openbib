@@ -1466,6 +1466,16 @@ sub load_circulation {
 	
 	my $mediastatus_ref = $ils->get_mediastatus($self->{id});
 
+	if ($logger->is_debug){
+	    $logger->debug("Result: ".YAML::Dump($mediastatus_ref));
+	}
+
+	if (defined $mediastatus_ref->{error}){
+	    $self->set_circulation_error($mediastatus_ref);
+	    $self->set_circulation($circulation_ref);
+	    return $self;
+	}
+	
 	if (defined $mediastatus_ref->{items} && @{$mediastatus_ref->{items}}){
             for (my $i=0; $i < scalar(@{$mediastatus_ref->{items}}); $i++) {
 		my $department     = $mediastatus_ref->{items}[$i]{department}{content};
@@ -1799,6 +1809,26 @@ sub set_holding {
     return;
 }
 
+sub get_locationmark_of_media {
+    my ($self,$medianumber,$msg) = @_;
+
+    my $logger = get_logger();
+
+    $logger->debug("Getting locationmark for $medianumber");
+
+    my $location_mark = "";
+
+    foreach my $holding_ref (@{$self->get_holdings}){
+	next unless (defined $holding_ref->{'X0010'} && $holding_ref->{'X0010'} eq $medianumber);
+	$location_mark = $holding_ref->{'X0014'};
+	last;
+    }
+
+    $logger->debug("Got locationmark $location_mark");
+    
+    return $location_mark;
+}
+
 sub set_generic_attributes {
     my ($self,$attributes_ref)=@_;
 
@@ -1841,6 +1871,34 @@ sub set_circulation {
     $self->{_circulation} = $circulation_ref;
 
     return;
+}
+
+sub set_circulation_error {
+    my ($self,$error_ref)=@_;
+
+    # Log4perl logger erzeugen
+    
+    my $logger = get_logger();
+
+    if ($logger->is_debug){
+        $logger->debug("Setting Circulation Error: ".YAML::Dump($error_ref));
+    }
+    
+    $self->{_circulation_error} = $error_ref;
+
+    return;
+}
+
+sub has_circulation_error {
+    my ($self)=@_;
+
+    return (defined $self->{_circulation_error} && %{$self->{_circulation_error}} )?1:0;
+}
+
+sub get_circulation_error {
+    my ($self)=@_;
+
+    return (defined $self->{_circulation_error} && %{$self->{_circulation_error}} )?$self->{_circulation_error}:undef;
 }
 
 sub set_same_records {

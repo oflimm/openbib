@@ -12,6 +12,7 @@
 #######################################################################
 -%]
 <p />
+
 [%# USE dumper;dumper.dump(dbinfo)%]
 <div class="table-responsive">
 <table class="table table-striped table-flippable">
@@ -267,7 +268,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [% IF availability_info.match('Bestellschein') %]
 [%    bestellscheinparts = availability_info.match('^.* (\(.*\))'); %]
 <br/><em>Bitte füllen Sie einen konventionellen Bestellschein aus</em><br/>[% bestellscheinparts.first %]<br/>
-[%    IF config.get('active_ils') && authenticator.name == 'inst001' %]
+[%    IF config.get('active_ils') %]
 [%
 
         anon_redirect_url = "${path_prefix}/${config.get('users_loc')}/id/me/${config.get('circulations_loc')}/id/mail/default.html?l=${lang};dbname=${database};titleid=${record.id};label=${uri_escape(thiscirculation.location_mark)};location=${uri_escape(standort)};realm=usb";
@@ -280,7 +281,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 [% ELSIF standort.match('Handapp') %]
 [%   IF thiscirculation.department_id.match('^(0|4|6|10|15|18|22|406)$') ; # Handapp. der Hauptabteilung und FBs: Bestellformular einblenden, z.B. ID=6445402, ID=6781850 %]
 entliehen
-[%    IF config.get('active_ils') && authenticator.name == 'inst001' %]
+[%    IF config.get('active_ils') %]
 [%      IF    thiscirculation.department_id.match('^4$') ;
           realm = "hwa";
 	ELSIF thiscirculation.department_id.match('^6$') ;
@@ -435,7 +436,7 @@ Präsenzbestand
    <input type="hidden" name="unit_desc"     value="[% standort %]" />
    <!-- Kein Parameter pickup_location = Ausgabeort bestimmen -->
 [%   IF NOT corona %]
-[%     IF config.get('active_ils') && authenticator.name == 'inst001' %]
+[%     IF config.get('active_ils') %]
    <input type="submit" value="Bestellen" class="btn btn-primary mb-1" title="Dieses Buch steht in einem nicht-öffentlichen Bereich. Wir suchen es für Sie heraus." />
 [%     END %]
 [%   ELSE %]
@@ -470,7 +471,7 @@ Präsenzbestand
      END;
 
 %]
-[%   IF vormerkbutton  && config.get('active_ils') && authenticator.name == 'inst001' %]
+[%   IF vormerkbutton  && config.get('active_ils') %]
 
 [% # (Mehrfach)exemplare pro Zweigstelle
  
@@ -501,7 +502,7 @@ Präsenzbestand
 [%############### ANFANG KMB ######### %]
 [% IF thiscirculation.department_id == '20' # KMB: Bestellbutton mit Sprung ins KuBi-Portal bzw. zur Bestellmaske, z.B. ID=inst001:7140497 %]
 [%   IF NOT standort.match('(Museum für Angewandte Kunst|Graphische Sammlung|Schwarze Lade)') # Bestellfunktionen fuer KMB-Bestand im MAKK, WRM (Graphische Sammlung) und DSL unterdruecken %]
-[%#     IF config.get('active_ils') && authenticator.name == 'inst001' %]
+[%#     IF config.get('active_ils') %]
 <p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];dbname=[% database %];location=[% standort |uri %];realm=kmb">[% msg.maketext("In den Lesesaal bestellen") %]</a></p> 
 <p>
 <b>KMB-Dokumentlieferdienst:</b><br/>
@@ -531,7 +532,7 @@ Präsenzbestand
       END;
 %]
 [%    IF thiscirculation.availability != 'vermisst' %]
-[%      IF config.get('active_ils') && authenticator.name == 'inst001' %]
+[%      IF config.get('active_ils') %]
 <p>
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/campusorders">
    <input type="hidden" name="l"             value="[% lang %]" />
@@ -558,7 +559,7 @@ Präsenzbestand
 [%   session_cache = session.get_datacache %]
 [%  IF thiscirculation.department_id.match('^(0|4)$') && session_cache.ilias.defined %]
 [%    IF thiscirculation.availability != 'vermisst' %]
-[%      IF config.get('active_ils') && authenticator.name == 'inst001' %]
+[%      IF config.get('active_ils') %]
 <p>
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/ilias/[% config.get('circulations_loc') %]/id/iliasorders">
    <input type="hidden" name="l"             value="[% lang %]" />

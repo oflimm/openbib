@@ -117,9 +117,9 @@
 </div>
 [% END %]
 
-[% IF available_searchfields.mark.active %]
-[%- cgiparam = searchfield.mark.prefix;
-    this_searchfield = 'mark';
+[% IF available_searchfields.markstring.active %]
+[%- cgiparam = searchfield.markstring.prefix;
+    this_searchfield = 'markstring';
  -%]
 <div class="form-floating mb-3">
 <input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />

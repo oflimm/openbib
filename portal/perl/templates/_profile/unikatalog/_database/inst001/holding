@@ -37,7 +37,7 @@
     is_journal = 0;
 
     FOREACH thisholding IN holding ;
-      IF thisholding.defined('X1204'); # Bestandsverlauf
+      IF thisholding.defined('X1204') && thisholding.${"X1204"}.content != "-"; # Bestandsverlauf
         is_journal = 1;
       END;
     END;

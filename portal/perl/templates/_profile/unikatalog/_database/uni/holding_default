@@ -55,6 +55,18 @@ END ;
 
 standort = thisholding.${"X0016"}.content;
 
+IF standort.match('BIB$');
+  standort = "Bibliothek";
+ELSIF standort.match('MAG$');
+  standort = "Magazin";     
+ELSIF standort.match('AWM$');
+  standort = "Ausweichmagazin";     
+ELSIF standort.match('LBS$');
+  standort = "Lehrbuchsammlung";     
+ELSIF standort.match('LS$');
+  standort = "Lesesaal";     
+END;
+
 IF thisholding.${"X3330"}.content.match('^38$');
   IF thisholding.${"X0014"}.content.match('^FHM ') ;
     standort = "USB-Freihandmagazin (1. OG)";

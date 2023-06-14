@@ -1212,6 +1212,27 @@ sub get_mediastatus {
 		my $available_ref   = [];
 		my $unavailable_ref = [];
 
+
+		# Temporary locations => nicht entleihbar weil Schimmel, Ausstellung etc.
+
+		my $in_temporary_location = (defined $circ_ref->{'holding_data'}{'in_temp_location'} && $circ_ref->{'holding_data'}{'in_temp_location'})?1:0;
+
+		my $temporary_location_desc = "";
+		
+		if ($in_temporary_location){
+		    if (defined $circ_ref->{'holding_data'}{'temp_policy'}{'desc'}){
+			$temporary_location_desc .= $circ_ref->{'holding_data'}{'temp_policy'}{'desc'};
+		    }
+
+		    if (defined $circ_ref->{'holding_data'}{'temp_location'}{'desc'}){
+			$temporary_location_desc .= " (".$circ_ref->{'holding_data'}{'temp_location'}{'desc'}.")";
+		    }
+		}
+
+		if ($logger->is_debug){
+		    $logger->debug("in_temporary_location: $in_temporary_location / desc: $temporary_location_desc");
+		}
+		
 		# See Configuration->Fulfillment->Physical Fulfillment->Item Policy (here: from sandbox for testing)
 		my $policy      = $circ_ref->{'item_data'}{'policy'}{'value'}; # Ausleihkonditionen fuer dieses Item
 		my $policy_desc = $circ_ref->{'item_data'}{'policy'}{'desc'}; # Ausleihkonditionen fuer dieses Item
@@ -1240,9 +1261,19 @@ sub get_mediastatus {
 		    my ($ref) = grep { $_->{'desc'} =~m/Lesesaal/i } @{$this_circ_conf->{pickup_locations}};
 		    $circulation_desk = 1 if ($ref);
 		}
-		
+
+		# Temporaere Location
+		if ($in_temporary_location){
+		    my $this_unavailable_ref = {
+			service => 'loan',
+			content => $temporary_location_desc,
+			expected => "temporarily unavailable",
+		    };
+
+		    push @$unavailable_ref, $this_unavailable_ref;
+		}
 		# Bestell-/ausleihbar in den Lesesaal
-		if ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $policy eq "L" ){ # ggf. auch $policy = L = Lesesaalausleihe
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $policy eq "L" ){ # ggf. auch $policy = L = Lesesaalausleihe
 		    push @$available_ref, {
 			service => 'order',
 			content => "bestellbar in Lesesaal",
@@ -1321,6 +1352,17 @@ sub get_mediastatus {
 		    };
 
 		    # no queue = no reservation!
+		    push @$unavailable_ref, $this_unavailable_ref;
+		    
+		}
+		# vermisst?
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0 && $process_type eq "MISSING"){
+		    my $this_unavailable_ref = {
+			service => 'loan',
+			content => "vermisst",
+			expected => 'missing',
+		    };
+		    
 		    push @$unavailable_ref, $this_unavailable_ref;
 		    
 		}

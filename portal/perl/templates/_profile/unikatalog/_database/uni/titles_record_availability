@@ -18,13 +18,11 @@
 
 [% IF has_circulation_error %]
 
-[% circulation_error = record.get_circulation_error %]
-
-  <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="[% circulation_error.error_description %]" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_error mb-1 me-1 ps-1 pe-1"><i class="fas fa-exclamation-triangle"></i> <span class="ps-1 d-none d-sm-inline text-nowrap">[% msg.maketext("Alma Problem") %]</span></a>
-
+  <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_error mb-1 me-1 ps-1 pe-1"><i class="fas fa-exclamation-triangle"></i> <span class="ps-1 d-none d-sm-inline text-nowrap">[% msg.maketext("Alma Problem") %]</span></a>
 
 [% ELSE %]
 
+[%
    FOREACH thiscirculation IN circulation ;
      IF thiscirculation.availability == "lent" || thiscirculation.availability == "ordered";
         overall_mediastatus.${"lent"} = 1;

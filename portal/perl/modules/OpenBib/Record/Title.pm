@@ -4521,12 +4521,13 @@ sub get_availability {
     if (defined $unavailability_ref && @$unavailability_ref){
 	foreach my $this_unavailability_ref (@$unavailability_ref){
 	    if ($this_unavailability_ref->{service} eq "loan"){
-		if (defined $this_unavailability_ref->{expected} && $this_unavailability_ref->{expected}){
-		    $availability = "lent";
-		}
+		$availability = "lent";		
 		
-		if (!defined $this_unavailability_ref->{expected} || $this_unavailability_ref->{expected} eq "lost"){
+		if (defined $this_unavailability_ref->{expected} && $this_unavailability_ref->{expected} eq "missing"){
 		    $availability = "missing";
+		}
+		if (defined $this_unavailability_ref->{expected} && $this_unavailability_ref->{expected} eq "temporarily_unavailable"){
+		    $availability = "temporarily_unavailable";
 		}
 	    }
 	    elsif ($this_unavailability_ref->{service} eq "order"){

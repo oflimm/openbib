@@ -29,7 +29,9 @@
      ELSIF thiscirculation.availability == "loan" || thiscirculation.availability == "order" || ( thiscirculation.availability == 'loan' && thiscirculation.availability_info.limitation.first.content == "nur Wochenende" ) ;
         overall_mediastatus.${"lendable"} = 1;
      ELSIF thiscirculation.availability == "missing" ;
-        overall_mediastatus.${"lent"} = 1;
+        overall_mediastatus.${"missing"} = 1;
+     ELSIF thiscirculation.availability == "temporarily unavailable" ;
+        overall_mediastatus.${"temporarily_unavailable"} = 1;
      ELSIF thiscirculation.availability == "presence" || ( thiscirculation.availability == order && ( thiscirculation.availability_info.limitation.first.content == "nur in Lesesaal bestellbar" || thiscirculation.availability_info.limitation.first.content == "nur in bes. Lesesaal bestellbar" ) );
         overall_mediastatus.${"presence"} = 1;
      END;
@@ -44,6 +46,8 @@
 <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_borrowed mb-1 me-1 pe-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("entliehen") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("entliehen") %]</span></a>
 [% ELSIF overall_mediastatus.${"missing"} == 1 %]
 <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_borrowed mb-1 me-1 pe-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("vermisst") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("vermisst") %]</span></a>
+[% ELSIF overall_mediastatus.${"temporarily_unavailable"} == 1 %]
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_borrowed mb-1 me-1 pe-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("vermisst") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("nicht verfügbar") %]</span></a>
 [% END %]
 
 [% END # else has_circulation_error %]

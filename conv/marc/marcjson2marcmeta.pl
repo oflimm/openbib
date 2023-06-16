@@ -121,10 +121,10 @@ open (HOLDING,       ">:raw","meta.holding");
 # tie %subject, 'DB_File', "./subject.db", $flags, 0777, $db ;
 
 if ($reducemem){
-    tie %person, 'BerkeleyDB::Hash', -Filename      => "person.db";
-    tie %corporatebody, 'BerkeleyDB::Hash', -Filename      => "corporatebody.db";
-    tie %classification, 'BerkeleyDB::Hash', -Filename      => "classification.db";
-    tie %subject, 'BerkeleyDB::Hash', -Filename      => "subject.db";
+    tie %person, 'BerkeleyDB::Hash', -Filename         => "person.db";
+    tie %corporatebody, 'BerkeleyDB::Hash', -Filename  => "corporatebody.db";
+    tie %classification, 'BerkeleyDB::Hash', -Filename => "classification.db";
+    tie %subject, 'BerkeleyDB::Hash', -Filename        => "subject.db";
 }
 
 our $excluded_titles = 0;
@@ -198,14 +198,32 @@ while (<DAT>){
 	content  => $leader,
 	mult     => 1,
     } if ($leader);
+
+
+    my $has_items    = 0;
+    my $has_holdings = 0;
     
     # Sonstige Felder umwandeln
+
+    my $holdings_ref = [];
+    
     foreach my $field_ref (@{$record_ref->{fields}}){
 	foreach my $field (keys %$field_ref){
 	    next unless ($field =~m/^\d+$/); # Nur numerische Feldernummern verarbeiten
-
 	    my $field_nr = sprintf "%04d", $field;
 
+
+	    # Holdings in 0943 separat sichern und weiter
+	    if ($field_nr eq "0943"){
+		push @$holdings_ref, {
+		    $field_nr => $field_ref->{$field},
+		};
+
+		$has_holdings = 1;
+		
+		next;
+	    }
+	    
 	    # Leader bearbeiten
 	    if ($field =~m/^00\d$/){
 		push @{$title_ref->{'fields'}{$field_nr}}, {
@@ -393,6 +411,8 @@ while (<DAT>){
 	    } # Ende Subject
 	    # Exemplardaten
 	    elsif (defined $localfields_ref->{$field}){
+		$has_items = 1;
+		
 		$logger->debug("Processing field $field");
 		
 		my $holding_ref = {
@@ -436,6 +456,125 @@ while (<DAT>){
 	    
 	    $field_mult_ref->{$field_nr}++;
 	}
+    }
+
+
+    $logger->debug("has items: $has_items - has holdings: $has_holdings");    
+
+    # Keine Items? Dann Exemplardaten aus holdings, z.B. bei Zeitschriften
+    if (!$has_items && $has_holdings){
+
+	$logger->debug("Processing holdings");
+
+	# Holding-Anreicherung in 943
+	if ($logger->is_debug){
+	    $logger->debug("Holdings". YAML::Dump($holdings_ref));
+	}
+
+	my $all_holdings_ref   = [];
+	my $single_holding_ref = {};
+
+	# Reorganisieren der umgstaendlich gepublishten Holding-Informationen
+	foreach my $field_ref (@$holdings_ref){
+	    my $subfields_ref =  $field_ref->{'0943'}{'subfields'};
+
+	    # if ($logger->is_debug){
+	    # 	$logger->debug(YAML::Dump($subfields_ref));
+	    # }
+	    
+	    foreach my $subfield_ref (@$subfields_ref){
+		foreach my $subfield_code (keys %$subfield_ref){
+		    next unless ($subfield_code =~m/^(a|b|c|h|z|8)$/);
+
+		    if ($subfield_code eq "b" && keys %{$single_holding_ref}){ # Beginn neues Holding
+			push @$all_holdings_ref, $single_holding_ref; # fertiges altes holding speichern
+			$single_holding_ref = {};
+			$single_holding_ref->{$subfield_code} = $subfield_ref->{$subfield_code};
+		    }
+		    else {
+			$single_holding_ref->{$subfield_code} = $subfield_ref->{$subfield_code};		    
+		    }
+		}
+	    }	
+	}
+
+	push @$all_holdings_ref, $single_holding_ref if (keys %{$single_holding_ref}); # letztes holding speichern
+
+	
+	foreach my $single_holding_ref (@$all_holdings_ref){
+	    my $holding_ref = {
+		'id'     => $mexid++,
+		    'fields' => {
+			'0004' =>
+			    [
+			     {
+				 mult     => 1,
+				 subfield => '',
+				 content  => $title_ref->{id},
+			     },
+			    ],
+		},
+	    };
+
+	    # Holding-ID setzten, ansonsten bleibt hochgezaehlte ID
+	    if ($single_holding_ref->{'8'}){
+		$holding_ref->{'id'} = $single_holding_ref->{'8'};
+	    }
+	    
+	    if ($single_holding_ref->{'b'}){
+		my $content = $single_holding_ref->{'b'};
+		
+		push @{$holding_ref->{fields}{'3330'}}, {
+		    content  => $normalizer->cleanup($content),
+		    subfield => '',
+		    mult     => 1,
+		};
+	    }
+
+	    if ($single_holding_ref->{'c'}){
+		my $content = $single_holding_ref->{'c'};
+
+		push @{$holding_ref->{fields}{'0016'}}, {
+		    content  => $normalizer->cleanup($content),
+		    subfield => '',
+		    mult     => 1,
+		};
+	    }
+
+	    if ($single_holding_ref->{'h'}){
+		my $content = $single_holding_ref->{'h'};
+
+		push @{$holding_ref->{fields}{'0014'}}, {
+		    content  => $normalizer->cleanup($content),
+		    subfield => '',
+		    mult     => 1,
+		};
+	    }
+
+	    if ($single_holding_ref->{'a'}){
+		my $content = $single_holding_ref->{'a'};
+
+		if ($single_holding_ref->{'z'}){
+		    $content.=" ".$single_holding_ref->{'z'};
+		}
+		
+		push @{$holding_ref->{fields}{'1204'}}, {
+		    content  => $normalizer->cleanup($content),
+		    subfield => '',
+		    mult     => 1,
+		};
+	    }
+
+	    if ($logger->is_debug){
+		$logger->debug(Dump($holding_ref));
+	    }
+	    
+	    print HOLDING encode_json $holding_ref,"\n";	    
+	}
+	
+	if ($logger->is_debug){
+	    $logger->debug(YAML::Dump($all_holdings_ref));
+	}	
     }
     
     if (!$titleid){
@@ -491,9 +630,9 @@ while (<DAT>){
     
     print TITLE encode_json $title_ref, "\n";
     
-    if ($logger->is_debug){
-	$logger->debug(encode_json $title_ref);
-    }
+    # if ($logger->is_debug){
+    # 	$logger->debug(encode_json $title_ref);
+    # }
     
     if ($counter % 10000 == 0){
 	$logger->info("$counter titles done");
@@ -502,8 +641,8 @@ while (<DAT>){
     $counter++;
 }
 
-$logger->info("$all_count titles done");
-$logger->info("$counter titles survived");
+$logger->info(($all_count - 1)." titles done");
+$logger->info(($counter - 1)." titles survived");
 $logger->info("Excluded titles: $excluded_titles");
 
 close(TITLE);

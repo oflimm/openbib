@@ -11562,6 +11562,13 @@ convtab:
           index:
             'markstring': 1
             'mark': 1
+      '0942': 
+        'a': # GND Anreicherung: Verweisungsform Person
+          index:
+            'person': 1
+        'b': # GND Anreicherung: Verweisungsform Koerperschaft
+          index:
+            'corporatebody': 1
       '1001':
         'z':         # zdbid
           index:
@@ -12547,6 +12554,13 @@ convtab:
           index:
             'markstring': 1
             'mark': 1
+      '0942': 
+        'a': # GND Anreicherung: Verweisungsform Person
+          index:
+            'person': 1
+        'b': # GND Anreicherung: Verweisungsform Koerperschaft
+          index:
+            'corporatebody': 1
       '1001':
         'z':         # zdbid
           index:

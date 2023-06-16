@@ -491,7 +491,7 @@ while (<DAT>){
     if (!$has_items && $has_holdings){
 	# Feld und Subfeld anhand Holding Anreicherung beim Publishing
 	#
-	# Items in Feld 943
+	# Holdings in Feld 943
 	#
 	# Subfields
 	# '8'    : 'id'

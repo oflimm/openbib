@@ -411,6 +411,32 @@ while (<DAT>){
 	    } # Ende Subject
 	    # Exemplardaten
 	    elsif (defined $localfields_ref->{$field}){
+		# Feld und Subfeld anhand Item Anreicherung beim Publishing
+		#
+		# Items in Feld 944
+		#
+		# Subfields
+		# 'd': 'id'
+		# 'h': '3330' # Permanent library subfield
+		# 's': '0014' # Item call number subfield
+		# 'k': '0016' # Permanent location subfield
+		# 'a': '0010' # Barcode subfield
+		# 'p': '0020' # Item policy subfield
+		# 'g': '0021' # Material type subfield
+		# 'e': '0022' # Item status subfield
+		# 'b': '0023' # Call number subfield
+		# 'm': '0024' # Current location subfield
+		# 'i': '0025' # Description subfield
+		# 'n': '0026' # Public note subfield
+		# 'f': '0027' # Fulfillment note subfield
+		# 'u': '0028' # Internal note 1 subfield
+		# 'v': '0029' # Internal note 2 subfield
+		# 'w': '0030' # Internal note 3 subfield
+		# 'q': '0031' # Due back date subfield
+		# 'r': '0032' # Receiving date subfield
+		# 'x': '0033' # Retention reason subfield
+		# 'y': '0034' # Retention note subfield
+		
 		$has_items = 1;
 		
 		$logger->debug("Processing field $field");
@@ -463,6 +489,16 @@ while (<DAT>){
 
     # Keine Items? Dann Exemplardaten aus holdings, z.B. bei Zeitschriften
     if (!$has_items && $has_holdings){
+	# Feld und Subfeld anhand Holding Anreicherung beim Publishing
+	#
+	# Items in Feld 943
+	#
+	# Subfields
+	# '8'    : 'id'
+	# 'b'    : '3330' # Permanent library subfield
+	# 'h'    : '0014' # Item call number subfield
+	# 'c'    : '0016' # Permanent location subfield
+	# 'a'+'z': '1204' # Timespan + gaps
 
 	$logger->debug("Processing holdings");
 

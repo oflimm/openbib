@@ -31,7 +31,7 @@
 [%   PROCESS common/subtemplate name="titles_record_html_sammlungslinks" %]
 
 [%# USE dumper;dumper.dump(record.get_fields)%]
-[%# USE dumper;dumper.dump(normdata)%]
+[% USE dumper;dumper.dump(normdata)%]
 
 <div class="table-responsive">
 <table class="table table-striped table-hover ob-title_fields">
@@ -213,6 +213,8 @@ END;
 # Lizensierter Volltext? (Ausgabe Zugriffshinweis)
 is_licensed = 0;
 
+#USE dumper;dumper.dump(normdata.${"T5003"});
+
 FOREACH item IN normdata.${'T4120'} ;
    IF item.subfield == "g";
       is_licensed = 0;
@@ -343,31 +345,28 @@ FOREACH field IN normdata;
 	 END;
 
     CASE "T0245"; # HST
-         content = thisfield.${'a'} ;
-	 
-         IF thisfield.${'b'} ;
-	    title_supplement = thisfield.${'b'};
-	    content = "${content} : ${title_supplement}";
+         main_title = [];
+    
+         IF thisfield.${'a'} ;
+	   main_title.push(thisfield.${'a'});
 	 END;
 	 
-         IF content ;
+         IF thisfield.${'b'} ;
+	   main_title.push(thisfield.${'b'});	 
+	 END;
+
+         IF thisfield.${'c'} ;
+	   main_title.push(thisfield.${'c'});	 
+	 END;
+
+         IF main_title.size > 0 ;
+	   content = main_title.join(' ');
            content   = "<b>${highlightquery(searchquery,content)}</b>";
 
            IF NOT content_map.${'Titel'} ;
 	     content_map.${'Titel'} = [];
 	   END;
            content_map.${'Titel'}.push(content);
-	 END;
-
-         content = thisfield.${'c'} ;
-
-         IF content ;
-           content   = "${highlightquery(searchquery,content)}";
-	 
-           IF NOT content_map.${'Verfasserangabe'} ;
-	     content_map.${'Verfasserangabe'} = [];
-	   END;
-           content_map.${'Verfasserangabe'}.push(content);
 	 END;
 
     CASE "T0250"; # Auflage
@@ -381,35 +380,27 @@ FOREACH field IN normdata;
 	 END;
 
     CASE [ "T0260" "T0264" ]; # 
-         jahr = "";
-	 IF thisfield.${'c'} ;
-	   jahr = thisfield.${'c'};
-	 END;
-
-         ortverlag = [];
+         ortverlagjahr = [];
 
          IF thisfield.${'a'} ; # Ort
-	   ortverlag.push(thisfield.${'a'});
+	   ortverlagjahr.push(thisfield.${'a'});
 	 END;
 
          IF thisfield.${'b'} ; # Verlag
-           ortverlag.push(thisfield.${'b'});
-         END;
-	 
-         ortverlagcontent = ortverlag.join(' : ');
-
-         IF ortverlagcontent ;
-           IF NOT content_map.${'Ort/Verlag'} ;
-            content_map.${'Ort/Verlag'} = [];
-	   END;
-           content_map.${'Ort/Verlag'}.push(ortverlagcontent);
+           ortverlagjahr.push(thisfield.${'b'});
          END;
 
-         IF jahr ;
-           IF NOT content_map.${'Jahr'} ;
-             content_map.${'Jahr'} = [];
+	 IF thisfield.${'c'} ;
+           ortverlagjahr.push(thisfield.${'c'});	 
+	 END;
+
+         ortverlagjahrcontent = ortverlagjahr.join(' ');
+
+         IF ortverlagjahrcontent ;
+           IF NOT content_map.${'Ort/Verlag/Jahr'} ;
+            content_map.${'Ort/Verlag/Jahr'} = [];
 	   END;
-           content_map.${'Jahr'}.push(jahr);
+           content_map.${'Ort/Verlag/Jahr'}.push(ortverlagjahrcontent);
          END;
 
     CASE "T0300"; # 
@@ -524,6 +515,62 @@ FOREACH field IN normdata;
 	    content_map.${'URL'} = [];
 	 END;
          content_map.${'URL'}.push(content);
+
+    CASE "T5001";
+         searchterms = [];
+         FOREACH superfield IN normdata.${"T5003"};
+	    IF superfield.defined('a');
+	       superfieldcontent = superfield.${'a'};
+               searchterms.push("id:${superfieldcontent}");
+	    END;
+         END;
+
+         zeigeueberordnung        = msg.maketext('Zeige Überordnung');
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};dop=or;fs=${searchterms.join(' ')}";
+         content   = "<a class=\"btn btn-primary\" href=\"${localurl}\">${zeigeueberordnung}</a>";
+         IF NOT content_map.${'T5001'} ;
+	    content_map.${'T5001'} = [];
+	 END;
+         content_map.${'T5001'}.push(content);
+
+    CASE "T5002";
+         searchterm    = item.content;
+         searchprefix  = config.get('searchfield').subid.prefix;
+
+         baendeanzeigen = msg.maketext('Bände/Stücktitel anzeigen');
+	 
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1;num=20;srt=order_desc;profile=${searchprofileid_of_database};${searchprefix}=${record.id}";
+         content   = "<a class=\"btn btn-primary\" href=\"${localurl}\">${content} ${baendeanzeigen}</a>";
+         IF NOT content_map.${'T5002'} ;
+	    content_map.${'T5002'} = [];
+	 END;
+         content_map.${'T5002'}.push(content);
+	 
+    CASE "T5005";
+         content = thisfield.${'e'};
+         super         = from_json(content);
+         USE dumper;dumper.dump(super);
+         searchterm    = super.id;
+         searchprefix  = config.get('searchfield').id.prefix;
+
+         super_title   = "";
+
+         FOREACH superfields IN super.fields.${'0245'} ;
+	   IF superfields.subfield == 'a';
+	      super_title = superfields.content;
+	   END;
+	 END;
+
+         IF NOT super_title ;
+            super_title = "Zur &Uuml;berordnung";
+         END ;
+
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         content   = "<a href=\"${localurl}\">${super_title}</a>";
+         IF NOT content_map.${'T5005'} ;
+	    content_map.${'T5005'} = [];
+	 END;
+         content_map.${'T5005'}.push(content);
 
     CASE ;
          content   = highlightquery(searchquery,item.content);

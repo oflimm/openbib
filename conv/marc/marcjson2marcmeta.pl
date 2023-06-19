@@ -161,6 +161,14 @@ if ($configfile && defined $convconfig->{localfields}{holdings}){
     $localfields_ref = $convconfig->{localfields}{holdings};
 }
 
+my $enrichment_field_mapping_ref = {
+    'GND' => '1942', # GND Enrichment
+    'HOL' => '1943', # Holdings Enrichment
+    'ITM' => '1944', # Items Enrichment
+    'POF' => '1945', # Portfolios Enrichment
+    'DIV' => '1946', # Digital Inventory Enrichment
+};
+
 while (<DAT>){
     my $record_ref = decode_json $_;
 
@@ -209,14 +217,25 @@ while (<DAT>){
     
     foreach my $field_ref (@{$record_ref->{fields}}){
 	foreach my $field (keys %$field_ref){
-	    next unless ($field =~m/^\d+$/); # Nur numerische Feldernummern verarbeiten
-	    my $field_nr = sprintf "%04d", $field;
+	    my $field_nr;
 
+	    # Numeric Fields
+	    if ($field =~m/^\d+$/){
+		$field_nr = sprintf "%04d", $field;
+	    }
+	    # Enrichments
+	    elsif (defined $enrichment_field_mapping_ref->{$field}){
+		$field_nr = $enrichment_field_mapping_ref->{$field};
+	    }
+	    # Ignore others
+	    else {
+		next;
+	    }
 
-	    # Holdings in 0943 separat sichern und weiter
-	    if ($field_nr eq "0943"){
+	    # Holdings in  separat sichern und weiter
+	    if ($field eq "HOL"){
 		push @$holdings_ref, {
-		    $field_nr => $field_ref->{$field},
+		    $field => $field_ref->{$field},
 		};
 
 		$has_holdings = 1;
@@ -413,7 +432,7 @@ while (<DAT>){
 	    elsif (defined $localfields_ref->{$field}){
 		# Feld und Subfeld anhand Item Anreicherung beim Publishing
 		#
-		# Items in Feld 944
+		# Items in Feld ITM
 		#
 		# Subfields
 		# 'd': 'id'
@@ -491,7 +510,7 @@ while (<DAT>){
     if (!$has_items && $has_holdings){
 	# Feld und Subfeld anhand Holding Anreicherung beim Publishing
 	#
-	# Holdings in Feld 943
+	# Holdings in Feld HOL
 	#
 	# Subfields
 	# '8'    : 'id'
@@ -502,7 +521,7 @@ while (<DAT>){
 
 	$logger->debug("Processing holdings");
 
-	# Holding-Anreicherung in 943
+	# Holding-Anreicherung in HOL
 	if ($logger->is_debug){
 	    $logger->debug("Holdings". YAML::Dump($holdings_ref));
 	}
@@ -512,7 +531,7 @@ while (<DAT>){
 
 	# Reorganisieren der umgstaendlich gepublishten Holding-Informationen
 	foreach my $field_ref (@$holdings_ref){
-	    my $subfields_ref =  $field_ref->{'0943'}{'subfields'};
+	    my $subfields_ref =  $field_ref->{'HOL'}{'subfields'};
 
 	    # if ($logger->is_debug){
 	    # 	$logger->debug(YAML::Dump($subfields_ref));

@@ -11562,7 +11562,7 @@ convtab:
           index:
             'markstring': 1
             'mark': 1
-      '0942': 
+      '1942': 
         'a': # GND Anreicherung: Verweisungsform Person
           index:
             'person': 1
@@ -12554,7 +12554,7 @@ convtab:
           index:
             'markstring': 1
             'mark': 1
-      '0942': 
+      '1942': 
         'a': # GND Anreicherung: Verweisungsform Person
           index:
             'person': 1

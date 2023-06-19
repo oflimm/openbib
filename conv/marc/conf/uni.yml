@@ -1,6 +1,6 @@
 localfields:
   holdings:
-    '944':
+    'ITM':
        'd': 'id'
        'h': '3330' # Permanent library subfield
        's': '0014' # Item call number subfield

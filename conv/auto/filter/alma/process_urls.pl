@@ -50,26 +50,20 @@ while (<>){
 
     my $url_done_ref = {};
     
-    # Zuerst Analyse der Portfolie-Informationen in 945
+    # Zuerst Analyse der Portfolie-Informationen in 1945
 
-    my $portfolio_info_ref = {};
-    
-    if (defined $fields_ref->{'0945'}){
+    if (defined $fields_ref->{'1945'}){
 	# Umorganisieren nach Mult-Gruppe
 	my $portfolio_ref = {};
 	
-	foreach my $item_ref (@{$fields_ref->{'0945'}}){
+	foreach my $item_ref (@{$fields_ref->{'1945'}}){
 	    $portfolio_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content}; 
 	}
 
-	foreach my $mult (sort keys %$portfolio_ref){
-	    if (defined $portfolio_ref->{$mult}{'e'}){
-		my $url = $portfolio_ref->{$mult}{'e'};
-		
-		foreach my $subfield (sort keys %{$portfolio_ref->{'mult'}}){
-		    next if ($subfield eq "e");
-		    $portfolio_info_ref->{$url}{$subfield} = $portfolio_ref->{'mult'}{$subfield};
-		}
+	foreach my $pmult (sort keys %$portfolio_ref){
+	    if (defined $portfolio_ref->{$pmult}{'e'}){
+		my $url = $portfolio_ref->{$pmult}{'e'};
+		my $mult    = $mult_ref->{'4662'}++;
 
 		# Hochschulschriften
 		if ($url =~m/^https?:\/\/kups\.ub\.uni\-koeln\.de/){
@@ -175,8 +169,8 @@ while (<>){
 		    $url_done_ref->{$url} = 1;
 		}
 		# public_note aus Portfolio zum URL verfuegbar
-		elsif (defined $portfolio_info_ref->{$url}{'l'}){
-		    my $public_note = $portfolio_info_ref->{$url}{'l'};
+		elsif (defined $portfolio_ref->{$pmult}{'l'}){
+		    my $public_note = $portfolio_ref->{$pmult}{'l'};
 		    
 		    # E-Books mit lokaler URL, z.B.: ID=5902307
 		    if ($public_note =~m/(Zugriff nur im Hochschulnetz|lizenzpflichtig|Access restricted to subscribers)/i){
@@ -386,7 +380,7 @@ while (<>){
 
 			    $url_done_ref->{$url} = 1;						    
 			}
-			elsif ($public_note =~m/DBIS/ && $mult > 1) { # Bsp.: TI=Bayerische Bauordnung 2008
+			elsif ($public_note =~m/DBIS/ && $pmult > 1) { # Bsp.: TI=Bayerische Bauordnung 2008
 			    # 2. DBIS-Link loeschen, da Titel evtl. nicht in die DBIS-Sicht der USB aufgenommen wurde
 			    $url_done_ref->{$url} = 1;			
 			    next;
@@ -470,6 +464,33 @@ while (<>){
 		#     $url_done_ref->{$url} = 1;
 		# }
 	    }
+	    # Kein Static URL -> URL-Resolver
+	    else {
+		my $portfolio_id = $portfolio_ref->{$pmult}{'a'};
+
+		if ($portfolio_id){
+		    my $url="https://eu04.alma.exlibrisgroup.com/view/uresolver/49HBZ_UBK/openurl?u.ignore_date_coverage=true&portfolio_pid=$portfolio_id&Force_direct=true";
+		    
+		    my $mult    = $mult_ref->{'4662'}++;
+		    my $description = "Zum Volltext";
+		    my $access = "f";
+		    
+		    push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => $access,
+			content  => $url,
+		    };
+		    
+		    push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $description,
+			
+		    };
+		    
+		    $url_done_ref->{$url} = 1;
+		}
+	    }
 	}
     }
     
@@ -484,9 +505,10 @@ while (<>){
 	    $url_info_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content}; 
 	}
 
-	foreach my $mult (sort keys %$url_info_ref){
-	    if (defined $url_info_ref->{$mult}{'u'}){
-		my $url = $url_info_ref->{$mult}{'u'};
+	foreach my $umult (sort keys %$url_info_ref){
+	    if (defined $url_info_ref->{$umult}{'u'}){
+		my $url  = $url_info_ref->{$umult}{'u'};
+		my $mult = $mult_ref->{'4662'}++;
 
 		# URL schon ueber Portfolios verarbeitet? Dann ignorieren
 		next if (defined $url_done_ref->{$url} && $url_done_ref->{$url});
@@ -586,8 +608,8 @@ while (<>){
 		}
 
 		# Hinweise aus 856$z
-		elsif (defined $url_info_ref->{$mult}{'z'}){
-		    my $public_note = $url_info_ref->{$mult}{'z'};
+		elsif (defined $url_info_ref->{$umult}{'z'}){
+		    my $public_note = $url_info_ref->{$umult}{'z'};
 
 		    if ($public_note =~m/(digitalisiert von|kostenfrei|DOAB|Frei zugänglich|Full text online|kostenloser Download|lizenzfrei|Volltext)/i){
 			my $description = "E-Book im Volltext";
@@ -772,7 +794,7 @@ while (<>){
 
 			    $url_done_ref->{$url} = 1;						    
 			}
-			elsif ($public_note =~m/DBIS/ && $mult > 1) { # Bsp.: TI=Bayerische Bauordnung 2008
+			elsif ($public_note =~m/DBIS/ && $umult > 1) { # Bsp.: TI=Bayerische Bauordnung 2008
 			    # 2. DBIS-Link loeschen, da Titel evtl. nicht in die DBIS-Sicht der USB aufgenommen wurde
 			    $url_done_ref->{$url} = 1;			
 			    next;
@@ -882,14 +904,14 @@ while (<>){
 
     my $restricted_access = 0;
 
-    if (defined $fields_ref->{'4662'}){
-	foreach my $item_ref (@{$fields_ref->{'4662'}}){
-	    if ($item_ref->{subfield} eq "y"){
+    if (defined $fields_ref->{'0998'}){
+	foreach my $item_ref (@{$fields_ref->{'0998'}}){
+	    if ($item_ref->{'subfield'} eq "z" && $item_ref->{content} =~m/Zugriff nur im Hochschulnetz/){
 		$restricted_access = 1;
 	    }
 	}
     }
-        
+            
     # Zweiter Durchang durch alle Links und Analyse weiterer Kategorien
     if (defined $fields_ref->{'4662'}){
 	my $i = 0;

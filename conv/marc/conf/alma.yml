@@ -1,8 +1,23 @@
 localfields:
   holdings:
-    '0944':
+    'ITM':
        'd': 'id'
-       'h': '3330'
-       's': '0014'
-       'k': '0016'
-       'p': '1203'
+       'h': '3330' # Permanent library subfield
+       's': '0014' # Item call number subfield
+       'k': '0016' # Permanent location subfield
+       'a': '0010' # Barcode subfield
+       'p': '0020' # Item policy subfield
+       'g': '0021' # Material type subfield
+       'e': '0022' # Item status subfield
+       'b': '0023' # Call number subfield
+       'm': '0024' # Current location subfield
+       'i': '0025' # Description subfield
+       'n': '0026' # Public note subfield
+       'f': '0027' # Fulfillment note subfield
+       'u': '0028' # Internal note 1 subfield
+       'v': '0029' # Internal note 2 subfield
+       'w': '0030' # Internal note 3 subfield
+       'q': '0031' # Due back date subfield
+       'r': '0032' # Receiving date subfield
+       'x': '0033' # Retention reason subfield
+       'y': '0034' # Retention note subfield

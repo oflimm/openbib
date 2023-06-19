@@ -50,13 +50,13 @@ while (<>){
 
     my $url_done_ref = {};
     
-    # Zuerst Analyse der Portfolie-Informationen in 945
+    # Zuerst Analyse der Portfolie-Informationen in 1945
 
-    if (defined $fields_ref->{'0945'}){
+    if (defined $fields_ref->{'1945'}){
 	# Umorganisieren nach Mult-Gruppe
 	my $portfolio_ref = {};
 	
-	foreach my $item_ref (@{$fields_ref->{'0945'}}){
+	foreach my $item_ref (@{$fields_ref->{'1945'}}){
 	    $portfolio_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content}; 
 	}
 
@@ -463,6 +463,33 @@ while (<>){
 		    
 		#     $url_done_ref->{$url} = 1;
 		# }
+	    }
+	    # Kein Static URL -> URL-Resolver
+	    else {
+		my $portfolio_id = $portfolio_ref->{$pmult}{'a'};
+
+		if ($portfolio_id){
+		    my $url="https://eu04.alma.exlibrisgroup.com/view/uresolver/49HBZ_UBK/openurl?u.ignore_date_coverage=true&portfolio_pid=$portfolio_id&Force_direct=true";
+		    
+		    my $mult    = $mult_ref->{'4662'}++;
+		    my $description = "Zum Volltext";
+		    my $access = "f";
+		    
+		    push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => $access,
+			content  => $url,
+		    };
+		    
+		    push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $description,
+			
+		    };
+		    
+		    $url_done_ref->{$url} = 1;
+		}
 	    }
 	}
     }

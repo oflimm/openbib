@@ -31,7 +31,7 @@
 [%   PROCESS common/subtemplate name="titles_record_html_sammlungslinks" %]
 
 [%# USE dumper;dumper.dump(record.get_fields)%]
-[% USE dumper;dumper.dump(normdata)%]
+[%# USE dumper;dumper.dump(normdata)%]
 
 <div class="table-responsive">
 <table class="table table-striped table-hover ob-title_fields">
@@ -549,7 +549,7 @@ FOREACH field IN normdata;
     CASE "T5005";
          content = thisfield.${'e'};
          super         = from_json(content);
-         USE dumper;dumper.dump(super);
+         # USE dumper;dumper.dump(super);
          searchterm    = super.id;
          searchprefix  = config.get('searchfield').id.prefix;
 

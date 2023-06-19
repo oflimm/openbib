@@ -1835,6 +1835,7 @@ sub process_marc {
         # HSTQuelle besetzt
         if ($fields_ref->{'0773'}) {
 	    foreach my $item_ref (@{$fields_ref->{'0773'}}) {
+
 		unless (defined $have_type_ref->{'Aufsatz'}){
 		    push @{$fields_ref->{'4410'}}, {
 			mult      => $type_mult++,
@@ -1902,7 +1903,7 @@ sub process_marc {
 	
         # Elektronisches Medium mit Online-Zugriff
         # werden vorher katalogspezifisch per pre_unpack.pl angereichert
-    } 
+    }
 
     # Jahreszahlen umwandeln
     if (defined $fields_ref->{'0260'} || defined $fields_ref->{'0264'}) {        
@@ -1947,7 +1948,7 @@ sub process_marc {
 		my $subfield         = ($item_ref->{subfield})?$item_ref->{subfield}:'';
 		my $source_titleid   = $id;
 		my $supplement       = "";
-		my $field            = "0004";
+		my $field            = "0830";
 		
 		# Keine Verlinkungen zu nicht existierenden Titelids
 		next if (!defined $self->{storage}{titleid_exists}{$target_titleid} || ! $self->{storage}{titleid_exists}{$target_titleid});
@@ -1987,8 +1988,58 @@ sub process_marc {
 	    }
         }
     }
-    
 
+    # Bandverlinkungen durch 0773$w    
+    if (defined $fields_ref->{'0773'}){
+	foreach my $item_ref (@{$fields_ref->{'0773'}}){
+	    if ($item_ref->{subfield} eq "w"){
+		my $target_titleid   = $item_ref->{content};
+		my $mult             = $item_ref->{mult};
+		my $subfield         = ($item_ref->{subfield})?$item_ref->{subfield}:'';
+		my $source_titleid   = $id;
+		my $supplement       = "";
+		my $field            = "0773";
+		
+		# Keine Verlinkungen zu nicht existierenden Titelids
+		next if (!defined $self->{storage}{titleid_exists}{$target_titleid} || ! $self->{storage}{titleid_exists}{$target_titleid});
+		
+		if (defined $inverted_ref->{$field}{$subfield}->{index}) {
+		    foreach my $searchfield (keys %{$inverted_ref->{$field}{$subfield}->{index}}) {
+			my $weight = $inverted_ref->{$field}{$subfield}->{index}{$searchfield};
+			
+			$index_doc->add_index($searchfield, $weight, ["T$field",$target_titleid]);
+		    }
+		}
+		
+		push @superids, $target_titleid;
+		
+		if (defined $self->{storage}{listitemdata_superid}{$target_titleid} && $source_titleid && $target_titleid){
+		    $supplement = $self->cleanup_content($supplement);
+		    push @{$self->{_columns_title_title}}, [$self->{title_title_serialid},$field,$mult,$source_titleid,$target_titleid,$supplement];
+		    #push @{$self->{_columns_title_title}}, ['',$field,$mult,$source_titleid,$target_titleid,$supplement];
+		    $self->{title_title_serialid}++;
+		}
+		
+		
+		if (defined $self->{storage}{listitemdata_superid}{$target_titleid} && %{$self->{storage}{listitemdata_superid}{$target_titleid}}){
+		    # my $title_super = encode_json($self->{storage}{listitemdata_superid}{$target_titleid});
+		    
+		    # $titlecache =~s/\\/\\\\/g; # Escape Literal Backslash for PostgreSQL
+		    # $title_super = $self->cleanup_content($title_super);
+		    
+		    # Anreicherungen mit 5005 (Titelinformationen der Ueberordnung)
+		    push @{$fields_ref->{'5005'}}, {
+			mult      => $mult,
+			subfield  => 'e',
+			content   => $self->{storage}{listitemdata_superid}{$target_titleid},
+			#  content   => $title_super,
+		    };
+		}
+	    }
+	    
+	}
+    }
+    
     # Verfasser/Personen Normdaten verknuepfen
     foreach my $field ('0100','0700') {
         if (defined $fields_ref->{$field}) {
@@ -2721,7 +2772,7 @@ sub process_marc {
 		}
 	    }
         }
-        
+	
         # Exemplardaten-Hash zu listitem-Hash hinzufuegen
         if (exists $self->{storage}{listitemdata_holding}{$id}){
             my $thisholdings = $self->{storage}{listitemdata_holding}{$id};

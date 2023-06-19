@@ -530,7 +530,7 @@ sub load_full_title_record {
                 $title_record->set_field({                
                     field      => 'T5001',
                     content    => scalar(@sub),
-                    subfield   => '',
+                    subfield   => 'a',
                     mult       => 1,
                 });
                 
@@ -538,7 +538,7 @@ sub load_full_title_record {
                     $title_record->set_field({
                         field      => 'T5003',
                         content    => $tt_ref->{id},
-                        subfield   => '',
+                        subfield   => 'a',
                         mult       => $tt_ref->{mult},
                     });
                 }
@@ -565,7 +565,7 @@ sub load_full_title_record {
                 $title_record->set_field({
                     field      => 'T5002',
                     content    => scalar(@super),
-                    subfield   => '',
+                    subfield   => 'a',
                     mult       => 1,
                 });
                 
@@ -573,7 +573,7 @@ sub load_full_title_record {
                     $title_record->set_field({                
                         field      => 'T5004',
                         content    => $tt_ref->{id},
-                        subfield   => '',
+                        subfield   => 'a',
                         mult       => $tt_ref->{mult},
                     });
                 }

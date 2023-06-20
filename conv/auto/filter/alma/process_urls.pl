@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 
+use HTML::Entities qw/decode_entities/;
 use JSON::XS;
 use YAML;
 use utf8;
@@ -61,7 +62,7 @@ while (<>){
 	}
 
 	foreach my $pmult (sort keys %$portfolio_ref){
-	    if (defined $portfolio_ref->{$pmult}{'e'}){
+	    if (defined $portfolio_ref->{$pmult}{'e'}){ # Static URL available
 		my $url = $portfolio_ref->{$pmult}{'e'};
 		my $mult    = $mult_ref->{'4662'}++;
 
@@ -464,16 +465,40 @@ while (<>){
 		#     $url_done_ref->{$url} = 1;
 		# }
 	    }
-	    # Kein Static URL -> URL-Resolver
+	    elsif (defined $portfolio_ref->{$pmult}{'2'}){ # Dynamic URL (OpenURL Resolver) available
+		my $url = $portfolio_ref->{$pmult}{'2'};
+		$url = decode_entities($url);
+		
+		my $mult        = $mult_ref->{'4662'}++;
+		my $description = "Zum Volltext";
+		my $access      = "f";
+		
+		push @{$record_ref->{fields}{'4662'}}, {
+		    mult     => $mult,
+		    subfield => $access,
+		    content  => $url,
+		};
+		
+		push @{$record_ref->{fields}{'4663'}}, {
+		    mult     => $mult,
+		    subfield => '',
+		    content  => $description,
+		    
+		};
+		
+		$url_done_ref->{$url} = 1;
+		
+	    }
+	    # Else build URL-Resolver URL with portfolio_id
 	    else {
 		my $portfolio_id = $portfolio_ref->{$pmult}{'a'};
 
 		if ($portfolio_id){
 		    my $url="https://eu04.alma.exlibrisgroup.com/view/uresolver/49HBZ_UBK/openurl?u.ignore_date_coverage=true&portfolio_pid=$portfolio_id&Force_direct=true";
 		    
-		    my $mult    = $mult_ref->{'4662'}++;
+		    my $mult        = $mult_ref->{'4662'}++;
 		    my $description = "Zum Volltext";
-		    my $access = "f";
+		    my $access      = "f";
 		    
 		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,

@@ -589,13 +589,25 @@ if ($addsuperpers) {
         my $titleid = $record_ref->{id};
 
 	$storage_ref->{titleid_exists}{$titleid} = 1;
-	
-        if (exists $record_ref->{fields}{'0004'}){
-            foreach my $item (@{$record_ref->{fields}{'0004'}}){
-                my $superid = $item->{content};
-                $storage_ref->{listitemdata_superid}{$superid}={};
-            }
-        }
+
+	if ($scheme eq "marc"){
+	    if (exists $record_ref->{fields}{'0773'}){
+		foreach my $item (@{$record_ref->{fields}{'0773'}}){
+		    if ($item->{subfield} eq "w"){
+			my $superid = $item->{content};
+			$storage_ref->{listitemdata_superid}{$superid}={};
+		    }
+		}
+	    }
+	}
+	else {
+	    if (exists $record_ref->{fields}{'0004'}){
+		foreach my $item (@{$record_ref->{fields}{'0004'}}){
+		    my $superid = $item->{content};
+		    $storage_ref->{listitemdata_superid}{$superid}={};
+		}
+	    }
+	}
 
        if ($count % 100000 == 0){
             $logger->info("### $database: 100000 ($count) Titel");

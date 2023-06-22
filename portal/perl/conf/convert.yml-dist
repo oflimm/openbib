@@ -10500,6 +10500,9 @@ convtab:
           index:
             'source': 1
             'freesearch': 1
+        'w':  # ID der Ueberordnung
+          index:
+            'subid': 1
       '0082': # DDC
         'a':
           index:

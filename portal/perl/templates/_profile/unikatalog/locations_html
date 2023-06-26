@@ -185,7 +185,7 @@ for (var i = 0; i < libraries.length; i++) {
      IF identifier.match('DE-38-\d\d\d') ;
          sigel = identifier.match('DE-38-(\d\d\d)').first ;
          sigel_path = "38_${sigel}";
-         sigel = "38/${sigel}";
+         sigel = "DE-38-${sigel}";
      
      ELSE ;
          sigel          = location.fields.${"L0250"}.first.content;
@@ -249,7 +249,7 @@ for (var i = 0; i < libraries.length; i++) {
      IF identifier.match('DE-38-\d\d\d') ;
          sigel = identifier.match('DE-38-(\d\d\d)').first ;
          sigel_path = "38_${sigel}";
-         sigel = "38/${sigel}";
+         sigel = "DE-38-${sigel}";
      ELSE ;
          sigel          = location.fields.${"L0250"}.first.content;
          sigel_path     = location.fields.${"L0250"}.first.content.replace('/','_');
@@ -327,7 +327,7 @@ for (var i = 0; i < libraries.length; i++) {
      IF identifier.match('DE-38-\d\d\d') ;
          sigel = identifier.match('DE-38-(\d\d\d)').first ;
          sigel_path = "38_${sigel}";
-         sigel = "38/${sigel}";
+         sigel = "DE-38-${sigel}";
      ELSE ;
          sigel          = location.fields.${"L0250"}.first.content;
          sigel_path     = location.fields.${"L0250"}.first.content.replace('/','_');
@@ -393,7 +393,7 @@ for (var i = 0; i < libraries.length; i++) {
      IF identifier.match('DE-38-\d\d\d') ;
          sigel = identifier.match('DE-38-(\d\d\d)').first ;
          sigel_path = "38_${sigel}";
-         sigel = "38/${sigel}";
+         sigel = "DE-38-${sigel}";
      ELSE ;
          sigel          = location.fields.${"L0250"}.first.content;
          sigel_path     = location.fields.${"L0250"}.first.content.replace('/','_');
@@ -458,7 +458,7 @@ for (var i = 0; i < libraries.length; i++) {
      IF identifier.match('DE-38-\d\d\d') ;
          sigel = identifier.match('DE-38-(\d\d\d)').first ;
          sigel_path = "38_${sigel}";
-         sigel = "38/${sigel}";
+         sigel = "DE-38-${sigel}";
      ELSE ;
          sigel          = location.fields.${"L0250"}.first.content;
          sigel_path     = location.fields.${"L0250"}.first.content.replace('/','_');
@@ -523,7 +523,7 @@ for (var i = 0; i < libraries.length; i++) {
      IF identifier.match('DE-38-\d\d\d') ;
          sigel = identifier.match('DE-38-(\d\d\d)').first ;
          sigel_path = "38_${sigel}";
-         sigel = "38/${sigel}";
+         sigel = "DE-38-${sigel}";
      ELSE ;
          sigel          = location.fields.${"L0250"}.first.content;
          sigel_path     = location.fields.${"L0250"}.first.content.replace('/','_');
@@ -676,7 +676,7 @@ Mit der Schlagwortliste finden Sie Ihre Campusbibliothek. Die Schlagwörter basi
  <li>Entwicklungsgenetik <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-503.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-503.include?l=[% lang %]">DE-38-503</a></li>
  <li>Entwicklungspsychologie <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-305.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-305.include?l=[% lang %]">DE-38-305</a></li>
  <li>Epigraphik <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-404.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-404.include?l=[% lang %]">DE-38-404</a></li>
- <li>Erziehungswissenschaft 38/HWA</li>
+ <li>Erziehungswissenschaft DE-38-HWA</li>
  <li>Ethnologie <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-431.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-431.include?l=[% lang %]">DE-38-431</a></li>
  <li>Europäische Fragen <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-125.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-125.include?l=[% lang %]">DE-38-125</a></li>
  <li>Europäische Musikethnologie <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-324.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-324.include?l=[% lang %]">DE-38-324</a></li>
@@ -778,7 +778,7 @@ Mit der Schlagwortliste finden Sie Ihre Campusbibliothek. Die Schlagwörter basi
  <li>Hörfunk <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-101.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-101.include?l=[% lang %]">DE-38-101</a></li>
  <li>Humangenetik <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-503.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-503.include?l=[% lang %]">DE-38-503</a></li>
  <li>Humanismus <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-434.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-434.include?l=[% lang %]">DE-38-434</a></li>
- <li>Humanwissenschaft 38/HWA</li>
+ <li>Humanwissenschaft DE-38-HWA</li>
  <li>Husserl <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-433.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-433.include?l=[% lang %]">DE-38-433</a></li>
   </ul>
 

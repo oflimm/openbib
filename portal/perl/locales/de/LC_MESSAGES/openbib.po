@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2023-05-10 14:20+0100\n"
+"PO-Revision-Date: 2023-06-26 13:22+0100\n"
 "Last-Translator: openbib <flimm@openbib.org>\n"
 "Language-Team: German <kde-i18n-de@kde.org>\n"
 "Language: de\n"
@@ -61283,7 +61283,7 @@ msgstr "ausleihbar / nur Wochenende"
 #: ../templates/_profile/unikatalog/search_facet:404
 #: ../templates/search_facet:592
 msgid "lent"
-msgstr "lent"
+msgstr "entliehen"
 
 #: ../templates/_profile/bootstrap5/viewadmin_views_record_edit_html:109
 #: ../templates/_profile/unikatalog/viewadmin_views_record_edit_html:110

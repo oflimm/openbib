@@ -1,0 +1,62 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+
+
+<h2>[% msg.maketext("Server") %] [% serverinfo.hostip %]</h2>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+
+<tr>
+<th>[% msg.maketext("Id") %]</th>
+<td>[% serverinfo.id %]</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("IP-Adresse") %]</th>
+<td>[% serverinfo.hostip %]</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Beschreibung") %]</th>
+<td>[% serverinfo.description %]</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Status") %]</th>
+<td>
+[% IF serverinfo.status == 'updatable'%]
+[% msg.maketext("Aktualisierbar") %]
+[% ELSIF serverinfo.status == "updating" %]
+[% msg.maketext("Aktualisieren") %]
+[% ELSIF serverinfo.status == "updated" %]
+[% msg.maketext("Fertig mit Aktualisierung") %]
+[% ELSIF serverinfo.status == "searchable" %]
+[% msg.maketext("Recherchierbar") %]
+[% END %]
+</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Cluster") %]</th>
+<td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %]/id/[% serverinfo.clusterid.id %].html?l=[% lang %]">[% serverinfo.clusterid.description %]</a></td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Aktiv") %]</th>
+<td>[%- IF serverinfo.active -%][% msg.maketext("Ja") %][% ELSE %][% msg.maketext("Nein") %][% END %]</td>
+</tr>
+
+</table>
+</div>

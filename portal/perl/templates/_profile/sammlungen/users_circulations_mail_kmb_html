@@ -1,0 +1,230 @@
+[%-
+
+  fields = record.get_fields;
+
+  title     = fields.${"T0331"}.first.content;
+
+  IF fields.${"T0335"}.defined ;
+     titlesup = fields.${"T0335"}.first.content;
+     title = "${title} : ${titlesup}";
+  END;
+
+  persons   = [];
+  FOREACH thisfield IN ['P0100','P0101','P0102','P0103'];
+    IF fields.${thisfield}.defined;
+      FOREACH thisitem IN fields.${thisfield};
+        persons.push(thisitem.content);
+      END;
+    END;
+  END;
+  person = persons.join(' ; ');
+
+  corporatebodies   = [];
+  FOREACH thisfield IN ['C0200','C0201'];
+    IF fields.${thisfield}.defined;
+      FOREACH thisitem IN fields.${thisfield};
+        corporatebodies.push(thisitem.content);
+      END;
+    END;
+  END;
+  corporatebody = corporatebodies.join(' ; ');
+
+  pubplace = [];
+  publisher = fields.${"T0412"}.first.content;
+  place     = fields.${"T0410"}.first.content;
+
+  IF place ;
+    pubplace.push(place);
+  END;
+
+  IF publisher ;
+    pubplace.push(publisher);
+  END;
+
+  publisher = pubplace.join(' : ');
+  
+
+  year      = fields.${"T0425"}.first.content;
+  # IF fields.${"T0424"}.defined;
+  #   year      = fields.${"T0424"}.first.content;  
+  # END;
+
+  super = "";
+  # 1. Ueberordnung?
+  IF fields.${'T5005'}.first.content;
+     super = from_json(fields.${'T5005'}.first.content);
+  END;
+
+  source    = "";
+  IF fields.${"T0451"}.defined;
+    source  = fields.${"T0451"}.first.content;  
+  ELSIF fields.${"T0508"}.defined;
+    source  = fields.${"T0508"}.first.content;  
+  ELSIF fields.${"T0590"}.defined;
+    source  = fields.${"T0590"}.first.content;
+  ELSIF super ;
+     super_title = super.fields.${'0451'}.first.content;
+     IF super.fields.${'0331'} ;
+        source   = super.fields.${'0331'}.first.content;
+     END ;
+  END;
+
+  titleid   = record.id;
+
+  hide_pickup = "";
+  
+  IF title_location.match('/ (Fotobib|MAKK)') ;
+    hide_pickup = "LUDWIG";
+  ELSIF title_location.match('/ KMB$') ;
+    IF label.match('KMB/(K|YA|YG)') ;
+      hide_pickup = "KUNST";
+    END;
+  END;
+  
+  
+-%]
+[%# USE dumper;dumper.dump(fields) %]
+<div class="card mt-5 mb-5 me-5">
+<div class="card-header">[% msg.maketext("Bestellung in den Lesesaal der KMB") %]</div>
+<div class="card-body">
+
+<p>
+Bitte füllen Sie das Bestellformular vollständig aus. Ihr Bestellwunsch wird per E-Mail an unsere Benutzungsabteilung übermittelt und liegt in der Regel innerhalb von 3 Werktagen 14 Tage lang für Sie bereit.</p>
+
+<p>
+Sie werden über den Eingang der Bestellung <b>nicht</b> gesondert benachrichtigt.
+</p>
+
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/mail/kmb">
+ 
+     <input type="hidden" name="realm"       value="[% realm %]" />
+     <input type="hidden" name="location"    value="[% title_location %]" />
+     <input type="hidden" name="dbname"      value="[% database %]" />
+
+<legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
+
+<div class="form-floating mb-3">
+      <span class="form-control">[% title %]</span>
+      <input type="hidden" name="titleid" value="[% titleid %]" />
+      <label for="title">Titel</label>
+</div>
+
+[% IF person %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% person %]</span>
+      <label for="person">[% msg.maketext("Autor") %]:</label>
+</div>
+[% END %]
+
+[% IF corporatebody %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% corporatebody %]</span>
+      <label for="corporatation">[% msg.maketext("Körperschaft") %]:</label>
+</div>
+[% END %]
+
+[% IF publisher %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% publisher %]</span>
+      <label for="publisher">[% msg.maketext("Ort/Verlag") %]:</label>
+</div>
+[% END %]
+
+[% IF year %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% year %]</span>
+      <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
+</div>
+[% END %]
+
+[% IF source %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% source %]</span>
+      <label for="source">[% msg.maketext("In") %]:</label>
+</div>
+[% END %]
+
+[%
+     signatur = "";
+     IF label ;
+       signatur = label ;
+     ELSE ;
+       signatur = holdingid ;
+     END;
+
+
+     
+%]
+
+<div class="form-floating mb-3">
+      <span class="form-control">[% signatur %]</span>
+      <input type="hidden" name="label" value="[% uri_escape(signatur) %]" />
+      <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
+</div>
+
+[% IF numbering %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% numbering %]</span>
+      <input type="hidden" name="numbering" value="[% uri_escape(numbering) %]" />
+     <label for="numbering">[% msg.maketext("Bestand in der USB") %]:</label>
+</div>
+[% END %]
+
+[%
+   name = "";
+   IF userinfo.nachname || userinfo.vorname ;
+        IF userinfo.nachname ;
+          name = userinfo.nachname ;
+	END ;
+	IF userinfo.vorname ;
+	  name = "${userinfo.vorname} ${name}";
+	END;
+   END;
+
+%]
+
+<legend class="mt-2">[% msg.maketext("Weitere Angaben zur Bestellung") %]</legend>
+
+<p>Mit * gekennzeichnete Felder sind Pflichtfelder und müssen ausgefüllt werden.</p>
+
+<div class="form-floating mb-3">
+      <input class="form-control" type="text" name="loginname" value="" />
+     <label for="username">[% msg.maketext("Name, Vorname") %] (*):</label>
+</div>
+
+<p/>
+
+<legend class="mt-2">[% msg.maketext("Bereitstellungsort") %] (*)</legend>
+
+[% IF hide_pickup != "LUDWIG" %]
+<div class="form-check">
+      <input class="form-check-input" type="radio" name="pickup_location" value="Lesesaal im Museum Ludwig"/>
+      <label class="form-check-label" for="pickup_location">Lesesaal im Museum Ludwig</label>
+</div>
+[% END %]
+
+[% IF hide_pickup != "KUNST" %]
+<div class="form-check">
+      <input class="form-check-input" type="radio" name="pickup_location" value="Lesesaal im Museum für angewandte Kunst"/>
+      <label class="form-check-label" for="pickup_location">Lesesaal im Museum für angewandte Kunst</label>
+</div>
+[% END %]
+
+<p/>
+
+<div class="form-floating mb-3">
+      <textarea class="form-control" type="text" name="remark" placeholder="[% msg.maketext("Geben Sie hier bitte ggf. Bemerkungen zu Ihrer Bestellung ein") %]" value="" maxlength="120" size="37" ></textarea>
+      <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
+</div>
+
+<div class="form-floating mb-3">
+      <input class="form-control" type="text" name="email" value="" />
+      <label for="email">[% msg.maketext("E-Mail") %] (*):</label>
+</div>
+
+<button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Bestellen") %]</button>
+
+</form>
+
+</div>
+</div>

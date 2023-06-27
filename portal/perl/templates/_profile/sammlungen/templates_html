@@ -1,0 +1,37 @@
+[%#-
+#######################################################################
+#
+# Templatename: templates
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der aktuellen Einstellungen des Betriebs
+#
+#######################################################################
+-%]
+
+[% IF templateinfos.count > 0 %]
+
+<h3>[% msg.maketext("Templates") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+<thead>
+<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("View") %]</th><th>[% msg.maketext("Sprache") %]</th></tr>
+</thead>
+<tbody>
+[% FOREACH templateinfo IN templateinfos.all %]
+<tr>
+<td>[% templateinfo.id %]</td>
+<td><a href="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %]">[% templateinfo.templatename %]</a></td>
+<td>[% templateinfo.viewid.viewname %]: [% templateinfo.viewid.description %]</td>
+<td><img style="vertical-align: bottom;" src="/images/openbib/[% templateinfo.templatelang %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",templateinfo.templatelang) %]" /></td>
+</tr>
+[% END %]
+</tbody>
+</table>
+</div>
+
+[% END %]

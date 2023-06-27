@@ -1,0 +1,3 @@
+[% config.get_templatetext('info_tipps',view,lang) %]
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Tipps zur Nutzung") %]</div>

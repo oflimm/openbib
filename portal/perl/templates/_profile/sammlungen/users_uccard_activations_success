@@ -1,0 +1,28 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+    suppress_unauthorized = 1;
+    layout_param = {
+
+      'main_template' = 'users_uccard_activations_success_html'
+
+      'active_menu' = 'registrations'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext("Freischaltung UCCard")
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="users_uccard_activations_success_json" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

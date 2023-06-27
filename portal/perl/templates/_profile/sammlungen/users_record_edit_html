@@ -1,0 +1,166 @@
+[%#-
+#######################################################################
+#
+# Templatename: userprefs
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Informationen ueber den Benutzer
+#
+#######################################################################
+-%]
+
+<div class="card">
+<div class="card-header">[% msg.maketext("Basisdaten") %]</div>
+<div class="card-body">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="_method"    value="PUT" />
+<!-- Beispiel: Ablage von weiteren Informationen in mixed_bag -->
+[%# USE dumper;dumper.dump(userinfo.mixed_bag)%]
+
+<!--
+<div class="form-floating mb-3 mt-4">
+  <select class="form-select" name="bag_title" id="bag_title">
+       <option value="none" [% IF userinfo.mixed_bag.bag_title.first == 'none' %]selected[% END %]>[% msg.maketext("Keine") %]</option>
+       <option value="mr" [% IF userinfo.mixed_bag.bag_title.first == "mr" %]selected[% END %]>[% msg.maketext("Herr") %]</option>
+       <option value="mrs" [% IF userinfo.mixed_bag.bag_title.first == "mrs" %]selected[% END %]>[% msg.maketext("Frau") %]</option>
+       <option value="dr" [% IF userinfo.mixed_bag.bag_title.first == "dr" %]selected[% END %]>[% msg.maketext("Dr.") %]</option>
+   </select>
+<label for="bag_title">[% msg.maketext("Anrede") %]</label>
+</div>
+
+<div class="form-floating mb-3 mt-4">
+<input class="form-control" type="text" name="bag_institution" id="bag_institution" value="[% userinfo.mixed_bag.bag_institution.first %]"/>
+<label for="bag_institution">[% msg.maketext("Heimatinstitution") %]</label>
+</div>
+
+-->
+
+<div class="form-floating mb-3">
+<span class="form-control" id="username">[% userinfo.username %]</span>
+<label for="username">[% msg.maketext("Benutzername") %]</label>
+</div>
+
+
+<div class="form-floating mb-3">
+<span class="form-control" id="authenticator">[% authenticator.description %]</span>
+<label for="authenticator">[% msg.maketext("Authentifizierung") %]</label>
+</div>
+[%# USE dumper;dumper.dump(views)%]
+<div class="form-floating mb-3">
+<span class="form-control" id="view">[% IF userinfo.viewname %][% config.get_viewdesc_from_viewname(userinfo.viewname) %][% ELSE %][% msg.maketext("Zugriff auf alle Portale") %][% END %]</span>
+<label for="view">[% msg.maketext("Portal") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="nachname" type="text" name="nachname" value="[% userinfo.nachname %]" size="30" maxlength="200" />
+<label for="nachname">[% msg.maketext("Nachname") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="vorname" type="text" name="vorname" value="[% userinfo.vorname %]" size="30" maxlength="200" />
+<label for="vorname">[% msg.maketext("Vorname") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="email" type="text" name="email" value="[% userinfo.email %]" size="30" maxlength="200" />
+<label for="email">[% msg.maketext("E-Mail") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<span class="form-control" id="status">[% userinfo.status %]</span>
+<label for="status">[% msg.maketext("Status") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<span class="form-control" id="sperre">
+[%- IF userinfo.sperre -%]
+[% msg.maketext("ja, seit") %][% userinfo.sperrdatum %] [% msg.maketext("mit Grund") %]<em>[% userinfo.sperre %]</em>
+[%- ELSE -%]
+[% msg.maketext("nein") %]
+[%- END -%]
+</span>
+<label for="sperre">[% msg.maketext("Sperre") %]</label>
+</div>
+
+<button class="btn btn-primary mb-2 mt-4" type="submit">[% msg.maketext("&Auml;ndern") %]</button>
+
+[%   IF userinfo.username != 'admin' %]
+<a class="btn btn-primary mb-2 mt-4" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Kennung l&ouml;schen") %]</a>
+[%   END %]
+
+[% IF authenticator.type != 'self' %]
+<div class="alert alert-info mt-4">
+[% msg.maketext("Bei <em>Kennung löschen</em> wird nur die Kennung in diesem Recherche-System mit alle zugehörigen Daten (u.a. Merklisten, Literaturlisten) gelöscht, nicht aber die Kennung im Bibliothekssystem.") %]
+</div>
+[% END %]
+
+</form>
+
+</div><!-- End card-body -->
+</div><!-- End card -->
+
+<p />
+
+[% IF authenticator.type == 'self' %]
+<div class="card">
+<div class="card-header">[% msg.maketext("Passwort &auml;ndern") %]</div>
+<div class="card-body">
+<div class="table-responsive">
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences/password" enctype="application/x-www-form-urlencoded">
+
+<div class="form-floating mb-3 mt-2">
+<input class="form-control" type="password" name="password1" id="password1" value="" />
+<label for="password1">[% msg.maketext("Passwort") %]</label>
+</div>
+
+<div class="form-floating mb-3 mt-2">
+<input class="form-control" type="password" name="password2" id="password2" value="" />
+<label for="password2">[% msg.maketext("Passwort wiederholt") %]</label>
+</div>
+
+<button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Passwort &auml;ndern") %]</button>
+
+</form>
+</div>
+
+</div><!-- End card body -->
+</div><!-- End card -->
+
+<p />
+[% END %]
+
+[% IF userinfo.role %]
+<div class="card">
+<div class="card-header">[% msg.maketext("Rollen-Zugeh&ouml;rigkeiten") %]</div>
+<div class="card-body">
+<ul class="list-group">
+[% FOREACH thisrole IN userinfo.role %]
+<li class="list-group-item">[% thisrole.value %] ([% thisrole.key %])</li>
+[% END %]
+</ul>
+</div>
+</div>
+
+<p/>
+[% END %]
+
+[% templates_of_user = user.get_templates_of_user(userid).all %]
+[% IF templates_of_user %]
+<div class="card">
+<div class="card-header">[% msg.maketext("Zugeordnete Templates") %]</div>
+<div class="card-body">
+<ul class="list-group">
+[% FOREACH thistemplate IN templates_of_user %]
+[%# USE dumper;dumper.dump(thistemplate)%]
+<li class="list-group-item">View: [% thistemplate.templateid.viewid.description %]<br/>Template: [% thistemplate.templateid.templatename %]<br/>Sprache: [% thistemplate.templateid.templatelang %]</li>
+[% END %]
+</ul>
+</div>
+</div>
+
+<p/>
+[% END %]
+

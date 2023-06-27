@@ -1,0 +1,76 @@
+[%#-
+#######################################################################
+#
+# Templatename: titles_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes
+#
+#######################################################################
+-%]
+[%-
+  title      = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc);
+
+  facets     = config.get('facets');
+  
+-%]
+
+<h1>Informationen im Suchindex</h1>
+
+<h2>Terms</h2>
+
+[% IF terms %]
+<p>
+[% terms.join(' ') %]
+</p>
+[% ELSE %]
+[% msg.maketext("Es konnten keine Terme im Index für diesen Titel gefunden werden") %]
+[% END %]
+
+<p/>
+
+<h2>Values</h2>
+
+[% IF facets.keys || sorttypes.keys || collapsetypes.keys %]
+<div class="table-responsive">
+<table class="table table-striped ">
+<thead>
+<tr><th>Typ</th><th>Slot</th><th>Kategorie</th><th>Inhalt</th></tr>
+</thead>
+<tbody>
+[% facets    = config.get('xapian_facet_value');
+   sorttypes = config.get('xapian_sorttype_value');
+   collapsetypes = config.get('xapian_collapse_value');
+
+
+   FOREACH category IN facets.keys.sort %]
+<tr><td>Facette</td><td>[% facets.${category} %]</td><td>[% category %]</td><td>[% values.${facets.${category}}.replace('\t',' \\t ') %]</td></tr>
+[% END %]
+
+[% FOREACH category IN sorttypes.keys.sort %]
+<tr><td>Sortierung</td><td>[% sorttypes.${category} %]</td><td>[% category %]</td><td>[% values.${sorttypes.${category}} %]</td></tr>
+[% END %]
+[% FOREACH category IN collapsetypes.keys.sort %]
+<tr><td>Collapse Key</td><td>[% collapsetypes.${category} %]</td><td>[% category %]</td><td>[% values.${collapsetypes.${category}} %]</td></tr>
+[% END %]
+</tbody>
+</table>
+</div>
+[% ELSE %]
+[% msg.maketext("Es konnten keine Values im Index für diesen Titel gefunden werden") %]
+[% END %]
+
+<p/>
+
+<h2>Daten</h2>
+
+[% IF data %]
+<p>
+[% data %]
+</p>
+[% ELSE %]
+[% msg.maketext("Es konnten keine Daten-BLOBs im Index für diesen Titel gefunden werden") %]
+[% END %]

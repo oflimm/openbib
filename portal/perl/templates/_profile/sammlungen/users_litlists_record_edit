@@ -1,0 +1,53 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+     'page_title' = "Eigene Literaturliste bearbeiten"
+
+      'main_template' = 'users_litlists_record_edit_html'
+
+      'active_menu' = 'users'
+      'active_submenu' = 'litlists'
+
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = username
+	     url  = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/preferences.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Literaturlisten')
+	     url  = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('litlists_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = litlist.properties.title
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      # 'representations' = [
+      #     {
+      # 	     type = 'json'
+      # 	     url  = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('litlists_loc')}.json?l=${lang}"
+      # 	  }
+      #  ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="litlists_record_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="litlists_record_json" -%]
+[%- ELSIF representation == 'rss' -%]
+[%- PROCESS common/subtemplate name="litlists_record_rss" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="litlists_record_include" -%]
+[%- ELSIF representation == 'bibtex' -%]
+[%- PROCESS common/subtemplate name="litlists_record_bibtex" -%]
+[%- ELSIF representation == 'refer' -%]
+[%- PROCESS common/subtemplate name="litlists_record_refer" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

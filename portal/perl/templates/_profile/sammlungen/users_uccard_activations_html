@@ -1,0 +1,61 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_librarycard_registrations
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Eingabemaske fuer die Neuanmeldung eines Bibliotheksausweises
+#
+#######################################################################
+-%]
+
+        <div class="ob-jumbotron">
+         <h1 class="display-4">[% msg.maketext("UCCard als Bibliotheksausweis freischalten") %]</h1>
+
+<p class="alert alert-warning">[% msg.maketext("Für Studierende der Uni Köln: Um die Bibliothek zu nutzen und das Eingangssystem passieren zu können, müssen Sie Ihre UCCard als Bibliotheksausweis freischalten.") %]</p>
+
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('uccard_login_loc') %]" enctype="application/x-www-form-urlencoded">
+
+<input type="hidden" name="dbname" value="inst001" />
+
+<h4>[% msg.maketext("Studierenden-Account") %]</h4>
+
+<div class="form-floating mt-3">
+<input class="form-control" type="text" name="ucusername" id="username" value="" />
+<label for="username">[% msg.maketext("Benutzername") %]</label>
+</div>
+
+<div class="form-floating mt-3">
+<input class="form-control" type="password" name="ucpassword" id="password" />
+<label for="password">[% msg.maketext("Passwort") %]</label>
+</div>
+
+<p/>
+
+<button class="btn btn-primary mt-3 type="submit">[% msg.maketext("Weiter") %]</button>
+
+</form>
+
+<img class="img-fluid mt-5 mb-5" src="/images/openbib/UCCard_Rueckseite2018_gelb_mit_Beschriftung_ori1080_ger.jpg" alt="[% msg.maketext("Rückseite der UCCard") %]"/>
+
+<h4>[% msg.maketext("Probleme bei der Freischaltung") %]</h4>
+
+<p>[% msg.maketext("Bitte wenden Sie sich an") %]</p>
+
+<p>
+Ortsleihe<br/>
+<br/>
+Telefon +49 221 470-3316<br/>
+E-Mail ortsleihe@ub.uni-koeln.de<br/>
+</p>
+
+<h4>[% msg.maketext("UCCard verloren?") %]</h4>
+
+<p>
+[% msg.maketext("Melden Sie Ihren Verlust beim") %] <a class="exturl" href="https://uccard.uni-koeln.de/zweitausfertigung/index_ger.html">UCCard-Support</a>.
+</p>
+
+</div><!-- End: ob-jumbotron -->

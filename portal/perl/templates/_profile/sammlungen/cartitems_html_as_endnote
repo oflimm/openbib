@@ -1,0 +1,32 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecartitems_tit_as_endnote
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *aller* Merklisten-Items im Endnote-Format *ohne* Funktions-
+# elemente
+#
+#######################################################################
+-%]
+[% IF NOT data_only %]
+<div class="row">
+<div class="col-md-12 ps-4 pe-4">
+
+[% IF NOT representation == 'include' %]<h3>[% IF title %][% title %][% ELSE %][% msg.maketext("Merkliste im Endnote-Format") %][% END %]</h3>[% END %]
+
+<pre>
+[% END %]
+[%- FOREACH record IN recordlist.load_full_records.get_records -%]
+[% record.to_endnote %]
+
+[% END %]
+[% IF NOT data_only %]
+</pre>
+</div>
+</div>
+[% IF representation == 'include' %]<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("EndNote-Format") %]</div>[% END %]
+[% END %]

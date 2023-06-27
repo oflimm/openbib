@@ -1,0 +1,64 @@
+[%#-
+#######################################################################
+#
+# Templatename: userprefs
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Informationen ueber den Benutzer
+#
+#######################################################################
+-%]
+
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/migration" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="_method"    value="PUT" />
+
+
+
+<h3>[% msg.maketext("Migration von nutzergenerierten Inhalte (Literaturlisten, Tags, Merkliste) einer anderen Kennung") %]</h3>
+
+<div class="alert-info p-1">
+<p>[% msg.maketext("Haben Sie Ihren Bibliotheksausweis verloren und eine neue
+Benutzernummer bekommen? Oder haben Sie keinen Bibliotheksausweis mehr
+und wollen den KUG weiter mit Ihrer registrierten E-Mail-Adresse
+verwenden? Dann können Sie hier Ihre unter der alten
+Kennung angelegten Merklisteneinträge, Literaturlisten und Tags
+zu dieser Kennung verschieben.") %]</p>
+
+<p>[% msg.maketext("Geben Sie bitte die Authentifizierungsinformationen für die alte Kennung
+ein, von der Inhalte zu dieser hin verschoben werden sollen.") %]</p>
+
+</div>
+
+<p/>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="oldusername" id="oldusername" />
+<label for="oldusername">[% msg.maketext("Alte Benutzernummer bzw. E-Mail-Adresse") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="password" name="oldpassword" id="oldpassword" />
+<label for="oldpassword"/>[% msg.maketext("Altes Passwort") %]</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="migrate_collections" id="migrate_collections" value="1" checked="checked" />
+<label class="form-check-label" for="migrate_collections">[% msg.maketext("Merkliste") %]</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="migrate_litlists" id="migrate_litlists" value="1" checked="checked" />
+<label class="form-check-label" for="migrate_litlists">[% msg.maketext("Literaturlisten") %]</label>
+</div>
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" name="migrate_tags" id="migrate_tags" value="1" checked="checked" />
+<label class="form-check-label" for="migrate_tags">[% msg.maketext("Tags") %]</label>
+</div>
+
+<button class="btn btn-primary mb-2 mt-3" type="submit">[% msg.maketext("Zur aktuellen Kennung verschieben") %]</button>
+
+</form>

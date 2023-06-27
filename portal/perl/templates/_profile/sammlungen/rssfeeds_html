@@ -1,0 +1,73 @@
+[%#-
+#######################################################################
+#
+# Templatename: rssframe
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller verfuegbaren RSS-Feeds
+#
+#######################################################################
+-%]
+
+   <h3>[% msg.maketext("RSS-Feeds") %]: [% msg.maketext("Letzte 50 Neuaufnahmen") %]</h3>
+
+<p class="alert alert-info">
+[% msg.maketext("Auf dieser Seite k&ouml;nnen Sie f&uuml;r die
+jeweiligen Kataloge die zugeh&ouml;rigen
+RSS-Feeds abonnieren. Wählen Sie bitte den jeweiligen URL von
+dieser Seite aus und kopieren ihn in Ihr RSS-Leseprogramm.") %]
+</p>
+
+[%- IF view && view !='kug' -%]
+[%-  IF rssfeedinfo.keys -%]
+[%-   FOREACH category = config.get_orgunitinfo_overview(sysprofile).all -%]
+[%       IF rssfeedinfo.${category.description} %]
+
+[%          FOREACH thisitem IN rssfeedinfo.${category.description} %]
+<div class="table-responsive">
+<table class="table table-striped ">
+[%             IF thisitem.type == 'neuzugang' %]
+<tr><td><a
+href="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[% thisitem.pool %]/[% config.get('titles_loc') %]/recent.rss?l=[% lang %]" target="_blank">[% thisitem.pooldesc %]</a></td></tr>
+[%             END %]
+</table>
+</div>
+<p />
+[%          END %]
+[%-      END -%]
+[%-    END -%]
+[%- ELSE -%]
+[% msg.maketext("Für dieses Portal werden keine RSS-Feeds der Neuzugänge angeboten.") %]
+[%- END -%]
+
+[% ELSE %]
+
+[%-  FOREACH category = config.get_orgunitinfo_overview(sysprofile).all -%]
+[%# USE dumper;dumper.dump(category)%]
+<h4>[% category.description %]</h4>
+[%     IF NOT rssfeedinfo.${category.description} %]
+<p>
+[% msg.maketext("Keine Feeds") %]
+</p>
+       
+[%     ELSE %]
+
+<div class="table-responsive">
+<table class="table table-striped ">
+[%       FOREACH thisitem IN rssfeedinfo.${category.description} %]
+
+[%# USE dumper;dumper.dump(thisitem)%]
+
+[%         IF thisitem.type == 'neuzugang' %]
+<tr><td><a
+href="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[% thisitem.pool %]/[% config.get('titles_loc') %]/recent.rss?l=[% lang %]" target="_blank">[% thisitem.pooldesc %]</a></td></tr>
+[%         END %]
+[%       END %]
+</table>
+</div>
+[%-    END -%]
+[%-  END -%]
+[% END %]

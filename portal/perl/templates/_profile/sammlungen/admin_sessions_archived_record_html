@@ -1,0 +1,80 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_session_archived_record
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller aktuell bestehenden Sessions
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+
+<h3>Einzelne Session [% sid %]</h3>
+
+[%# USE dumper;dumper.dump(events)%]
+<div class="table-responsive">
+<table class="table table-striped ">
+<thead>
+<tr><th>[% msg.maketext("Timestamp") %]</th><th>[% msg.maketext("Event") %]</th><th>[% msg.maketext("Inhalt") %]</th></th><th></th></tr>
+</thead>
+<tbody>
+[% FOREACH event IN events %]
+[%  SWITCH event.type %]
+[%    CASE 1 %]
+[%       searchquery = event.content %]
+<tr><td>[% event.tstamp %]</td><td>Recherche</td><td>
+[%- IF searchquery.freesearch.val -%]&nbsp;FS: [% searchquery.freesearch.val %] 
+[%- END -%]
+[%- IF searchquery.person.val -%]
+&nbsp;[% searchquery.person.bool %]&nbsp;PER: [% searchquery.person.val %]
+[%- END -%]
+[%- IF searchquery.title.val -%]
+&nbsp;[% searchquery.title.bool %]&nbsp;TIT: [% searchquery.title.val %]
+[%- END -%]
+[%- IF searchquery.subject.val -%]
+&nbsp;[% searchquery.subject.bool %]&nbsp;SUBJ: [% searchquery.subject.val %]
+[%- END -%]
+[%- IF searchquery.corporatebody.val -%]
+&nbsp;[% searchquery.corporatebody.bool %]&nbsp;CORP: [% searchquery.corporatebody.val %]
+[%- END -%]
+[%- IF searchquery.classification.val -%]
+&nbsp;[% searchquery.classification.bool %]&nbsp;NOT: [% searchquery.classification.val %] 
+[%- END -%]
+[%- IF searchquery.mark.val -%]
+&nbsp;[% searchquery.mark.bool %]&nbsp;SIG: [% searchquery.mark.val %]
+[%- END -%]
+[%- IF searchquery.year.val -%]
+&nbsp;[% searchquery.year.bool %]&nbsp;EJAHR: [% searchquery.year.val %]
+[%- END -%]
+[%- IF searchquery.isbn.val -%]
+&nbsp;[% searchquery.isbn.bool %]&nbsp;ISBN: [% searchquery.isbn.val %]
+[%- END -%]
+[%- IF searchquery.issn.val -%]
+&nbsp;[% searchquery.issn.bool %]&nbsp;ISSN: [% searchquery.issn.val %]
+[%- END -%]
+[%- IF searchquery.mediatype.val -%]
+&nbsp;[% searchquery.mediatype.bool %]&nbsp;MART: [% searchquery.mediatype.val %]
+[%- END -%]
+[%- IF searchquery.titlestring.val -%]
+&nbsp;[% searchquery.titlestring.bool %]&nbsp;HSTR: [% searchquery.titlestring.val %] 
+[%- END -%]
+</td><td>(Treffer: [% searchquery.hits %] / Suchprofil: <a class="inturl" href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% searchquery.searchprofile %]">[% searchquery.searchprofile %]</a>)</td></tr>
+[%    CASE 10 %]
+<tr><td>[% event.tstamp %]</td><td>Einzeltreffer</td><td><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% event.content.database %]/[% config.get('titles_loc') %]/id/[% event.content.id %]">[% event.content.id %] in [% event.content.database %]</a></td><td></td></tr>
+[%    CASE 100 %]
+<tr><td>[% event.tstamp %]</td><td>View</td><td>[% event.content %]</td><td></td></tr>
+[%    CASE 101 %]
+<tr><td>[% event.tstamp %]</td><td>Browser</td><td>[% event.content %]</td><td></td></tr>
+[%    CASE 102 %]
+<tr><td>[% event.tstamp %]</td><td>IP</td><td>[% event.content %]</td><td></td></tr>
+[%    CASE ; %]
+<tr><td>[% event.tstamp %]</td><td>[% event.type %]</td><td>[% event.content %]</td><td></td></tr>
+[%    END %]
+[% END %]
+</tbody>
+</table>
+</div>

@@ -1,0 +1,51 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+
+[% differences = config.check_cluster_consistency(clusterinfo.id) ;
+
+   IF differences ;
+
+   serverids = config.get_serverids_of_cluster(clusterinfo.id);
+
+%]
+<h4>Inkonsistenzen zwischen den Servern dieses Clusters</h4>
+
+<div class="table-responsive text-nowrap">
+<table class="table table-striped ">
+<thead>
+<tr>
+<th>[% msg.maketext("Katalog") %]</th>
+[% FOREACH serverid IN serverids %]
+<th>
+Titel auf [% config.get_serverinfo_description(serverid) %]
+</th>
+[% END %]
+</tr>
+</thead>
+<tbody>
+[% FOREACH thisdb IN differences %]
+<tr>
+<td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% thisdb.dbname %]/updates.html?l=[% lang %]">[% thisdb.dbname %]</a></td>
+[% FOREACH serverid IN serverids %]
+<td>[% thisdb.server.${serverid} %]</td>
+[% END %]
+</tr>
+[% END %] 
+</tbody>
+</table>
+</div>
+[%
+#     USE dumper;dumper.dump(differences);
+   END;
+%]

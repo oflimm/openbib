@@ -1,0 +1,85 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_history
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe des Ergebnisses der zurueckliegenden Recherchen
+#
+#######################################################################
+-%]
+
+<h3>[% msg.maketext("Ihre bisherigen Recherchen") %]</h3>
+
+<p />
+
+[% IF queries.size > 0 %]
+
+[% PROCESS common/subtemplate name="search_title_field" %] 
+
+[%
+    field_prefix_map = {};
+
+    FOREACH searchfield IN config.get('searchfield').keys ;
+          prefix = config.get('searchfield').${searchfield}.prefix;
+          IF field_map.${searchfield} ;
+              field_prefix_map.${prefix} = field_map.${searchfield};
+          END ;
+    END;
+
+
+%]
+[% count = 1 %]
+<div class="table-responsive">
+<table class="table table-striped ">
+<tr><th>[% msg.maketext("Wann") %]</th><th>[% msg.maketext("Suchanfrage") %]</th><th>[% msg.maketext("Filter") %]</th><th>[% msg.maketext("Treffer") %]</th></tr>
+[% FOREACH query IN queries ;
+    searchprofileid = query.get_searchprofile;
+    databases = config.get_databases_of_searchprofile(searchprofileid);
+    add_option = '';
+    IF databases.size == 1 ;
+      databaseinfo = config.get_databaseinfo.single({dbname = databases.first});
+      IF databaseinfo.system.match('Backend');
+        add_option = 'sm=seq';
+      END;
+    END;
+%]	  
+<tr><td>[% query.get_tstamp.substr(0,19) %]</td><td>
+<a href="[% path_prefix%]/[% config.get('search_loc')%].html?l=[% lang %];novrp=1;[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %];page=1;[% query.to_cgi_querystring %][% IF add_option %];[% add_option %][% END %]"><img style="vertical-align: bottom;" src="[% config.get_icon('search_small',view,sysprofile) %]" alt="Search Icon"/>&nbsp;
+[% used_fields = [] %]
+[%- FOREACH field IN query.get_searchquery.keys  -%]
+[%-
+    fieldname    = field_map.${field};
+    fieldcontent = query.get_searchquery.${field}.val;
+    NEXT IF NOT fieldcontent ;    
+-%]
+[% used_fields.push( "<b>${fieldname}</b>: ${fieldcontent}" ) %]
+[%- END -%]
+[% used_fields.join(' ; ') %] 
+[%# USE dumper;dumper.dump(databaseinfo.system);%]
+</a>
+</td>
+<td>
+[% used_filters = [] %]
+[%- FOREACH filter IN query.get_filter  -%]
+[%-
+    filtername = field_prefix_map.${filter.field};
+-%]
+[% used_filters.push( "<b>${filtername}</b>:${filter.term}" ) %]
+[%- END -%]
+[% used_filters.join(' ; ') %] 
+</td>
+<td>
+[% query.get_hits %]
+</td>
+[%- count = count + 1 -%]
+[% END %]
+</tr>
+</table>
+</div>
+[% ELSE %]
+[% msg.maketext("Sie haben noch keine Suchanfragen gestellt.") %]
+[% END %]

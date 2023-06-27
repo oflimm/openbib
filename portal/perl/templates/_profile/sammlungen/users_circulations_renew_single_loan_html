@@ -1,0 +1,56 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_circulations_renew_loans_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ergbnis der Gesamtkontoverlängerung
+#
+#######################################################################
+-%]
+
+[%# USE dumper; dumper.dump(renew_loans) %]
+
+<div class="card mt-5 mb-5 me-5">
+<div class="card-header">[% msg.maketext("Verlängerung der Leihfrist") %]</div>
+<div class="card-body">
+
+<p>[% renew_single_loan.info %]</p>
+
+<h5>[% msg.maketext("Die Leihfrist des folgenden Mediums wurde verlängert") %]</h5>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+<tbody>
+<tr>
+  <th>[% msg.maketext("Titelangaben") %]</th>
+  <td>
+    <i>
+[% loan.about %]
+    </i>
+  </td>
+</tr>
+<tr>
+  <th>[% msg.maketext("Signatur") %]</th>
+  <td>[% loan.label %]</td>
+</tr>
+<tr>
+  <th>[% msg.maketext("Status") %]</th>
+  <td>[% loan.num_renewals %]. [% msg.maketext("Verlängerung") %]</td>
+</tr>
+<tr>
+  <th>[% msg.maketext("Leihfristende") %]</th>
+  <td>[% loan.endtime %]</td>
+</tr>
+</body>
+</table>
+</div>
+
+<p><a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userid %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]" role="button">[% msg.maketext('Weiter') %]</a></p>
+
+</div>
+</div>
+

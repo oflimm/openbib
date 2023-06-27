@@ -1,0 +1,118 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_statistics_browser_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der wichtigsten statistischen Daten sowie
+# Verweise auf andere Sub-Templates (via stid = sub-template-id) mit
+# weiteren statistischen Auswertungen.
+#
+#######################################################################
+-%]
+
+[% PROCESS common/subtemplate name="admin_statistics_paging_monthly" statisticsid="browser" %] 
+
+<p/>
+
+[%-
+
+  browsers = statistics.get_ranking_of_event({ type => 101, limit => 300, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) ;
+
+  count_msie    = 0;
+  count_ff      = 0;
+  count_safari  = 0;
+  count_opera   = 0;
+  count_chrome  = 0;
+  count_all     = 0;
+
+  count_os_windows = 0;
+  count_os_macos   = 0;
+  count_os_linux   = 0;
+  count_os_android = 0;
+  count_os_ios     = 0;
+  count_os_all     = 0;
+
+  FOREACH browser IN browsers ;
+   IF browser.content.match('MSIE') ;
+      count_msie   =  count_msie + browser.number;
+      count_all    =  count_all + browser.number;
+   ELSIF browser.content.match('Firefox') ;
+      count_ff     =  count_ff + browser.number;
+      count_all    =  count_all + browser.number;
+   ELSIF browser.content.match('Safari') ;
+      count_safari =  count_safari + browser.number;
+      count_all    = count_all + browser.number;
+   ELSIF browser.content.match('Opera') ;
+      count_opera  =  count_opera + browser.number;
+      count_all    = count_all + browser.number;
+   ELSIF browser.content.match('Chrome') ;
+      count_chrome  =  count_chrome + browser.number;
+      count_all = count_all + browser.number;
+   END ;
+
+   IF browser.content.match('Windows NT') ;
+      count_os_windows =  count_os_windows + browser.number;
+      count_os_all = count_os_all + browser.number;
+   ELSIF browser.content.match('Android') ;
+      count_os_android =  count_os_android + browser.number;
+      count_os_all = count_os_all + browser.number;
+   ELSIF browser.content.match('Linux') ;
+      # Nur echte Browser, keine Spider
+      IF browser.content.match('Firefox') || browser.content.match('Chrome') || browser.content.match('KHTML');
+        count_os_linux =  count_os_linux + browser.number;
+        count_os_all = count_os_all + browser.number;
+      END;
+   ELSIF browser.content.match('iPhone OS') ;
+      count_os_ios = count_os_ios + browser.number;
+      count_os_all = count_os_all + browser.number;
+   ELSIF browser.content.match('Mac OS') ;
+      count_os_macos =  count_os_macos + browser.number;
+      count_os_all = count_os_all + browser.number;
+   END;
+  END ;
+-%]
+
+[% IF count_all %]
+
+<h3>[% msg.maketext("Browserverteilung") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+<tr><th>Firefox</th><td>[% count_ff * 100.0 / count_all %] %</td></tr>
+<tr><th>MSIE</th><td>[% count_msie * 100.0 / count_all %] %</td></tr>
+<tr><th>Safari</th><td>[% count_safari * 100.0 / count_all %] %</td></tr>
+<tr><th>Opera</th><td>[% count_opera * 100.0 / count_all %] %</td></tr>
+<tr><th>Chrome</th><td>[% count_chrome * 100.0 / count_all %] %</td></tr>
+</table>
+</div>
+<p />
+
+<h3>[% msg.maketext("Betriebssystemverteilung") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+<tr><th>Windows</th><td>[% count_os_windows * 100.0 / count_os_all %] %</td></tr>
+<tr><th>Mac OS</th><td>[% count_os_macos * 100.0 / count_os_all %] %</td></tr>
+<tr><th>Linux</th><td>[% count_os_linux * 100.0 / count_os_all %] %</td></tr>
+<tr><th>Android</th><td>[% count_os_android * 100.0 / count_os_all %] %</td></tr>
+<tr><th>iOS</th><td>[% count_os_ios * 100.0 / count_os_all %] %</td></tr>
+</table>
+</div>
+
+<p />
+
+[% END %]
+
+<h3>[% msg.maketext("Genutzte Browser") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+[% FOREACH browser IN browsers %]
+<tr><th>[% browser.content %]</th><td><b>[% browser.number %]</b></td></tr>
+[% END %]
+</table>
+</div>

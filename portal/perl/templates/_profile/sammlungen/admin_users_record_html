@@ -1,0 +1,87 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_users_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Aenderung von Nutzerinformationen durch den Administrator
+#
+#######################################################################
+-%]
+
+<h2>[% msg.maketext("Personendaten") %]</h2>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+[% IF userinfo.nachname %]
+<tr><th>[% msg.maketext("Nachname") %]</th><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
+[% END %] 
+[% IF userinfo.vorname %]
+<tr><th>[% msg.maketext("Vorname") %]</th><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
+[% END %] 
+[% IF userinfo.gebdatum %]
+<tr><th>[% msg.maketext("Geburtsdatum") %]</th><td align="left">&nbsp;[% userinfo.gebdatum %]</td></tr>
+[% END %] 
+[% IF userinfo.strasse %]
+<tr><th>[% msg.maketext("Strasse") %]</th><td align="left">&nbsp;[% userinfo.strasse %]</td></tr>
+[% END %] 
+[% IF userinfo.ort %]
+<tr><th>[% msg.maketext("Ort") %]</th><td align="left">
+[% IF userinfo.plz %]
+&nbsp;[% userinfo.plz %]
+[% END %] 
+&nbsp;[% userinfo.ort %]</td></tr>
+[% END %] 
+[% IF userinfo.email %]
+<tr><th>[% msg.maketext("E-Mail") %]</th><td align="left">&nbsp;[% userinfo.email %]</td></tr>
+[% END %]
+<tr><th>[% msg.maketext("Sperre") %]</th><td align="left">&nbsp;
+[%- IF userinfo.sperre -%]
+[% msg.maketext("ja, seit") %][% userinfo.sperrdatum %] [% msg.maketext("mit Grund") %]<em>[% userinfo.sperre %]</em>
+[%- ELSE -%]
+[% msg.maketext("nein") %]
+[%- END -%]
+</td></tr>
+</table>
+</div>
+
+<h3>[% msg.maketext("Einstellungen") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+
+[% roles_of_user = user.get_roles_of_user(userinfo.id) %]
+<tr>
+<th>[% msg.maketext("Rollen") %]</th>
+<td>
+[% IF roles_of_user.keys %]
+<ul>
+[% FOREACH role IN roles_of_user.keys %]
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% role %].html?l=[% lang %]">[% roles_of_user.${role} %]</a></li>
+[% END %]
+</ul>
+[% ELSE %]
+[% msg.maketext("Keine") %]
+[% END %]
+</td>
+</tr>
+[% templates_of_user = user.get_templates_of_user(userinfo.id) %]
+<tr><th>[% msg.maketext("Templates") %]</th>
+<td>
+[% IF templates_of_user %]
+<ul>
+[% FOREACH template IN templates_of_user.all %]
+<li>[% template.templateid.id %]: [% template.templateid.viewid.viewname %] - [% template.templateid.templatename %] - [% template.templateid.templatelang %]</li>
+[% END %]
+</ul>
+[% ELSE %]
+[% msg.maketext("Keine") %]
+[% END %]
+</td>
+</tr>
+
+</table>
+</div>

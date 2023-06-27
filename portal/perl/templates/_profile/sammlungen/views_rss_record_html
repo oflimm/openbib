@@ -1,0 +1,37 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+
+<h3>[% msg.maketext("RSS-Einstellungen") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+<tr><th>[% msg.maketext("Prim&auml;rer Feed f&uuml;r das Browser Auto-Discovery") %]</th>
+<td>
+[% FOREACH singlefeed IN allrssfeeds %]
+[% feedid = singlefeed.feedid %]
+[% NEXT IF singlefeed.type != 1 %]
+[% IF viewinfo.rssid.id == feedid %][% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %][% END %]
+[% END %]
+</td></tr>
+<tr><th>[% msg.maketext("Sonstige RSS-Feeds zu diesem View") %]</th>
+<td>
+[% FOREACH singlefeed IN allrssfeeds %]
+[% feedid = singlefeed.feedid %]
+[% NEXT IF singlefeed.type != 1 %]
+[% IF viewrssfeed.${feedid} %][% singlefeed.dbname %]: [% dbinfo.get('dbnames').${singlefeed.dbname}.full |truncate(60) %]<br/>[% END %]
+[% END %]
+</td></tr>
+
+</table>
+</div>

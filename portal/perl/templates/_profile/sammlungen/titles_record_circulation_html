@@ -1,0 +1,31 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+
+<h2>Ausleihe/Exemplare</h2>
+
+[%
+ FOREACH thiscirculation IN circulation ;
+    IF thiscirculation.AquisitionStatuscode >= 1 ;
+      circulation = [];
+    END ;
+ END ;
+%]
+
+[% circulation = record.get_circulation %]
+[% IF circulation.size > 0 %]
+[% PROCESS common/subtemplate name="circulation" %] 
+[% ELSE %]
+<h4>Zu dem Titel existieren keine Ausleihinformationen.</h4>
+[% END %]
+

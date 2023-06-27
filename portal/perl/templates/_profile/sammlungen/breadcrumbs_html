@@ -1,0 +1,60 @@
+[%#-
+#######################################################################
+#
+# Templatename: breadcrumbs
+#
+# Typ         : Subtemplage       
+#
+# Aufgabe:
+#
+# Ausgabe der Kruemelpfad-Navigation
+#
+#######################################################################
+-%]
+
+<!-- start: breadcrumb navigation -->
+<!-- <hr style="border-bottom-width:2px;"/> -->
+[% IF layout_param.breadcrumb %]
+<nav aria-label="breadcrumb" class="d-none d-md-block">
+<ol class="breadcrumb">
+[% FOREACH bc IN layout_param.breadcrumb %]
+[%   IF bc.current %]
+<li class="breadcrumb-item active text-black" aria-current="page">[% bc.desc %]</li>
+[%   ELSE %]
+<li class="breadcrumb-item text-black" aria-current="page"><a href="[% bc.url %]">[% bc.desc %]</a></li>
+[%   END %]
+[% END %]
+
+[% IF layout_param.representations %]
+<li class="ms-auto d-none d-md-block text-black">
+[%- FOREACH this_representation IN layout_param.representations ;
+
+      IF this_representation.type == 'csv'
+      -%]
+<a class="ob-representation_csv ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext(" Ressource im CSV-Format") %]" href="[% this_representation.url %]">CSV</a>&nbsp;
+      [%-
+      ELSIF this_representation.type == 'json'
+      -%]
+<a class="ob-representation_json ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext("Ressource im JSON-Format") %]" href="[% this_representation.url %]">{JSON}</a>&nbsp;
+      [%-
+      ELSIF this_representation.type == 'rss' ;
+      -%]
+<a class="ob-representation_rss ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext("Ressource als RSS-Feed") %]" href="[% this_representation.url %]"><i class="fas fa-rss"></i></a>
+      [%-
+      ELSIF this_representation.type == 'dfg' ;
+      -%]
+<a class="ob-reprensentation_dfg ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext("Anzeige der Ressource im DFG-Viewer") %]" href="[% this_representation.url %]" target="dfgviewer"><img src="/images/openbib/dfgviewer.png" alt="DFG-Viewer" /></a>
+      [%-
+      END ; 
+   END -%]
+</li>
+[% END %]
+
+</ol>
+
+
+</nav>
+[% ELSE %]
+<!-- no breadcrumb navigation -->
+[% END %]
+<!-- end: breadcrumb navigation -->

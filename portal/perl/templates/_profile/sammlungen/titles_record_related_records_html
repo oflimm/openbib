@@ -1,0 +1,45 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+
+<h3>[% msg.maketext("Thematisch relevante Titel nach einer Analyse der Wikipedia") %]</h3>
+
+[%
+
+   blacklisted_locations = [ 'DE-38-USBFB' ];
+
+   related_records = record.enrich_related_records({ viewname => view, blacklisted_locations => blacklisted_locations }).get_related_records ;
+
+   IF related_records.get_size > 0 %]
+<ul class="list-group">
+[% FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).get_records %]
+[% item = related_record.get_fields %]
+[% item_location = related_record.get_locations.first %]
+[% related_url = "${path_prefix}/${config.get('databases_loc')}/id/${related_record.database}/${config.get('titles_loc')}/id/${related_record.get_encoded_id}.html?l=${lang}" %]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Edition konstruieren %]
+[%- edition   = item.${'T0403'}.first.content -%]
+<li class="list-group-item"><a href="[% related_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />aus: [% locinfo.get('identifier').${item_location}.description %]</li>
+[% END %]
+</ul>
+<p/>
+[% ELSE %]
+<h3>[% msg.maketext("Zu diesem Titel existieren in der Wikipedia keine Beziehungen zu anderen thematisch relevanten Titeln") %]</h3>
+<p/>
+[% END %]

@@ -1,0 +1,72 @@
+[%#-
+#######################################################################
+#
+# Templatename: classifications_record_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Notations/Systematik-Normdatensatzes
+#
+#######################################################################
+-%]
+
+<div class="details ob-authority_record row"><!-- Begin Details -->
+<!-- Person begins here -->
+<div class="categories col-md-6"><!-- Begin Categories -->
+
+<div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
+
+<div class="table-responsive">
+<table class="table table-striped">
+<tr><th>id</th><td>[% record.id %]</td></tr>
+
+[% PROCESS common/subtemplate name="visible_categories_classification" %]
+
+[%- 
+
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    SWITCH category;
+
+    CASE "N5000";
+         searchterm    = record.id;
+         searchprefix  = config.get('searchfield').classificationid.prefix;
+
+         desc      = msg.maketext("Titel ist in diesem Katalog mit der Klassifikation verknüpft");
+         IF content > 1 ;
+             desc      = msg.maketext("Titel sind in diesem Katalog mit der Klassifikation verknüpft");
+         END;
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;db=${database};fs=${searchprefix}:${searchterm}";
+         content   = "<a href=\"${localurl}\">${content} ${desc}</a>";
+    END;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+-%]
+<tr><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+[%-
+   END;
+END;
+-%]
+</table>
+</div>
+
+</div><!-- End Categories -->
+
+<div class="images col-md-6"><!-- Begin Images -->
+<!-- Images in here -->
+</div><!-- End Images -->
+
+</div><!-- End Details / row -->
+

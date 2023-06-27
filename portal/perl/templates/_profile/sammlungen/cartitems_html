@@ -1,0 +1,147 @@
+[%#-
+#######################################################################
+#
+# Templatename: cartitems_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Anzeigen der Merkliste
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="visible_categories_title" %]
+
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function update_collection(yourform, checked, item) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].title.indexOf(item) != -1) {
+              yourform.elements[i].checked = checked;
+         }
+    }
+}
+
+// -->
+</script>
+
+
+<!-- begin: Layout with collapsable sidebar -->
+<style>
+[data-bs-toggle="collapse"] {
+  cursor: pointer;
+}
+
+//@media screen and (min-width:768px) { #ob-sidebar{ display: block!important;visibility:visible!important; } }
+
+</style>
+
+<form method="post" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]">
+
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+
+        <div class="offcanvas-header">
+	  <h3 class="offcanvas-title" id="offcanvasSidebarLabel">[% msg.maketext("Merkliste") %]</h3>
+	  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+	</div>
+	<div class="offcanvas-body">
+	  <div>
+            [% PROCESS common/subtemplate name="cartitems_html_actions" %]
+	  </div>
+
+	  <div class="offcanvas-footer">
+            <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">[% msg.maketext("Schließen") %]</button>
+          </div>
+	</div>
+      </div>
+  
+  
+  <div class="maincontent" >
+
+[% IF NOT user.ID %]
+<div class="alert alert-info">
+
+[% msg.maketext("Diese Merkliste verfällt nach Ablauf der Sitzung, da Sie nicht angemeldet sind. Um die Datensätze dauerhaft in Ihrem persönlichen Profil zu speichern, müssen Sie sich mit Ihrer Kennung - entweder Ihre Benutzernummer oder Mail-Adresse - anmelden.") %]
+
+</div>
+[% END %]
+
+[% IF recordlist.get_size > 0 %]
+[%   IF format == 'short' %]
+[%-  PROCESS common/subtemplate name="cartitems_html_short" -%]
+[%   ELSIF format == 'full' %]
+[%-  PROCESS common/subtemplate name="cartitems_html_full" -%]
+[%   ELSIF format == 'Text' %]
+[%-  PROCESS common/subtemplate name="cartitems_html_as_text" -%]
+[%   ELSIF format == 'BibTeX' %]
+[%-  PROCESS common/subtemplate name="cartitems_html_as_bibtex" -%]
+[%   ELSIF format == 'EndNote' %]
+[%-  PROCESS common/subtemplate name="cartitems_html_as_endnote" -%]
+[%   ELSIF format == 'apa' %]
+[%-  PROCESS common/subtemplate name="cartitems_html_as_apa" -%]
+[%   ELSIF format == 'harvard' %]
+[%-  PROCESS common/subtemplate name="cartitems_html_as_harvard" -%]
+[%   ELSIF format == 'mla' %]
+[%-  PROCESS common/subtemplate name="cartitems_html_as_mla" -%]
+[%   END %]
+
+
+</div><!-- End maincontent -->
+</form>
+
+<div class="d-flex ob-fulltitle_actions pb-3 pt-3 ps-2">
+
+	  <div>
+	    <a class="btn btn-primary ps-2" href="#" data-bs-toggle="modal" data-bs-target="#cartitemsSaveModal"><i class="fas fa-download"></i><span class="d-none d-sm-inline ms-2">[% msg.maketext("Export") %]</span></a>
+	  </div>
+
+[% IF user.ID %]
+	  <div class="ps-2">
+	    <a class="btn btn-primary ps-2" href="#" data-bs-toggle="modal" data-bs-target="#cartitemsMailModal"><i class="far fa-envelope"></i><span class="d-none d-sm-inline ms-2">[% msg.maketext("E-Mail") %]</span></a>
+	  </div>
+[% END %]
+
+	  <div class="ps-2">
+	    <a class="btn btn-primary ps-2" href="#" data-bs-toggle="modal" data-bs-target="#cartitemsPrintModal"><i class="fas fa-print"></i><span class="d-none d-sm-inline ms-2">[% msg.maketext("Drucken") %]</span></a>
+	  </div>
+	  	  
+          <div class="ps-2">
+              <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="citationMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                 <i class="fas fa-quote-right"></i><span class="d-none d-sm-inline ps-2">[% msg.maketext("Zitat") %]</span>
+                </button>
+                <ul class="dropdown-menu text-black" aria-labelledby="citationMenuButton">
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %].include?l=[% lang %];format=apa" title="[% msg.maketext("APA") %]">[% msg.maketext("APA") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %].include?l=[% lang %];format=harvard" title="[% msg.maketext("Harvard") %]">[% msg.maketext("Harvard") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %].include?l=[% lang %];format=mla" title="[% msg.maketext("MLA") %]">[% msg.maketext("MLA") %]</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %].include?l=[% lang %];format=BibTeX" title="[% msg.maketext("BibTeX") %]">[% msg.maketext("BibTeX") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %].include?l=[% lang %];format=EndNote" title="[% msg.maketext("EndNote") %]">[% msg.maketext("EndNote") %]</a></li>
+               </ul>
+             </div>
+          </div>
+
+<!--          <div>
+             <button class="btn btn-primary ms-2" type="submit" name="do_cartitems_delentry" value="1"><i class="fas fa-trash"></i><span class="d-none d-sm-inline ms-2">[% msg.maketext("Ausgewählte Titel löschen") %]</span></button>
+          </div> -->
+
+[% IF user.ID %]
+<button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
+
+<div class="pt-1">
+  <button class="ob-sidebar_button sidebar-toggler d-none d-md-block mb-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
+</div>
+[% END %]
+
+</div>
+
+
+[% ELSE %]
+<div class="ob-jumbotron">
+  <h1 class="display-4">[% msg.maketext("Derzeit ist Ihre Merkliste leer") %]</h1>
+</div>
+</div><!-- End maincontent -->
+</form>
+[% END %]

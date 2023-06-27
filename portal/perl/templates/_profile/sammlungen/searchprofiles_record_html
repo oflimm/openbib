@@ -1,0 +1,40 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+
+<div class="table-responsive">
+<table class="table table-striped ">
+<tr>
+<th>[% msg.maketext("Id") %]</th>
+<td>[% searchprofileid %]</td>
+</tr>
+<tr>
+<th>[% msg.maketext("Kataloge") %]</th>
+<td>
+<ul>
+[% databases = {};
+   FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid) ;
+     dbdesc     = dbinfo.get('dbnames').${dbname}.short;
+     databases.${dbdesc} = dbname;
+   END %]
+[% FOREACH dbdesc IN databases.keys.sort ;
+     dbname = databases.${dbdesc} ;
+     locationid = dbinfo.get('locationid').${dbname};
+%]
+<li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% dbname %].html?l=[% lang %]">[% dbdesc %]</a></li>
+[% END %]
+</ul>
+</td>
+</tr>
+</table>
+</div>

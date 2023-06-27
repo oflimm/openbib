@@ -1,0 +1,70 @@
+
+<div class="ob-title_wikipedia_articles">
+[%- IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} %]
+<p class="wikipediamashup">
+<img src="[% config.get_icon('wikipedia',view,sysprofile) %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
+[%-   IF normdata.${"E4200"} %]
+[%-     FOREACH item IN normdata.${"E4200"}-%]
+[%        redirect_url = "http://de.wikipedia.org/wiki/${item.content}" %]
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END %]
+[%-   IF normdata.${"E4201"} %]
+[%-     FOREACH item IN normdata.${"E4201"}-%]
+[%        redirect_url = "http://en.wikipedia.org/wiki/${item.content}" %]
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END %]
+[%-   IF normdata.${"E4202"} %]
+[%-     FOREACH item IN normdata.${"E4202"}-%]
+[%        redirect_url = "http://fr.wikipedia.org/wiki/${item.content}" %]
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END -%]
+</p>
+[% END %]
+</div>
+
+[% IF record_exists %]
+
+[%
+ FOREACH thiscirculation IN circulation ;
+    IF thiscirculation.AquisitionStatuscode >= 1 ;
+      circulation = [];
+    END ;
+ END ;
+%]
+
+[%- issn              = normdata.${"T0543"}.first.content ;
+    IF issn ;
+       journaltocs_feed  = "http://www.journaltocs.ac.uk/api/journals/${issn}?output=articles";
+    END ;
+-%]
+
+<div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
+[%# USE dumper;dumper.dump(holding)%]
+
+<ul class="nav nav-tabs" role="tablist">
+[%   IF circulation.size > 0 %]
+<li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
+[%   ELSIF holding.size > 0 %]
+<li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
+[%   END %]
+
+</ul>
+
+<div class="tab-content pt-3">
+[% IF circulation.size > 0 %]
+<div role="tabpanel" class="tab-pane fade-in active" id="ob-circulation_info"><!-- Begin Circulation -->
+[% PROCESS common/subtemplate name="circulation"%]
+</div><!-- End Circulation -->
+[% ELSIF holding.size > 0 %]
+<div role="tabpanel" class="tab-pane fade-in active" id="ob-holding_info"><!-- Begin Bestand -->
+[% PROCESS common/subtemplate name="holding" %]
+</div><!-- End Bestand -->
+[% END %]
+
+</div><!-- End: tab-content -->
+</div><!-- End: Additional Title Info -->
+
+[% END # record_exists %]

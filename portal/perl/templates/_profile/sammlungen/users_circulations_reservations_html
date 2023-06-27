@@ -1,0 +1,67 @@
+[%#-
+#######################################################################
+#
+# Templatename: circulation_reserv
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller vorgemerkten Medien
+#
+#######################################################################
+-%]
+
+[% IF reservations.no_reservations || reservations.items.size == 0 %]
+<div class="ob-jumbotron">
+<h1 class="display-4">[% msg.maketext("Sie haben derzeit keine Vormerkungen.") %]</h1>
+</div>
+[% ELSE  %]
+<h4>[% msg.maketext("Ihre Vormerkungen") %]</h4>
+
+<p>
+[% msg.maketext("Übersicht Ihrer Vormerkungen. Wir benachrichtigen Sie, sobald eine Vormerkung für Sie bereitliegt.") %]
+</p>
+
+<p>
+[% msg.maketext("Benachrichtigungen per E-Mail: kostenlos<br/>Benachrichtigungen per Brief: Portogebühr für einen Standardbrief") %]
+</p>
+
+[%# USE dumper;dumper.dump(reservations)%]
+<div class="table-responsive">
+<table class="table table-striped ">
+<thead>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Vormerkdatum") %]</th><th>[% msg.maketext("Aktion") %]</th></tr>
+</thead>
+<tbody>
+[%- FOREACH reservation = reservations.items -%]
+
+<tr>
+<td>
+<i><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% reservation.edition %].html?l=[% lang %]">[% reservation.about %]</a></i>
+[%#- Anzeige des Vormerkrangs nur bei vollqualifizierten VMs. Bei teilqualifizierten VMs (T) kann der Rang sehr hoch sein. -%]
+[% IF NOT reservation.item.match(' \(T\)$') %]
+[%   IF reservation.queue %]
+<br/>([% msg.maketext("Status: vorgemerkt an") %] [% reservation.queue %]. [% msg.maketext("Position") %])
+[%   END %]
+[% END %]
+</td>
+<td>
+[%#- Die Signatur wird nur dann ausgeben, falls sie nicht Teil der Mediennummer ist -%]
+[% IF reservation.label && reservation.item && NOT reservation.item.match(reservation.label) %]
+[% reservation.label %][% IF reservation.item %] / [% reservation.item %][% END %]
+[% ELSIF reservation.item %]
+[% reservation.item %]
+[% END %]
+</td>
+<td>[% reservation.department.about %][% IF reservation.pickup_location.about %] / [% reservation.pickup_location.about %][% END %]
+</td>
+<td>[% reservation.starttime %]</td>
+<td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations?_method=DELETE;unit=[% reservation.department.id %];[% IF reservation.item.match(' \(T\)$')%]titleid=[% reservation.edition %][% ELSE %]holdingid=[% uri_escape(reservation.item) %][% END %];validtarget=[% database %]" title="[% msg.maketext("Stornieren") %]" class="btn btn-primary">[% msg.maketext("Stornieren") %]</a></td>
+</tr>
+[% END %]
+</tbody>
+</table>
+</div>
+[% END %]
+

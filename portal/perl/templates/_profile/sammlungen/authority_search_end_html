@@ -1,0 +1,58 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_end
+#
+# Typ         : Mastertemplate (3/3)
+#
+# Aufgabe:
+#
+# Ausgabe das unteren Teils der initialen Trefferliste
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == 'html' -%]
+<p />
+
+
+[% PROCESS common/subtemplate name="std_footer" %]
+
+</div><!-- /.container-fluid -->
+
+[% PROCESS common/subtemplate name="cookie_alert" %]
+
+[% IF layout_param.jump_top || have_pagination %]
+<script>
+$(window).on('scroll',function() {
+  const mainfooter = $('.uzk15__mainfooter');
+  const scrollHeight = window.outerHeight - (3 * window.outerHeight / 4);
+  const scrollBottom = mainfooter.innerHeight();
+  if (window.scrollY > scrollHeight && window.scrollY < (document.body.scrollHeight - window.innerHeight - scrollBottom + 20 ) ) {
+    $('.ob-jump_top').addClass('active');
+    $('button.ob-floating_sidebar_button').addClass('ob-floating_sidebar_button_up');	
+  } else {
+    $('.ob-jump_top').removeClass('active');
+    $('button.ob-floating_sidebar_button').removeClass('ob-floating_sidebar_button_up');	
+  };
+  
+  if (window.scrollY >= 0 && window.scrollY < (document.body.scrollHeight - window.innerHeight - scrollBottom + 20 ) ) {
+
+    $('.ob-fixed_bottom').removeClass('ob-display_none');
+  } else {
+    $('.ob-fixed_bottom').addClass('ob-display_none');
+  }
+
+})
+</script>
+[% END %]
+
+[% IF layout_param.jump_top %]
+<div class="ob-jump_top" id="ob-jump_to_top">
+<a href="#ob-page_top" title="[% msg.maketext("Zum Anfang") %]"><i class="fas fa-chevron-up fa-2x"></i></a>
+</div>
+[% END %]
+  
+</body>
+</html>
+[% END %]

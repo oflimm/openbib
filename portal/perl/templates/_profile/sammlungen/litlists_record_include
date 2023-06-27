@@ -1,0 +1,33 @@
+[%#-
+#######################################################################
+#
+# Templatename: litlists_record_include
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Neuanlegen und Ausgabe bestehender Literaturlisten
+#
+#######################################################################
+-%]
+[%-
+
+   recordlist = litlist.recordlist;
+   title      = "Literaturliste: ${litlist.properties.title}";
+
+-%]
+[%- PROCESS common/subtemplate name="visible_categories_title" -%]
+[%- IF format == 'Text' -%]
+[%- PROCESS common/subtemplate name="litlists_record_html_as_text"  outputformat="Text" -%]
+[%- ELSIF format == 'BibTeX' %]
+[%- PROCESS common/subtemplate name="litlists_record_html_as_bibtex" outputformat="BibTeX" -%]
+[%- ELSIF format == 'EndNote' %]
+[%- PROCESS common/subtemplate name="litlists_record_html_as_endnote" outputformat="EndNote" -%]
+[%- ELSIF format == 'apa' -%]
+[%- PROCESS common/subtemplate name="litlists_record_html_as_apa" outputformat="APA Zitat" -%]
+[%  ELSIF format == 'harvard' %]
+[%- PROCESS common/subtemplate name="litlists_record_html_as_harvard" outputformat="Harvard Zitat" -%]
+[%- ELSIF format == 'mla' %]
+[%- PROCESS common/subtemplate name="litlists_record_html_as_mla" outputformat="MLA Zitat"-%]
+[%- END -%]

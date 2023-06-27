@@ -1,0 +1,84 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+
+<h2>[% msg.maketext("Bestand") %]</h2>
+
+[%-
+
+  request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) ;
+  holding         = record.get_holding ;
+
+  all_locations = record.get_locations;
+
+  # Filter locations
+  locations = [];
+  
+  FOREACH loc IN all_locations ;
+    IF loc.match('^DE-38$') ;
+       locations.push(loc);
+    ELSIF loc.match('^DE-38-[0-9][0-9][0-9]') ;
+       locations.push(loc);
+    ELSIF NOT loc.match('^DE-38-[a-zA-Z]');   
+         locations.push(loc);
+    END;
+  END;
+
+-%]
+
+<div class="content"><!-- Begin Fulltitle -->
+
+<div class="ob-category_header">
+[%-  IF locations.size >= 1 -%]
+[%      IF locations.size == 1 %]
+         [% locinfo.identifier.${locations.first}.description %]
+[%      ELSIF locations.size > 1 %]
+         [% msg.maketext('Verschiedene Standorte') %]
+[%      END %]
+[%-  ELSE %]
+[%     dbinfo.get('dbnames').${database}.short %]
+[%   END %]
+</div>
+
+<div class="ob-bottominfo"><!-- Begin Bottominfo -->
+
+[% IF record.record_exists %]
+
+<div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
+
+[%# USE dumper;dumper.dump(holding)%]
+
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
+</ul>
+
+<div class="tab-content pt-3">
+<div role="tabpanel" class="tab-pane fade-in active" id="ob-holding_info"><!-- Begin Bestand -->
+[% PROCESS common/subtemplate name="holding" %]
+</div><!-- End Bestand -->
+
+</div><!-- End: tab-content -->
+</div><!-- End: Additional Title Info -->
+
+[% END # record_exists %]
+
+</div><!-- End: Bottom Info -->
+
+</div><!-- End Fulltitle -->
+
+<!--</div>--><!-- End record -->
+
+<!-- Title ends here -->
+
+
+

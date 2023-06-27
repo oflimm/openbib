@@ -1,0 +1,286 @@
+[%#-
+#######################################################################
+#
+# Templatename: topic_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Themengebietes
+#
+#######################################################################
+-%]
+[%
+  bks         = config.load_bk;
+
+  bklist = [];
+  FOREACH bk IN bks;
+    IF bk.key.length == 2;
+      thisbk = {
+        classification   => bk.key,
+        desc             => bk.value,
+      };
+      bklist.push(thisbk);
+    END ;
+  END ;
+
+  rvks         = config.load_rvk;
+
+  rvklist = [];
+  FOREACH rvk IN rvks;
+      thisrvk = {
+        classification   => rvk.key,
+        desc             => rvk.value,
+      };
+      rvklist.push(thisrvk);
+  END ;
+
+  ddcs        = config.load_ddc;
+
+  ddclist = [];
+  FOREACH ddc IN ddcs;
+    IF ddc.key.length == 3;
+      thisddc = {
+        classification   => ddc.key,
+        desc             => ddc.value,
+      };
+      ddclist.push(thisddc);
+    END ;
+  END ;
+
+  lccs        = config.load_lcc;
+
+  lcclist = [];
+  FOREACH lcc IN lccs;
+    thislcc = {
+      classification   => lcc.key,
+      desc             => lcc.value,
+    };
+    lcclist.push(thislcc);
+  END ;
+
+  usblbs      = config.load_yaml('/opt/openbib/conf/usblbs.yml');
+
+  usblbslist = [];
+  FOREACH group IN usblbs.keys.sort;
+    thisusblbs = {
+      classification   => group,
+      desc             => usblbs.${group}.desc,
+    };
+    usblbslist.push(thisusblbs);
+  END ;
+
+  usbls      = config.load_yaml('/opt/openbib/conf/usbls.yml');
+  
+  usblslist = [];
+  FOREACH group IN usbls.keys.sort;
+    thisusbls = {
+      classification   => group,
+      desc             => usbls.${group}.desc,
+    };
+    usblslist.push(thisusbls);
+  END ;
+
+%]
+
+<h2>[% msg.maketext("Themengebiet") %]: [% topic.name %]</h2>
+
+<h4>[% msg.maketext("Zugeordnete Themengebiete der Basisklassifikation") %]</h4>
+
+[%
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[% IF classification_selected.keys %]
+<ul>
+[% FOREACH bk IN bklist %]
+[%   IF classification_selected.${bk.classification}  %]
+<li>[% bk.classification %]: [% bk.desc %]</li>
+[%   END %]
+[% END %]
+</ul>
+[% ELSE %]
+[% msg.maketext("Keine") %]
+[% END %]
+
+<div class="border-top my-3"></div>
+
+<p/>
+
+<h4>[% msg.maketext("Zugeordnete Themengebiete der EZB") %]</h4>
+
+[%-
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'ezb', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+-%]
+
+[% IF classification_selected.keys %]
+<ul>
+[% FOREACH ezb_topic IN ezb.get_classifications %]
+[%   IF classification_selected.${ezb_topic.name}  %]
+<li>[% ezb_topic.name %]: [% ezb_topic.desc %]</li>
+[%   END %]
+[% END %]
+</ul>
+[% ELSE %]
+[% msg.maketext("Keine") %]
+[% END %]
+
+<div class="border-top my-3"></div>
+
+<p/>
+
+<h4>[% msg.maketext("Zugeordnete Themengebiete von DBIS") %]</h4>
+
+[%-
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'dbis', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+-%]
+[% IF classification_selected.keys %]
+<ul>
+[% FOREACH dbis_topic IN dbis.get_classifications %]
+[%   IF classification_selected.${dbis_topic.name}  %]
+<li>[% dbis_topic.name %]: [% dbis_topic.desc %]</li>
+[%   END %]
+[% END %]
+</ul>
+[% ELSE %]
+[% msg.maketext("Keine") %]
+[% END %]
+
+<div class="border-top my-3"></div>
+
+<p/>
+
+<h4>[% msg.maketext("Zugeordnete Themengebiete der RVK") %]</h4>
+
+[%-
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'rvk', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+-%]
+[% IF classification_selected.keys %]
+<ul>
+[% FOREACH rvk IN rvklist %]
+[%   IF classification_selected.${rvk.classification}  %]
+<li>[% rvk.classification %]: [% rvk.desc %]</li>
+[%   END %]
+[% END %]
+</ul>
+[% ELSE %]
+[% msg.maketext("Keine") %]
+[% END %]
+
+<div class="border-top my-3"></div>
+
+<p/>
+
+<h4>[% msg.maketext("Zugeordnete Themengebiete der DDC") %]</h4>
+
+[%-
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'ddc', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+-%]
+[% IF classification_selected.keys %]
+<ul>
+[% FOREACH ddc IN ddclist %]
+[%   IF classification_selected.${ddc.classification}  %]
+<li>[% ddc.classification %]</li>
+[%   END %]
+[% END %]
+</ul>
+[% ELSE %]
+[% msg.maketext("Keine") %]
+[% END %]
+
+<div class="border-top my-3"></div>
+
+<p/>
+
+<h4>[% msg.maketext("Zugeordnete Themengebiete der LoC Classification") %]</h4>
+
+[%-
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'lcc', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+-%]
+[% IF classification_selected.keys %]
+<ul>
+[% FOREACH lcc IN lcclist %]
+[%   IF classification_selected.${lcc.classification}  %]
+<li>[% lcc.classification %]: [% lcc.desc %]</li>
+[%   END %]
+[% END %]
+</ul>
+[% ELSE %]
+[% msg.maketext("Keine") %]
+[% END %]
+
+<div class="border-top my-3"></div>
+
+<form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/lbs">
+
+<h1 class="display-5">[% msg.maketext("Themengebiet(e) der Lehrbuchsammlungs-Systematik zuordnen") %]</h1>
+
+<div class="form-group">
+<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
+<select class="form-control" name="classifications" id="classifications" multiple="multiple" size="10">
+[%
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'lbs', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[% FOREACH usblbs IN usblbslist %]
+
+<option value="[% usblbs.classification %]" [% IF classification_selected.${usblbs.classification}  %]selected="selected"[% END %]>[% usblbs.classification %] [% usblbs.desc %]</option>
+
+[% END %]
+</select>
+
+</div>
+
+[%# USE dumper;dumper.dump(classification_selected)%]
+<button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+</form>
+
+<div class="border-top my-3"></div>
+
+<form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/ls">
+
+<h1 class="display-5">[% msg.maketext("Themengebiet(e) der Lesesaal-Systematik zuordnen") %]</h1>
+
+<div class="form-group">
+<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
+<select class="form-control" name="classifications" id="classifications" multiple="multiple" size="10">
+[%
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'ls', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[% FOREACH usbls IN usblslist %]
+
+<option value="[% usbls.classification %]" [% IF classification_selected.${usbls.classification}  %]selected="selected"[% END %]>[% usbls.classification %] [% usbls.desc %]</option>
+
+[% END %]
+</select>
+
+</div>
+
+[%# USE dumper;dumper.dump(classification_selected)%]
+<button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+</form>

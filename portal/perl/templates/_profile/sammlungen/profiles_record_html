@@ -1,0 +1,45 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_profile_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Profiles
+#
+#######################################################################
+-%]
+
+<h3>[% msg.maketext("Katalog-Profil") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+
+<tr><th>[% msg.maketext("Profil-Name") %]</th>
+<td>[% profileinfo.profilename %]</td>
+</tr>
+
+<tr><th>[% msg.maketext("Beschreibung") %]</th>
+<td>[% profileinfo.description %]</td>
+</tr>
+
+</table>
+</div>
+
+
+[% IF orgunits.all %]
+<h3>[% msg.maketext("Organisationseinheiten") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+<tr><th><b>[% msg.maketext("Name") %]</b></th><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>Nr</b></td><td><b>[% msg.maketext("Kataloge") %]</b></td><td></td></tr>
+[% FOREACH thisorgunit IN orgunits.all %]
+<tr><th>[% thisorgunit.orgunitname %]</th><td><a href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/[% config.get('orgunits_loc') %]/id/[% thisorgunit.orgunitname %].html?l=[% lang %]">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td><ul>[% FOREACH item IN config.get_orgunitdbs(profileinfo.profilename,thisorgunit.orgunitname).sort %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]</ul></td></tr>
+[% END %]
+</table>
+</div>
+[% ELSE %]
+<h3>[% msg.maketext("Sie haben in diesem Profil noch keine Organisationseinheiten angelegt.") %]</h3>
+[% END %]

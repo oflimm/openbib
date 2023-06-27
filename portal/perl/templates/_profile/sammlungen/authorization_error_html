@@ -1,0 +1,7 @@
+        <div class="ob-jumbotron">
+         <h1 class="display-4">[% msg.maketext("Zugriffsfehler") %]</h1>
+         <p class="lead">[% msg.maketext("Sie sind für diesen Zugriff nicht berechtigt. Bitte melden Sie sich mit einer priviligierten Kennung an.") %]</p>
+         <p class="lead">
+            <a class="btn btn-primary btn-lg" href="[% login_url %]" role="button">Weiter zur Anmeldung</a>
+         </p>
+        </div><!-- End: ob-jumbotron -->

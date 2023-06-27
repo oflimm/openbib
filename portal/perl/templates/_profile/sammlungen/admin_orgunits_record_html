@@ -1,0 +1,41 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_orgunit_record_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Zuordnung der Datenbanken zu einer Organisationseinheit eines einzelnen Profiles
+#b
+#######################################################################
+-%]
+<h2>[% msg.maketext("Organisationseinheit")%] [% orgunitinfo.description %]</h2>
+
+<div class="table-responsive text-nowrap">
+<table class="table table-striped ">
+<tr>
+<th>[% msg.maketext("Name") %]</th>
+<td>[% orgunitinfo.orgunitname %]</td>
+</tr>
+<tr>
+<th>[% msg.maketext("Beschreibung") %]</th>
+<td>[% orgunitinfo.description %]</td>
+</tr>
+<tr>
+<th>[% msg.maketext("Nr") %]</th>
+<td>[% orgunitinfo.nr %]</td>
+</tr>
+
+<tr>
+<th>Kataloge der Organisationseinheit</th>
+<td>
+<ul>
+[% FOREACH singledb IN orgunitdbs %]
+<li>[% singledb %]: [% dbinfo.get('dbnames').${singledb}.full %]</li>
+[% END %]
+</ul>
+</tr>
+</table>
+</div>

@@ -1,0 +1,47 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_servers
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der aktuellen Einstellungen des Betriebs
+#
+#######################################################################
+-%]
+
+[%# USE dumper;dumper.dump(serverinfos)%]
+[% IF serverinfos.count > 0 %]
+
+<h3>[% msg.maketext("Bereits existierende Rechner zur Lastverteilung") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+<tr><th><b>[% msg.maketext("Id") %]</b></th><th><b>[% msg.maketext("IP-Adresse") %]</b></th><th><b>[% msg.maketext("Beschreibung") %]</b></th><th><b>[% msg.maketext("Status") %]</b></th><th><b>[% msg.maketext("Cluster") %]</b></th><th><b>[% msg.maketext("Aktiv") %]</b></th></tr>
+[% FOREACH serverinfo IN serverinfos.all %]
+<tr [% IF serverinfo.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
+<td>[% serverinfo.id %]</td>
+<td><a href="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %].html?l=[% lang %]">[% serverinfo.hostip %]</a></td>
+<td>[% serverinfo.description %]</td>
+<td>
+[% IF serverinfo.status == ''%]
+[% msg.maketext("Keiner") %]
+[% ELSIF serverinfo.status == "updating" %]
+[% msg.maketext("Aktualisieren") %]
+[% ELSIF serverinfo.status == "updated" %]
+[% msg.maketext("Fertig mit Aktualisierung") %]
+[% ELSIF serverinfo.status == "searchable" %]
+[% msg.maketext("Recherchierbar") %]
+[% END %]
+</td>
+<td>[% serverinfo.clusterid.description %]</td>
+<td>[%- IF serverinfo.active == 1 -%]<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>[%- ELSE -%] <span style="color:red;">[%- msg.maketext("Nein") -%]</span>[%- END -%]</td></tr>
+[% END %]
+
+</table>
+</div>
+[% ELSE %]
+[% msg.maketext('Es wurden noch keine Server definiert.') %]
+[% END %]

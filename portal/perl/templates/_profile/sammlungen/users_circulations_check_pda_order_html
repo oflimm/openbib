@@ -1,0 +1,265 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_circulations_check_pda_order_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ueberpruefung einer Bestellung im Buchhandel mit PDA
+#
+#######################################################################
+-%]
+
+<div class="card mt-5 mb-5 me-5">
+<div class="card-header">[% msg.maketext("Neuanschaffung") %]</div>
+<div class="card-body">
+[% IF NOT userinfo.username.match("^([ABCKRSTVW]|I00011011#7)") %]
+
+<p>[% msg.maketext("Ihre Benutzergruppe ist nicht für diese Funktion zugelassen.") %]</p>
+
+[%   IF userinfo.username.match("^9") %]
+<p>[% msg.maketext("Sie besitzen derzeit noch eine vorläufige Benutzernummer, mit der Sie lediglich Medien aus dem Bestand der USB Köln bestellen oder vormerken können.") %]</p>
+
+<p>[% msg.maketext("Für alle anderen Funktionen benötigen Sie einen Bibliotheksausweis, den Sie an unserem Schalter <strong>Bibliotheksausweise &amp; Fernleihrückgabe</strong> im EG erhalten.") %]</p>
+[%   ELSE %]
+<p>[% msg.maketext("Sofern Sie Fragen haben, wenden Sie sich bitte an") %] <a href="mailto:mediateam@ub.uni-koeln.de">mediateam@ub.uni-koeln.de</a></p>
+[%   END %]
+[% ELSIF NOT userinfo.email %]
+<p>[% msg.maketext("Bitte tragen Sie Ihre E-Mail-Adresse in Ihrem Bibliothekskonto unter <strong>Persönliche Daten</strong> ein. Eine Benachrichtigung über das eingetroffene Buch ist ansonsten nicht möglich.") %]</p>
+
+<a class="btn btn-primary mt-3 mb-3" href="[% path_prefix%]/[% config.get("users_loc") %]/id/[% user.ID %]/[% config.get("circulations_loc") %].html?l=[% lang %]">[% msg.maketext("E-Mail-Adresse eintragen") %]</a>
+[% ELSE %]
+[%-
+
+  fields       = record.get_fields;
+#  holdings     = record.get_holding;
+#  circulations = record.load_circulation.get_circulation;
+  
+  title     = fields.${"T0331"}.first.content;
+
+  IF NOT title && fields.${'T0089'}.first.content;
+     title = fields.${'T0089'}.first.content;
+  END ;
+
+  IF fields.${"T0335"}.defined ;
+     titlesup = fields.${"T0335"}.first.content;
+     title = "${title} : ${titlesup}";
+  END;
+
+  persons   = [];
+  FOREACH thisfield IN ['T0100','T0101','T0102','T0103'];
+    IF fields.${thisfield}.defined;
+      FOREACH thisitem IN fields.${thisfield};
+        persons.push(thisitem.content);
+      END;
+    END;
+  END;
+  person = persons.join(' ; ');
+
+  corporatebodies   = [];
+  FOREACH thisfield IN ['T0200','T0201'];
+    IF fields.${thisfield}.defined;
+      FOREACH thisitem IN fields.${thisfield};
+        corporatebodies.push(thisitem.content);
+      END;
+    END;
+  END;
+  corporatebody = corporatebodies.join(' ; ');
+
+  pubplace = [];
+  publisher = fields.${"T0412"}.first.content;
+  place     = fields.${"T0410"}.first.content;
+
+  IF place ;
+    pubplace.push(place);
+  END;
+
+  IF publisher ;
+    pubplace.push(publisher);
+  END;
+
+  publisher = pubplace.join(' : ');
+
+  price = fields.${"T4211"}.first.content;
+
+  year      = fields.${"T0425"}.first.content;
+  # IF fields.${"T0424"}.defined;
+  #   year      = fields.${"T0424"}.first.content;  
+  # END;
+
+  super = "";
+  # 1. Ueberordnung?
+  IF fields.${'T5005'}.first.content;
+     super = from_json(fields.${'T5005'}.first.content);
+  END;
+
+  IF fields.${"T0540"}.defined;
+    isbn = fields.${"T0540"}.first.content;  
+  ELSIF fields.${"T0541"}.defined;
+    isbn = fields.${"T0541"}.first.content;  
+  ELSIF fields.${"T0553"}.defined;
+    isbn = fields.${"T0553"}.first.content;  
+  ELSIF super && super.fields.${"0540"};
+    issn = super.fields.${"0540"}.first.content;  
+  ELSIF super && super.fields.${"0553"};
+    issn = super.fields.${"0553"}.first.content;  
+  END;
+
+  IF fields.${"T0543"}.defined;
+    issn = fields.${"T0543"}.first.content;  
+  ELSIF super && super.fields.${"0543"};
+    issn = super.fields.${"0543"}.first.content;  
+  END;
+
+  source    = "";
+  IF fields.${"T0451"}.defined;
+    source  = fields.${"T0451"}.first.content;  
+  ELSIF fields.${"T0508"}.defined;
+    source  = fields.${"T0508"}.first.content;  
+  ELSIF fields.${"T0590"}.defined;
+    source  = fields.${"T0590"}.first.content;
+  ELSIF super ;
+     super_title = super.fields.${'0451'}.first.content;
+     IF super.fields.${'0331'} ;
+        source   = super.fields.${'0331'}.first.content;
+     END ;
+  END;
+
+  titleid   = record.id;
+  
+-%]
+
+[%# USE dumper;dumper.dump(super)%]
+<!--
+<div class="card mt-5 mb-5 me-5">
+<div class="card-header">[% msg.maketext("Neuanschaffung") %]</div>
+<div class="card-body">
+-->
+
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/pdaorders">
+ 
+     <input type="hidden" name="unit_desc"   value="[% unit_desc |uri %]" />
+     <input type="hidden" name="unit"        value="[% unit %]" />
+     <input type="hidden" name="titleid"     value="[% titleid %]" />
+     <input type="hidden" name="database"    value="[% database %]" />
+     <input type="hidden" name="title"       value="[% title | uri %]" />
+
+<legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
+
+[% IF title %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% title %]</span>
+      <label for="title">Titel</label>
+</div>
+[% END %]
+
+[% IF person %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% person %]</span>
+     <input type="hidden" name="author"     value="[% person | uri %]" />
+      <label for="person">[% msg.maketext("Autor") %]:</label>
+</div>
+[% END %]
+
+[% IF corporatebody %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% corporatebody %]</span>
+     <input type="hidden" name="corporation"     value="[% corporatebody | uri %]" />
+      <label for="corporation">[% msg.maketext("Körperschaft") %]:</label>
+</div>
+[% END %]
+
+[% IF publisher %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% publisher %]</span>
+     <input type="hidden" name="publisher"     value="[% publisher | uri %]" />
+      <label for="publisher">[% msg.maketext("Ort/Verlag") %]:</label>
+</div>
+[% END %]
+
+[% IF isbn %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% isbn %]</span>
+      <input type="hidden" name="isbn" value="[% isbn | uri %]" />
+      <label for="location_mark">[% msg.maketext("ISBN") %]:</label>
+</div>
+[% END %]
+
+[% IF issn %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% issn %]</span>
+      <input type="hidden" name="isbn" value="[% issn | uri %]" />
+      <label for="location_mark">[% msg.maketext("ISSN") %]:</label>
+</div>
+[% END %]
+
+[%   IF price %]
+<div class="form-floating mb-3">
+      <span class="form-control">[%  price.replace('(\d\d)$',',$1') %] EUR</span>
+      <input type="hidden" name="year" value="[% price.replace('(\d\d)$',',$1') %]" />
+      <label for="year">[% msg.maketext("Preis") %]:</label>
+</div>
+[%   END %]
+
+[% IF source %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% source %]</span>
+      <input type="hidden" name="source" value="[% source | uri %]" />
+      <label for="source">[% msg.maketext("In") %]:</label>
+</div>
+[% END %]
+
+
+[%   IF year %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% year %]</span>
+      <input type="hidden" name="year" value="[% uri_escape(year) %]" />
+      <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
+</div>
+[%   END %]
+
+<legend class="mt-2">[% msg.maketext("Weitere Angaben zur Bestellung") %]</legend>
+
+[%# USE dumper;dumper.dump(userinfo)%]
+<div class="form-floating mb-3">
+      <span class="form-control">[% userinfo.username %]</span>
+      <label for="username">[% msg.maketext("Benutzernummer") %] (*):</label>
+</div>
+
+<div class="form-floating mb-3">
+      <span class="form-control">[% userinfo.fullname %]</span>
+      <label for="username">[% msg.maketext("Nachname, Vorname") %] (*):</label>
+</div>
+
+<div class="form-floating mb-3">
+      <span class="form-control">[% userinfo.email %]</span>
+      <label for="email">[% msg.maketext("E-Mail") %] (*):</label>
+</div>
+
+<legend class="mt-2">[% msg.maketext("Bestellquittung") %]</legend>
+<div class="form-check">
+
+      <input class="form-check-input" type="checkbox" name="receipt"/>
+      <label class="form-check-label" for="receipt">[% msg.maketext("Ja, ich möchte eine Kopie dieser Bestellung als E-Mail erhalten") %].</label>
+</div>
+
+<p/>
+
+<p>
+[% msg.maketext("Sie erhalten von uns eine Nachricht per E-Mail, sobald der Titel als E-Book freigeschaltet ist oder Sie das Printexemplar zur Ausleihe abholen können.") %]
+</p>
+
+<p>
+<i>[% msg.maketext("Beachten Sie bitte, dass Ihre Bestellung erst dann in Ihrem Konto erscheint, wenn das Buch bei uns eingetroffen ist.") %]</i>
+</p>
+
+<button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Kostenfrei bestellen") %]</button>
+
+</form>
+
+[% END %]
+
+</div>
+</div>

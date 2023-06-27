@@ -1,0 +1,17 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_datenschutz
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Datenschutz
+#
+#######################################################################
+-%]
+
+[% PROCESS common/subtemplate name="info_datenschutz_html" %]
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Datenschutzerklärung") %]</div>

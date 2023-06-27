@@ -1,0 +1,53 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+<div class="table-responsive text-nowrap">
+<table class="table table-striped ">
+<tr><th>[% msg.maketext("Viewname") %]</th>
+<td>[% viewinfo.viewname %]</td></tr>
+
+<tr><th>[% msg.maketext("Beschreibung") %]</th>
+<td>[% viewinfo.description %]</td></tr>
+
+<tr><th>[% msg.maketext("Katalog-Profile") %]</th>
+<td>
+[% FOREACH profile IN config.get_profileinfo_overview.all %]
+[% IF viewinfo.profileid.id == profile.id %][% profile.description %]<br/>[% END %]
+[% END %]
+</td></tr>
+
+<tr><th>[% msg.maketext("Aktiv") %]</th>
+<td>[% IF viewinfo.active == 1 %][% msg.maketext("Ja") %][% ELSE %][% msg.maketext("Nein") %][% END %]</td></tr>
+
+<tr><th>[% msg.maketext("Katalogauswahl zu diesem View") %]</th>
+<td>
+[%
+   viewsdesc = [];
+   FOREACH singledb IN viewdbs ;
+     desc = dbinfo.get('dbnames').${singledb}.short;
+     viewsdesc.push("${singledb} : ${desc}");
+   END;
+   
+%]
+[% FOREACH singledesc IN viewsdesc.sort %]
+[% singledesc %]<br/>
+[% END %]
+
+</td></tr>
+[% IF viewinfo.view_rsses.size || viewinfo.rssid.id %]
+<tr><th>[% msg.maketext("RSS") %]</th>
+<td><a href="[% path_prefix %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/rss.html?l=[% lang %]">[% msg.maketext('Anzeigen') %]</a></td>
+</tr>
+[% END %]
+</table>
+</div>

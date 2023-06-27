@@ -1,0 +1,36 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+
+<div class="table-responsive text-nowrap">
+<table class="table table-striped ">
+<tr><th>[% msg.maketext("Id") %]</th>
+<td>[% searchprofileid %]</td></tr>
+
+<tr><th>[% msg.maketext("Kataloge") %]</th>
+<td>
+<ul>
+[% FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid).sort %]
+<li>
+[%   IF user.has_right({scope = 'admin_databases', right = 'right_update'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% dbname %]/edit.html?l=[% lang %]">[% dbname %]: [% IF dbinfo.get('dbnames').${dbname}.short %][% dbinfo.get('dbnames').${dbname}.short %][% ELSE %][% dbinfo.get('dbnames').${dbname}.full %][% END %]</a>
+[%   ELSIF user.has_right({scope = 'admin_databases', right = 'right_read'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% dbname %].html?l=[% lang %]">[% dbname %]: [% IF dbinfo.get('dbnames').${dbname}.short %][% dbinfo.get('dbnames').${dbname}.short %][% ELSE %][% dbinfo.get('dbnames').${dbname}.full %][% END %]</a>
+[%   END %]
+</li>
+[% END %]
+</ul>
+</td>
+</tr>
+</table>
+</div>

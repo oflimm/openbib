@@ -1,0 +1,97 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_databases_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Kataloge
+# mit ihren wichtigsten Informationen
+#
+# Einrichtung eines neuen Kataloges
+#
+#######################################################################
+-%]
+
+[% IF user.has_right({scope = 'admin_locations', right = 'right_create'}) %]
+<div id="new_item" class="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          [% msg.maketext("Neuen Standort anlegen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#new_item">
+      <div class="card-body">
+<form method="post" action="[% path_prefix %]/[% config.get('locations_loc') %]">
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="identifier" id="identifier" size="8" />
+<label for="identifier">[% msg.maketext("Identifier") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="description" id="description" size="20" />
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="shortdesc" id="shortdesc" size="20" />
+<label for="shortdesc">[% msg.maketext("Kurzbeschreibung") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+  <select class="form-select" name="type" id="type">
+[% FOREACH location_type IN config.get('location_types') %]
+       <option value="[% location_type %]">[% location_type %]</option>
+[% END %]
+   </select>
+<label for="type">[% msg.maketext("Typ") %]</label>
+</div>
+
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Neu") %]</button>
+
+</form>
+</div>
+</div>
+</div>
+</div>
+
+<p />
+[% END # right_create %]
+
+[% IF locations.size > 0 %]
+
+<h3>[% msg.maketext("Bereits existierende Standorte") %]: [% config.get_number_of_locations %]</h3>
+[%# USE dumper;dumper.dump(locations)%]
+<div class="table-responsive">
+<table class="table table-striped ">
+<thead>
+<tr><th>[% msg.maketext("Identifier") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Kurzbeschreibung") %]</th><th>[% msg.maketext("Typ") %]</th></tr>
+</thead>
+<tbody>
+[% FOREACH location IN locations %]
+<tr>
+<td>
+[% location.identifier %]
+</td>
+<td>
+[%   IF user.has_right({scope = 'admin_locations', right = 'right_update'}) %]
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% location.identifier %]/edit.html?l=[% lang %]">[% location.description %]</a>
+[%   ELSIF user.has_right({scope = 'admin_locations', right = 'right_read'}) %]
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% location.identifier %].html?l=[% lang %]">[% location.description %]</a>
+[%   END %]
+</td>
+<td>[% location.shortdesc %]</td>
+<td>[% location.type %]</td>
+</tr>
+[% END %]
+</tbody>
+</table>
+</div>
+[% END %]

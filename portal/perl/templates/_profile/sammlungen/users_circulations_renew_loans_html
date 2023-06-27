@@ -1,0 +1,71 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_circulations_renew_loans_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ergbnis der Gesamtkontoverlängerung
+#
+#######################################################################
+-%]
+
+[%# USE dumper; dumper.dump(renew_loans) %]
+
+<div class="card mt-5 mb-5 me-5">
+<div class="card-header">[% msg.maketext("Ergebnis der Gesamtkontoverlängerung") %]</div>
+<div class="card-body">
+
+<div class="table-responsive table-flippable">
+<table class="table">
+<thead>
+<tr><th>[% msg.maketext("Durchgeführte Verlängerungen") %]</th><th>[% msg.maketext("Abgelehnte Verlängerungen") %]</th></tr>
+</thead>
+<tbody>
+<tr><td style="color: green;">[% renew_loans.num_successful_renewals %]</td><td style="color: red;">[% renew_loans.num_failed_renewals %]</td></tr>
+</tbody>
+</table>
+</div>
+
+[% IF renew_loans.items.size > 0 %]
+<h5>[% msg.maketext("Ausleihen") %]</h5>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+<thead>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %] / [% msg.maketext("Bestellnr.") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Leihfristende") %]</th></tr>
+</thead>
+<tbody>
+[%- FOREACH loan = renew_loans.items -%]
+
+<tr>
+<td>
+<i>[% loan.about %]</i>
+[% IF loan.renewal_message %] 
+<br/> ([% loan.renewal_message %])
+[% END %]
+</td>
+<td>
+[%#- Die Signatur wird nur dann ausgeben, falls sie nicht Teil der Mediennummer ist -%]
+[% IF loan.label && loan.item && NOT loan.item.match(loan.label) %]
+[% loan.label %][% IF loan.item %]&nbsp;/&nbsp;[% loan.item %][% END %]
+[% ELSIF loan.item %]
+[% loan.item %]
+[% END %]
+</td>
+<td>[% loan.department.about %][% IF loan.pickup_location.about %] / [% loan.pickup_location.about %][% END %]</td>
+<td>[% loan.endtime %]</td>
+</tr>
+[% END %]
+</tbody>
+</table>
+</div>
+[% END %]
+
+<p><a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userid %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]" role="button">[% msg.maketext('Weiter') %]</a></p>
+
+</div>
+</div>
+

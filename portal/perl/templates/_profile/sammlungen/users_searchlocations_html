@@ -1,0 +1,66 @@
+[%#-
+#######################################################################
+#
+# Templatename: databaseprofile
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Katalogauswahlliste/-tabelle und weiterer
+# Eingabeelemte fuer die Erstellung und Bearbeitung eigener
+# Katalogsuchprofile
+#
+#######################################################################
+-%]
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function update_fak(yourform, checked, fak) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].title.indexOf(fak) != -1) {
+              yourform.elements[i].checked = checked;
+         }
+    }
+}
+
+// -->
+</script>
+
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchlocations_loc') %]" enctype="application/x-www-form-urlencoded">
+
+<h1 class="display-5">[% msg.maketext("Bevorzugte Standorte definieren") %]</h1>
+
+[%# USE dumper;dumper.dump(checkedloc)%]
+[%# USE dumper;dumper.dump(config.get_orgunitinfo_overview(profile)) %]
+
+<p />
+
+<button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchlocations_loc') %]?_method=DELETE;confirm=1" title="[% msg.maketext("Entfernen") %]" class="btn btn-primary mb-2">[% msg.maketext("Löschen") %]</a>
+
+<p />
+<div class="table-responsive">
+<table class="table table-striped ">
+[%- FOREACH thislocation IN searchlocations -%]
+
+<tr><td><input type="checkbox" name="location" value="[% thislocation.identifier %]" title="[% thislocation.description %]" [% IF checkedloc.${thislocation.identifier} %]checked="checked"[% END %]/></td><td><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% thislocation.identifier %]">[% thislocation.description %]</a></td></tr>
+[%- END -%]
+</table>
+<p />
+</td></tr>
+</table>
+</div>
+
+<p />
+
+<button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchlocations_loc') %]?_method=DELETE;confirm=1" title="[% msg.maketext("Entfernen") %]" class="btn btn-primary mb-2">[% msg.maketext("Löschen") %]</a>
+
+</form>

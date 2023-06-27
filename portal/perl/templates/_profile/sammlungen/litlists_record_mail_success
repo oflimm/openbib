@@ -1,0 +1,13 @@
+[%- IF representation == '' || representation == 'html' ;
+
+    layout_param = {
+      'page_title' = 'Erfolgreicher Mailversand'
+     
+      'main_template' = 'litlists_record_mail_success_html'
+      
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

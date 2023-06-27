@@ -1,0 +1,72 @@
+[%#-
+#######################################################################
+#
+# Templatename: tags_edit_usertags
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Aendern der privaten Tags eines Benutzers
+#
+#######################################################################
+-%]
+[%
+   private_tags = user.get_private_tags({ username => username  });
+
+%]
+
+<form method="post" action="[% path_prefix %]/[% config.get('tags_loc') %]" enctype="application/x-www-form-urlencoded">
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="oldtag" size="30" id="oldtag">
+<label for="oldtag">[% msg.maketext("Zu ersetzendes Tag") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="newtag" size="30" id="newtag">
+<label for="newtag">[% msg.maketext("Neuer Tag-Name") %]</label>
+</div>
+
+<button class="btn btn-primary mb-2" type="submit" name="do_change">[% msg.maketext("&Auml;ndern") %]"></button>
+
+</form>
+
+<p/>
+
+<div class="card">
+<div class="card-header">[% msg.maketext("Eigene Tags") %]</div>
+<div class="card-body">
+
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%- IF private_tags.size > 0 -%]
+<ol class="ob-cloud">
+[%- FOREACH thisitem IN private_tags -%]
+[% item      = thisitem.name;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemid    = thisitem.id;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind
+verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+[% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]
+[% END %]
+
+</div>
+</div>

@@ -1,0 +1,70 @@
+[%#-
+#######################################################################
+#
+# Templatename: circulation_orders
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller bestellten Medien
+#
+#######################################################################
+-%]
+
+[% IF orders.no_orders || orders.items.size == 0 %]
+<div class="ob-jumbotron">
+<h1 class="display-4">[% msg.maketext("Sie haben derzeit keine offenen Bestellungen.") %]</h1>
+</div>
+[% ELSE  %]
+<p>
+[% msg.maketext("Liste Ihrer bestellten Bücher (ohne Aufsatzbestellungen).") %]
+</p>
+
+[%# USE dumper;dumper.dump(orders) %]
+
+<div class="table-responsive">
+<table class="table table-striped ">
+<thead>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %] / [% msg.maketext("Bestellnr.") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Bestelldatum") %]</th><th>[% msg.maketext("Aktion") %]</th></tr>
+</thead>
+<tbody>
+[%- FOREACH order = orders.items ;
+      is_ill = 0;
+      IF order.item.match('^@[0-9]{9}$');
+         is_ill = 1;
+      END;
+-%]
+<tr>
+<td>
+  <i>[% order.about %]</i>
+[% IF order.info %] 
+<br/> ([% IF is_ill %][% msg.maketext("Fernleihe") %].&nbsp;[% END %][% msg.maketext("Status") %]: [% order.info %] [% IF order.status.match('abholbar') %]. [% msg.maketext("Leihfristende") %]: [% order.endtime %][% END %] <!-- Info Link zum Fernleihkonto zu dieser Bestellung -->)
+[% END %]  
+</td>
+<td>
+[%#- Die Signatur wird nur dann ausgeben, falls sie nicht Teil der Mediennummer ist -%]
+[% IF order.label && order.item && NOT order.item.match(order.label) %]
+[% order.label %][% IF order.item %]&nbsp;/&nbsp;[% order.item %][% END %]
+[% ELSIF order.item %]
+[% order.item %]
+[% END %]
+</td>
+<td>[% order.department.about %][% IF order.pickup_location.about %] / [% order.pickup_location.about %][% END %]</td>
+<td>[% order.starttime %]</td>
+<td>
+[% IF is_ill %]
+[% msg.maketext("Fernleihbestellung nicht stornierbar!") %]
+[% ELSE %]
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders?_method=DELETE;confirm=1;unit=[% order.department.id %];unitname=[% order.department.about | uri %];titleid=[% order.edition %];holdingid=[% order.item | uri %];date=[% order.starttime |uri %];validtarget=[% database %]" title="Bestellung l&ouml;schen" class="btn btn-primary">[% msg.maketext("Stornieren") %]</a>
+[% END %]
+</td>
+</tr>
+[% END %]
+</tbody>
+</table>
+</div>
+
+[% END %]
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Ihre Bestellungen") %]</div>

@@ -1,0 +1,33 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+
+<h3>[% msg.maketext("Cluster") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+<tr><th>[% msg.maketext("Id") %]</th><td>[% clusterinfo.id %]</td></tr>
+<tr><th>[% msg.maketext("Beschreibung") %]</th><td>[% clusterinfo.description %]</td></tr>
+<tr><th>[% msg.maketext("Status") %]</th><td>
+[% IF clusterinfo.status == '' %][% msg.maketext("Keiner") %][% END %]
+[% IF clusterinfo.status == 'updatable' %][% msg.maketext("Aktualisierbar") %][% END %]
+[% IF clusterinfo.status == 'updating' %][% msg.maketext("Aktualisieren") %][% END %]
+[% IF clusterinfo.status == 'updated' %][% msg.maketext("Fertig mit Aktualisierung") %][% END %]
+[% IF clusterinfo.status == 'searchable' %][% msg.maketext("Recherchierbar") %][% END %]
+</td></tr>
+<tr><th>[% msg.maketext("Aktiv") %]</th><td>
+[%- IF databaseinfo.active -%][% msg.maketext("Ja") %][%- END -%]
+[%- IF NOT databaseinfo.active -%][% msg.maketext("Nein") %][%- END -%]
+</td></tr>
+</table>
+</div>

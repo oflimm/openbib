@@ -1,0 +1,44 @@
+[%#-
+#######################################################################
+#
+# Templatename: databaseprofile
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Katalogauswahlliste/-tabelle und weiterer
+# Eingabeelemte fuer die Erstellung und Bearbeitung eigener
+# Katalogsuchprofile
+#
+#######################################################################
+-%]
+
+[%
+orgunits = {};
+FOREACH thisdb = catdb ;
+  IF thisdb.checked == 1;
+    orgunits.${thisdb.category} = 1;
+  END ;
+END;
+-%]
+
+<h3>[% msg.maketext("Suchprofil") %] <b>[% profilename %]</b></h3>
+
+<p/>
+[%# USE dumper;dumper.dump(catdb)%]
+[%# USE dumper;dumper.dump(orgunits)%]
+
+<div class="table-responsive">
+<table class="table table-striped ">
+[%- FOREACH thiscategory = orgunits.keys.sort -%]
+<tr><td class="thickheadline"><b>[% thiscategory %]</b></td></tr>
+
+[%-   FOREACH thisdb = catdb -%]
+[%-     IF thisdb.category == thiscategory && thisdb.checked -%]
+<tr><td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% thisdb.db %].html?l=[% lang %]">[% thisdb.name %]</a></td></tr>
+[%-     END -%]
+[%-   END -%]
+[%- END -%]
+</table>
+</div>

@@ -1,0 +1,37 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+
+<h3>[% dbinfo.get('dbnames').${database}.short %]</span></h3>
+
+<!-- Titlelist begins here -->
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="ob-catalog">
+    Letzte Neuzugänge
+    </div>
+    <div class="ob-hits">
+    </div>
+    <div class="ob-navigation">
+    </div>
+  </div>
+  <div class="ob-resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH record IN recordlist.load_brief_records.get_records -%]
+[% PROCESS common/subtemplate name="titlist_item_html_short" database=record.database %]
+[%- END -%]
+  </div>
+</div>
+<!-- Titlelist ends here -->

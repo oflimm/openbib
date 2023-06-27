@@ -1,0 +1,45 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_orgunit_record_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Zuordnung der Datenbanken zu einer Organisationseinheit eines einzelnen Profiles
+#b
+#######################################################################
+-%]
+
+<h3>Organisationseinheit</h3>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+
+<tr><th>[% msg.maketext("Name") %]</th>
+<td>[% orgunitinfo.orgunitname %]</td>
+</tr>
+
+<tr><th>[% msg.maketext("Beschreibung") %]</th>
+<td>[% orgunitinfo.description %]</td>
+</tr>
+
+<tr><th>Nr.</th>
+<td>[% orgunitinfo.nr %]</td>
+</tr>
+
+</table>
+</div>
+
+[% IF orgunitdbs %]
+<h3>[% msg.maketext("Kataloge") %]</h3>
+
+<ul class="list-group">
+[% FOREACH item IN orgunitdbs %]
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% item %].html?l=[% lang %]">[% item %]</a>: [% dbinfo.get('dbnames').${item}.full %]</li>
+[% END %]
+</ul>
+[% ELSE %]
+<h3>[% msg.maketext("Sie haben dieser noch keine Kataloge zugeordnet.") %]</h3>
+[% END %]

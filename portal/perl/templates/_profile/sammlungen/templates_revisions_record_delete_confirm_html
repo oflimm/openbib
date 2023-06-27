@@ -1,0 +1,27 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+
+        <div class="ob-jumbotron">
+          <h1 class="display-4">[% msg.maketext("Sind sie sicher?") %]</h1>
+          <p class="lead">[% msg.maketext("Möchten Sie wirklich die Revision <b>[_1]</b> des Templates [_2] löschen?",revision.id, templateid) %]</p>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateid %]/revisions/id/[% revisionid %]?_method=DELETE;confirm=0">[% msg.maketext("Ja") %]</a>
+
+&nbsp;&nbsp;
+
+[% IF user.is_admin %]
+          <a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %].html?l=[% lang %]">[% msg.maketext("Abbruch") %]</a>
+[% ELSE %]
+          <a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('templates_loc') %].html?l=[% lang %]">[% msg.maketext("Abbruch") %]</a>
+[% END %]
+        </div>

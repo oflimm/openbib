@@ -1,0 +1,59 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat_rss
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen der RSS-Feeds
+# eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+[%
+typedescription = {
+   '1' = msg.maketext("Neuaufnahmen (generell)")
+   '2' = msg.maketext("Neuaufnahmen nach Verfasser")
+   '3' = msg.maketext("Neuaufnahmen nach K&ouml;rperschaft") 
+   '4' = msg.maketext("Neuaufnahmen nach Schlagwort")
+   '5' = msg.maketext("Neuaufnahmen nach Systematik")
+};
+
+yesno = {
+   '0' = msg.maketext("Nein")
+   '1' = msg.maketext("Ja")
+};
+
+%]
+
+<h3>[% msg.maketext("RSS-Einstellungen") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped ">
+<tr>
+<th>Id</th>
+<td>[% rssinfo.id %]</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Katalog") %]</th>
+<td>[% databaseinfo.dbname %]</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Art des Feeds") %]</th>
+<td>[% typedescription.${rssinfo.type} %]</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Aktiv") %]</th>
+<td>
+[%- IF rssinfo.active -%][% msg.maketext("Ja") %]</option>[%- END -%]
+[%- IF NOT rssinfo.active -%][% msg.maketext("Nein") %][%- END -%]
+</td>
+</tr>
+
+</table>
+</div>

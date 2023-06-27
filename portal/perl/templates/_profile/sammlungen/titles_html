@@ -1,0 +1,57 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+
+<!-- Beginn Result Item -->
+[%-
+    request_base    = "num=${qopts.get_option('num')};srt=year_desc;page=1;" ;
+    start_range     = nav.current_page*qopts.get_option('num')-qopts.get_option('num') + 1;
+    end_range       = nav.current_page*qopts.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
+
+    <div class="ob-resultlist">
+      <div class="row">
+        <div class="col-md-6 d-flex justify-content-start">
+[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
+        </div>
+        <div class="col-md-6 d-flex justify-content-end">
+           <form method="get" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% layout_param.database %]/titles.html">
+<input type="hidden" name="page" value="1" />
+[% cgiapp.to_cgi_hidden_input({ exclude = ['srt','srto','page'] }) %]
+
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') %]
+           </form>
+
+        </div>
+      </div>
+      <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database %] 
+[%- END -%]
+        <div class="ob-footer">
+[% PROCESS common/subtemplate name="pagination" %]
+           <div class="ob-resulttime">
+<!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->
+           </div>
+        </div>
+
+      </div> <!-- resultitems -->
+    </div> <!-- resultlist -->

@@ -1,0 +1,33 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_statistics_view_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der wichtigsten statistischen Daten sowie
+# Verweise auf andere Sub-Templates (via stid = sub-template-id) mit
+# weiteren statistischen Auswertungen.
+#
+#######################################################################
+-%]
+
+[% PROCESS common/subtemplate name="admin_statistics_paging_monthly" statisticsid="view" %] 
+
+<p/>
+
+<h3>[% msg.maketext("Nutzung der vorhandenen Views") %]</h3>
+
+[% views = statistics.get_ranking_of_event({ type => 100, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %]
+
+[% IF views.size() > 0 %]
+<div class="table-responsive">
+<table class="table table-striped ">
+[% FOREACH view IN views %]
+<tr><th>[% view.content %]</th><td><b>[% view.number %]</b></td></tr>
+[% END %]
+</table>
+</div>
+[% END %]

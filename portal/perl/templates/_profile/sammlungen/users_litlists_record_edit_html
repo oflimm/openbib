@@ -1,0 +1,168 @@
+[%#-
+#######################################################################
+#
+# Templatename: litlists_record_edit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Neuanlegen und Ausgabe bestehender Literaturlisten
+#
+#######################################################################
+-%]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title" id="offcanvasSidebarLabel">[% msg.maketext("Literaturliste") %]</h3>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+      [% PROCESS common/subtemplate name="users_litlists_record_html_actions" %]
+    </div>
+
+    <div class="offcanvas-footer">
+      <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">[% msg.maketext("Schließen") %]</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="p-1">
+<div class="ob-page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</div>
+<div class="ob-page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
+[%- IF litlist.properties.topics.size -%]
+[%-   FOREACH topic IN litlist.properties.topics-%]
+<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %].html">[% topic.name %]</a>&nbsp;&nbsp;
+[%-   END-%]
+[%- ELSE -%]
+[% msg.maketext("Keine") %]
+[%- END-%]
+</div>
+</div>
+
+<p/>
+[% userrole = user.get_roles_of_user(litlist.properties.userid) %]
+
+
+<p />
+
+[%# USE dumper; dumper.dump(litlist)%]
+[% IF litlist.recordlist.get_size > 0 %]
+[%-
+    start_range     = 1;
+    end_range       = litlist.get_size;
+-%]
+
+<!-- Titlelist begins here -->
+<div class="ob-resultlist">
+  <div class="ob-resultheader pb-3">
+    <div class="left">
+[% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
+    </div>
+    <div class="right">
+
+[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('litlists_loc')}/id/${litlist.properties.id}/edit" no_relevance=1 no_htmx=1 %]
+
+    </div>
+  </div>
+  
+  <div class="ob-resultitems [% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+
+[%-
+
+   recordlist = litlist.recordlist;
+   title      = "&nbsp;";
+
+-%]
+
+[% IF format == 'Text' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_text" %]
+
+[% ELSIF format == 'BibTeX' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_bibtex" %]
+
+[% ELSIF format == 'EndNote' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_endnote" %]
+
+[% ELSIF format == 'short' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_short" %] 
+
+[% ELSIF format == 'full' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_full" %]
+
+[% ELSIF format == 'apa' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_apa" %]
+
+[% ELSIF format == 'harvard' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_harvard" %]
+
+[% ELSIF format == 'mla' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_mla" %]
+
+[%- END # Ende Alles -%]
+
+  </div>
+
+  <div class="d-flex ob-fulltitle_actions pb-3 pt-3 text-white">
+	  <div class="btn btn-primary ms-2">
+	    <a href="#" data-bs-toggle="modal" data-bs-target="#litlistsSaveModal"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Export") %]</span></a>
+	  </div>
+	  
+[% IF user.ID %]
+	  <div class="btn btn-primary ms-2">
+	    <a href="#" data-bs-toggle="modal" data-bs-target="#litlistsMailModal"><i class="far fa-envelope"></i><span class="d-none d-sm-inline ps-2">[% msg.maketext("E-Mail") %]</span></a>
+	  </div>
+[% END %]
+
+	  <div class="btn btn-primary ms-2">
+	    <a href="#" data-bs-toggle="modal" data-bs-target="#litlistsPrintModal"><i class="fas fa-print"></i><span class="d-none d-sm-inline ps-2">[% msg.maketext("Drucken") %]</span></a>
+	  </div>
+	  
+          <div class="ms-2">
+ <div class="dropdown">
+   <button class="btn btn-primary dropdown-toggle" type="button" id="citationMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fas fa-quote-right"></i><span class="d-none d-sm-inline ps-2">[% msg.maketext("Zitat") %]</span>
+  </button>
+  <ul class="dropdown-menu text-black" aria-labelledby="citationMenuButton">
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=apa" title="[% msg.maketext("APA") %]">[% msg.maketext("APA") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=harvard" title="[% msg.maketext("Harvard") %]">[% msg.maketext("Harvard") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=mla" title="[% msg.maketext("MLA") %]">[% msg.maketext("MLA") %]</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=BibTeX" title="[% msg.maketext("BibTeX") %]">[% msg.maketext("BibTeX") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=EndNote" title="[% msg.maketext("EndNote") %]">[% msg.maketext("EndNote") %]</a></li>
+  </ul>
+ </div>
+             </div>
+
+  <div class="pt-3 mb-3">
+    <button class="ob-floating_sidebar_button sidebar-toggler d-md-none" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
+    
+    <button class="ob-sidebar_button sidebar-toggler d-none d-md-block" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
+  </div>
+
+  </div>
+
+
+</div>
+<!-- Titlelist ends here -->
+
+
+[% ELSE %]
+
+<h1>Diese Literaturliste enth&auml;lt keine Titel</h1>
+
+[% END %]

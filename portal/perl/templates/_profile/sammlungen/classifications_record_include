@@ -1,0 +1,123 @@
+[%#-
+#######################################################################
+#
+# Templatename: classifications_record_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Notations/Systematik-Normdatensatzes
+#
+#######################################################################
+-%]
+[%-
+
+   catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
+   
+   resourceurl             = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${record.id}";
+
+   bks = config.load_bk;
+-%]
+
+<div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
+
+<div class="details ob-authority_record row"><!-- Begin Details -->
+<!-- Person begins here -->
+<div class="categories col-md-12"><!-- Begin Categories -->
+
+<h4>[% msg.maketext("Index-Eintrag (Normdaten)") %]</h4>
+
+<div class="table-responsive">
+<table class="table table-striped ob-normdata_fields">
+
+[% PROCESS common/subtemplate name="visible_categories_classification" %]
+
+[%- 
+
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    SWITCH category;
+
+    CASE "N0800";
+         IF bks.defined(content);
+	   bk_desc = bks.${content};
+	   content = "${content} (${bk_desc})";
+	 END;
+
+    CASE "N5000";
+         searchterm    = record.id;
+         searchprefix  = config.get('searchfield').classificationid.prefix;
+
+         desc      = msg.maketext("Titel ist in diesem Katalog mit der Klassifikation verknüpft");
+         IF content > 1 ;
+             desc      = msg.maketext("Titel sind in diesem Katalog mit der Klassifikation verknüpft");
+         END;
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;fdb=${database};${searchprefix}=${searchterm}";
+         content   = "<a href=\"${localurl}\">${content} ${desc}</a>";
+    END;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+-%]
+<tr><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+[%-
+   END;
+END;
+-%]
+</table>
+</div>
+
+<h4>[% msg.maketext("Weiterführende Links") %]</h4>
+
+<div class="table-responsive">
+<table class="table table-striped ob-normdata_fields">
+<!--
+[%-
+
+    IF normset.${'N5000'};
+         content = normset.${'N5000'}.first.content;
+	 
+         searchterm    = record.id;
+         searchprefix  = config.get('searchfield').classificationid.prefix;
+
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;fdb=${database};${searchprefix}=${searchterm}";
+         desc      = msg.maketext("Titel ist in diesem Katalog mit der Person verknüpft");
+         IF content > 1 ;
+             desc      = msg.maketext("Titel sind in diesem Katalog mit der Klassifikation verknüpft");
+         END;
+         content   = "<a href=\"${localurl}\">${content} ${desc}</a>";
+-%]
+<tr><th class="ob-field">[% msg.maketext("N5000") %]</th><td>[% content %]</td></tr>
+[%- END -%]-->
+[% IF normset.defined('N0010') %]
+[% gnd = normset.${'N0010'}.first.content %]
+<tr><th class="ob-field">Dt.&nbsp;Nationalbibliothek</th><td><a href="http://d-nb.info/gnd/[% gnd %]" target="_blank">Normdatensatz</a></td></tr>
+<!-- <tr><th class="ob-field">Wikipedia (de)</th><td><a href="http://tools.wmflabs.org/persondata/redirect/gnd/de/[% gnd %]" target="_blank">Artikel</a></td></tr> -->
+[% END %]
+[% IF activefeed.5 && catalog_has_authorities ;
+   subscribe = msg.maketext("Feed abonnieren");
+   rssfeed = "<a href=\"http://${servername}${resourceurl}/titles/recent.rss?l=${lang}\" target=\"_blank\" title=\"RSS-Feed: Titel zur Systematik\"><img src=\"${config.get_icon('rssfeed',view,sysprofile)}\" alt=\"RSS-Icon\" /> ${subscribe}</a>" ;
+%]
+<tr><th class="ob-field">RSS</th><td><a href="http://d-nb.info/gnd/[% gnd %]" target="_blank">[% rssfeed %]</td></tr>
+[% END %]
+<tr><th class="ob-field">API Formate</th><td><a href="[% resourceurl %].json?l=[% lang %]" target="_blank">JSON</td></tr>
+</table>
+</div>
+
+</div><!-- End Categories -->
+
+</div><!-- End Details / row -->
+
+</div>
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Klassifikations-Information") %]</div>

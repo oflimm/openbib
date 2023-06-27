@@ -36,7 +36,7 @@ Damit erhalten Studierende, Wissenschaftler:innen und interessierte Bürgerinnen
     <div class="uzk15__grid_100 pb-2 pt-2">
       <div class="row">
 	<div class="col-md-6">
-	  <span style="color:#fff;"> <a href="https://www.ub.uni-koeln.de/" target="_blank">[% msg.maketext("Der Kölner Universitätskatalog ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]</a></span>
+	  <span style="color:#fff;"> <a href="https://www.ub.uni-koeln.de/" target="_blank">[% msg.maketext("Dieses Sammlungsportal ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]</a></span>
 	</div>
 	<div id="ob-essential_statements_small" class="col-md-6">
 	  <a target="_blank" href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">[% msg.maketext("Impressum") %]</a>&nbsp;|&nbsp;<a target="_blank" href="[% path_prefix %]/info/datenschutz.html" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.include?l=[% lang %]">[% msg.maketext("Datenschutzerklärung") %]</a> | <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/netiquette.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/netiquette.include?l=[% lang %]">[% msg.maketext("Netiquette") %]</a>

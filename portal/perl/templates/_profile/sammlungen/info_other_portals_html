@@ -1,1 +1,11 @@
-[% config.get_templatetext('info_other_portals',view,lang) %]
+<h2>Weitere Sammlungen an der Universität zu Köln</h2>
+
+<p>Jenseits der USB Köln gibt es noch weitere Sammlungen an der Universität zu Köln. Einige davon wurden in Zusammenarbeit mit der USB in einem Sammlungs-Portal präsentiert.</p>
+
+<ul>
+<li><a class="exturl" href="https://abklatschsammlung.ub.uni-koeln.de" target="_blank">Die Abklatschsammlung</a> (Institut für Altertumskunde)</li>
+<li><a class="exturl" href="https://alte-buecher-zur-kunst.kubi-koeln.de/portal/home.html?l=de" target="_blank">Alte Bücher zur Kunst</a> (Kunst- und Museumsbibliothek der Stadt Köln)</li>
+<li><a class="exturl" href="https://gentz-digital.ub.uni-koeln.de" target="_blank">Gentz Digital</a> - Die digital erschlossenen Briefe des Friedrich von Gentz (Forschungsstelle Gentz)</li>
+<li><a class="exturl" href="https://muenzen.uni-koeln.de" target="_blank">Das Kölner Münzportal</a> (Institut für Altertumskunde)</li>
+<li><a class="exturl" href="behalter.aleki.uni-koeln.de/portal/home.html?l=de" target="_blank">Schatzbehalter</a> - Das Portal für historische Kinder- und Jugendliteratur (ALEKI)</li>
+</u>

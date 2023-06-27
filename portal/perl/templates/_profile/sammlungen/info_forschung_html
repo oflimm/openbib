@@ -1,1 +1,19 @@
-[% config.get_templatetext('info_forschung',view,lang) %]
+
+<h2>Forschen an & mit historischen Quellen</h2>
+
+<p>
+Wissenschaftler*innen und Nachwuchsforscher*innen können unsere historischen Sammlungen für ihre Arbeit nutzen. Wir erschließen unseren Bestand und stellen ihn digital zur Verfügung. Dadurch ermöglichen wir Ihnen ein komfortables Arbeiten mit historischen Quellen. Zusätzlich bieten wir ein hohes Maß an persönlicher Unterstützung.
+</p>
+
+<p>Weitere Projekte:</p>
+
+<ul>
+<li>FRONTISPIZ UND TITELBILD - Bedeutungsträger und Gestaltungsaufgabe frühneuzeitlicher Kunst. Ein Projekt des Kunsthistorischen Instituts der Universität zu Köln, Abteilung Allgemeine Kunstgeschichte. <a class="exturl" href="http://www.uni-koeln.de/phil-fak/khi/frontispizseminar-kepetzis/index.html" target="_blank">Lesen Sie mehr</a> >></li>
+
+<li>WALLRAF DIGITAL - entdecken Sie ein Stück Kölner Stadtgeschichte über verschiedene digitale Zugänge. <a class="exturl" href="http://www.blog-zeitenblicke.uni-koeln.de/wallraf-digital/" target="_blank">Lesen Sie mehr >></a></li>
+
+<li>GENTZ DIGITAL - die digitale Erschliessung der Korrespondenzen des Friedrich von Gentz (1764 - 1832). <a class="exturl" href="http://gentz-digital.ub.uni-koeln.de/portal/home.html?l=de" target="_blank">Lesen Sie mehr >></a></li>
+</li>
+
+<li>Fragmenteforschung in der USB - die digitale Erschliessung der lose vorliegenden Fragmente <a class="exturl" href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/forschen-an-und-mit-historischen-quellen/fragmenteforschung" target="_blank">Lesen Sie mehr >></a></li>
+</li>

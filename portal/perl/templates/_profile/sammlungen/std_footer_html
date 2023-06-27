@@ -20,127 +20,17 @@
 
 [% IF footer_type == "info" %]
   
-<div class="w-100 pt-4">
-  <div class="uzk15__mainwrapper d-none d-md-block">
-    <div class="uzk15__grid_100">
-      <h2 class="w-100">
-	[% msg.maketext("Literatur suchen und finden") %]
-      </h2>
-      <div class="uzk15__columnlist">
-	<nav class="uzk15__footercolumn">
-	  <h3>[% msg.maketext("Effektiv suchen") %]</h3>
-	  <br/>
-	  <ul>
-            <li>
-	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/help.html?l=[% lang %]" target="_blank" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/help.include?l=[% lang %]">[% msg.maketext("Informationen zum Unikatalog") %]</a>
-	    </li>
-            <li>
-	      <a target="_blank" href="[% path_prefix %]/info/medienarten.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/medienarten.include?l=[% lang %]">[% msg.maketext("Nach Datenbanken und E-Medien suchen") %]</a>
-	    </li>
-            <li>
-	      <a target="_blank" href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/kurse/index_ger.html" target="_blank">[% msg.maketext("Kursangebot der USB") %]</a>
-	    </li>
-	  </ul>
-	</nav>
-	<nav class="uzk15__footercolumn">
-	  <h3>[% msg.maketext("Nichts gefunden?!") %]</h3>
-	  <br/>
-	  <ul>
-	    <li>
-	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.include?l=[% lang %]">[% msg.maketext("Alles rund um die Fernleihe") %]</a>
-	    </li>
-	    <li>
-	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/internetquellen.html?l=[% lang %]" target="_blank" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/internetquellen.include?l=[% lang %]">[% msg.maketext("Weitere Recherchemöglichkeiten") %]</a>
-	    </li>
-	    <li>
-	      <a target="_blank" href="[% path_prefix %]/info/anschaffung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/anschaffung.include?l=[% lang %]">[% msg.maketext("Bücher zum Kauf vorschlagen") %]</a>
-	    </li>
-	  </ul>
-	</nav>
-	<nav class="uzk15__footercolumn">
-	  <h3>[% msg.maketext("Weitere Services") %]</h3>
-	  <br/>
-	  <ul>
-	    <li>
-	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.include?l=[% lang %]">[% msg.maketext("Ausleihen oder einsehen") %]</a>
-	    </li>
-	    
-	    <li>
-	      <a target="_blank" href="[% path_prefix %]/info/neuerwerbung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/neuerwerbung.include?l=[% lang %]">[% msg.maketext("Neuerwerbungslisten abonnieren") %]</a>
-	    </li>
-	    
-	    <li>
-	      <a target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/fragen/index_ger.html" target="_blank">[% msg.maketext("Fragen Sie uns") %]</a>
-	    </li>
-          </ul>
-	</nav>
-      </div>
-    </div>
-    <div class="uzk15__grid_100 pb-2">
-      <div class="row">
-	<div class="col-md-6">
-	  <span> <a style="color:#fff; padding-top:5px;" href="https://www.ub.uni-koeln.de/" target="_blank">[% msg.maketext("Der Kölner Universitätskatalog ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]</a></span>
-	</div>
-	<div id="ob-essential_statements" class="col-md-6 ps-3 justify-content-right">
-	  <a target="_blank" href="https://www.ub.uni-koeln.de/res/impressum/index_ger.html">[% msg.maketext("Impressum") %]</a>&nbsp;|&nbsp;<a target="_blank" href="[% path_prefix %]/info/datenschutz.html" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.include?l=[% lang %]">[% msg.maketext("Datenschutzerklärung") %]</a> |  <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/netiquette.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/netiquette.include?l=[% lang %]">[% msg.maketext("Netiquette") %]</a>
-	</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="d-md-none ps-2 pe-2">      
-    <div class="w-100 d-md-flex">
+<div class="uzk15__grid_100 pt-4">
       <h2>
-	[% msg.maketext("Literatur suchen und finden") %]
+	[% msg.maketext("Sammlungsportale sind Informationsräume") %]
       </h2>
-      
-      <div class="w-100 ps-0">
-	
-	<div id="dropdown_effective_search" class="dropdown">
-	  <button id="dropdownMenu_effective_search" class="btn dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Effektiv suchen") %]</button>
-	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_effective_search">
-            <li>
-	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/help.html?l=[% lang %]" target="_blank"  data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/help.include?l=[% lang %]">[% msg.maketext("Informationen zum Unikatalog") %]</a>
-	    </li>
-            <li>
-	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/info/medienarten.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/medienarten.include?l=[% lang %]">[% msg.maketext("Nach Datenbanken und E-Medien suchen") %]</a>
-	    </li>
-            <li>
-	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/[% config.get('browse_loc') %]/topics.html?l=[% lang %]" target="_blank" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('browse_loc') %]/topics.include?l=[% lang %]">[% msg.maketext("In Ihrem Fachgebiet suchen") %]</a>
-	    </li>
-	  </ul>
-	</div>
-	<div id="dropdown_nothing_found" class="dropdown mt-2">
-	  <button id="dropdownMenu_nothing_found" class="btn dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Nichts gefunden?!") %]</button>
-	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_nothing_found">
-	    <li>
-	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.include?l=[% lang %]">[% msg.maketext("Alles rund um die Fernleihe") %]</a>
-	    </li>
-	    <li>
-	      <a class="dropdown-item" target="_blank" href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/kurse/index_ger.html" target="_blank">[% msg.maketext("Kursangebot der USB") %]</a>
-	    </li>
-	    <li>
-	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/info/anschaffung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/anschaffung.include?l=[% lang %]">[% msg.maketext("Bücher zum Kauf vorschlagen") %]</a>
-	    </li>
-	  </ul>
-	</div>
-	<div id="dropdown_more_services" class="dropdown mt-2 mb-2">
-	  <button id="dropdownMenu_more_services" class="btn dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Weitere Services") %]</button>
-	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_more_services">
-	    <li>
-	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.include?l=[% lang %]">[% msg.maketext("Ausleihen oder einsehen") %]</a>
-	    </li>
-	    
-	    <li>
-	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/info/neuerwerbung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/neuerwerbung.include?l=[% lang %]">[% msg.maketext("Neuerwerbungslisten abonnieren") %]</a>
-	    </li>
-	    
-	    <li>
-	      <a class="dropdown-item" target="_blank" href="https://www.ub.uni-koeln.de/suchen_ausleihen/fragen/index_ger.html" target="_blank">[% msg.maketext("Fragen Sie uns") %]</a>
-	    </li>
-	  </ul>
-	</div>
-      </div>
+
+	<p>Sie geben Auskunft darüber wie eine Sammlung zu uns gelangt ist, warum Sammlerinnen und Sammlern ein spezielles Thema wichtig war und wie umfangreich der Buchbestand ist.</p>
+
+<p>
+Damit erhalten Studierende, Wissenschaftler:innen und interessierte Bürgerinnen und Bürger wichtige Hinweise zu ihren Forschungsgebieten. Unsere Sammlungsportale haben bereits den Anstoß zu Forschungsprojekten gegeben und Anfragen aus dem Ausland zeigen, dass dieser Bibliotheksbestand auch international wahrgenommen wird.
+</p>
+
     </div>
 
     <div class="uzk15__grid_100 pb-2 pt-2">
@@ -153,8 +43,6 @@
 	</div>
       </div>
     </div>
-
-  </div><!-- end d-md-none -->  
 
 </div>
 [% END %]

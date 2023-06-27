@@ -1,1 +1,160 @@
-[% config.get_templatetext('info_sammlung',view,lang) %]
+<h2>Die Sammlungen der USB</h2>
+
+<div class="uzk15__editorblock default "><h1 id="c252" class="uzk15__standard_h1 uzk15_header_">A</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="http://abklatschsammlung.ub.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer"><strong>A</strong>bklatsch-Sammlung</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/alff">Sammlung Alff</a><br> <a href="http://artmann.ub.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer">H.C. <strong>A</strong>rtmann-Sammlung (Knupfer)</a><br> <strong>A</strong>utographen-Sammlung (erhältlich im Historischen Lesesaal und bei <a href="http://kalliope.staatsbibliothek-berlin.de/de/index.html" target="_blank" rel="noreferrer">Kalliope</a>)</p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:252/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:253/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c253" class="uzk15__standard_h1 uzk15_header_">B</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/georg-andreas-und-gerlinde-bachem">Bachem - Sammlung Georg Andreas und Gerlinde Bachem</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/bachem">Bachem, Franz Xaver - Sammlung Franz Xaver Bachem</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/baenfer">Bänfer - Sammlung Fred Bänfer</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/baeumker">Bäumker - Sammlung Wilhelm Bäumker</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/becker"><strong>B</strong>ecker - Bibliothek Hermann Heinrich Becker</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/bellux">Belgien / Luxemburg - Kulturkreis Belgien Luxemburg - Inhaltsverzeichnisse</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/schwerpunkte/belgien-luxemburg">Belgien / Luxemburg - Schwerpunkt Kulturkreis Belgien / Luxemburg</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/belgisches-haus">Bibliothek Belgisches Haus</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/schwerpunkte/betriebswirtschaftslehre">Betriebswirtschaftslehre - Schwerpunkt Betriebswirtschaftslehre</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/botanik">Sammlung Botanik und Zoologie</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/breslaudiss">Breslauer Dissertationen</a><br> <a href="http://maxbrucharchiv.ub.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer">Max <strong>B</strong>ruch-</a><a href="http://maxbrucharchiv.ub.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer">Archiv</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:253/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:213/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c213" class="uzk15__standard_h1 uzk15_header_">D</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/dante">Dante - Sammlung Wilhelm Reiners </a><br> <a href="https://digitalis.ub.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer">Digitalis - Sammlung digitalisierter Bücher zur Wirtschafts- und Sozialgeschichte</a><br> <a href="http://ddr-kinderbuch.aleki.uni-koeln.de/portal/home.html?l=de" target="_top">DDR - Kinderbuch</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/dirksen">Bibliothek Herbert von Dirksen</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:213/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:254/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c254" class="uzk15__standard_h1 uzk15_header_">E</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/schwerpunkte/europaeisches-schrifttum">Europäisches Schrifttum</a><br> <a href="http://einbandsammlung.ub.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer"><strong>E</strong>inbandsammlung</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/englaender">Sammlung Hans Engländer</a><br> <a href="http://landschaftsbilder.ub.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer">Europäische Städte- und Landschaftsdarstellungen</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/ebk">Evangelische Bibliothek Köln</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:254/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:255/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c255" class="uzk15__standard_h1 uzk15_header_">F</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/fastenrath">Fastenrath - Bibliothek Johannes Fastenrath</a><br> <a href="http://fotohandbuecher.khi.phil-fak.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer"><strong>F</strong>otografie als angewandte Wissenschaft</a><br> <a href="http://historische-frauenlektuere.aleki.uni-koeln.de" target="_blank" rel="noreferrer">Portal Historische <strong>F</strong>rauenlektüre</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:255/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:256/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c256" class="uzk15__standard_h1 uzk15_header_">G</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/gabel">Illustrierte Belletristik - Sammlung Gernot Uwe Gabel</a><br> <a href="http://gentz-digital.ub.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer"><strong>G</strong>entz digital</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/gentz">Friedrich von Gentz - Sammlung Günter Herterich</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/grantha">Grantha- und Telugu-Drucke</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/gymnasialbibliothek">Gymnasialbibliothek</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:256/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:257/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c257" class="uzk15__standard_h1 uzk15_header_">H</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/hallische">Hallische Jahrbücher</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/hilferding">Bibliothek Rudolf Hilferding</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/hittorff">Sammlung Jakob Ignaz Hittorff </a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:257/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:258/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c258" class="uzk15__standard_h1 uzk15_header_">I</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/islandica">Islandica-Sammlung</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/inkunabeln">Inkunabelsammlung und Blockbücher</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:258/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:259/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c259" class="uzk15__standard_h1 uzk15_header_">J</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="https://jesuitensammlung.ub.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer"><strong>J</strong>esuitensammlung Köln</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:259/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:260/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c260" class="uzk15__standard_h1 uzk15_header_">K</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="http://kempis.ub.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer">Thomas a <strong>K</strong>empis-Sammlung</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/koelner-hochschulen">Publikationen aus und über Kölner Hochschulen</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/dissertationen">Kölner Dissertationen vor 1800</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/vorlesung">Kölner Personal- und Vorlesungsverzeichnisse</a><br> <a href="http://provenienzen.ub.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer">Kölner Provenienzportal</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/syndikatsbibliothek">Kölner Ratsbibliothek</a>, s.a. <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/syndikatsbibliothek">Syndikatsbibliothek</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/studentenbuecherei">Kölner Studentenbücherei</a><br> <a href="http://search.ub.uni-koeln.de/portal/koelnzeitung/home.html?l=de" target="_blank" rel="noreferrer"><strong>K</strong>ölner Zeitungsartikel</a><br> <a href="http://zeitungsausschnitte.ub.uni-koeln.de/" target="_blank" rel="noreferrer"><strong>K</strong>ölner Sammlung von Zeitungsausschnitten 1840 - 1969</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/koenigsberger-dissertationen">Königsberger Dissertationen</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/kolonialismus-und-afrikansiche-diaspora-auf-bildpostkarten">Kolonialismus und afrikanische Diaspora auf Bildpostkarten</a><br> <a href="http://alte-buecher-zur-kunst.kubi-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer">Alte Bücher zur Kunst</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:260/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:261/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c261" class="uzk15__standard_h1 uzk15_header_">L</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/lefort">Sammlung Gertrud von Le Fort</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:261/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:262/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c262" class="uzk15__standard_h1 uzk15_header_">M</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/mevissen">Bibliothek der Familie von Mevissen </a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/immo-mikloweit" target="_blank">Sammlung Immo Mikloweit</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/schriften-aus-dem-monschauer-land" target="_blank">Schriften aus dem Monschauer Land</a><br> <a href="http://muenzen.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer">Kölner <strong>M</strong>ünzportal</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:262/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:263/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c263" class="uzk15__standard_h1 uzk15_header_">O</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/ernst-von-oidtman" target="_blank">Sammlung Ernst von Oidtman</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:263/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:264/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c264" class="uzk15__standard_h1 uzk15_header_">P</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="http://poetica.ub.uni-koeln.de/" target="_blank" rel="noreferrer"><strong>P</strong>oetica-Sammlung</a><br> <a href="http://portraitsammlung.ub.uni-koeln.de/" target="_blank" rel="noreferrer"><strong>P</strong>ortraitsammlung</a><br> <a href="http://provenienzen.ub.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer">Kölner<strong> P</strong>rovenienzportal</a><br> <a href="https://pruessen.ub.uni-koeln.de/portal/home.html?l=en" target="_blank" rel="noreferrer">Sammlung Eduard <strong>P</strong>rüssen</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:264/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:265/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c265" class="uzk15__standard_h1 uzk15_header_">Q</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/quint" target="_blank">Bibliothek Josef Quint</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:265/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:266/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c266" class="uzk15__standard_h1 uzk15_header_">R</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/publikationen-der-gesellschaft-fuer-rheinische-geschichtskunde" target="_blank">Publikationen der Gesellschaft für Rheinische Geschichtskunde</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/rheinische-monographien">Rheinische Monographien</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/rheinische-zeitschriften" target="_blank">Rheinische Zeitschriften</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/rheinisches-museum-fuer-philologie" target="_blank">Rheinisches Museum für Philologie </a><br> <a href="http://rheinlandbib.ub.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer"><strong>R</strong>HEINLANDBIB - Historisches Bestände im Rheinland </a><br> <a href="http://richterbibliothek.ub.uni-koeln.de/" target="_blank" rel="noreferrer">Die virtuelle Bibliothek Elise und Helene <strong>R</strong>ichter</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:266/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:267/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c267" class="uzk15__standard_h1 uzk15_header_">S</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="http://schatzbehalter.aleki.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer"><strong>S</strong>chatzbehalter</a><br> <a href="http://schmalenbach.ub.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer">Bibliothek Eugen <strong>S</strong>chmalenbach</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/familie-schmitz-otto" target="_blank">Sammlungen der Familie Schmitz-Otto</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/juergen-scholle" target="_blank">Bibliothek Jürgen Scholle</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/schulprogamm-der-usb-koeln" target="_blank">Schulprogramme der USB Köln</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/schwerpunkte/fachinformationsdienst-soziologie">Schwerpunkt Sozialwissenschaften</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/klassiker-der-soziologie">Klassiker der Soziologie</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/alte-koelner-stadtbibliothek">Alte Kölner Stadtbibliothek</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/martin-stankowski" target="_blank">Sammlung Martin Stankowski</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/studentenbuecherei">Kölner Studentenbücherei</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/syndikatsbibliothek">Syndikatsbibliothek</a>, s.a. <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/syndikatsbibliothek">Kölner Ratsbibliothek</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:267/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:268/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c268" class="uzk15__standard_h1 uzk15_header_">T</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/franz-thorbecke" target="_blank">Bibliothek Franz Thorbecke</a><br> <a href="http://totenzettel.ub.uni-koeln.de/portal/home.html?l=de" target="_blank" rel="noreferrer"><strong>T</strong>otenzettelsammlung</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:268/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:219/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c219" class="uzk15__standard_h1 uzk15_header_">W</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/wallraf">Bibliothek Ferdinand Franz Wallraf</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/franz-weinkauff" target="_blank">Bibliothek Franz Weinkauff</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/westerholt" target="_blank">Sammlung Westerholt</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/eberhard-wolff">Sammlung Eberhard Wolff</a><br> <a href="https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/otto-wolff">Sammlung Otto Wolff</a></p>
+		<!--  Text: [end] -->
+			</div>
+	<!--  CONTENT ELEMENT, uid:219/text [end] -->
+		
+	<!--  CONTENT ELEMENT, uid:217/text [begin] -->
+		<div class="uzk15__editorblock default "><h1 id="c217" class="uzk15__standard_h1 uzk15_header_">Z</h1>
+		<!--  Text: [begin] -->
+			<p class="bodytext"><a href="http://zeitungsausschnitte.ub.uni-koeln.de/" target="_blank" rel="noreferrer">Sammlung Kölner <strong>Z</strong>eitungsartikel 1970-1984 und 1990-1991<br> Kölner Sammlung von <strong>Z</strong>eitungsausschnitten 1840 - 1969</a><br> <a href="https://zeitpunkt.nrw/" target="_blank" rel="noreferrer">zeit.punktNRW</a></p>
+<p class="bodytext">&nbsp;</p>
+		<!--  Text: [end] -->
+			</div>

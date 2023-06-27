@@ -228,9 +228,10 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
 [% END %]
 
   </div><!-- End: col -->
-</div><!-- End: row -->
 
 [% PROCESS common/subtemplate name="search_pagination" %]
+
+</div><!-- End: row -->
 
 [% ELSE %]
   <div class="ob-no_hits">

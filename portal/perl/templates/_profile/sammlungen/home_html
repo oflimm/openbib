@@ -222,7 +222,7 @@ $(function () {
   <div class="row">
     <div class="col-md-4 ps-3 pe-1 pb-2">
       <div class="card mt-2 h-100 ob-shortlink">
-	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-book-open pe-2"></i> <a class="text-white" href="[% path_prefix %]/[% config.get('info_loc') %]/sammmlung.html?l=[% lang %]">[% msg.maketext("Die Sammlungen") %]</a></div>
+	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-book-open pe-2"></i> <a class="text-white" href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">[% msg.maketext("Die Sammlungen") %]</a></div>
 <!--	<div class="card-body pb-0">
 	  <p class="card-text">[% msg.maketext("Online-Zugriff auf alle Elektronischen Zeitschriften an der Universität") %]</p> 
 	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/classifications.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>-->

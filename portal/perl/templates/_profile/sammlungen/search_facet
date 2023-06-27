@@ -392,6 +392,99 @@ $(document).on("click", ".ob-less_button", function () {
 [%         END %]
 <!-- End database facet -->
 
+<!-- Begin provenance facet -->
+[%         IF config.get('facets').provenance && facets.defined('provenance') && facets.provenance.size > 0 %]
+
+[%-
+  collection_map = {
+   'Sammlung H. C. Artmann - Sammlung Karl-Heinz Knupfer' => 'https://artmann.ub.uni-koeln.de/'
+   'Sammlung Georg Andreas und Gerlinde Bachem' => 'https://www.ub.uni-koeln.de/sammlungen/bachem/index_ger.html'
+   'Sammlung Fred Bänfer' => 'http://www.ub.uni-koeln.de/sammlungen/baenfer/'
+   'Sammlung Friedrich Wilhelm Bäumker' => 'http://baeumker.ub.uni-koeln.de/'
+   'Sammlung Hermann Heinrich Becker' => 'http://becker.ub.uni-koeln.de/'
+   'Sammlung Belgisches Haus' => 'https://www.ub.uni-koeln.de/sammlungen/belgischeshaus/index_ger.html'
+   'Sammlung Breslauer Dissertationen' => 'https://www.ub.uni-koeln.de/sammlungen/breslaudiss/index_ger.html'
+   'Sammlung Dante - Sammlung Wilhelm Reiners' => 'http://dante.ub.uni-koeln.de/'
+   'Sammlung Herbert von Dirksen' => 'http://dirksen.ub.uni-koeln.de/'
+   'Sammlung Hans Engländer' => 'https://www.ub.uni-koeln.de/sammlungen/englaender/index_ger.html'
+   'Sammlung Evangelische Bibliothek' => 'http://www.ub.uni-koeln.de/sammlungen/ebk/'
+   'Sammlung Johannes Fastenrath' => 'https://www.ub.uni-koeln.de/sammlungen/fastenrath/index_ger.html'
+   'Sammlung Gernot Uwe Gabel' => 'https://www.ub.uni-koeln.de/sammlungen/gabel/index_ger.html'
+   'Sammlung Gymnasialbibliothek' => 'http://gymnasialbibliothek.ub.uni-koeln.de/'
+   'Sammlung Günter Herterich' => 'http://www.ub.uni-koeln.de/sammlungen/gentz/'
+   'Sammlung Rudolf Hilferding' => 'http://hilferding.ub.uni-koeln.de/'
+   'Sammlung Jakob Ignaz Hittorff' => 'https://www.ub.uni-koeln.de/sammlungen/hittorff/index_ger.html'
+   'Sammlung Inkunabeln und Blockbücher' => 'https://www.ub.uni-koeln.de/sammlungen/inkunabeln/index_ger.html'
+   'Sammlung Islandica' => 'https://www.ub.uni-koeln.de/sammlungen/islandica/'
+   'Sammlung Jesuitenbibliothek' => 'https://jesuitensammlung.ub.uni-koeln.de/'
+   'Sammlung Kölnische Bibliotheksgesellschaft' => 'https://www.ub.uni-koeln.de/ueber_uns/freunde/index_ger.html'
+   'Sammlung Königsberger Dissertationen' => 'https://www.ub.uni-koeln.de/sammlungen/koenigsberg/index_ger.html'
+   'Sammlung Kölner Dissertationen vor 1800' => 'https://www.ub.uni-koeln.de/sammlungen/dissertationen1800/index_ger.html'
+   'Sammlung Kölner Provenienzportal' => 'http://provenienzen.ub.uni-koeln.de/'
+   'Sammlung Gertrud von Le Fort' => 'http://lefort.ub.uni-koeln.de/'
+   'Sammlung Otto Löffler' => 'https://www.ub.uni-koeln.de/sammlungen/islandica/index_ger.html'
+   'Sammlung Fachbibliothek Medienkultur und Theater' => 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/gfb/index_ger.html'
+   'Sammlung Gustav von Mevissen' => 'http://mevissen.ub.uni-koeln.de/'
+   'Sammlung Melanie von Mevissen' => 'http://mevissen.ub.uni-koeln.de/'
+   'Sammlung Mathilde von Mevissen' => 'http://mevissen.ub.uni-koeln.de/'
+   'Sammlung Immo Mikloweit' => 'https://www.ub.uni-koeln.de/sammlungen/mikloweit/index_ger.html'
+   'Sammlung Ernst von Oidtman' => 'https://www.ub.uni-koeln.de/sammlungen/oidtman/index_ger.html'
+   'Sammlung Josef Quint' => 'https://www.ub.uni-koeln.de/sammlungen/quint/index_ger.html'
+   'Sammlung Publikationen der Ges. für Rheinische Geschichtsforschung' => 'https://www.ub.uni-koeln.de/sammlungen/grhg/index_ger.html'
+   'Sammlung Elise und Helene Richter' => 'https://richterbibliothek.ub.uni-koeln.de/'
+   'Bibliothek Eugen Schmalenbach' => 'https://schmalenbach.ub.uni-koeln.de/'
+   'Sammlung Fachbibliothek Schmalenbach' => 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/gfb/index_ger.html'
+   'Sammlung Hanns-Theo Schmitz-Otto' => 'http://schmitzotto.ub.uni-koeln.de/'
+   'Sammlung Jürgen Scholle' => 'http://www.ub.uni-koeln.de/sammlungen/scholle/'
+   'Sammlung Klassiker der Soziologie' => 'https://www.ub.uni-koeln.de/sammlungen/soziologie/index_ger.html'
+   'Sammlung Martin Stankowski' => 'https://www.ub.uni-koeln.de/sammlungen/stankowski/index_ger.html'
+   'Sammlung Otto Stein' => 'https://www.ub.uni-koeln.de/sammlungen/stein/index_ger.html'
+   'Sammlung Syndikatsbibliothek' => 'http://syndikatsbibliothek.ub.uni-koeln.de/'
+   'Sammlung Thomas a Kempis' => 'http://kempis.ub.uni-koeln.de/'
+   'Sammlung Franz Thorbecke' => 'https://www.ub.uni-koeln.de/sammlungen/thorbecke/index_ger.html'
+   'Sammlung Ferdinand Franz Wallraf' => 'http://wallraf.ub.uni-koeln.de/'
+   'Sammlung Franz Weinkauff' => 'http://weinkauff.ub.uni-koeln.de/'
+   'Sammlung Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
+   'Sammlung Fritz von Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
+   'Sammlung Wilhelmine von Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
+   'Sammlung Eberhard Wolff' => 'https://www.ub.uni-koeln.de/sammlungen/eberhardwolff/index_ger.htmlIPS-Suchschlitz'
+   'Sammlung Otto Wolff' => 'https://www.ub.uni-koeln.de/sammlungen/ottowolff/index_ger.htmlIPS-Suchschlitz'
+   'Sammlung Schriften aus dem Monschauer Land' => 'https://www.ub.uni-koeln.de/sammlungen/monschau/index_ger.html'
+   'Sammlung Hallische Jahrbücher' => 'https://www.ub.uni-koeln.de/sammlungen/hallische/index_ger.html'
+   'Sammlung Publikationen aus und über Kölner Hochschulen' => 'https://www.ub.uni-koeln.de/sammlungen/koelnerhochschulen/index_ger.html'
+   'Sammlung Rheinische Monographien' => 'https://www.ub.uni-koeln.de/sammlungen/rheinischemonographien/index_ger.html'
+   'Sammlung Rheinische Zeitschriften' => 'https://www.ub.uni-koeln.de/sammlungen/rheinischezeitschriften/index_ger.html'
+   'Sammlung Wilhelm Alff' => 'http://www.ub.uni-koeln.de/sammlungen/alff/'
+   'Sammlung Kölner Personal- und Vorlesungsverzeichnisse' => 'https://www.ub.uni-koeln.de/sammlungen/vorlesung/index_ger.html'
+  }
+
+-%]
+
+
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-provenance[% idsuffix %][% facet_prefix %]" aria-expanded="true">
+           [% msg.maketext("Sammlungsportal") %]<i class="ms-2 fas fa-archway"></i>  / [% msg.maketext("Provenienz") %]
+        </h4>
+        <ul id="group-provenance[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
+[%             FOREACH termitem IN facets.provenance ;
+                  LAST IF loop.count > 25 ;
+ %]
+
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').provenancestring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item" [% IF facets.provenance.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>[% IF collection_map.defined(termitem.0) %] <a class="ps-2 pe-2" title="USB [% msg.maketext("Sammlungsportal") %] [% termitem.0 %]" target="_blank" href="[% collection_map.${termitem.0} %]"><i class="fas fa-archway"></i></a>[% END %] <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+[%             END %]
+[% IF facets.provenance.size > 5 %]
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
+[% END %]
+</ul>
+<p/>
+[%         END %]
+<!-- End provenance facet -->
+
 <!-- Begin availability facet -->
 [%         IF facets.defined('availability') && facets.availability.size > 0 %]
         <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-availability[% idsuffix %][% facet_prefix %]" aria-expanded="true">
@@ -958,98 +1051,6 @@ yearslider_to[% facet_prefix %][% idsuffix %].addEventListener('change', functio
 <p/>
 [%         END %]
 <!-- End classification facet -->
-<!-- Begin provenance facet -->
-[%         IF config.get('facets').provenance && facets.defined('provenance') && facets.provenance.size > 0 %]
-
-[%-
-  collection_map = {
-   'Sammlung H. C. Artmann - Sammlung Karl-Heinz Knupfer' => 'https://artmann.ub.uni-koeln.de/'
-   'Sammlung Georg Andreas und Gerlinde Bachem' => 'https://www.ub.uni-koeln.de/sammlungen/bachem/index_ger.html'
-   'Sammlung Fred Bänfer' => 'http://www.ub.uni-koeln.de/sammlungen/baenfer/'
-   'Sammlung Friedrich Wilhelm Bäumker' => 'http://baeumker.ub.uni-koeln.de/'
-   'Sammlung Hermann Heinrich Becker' => 'http://becker.ub.uni-koeln.de/'
-   'Sammlung Belgisches Haus' => 'https://www.ub.uni-koeln.de/sammlungen/belgischeshaus/index_ger.html'
-   'Sammlung Breslauer Dissertationen' => 'https://www.ub.uni-koeln.de/sammlungen/breslaudiss/index_ger.html'
-   'Sammlung Dante - Sammlung Wilhelm Reiners' => 'http://dante.ub.uni-koeln.de/'
-   'Sammlung Herbert von Dirksen' => 'http://dirksen.ub.uni-koeln.de/'
-   'Sammlung Hans Engländer' => 'https://www.ub.uni-koeln.de/sammlungen/englaender/index_ger.html'
-   'Sammlung Evangelische Bibliothek' => 'http://www.ub.uni-koeln.de/sammlungen/ebk/'
-   'Sammlung Johannes Fastenrath' => 'https://www.ub.uni-koeln.de/sammlungen/fastenrath/index_ger.html'
-   'Sammlung Gernot Uwe Gabel' => 'https://www.ub.uni-koeln.de/sammlungen/gabel/index_ger.html'
-   'Sammlung Gymnasialbibliothek' => 'http://gymnasialbibliothek.ub.uni-koeln.de/'
-   'Sammlung Günter Herterich' => 'http://www.ub.uni-koeln.de/sammlungen/gentz/'
-   'Sammlung Rudolf Hilferding' => 'http://hilferding.ub.uni-koeln.de/'
-   'Sammlung Jakob Ignaz Hittorff' => 'https://www.ub.uni-koeln.de/sammlungen/hittorff/index_ger.html'
-   'Sammlung Inkunabeln und Blockbücher' => 'https://www.ub.uni-koeln.de/sammlungen/inkunabeln/index_ger.html'
-   'Sammlung Islandica' => 'https://www.ub.uni-koeln.de/sammlungen/islandica/'
-   'Sammlung Jesuitenbibliothek' => 'https://jesuitensammlung.ub.uni-koeln.de/'
-   'Sammlung Kölnische Bibliotheksgesellschaft' => 'https://www.ub.uni-koeln.de/ueber_uns/freunde/index_ger.html'
-   'Sammlung Königsberger Dissertationen' => 'https://www.ub.uni-koeln.de/sammlungen/koenigsberg/index_ger.html'
-   'Sammlung Kölner Dissertationen vor 1800' => 'https://www.ub.uni-koeln.de/sammlungen/dissertationen1800/index_ger.html'
-   'Sammlung Kölner Provenienzportal' => 'http://provenienzen.ub.uni-koeln.de/'
-   'Sammlung Gertrud von Le Fort' => 'http://lefort.ub.uni-koeln.de/'
-   'Sammlung Otto Löffler' => 'https://www.ub.uni-koeln.de/sammlungen/islandica/index_ger.html'
-   'Sammlung Fachbibliothek Medienkultur und Theater' => 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/gfb/index_ger.html'
-   'Sammlung Gustav von Mevissen' => 'http://mevissen.ub.uni-koeln.de/'
-   'Sammlung Melanie von Mevissen' => 'http://mevissen.ub.uni-koeln.de/'
-   'Sammlung Mathilde von Mevissen' => 'http://mevissen.ub.uni-koeln.de/'
-   'Sammlung Immo Mikloweit' => 'https://www.ub.uni-koeln.de/sammlungen/mikloweit/index_ger.html'
-   'Sammlung Ernst von Oidtman' => 'https://www.ub.uni-koeln.de/sammlungen/oidtman/index_ger.html'
-   'Sammlung Josef Quint' => 'https://www.ub.uni-koeln.de/sammlungen/quint/index_ger.html'
-   'Sammlung Publikationen der Ges. für Rheinische Geschichtsforschung' => 'https://www.ub.uni-koeln.de/sammlungen/grhg/index_ger.html'
-   'Sammlung Elise und Helene Richter' => 'https://richterbibliothek.ub.uni-koeln.de/'
-   'Bibliothek Eugen Schmalenbach' => 'https://schmalenbach.ub.uni-koeln.de/'
-   'Sammlung Fachbibliothek Schmalenbach' => 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/gfb/index_ger.html'
-   'Sammlung Hanns-Theo Schmitz-Otto' => 'http://schmitzotto.ub.uni-koeln.de/'
-   'Sammlung Jürgen Scholle' => 'http://www.ub.uni-koeln.de/sammlungen/scholle/'
-   'Sammlung Klassiker der Soziologie' => 'https://www.ub.uni-koeln.de/sammlungen/soziologie/index_ger.html'
-   'Sammlung Martin Stankowski' => 'https://www.ub.uni-koeln.de/sammlungen/stankowski/index_ger.html'
-   'Sammlung Otto Stein' => 'https://www.ub.uni-koeln.de/sammlungen/stein/index_ger.html'
-   'Sammlung Syndikatsbibliothek' => 'http://syndikatsbibliothek.ub.uni-koeln.de/'
-   'Sammlung Thomas a Kempis' => 'http://kempis.ub.uni-koeln.de/'
-   'Sammlung Franz Thorbecke' => 'https://www.ub.uni-koeln.de/sammlungen/thorbecke/index_ger.html'
-   'Sammlung Ferdinand Franz Wallraf' => 'http://wallraf.ub.uni-koeln.de/'
-   'Sammlung Franz Weinkauff' => 'http://weinkauff.ub.uni-koeln.de/'
-   'Sammlung Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
-   'Sammlung Fritz von Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
-   'Sammlung Wilhelmine von Westerholt' => 'http://www.ub.uni-koeln.de/sammlungen/westerholt/'
-   'Sammlung Eberhard Wolff' => 'https://www.ub.uni-koeln.de/sammlungen/eberhardwolff/index_ger.htmlIPS-Suchschlitz'
-   'Sammlung Otto Wolff' => 'https://www.ub.uni-koeln.de/sammlungen/ottowolff/index_ger.htmlIPS-Suchschlitz'
-   'Sammlung Schriften aus dem Monschauer Land' => 'https://www.ub.uni-koeln.de/sammlungen/monschau/index_ger.html'
-   'Sammlung Hallische Jahrbücher' => 'https://www.ub.uni-koeln.de/sammlungen/hallische/index_ger.html'
-   'Sammlung Publikationen aus und über Kölner Hochschulen' => 'https://www.ub.uni-koeln.de/sammlungen/koelnerhochschulen/index_ger.html'
-   'Sammlung Rheinische Monographien' => 'https://www.ub.uni-koeln.de/sammlungen/rheinischemonographien/index_ger.html'
-   'Sammlung Rheinische Zeitschriften' => 'https://www.ub.uni-koeln.de/sammlungen/rheinischezeitschriften/index_ger.html'
-   'Sammlung Wilhelm Alff' => 'http://www.ub.uni-koeln.de/sammlungen/alff/'
-   'Sammlung Kölner Personal- und Vorlesungsverzeichnisse' => 'https://www.ub.uni-koeln.de/sammlungen/vorlesung/index_ger.html'
-  }
-
--%]
-
-
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-provenance[% idsuffix %][% facet_prefix %]" aria-expanded="true">
-           [% msg.maketext("Sammlungsportal") %]<i class="ms-2 fas fa-archway"></i>  / [% msg.maketext("Provenienz") %]
-        </h4>
-        <ul id="group-provenance[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
-[%             FOREACH termitem IN facets.provenance ;
-                  LAST IF loop.count > 25 ;
- %]
-
-[%-
-    searchterm    = termitem.0;
-    searchprefix  = config.get('searchfield').provenancestring.prefix;
-    filterstring  = "${searchprefix}:${searchterm}";
--%]
-<li class="ob-facet-item" [% IF facets.provenance.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>[% IF collection_map.defined(termitem.0) %] <a class="ps-2 pe-2" title="USB [% msg.maketext("Sammlungsportal") %] [% termitem.0 %]" target="_blank" href="[% collection_map.${termitem.0} %]"><i class="fas fa-archway"></i></a>[% END %] <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
-[%             END %]
-[% IF facets.provenance.size > 5 %]
-<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
-<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
-[% END %]
-</ul>
-<p/>
-[%         END %]
-<!-- End provenance facet -->
 <!-- Begin tag facet -->
 [%         IF config.get('facets').tag && facets.defined('tag') && facets.tag.size > 0 %]
         <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-tag[% idsuffix %][% facet_prefix %]" aria-expanded="true">

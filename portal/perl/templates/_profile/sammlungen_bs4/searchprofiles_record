@@ -1,0 +1,41 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+     'page_title' = 'Suchprofile anzeigen'
+
+      'main_template' = 'searchprofiles_record_html'
+
+      # 'active_menu' = ''
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Suchprofile')
+	     url  = "${path_prefix}/${config.get('searchprofiles_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = searchprofileid
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('searchprofiles_loc')}/id/${searchprofileid}.json?l=${lang}"
+	  },
+       ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="searchprofiles_record_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="searchprofiles_record_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="searchprofiles_record_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

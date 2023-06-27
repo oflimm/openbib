@@ -1,0 +1,63 @@
+[%#-
+#######################################################################
+#
+# Templatename: circulation
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Ausleih/Explar-Informationen (via OLWS)
+#
+#######################################################################
+-%]
+<p />
+[%# USE dumper;dumper.dump(dbinfo)%]
+<div class="table-responsive table-flippable">
+<table class="table table-striped table-hover">
+<thead>
+<tr><th>[% msg.maketext("Standort") %]</th><th>QR</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Ausleihstatus") %]</th></tr>
+</thead>
+<tbody>
+[% FOREACH thiscirculation IN circulation %]
+[%-
+
+     department = thiscirculation.department;
+     department_url = thiscirculation.department_url;
+     storage    = thiscirculation.storage;
+
+     standort = "${department} / ${storage}";
+
+     IF department_url;
+        standort_with_url = "<a href=\"${department_url}\">${standort}</a>";
+     ELSE ;
+        standort_with_url = standort;   
+     END;
+
+    title    = normdata.${"T0331"}.first.content ;
+    IF  normdata.${"T0310"}.first.content ;
+       title = normdata.${"T0310"}.first.content ;
+    END ;
+
+-%]
+<tr><td><strong>[% standort_with_url %]</strong></td>
+<td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %]" title="Titel :: Standort :: Signatur"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
+[%-
+
+thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','');
+
+-%]
+<td><strong>[% thiscirculation.location_mark %]</strong>
+[% provenances = record.get_provenances_of_media(thiscirculation.holdingid) %]
+[% IF provenances.size > 0 %]
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% uri_escape(thiscirculation.holdingid) %]">Provenienzen</a>
+[% END %]
+</td>
+<td><strong>[%- IF thiscirculation.availability == 'loan' -%]ausleihbar[% ELSIF thiscirculation.availability == 'presence' %]Pr&auml;senzbestand[% ELSIF thiscirculation.availability == 'order' %]bestellbar[% IF availability_limitation %][% END %][% ELSIF
+thiscirculation.availability == 'lent' && thiscirculation.Rueckgabe != '31.12.9999' && thiscirculation.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% thiscirculation.Rueckgabe %][%- ELSE -%][% thiscirculation.availability %][%- END -%]</strong>
+</td>
+</tr>
+[% END %]
+</tbody>
+</table>
+</div>

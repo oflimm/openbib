@@ -1,0 +1,83 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+
+<h2>[% msg.maketext("View") %] [% viewinfo.viewname %]</h2>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<tr>
+<th>[% msg.maketext("Viewname") %]</th>
+<td>[% viewinfo.viewname %]</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Beschreibung") %]</th>
+<td>[% viewinfo.description %]</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Katalog-Profil") %]</th>
+<td>[% viewinfo.profileid.profilename %]</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("URI ohne View") %]</th>
+<td>
+[% IF viewinfo.stripuri == 1 %][% msg.maketext("Ja") %][% ELSE %][% msg.maketext("Nein") %][% END %]
+</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Aktiv") %]</th>
+<td>
+[% IF viewinfo.active == 1 %][% msg.maketext("Ja") %][% ELSE %][% msg.maketext("Nein") %][% END %]
+</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Eigener Servername in URI") %]</th>
+<td>[% viewinfo.servername %]</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Eigener Start-URI-Pfad") %]</th>
+<td>[% viewinfo.start_loc %]</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Katalogauswahl zu diesem View") %]</th>
+<td>
+<ul>
+[% FOREACH singledb IN dbnames.sort %]
+<li>
+[%   IF user.has_right({scope = 'admin_databases', right = 'right_update'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% singledb %]/edit.html?l=[% lang %]">[% singledb %]: [% IF dbinfo.get('dbnames').${singledb}.short %][% dbinfo.get('dbnames').${singledb}.short %][% ELSE %][% dbinfo.get('dbnames').${singledb}.full %][% END %]</a>
+[%   ELSIF user.has_right({scope = 'admin_databases', right = 'right_read'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% singledb %].html?l=[% lang %]">[% singledb %]: [% IF dbinfo.get('dbnames').${singledb}.short %][% dbinfo.get('dbnames').${singledb}.short %][% ELSE %][% dbinfo.get('dbnames').${singledb}.full %][% END %]</a>
+[%   END %]
+</li>
+[% END %]
+</ul>
+</td>
+</tr>
+
+<tr>
+<th>[% msg.maketext("Eigener Index") %]</th>
+<td>
+[% IF viewinfo.own_index == 1 %][% msg.maketext("Ja") %][% ELSE %][% msg.maketext("Nein") %][% END %]
+</td>
+</tr>
+</table>
+</div>
+

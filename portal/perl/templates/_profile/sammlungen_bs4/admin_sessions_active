@@ -1,0 +1,63 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_session
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller aktiver Sessions
+# mit ihren wichtigsten Informationen
+#
+#
+#######################################################################
+-%]
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = 'Administration - Aktive Sessions anzeigen'
+      
+      'main_template' = 'admin_sessions_active_html'
+      'sidebar_template' = 'users_navigation'
+
+      'active_menu' = 'admin'
+      'active_submenu' = 'admin_sessions'
+      'active_subsubmenu' = 'active'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Administration')
+	     url  = "${path_prefix}/${config.get('admin_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Sessions')
+	     url  = '#'
+	     current = 1
+	  },
+	  {
+	     desc = msg.maketext('Aktiv')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('sessions_loc')}/active.json?l=${lang}"
+	  }
+       ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html"  -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="admin_sessions_active_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="admin_sessions_active_json" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

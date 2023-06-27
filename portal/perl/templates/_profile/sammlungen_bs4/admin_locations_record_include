@@ -1,0 +1,150 @@
+<script>
+$(document).ready(function(){
+// Begin Verwandte Personen
+  $.get("[% path_prefix %]/[% config.get('litlists_loc') %]/journaltocs?id=[% normdata.${"E4115"}.first.content %];format=ajax",
+         function (txt){
+           $("#ob-journaltocs").html(txt); 
+  });
+});
+</script>
+
+<table class="ZMSTable" >
+<caption align="top"></caption>
+<colgroup>
+  <col width="16%">
+  <col width="83%">
+</colgroup>
+<tbody>
+[%-
+
+PROCESS common/subtemplate name="visible_categories_location";
+
+thisdbname = config.get_databases_of_isil(locationinfo.identifier).first;
+
+sigel = locationinfo.identifier.replace('DE-38-','');
+
+recent_litlists = user.get_recent_litlists({database = thisdbname, view = view});
+
+litlist_content = [];
+
+IF recent_litlists.size > 0;
+  litlist_content.push("<ul>");
+  FOREACH litlist IN recent_litlists;
+    litlist_content.push("<li><a target=\"kug\" href=\"http://kug.ub.uni-koeln.de/portal/kug/litlists/id/${litlist.id}.html?l=de\">${litlist.title}</a> (${litlist.itemcount} Titel)</li>");
+  END;
+  litlist_content.push("</ul>");
+ELSE;
+  litlist_content.push("Es wurden noch keine Literaturlisten mit Titel dieses Kataloges angelegt.");
+END;
+
+recent_tags = user.get_recent_tags({database = thisdbname});
+
+tags_content = [];
+
+IF recent_tags.size > 0;
+  tags_content.push("<ul>");
+  FOREACH tag IN recent_tags;
+    tags_content.push("<li><a target=\"kug\" href=\"http://kug.ub.uni-koeln.de/portal/kug/tags/names/id/${tag.tag}.html?l=de\">${tag.tag}</a></li>");
+  END;
+  tags_content.push("</ul>");
+ELSE;
+  tags_content.push("F&uuml;r Titel in diesem Katalog wurden noch keine Tags vergeben");
+END;
+
+locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriften dieser Bibliothek als <a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-${sigel}-all.pdf\">e-Book</a>" } ];
+locationinfo.fields.${"Die 5 zuletzt angelegten Literaturlisten"} = [ { content = litlist_content.join("\n") } ];
+locationinfo.fields.${"Die 5 zuletzt vergebenen Tags"} = [ { content = tags_content.join("\n") } ];
+
+trclass = "even" ;
+
+FOREACH category IN categories;
+    IF category == 'Bestand';
+       contentarray = [];
+       IF locationinfo.fields.${"L0120"}.first.content ;
+          thiscontent = locationinfo.fields.${"L0120"}.first.content;
+          contentarray.push("Monographien: ${thiscontent}");
+       END;
+       IF locationinfo.fields.${"L0130"}.first.content ;
+          thiscontent = locationinfo.fields.${"L0130"}.first.content;
+          contentarray.push("Zeitschriften: ${thiscontent}");
+       END;
+       IF locationinfo.fields.${"L0140"}.first.content ;
+          thiscontent = locationinfo.fields.${"L0140"}.first.content;
+          contentarray.push("Lfd. Zeitschriften: ${thiscontent}");
+       END;
+       IF contentarray.size > 0;
+          content = contentarray.join(" / ");
+          locationinfo.fields.${"Bestand"} = [ { content = content } ];
+       ELSE ;
+         NEXT;
+       END;
+    END;
+
+    IF locationinfo.fields.${category} ;
+      FOREACH item IN locationinfo.fields.$category;
+        content  = item.content;
+        mult     = item.mult;
+        subfield = item.subfield;
+
+       SWITCH category;
+
+          CASE [ "L0180" ];
+            IF locationinfo.fields.${"L0230"};
+               kuginfo = locationinfo.fields.${"L0230"}.first.content;
+               content = "${content} (${kuginfo})";
+            END;
+
+       END ;
+
+        # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+        # in Config.pm fuer die entsprechende Datenbank definiert
+        # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+        # kodiert.
+        thiscategory = category ;
+        IF config.get('categorymapping').${locationinfo.databaseinfos.dbname}.$category ;
+          thiscategory = "${category}-${record.database}" ;
+        END;
+-%]
+<tr class="[% trclass %]"><td><p>[% msg.maketext("${thiscategory}") %]</p></td><td><p>[% content %]</p></td></tr>
+[%-   END ;
+      IF trclass == "even" ;
+        trclass = "odd";
+      ELSE;
+        trclass = "even";
+      END;
+   END ;
+END ;-%]
+</tbody>
+</table>
+
+[%- IF locationinfo.fields.${"L0280"}.first.content -%]
+<p>
+<div id="map_canvas" style="width: 100%; height: 600px"></div>
+</p>
+
+<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+
+<script type="text/javascript">
+    map = new OpenLayers.Map("map_canvas");
+    map.addLayer(new OpenLayers.Layer.OSM());
+
+    var lonLat = new OpenLayers.LonLat( [% locationinfo.fields.${"L0280"}.first.content.split(',').reverse.join(',') %] ).transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            map.getProjectionObject() // to Spherical Mercator Projection
+          );
+
+    var zoom=16;
+
+    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    map.addLayer(markers);
+
+    var size = new OpenLayers.Size(32,32);
+    var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+    var icon = new OpenLayers.Icon('http://kug.ub.uni-koeln.de/images/openbib/blue-marker.png',size,offset);
+    var marker = new OpenLayers.Marker(lonLat,icon);
+    markers.addMarker(marker);
+
+    marker.icon.imageDiv.title = "[% locationinfo.description.replace('"','\'') %]";
+    map.setCenter (lonLat, zoom);
+</script>
+[% END %]

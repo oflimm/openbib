@@ -1,0 +1,59 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_roles
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Kataloge
+# mit ihren wichtigsten Informationen
+#
+# Einrichtung eines neuen Kataloges
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = 'Portal Administration - Nutzer-Rollen anzeigen'
+      
+      'main_template' = 'viewadmin_roles_html'
+      'sidebar_template' = 'users_navigation'
+
+      'active_menu' = 'viewadmin'
+      'active_submenu' = 'viewadmin_roles'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Portal Administration')
+	     url  = "${path_prefix}/${config.get('viewadmin_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Rollen')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('viewadmin_loc')}/${config.get('roles_loc')}.json?l=${lang}"
+	  }
+       ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="viewadmin_roles_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="viewadmin_roles_json" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

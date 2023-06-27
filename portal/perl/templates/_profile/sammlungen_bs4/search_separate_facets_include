@@ -1,0 +1,20 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_start
+#
+# Typ         : Mastertemplate (1/3)
+#
+# Aufgabe:
+#
+# Ausgabe des Anfangs der initialen Trefferliste
+#
+#######################################################################
+-%]
+
+[% PROCESS common/subtemplate name="search_facet" %] 
+
+<div class="ob-resulttime">
+in: [% resulttime %] [% msg.maketext("Sekunden") %]
+</div>
+

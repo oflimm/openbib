@@ -1,0 +1,162 @@
+<script>
+function copy_to_clipboard(formatid) {
+    var range = document.createRange();
+    range.selectNode(document.getElementById(formatid));
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+    document.execCommand("copy");
+    window.getSelection().removeAllRanges();
+} 
+</script>
+
+<div class="modal fade" id="apaModal" tabindex="-1" role="dialog" aria-labelledby="apaModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="apaModalLabel">APA Zitierformat</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+        </button>
+      </div>
+      <div class="modal-body" id="apa_citation">
+[% apa_citation = record.to_apa_citation %]
+[% IF apa_citation %]
+[% apa_citation %]
+[% ELSE %]
+[% msg.maketext("Zu diesem Zitierstil konnte mit den vorhandenen Informationen kein Zitat erstellt werden.") %]
+[% END %]
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="copy_to_clipboard('apa_citation')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
+
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="harvardModal" tabindex="-1" role="dialog" aria-labelledby="harvardModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="harvardModalLabel">Harvard Zitierformat</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+        </button>
+      </div>
+      <div class="modal-body" id="harvard_citation">
+[% harvard_citation = record.to_harvard_citation %]
+[% IF harvard_citation %]
+[% harvard_citation %]
+[% ELSE %]
+[% msg.maketext("Zu diesem Zitierstil konnte mit den vorhandenen Informationen kein Zitat erstellt werden.") %]
+[% END %]
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="copy_to_clipboard('harvard_citation')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="mlaModal" tabindex="-1" role="dialog" aria-labelledby="mlaModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="mlaModalLabel">MLA Zitierformat</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+        </button>
+      </div>
+      <div class="modal-body" id="mla_citation">
+[% mla_citation = record.to_mla_citation %]
+[% IF mla_citation %]
+[% mla_citation %]
+[% ELSE %]
+[% msg.maketext("In diesem Zitierstil konnte mit den vorhandenen Informationen kein Zitat erstellt werden.") %]
+[% END %]
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="copy_to_clipboard('mla_citation')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="bibtexModal" tabindex="-1" role="dialog" aria-labelledby="bibtexModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="bibtexModalLabel">BibTeX Zitierformat</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+        </button>
+      </div>
+      <div class="modal-body" id="bibtex_format">
+      <pre>
+[% record.to_bibtex %]
+      </pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="copy_to_clipboard('bibtex_format')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="endnoteModal" tabindex="-1" role="dialog" aria-labelledby="endnoteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="endnoteModalLabel">Endnote Format</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+        </button>
+      </div>
+      <div class="modal-body" id="endnote_format">
+      <pre>
+[% record.to_endnote %]
+      </pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="copy_to_clipboard('endnote_format')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="qrcodeModal" tabindex="-1" role="dialog" aria-labelledby="qrcodeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="qrcodeModalLabel">[% msg.maketext("QR-Code") %]</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="modal-qrcode text-center" id="qrcode_message">
+        </div>
+
+        <p class="text-center">Titel :: Bibliothek :: Standort :: Signatur</p>
+
+        <div class="alert alert-info text-center">Ggf. benötigen Sie zur Nutzung eine <a class="exturl" href="http://qrcode.wilkohartz.de/">Reader-Software</a></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  // qrCode
+  var qrcodeModal = document.getElementById('qrcodeModal')
+  qrcodeModal.addEventListener('show.bs.modal', event => {
+    var button = event.relatedTarget
+
+    const title = button.getAttribute('data-bs-modaltitle')
+    var url   = button.getAttribute('data-bs-modalurl')
+    
+    // Update the modal's content.
+    var modalTitle = qrcodeModal.querySelector('#qrcodeModalLabel')
+    var modalBody  = qrcodeModal.querySelector('#qrcode_message')
+
+    modalTitle.textContent = title
+    modalBody.innerHTML    = '<img src="'+url+'"/>'
+  });
+
+</script>

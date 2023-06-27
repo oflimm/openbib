@@ -1,0 +1,33 @@
+[%-
+
+x = csv.print(r,['Identifier','Typ','Beschreibung','Kurzbezeichnung','Institution','Adresse','Gebaeude','Gemeinsame_Bibliothek','Weitere_Kataloge','Telefon','Fax','Email','Internet','Auskunft_Bibliothekare','Oeffnungszeiten','Anzahl_Arbeitplaetze','Bestand_Monos','Bestand_Zeitschriften','Laufende_Zeitschriften','Sammelgebiete','Art_der_Bibliothek','Sigel','Geokoordinaten']);
+
+FOREACH location IN locations ;
+
+  field = config.get_locationinfo_fields(location.identifier);
+
+  institution = field.${"L0010"}.first.content;
+  adresse = field.${"L0020"}.first.content;
+  gebaeude = field.${"L0030"}.first.content;
+  gemeinsame_bibliothek = field.${"L0050"}.first.content;
+  weitere_kataloge = field.${"L0290"}.first.content;
+  telefon = field.${"L0060"}.first.content;
+  fax = field.${"L0070"}.first.content;
+  e_mail = field.${"L0080"}.first.content;
+  internet = field.${"L0090"}.first.content;
+  bibliothekare = field.${"L0100"}.first.content;
+  oeffnungszeiten = field.${"L0110"}.first.content;
+  anzahlarbeitsplaetze = field.${"L0270"}.first.content;
+  bestand_monos = field.${"L0120"}.first.content;
+  bestand_zeitschriften = field.${"L0130"}.first.content;
+  laufende_zeitschriften = field.${"L0140"}.first.content;
+  sammelgebiete = field.${"L0170"}.first.content;
+  art = field.${"L0180"}.first.content;
+  sigel = field.${"L0250"}.first.content;
+  geo = field.${"L0280"}.first.content;
+
+  x = csv.print(r,[location.identifier,location.type,location.description,location.shortdesc,institution,adresse,gebaeude,gemeinsame_bibliothek,weitere_kataloge,telefon,fax,e_mail,internet,bibliothekare,oeffnungszeiten,anzahlarbeitsplaetze,bestand_monos,bestand_zeitschriften,laufende_zeitschriften,sammelgebiete,art,sigel,geo]);
+END ;
+
+-%]
+[%- r.print_buffer -%]

@@ -1,0 +1,31 @@
+[%-
+
+provenances_output = [];
+
+FOREACH provenance IN provenances ;
+
+  thisrecord = {
+      fields = provenance      
+  };
+
+  provenances_output.push(thisrecord);
+END ;
+
+metainformation = {
+   hits        = provenances.size
+   ips_user    = qopts.get_option('ips_user')
+};
+
+json_output = {
+    link = {
+        rel = 'self'
+        href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}/id/${titleid}/provenances.json?${cgiapp.to_cgi_querystring}"
+    }
+
+    meta    = metainformation
+    records = provenances_output
+};
+
+to_json(json_output);
+
+-%]

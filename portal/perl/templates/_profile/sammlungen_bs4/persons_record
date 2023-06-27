@@ -1,0 +1,49 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%
+
+  dbdesc   = dbinfo.get('dbnames').${database}.short ;
+  normset  = record.to_rawdata;   
+  request_base = queryoptions.to_cgi_params({exclude = ['profile','page','db']});
+
+  recordname = normset.${'P0800'}.first.content;
+
+  IF representation == '' || representation == 'html' ;
+
+    layout_param = {
+      'page_title' = msg.maketext("Personen-Information: [_1] in Katalog [_2]",recordname,dbdesc)
+
+      'main_template' = 'persons_record_html'
+
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext("Person")
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      'representations' = [
+          {
+	     type = 'rdf'
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${record.id}.rdf?l=${lang}"
+	  },
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${record.id}.json?l=${lang}"
+	  }
+       ]
+    };
+%]
+[%- PROCESS common/subtemplate name="layout_html"  -%]
+[% ELSIF representation == 'json' %]
+[%- PROCESS common/subtemplate name="persons_record_json" -%]
+[% ELSIF representation == 'include' %]
+[%- PROCESS common/subtemplate name="persons_record_include" -%]
+[% ELSIF representation == 'rdf' %]
+[%- PROCESS common/subtemplate name="persons_record_rdf" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

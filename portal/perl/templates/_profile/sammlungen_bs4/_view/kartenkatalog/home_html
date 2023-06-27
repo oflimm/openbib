@@ -1,0 +1,106 @@
+[%#-
+#######################################################################
+#
+# Templatename: home
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Portalinformationen
+#
+#######################################################################
+-%]
+
+<div class="jumbotron jumbotron-fluid mb-0 landing-page-img">
+  <div class="container container-fluid" style="margin-top: 50px!important;">
+
+    <div class="card border-0 d-none d-md-block" style="min-width: 100%!important;">
+      <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+
+	<input type="hidden" name="num"        value="20" />
+	<input type="hidden" name="page"       value="1" />
+	<input type="hidden" name="l"          value="[% lang %]" />
+	
+	<input type="hidden" name="srt"        value="relevance_desc" />
+	<input type="hidden" name="st"         value="1" />
+	<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+        <div class="card-header p-0 border-0">
+	  
+          <div id="search_wrapper" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
+            <div class="input-group-prepend">
+              <button type="submit" class="input-group-text ob-bg ob-border">
+                <i class="fas fa-search text-white"></i>
+              </button>
+            </div>
+            <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
+          </div>
+        </div>
+    </div>
+    <div class="d-md-flex justify-content-end d-none bg-transparent" style="width: 95%">
+      <div class="btn-group btn-group-sm d-none d-md-block">
+        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">
+          <i class="fas fa-search-plus"></i> [% msg.maketext("Suche in einzelnem Katalog") %]
+        </a>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center d-md-none">
+      <div class="btn-group btn-group-sm d-none d-md-block">
+        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;"  href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">
+          <i class="fas fa-search-plus"></i> [% msg.maketext("Suche in einzelnem Katalog") %]
+        </a>
+      </div>
+    </form>      
+    </div>
+  </div>
+</div>
+
+<div class="text-center ob-bg text-white"><h4>[% msg.maketext("DER KARTENKATALOG DER PHILOSOPHISCHEN FAKULTÄT") %]</h4></div>
+
+<div class="container">
+
+<p>Aus Sicherheitsgründen musste leider der bisherige Digitale Kartenkatalog der Philosophischen Fakultät mit seiner 16 Jahren alten Software vom Netz genommen werden.</p>
+
+<p>In diesem Portal können die digitalisierten Kartenkataloge der Philosophischen Fakultät durchsucht werden. Zusätzlich kann in den Katalogen auch klassisch in den Karten geblättert werden.</p>
+
+<p>
+Grundlage der Recherche ist eine Analyse der Karten mit OCR (Optische Bilderkennung) und dem System tesseract.</p>
+
+<div class="alert alert-info">
+
+<p>Auch wenn die Texterkennung in der Regel
+gute Ergebnisse erreichte, so kann nicht ausgeschlossen werden, dass
+Begriffe und Titel bei der Recherche dennoch nicht gefunden
+werden. Die Texterkennung soll sukzessive weiter verbessert werden.
+</p>
+<p>
+Auf den vollständigen Bestand an Katalogkarten können Sie
+immer über <strong>Blättern in einzelnen Katalogen</strong> zugreifen.
+</p>
+</div>
+
+<p>Noch fehlende Kataloge werden hinzugefügt, sobald sie mit OCR entsprechend aufbereitet wurden.
+<hr/>
+
+<h4>Blättern in einzelnen Katalogen</h4>
+
+[%
+   kartenkataloge = {};
+
+   FOR katalog IN config.get_dbs_of_view(view);
+      katalogname = dbinfo.get('dbnames').${katalog}.full ;
+      kartenkataloge.${katalogname} = katalog;
+   END;
+   
+%]
+
+<ul class="list-group">
+[% FOR katalogname IN kartenkataloge.keys.sort %]
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% kartenkataloge.${katalogname} %]/titles.html?l=[% lang %]&srt=title_asc">[% katalogname %]</a> ([% config.get_number_of_titles({ database = kartenkataloge.${katalogname}}).allcount%] Katalogkarten)</li>
+[% END %]
+</ul>
+
+</div>
+
+<hr/>
+

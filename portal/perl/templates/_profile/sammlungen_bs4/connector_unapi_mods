@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+[%- normdata = record.get_fields -%]
+[%- holding = record.get_holding -%]
+[%- circulation = record.load_circulation.get_circulation -%]
+[%- same_records = record.enrich_same_records.get_same_records -%]
+[%- similar_records = record.enrich_similar_records.get_similar_records -%]
+<mods xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:mods="http://www.loc.gov/mods/v3"
+  xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd" version="3.4">
+  <mods:recordInfo>
+    <mods:recordIdentifier>[% record.id %]</mods:recordIdentifier>
+  </mods:recordInfo>
+
+  [%-
+  personlist = [];
+  IF normdata.${"T0100"};
+  personlist.push(normdata.${"T0100"});
+  END;
+  IF normdata.${"T0101"};
+  personlist.push(normdata.${"T0101"});
+  END;
+  IF normdata.${"T0102"};
+  personlist.push(normdata.${"T0102"});
+  END;
+  IF normdata.${"T0103"};
+  personlist.push(normdata.${"T0103"});
+  END;
+  -%]
+  [%- IF personlist && personlist.size -%]
+  [%- FOREACH persondata IN personlist %]
+  [%- FOREACH item IN persondata %]
+  <mods:name type="personal">
+    [%-
+    IF item.content.search(',');
+    name_array = item.content.split(','),
+    family = name_array.0.trim;
+    given = name_array.1.trim;
+    ELSE;
+    given = item.content.trim;
+    END;
+    -%]
+    [%- IF family %]
+    <mods:namePart type="family">[% family %]</mods:namePart>
+    [%- END %]
+    <mods:namePart type="given">[% given %]</mods:namePart>
+    <mods:displayForm>[% item.content %]</mods:displayForm>
+    <mods:role>
+      [%- IF item.supplement %]
+      <mods:roleTerm type="code" authority="marcrelator" text="[%item.supplement%]">oth</mods:roleTerm>
+      [%- ELSE %]
+      <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+      [%- END %]
+    </mods:role>
+  </mods:name>
+  [%- END -%]
+  [%- END -%]
+  [%- END -%]
+  [%-
+  corplist = [];
+  IF normdata.${"T0200"};
+  corplist.push(normdata.${"T0100"});
+  END;
+  IF normdata.${"T0201"};
+  corplist.push(normdata.${"T0101"});
+  END;
+  %]
+  [% IF corplist && corplist.size %]
+  [%- FOREACH corpdata IN corplist %]
+  [% FOREACH item IN corpdata %]
+  <mods:name type="corporate">
+    <mods:namePart>[% item.content %]</mods:namePart>
+    <mods:role>
+      [% IF item.supplement %]
+      <mods:roleTerm type="code" authority="marcrelator" text="[% item.supplement %]">oth</roleTerm>
+        [% ELSE %]
+        <mods:roleTerm type="code" authority="marcrelator">aut</mods:roleTerm>
+        [% END %]
+    </mods:role>
+  </mods:name>
+  [% END %]
+  [% END %]
+  [% END %]
+  <mods:titleInfo>
+    [%- FOREACH item IN normdata.${"T0331"} %]
+    <mods:title>[% item.content %]</mods:title>
+    [%- END %]
+    [%- FOREACH item IN normdata.${"T0370"} %]
+    <mods:title type="alternative">[% item.content %]</mods:title>
+    [%- END %]
+    [%- FOREACH item IN normdata.${"T0335"} %]
+    <mods:subtitle>[% item.content %]</mods:subtitle>
+    [% END %]
+  </mods:titleInfo>
+  <mods:originInfo eventType="publication">
+    [%- FOREACH item IN normdata.${"T0410"} %]
+    <mods:place>
+      <mods:placeTerm type="text">[% item.content %]</mods:placeTerm>
+    </mods:place>
+    [%- END %]
+    [%- FOREACH item IN normdata.${"T0412"} %]
+    <mods:publisher>[% item.content %]</mods:publisher>
+    [%- END %]
+    [%- FOREACH item IN normdata.${"T0425"} %]
+    <mods:dateIssued keyDate="yes" encoding="iso8601">[% item.content %]</mods:dateIssued>
+    [%- END %]
+  </mods:originInfo>
+  [%- IF normdata.${"T4301"}.first %]
+  <mods:language>
+    <mods:languageTerm type="code" authority="iso639-2">[% normdata.${"T4301"}.first.content %]</mods:languageTerm>
+  </mods:language>
+  [%-END%]
+  [%- IF normdata.${"T4310"}.first %]
+  <mods:note type="ownership">
+    [% normdata.${"T4310"}.first.content %]
+  </mods:note>
+  [%- END %]
+  [%- FOREACH item IN normdata.${"T4700"} %]
+  <mods:classification authority="ZVDD">[% item.content %]</mods:classification>
+  [%- END %]
+  [%- IF normdata.${"T0710"}.first %]
+  <mods:subject>
+    [%- FOREACH item IN normdata.${"T0710"} %]
+    <mods:topic>[% item.content %]</mods:topic>
+    [%- END %]
+  </mods:subject>
+  [%- END %]
+  [%-
+  IF normdata.${"T5005"}.first;
+  super = from_json(normdata.${"T5005"}.first.content);
+  super_title = super.fields.${'0451'}.first.content;
+
+  IF super.fields.${'0331'} ;
+  super_title = super.fields.${'0331'}.first.content;
+  END ;
+  IF NOT super_title ;
+  super_title = "Zur Ueberordnung";
+  END ;
+  END;
+  -%]
+  [% IF super %]
+  <mods:relatedItem>
+    <mods:titleInfo>[% super_title %]</mods:titleInfo>
+  </mods:relatedItem>
+  <mods:relatedItem type="host">
+    <mods:recordInfo>
+      <mods:recordIdentifier>[% normdata.${"T0004"}.first.content %]</mods:recordIdentifier>
+    </mods:recordInfo>
+  </mods:relatedItem>
+  <mods:relatedItem>
+    <mods:part>
+      <mods:detail type="volume">
+        [% IF NOT normdata.${"T0331"} %]
+        <mods:number>[% normdata.${"T0089"}.first.content %]</mods:number>
+        [% ELSE %]
+        <mods:number>[% normdata.${"T0455"}.first.content %]</mods:number>
+        [%END%]
+      </mods:detail>
+    </mods:part>
+  </mods:relatedItem>
+  [%END%]
+</mods>

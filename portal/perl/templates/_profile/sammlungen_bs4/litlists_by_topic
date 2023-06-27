@@ -1,0 +1,46 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+     'page_title' = "Literaturlisten nach Themengebieten"
+
+      'main_template' = 'litlists_by_topic_html'
+      'sidebar_template' = 'litlists_navigation'
+
+      'active_submenu' = 'litlists_topics'
+
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Literaturlisten')
+	     url  = "${path_prefix}/${config.get('litlists_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Themengebiete')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('litlists_loc')}/${config.get('topics_loc')}.json?l=${lang}"
+	  }
+       ]
+    };
+
+    show_foot_banner = 1;
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="litlists_by_topic_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="litlists_by_topic_json" -%]
+[%- ELSIF representation == 'bibtex' -%]
+[%- PROCESS common/subtemplate name="litlists_by_topic_bibtex" -%]
+[%- ELSIF representation == 'refer' -%]
+[%- PROCESS common/subtemplate name="litlists_by_topic_refer" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

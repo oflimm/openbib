@@ -1,0 +1,45 @@
+[%#-
+#######################################################################
+#
+# Templatename: templates_revisions_json
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Informationen eines Templates im JSON-format
+#
+#######################################################################
+-%]
+[%-
+
+all_revisions = [];
+
+FOREACH revision IN revisions ;
+
+   this_json_output = {
+       link = {
+          rel = 'self'
+          href = "${path_prefix}/${config.get('templates_loc')}/id/${revision.templateid.id}/revisions/id/${revision.id}"
+       }
+       id = revision.id
+       tstamp = revision.tstamp
+       templatetext = revision.templatetext
+   };
+
+   all_revisions.push(this_json_output);
+
+END ;
+
+this_json_output = {
+       link = {
+          rel = 'self'
+          href = "${path_prefix}/${config.get('templates_loc')}/id/${revision.templateid.id}/revisions"
+       }
+
+       revision = all_revisions
+   };
+
+  to_json(this_json_output);
+
+-%]

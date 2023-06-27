@@ -1,0 +1,45 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_authenticators
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste der Anmeldeziele.
+#
+#######################################################################
+-%]
+[%-
+
+ templates = [] ;
+
+ FOREACH templateinfo IN config.get_templateinfo_overview.all;
+   thistemplateinfo = {
+       link = {
+          rel = 'self'
+          href = "${path_prefix}/${config.get('admin_loc')}/${config.get('templates_loc')}/id/${templateinfo.id}"
+       }
+       id = templateinfo.id
+       viewname = templateinfo.viewname
+       templatename = templateinfo.templatename
+       templatetext = templateinfo.templatetext
+       templatelang = templateinfo.templatelang
+   };
+
+   templates.push(thistemplateinfo);
+ END;
+ 
+
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+     templates = templates
+ };
+
+  to_json(this_json_output);
+
+-%]

@@ -1,0 +1,40 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[% IF representation == '' || representation == 'html' ;
+    request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']})
+    disable_cache_control = 1
+    
+    layout_param = {
+      'page_title' = msg.maketext('Verwandete Personen')
+
+      'main_template' = 'connector_similarpersons_html'
+
+      # 'active_menu' = ''
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Verwandete Personen')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      # 'representations' = [
+      #     {
+      # 	     type = 'json'
+      # 	     url  = "${path_prefix}/${config.get('connector_similarpersons_loc')}.json?l=${lang}"
+      # 	  },
+      #  ]
+    };
+%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[% ELSIF representation == 'json' %]
+[%- PROCESS common/subtemplate name="connector_similarpersons_json" -%]
+[% ELSIF representation == 'include' %]
+[%- PROCESS common/subtemplate name="connector_similarpersons_include" -%]
+[% ELSIF representation == 'rdf' %]
+[%- PROCESS common/subtemplate name="connector_similarpersons_rdf" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

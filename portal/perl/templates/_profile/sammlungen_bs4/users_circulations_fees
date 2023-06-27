@@ -1,0 +1,33 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+     'page_title' = 'Gebühren'
+
+      'main_template' = 'users_circulations_fees_html'
+      'sidebar_template' = 'users_navigation'
+
+      'active_menu' = 'users'
+      'active_submenu' = 'fees'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = username
+	     url  = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/preferences.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Gebühren')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="users_circulations_fees_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

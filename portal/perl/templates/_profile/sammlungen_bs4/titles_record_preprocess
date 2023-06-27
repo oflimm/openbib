@@ -1,0 +1,109 @@
+[%-
+
+     hide_hit_msg    = msg.maketext("Zugriff nur nach Authentifizierung und für Hochschulangehörige");
+     hide_detail_msg = msg.maketext("Zugriff nur nach Authentifizierung und für Hochschulangehörige");
+
+     pda_hide_detail = { };
+
+     # EDS/PDA Visibility
+     hide_hit    = 0;
+     hide_detail = 0;
+
+     IF pda_hide_detail.defined(record.database) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.has_role('erwerbung') && NOT user.has_role('usb') && NOT user.has_role('librarian') && NOT user.is_admin && NOT user.is_viewadmin ;
+       hide_detail = 1;     
+     ELSIF record.database == 'eds';
+       eds_hide_hit = {
+         'bas' = 1
+         'dfg' = 1
+         'dfn' = 1
+         'edsbds' = 1
+         'edsbll' = 1
+         'edsgoc' = 1
+         'edswah' = 1
+         'edswis' = 1
+         'edswss' = 1
+         'eoh' = 1
+         'f3h' = 1
+         'geh' = 1
+         'guh' = 1
+         'kah' = 1
+         'msn' = 1
+         'mzh' = 1
+         'pdx' = 1
+         'phl' = 1
+         'psyh' = 1
+         'ram' = 1
+         'rip' = 1
+        };
+
+        eds_hide_detail = {
+         'asn' = 1
+         'cin20' = 1
+         'edsaks' = 1
+         'edsasp' = 1
+         'edsbio' = 1
+         'edsbl' = 1
+         'edsdeo' = 1
+         'edsdzs' = 1
+         'edsear' = 1
+         'edsebo' = 1
+         'edsebr' = 1
+         'edselp' = 1
+         'edsemr' = 1
+         'edsewc' = 1
+         'edsgtd' = 1
+         'edshol' = 1
+         'edshvr' = 1
+         'edsimf' = 1
+         'edsjoj' = 1
+         'edsjsr' = 1
+         'edsmkl' = 1
+         'edsnol' = 1
+         'edsoad' = 1
+         'edsoec' = 1
+         'edsomo' = 1
+         'edsovi' = 1
+         'edspdh' = 1
+         'edspmu' = 1
+         'edsrai' = 1
+         'edssjs' = 1
+         'edssvl' = 1
+         'edstro' = 1
+         'edsupi' = 1
+         'edsupp' = 1
+         'edsver' = 1
+         'edswao' = 1
+         'edswbe' = 1
+         'edswsc' = 1
+         'edswst' = 1
+         'h9h' = 1
+         'h9i' = 1
+         'h9j' = 1
+         'h9k' = 1
+         'h9m' = 1
+         'sih' = 1
+        };
+
+        edsdb = record.id.match('^(.+)::').first;
+
+        IF eds_hide_hit.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('usb') && NOT user.has_role('student') && NOT user.is_admin && NOT user.is_viewadmin ;
+            hide_hit = 1;
+        ELSIF eds_hide_detail.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.has_role('usb') && NOT user.is_admin && NOT user.is_viewadmin ;
+	    hide_detail = 1;
+        ELSIF pda_hide_detail.defined(edsdb) && NOT user.has_role('uzk') && NOT user.has_role('student') && NOT user.has_role('erwerbung') && NOT user.has_role('usb') && NOT user.has_role('librarian') && NOT user.is_admin && NOT user.is_viewadmin ;
+            hide_detail = 1;
+        END;
+     END;
+
+     # Im UzK Netz? Dann voller Zugriff auf EDS
+
+     IF remote_ip.match('^(134\.95\.|172\.1[6-9]\.|172\.2[0-9]\.|172\.3[0-1]\.)') ;
+        hide_hit = 0;
+	hide_detail = 0;
+     END;
+
+     record_exists     = record.record_exists ;
+
+     record_from_cache = record.get_status('from_cache');
+
+-%]

@@ -1,0 +1,13 @@
+[%- IF representation == '' || representation == 'html' -%]
+[%-   layout_param = {
+          jump_top = 1
+      }
+-%]
+[%- PROCESS common/subtemplate name="authority_search_end_html" -%]
+[%- ELSIF representation == 'rss' -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- ELSIF representation == 'txt' -%]
+[%- ELSIF representation == 'json' -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

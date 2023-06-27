@@ -1,0 +1,32 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = 'Tags bearbeiten'
+
+      'main_template' = 'users_tags_edit_html'
+      'sidebar_template' = 'users_navigation'
+
+      'active_menu' = 'users'
+      'active_submenu' = 'tags_edit'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = username
+	     url  = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/preferences.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Tags bearbeiten')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+    disable_cache_contro = 1;
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

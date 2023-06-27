@@ -1,0 +1,33 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_titles_combined_rdf
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes als LinkedData
+#
+#######################################################################
+-%]
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:libris="http://libris.kb.se/vocabulary/experimental#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" >
+[%-
+
+  FOREACH database IN databases ;
+    json_info.push({ database => database, description => dbinfo.get('dbnames').${database}.full});
+-%]
+
+  <rdf:Description rdf:about="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/[%- database -%]">
+[%- IF dbinfo.get('dbnames').${database}.full %]
+     <dc:title>[% dbinfo.get('dbnames').${database}.full %]</dc:title>
+[%- END -%]
+  </rdf:Description>
+[%- END %]
+</rdf:RDF>

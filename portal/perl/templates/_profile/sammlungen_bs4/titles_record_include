@@ -1,0 +1,72 @@
+[%#-
+#######################################################################
+#
+# Templatename: titles_include
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes zur Einbettung in andere HTML-Seiten
+#
+#######################################################################
+-%]
+[%- request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) -%]
+[%- normdata        = record.get_fields -%]
+[%- holding         = record.get_holding -%]
+[%- circulation     = record.load_circulation.get_circulation -%] 
+[%- same_records    = record.enrich_same_records.get_same_records -%]
+[%- similar_records = record.enrich_similar_records.get_similar_records -%]
+[%- bibkey = record.to_bibkey -%]
+[%- isbn   = normdata.${"T0540"}.first.content.replace('-','') -%]
+[%- IF NOT isbn ;
+       isbn   = normdata.${"T0553"}.first.content.replace('-','') ;
+    END ;
+-%]
+[% IF format == "BibTeX" %]
+<div>
+<pre>
+[% record.to_bibtex %]
+</pre>
+</div>
+[% ELSIF format == "Text" %]
+<pre>
+[% FOREACH category IN categories;
+    FOREACH item IN normdata.$category;
+    content = item.content;
+
+    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+    # in Config.pm fuer die entsprechende Datenbank definiert
+    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+    # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+-%]
+[% msg.maketext("${thiscategory}") | format("%- 24s") %]: [% content %]
+[% END -%]
+[%- END -%]
+[%- IF holding.size > 0 -%]
+[%- FOREACH thisholding IN holding -%]
+[% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% thisholding.${"X4000"}.content.full %]
+[% msg.maketext("Standort             ") %] [% loop.count %] : [% thisholding.${"X0016"}.content %]
+[% msg.maketext("Lokale Signatur      ") %] [% loop.count %] : [% thisholding.${"X0014"}.content %]
+[% msg.maketext("Inventarnummer       ") %] [% loop.count %] : [% thisholding.${"X0005"}.content %]
+[% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% thisholding.${"X1204"}.content %]
+[% END %]
+
+[% END %]
+</pre>
+[% ELSIF format == "EndNote" %]
+<pre>
+[% record.to_endnote %]
+</pre>
+[% ELSIF format == "harvard" %]
+[% record.to_harvard_citation %]
+[% ELSIF format == "mla" %]
+[% record.to_mla_citation %]
+[% ELSIF format == "apa" %]
+[% record.to_apa_citation %]
+[% END %]

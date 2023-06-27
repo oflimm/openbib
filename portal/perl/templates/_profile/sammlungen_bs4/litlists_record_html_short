@@ -1,0 +1,3 @@
+[% FOREACH record IN litlist.recordlist.get_records %]
+  [% PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 %]
+[% END %]

@@ -1,0 +1,30 @@
+[%#-
+#######################################################################
+#
+# Templatename: topic_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Themengebietes
+#
+#######################################################################
+-%]
+[%-
+
+  this_json_output = topic;
+
+  this_json_output.link = {
+          rel = 'self'
+          href = location
+  };
+
+  this_json_output.mappings = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('topics_loc')}/id/${topic.id}/mappings.json?l=${lang}"
+  };
+
+  to_json(this_json_output);
+
+-%]

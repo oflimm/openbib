@@ -1,0 +1,31 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+     'page_title' = 'Bestellung stornieren'
+
+      'main_template' = 'users_circulations_cancel_order_confirm_html'
+      'sidebar_template' = 'users_navigation'
+
+      'active_menu' = 'users'
+      'active_submenu' = 'cancel_order_confirm'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = username
+	     url  = '#'
+	  },
+	  {
+	     desc = msg.maketext('Bestellung stornieren')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

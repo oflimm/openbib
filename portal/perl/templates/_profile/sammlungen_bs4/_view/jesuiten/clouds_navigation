@@ -1,0 +1,71 @@
+[%#-
+#######################################################################
+#
+# Templatename: subnavigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu fuer Tabs
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+<div class="card">
+<div class="card-header">[% msg.maketext("&Uuml;bersichten") %]</div>
+<div class="card-body">
+ <nav class="navbar bg-light">
+ <ul class="navbar-nav">
+[% IF statistics.result_exists({ id => database, type => 9 }) %]
+[%   IF layout_param.active_submenu == "clouds_year" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Erscheinungsjahr") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="[% msg.maketext("Erscheinungsjahr") %]">[% msg.maketext("Erscheinungsjahr") %]</a></li>
+[%   END %]
+[% END %]
+[% IF statistics.result_exists({ id => "jesuiten-4316", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_yearofaddition" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Zugangsjahr") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/yearofaddition.html?l=[% lang %]" title="[% msg.maketext("Zugangsjahr") %]">[% msg.maketext("Zugangsjahr") %]</a></li>
+[%   END %]
+[% END %]
+[% IF statistics.result_exists({ id => "jesuiten-470", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_placeofpublication" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Erscheinungsort") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/placeofpublication.html?l=[% lang %]" title="[% msg.maketext("Erscheinungsort") %]">[% msg.maketext("Erscheinungsort") %]</a></li>
+[%   END %]
+[% END %]   
+[% IF statistics.result_exists({ id => "jesuiten-471", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_publisherprinter" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Verlag/Drucker") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/publisherprinter.html?l=[% lang %]" title="[% msg.maketext("Verlag/Drucker") %]">[% msg.maketext("Verlag/Drucker") %]</a></li>
+[%   END %]
+[% END %]   
+[% IF statistics.result_exists({ id => "jesuiten-4308", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_provenanceperson" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Provenienz/Person") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/provenanceperson.html?l=[% lang %]" title="[% msg.maketext("Provenienz/Person") %]">[% msg.maketext("Provenienz/Person") %]</a></li>
+[%   END %]
+[% END %]   
+[% IF statistics.result_exists({ id => "jesuiten-4307", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_provenancecorporatebody" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Provenienz/Körperschaft") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/provenancecorporatebody.html?l=[% lang %]" title="[% msg.maketext("Provenienz/Körperschaft") %]">[% msg.maketext("Provenienz/Körperschaft") %]</a></li>
+[%   END %]
+[% END %]   
+ </ul>
+</nav>
+
+</div>
+</div>

@@ -1,0 +1,223 @@
+[% IF NOT hide_options %]
+<div class="ob-cartitems ob-reuse_data"><!-- Begin Reuse -->
+
+<h4>[% msg.maketext("Diese Merkliste") %]</h4>
+
+<div id="ob-title_actions" class="accordion"><!-- Begin Litlist -->
+
+  <div class="card">
+    <div class="card-header" id="headingActions">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseActions" data-toggle="collapse" data-target="#collapseActions" aria-expanded="true" aria-controls="collapseActions">
+          [% msg.maketext("Aktionen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseActions" class="collapse show" aria-labelledby="headingActions" data-parent="#ob-title_actions">
+      <div class="card-body">
+
+<div class="pt-2">
+<img src="[% config.get_icon('save',view,sysprofile) %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/save?format=Text" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a>
+</div>
+
+<div class="pt-2">
+<img src="[% config.get_icon('print',view,sysprofile) %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/print?format=short" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a>
+</div>
+
+[% IF user.ID %]
+<div class="pt-2">
+<img src="[% config.get_icon('mail',view,sysprofile) %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/mail?format=Text" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a><br/>
+</div>
+[% END %]
+<p />
+
+</div>
+</div>
+</div>
+</div>
+
+<div id="ob-formats" class="accordion"><!-- Begin Formats -->
+
+  <div class="card">
+    <div class="card-header" id="headingFormats">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseFormats" data-toggle="collapse" data-target="#collapseFormats" aria-expanded="false" aria-controls="collapseFormats">
+          [% msg.maketext("Andere Formate") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseFormats" class="collapse" aria-labelledby="headingFormats" data-parent="#ob-formats">
+      <div class="card-body">
+<p />
+<a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=short"[%- IF format == 'short' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>,  <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a>
+<p />
+</div>
+</div>
+</div>
+</div>
+
+<p/>
+
+<h4>[% msg.maketext("Ausgewählte Titel") %]</h4>
+
+
+<p />
+
+[% IF extended_actions == 1 %]
+
+[%    IF config.get('litlists') %]
+<div id="ob-litlists" class="accordion"><!-- Begin Litlist -->
+
+  <div class="card">
+    <div class="card-header" id="headingLitlists">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseLitlists" data-toggle="collapse" data-target="#collapseLitlists" aria-expanded="false" aria-controls="collapseLitlists">
+          [% msg.maketext("Literaturliste") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseLitlists" class="collapse" aria-labelledby="headingLitlists" data-parent="#ob-litlists">
+      <div class="card-body">
+[% 
+      litlists = [] ;
+      IF user.ID ;
+          litlists = user.get_litlists({ view => view });
+      END ;
+
+      IF litlists.size > 0 ;
+%]
+<p/>
+
+<h5>[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]</h5>
+
+<div class="form-group">
+<label for="litlistid">[% msg.maketext("Name") %]</label>
+<select class="form-control" name="litlistid" id="litlistid">
+[% FOREACH litlist IN litlists %]
+  <option value="[% litlist.id %]">[% litlist.title %]</option>
+[% END %]
+</select>
+</div>
+
+<button class="btn btn-primary mb-2" type="submit" name="do_litlists_addentry" value="1">[% msg.maketext("Los") %]</button>
+[%    END %]
+<p/>
+<hr/>
+<p/>
+
+<h5>[% msg.maketext("Anlegen einer neuen Literaturliste: ") %]</h5>
+
+<div class="form-group">
+<label for="title">[% msg.maketext("Name") %]</label>
+<input class="form-control" type="text" name="title" id="title" size="20" />
+</div>
+
+<div class="form-group">
+<label for="littype">[% msg.maketext("Typ") %]</label>
+<select class="form-control" name="littype" id="littype">
+  <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
+  <option value="2">[% msg.maketext("privat") %]</option>
+</select>
+</div>
+
+<button class="btn btn-primary mb-2" type="submit" name="do_addlitlist" value="1">[% msg.maketext("Los") %]</button>
+[% END %]
+</div> <!-- End: card-body -->
+
+</div> <!-- End: Listlist do -->
+</div><!-- End: Listlist -->
+</div>
+
+[%# IF user.ID %]
+[% username = user.get_username %]
+<div id="ob-tagging" class="accordion"><!-- Begin: Tagging -->
+
+  <div class="card">
+    <div class="card-header" id="headingTagging">
+      <h5 class="mb-0">
+        <a class="card-link" href="#collapseTagging" data-toggle="collapse" data-target="#collapseTagging" aria-expanded="false" aria-controls="collapseTagging">
+          [% msg.maketext("Tagging") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseTagging" class="collapse" aria-labelledby="headingTagging" data-parent="#ob-tagging">
+      <div class="card-body">
+<p/>
+[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> mit diesen Tags versehen:") %]
+
+<h5>[% msg.maketext("Eingabe neuer Tags") %]</h5>
+
+<div class="form-group">
+<label for"tags">[% msg.maketext("Tags") %]</label>
+<input class="form-control" type="text" name="tags" value="" size="20" maxlength="200" id="tags"/>
+</div>
+
+<div class="form-group">
+<label for="tags_type">[% msg.maketext("Typ") %]</label>
+<select class="form-control" name="tags_type" id="tags_type">
+  <option value="1">[% msg.maketext("&ouml;ffentlich") %]</option>
+  <option value="2">[% msg.maketext("privat") %]</option>
+</select>
+</div>
+
+<button class="btn btn-primary mt-1 mb-2" type="submit" name="do_addtags" value="1">[% msg.maketext("Hinzuf&uuml;gen") %]</button>
+
+[% private_tags = user.get_private_tags({ username => username  }) %]
+
+<p/>
+
+<h5>[% msg.maketext("Übernahme eigener Tags") %]</h5>
+
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%-   IF private_tags.size > 0 -%]
+<ol class="ob-cloud">
+[%-     FOREACH thisitem IN private_tags -%]
+[%        item      = thisitem.name;
+          itemcount = thisitem.count;
+          classnr   = thisitem.class;
+          itemid    = thisitem.id;
+          itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% msg.maketext("[_1] Titel sind
+verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'tags'); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+[%      END %]
+</ol>
+[%    ELSE %]
+[% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]
+[%    END %]
+
+</div><!-- End: Tagging do -->
+</div><!-- End: Tagging -->
+[%# END %]
+
+[%   END %]
+
+</div>  <!-- End: card-body -->
+</div>  <!-- End: card -->
+
+<p/>
+
+<p>
+
+<button class="btn btn-primary mt-1 mb-2" type="submit" name="do_cartitems_delentry" value="1">[% msg.maketext("Löschen") %]</button>
+
+</p>
+
+</div> <!-- End: Reuse Data -->
+[% END %]

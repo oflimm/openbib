@@ -1,0 +1,194 @@
+[%- # From OLWS
+
+result_ref = {
+            '$schema' = 'http://gbv.github.io/daia/daia.schema.json'
+            institution = {
+	         content = 'KUG Recherche-Infrastruktur'
+		 href = 'https://search.ub.uni-koeln.de/portal/api/home'
+	    }
+ 	    timestamp = timestamp
+	    version   = '0.1'
+	    items_src = items
+};
+
+documents_ref = [];
+
+FOREACH thisdoc IN items ;
+
+ resourceurl  = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${thisdoc.database}/${config.get('titles_loc')}/id/${thisdoc.id}";
+
+ newdoc_ref = {
+ 	    href = resourceurl
+ 	    id   = resourceurl
+ };
+
+ items_ref = [];
+
+ # ISILs bestimmen
+ FOREACH thiscirculation IN thisdoc.circulation ;
+     IF     thiscirculation.Zweigstelle == 0 ;
+
+        IF thiscirculation.Signatur.match('^2[4-9]A') || thiscirculation.Signatur.match('[3-9][0-9]A') ;
+           thiscirculation.ZweigAbteil = "Hauptabt. / SAB";
+        END ;      
+
+        IF thiscirculation.Signatur.match('^KS/V') ;
+           thiscirculation.LeihstatusText = "bestellbar (Nutzung nur im Lesesaal)";
+           thiscirculation.ZweigAbteil = "Hauptabt. / Magazin";
+        END ; 
+
+     END ;
+
+     IF thiscirculation.ZweigAbteil.match(' / ');
+            zweigabteil = thiscirculation.ZweigAbteil.split(' / ');
+            thiscirculation.ZweigName  = zweigabteil.0;
+            thiscirculation.AbteilName = zweigabteil.1;
+     END ;
+
+    library_isil = "";
+
+    IF thiscirculation.ZweigAbteil.match('Hauptabt.') || thiscirculation.ZweigAbteil.match('Humanwiss. Abteilung') ;
+       library_isil = "DE-38";
+    ELSIF thiscirculation.Zweigstelle.match('^[0-9][0-9][0-9]');
+       kuerzel = thiscirculation.Zweigstelle.match("^([0-9][0-9][0-9])").first ;
+       IF kuerzel ;
+          library_isil = "DE-38-${kuerzel}";
+       END ;
+    ELSIF thiscirculation.ZweigAbteil.match('VWL');
+       library_isil = "DE-38-101";
+    ELSIF thiscirculation.ZweigAbteil.match('Archäologisches Institut');
+       library_isil = "DE-38-427";
+    ELSIF thiscirculation.ZweigAbteil.match('Forschungsstelle Afrika');
+       library_isil = "DE-38-438";
+    ELSIF thiscirculation.ZweigAbteil.match('Institut für Ur- u. Frühgeschichte');
+       library_isil = "DE-38-426";
+    ELSIF thiscirculation.ZweigAbteil.match('China');
+       library_isil = "DE-38-450";
+    ELSIF thiscirculation.ZweigAbteil.match('Japanologie');
+       library_isil = "DE-38-459";
+    ELSIF thiscirculation.ZweigAbteil.match('Slavistik');
+       library_isil = "DE-38-418";
+    ELSIF thiscirculation.ZweigAbteil.match('Soziologie');
+       library_isil = "DE-38-132";
+    ELSIF thiscirculation.ZweigAbteil.match('Theaterwiss. Sammlung');
+       library_isil = "DE-38-429";
+    ELSIF thiscirculation.ZweigAbteil.match('Inst. für Medienkultur u. Theater');
+       library_isil = "DE-38-448";
+    ELSIF thiscirculation.ZweigAbteil.match('Philosophisches Seminar');
+       library_isil = "DE-38-401";
+    END ;
+
+    IF thiscirculation.ZweigAbteil.match('Historisches Institut \/ Osteuropäische Geschichte');
+       library_isil = "DE-38-425";
+    ELSIF thiscirculation.ZweigAbteil.match('Kunstgeschichte \/ Architekturgeschichte');
+       library_isil = "DE-38-445";
+    ELSIF thiscirculation.ZweigAbteil.match('Altertumskunde \/ Byzantinistik');
+       library_isil = "DE-38-460";
+    ELSIF thiscirculation.ZweigAbteil.match('Altertumskunde \/ Mittellatein und Neulatein');
+       library_isil = "DE-38-461";
+    END;
+
+    IF thisdoc.database.match('inst[0-9][0-9][0-9]') && NOT thisdoc.database.match('inst001');
+       library_isil = thisdoc.database.replace('inst','');
+       library_isil = "DE-38-${library_isil}";
+       thiscirculation.Zweigstelle = 0;
+    END;
+
+    locationurl  = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${library_isil}";
+
+    thisitem_ref = {
+      label = thiscirculation.Signatur
+      href  = resourceurl
+      id    = thiscirculation.MedienNr
+    };
+
+    IF thiscirculation.ZweigName && thiscirculation.AbteilName ;
+      thisitem_ref.department = {
+      	      content = thiscirculation.ZweigName
+	      href = locationurl
+	      id   = thiscirculation.Zweigstelle
+      };
+      thisitem_ref.storage = {
+      	      content = thiscirculation.AbteilName      
+      };
+    ELSE;
+      thisitem_ref.department = {
+      	      content = thiscirculation.ZweigAbteil
+	      href = locationurl
+	      id   = thiscirculation.Zweigstelle
+      };
+    END;
+
+    available_ref   = [];
+    unavailable_ref = [];
+    
+    IF thiscirculation.LeihstatusText == 'Präsenzbestand' ;
+      available_ref.push({service = 'presence'}) ;
+    ELSIF thiscirculation.LeihstatusText == 'bestellbar (Nutzung nur im Lesesaal)' ;
+      available_ref.push({
+           service = 'loan'
+	   limitation = [ {
+	        content = thiscirculation.LeihstatusText
+	        id = "http://purl.org/ontology/dso#Stationary"
+	   } ]
+      }) ;
+    ELSIF thiscirculation.LeihstatusText.match('bestellbar') || thiscirculation.LeihstatusText.match('verfügbar') ;
+      available_ref.push({service = 'order'}) ;
+    ELSIF thiscirculation.LeihstatusText == 'ausleihbar' ;
+      available_ref.push({service = 'loan'}) ;
+    ELSIF thiscirculation.LeihstatusText == 'nicht entleihbar' ;
+      available_ref.push({service = 'presence'}) ;
+    ELSIF thiscirculation.LeihstatusText == 'nur in bes. Lesesaal bestellbar' ;
+      available_ref.push({
+           service = 'order'
+	   limitation = [ {
+	        content = thiscirculation.LeihstatusText
+	        id = "http://purl.org/ontology/dso#Stationary"
+	   } ]
+      }) ;
+    ELSIF thiscirculation.LeihstatusText == 'nur Wochenende' ;
+      available_ref.push({
+           service = 'loan'
+	   limitation = [ {
+	        content = thiscirculation.LeihstatusText
+	        id = "http://purl.org/ontology/dso#ShortLoan"
+	   } ]
+      }) ;
+    ELSIF thiscirculation.LeihstatusText.match('entliehen') ;
+      this_unavailable_ref = {
+               service  = 'loan'
+	       expected = thiscirculation.RueckgabeDatum
+      };
+      
+      IF thiscirculation.VormerkAnzahl ;
+        this_unavailable_ref.queue = thiscirculation.VormerkAnzahl ;
+      END;
+      unavailable_ref.push(this_unavailable_ref) ;
+    ELSIF thiscirculation.LeihstatusText.match('vermisst') ;
+      this_unavailable_ref = {
+               service = 'loan'
+      };
+      unavailable_ref.push(this_unavailable_ref) ;
+    END ;
+
+    IF available_ref.size > 0 ;
+      thisitem_ref.available = available_ref;
+    END;
+
+    IF unavailable_ref.size > 0 ;
+      thisitem_ref.unavailable = unavailable_ref;
+    END;
+
+    items_ref.push(thisitem_ref);
+ END;
+
+ newdoc_ref.item = items_ref;
+
+ documents_ref.push(newdoc_ref);
+END;
+
+result_ref.documents = documents_ref;
+
+to_json(result_ref);
+
+-%]

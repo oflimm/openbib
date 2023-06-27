@@ -1,0 +1,52 @@
+[%- PROCESS common/subtemplate name="local_config" -%]
+[%# USE dumper;dumper.dump(public_litlists)%]
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = 'Öffentliche Literaturlisten anzeigen'
+
+      'main_template' = 'litlists_recent_html'
+      'sidebar_template' = 'litlists_navigation'
+
+      'active_submenu' = 'litlists_recent'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Literaturlisten')
+	     url  = "${path_prefix}/${config.get('home_loc')}/${config.get('litlists_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Zuletzt angelegt')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('litlists_loc')}/recent.json?l=${lang}"
+	  },
+          {
+	     type = 'rss'
+	     url  = "${path_prefix}/${config.get('litlists_loc')}/recent.rss?l=${lang}"
+	  },
+       ]
+    };
+
+    show_foot_banner = 1 ;
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="litlists_recent_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="litlists_recent_json" -%]
+[%- ELSIF representation == 'rss' -%]
+[%- PROCESS common/subtemplate name="litlists_recent_rss" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="litlists_recent_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

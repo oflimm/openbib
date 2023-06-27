@@ -1,0 +1,43 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%
+
+  dbdesc   = dbinfo.get('dbnames').${database}.short ;
+  normset  = record.to_rawdata;   
+
+  recordname = normset.${'C0800'}.first.content;
+
+  IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = msg.maketext("Körperschafts-Information: [_1] in Katalog [_2]",recordname,dbdesc)
+
+      'main_template' = 'corporatebodies_record_html'
+
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext("Körperschaft")
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${record.id}.json?l=${lang}"
+	  }
+       ]
+    };
+%]
+[%- PROCESS common/subtemplate name="layout_html"  -%]
+[% ELSIF representation == 'json' %]
+[%- PROCESS common/subtemplate name="corporatebodies_record_json" -%]
+[% ELSIF representation == 'include' %]
+[%- PROCESS common/subtemplate name="corporatebodies_record_include" -%]
+[% ELSIF representation == 'rdf' %]
+[%- PROCESS common/subtemplate name="corporatebodies_record_rdf" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

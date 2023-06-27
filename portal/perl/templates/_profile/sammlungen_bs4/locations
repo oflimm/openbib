@@ -1,0 +1,58 @@
+[%#-
+#######################################################################
+#
+# Templatename: locations
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Kataloge
+# mit ihren wichtigsten Informationen
+#
+# Einrichtung eines neuen Kataloges
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = 'Standorte'
+
+      'main_template' = 'locations_html'
+
+      'jump_top' = 1
+
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Standorte')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      'representations' = [
+          {
+	     type = 'csv'
+	     url  = "${path_prefix}/${config.get('locations_loc')}.csv?l=${lang}"
+	  }
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('locations_loc')}.json?l=${lang}"
+	  }
+       ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'csv' -%]
+[%- PROCESS common/subtemplate name="locations_csv" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="locations_include" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="locations_json" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

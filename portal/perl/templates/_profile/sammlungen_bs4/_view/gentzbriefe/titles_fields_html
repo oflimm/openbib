@@ -1,0 +1,55 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+
+[%- categories = [
+                'T0100', # msg.maketext("T0100-gentzdigital") Briefaussteller
+                'T0101', # msg.maketext("T0101-gentzdigital") Briefempfaenger
+                'T0200', # msg.maketext("T0200-gentzdigital")
+                'T0334', # msg.maketext("T0334-gentzdigital")
+                'T0335', # msg.maketext("T0335-gentzdigital") Incipit  
+                'T0336', # msg.maketext("T0336-gentzdigital")  
+                'T0410', # msg.maketext("T0410-gentzdigital") Aufstellungsort
+                'T0412', # msg.maketext("T0412-gentzdigital") Handschriftl. Ueberlieferung
+                'T0413', # msg.maketext("T0413-gentzdigital")
+                'T0424', # msg.maketext("T0424-gentzdigital") Datum
+                'T0433', # msg.maketext("T0433-gentzdigital") Format/Umfang
+                'T0451', # msg.maketext("T0451-gentzdigital") 
+                'T0480', # msg.maketext("T0480-gentzdigital") 
+                'T0482', # msg.maketext("T0482-gentzdigital") 
+                'T0490', # msg.maketext("T0490-gentzdigital") 
+                'T0491', # msg.maketext("T0491-gentzdigital") 
+                'T0590', # msg.maketext("T0590-gentzdigital") Druckpublikationen
+                'T0594', # msg.maketext("T0594-gentzdigital") Druckorte
+                'T0800', # msg.maketext("T0800-gentzdigital") Brieftyp
+                #'T1664', # msg.maketext("T1664-gentzdigital") 
+                ]
+
+-%]
+
+<h2>Felder</h2>
+
+<ul class="list-group">
+
+[%# USE dumper;dumper.dump(fields)%]
+[% FOREACH category IN categories ;
+   thiscategory = category ;
+   IF config.get('categorymapping').${database}.$category ;
+     thiscategory = "${category}-${database}" ;
+   END;
+%]
+[%  IF fields.${category.replace('T','')}%]
+<li class="list-group-item"><strong>[% category.replace('T','') %]</strong> <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% category.replace('T','') %].html?l=[% lang %]">[% msg.maketext("${thiscategory}") %]</a></li>
+[%  END %]
+[% END %]
+</ul>

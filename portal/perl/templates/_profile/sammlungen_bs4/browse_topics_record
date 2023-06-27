@@ -1,0 +1,47 @@
+[%- PROCESS common/subtemplate name="local_config" -%]
+[%- thistopic = user.get_topic({ id => topicid }); #USE dumper;dumper.dump(thistopic) -%]
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = "Themengebiet '${thistopic.name}' anzeigen"
+
+      'main_template' = 'browse_topics_record_html'
+
+      'active_menu' = 'register'
+
+      'jump_top' = 1
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Browsen')
+	     url  = "${path_prefix}/${config.get('browse_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Themengebiete')
+	     url  = "${path_prefix}/${config.get('browse_loc')}/${config.get('topics_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = thistopic.name
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('browse_loc')}/${config.get('topics_loc')}/id/${topicid}.json?l=${lang}"
+	  },
+       ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="browse_topics_record_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="browse_topics_record_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

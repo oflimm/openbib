@@ -1,0 +1,98 @@
+[%#-
+#######################################################################
+#
+# Templatename: topic_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Themengebietes
+#
+#######################################################################
+-%]
+[%
+  bks         = config.load_bk;
+
+  bklist = [];
+  FOREACH bk IN bks;
+    IF bk.key.length == 2;
+      thisbk = {
+        classification   => bk.key,
+        desc             => bk.value,
+      };
+      bklist.push(thisbk);
+    END ;
+  END ;
+
+%]
+
+<h3>[% topic.id %] - [% topic.name %] [% IF topic.description %]([% topic.description %])[% END %]</h3>
+
+          <div class="row">
+            <div class="col-md-4 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><a href="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/bk.html?l=[% lang %]">[% msg.maketext("Zuordnung") %]: [% msg.maketext("Basisklassifikation") %]</a></div>
+
+<div class="card-body">
+
+<ul class="list-group">
+[%
+   type == "bk";
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[%  FOREACH bk IN bklist %]
+[%   IF classification_selected.${bk.classification}  %]<li class="list-group-item">[% bk.classification %] [% bk.desc %]</li>[% END %]
+[%  END %]
+</ul>
+</div>
+</div>
+            </div>
+            <div class="col-md-4 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><a href="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/ezb.html?l=[% lang %]">[% msg.maketext("Zuordnung") %]: [% msg.maketext("Elektronische Zeitschriftenbibliothek") %]</a></div>
+<div class="card-body">
+
+<ul class="list-group">
+[%
+   mapping = cgiapp.get_mapping_by_id("ezb");
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => "ezb", topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[%  FOREACH thisclassification IN mapping.get_classifications %]
+[%   IF classification_selected.${thisclassification.name}  %]<li class="list-group-item">[% thisclassification.name %] [% thisclassification.desc %]</li>[% END %]
+[%  END %]
+</ul>
+</div>
+</div>
+            </div>
+            <div class="col-md-4 mt-2">
+
+
+<div class="card h-100">
+<div class="card-header"><a href="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/dbis.html?l=[% lang %]">[% msg.maketext("Zuordnung") %]: [% msg.maketext("DBIS") %]</a></div>
+<div class="card-body">
+
+<ul class="list-group">
+[%
+   mapping = cgiapp.get_mapping_by_id("dbis");
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => "dbis", topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[%  FOREACH thisclassification IN mapping.get_classifications %]
+[%   IF classification_selected.${thisclassification.name}  %]<li class="list-group-item">[% thisclassification.name %] [% thisclassification.desc %]</li>[% END %]
+[%  END %]
+</ul>
+</div>
+</div>
+            </div>
+            </div>

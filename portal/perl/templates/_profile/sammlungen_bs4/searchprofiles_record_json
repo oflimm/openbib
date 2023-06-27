@@ -1,0 +1,38 @@
+[%- 
+
+searchprofile_databases = config.get_databases_of_searchprofile(searchprofile.id);
+
+databases = [];
+
+FOREACH database IN searchprofile_databases ;
+      thisdatabase = {
+         link = {
+                 rel = 'self'
+                 href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${database}.json"
+         }
+         id                = database
+         description       = dbinfo.get('dbnames').${database}.full
+         description_short = dbinfo.get('dbnames').${database}.short
+         schema            = dbinfo.get('schema').${database}
+         url               = dbinfo.get('urls').${database}                          
+      };
+
+      databases.push(thisdatabase);
+END;
+
+this_json_output = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('searchprofiles_loc')}/id/${searchprofile.id}.json"
+     }
+
+     id = searchprofile.id
+     own_index = searchprofile.own_index
+     number_of_databases = databases.size
+
+     databases = databases 
+};
+
+to_json(this_json_output);
+
+-%]

@@ -1,0 +1,58 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+
+<form method="post" action="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]">
+<input type="hidden" name="_method"    value="PUT" />
+
+<h1 class="display-5">[% msg.maketext("Cluster bearbeiten") %]</h1>
+
+<div class="form-group">
+<label for="id">[% msg.maketext("Id") %]</label>
+<span class="form-control">[% clusterinfo.id %]</span>
+</div>
+
+<div class="form-group">
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<input class="form-control" type="text" name="description" id="description" value="[% clusterinfo.description %]"/>
+</div>
+
+<div class="form-group">
+<label for="status">[% msg.maketext("Status") %]</label>
+  <select class="form-control" name="status" id="status">
+     <option value="updatable" [% IF clusterinfo.status == 'updatable' %]selected="selected"[% END %]>[% msg.maketext("Akualisierbar") %]</option>
+     <option value="updating" [% IF clusterinfo.status == 'updating' %]selected="selected"[% END %]>[% msg.maketext("Aktualisieren") %]</option>
+     <option value="updated" [% IF clusterinfo.status == 'updated' %]selected="selected"[% END %]>[% msg.maketext("Fertig mit Aktualisierung") %]</option>
+     <option value="searchable" [% IF clusterinfo.status == 'searchable' %]selected="selected"[% END %]>[% msg.maketext("Recherchierbar") %]</option>
+  </select>
+</div>
+
+<div class="form-group">
+<label for="active">[% msg.maketext("Aktiv") %]</label>
+  <select class="form-control" name="active" id="active">
+     <option value="true" [%- IF clusterinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Ja") %]</option>
+     <option value="false" [%- IF NOT clusterinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Nein") %]</option>
+  </select>
+</div>
+
+<button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+&nbsp;&nbsp;&nbsp;
+
+[%- IF user.has_right({scope = 'admin_clusters', right = 'right_delete'}) -%]
+&nbsp;&nbsp;&nbsp;
+
+<a class="btn btn-primary mb-2" role="button" href="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+[%- END -%]
+
+</form>

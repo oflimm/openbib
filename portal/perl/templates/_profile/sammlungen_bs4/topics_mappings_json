@@ -1,0 +1,119 @@
+[%#-
+#######################################################################
+#
+# Templatename: topic_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Themengebietes
+#
+#######################################################################
+-%]
+[%-
+
+bks         = config.load_bk;
+
+bklist = [];
+FOREACH bk IN bks;
+  IF bk.key.length == 2;
+    thisbk = {
+      classification   => bk.key,
+      desc             => bk.value,
+    };
+    bklist.push(thisbk);
+  END ;
+END ;
+
+all_mappings = [] ;
+
+# Basisklassifikation
+
+this_mapping = {
+   link = {
+        rel = 'self'
+        href = "${scheme}://${servername}${path_prefix}/${config.get('topics_loc')}/id/${topic.id}/mappings/id/bk.json?l=${lang}"
+   }
+   type = 'bk'
+   classifications = []
+};
+
+type == "bk";
+classification_selected = {};
+FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
+   classification_selected.${classification} = 1;
+END;
+
+FOREACH bk IN bklist;
+  IF classification_selected.${bk.classification} ;
+     this_mapping.classifications.push({classification = bk.classification, description = bk.desc});
+  END;
+END;
+all_mappings.push(this_mapping);
+
+# EZB
+
+this_mapping = {
+   link = {
+        rel = 'self'
+        href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('topics_loc')}/id/${topic.id}/mappings/id/ezb.json?l=${lang}"
+   }
+   type = 'ezb'
+   classifications = []
+};
+
+type == "ezb";
+mapping = cgiapp.get_mapping_by_id("ezb");   
+classification_selected = {};
+FOREACH classification IN user.get_classifications_of_topic({ type => 'ezb', topicid => topic.id});
+   classification_selected.${classification} = 1;
+END;
+
+FOREACH thisclassification IN mapping.get_classifications;
+  IF classification_selected.${thisclassification.name} ;
+     this_mapping.classifications.push({classification = thisclassification.name, description = thisclassification.desc});
+  END;
+END;
+
+all_mappings.push(this_mapping);
+
+# DBIS
+
+this_mapping = {
+   link = {
+        rel = 'self'
+        href = "${scheme}://${servername}${path_prefix}/${config.get('topics_loc')}/id/${topic.id}/mappings/id/dbis.json?l=${lang}"
+   }
+   type = 'dbis'
+   classifications = []
+};
+
+type == "dbis";
+mapping = cgiapp.get_mapping_by_id("dbis");   
+classification_selected = {};
+FOREACH classification IN user.get_classifications_of_topic({ type => 'dbis', topicid => topic.id});
+   classification_selected.${classification} = 1;
+END;
+
+FOREACH thisclassification IN mapping.get_classifications;
+  IF classification_selected.${thisclassification.name} ;
+     this_mapping.classifications.push({classification = thisclassification.name, description = thisclassification.desc});
+  END;
+END;
+
+all_mappings.push(this_mapping);
+
+this_json_output = {
+     topic    = topic
+
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('topics_loc')}/id/${topic.id}/mappings.json?l=${lang}"
+     }
+     mappings = all_mappings
+};
+
+to_json(this_json_output) ;
+
+-%]

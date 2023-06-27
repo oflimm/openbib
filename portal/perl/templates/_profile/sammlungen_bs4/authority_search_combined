@@ -1,0 +1,32 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_databases
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Kataloge
+# mit ihren wichtigsten Informationen
+#
+# Einrichtung eines neuen Kataloges
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' -%]
+[%- PROCESS common/subtemplate name="authority_search_combined_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="authority_search_combined_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="authority_search_combined_json" -%]
+[%- ELSIF representation == 'txt' -%]
+[%- PROCESS common/subtemplate name="authority_search_combined_txt" -%]
+[%- ELSIF representation == 'rss' -%]
+[%- PROCESS common/subtemplate name="authority_search_combined_rss" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="authority_search_combined_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

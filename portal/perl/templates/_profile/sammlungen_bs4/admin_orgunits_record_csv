@@ -1,0 +1,10 @@
+[%-
+
+x = csv.print(r,['Katalogname','Beschreibung','Gemeldete_Monographien','Gesamtzahl_erfasster_Titel','Davon_Zeitschriften_Serien','Davon_Aufsaetze','Davon_elektronisch']);
+
+FOREACH thisorgunitdb IN orgunitinfo.search_related("orgunit_dbs", {}, {} ) ;
+x = csv.print(r,[thisorgunitdb.dbid.dbname,thisorgunitdb.dbid.description,thisorgunitdb.dbid.locationid.search_related("locationinfo_fields",{ field => 120},{ column => 'content'}).first.content,thisorgunitdb.dbid.allcount,thisorgunitdb.dbid.journalcount,thisorgunitdb.dbid.articlecount,thisorgunitdb.dbid.digitalcount]);
+END ;
+
+-%]
+[%- r.print_buffer -%]

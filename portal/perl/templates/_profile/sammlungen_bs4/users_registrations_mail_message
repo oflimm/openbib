@@ -1,0 +1,26 @@
+[%#-
+#######################################################################
+#
+# Templatename: registrations_mail_confirmation
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Mailtext mit Freischaltlink als Registrierungs-Bestaetigung
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+
+Sehr geehrter Nutzer,
+
+sie haben sich heute im Portal "[% config.get_viewdesc_from_viewname(view) %]" selbst registriert.
+
+Ihre Registrierung wird wirksam, wenn Sie den folgenden URL aufrufen:
+
+[% scheme %]://[% servername %][% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %]/id/[% registrationid %]
+
+Mit freundlichen Gruessen
+
+Das Portal-Team

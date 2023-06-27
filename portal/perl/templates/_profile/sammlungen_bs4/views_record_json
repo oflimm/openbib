@@ -1,0 +1,39 @@
+[%- 
+
+databases = [];
+FOREACH item IN config.get_viewdbs(viewinfo.viewname).sort ;
+  databases.push({
+          link = {
+              rel = 'self'
+              href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${item}.json?l=${lang}"
+          }
+
+          id     = item
+          dbname = item
+          description       = dbinfo.get('dbnames').${item}.full
+          description_short = dbinfo.get('dbnames').${item}.short
+          schema = dbinfo.get('schema').${item}
+});
+END ;
+
+
+thisviewinfo = {
+  link = {
+        rel = 'self'
+        href = "${scheme}://${servername}${path_prefix}/${config.get('views_loc')}/id/${viewinfo.viewname}.json?l=${lang}"
+  }
+
+  id          = viewinfo.viewname
+  viewname    = viewinfo.viewname
+  description = viewinfo.description
+  profilename = viewinfo.profileid.profilename
+  stripuri    = viewinfo.stripuri
+  active      = viewinfo.active
+  databases   = databases
+  servername  = viewinfo.servername
+  start_loc   = viewinfo.start_loc
+};
+
+to_json(thisviewinfo);
+
+-%]

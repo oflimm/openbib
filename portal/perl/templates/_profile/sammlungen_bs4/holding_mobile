@@ -1,0 +1,47 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_digibib_holding
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Exemplar-Informationen aus den bibliograph. Daten
+#
+#######################################################################
+-%]
+[% IF circulation.size <= 0 %]
+<table class="ym-full">
+<thead>
+<tr align="center"><th>[% msg.maketext("Bibliothek") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Bestand") %]</th></tr>
+</thead>
+<tbody>
+[% FOREACH thisholding IN holding %]
+<tr align="center"><td><strong>
+[%- IF thisholding.${"X4000"}.content && thisholding.${"X4001"}.content -%]
+[%-   thisdbname = thisholding.${"X4000"}.content.dbname -%]
+[%-   IF dbinfo.get('locationid').${record.database}.identifier %]
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database}.identifier %].html?l=[% lang %]">
+[%-   ELSE -%]
+<a href="[% thisholding.${"X4001"}.content %]" target="_blank">
+[%-   END -%]
+[% thisholding.${"X4000"}.content.full %]</a>
+[%- ELSE -%]
+[% thisholding.${"X4000"}.content.full %]
+[%- END -%]
+</strong>
+</td>
+[%-
+
+  title    = normset.${"T0331"}.first.content ;
+  IF  normset.${"T0310"}.first.content ;
+     title = normset.${"T0310"}.first.content ;
+  END ;
+
+-%]
+<td>[% thisholding.${"X0016"}.content %]</td><td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong></td><td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]</td></tr>
+[% END %]
+</tbody>
+</table>
+[% END %]

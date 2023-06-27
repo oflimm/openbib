@@ -1,0 +1,123 @@
+<script language="JavaScript" type="text/javascript" src="/js/jquery.ihavecookies.js?7"></script>
+
+<script>
+    $(document).ready(function() {
+        $('body').ihavecookies({
+            title: '&#x1F36A; Aktzeptieren von Cookies',
+            message: 'Für eine bestmögliche und vollständige Nutzbarkeit verwendet diese Webseite Cookies. Um fortzufahren müssen Sie der Verwendung von Cookies ausdr&uuml;cklich zustimmen - ansonsten deaktivieren Sie bitte die lokale Speicherung von Cookies in Ihren Browsereinstellungen. Weitere Informationen finden Sie in unserer ',
+            delay: 60,
+            expires: 30,
+            link: '[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.html?l=[% lang %]',
+    	    listLabelTitle: 'Diese Cookies sind absolut notwending, damit die Webseite korrekt funktioniert.',
+	    listLabelNecessary: 'Absolut notwendige Session-Cookies',
+	    titleSelection: 'Wählen Sie die von Ihnen aktzeptierten Cookies aus',
+
+            cookieTypes: [
+            ],
+	    
+    	    noSelection: 1,
+
+            uncheckBoxes: true,
+            acceptBtnLabel: 'Cookies aktzeptieren',
+            moreInfoLabel: 'Datenschutzerkl&auml;rung',
+            advancedBtnLabel: 'Cookies ausw&auml;hlen'
+        });
+    });
+</script>
+
+<style type="text/css">
+    #gdpr-cookie-message li {
+        list-style: none;
+        margin-bottom: 10px;
+    }
+    #gdpr-cookie-message li:last-child {
+        margin-bottom: 0;
+    }
+    
+    /* Cookie Dialog */
+    #gdpr-cookie-message {
+        display: table;
+        position: fixed;
+	color: black;
+        top: 5px;
+        left: 0px;
+	right: 5px;
+        max-width: auto;
+        background-color: #dfe2e8;
+        padding: 5px;
+        border-radius: 5px;
+        box-shadow: 0 6px 6px rgba(0,0,0,0.25);
+        margin-left: 10px;
+    }
+    #gdpr-cookie-message h4 {
+        display: none;
+        font-size: 18px;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+    #gdpr-cookie-message h5 {
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+    #gdpr-cookie-message p {
+        display: table-cell;
+	padding: 5px;
+        width: 80%;
+        text-align: left;
+        color: black;
+        font-size: 15px;
+        line-height: 1.5em;
+    }
+    #gdpr-cookie-message ul {
+        color: black;
+        font-size: 15px;
+        line-height: 1.5em;
+    }
+    #gdpr-cookie-message p:last-child {
+	width: 15em;
+	vertical-align: middle;
+        text-align: right;
+    }
+    #gdpr-cookie-message li {
+        width: 49%;
+        display: inline-block;
+    }
+    #gdpr-cookie-message a {
+        text-decoration: none;
+        font-size: 15px;
+        padding-bottom: 2px;
+        border-bottom: 1px dotted rgba(255,255,255,0.75);
+        transition: all 0.3s ease-in;
+    }
+    #gdpr-cookie-message a:hover {
+        color: black;
+        border-bottom-color: var(--red);
+        transition: all 0.3s ease-in;
+    }
+    #gdpr-cookie-message button {
+        border: none;
+        font-size: 15px;
+        padding: 7px;
+        border-radius: 3px;
+/*        margin-left: 15px; */
+        cursor: pointer;
+/*        transition: all 0.3s ease-in; */
+    }
+    #gdpr-cookie-message button:hover {
+        background: lightgrey;
+        transition: all 0.3s ease-in;
+    }
+    button#gdpr-cookie-advanced {
+        background: white;
+    }
+    #gdpr-cookie-message button:disabled {
+        opacity: 0.3;
+    }
+    #gdpr-cookie-message input[type="checkbox"] {
+        float: none;
+        margin-top: 0;
+        margin-right: 5px;
+    }
+</style>
+

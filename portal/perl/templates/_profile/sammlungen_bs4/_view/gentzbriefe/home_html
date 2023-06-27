@@ -1,0 +1,134 @@
+[%#-
+#######################################################################
+#
+# Templatename: home
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Portalinformationen
+#
+#######################################################################
+-%]
+
+<div class="jumbotron jumbotron-fluid mb-0 landing-page-img">
+  <div class="container container-fluid" style="margin-top: 50px!important;">
+
+    <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+    <div class="card border-0 d-none d-md-block" style="min-width: 100%!important;">
+
+	<input type="hidden" name="num"        value="20" />
+	<input type="hidden" name="page"       value="1" />
+	<input type="hidden" name="l"          value="[% lang %]" />
+	
+	<input type="hidden" name="srt"        value="relevance_desc" />
+	<input type="hidden" name="st"         value="1" />
+	<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+        <div class="card-header p-0 border-0">
+	  
+          <div id="search_wrapper" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
+            <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="Suchbegriffe" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
+            <div class="input-group-append">
+              <button type="submit" class="input-group-text ob-bg ob-border" aria-label="Suche abschicken">
+                <i class="fas fa-search text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="d-md-flex justify-content-end d-none bg-transparent" style="width: 95%">
+      <div class="btn-group btn-group-sm d-none d-md-block">
+              <a class="dropdown-toggle btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="#" id="navbarDropdownMenuLinkfull" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">[% msg.maketext("Register") %]</a>
+             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinkfull">
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Jahre") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Aussteller") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0101.html?l=[% lang %];page=1">[% msg.maketext("Empfänger") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0410.html?l=[% lang %];page=1">[% msg.maketext("Ausstellungsorte") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0412.html?l=[% lang %];page=1">[% msg.maketext("Archive") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0590.html?l=[% lang %];page=1">[% msg.maketext("Druckpublikationen") %]</a></li>
+             </ul>
+	     
+        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">
+          <i class="fas fa-search-plus"></i> [% msg.maketext("Selektive Suche") %]
+        </a>
+<!--        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/[% config.get('titles_loc') %].html?l=[% lang %];facets=mediatype,year,provenance,person,corporatebody,language,custom1,custom2,custom3,custom4,custom5">
+          <i class="fas fa-th-list"></i> [% msg.maketext("Alle Titel") %]
+        </a> -->
+      </div>
+    </div>
+    <div class="d-flex justify-content-center d-md-none">
+      <div class="btn-group btn-group-sm d-none d-md-block">
+              <a class="dropdown-toggle btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="#" id="navbarDropdownMenuLinksmall" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">[% msg.maketext("Register") %]</a>
+             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLinksmall">
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Jahre") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Aussteller") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0101.html?l=[% lang %];page=1">[% msg.maketext("Empfänger") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0410.html?l=[% lang %];page=1">[% msg.maketext("Ausstellungsorte") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0200.html?l=[% lang %];page=1">[% msg.maketext("Archive") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0590.html?l=[% lang %];page=1">[% msg.maketext("Druckpublikationen") %]</a></li>
+             </ul>
+         <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;"  href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">
+          <i class="fas fa-search-plus"></i> [% msg.maketext("Selektive Suche") %]
+        </a>
+<!--        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/[% config.get('titles_loc') %].html?l=[% lang %];facets=mediatype,year,provenance,person,corporatebody,language,custom1,custom2,custom3,custom4,custom5">
+          <i class="fas fa-th-list"></i> [% msg.maketext("Alle Titel") %]
+        </a> -->
+      </div>
+    </div>
+    </form>      
+  </div>
+</div>
+
+<div class="container pb-5">
+
+<div class="row justify-content-end">
+
+<div class="col-md-3 pl-1 pr-1 pb-2">
+<div class="card mt-5 mb-0 h-100">
+<div class="card-header pb-2 text-center ob-bg-secondary"><i class="fas fa-info fa-2x"></i></div>
+<div class="card-body p-0 ob-bg-secondary">
+<h5 class="card-title p-3 mt-4 text-center">[% msg.maketext("Zur Entstehung des Verzeichnisses") %]</h5>
+<a class="btn btn-primary ml-3" href="[% path_prefix %]/[% config.get('info_loc') %]/editorial.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
+</div>
+</div>
+<div class="col-md-3 pl-1 pr-1 pb-2">
+<div class="card mt-5 mb-0 h-100">
+<div class="card-header pb-2 text-center ob-bg-secondary"><i class="fas fa-info fa-2x"></i></div>
+<div class="card-body p-0 ob-bg-secondary">
+<h5 class="card-title p-3 mt-4 text-center">[% msg.maketext("Informationen zur Nutzung") %]</h5>
+<!--<p class="card-text">Vita, Hinweise, Quellen</p> -->
+<a class="btn btn-primary ml-3" href="[% path_prefix %]/[% config.get('info_loc') %]/verzeichnis.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
+</div>
+</div>
+
+<div class="col-md-3 pl-1 pr-1 pb-2">
+<div class="card mt-5 mb-0 h-100">
+<div class="card-header pb-2 text-center ob-bg-tertiary"><i class="fas fa-list-ul fa-2x"></i></div>
+<div class="card-body p-0 ob-bg-tertiary">
+<h5 class="card-title p-3 mt-4 text-center text-black">[% msg.maketext("Gesamtverzeichnis Briefe von und an Friedrich Gentz") %]</h5>
+<!-- <p class="card-text">Ansprechpartner, "Team Gentz"</p> -->
+<a class="btn btn-primary ml-3" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/[% config.get('titles_loc') %].html?l=[% lang %];facets=mediatype,year,provenance,person,corporatebody,language,custom1,custom2,custom3,custom4,custom5">[% msg.maketext("Mehr") %]</a></div>
+</div>
+</div>
+
+<div class="col-md-3 pl-1 pr-1 pb-2">
+<div class="card mt-5 mb-0 h-100">
+<div class="card-header pb-2 text-center ob-bg-secondary"><i class="fab fa-hubspot fa-2x"></i></div>
+<div class="card-body p-0 ob-bg-secondary">
+<h5 class="card-title p-3 mt-4 text-center">[% msg.maketext("Korrespondenznetzwerke um 1800: Zur Bedeutung des Friedrich Gentz") %]</h5>
+<!-- <p class="card-text">Ansprechpartner, "Team Gentz"</p> -->
+<a class="btn btn-primary ml-3" href="[% path_prefix %]/[% config.get('info_loc') %]/netzwerk.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
+</div>
+</div>
+
+
+</div>
+</div>
+
+<div class="container mt-5">
+
+[% config.get_templatetext('home',view,lang) %]
+
+</div><!-- End: container -->
+

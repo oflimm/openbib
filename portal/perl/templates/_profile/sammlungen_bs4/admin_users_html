@@ -1,0 +1,99 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_user
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsseite zur Nutzerverwaltung
+#
+#######################################################################
+-%]
+
+[% IF user.has_right({scope = 'admin_users', right = 'right_create'}) %]
+
+<div id="new_item" class="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          [% msg.maketext("Neuen Nutzer anlegen") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#new_item">
+      <div class="card-body">
+<form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]">
+
+<div class="form-group">
+<label for="dbname">[% msg.maketext("Kennung") %]</label>
+<input class="form-control" type="text" name="username" id="username" size="8" />
+</div>
+
+<div class="form-group">
+<label for="password">[% msg.maketext("Passwort") %]</label>
+<input class="form-control" type="password" name="password" id="password" size="20" />
+</div>
+
+<div class="form-group">
+<label for="password_again">[% msg.maketext("Passwort (wiederholt)") %]</label>
+<input class="form-control" type="password" name="password_again" id="password_again" size="20" />
+</div>
+
+<div class="form-group">
+<label for="view">[% msg.maketext("Portal") %]</label>
+<select class="form-control" name="viewid" size="15">
+[% FOREACH thisview IN views %]
+  <option value="[% thisview.id %]">[% thisview.viewname %] - [% thisview.description %]</option>
+[% END %]
+</select>
+</div>
+
+<button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
+
+</form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p />
+[% END # right_create %]
+
+<form method="get" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/search.html">
+<input type="hidden" name="l" value="[% lang %]"/>
+
+<h3>[% msg.maketext("Nutzer suchen") %]</h3>
+
+<div class="form-group">
+<label for="username">[% msg.maketext("Kennung") %]</label>
+<input class="form-control" type="text" name="username" id="username"  value=""/>
+</div>
+
+<button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Los") %]</button>
+
+</form>
+
+<p />
+
+<h3>[% msg.maketext("Nutzer mit Rollen") %]</h3>
+
+<ul class="list-group">
+[% FOREACH role IN user.get_all_roles %]
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/search.html?l=[% lang %];roleid=[% role.id %]">[% role.description %]</a></li>
+[% END %]
+</ul>
+
+<p/>
+
+<h3>[% msg.maketext("Allgemeine Angaben") %]</h3>
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<tr><td>[% msg.maketext("Anzahl der Nutzer") %]</td><td><b>[% user.get_number_of_users %]</b></td><td></td></tr>
+<tr><td>[% msg.maketext("Anzahl der Suchprofile von Nutzern") %]</td><td><b>[% user.get_number_of_dbprofiles %]</b></td><td></td></tr>
+<tr><td>[% msg.maketext("Anzahl der Merklisten von Nutzern (Eintr&auml;ge/Nutzer)") %]</td><td><b>[% user.get_number_of_collection_entries %] / [% user.get_number_of_collections %]</b></td><td></td></tr> 
+</table>
+</div>

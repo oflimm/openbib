@@ -1,0 +1,45 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = "Tags"
+
+      'main_template' = 'tags_html'
+#      'sidebar_template' = 'clouds_navigation'
+
+      'active_menu' = 'tag'
+#      'active_submenu' = 'clouds_choice'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+      	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+      	  },
+      	  {
+      	     desc = msg.maketext('Tags')
+      	     url  = '#'
+      	     current = 1
+      	  }
+      ]
+      # 'representations' = [
+      #     {
+      # 	     type = 'json'
+      # 	     url  = "${path_prefix}/${config.get('tags_loc')}.json?l=${lang}"
+      # 	  },
+      #  ]
+    };
+
+   disable_cache_control = 1 ;
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="tags_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="tags_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="tags_include" -%]
+[%- ELSIF representation == 'bibtex' -%]
+[%- PROCESS common/subtemplate name="tags_bibtex" -%]
+[%- ELSIF representation == 'refer' -%]
+[%- PROCESS common/subtemplate name="tags_refer" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

@@ -1,0 +1,45 @@
+[%-
+
+view_db_map = {};
+
+FOREACH dbname IN config.get_viewdbs(view);
+  view_db_map.${dbname} = 1;
+END;
+
+all_databases = [] ;
+FOREACH database IN databases ;
+  this_databaseinfo = {
+    link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${database.dbname}.json?l=${lang}"
+    }
+    id          = database.dbname
+    description = database.description
+    active      = database.active
+    dbname      = database.dbname
+    system      = database.system
+    schema      = database.schema
+    sigel       = database.sigel
+    url         = database.url
+#    autoconvert = database.autoconvert
+#    count_all      = database.allcount
+#    count_digital  = database.digitalcount
+#    count_journals = database.journalscount
+#    count_articles = database.articlecount
+  };
+  IF view_db_map.${database.dbname} ;
+    all_databases.push(this_databaseinfo);
+  END ;
+END;
+
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}.json?l=${lang}"
+     }
+     databases = all_databases
+ };
+
+to_json(this_json_output) ;
+
+-%]

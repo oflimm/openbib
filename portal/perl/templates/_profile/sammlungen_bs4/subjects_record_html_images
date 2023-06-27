@@ -1,0 +1,11 @@
+<div id="yewno-subject-widget" style=”height:259px;width:100%;”></div>
+<script>
+new YewnoDiscoverWidget({
+containerElementSelector: "#yewno-subject-widget",
+query: ["[% normset.${"S0800"}.first.content.replace('"',' ').replace('&.+?;', ' ').split(', ').reverse.join(' ') %]"], // add your search engine's URL search params
+height: 259,
+shouldCenter: true,
+showDefinitions: true,
+languages: [[% IF lang == 'de' %]"deu"[% ELSE %]"eng"[% END %]], // available languages eng,zho,deu
+});
+</script>

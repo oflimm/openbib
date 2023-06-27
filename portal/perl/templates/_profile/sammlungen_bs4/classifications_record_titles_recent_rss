@@ -1,0 +1,21 @@
+[%#-
+#######################################################################
+#
+# Templatename: classifications_record_titles_recent_rss
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe des RSS-Feeds zu einer Notations-ID
+#
+#######################################################################
+-%]
+[%-
+
+channel_link        = "${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('classifications_loc')}/id/${classificationid}/titles/recent.rss";
+channel_description = "Hier finden Sie die 50 zuletzt katalogisierten Medien des Kataloges zu Notation" ;
+channel_title       = "Neue Katalogisate zu Notation" ;
+recordlist.to_rss({ path_prefix = path_prefix, servername = servername, view = view, channel_title = channel_title, channel_link = channel_link, channel_language = lang });
+
+-%]

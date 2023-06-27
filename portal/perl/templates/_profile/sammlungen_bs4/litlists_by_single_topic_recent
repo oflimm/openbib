@@ -1,0 +1,67 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+
+    thistopic = "";
+    FOREACH topic IN topics;
+      IF topic.id == topicid;
+        thistopic = topic.name ;
+      END;
+    END;
+
+    layout_param = {
+      'page_title' = "Zuletzt angelegte Literaturlisten zum Themengebiet '${thistopic}' anzeigen"
+
+      'main_template' = 'litlists_by_single_topic_recent_html'
+      'sidebar_template' = 'litlists_navigation'
+
+      'active_submenu' = 'litlists_topic_recent'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Literaturlisten')
+	     url  = "${path_prefix}/${config.get('litlists_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Themengebiete')
+	     url  = "${path_prefix}/${config.get('litlists_loc')}/${config.get('topics_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = thistopic
+	     url  = "${path_prefix}/${config.get('litlists_loc')}/${config.get('topics_loc')}/id/${topicid}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Zuletzt angelegt')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('litlists_loc')}/${config.get('topics_loc')}/id/${topicid}/recent.json?l=${lang}"
+	  },
+          {
+	     type = 'rss'
+	     url  = "${path_prefix}/${config.get('litlists_loc')}/${config.get('topics_loc')}/id/${topicid}/recent.rss?l=${lang}"
+	  },
+       ]
+    };
+
+    show_foot_banner = 1 ;
+-%]
+[%- PROCESS common/subtemplate name="layout_html"  -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="litlists_by_single_topic_recent_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="litlists_by_single_topic_recent_json" -%]
+[%- ELSIF representation == 'rss' -%]
+[%- PROCESS common/subtemplate name="litlists_by_single_topic_recent_rss" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="litlists_by_single_topic_recent_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

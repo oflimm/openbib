@@ -1,0 +1,54 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_titset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%-# Ausgabekategorien -%]
+[%- categories = [
+                'Vorderseite', # msg.maketext("Vorderseite") Vorderseite Legende+Beschreibung
+                'Rückseite', # msg.maketext("Rückseite") Rückseite Legende+Beschreibung
+#                'T0010', # msg.maketext("T0010-muenzen") Katalognummer
+                'T0100', # msg.maketext("T0100-muenzen") Herrscher (Regent)
+                'T0531', # msg.maketext("T0531-muenzen") Mitglied Herrscherfamilie
+                'T0619', # msg.maketext("T0619-muenzen") Regierungsjahr (Praegejahr)
+                'T0700', # msg.maketext("T0700-muenzen") Stadt
+                'T0410', # msg.maketext("T0410-muenzen") Politischer Bereich
+                'T0533', # msg.maketext("T0533-muenzen") Magistrat
+                'T0710', # msg.maketext("T0710-muenzen") Region
+                'T0428', # msg.maketext("T0428-muenzen") Datierung als Text
+#                'T0332', # msg.maketext("T0332-muenzen") Vorderseite Legende
+#                'T0334', # msg.maketext("T0334-muenzen") Vorderseite Beschreibung
+#                'T0335', # msg.maketext("T0335-muenzen") Rueckseite Legende
+#                'T0337', # msg.maketext("T0337-muenzen") Rueckseite Beschreibung
+                'T0338', # msg.maketext("T0338-muenzen") Nominal
+                'T0800', # msg.maketext("T0800-muenzen") Material
+                'T0435', # msg.maketext("T0435-muenzen") Durchmesser 
+                'T0433', # msg.maketext("T0433-muenzen") Gewicht 
+#                'T0333', # msg.maketext("T0333-muenzen") Vorderseite stempelgleich mit (Referenz)
+#                'T0336', # msg.maketext("T0336-muenzen") Rueckseite stempelgleich mit (Referenz)
+#                'T0425', # msg.maketext("T0425-muenzen") Datierung
+#                'T0426', # msg.maketext("T0426-muenzen") Datierung von
+#                'T0427', # msg.maketext("T0427-muenzen") Datierung bis
+                'T0407', # msg.maketext("T0407-muenzen") Stempelstellung
+#                'T1664', # msg.maketext("T1664") Provenienz
+#                'T0508', # msg.maketext("T0508-muenzen") Referenz
+                'T0622', # msg.maketext("T0622-muenzen") Links
+                'T0451', # msg.maketext("T0451-muenzen") Forschungsliteratur
+                'T0600', # msg.maketext("T0600-muenzen") Kommentar
+#                'T0341', # msg.maketext("T0341-muenzen") Legende Vorderseite: nicht aufgelöst
+#                'T0342', # msg.maketext("T0342-muenzen") Legende Vorderseite: aufgelöst, nur Text
+#                'T0343', # msg.maketext("T0343-muenzen") Legende Vorderseite: aufgelöst, Editionstext
+#                'T0351', # msg.maketext("T0351-muenzen") Legende Rückseite: nicht aufgelöst
+#                'T0352', # msg.maketext("T0352-muenzen") Legende Rückseite: aufgelöst, nur Text
+#                'T0353', # msg.maketext("T0353-muenzen") Legende Rückseite: aufgelöst, Editionstext
+                ]
+
+-%]

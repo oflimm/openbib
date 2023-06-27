@@ -1,0 +1,33 @@
+[%- IF representation == '' || representation == 'html' ;
+
+    layout_param = {
+      'page_title' = 'Merkliste mailen'
+     
+      'main_template' = 'cartitems_mail_html'
+      
+      'active_menu' = 'collection'
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Merkliste')
+	     url  = "${path_prefix}/${config.get('cartitems_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Merkliste mailen')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="cartitems_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="cartitems_json" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

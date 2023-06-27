@@ -1,0 +1,43 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = msg.maketext("Titel in anderen Ausgaben")
+
+      'main_template' = 'titles_dbis_recommendations_html'
+      'sidebar_template' = 'usage_navigation'
+
+      'active_menu' = 'usage'
+      'active_submenu' = 'titles'
+
+      # 'active_menu' = ''
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Kataloge')
+	     url  = "${path_prefix}/${config.get('databases_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Datenbank-Empfehlungen')
+	     url  = "#"
+	     current = 1
+	  },
+      ]
+      # 'representations' = [
+      #     {
+      # 	     type = 'json'
+      # 	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}/id/${titleid}/similar_records.json?l=${lang}"
+      # 	  },
+      #  ]
+
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="titles_dbis_recommendations_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="titles_dbis_recommendations_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

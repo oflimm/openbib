@@ -1,0 +1,30 @@
+Sehr geehrte Damen und Herren,
+
+Ueber die Mail-Bestellfunktion wurde folgendes Medium bestellt:
+
+-- Angaben zum Nutzer --
+
+Nutzer-ID           : [% userid %]
+Name des Nutzers    : [% username %]
+E-Mail              : [% email %]
+
+-- Angaben zum Titel --
+
+Person              : [% person %]
+Koerperschaft       : [% corporation %]
+Titel               : [% title %]
+Verlag              : [% publisher %]
+
+Signatur(en)        : [% mark %]
+Mediennummer(n)     : [% mnr %]
+
+-- Sonstige Angaben --
+
+Bereitstellungsort  : [% pickup %]
+
+Bemerkungen         : [% remark %]
+
+Mit freundlichen Gruessen
+
+Das Recherche-Portal
+

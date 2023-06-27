@@ -1,0 +1,29 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+[%-
+
+rssfeeds = [];
+
+FOREACH singlefeed IN viewrssfeed.keys;
+  rssfeeds.push(singlefeed);
+END;
+
+thisviewrssinfo = {
+  rssfeeds = rssfeeds,
+  primrssfeed = viewinfo.rssid.id
+};
+
+to_json(thisviewrssinfo);
+
+-%]

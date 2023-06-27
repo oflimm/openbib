@@ -1,0 +1,79 @@
+[%#-
+#######################################################################
+#
+# Templatename: titles_record_mobile
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes auf mobilen Geraeten
+#
+#######################################################################
+-%]
+[%-
+
+  request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) ;
+  normdata        = record.get_fields ;
+  holding         = record.get_holding ;
+  circulation     = record.load_circulation.get_circulation ; 
+  same_records    = record.enrich_same_records.get_same_records ;
+  similar_records = record.enrich_similar_records.get_similar_records ;
+  bibkey = record.to_bibkey ;
+  isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
+  IF NOT isbn ;
+      isbn   = normdata.${"T0553"}.first.content.replace('-','') ;
+  END ;
+
+  recordname = normdata.${'T0331'}.first.content;
+  IF normdata.${'PC0001'}.first.content ;
+     pc = normdata.${'PC0001'}.first.content ;
+     recordname = "${pc} - ${recordname}";
+  END ;
+  title      = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc)
+
+-%]
+[% PROCESS common/subtemplate name="std_header" unapi=1 LinkedData="title" %]
+
+<body>
+
+<div data-role="page">
+
+       <div  data-role="header">
+           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('home_loc') %].mobile?l=de" >[% msg.maketext("Home") %]</a>
+	   <h1>Einzeltitel</h1> 
+       </div> 
+
+       <div data-role="content">
+
+[% PROCESS common/subtemplate name="visible_categories_title" %]
+
+[% PROCESS common/subtemplate name="titles_record_mobile_categories" %]
+
+<style type="text/css"> 
+    .ob-holding_info table { width:100%; }
+    .ob-holding_info table caption { text-align:left;  }
+    .ob-holding_info table thead th { text-align:left; border-bottom-width:1px; border-top-width:1px; }
+    .ob-holding_info table th, td { text-align:left; padding:6px;} 
+</style>
+
+[% IF circulation.size > 0 %]
+<p/>
+
+<div id="ob-holding_info"><!-- Begin Bestand -->
+[% PROCESS common/subtemplate name="circulation_mobile" %]
+</div><!-- End Bestand -->
+
+[% ELSIF holding.size > 0 %]
+<p/>
+
+<div id="ob-holding_info"><!-- Begin Bestand -->
+[%# USE dumper;dumper.dump(holding)%]
+[% PROCESS common/subtemplate name="holding_mobile" %]
+</div><!-- End Bestand -->
+
+[% END %]
+
+       </div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

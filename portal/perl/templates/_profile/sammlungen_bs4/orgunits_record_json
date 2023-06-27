@@ -1,0 +1,48 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_orgunit_record_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Zuordnung der Datenbanken zu einer Organisationseinheit eines einzelnen Profiles
+#b
+#######################################################################
+-%]
+[%-
+
+databases = [];
+
+FOREACH db IN orgunitdbs ;
+  thisdatabase = {
+    link = {
+        rel = 'self'
+        href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${db}.json?l=${lang}"
+    }
+    id                = db
+    description       = dbinfo.get('dbnames').${db}.full
+    description_short = dbinfo.get('dbnames').${db}.short
+    schema            = dbinfo.get('schema').${db}
+    url               = dbinfo.get('urls').${db}                          
+
+  };
+  databases.push(thisdatabase);
+END;
+
+this_json_output = {
+  link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('profiles_loc')}/id/${profileinfo.profilename}/${config.get('orgunits_loc')}/id/${orgunitinfo.orgunitname}.json?l=${lang}"
+  }
+
+  description = orgunitinfo.description
+  orgunitname = orgunitinfo.orgunitname
+  nr          = orgunitinfo.nr
+  databases   = databases
+};
+
+to_json(this_json_output);
+
+-%]

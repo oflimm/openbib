@@ -1,0 +1,505 @@
+[%#-
+#######################################################################
+#
+# Templatename: titles_record_xml
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes im LIDO/KENUM XML-Format
+#
+#######################################################################
+-%]
+[%-
+     normdata        = record.get_fields;
+     holding         = record.get_holding;
+     circulation     = record.load_circulation.get_circulation;
+     same_records    = record.enrich_same_records.get_same_records;
+     similar_records = record.enrich_similar_records.get_similar_records;
+     
+     # Titel konstruieren
+     title = normdata.${'T0331'}.first.content;
+     IF normdata.${'T0334'}.first.content;
+         title_back = normdata.${'T0334'}.first.content;
+         title = "${title} / ${title_back}";
+     END;
+
+     # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?
+     IF NOT title ;
+       title = "Münze";
+     END;
+
+     legende_vorderseite = "";
+     
+     IF normdata.${'T0346'}.defined ;
+       # Legende Vorderseite aufgeloest Editionstext - Latein
+       legende_vorderseite = normdata.${'T0346'}.first.content;
+     ELSE ;
+       # Legende Vorderseite aufgeloest Editionstext - Griechisch
+       legende_vorderseite = normdata.${'T0343'}.first.content;
+     END;
+
+     legende_rueckseite = "";
+
+     IF normdata.${'T0356'}.defined ;
+       # Legende Rueckseite aufgeloest Editionstext - Latein
+       legende_rueckseite = normdata.${'T0356'}.first.content;
+     ELSE ;
+       # Legende Rueckseite aufgeloest Editionstext - Griechisch
+       legende_rueckseite = normdata.${'T0353'}.first.content;
+     END ;
+     
+     # Beschreibung Vorderseite
+     beschreibung_vorderseite = normdata.${'T0334'}.first.content;
+
+     # Beschreibung Rueckseite
+     beschreibung_rueckseite = normdata.${'T0337'}.first.content;
+
+     # Nominal
+     nominal = normdata.${'T0338'}.first.content;
+
+     # Datierung ausfuehrlich
+     datierung = normdata.${'T0428'}.first.content;
+
+     # Muenzstand
+     muenzstand = normdata.${'T0410'}.first.content;
+
+     # Muenzherr
+     muenzherr = normdata.${'PC0001'}.first.content;
+
+     # Durchmesser
+     durchmesser = normdata.${'T0435'}.first.content;
+
+     # Gewicht
+     gewicht = normdata.${'T0433'}.first.content;
+
+     # Stempelstellung
+     stempelstellung = normdata.${'T0407'}.first.content;
+
+     # Herrscher
+     herrscher = normdata.${'T0100'}.first.content.match('^(.+?) \(').first;
+
+     # Datierung von
+     datierung_von = normdata.${'T0426'}.first.content;
+
+     # Datierung bis
+     datierung_bis = normdata.${'T0427'}.first.content;
+
+     # Material
+     material = normdata.${'T0800'}.first.content;
+
+     # Related Coins
+     related_coinids = normdata.${"T0662"}.first.content.split('\s+;\s+');
+
+     # Datum
+     datum = normdata.${"T0003"}.first.content ;
+
+     cdmptr_vorderseite = "";
+     cdmptr_rueckseite  = "";
+
+     FOREACH item IN normdata.${"T6054"} ;
+       cdm_ptr = item.content ;
+       thismult = item.mult ;
+       FOREACH thisitem IN normdata.${"T6050"} ;
+           IF thisitem.mult == thismult ;
+              IF thisitem.content == 'Vorderseite';
+	        cdmptr_vorderseite = cdm_ptr ;
+              ELSIF thisitem.content == 'Rückseite';
+                cdmptr_rueckseite = cdm_ptr ;
+	      END;
+           END ;
+       END ;
+     END ;
+
+-%]
+<?xml version="1.0" encoding="UTF-8"?>
+<lido:lidoWrap xmlns:lido="http://www.lido-schema.org" xsi:schemaLocation="http://www.lido-schema.org http://www.lido-schema.org/schema/v1.0/lido-v1.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<lido:lido xsi:schemaLocation="http://www.lido-schema.org http://www.lido-schema.org/schema/v1.0/lido-v1.0.xsd">
+  <lido:lidoRecID lido:source="Münzsammlung am Institut für Altertumskunde der Universität zu Köln" lido:type="local">record_DE-38-404_kenom_[% record.id %]
+  </lido:lidoRecID>
+  <lido:objectPublishedID lido:type="http://terminology.lido-schema.org/identifier_type/uri">
+   https://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[%- database -%]/[% config.get('titles_loc') %]/id/[%- record.id -%]
+  </lido:objectPublishedID>
+  <lido:category>
+    <lido:conceptID lido:type="URI">http://www.cidoc-crm.org/crm-concepts/E22
+    </lido:conceptID>
+    <lido:term xml:lang="en">Man-Made Object
+    </lido:term>
+  </lido:category>
+  <lido:descriptiveMetadata xml:lang="en">
+    <lido:objectClassificationWrap>
+      <lido:objectWorkTypeWrap>
+        <lido:objectWorkType>
+          <lido:conceptID lido:type="http://terminology.lido-schema.org/identifier_type/uri">
+         http://d-nb.info/gnd/4040629-5
+          </lido:conceptID>
+          <lido:conceptID lido:type="http://terminology.lido-schema.org/identifier_type/uri">
+         http://nomisma.org/id/coin
+          </lido:conceptID>
+          <lido:term>Münze</lido:term>
+        </lido:objectWorkType>
+      </lido:objectWorkTypeWrap>
+[% IF nominal %]
+      <lido:classificationWrap>
+        <lido:classification lido:type="nominal">
+          <lido:term>[% nominal %]</lido:term>
+        </lido:classification>
+      </lido:classificationWrap>
+[% END -%]
+    </lido:objectClassificationWrap>
+    <lido:objectIdentificationWrap>
+      <lido:titleWrap>
+        <lido:titleSet>	
+	  <lido:appellationValue lido:pref="given">[% IF muenzherr %][% muenzherr %]: [% END %][% title %][% IF nominal %], [% nominal %][% END %][% IF datierung %], [% datierung %][% END %]
+          </lido:appellationValue>
+          <lido:appellationValue lido:pref="generated_short">Münze[% IF nominal %], [% nominal %][% END %][% IF datierung %], [% datierung %][% END %]
+          </lido:appellationValue>
+          <lido:appellationValue lido:pref="generated_long">Münze[% IF nominal %], [% nominal %][% END %][% IF datierung %], [% datierung %][% END %][% IF muenzstand %], [% muenzstand %][% END %][% IF muenzherr %], [% muenzherr %][% END %]
+          </lido:appellationValue>
+        </lido:titleSet>
+      </lido:titleWrap>
+      <lido:inscriptionsWrap>
+        <lido:inscriptions lido:type="front">
+[%- IF legende_vorderseite %]	
+          <lido:inscriptionTranscription>
+          Legende: [% legende_vorderseite %]		  
+          </lido:inscriptionTranscription>
+[% END -%]
+[%- IF beschreibung_vorderseite %]	
+          <lido:inscriptionDescription>
+             <lido:descriptiveNoteValue>
+              [% beschreibung_vorderseite %]		  
+             </lido:descriptiveNoteValue>
+          </lido:inscriptionDescription>
+[% END -%]	  
+        </lido:inscriptions>
+        <lido:inscriptions lido:type="back">
+[%- IF legende_rueckseite %]	
+          <lido:inscriptionTranscription>
+          Legende: [% legende_rueckseite %]		  
+          </lido:inscriptionTranscription>
+[% END -%]
+[%- IF beschreibung_rueckseite %]	
+          <lido:inscriptionDescription>
+             <lido:descriptiveNoteValue>
+              [% beschreibung_rueckseite %]		  
+             </lido:descriptiveNoteValue>
+          </lido:inscriptionDescription>
+[% END -%]	  
+        </lido:inscriptions>
+        <lido:inscriptions lido:type="serial number">
+          <lido:inscriptionTranscription>[% record.id %]</lido:inscriptionTranscription>
+        </lido:inscriptions>
+[%- IF 0 == 1 %]
+        <!-- Weitere Beispiele fuer Bezeichnungen der Muenzen: -->
+
+        <lido:inscriptions lido:type="edge">
+           <lido:inscriptionTranscription>Beispieltext Prägung Rand</lido:inscriptionTranscription>
+           <lido:inscriptionDescription>
+             <lido:descriptiveNoteValue>Beispieltext Beschreibung Rand</lido:descriptiveNoteValue>
+           </lido:inscriptionDescription>
+        </lido:inscriptions>
+        <lido:inscriptions lido:type="serial number">
+           <lido:inscriptionTranscription>SE9-8765-4321</lido:inscriptionTranscription>
+        </lido:inscriptions>
+        <lido:inscriptions lido:type="control number">
+          <lido:inscriptionTranscription>ABC-1234567-89</lido:inscriptionTranscription>
+        </lido:inscriptions>
+        <lido:inscriptions lido:type="banknote">
+          <lido:inscriptionDescription>
+            <lido:descriptiveNoteValue>
+            Fortlaufende Beschriftung auf allen Scheinen dieser Serie: "KREIS - NOR - DER - DITH - 
+            MAR - SCHEN".
+            </lido:descriptiveNoteValue>
+          </lido:inscriptionDescription>
+        </lido:inscriptions>
+[% END %]
+      </lido:inscriptionsWrap>
+
+      <lido:repositoryWrap>
+        <lido:repositorySet lido:type="http://terminology.lido-schema.org/repositorySet_type/current_repository_or_location">
+          <lido:repositoryName>
+            <lido:legalBodyID lido:type="http://terminology.lido-schema.org/identifier_type/uri">
+            http://ld.zdb-services.de/resource/organisations/DE-38-404
+            </lido:legalBodyID>
+            <lido:legalBodyName>
+              <lido:appellationValue>Münzsammlung am Institut für Altertumskunde der Universität zu Köln</lido:appellationValue>
+            </lido:legalBodyName>
+            <lido:legalBodyWeblink>http://ifa.phil-fak.uni-koeln.de/</lido:legalBodyWeblink>
+          </lido:repositoryName>
+          <lido:workID>[% record.id %]</lido:workID>
+        </lido:repositorySet>
+      </lido:repositoryWrap>
+      <lido:displayStateEditionWrap/>
+      <lido:objectDescriptionWrap/>
+      <lido:objectMeasurementsWrap>
+        <lido:objectMeasurementsSet>
+[%- measurements = []; 
+    IF durchmesser ;
+       measurements.push("Durchmesser: ${durchmesser} mm");
+    END ;	 
+    IF gewicht ;
+       measurements.push("Gewicht: ${gewicht} g");
+    END;	 
+    IF stempelstellung ;
+       measurements.push("Stempelstellung: ${stempelstellung} Uhr");
+    END ;
+%]	
+          <lido:displayObjectMeasurements>[% IF measurements %][% measurements.join(', ') %][% END %]</lido:displayObjectMeasurements>
+        <lido:objectMeasurements>
+[%- IF durchmesser -%]	  
+         <lido:measurementsSet>
+           <lido:measurementType xml:lang="en">diameter</lido:measurementType>
+           <lido:measurementType>Durchmesser</lido:measurementType>
+           <lido:measurementUnit>mm</lido:measurementUnit>
+           <lido:measurementValue>[% durchmesser %]</lido:measurementValue>
+         </lido:measurementsSet>
+[% END %]
+[%- IF gewicht %]	  
+         <lido:measurementsSet>
+           <lido:measurementType xml:lang="en">weight</lido:measurementType>
+           <lido:measurementType>Gewicht</lido:measurementType>
+           <lido:measurementUnit>g</lido:measurementUnit>
+           <lido:measurementValue>[% gewicht %]</lido:measurementValue>
+         </lido:measurementsSet>
+[% END %]
+[%- IF stempelstellung %]	  
+         <lido:measurementsSet>
+           <lido:measurementType xml:lang="en">orientation</lido:measurementType>
+           <lido:measurementType>Stempelstellung</lido:measurementType>
+           <lido:measurementUnit>clock</lido:measurementUnit>
+           <lido:measurementValue>[% stempelstellung %]</lido:measurementValue>
+         </lido:measurementsSet>
+[% END %]
+       </lido:objectMeasurements>
+      </lido:objectMeasurementsSet>
+     </lido:objectMeasurementsWrap>
+    </lido:objectIdentificationWrap>
+
+    <lido:eventWrap>
+      <lido:eventSet>
+        <lido:event>
+          <lido:eventType>
+             <lido:conceptID lido:type="URI">
+             http://terminology.lido-schema.org/lido00007</lido:conceptID>
+             <lido:term xml:lang="en">Production</lido:term>
+             <lido:term xml:lang="de">Herstellung</lido:term>
+          </lido:eventType>
+[%- IF herrscher %]
+	  <lido:eventActor>
+	    <lido:actorInRole>
+	      <lido:actor lido:type="person">
+		<lido:nameActorSet>
+		  <lido:appellationValue lido:pref="preferred">[% herrscher %]
+		  </lido:appellationValue>
+		</lido:nameActorSet>
+	      </lido:actor>
+              <lido:roleActor>
+                <lido:conceptID lido:source="GND"
+                  lido:type="URI">
+                  http://d-nb.info/gnd/1051614252</lido:conceptID>
+                <lido:conceptID lido:source="nomisma"
+                  lido:type="URI">
+                  http://nomisma.org/id/authority</lido:conceptID>
+                <lido:term xml:lang="de">Münzherr</lido:term>
+                <lido:term xml:lang="en">Authority</lido:term>
+              </lido:roleActor>
+	    </lido:actorInRole>
+	  </lido:eventActor>
+[% END -%]	  
+[%- IF datierung %]	  	  
+	  <lido:eventDate>
+	    <lido:displayDate>[% datierung %]</lido:displayDate>
+[%- IF datierung_von || datierung_bis %]	  	  
+	    <lido:date>
+	      [% IF datierung_von %]<lido:earliestDate>[% datierung_von %]</lido:earliestDate>[% END %]
+	      [% IF datierung_bis %]<lido:latestDate>[% datierung_bis %]</lido:latestDate>[% END %]
+	    </lido:date>
+[% END -%]	    
+	  </lido:eventDate>
+[% END -%]
+[%- IF material %]	  
+	  <lido:eventMaterialsTech>
+	    <lido:materialsTech>
+              <lido:termMaterialsTech lido:type="material">
+                <lido:term>[% material %]</lido:term>
+	      </lido:termMaterialsTech>
+	    </lido:materialsTech>
+	  </lido:eventMaterialsTech>
+[% END -%]	  
+	</lido:event>
+      </lido:eventSet>
+[% IF region %]      
+      <lido:eventSet>
+	<lido:event>
+	  <lido:eventType>
+	    <lido:term>provenance
+	    </lido:term>
+	  </lido:eventType>
+[%- IF datierung %]	  	  
+	  <lido:eventDate>
+	    <lido:displayDate>[% datierung %]</lido:displayDate>
+[%- IF datierung_von || datierung_bis %]	  	  
+	    <lido:date>
+	      [% IF datierung_von %]<lido:earliestDate>[% datierung_von %]</lido:earliestDate>[% END %]
+	      [% IF datierung_bis %]<lido:latestDate>[% datierung_bis %]</lido:latestDate>[% END %]
+	    </lido:date>
+[% END -%]	    
+	  </lido:eventDate>
+[% END -%]
+	  <lido:eventPlace>
+	    <lido:place>
+	      <lido:namePlaceSet>
+		<lido:appellationValue>[% region %]
+		</lido:appellationValue>
+	      </lido:namePlaceSet>
+	    </lido:place>
+	  </lido:eventPlace>
+	</lido:event>
+      </lido:eventSet>
+[% END -%]      
+    </lido:eventWrap>
+[%- IF related_coinids %]    
+    <lido:objectRelationWrap>
+     <lido:relatedWorksWrap>
+[%- FOREACH coinid IN related_coinids %]     
+      <lido:relatedWorkSet>
+       <lido:relatedWork>
+         <lido:object>
+            <lido:objectWebResource>https://muenzen.uni-koeln.de/portal/databases/id/muenzen/titles/id/[% coinid %]</lido:objectWebResource>
+            <lido:objectID lido:type="http://terminology.lido-schema.org/identifier_type/local_identifier">
+               record_DE-38-404_kenom_[% coinid %]
+            </lido:objectID>
+            <lido:objectNote lido:type="type">[% coinid %]</lido:objectNote>
+         </lido:object>
+       </lido:relatedWork>
+       <lido:relatedWorkRelType>
+         <lido:term>Referenz</lido:term>
+         <lido:term xml:lang="en">reference</lido:term>
+       </lido:relatedWorkRelType>
+      </lido:relatedWorkSet>
+[% END -%]      
+     </lido:relatedWorksWrap>      
+    </lido:objectRelationWrap>
+[% END -%]    
+  </lido:descriptiveMetadata>
+  <lido:administrativeMetadata xml:lang="en">
+      <lido:rightsWorkWrap>
+        <lido:rightsWorkSet>
+          <lido:rightsHolder>
+            <lido:legalBodyID lido:type="URI">
+            http://ld.zdb-services.de/resource/organisations/DE-38-404</lido:legalBodyID>
+            <lido:legalBodyName>
+              <lido:appellationValue>Münzsammlung am Institut für Altertumskunde der Universität zu Köln</lido:appellationValue>
+            </lido:legalBodyName>
+            <lido:legalBodyWeblink>
+            http://ifa.phil-fak.uni-koeln.de/</lido:legalBodyWeblink>
+          </lido:rightsHolder>
+        </lido:rightsWorkSet>
+      </lido:rightsWorkWrap>
+      <lido:recordWrap>
+        <lido:recordID lido:type="local">[% record.id %]</lido:recordID>
+        <lido:recordType />
+        <lido:recordSource>
+          <lido:legalBodyID lido:type="URI"></lido:legalBodyID>
+          <lido:legalBodyName>
+            <lido:appellationValue>Münzsammlung am Institut für Altertumskunde der Universität zu Köln</lido:appellationValue>
+          </lido:legalBodyName>
+          <lido:legalBodyWeblink>
+          http://ifa.phil-fak.uni-koeln.de/</lido:legalBodyWeblink>
+        </lido:recordSource>
+        <lido:recordInfoSet>
+          <lido:recordInfoLink>
+          https://muenzen.uni-koeln.de/portal/databases/id/muenzen/titles/id/[% record.id %]</lido:recordInfoLink>
+          <lido:recordMetadataDate>[% datum.split('\.').reverse.join('-') %] 00:00:00</lido:recordMetadataDate>
+        </lido:recordInfoSet>
+      </lido:recordWrap>
+      <lido:resourceWrap>
+        <lido:resourceSet lido:sortorder="1">
+          <lido:resourceRepresentation lido:type="image_thumb">
+            <lido:linkResource lido:formatResource="image/jpeg"
+            lido:type="URI">
+            https://www.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=/muenzen&amp;CISOPTR=[% cdmptr_vorderseite %]</lido:linkResource>
+          </lido:resourceRepresentation>
+          <lido:resourceRepresentation lido:type="image_preview">
+            <lido:linkResource lido:formatResource="image/jpeg"
+            lido:type="URI">
+            https://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&amp;CISOPTR=[% cdmptr_vorderseite %]&amp;DMSCALE=100.00000&amp;DMWIDTH=4000&amp;DMHEIGHT=4000&amp;DMX=0&amp;DMY=0&amp;DMTEXT=&amp;REC=2&amp;DMTHUMB=1&amp;DMROTATE=0</lido:linkResource>
+          </lido:resourceRepresentation>
+          <lido:resourceRepresentation lido:type="image_master">
+            <lido:linkResource lido:formatResource="image/jpeg"
+            lido:type="URI">
+            http://www.ub.uni-koeln.de/cgi-bin/showfile.exe?CISOROOT=/muenzen&amp;CISOPTR=[% cdmptr_vorderseite %]</lido:linkResource>
+         </lido:resourceRepresentation>
+          <lido:resourceType>
+            <lido:term xml:lang="en">Digital image</lido:term>
+          </lido:resourceType>
+          <lido:resourceRelType>
+            <lido:term xml:lang="de">Hauptansicht</lido:term>
+          </lido:resourceRelType>
+          <lido:resourcePerspective>
+            <lido:conceptID lido:source="nomisma" lido:type="URI">
+            http://www.nomisma.org/id/obverse</lido:conceptID>
+            <lido:term xml:lang="en">obverse</lido:term>
+          </lido:resourcePerspective>
+          <lido:rightsResource>
+            <lido:rightsType>
+              <lido:conceptID lido:type="URI">
+              https://creativecommons.org/licenses/by-nc-sa/3.0/de/</lido:conceptID>
+              <lido:term>CC BY-NC-SA</lido:term>
+            </lido:rightsType>
+            <lido:rightsHolder>
+              <lido:legalBodyID lido:type="URI"></lido:legalBodyID>
+              <lido:legalBodyName>
+                <lido:appellationValue>Münzsammlung am Institut für Altertumskunde der Universität zu Köln</lido:appellationValue>
+              </lido:legalBodyName>
+              <lido:legalBodyWeblink>
+              http://ifa.phil-fak.uni-koeln.de/</lido:legalBodyWeblink>
+            </lido:rightsHolder>
+          </lido:rightsResource>
+        </lido:resourceSet>
+        <lido:resourceSet lido:sortorder="2">
+          <lido:resourceRepresentation lido:type="image_thumb">
+            <lido:linkResource lido:formatResource="image/jpeg"
+            lido:type="URI">
+            https://www.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=/muenzen&amp;CISOPTR=[% cdmptr_rueckseite %]</lido:linkResource>
+          </lido:resourceRepresentation>
+          <lido:resourceRepresentation lido:type="image_preview">
+            <lido:linkResource lido:formatResource="image/jpeg"
+            lido:type="URI">
+            https://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&amp;CISOPTR=[% cdmptr_rueckseite %]&amp;DMSCALE=100.00000&amp;DMWIDTH=4000&amp;DMHEIGHT=4000&amp;DMX=0&amp;DMY=0&amp;DMTEXT=&amp;REC=2&amp;DMTHUMB=1&amp;DMROTATE=0</lido:linkResource>
+          </lido:resourceRepresentation>
+          <lido:resourceRepresentation lido:type="image_master">
+            <lido:linkResource lido:formatResource="image/jpeg"
+            lido:type="URI">
+            http://www.ub.uni-koeln.de/cgi-bin/showfile.exe?CISOROOT=/muenzen&amp;CISOPTR=[% cdmptr_rueckseite %]</lido:linkResource>
+          </lido:resourceRepresentation>
+          <lido:resourceType>
+            <lido:term xml:lang="en">Digital image</lido:term>
+          </lido:resourceType>
+          <lido:resourcePerspective>
+            <lido:conceptID lido:source="nomisma" lido:type="URI">
+            http://www.nomisma.org/id/reverse</lido:conceptID>
+            <lido:term xml:lang="en">reverse</lido:term>
+          </lido:resourcePerspective>
+          <lido:rightsResource>
+            <lido:rightsType>
+              <lido:conceptID lido:type="URI">
+              https://creativecommons.org/licenses/by-nc-sa/3.0/de/</lido:conceptID>
+              <lido:term>CC BY-NC-SA</lido:term>
+            </lido:rightsType>
+            <lido:rightsHolder>
+              <lido:legalBodyID lido:type="URI"></lido:legalBodyID>
+              <lido:legalBodyName>
+                <lido:appellationValue>Münzsammlung am Institut für Altertumskunde der Universität zu Köln</lido:appellationValue>
+              </lido:legalBodyName>
+              <lido:legalBodyWeblink>
+              http://ifa.phil-fak.uni-koeln.de/</lido:legalBodyWeblink>
+            </lido:rightsHolder>
+          </lido:rightsResource>
+        </lido:resourceSet>
+      </lido:resourceWrap>
+    </lido:administrativeMetadata>
+</lido:lido>
+</lido:lidoWrap>

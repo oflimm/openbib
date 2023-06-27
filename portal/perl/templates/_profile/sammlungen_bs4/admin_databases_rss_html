@@ -1,0 +1,124 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat_rss
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen der RSS-Feeds
+# eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+
+[%
+typedescription = {
+   '1' = msg.maketext("Neuaufnahmen (generell)")
+   '2' = msg.maketext("Neuaufnahmen nach Verfasser")
+   '3' = msg.maketext("Neuaufnahmen nach K&ouml;rperschaft") 
+   '4' = msg.maketext("Neuaufnahmen nach Schlagwort")
+   '5' = msg.maketext("Neuaufnahmen nach Systematik")
+};
+
+yesno = {
+   '0' = msg.maketext("Nein")
+   '1' = msg.maketext("Ja")
+};
+
+available_types = {
+ '1' = '1'
+ '2' = '2'
+ '3' = '3'
+ '4' = '4'
+ '5' = '5'
+};
+
+FOREACH feed IN katalog.rssfeeds ;
+ available_types.delete(feed.type) ;
+END ;
+%]
+
+[% IF user.has_right({scope = 'admin_databases', right = 'right_create'}) %]
+[% IF available_types.size > 0 %]
+
+<div id="new_item" class="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+          [% msg.maketext("Neuen RSS-Feed einrichten") %]
+        </a>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#new_item">
+      <div class="card-body">
+
+<form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% katalog.dbname %]/rss">
+
+<div class="form-group">
+<label for="type">[% msg.maketext("Art des Feeds") %]</label>
+  <select class="form-control" name="type" id="type">
+[% FOREACH type IN available_types.keys %]
+<option value="[% type%]">[% typedescription.${type} %]</option>
+[% END %]
+  </select>
+</div>
+
+<div class="form-group">
+<label for="active">[% msg.maketext("Aktiv") %]</label>
+  <select class="form-control" name="active" id="active">
+    <option value="true" [%- IF databaseinfo.active == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
+    <option value="false" [%- IF databaseinfo.active == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
+  </select>
+</div>
+
+<button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
+</form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p />
+
+[% END %]
+[% END # right_create %]
+[%# USE dumper;dumper.dump(katalog)%]
+
+[% IF katalog.rssfeeds.size > 0 %]
+
+<h3>[% msg.maketext("Bereits existierende RSS-Feeds") %]</h3>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<thead>
+<tr>
+<th>Id</th><th>[% msg.maketext("Art des Feeds") %]</th><!-- <td>Unter-Art</td><td>Beschreibung Unter-Art</td> --><th>[% msg.maketext("Aktiv") %]</th>
+</tr>
+</thead>
+<tbody>
+[% FOREACH feed IN katalog.rssfeeds %]
+<tr  [% IF feed.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
+<td>[% feed.id %]</td>
+<td>
+[%   IF user.has_right({scope = 'admin_locations', right = 'right_update'}) %]
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% katalog.dbname %]/rss/id/[% feed.id %]/edit.html?l=[% lang %]">[% typedescription.${feed.type} %]</a>
+[%   ELSIF user.has_right({scope = 'admin_locations', right = 'right_read'}) %]
+[% typedescription.${feed.type} %]
+[%   END %]
+</td>
+<!-- <td>[% feed.subtype %]</td>
+<td>[% feed.subtypedesc %]</td>
+-->
+<td>[% yesno.${feed.active} %]</td>
+</tr>
+[% END %]
+</tbody>
+</table>
+</div>
+[% ELSE %]
+<h2>[% msg.maketext("Es sind noch keine RSS-Feeds f&uuml;r diesen Katalog eingerichtet.") %]</h2>
+[% END %]

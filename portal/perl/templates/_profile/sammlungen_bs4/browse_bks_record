@@ -1,0 +1,46 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = "Basisklassifikation '${bkid}' anzeigen"
+
+      'main_template' = 'browse_bks_record_html'
+
+      'active_menu' = 'register'
+      
+      'jump_top' = 1
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Browsen')
+	     url  = "${path_prefix}/${config.get('browse_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Basisklassifikation')
+	     url  = "${path_prefix}/${config.get('browse_loc')}/bks.html?l=${lang}"
+	  },
+	  {
+	     desc = bkid
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      # 'representations' = [
+      #     {
+      # 	     type = 'json'
+      # 	     url  = "${path_prefix}/${config.get('browse_loc')}/bks/id/${bkid}.json?l=${lang}"
+      # 	  },
+      #  ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="browse_bks_record_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="browse_bks_record_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

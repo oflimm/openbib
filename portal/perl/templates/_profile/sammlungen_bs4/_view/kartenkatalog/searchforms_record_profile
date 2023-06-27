@@ -1,0 +1,27 @@
+[%# USE dumper; dumper.dump(dbchoice)%]
+[%
+
+   kartenkataloge = config.get_dbs_of_view(view);
+
+   IF NOT searchprofileid_of_view ;
+      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
+   END ;
+
+   checked_profile = 0 ;
+
+#   USE dumper;dumper.dump(dbinfo);
+%]
+
+<select name="profile" class="form-control ob-selectbox selectpicker">
+<option value="[% searchprofileid_of_view %]"[%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%] selected="selected"[%- END -%]>[% msg.maketext("Alle Kataloge") %]</option>
+   
+[%
+   FOR katalog IN kartenkataloge ;
+     profileid = config.get_searchprofile_of_database(katalog);
+%]
+
+<option value="[% profileid %]"[%- IF prevprofile == profileid && NOT checked_profile -%] selected="selected"[%- END -%]>[% dbinfo.get('dbnames').${katalog}.full %]</option>
+
+[% END %]
+
+</select>

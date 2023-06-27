@@ -1,0 +1,25 @@
+[%-
+
+dbr = searchquery.get_dbis_recommendations ;
+
+FOREACH topic IN dbr ;
+  FOREACH db IN topic.databases ;
+    db.link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/dbis/titles/id/${db.id}.json?l=${lang}"
+    };
+  END ;
+END;
+
+this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+
+    recommendations = dbr
+};
+
+to_json(this_json_output) ;
+
+-%]

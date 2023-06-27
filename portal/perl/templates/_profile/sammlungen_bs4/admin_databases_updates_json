@@ -1,0 +1,103 @@
+[%-
+
+querystring_without_page = cgiapp.to_cgi_querystring({ exclude = ['page'] });
+
+ start_range     = nav.current_page*qopts.get_option('num')-qopts.get_option('num') + 1;
+ end_range       = nav.current_page*qopts.get_option('num');
+ IF end_range >= nav.total_entries ;
+    end_range       = nav.total_entries ;
+ END;
+
+all_updates = [] ;
+
+FOREACH update IN updates.all;
+  this_update = {
+    serverinfo  =   {
+                     link = {
+                           rel = 'self'
+                           href = "http://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('servers_loc')}/id/${update.serverid.id}.json?l=${lang}"
+                     }
+                     id = update.serverid.id
+                     hostip =  update.serverid.hostip
+                    }
+
+    tstamp_start = update.tstamp_start
+    is_incremental = update.is_incremental
+    duration     = update.duration
+    duration_per_stage = {
+       collect          = update.duration_stage_collect
+       unpack           = update.duration_stage_unpack
+       convert          = update.duration_stage_convert
+       load_db          = update.duration_stage_load_db
+       load_index       = update.duration_stage_load_index
+       load_authorities = update.duration_stage_load_authorities
+       switch           = update.duration_stage_switch
+       analyze          = update.duration_stage_analyze
+       update_enrichmnt = update.duration_stage_update_enrichment
+    }
+    count       = {
+       title_all  = update.title_count
+
+       title_digital  = update.title_digitalcount
+       title_journal  = update.title_journalcount
+       title_article  = update.title_articlecount
+       person         = update.person_count
+       corporatebody  = update.corporatebody_count
+       classification = update.classification_count
+       subject        = update.subject_count
+       holding        = update.holding_count
+    }
+    database     =  {
+                     link = {
+                           rel = 'self'
+                           href = "http://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${update.dbid.dbname}.json?l=${lang}"
+                     }
+                     id          = update.dbid.dbname
+                     dbname      = update.dbid.dbname
+                     description = update.dbid.description
+                    }
+  };
+  all_updates.push(this_update);
+END;
+
+ metainformation = {
+      hits        = nav.total_entries
+      num         = qopts.get_option('num')
+      page        = nav.current_page
+      start_range = start_range
+      end_range   = end_range
+ };
+
+ IF nav.current_page < nav.last_page ;
+   next_page = nav.next_page;
+   metainformation.next_page = {
+       link = {
+            rel = 'self'
+            href = "http://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${databaseinfo.dbname}/updates.json?page=${next_page};${querystring_without_page}"
+       }
+   };
+ END;
+
+ IF nav.current_page > nav.first_page ;
+   previous_page = nav.previous_page;
+   metainformation.previous_page = {
+       link = {
+            rel = 'self'
+            href = "http://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${databaseinfo.dbname}/updates.json?page=${previous_page};${querystring_without_page}"
+       }
+   };
+ END;
+
+this_json_output = {
+    link = {
+          rel = 'self'
+          href = "http://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${databaseinfo.dbname}/updates.json?${cgiapp.to_cgi_querystring}"
+    }
+
+    updates = all_updates
+    meta = metainformation
+};
+
+to_json(this_json_output) ;
+
+-%]

@@ -1,0 +1,86 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_bottom_left
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe Unten-Links
+#
+#######################################################################
+-%]
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Übersicht") %]</h4></div>
+
+<div class="card-body">
+
+[% titlecount = config.get_number_of_titles({view = view}) %]
+
+<h5><img style="vertical-align:bottom" src="[% config.get_icon('chart',view,sysprofile) %]" alt="Metrics" />&nbsp[% msg.maketext("Kennzahlen") %]</h5>
+
+<style>
+.ob-right_align td {
+   text-align:right;
+}
+</style>
+<div class="table-responsive">
+<table class="table table-striped table-hover ob-right_align">
+<tr>
+<th>[% msg.maketext("Kataloge") %]</th>
+<td>[% config.get_viewdbs(view).size %]</td>
+</tr>
+<tr>
+<th>[% msg.maketext("Titel") %]</th>
+<td>[% titlecount.allcount.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon Zeitschriften/Serien") %]</td>
+<td>[% titlecount.journalcount.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon Artikel") %]</td>
+<td>[% titlecount.articlecount.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon Digital") %]</td>
+<td>[% titlecount.digitalcount.chunk(-3).join('.') %]</td>
+</tr>
+[%-
+   user_all = user.get_number_of_users ;
+   user_selfreg = user.get_number_of_selfreg_users ;
+   user_bib = user_all - user_selfreg ;
+%]
+<tr>
+<th>[% msg.maketext("Angemeldete Nutzer") %]</th>
+<td>[% user_all.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon mit Bibliotheksausweis") %]</td>
+<td>[% user_bib.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon mit Mail-Adresse") %]</td>
+<td>[% user_selfreg.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<th>[% msg.maketext("Literaturlisten") %]</th>
+[% ret = user.get_number_of_litlists ;
+   litlists_all = ret.public + ret.private ;
+%]
+<td>[% litlists_all.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon öffentlich") %]</td>
+<td>[% ret.public.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon privat") %]</td>
+<td>[% ret.private.chunk(-3).join('.') %]</td>
+</tr>
+</table>
+</div>
+
+</div>
+</div>

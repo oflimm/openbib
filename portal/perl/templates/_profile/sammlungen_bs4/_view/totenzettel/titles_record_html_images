@@ -1,0 +1,37 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_images
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe des "Bilder"-Bereichs fuer einen
+# einzelnen Titelsatz
+#
+#######################################################################
+-%]
+<!-- Anfang Umschlagbilder -->
+[% IF normdata.${"T2662"} ;
+     FOREACH item IN normdata.${"T2662"} ;
+       url = item.content ;
+       thismult = item.mult ;
+       FOREACH thisitem IN normdata.${"T0663"} ;
+           IF thisitem.mult == thismult ;
+              description = thisitem.content ;
+           END ;
+       END ;
+       FOREACH thisitem IN normdata.${"T0662"} ;
+           IF thisitem.mult == thismult ;
+              full_url = thisitem.content ;
+           END ;
+       END ;
+       
+%]
+[%# USE dumper;dumper.dump(normdata)%]
+<center><a href="[% full_url.replace('http://easydb2.ub.uni-koeln.de/','/easydb2/') %]" target="_blank"><img src="[% url.replace('http://easydb2.ub.uni-koeln.de/','/easydb2/') %]" width="300"/></a><br/><i>[% description %]</i><center>
+<p/>
+[%   END %]
+[% END %]
+<!-- Ende Umschlagbilder -->

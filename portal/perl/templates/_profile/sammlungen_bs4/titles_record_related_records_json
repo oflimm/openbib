@@ -1,0 +1,67 @@
+[%-
+
+blacklisted_locations = [ 'DE-38-USBFB' ];
+
+related_records = record.enrich_related_records({ viewname => view, blacklisted_locations => blacklisted_locations }).get_related_records ;
+
+related_records_output = [];
+
+FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).get_records ;
+  item = related_record.get_fields ;
+
+  item.delete('id','database');
+
+  thisdatabase = related_record.database;
+  thisid       = related_record.id;
+
+  thisrecord = {
+      id = thisid
+      database = {
+             link = {
+                      rel = 'self'
+                      href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${thisdatabase}.json"
+             }
+             id                = thisdatabase
+             description       = dbinfo.get('dbnames').${thisdatabase}.full
+             description_short = dbinfo.get('dbnames').${thisdatabase}.short
+             schema            = dbinfo.get('schema').${record.database}
+             url               = dbinfo.get('urls').${thisdatabase}                          
+      }
+      fields = item      
+  };
+
+  item_location = related_record.get_locations.first;
+
+  IF item_location ;
+    thisrecord.locations = [{
+        link = {
+              rel = 'self'
+              href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${item_location}.json"
+        }
+        id = item_location
+        description = locinfo.get('identifier').${item_location}.description  
+    }];
+  END;
+
+  related_records_output.push(thisrecord);
+END ;
+
+metainformation = {
+   hits        = related_records.get_size()
+   ips_user    = qopts.get_option('ips_user')
+};
+
+json_output = {
+    link = {
+        rel = 'self'
+        href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}/id/${record.get_encoded_id}/related_records.json?${cgiapp.to_cgi_querystring}"
+    }
+
+    meta    = metainformation
+    records = related_records_output
+};
+
+to_json(json_output);
+
+
+-%]

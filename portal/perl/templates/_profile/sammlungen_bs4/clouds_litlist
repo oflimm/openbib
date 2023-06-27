@@ -1,0 +1,39 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = "Wortwolken"
+
+      'main_template' = 'clouds_litlist_html'
+      'sidebar_template' = 'clouds_navigation'
+
+      'active_menu' = 'cloud'
+      'active_submenu' = 'clouds_litlist'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+      	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+      	  },
+          {
+             desc = msg.maketext('Wolken')
+      	     url  = "${path_prefix}/${config.get('clouds_loc')}.html?l=${lang}"
+      	  },
+      	  {
+      	     desc = msg.maketext('Literaturlisten')
+      	     url  = '#'
+      	     current = 1
+      	  }
+      ]
+      # 'representations' = [
+      #     {
+      # 	     type = 'json'
+      # 	     url  = "${path_prefix}/${config.get('clouds_loc')}/id/litlist.json?l=${lang}"
+      # 	  },
+      #  ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="clouds_litlist_json" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

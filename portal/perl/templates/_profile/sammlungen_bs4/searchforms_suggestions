@@ -1,0 +1,201 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchforms_suggestions
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe des JavaScript-Codes fuer Suchvorschlaege (Livesearch oder Rechtschreibkorrektur)
+#
+#
+#######################################################################
+-%]
+[% IF NOT layout_param.without_navigation_search %]
+[% IF user.is_authenticated %]
+<style>
+.acResults {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 2000;
+  display: none;
+  float: left;
+  min-width: 160px;
+//  padding: 5px 0;
+//  margin: 2px 0 0;
+  list-style: none;
+  font-size: 14px;
+  text-align: left;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  background-clip: padding-box;
+}
+
+<!--
+.acResults > li {
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: #333333;
+  white-space: nowrap;
+}
+
+-->
+
+.acResults > ul  {
+    padding: 0px;
+}
+
+.acResults > ul > li:first-child {
+//    border-top-left-radius: .25rem;
+//    border-top-right-radius: .25rem;
+}
+
+
+.acResults > ul > li {
+    position: relative;
+    display: block;
+    padding: .75rem 0.75rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+}
+
+.acResults > ul > li:hover {
+    background-color: lightgrey;
+}
+
+//*, ::after, ::before {
+//    box-sizing: border-box;
+//}
+</style>
+
+[% autocompletion_type = user.get_autocompletion %]
+[% livesearch          = user.get_livesearch %]
+[% IF 1 == 0 && autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_serials").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_articles").autocomplete("[% path_prefix %]/[% config.get('connector_spellcheck_loc') %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% ELSIF autocompletion_type == "livesearch" %]
+<script type="text/javascript">
+$(document).ready(function(){
+  function append_wildcard(s,a,b){
+     return s+'*';
+  };
+
+  function unescapeHTML(escapedHTML) {
+     return escapedHTML.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
+  };
+
+[%     IF livesearch.freesearch.active %]
+  $("#to_focus").autocomplete("[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].txt", {
+                selectFirst: false,
+                queryParamName: "fs",
+                minChars: 3,
+                useCache: false,
+                showResult: unescapeHTML,
+[% IF NOT livesearch.freesearch.exact %]
+                beforeUseConverter: append_wildcard,
+[% END %]
+                filter: false,
+		sortResults: false,
+		delay: 300,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  l: "[% lang %]",
+                  facets: "none",
+		  srt: "relevance_desc",
+                  clp: "authority",
+                }});
+[%    END %]
+[%    IF livesearch.person.active %]
+  $("#autocomplete_per").autocomplete("[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].txt", {
+                selectFirst: false,
+                queryParamName: "per",
+                minChars: 3,
+                useCache: false,
+                showResult: unescapeHTML,
+[% IF NOT livesearch.person.exact %]
+                beforeUseConverter: append_wildcard,
+[% END %]
+                filter: false,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  l: "[% lang %]",
+                  facets: "none",
+		  srt: "relevance_desc",
+                  clp: "authority",
+                }});
+[%    END %]
+[%    IF livesearch.corporatebody.active %]
+  $("#autocomplete_corp").autocomplete("[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].txt", {
+                selectFirst: false,
+                queryParamName: "corp",
+                minChars: 3,
+                useCache: false,
+                showResult: unescapeHTML,
+[% IF NOT livesearch.corporatebody.exact %]
+                beforeUseConverter: append_wildcard,
+[% END %]
+                filter: false,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  l: "[% lang %]",
+                  facets: "none",
+		  srt: "relevance_desc",
+                  clp: "authority",
+                }});
+[%    END %]
+[%    IF livesearch.subject.active %]
+  $("#autocomplete_subj").autocomplete("[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].txt", {
+                selectFirst: false,
+                queryParamName: "subj",
+                minChars: 3,
+                useCache: false,
+                showResult: unescapeHTML,
+[% IF NOT livesearch.subject.exact %]
+                beforeUseConverter: append_wildcard,
+[% END %]
+                filter: false,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  l: "[% lang %]",
+                  facets: "none",
+		  srt: "relevance_desc",
+                  clp: "authority",
+                }});
+[%    END %]
+
+})
+</script>
+[%   END %]
+[% END %]
+[% END %]

@@ -1,0 +1,55 @@
+<div id="ob-search_tipps" class="pt-1" style="border-top: 1px solid #dbdbdb;">
+<!--<div class="card">
+
+<div class="card-header">[% msg.maketext("Weitergehende Suchhinweise") %]</div>
+<div class="card-body"> -->
+
+<p>
+[% msg.maketext("Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten Zeitschriftenartikel nicht im KUG finden?") %]
+</p>
+
+<p>
+<b><span style="font-size:1.2em">[% msg.maketext("Allgemeine Hinweise") %]</span></b>
+</p>
+
+<ul>
+<li>[% msg.maketext("Prüfen Sie die Schreibweise Ihrer Suchbegriffe.") %]</li>
+<li>[% msg.maketext("Verwenden Sie andere Begriffe mit derselben Bedeutung, falls Sie nach einem bestimmten Thema suchen.") %]</li>
+<li>[% msg.maketext("Suchen Sie mit wenigen Begriffen, z.B. mit einem Wort aus dem Titel und dem Nachnamen des Autors.") %]</li>
+<li>[% msg.maketext("Verwenden Sie das Sternchen (*) als Platzhalter.") %]</li>
+</ul>
+
+<p>
+<b><span style="font-size:1.2em">[% msg.maketext("Recherche in beliebigen Katalogen") %]</span></b>
+</p>
+
+<ul>
+<li>[% msg.maketext("Melden Sie sich im KUG an und [_1]erstellen Sie für
+beliebige Katalogkombinationen ein Katalogprofil[_2], dass Sie dann bei jeder
+Recherche auswählen können.","<a href=\"${path_prefix}/${config.get('users_loc')}/me/${config.get('searchprofiles_loc')}\">","</a>") %]</li>
+</ul>
+
+<p>
+<b><span style="font-size:1.2em">[% msg.maketext("B&uuml;cher") %]</span></b>
+</p>
+
+<ul>
+<li>[% msg.maketext("Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;ber den KUG recherchierbar.") %]</li>
+<li>[% msg.maketext("F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;t besteht die M&ouml;glichkeit der Suche in einem [_1]Online-Kartenkatalog[_2]","<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=532;url=http://retro-philfak.ub.uni-koeln.de:8080/catalog/\" target=\"_blank\">","</a>") %].</li>
+</ul>
+
+<p>
+<b><span style="font-size:1.2em">[% msg.maketext("Zeitschriftenartikel") %]</span></b>
+</p>
+
+<ul>
+<li>[% msg.maketext("Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in Ihrem Katalog aufnehmen") %]</li>
+<li>[% msg.maketext("Suchen Sie in den [_1]elektronisch verf&uuml;gbaren Zeitschriften[_2] der Universit&auml;tsbibliothek nach dem Zeitschriftentitel.","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/ezb/classifications.html?l=${lang};type=cloud;access_green=1;access_yellow=1\">","</a>") %]</li>
+<li>[% msg.maketext("Haben Sie sich &uuml;ber unser
+[_1]Datenbankangebot[_2] informiert? Auch hier finden Sie Volltexte.","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/dbis/classifications.html?l=de;type=cloud;access_green=1;access_yellow=1;access_national=1\">","</a>") %]</li>
+</ul>
+<!--
+</div>
+</div>-->
+
+</div>

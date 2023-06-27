@@ -1,0 +1,24 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+
+     'page_title' = 'Anschaffungsvorschlag'
+
+      'main_template' = 'users_circulations_suggestions_success_html'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Anschaffungsvorschlag')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

@@ -1,0 +1,32 @@
+[%-
+
+    funcargs = { id => view, type => 2 } ;
+    resultlist = statistics.get_result(funcargs);
+
+all_databases = [] ;
+FOREACH thisitem IN resultlist ;
+    database = thisitem.item ;
+    count    = thisitem.count ;
+
+  this_databaseinfo = {
+    link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${database}.json?l=${lang}"
+    }
+    description = dbinfo.get('dbnames').${database}.short
+    count       = count
+  };
+  all_databases.push(this_databaseinfo);
+END;
+
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/popular.json?l=${lang}"
+     }
+     databases = all_databases
+ };
+
+to_json(this_json_output) ;
+
+-%]

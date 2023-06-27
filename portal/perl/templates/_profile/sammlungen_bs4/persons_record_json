@@ -1,0 +1,38 @@
+[%-
+
+thisrecord = {
+           link = {
+                    rel = 'self'
+                    href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${record.id}.json"
+           }
+           id       = record.id
+           database = {
+                link = {
+                       rel = 'self'
+                       href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${record.database}.json"
+                }
+                id                = record.database
+                description       = dbinfo.get('dbnames').${record.database}.full
+                description_short = dbinfo.get('dbnames').${record.database}.short
+                schema            = dbinfo.get('schema').${record.database}
+                url               = dbinfo.get('urls').${record.database}                          
+           }
+           fields      = record.get_fields(msg)
+};
+
+locationid = dbinfo.locationid.${record.database};
+
+IF locationid ;
+  thisrecord.database.location = {
+      link = {
+              rel = 'self'
+              href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${locationid}.json"
+      }
+      id = dbinfo.locationid.${record.database}
+            
+  };
+END;
+
+to_json(thisrecord);
+
+-%]

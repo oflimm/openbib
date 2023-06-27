@@ -1,0 +1,248 @@
+
+<script type="text/javascript" src="/js/keyboard-greek.js"></script>
+<script type="text/javascript" src="/js/keyboard-muenzen.js"></script>
+[% searchform_choices = statistics.get_result({ id => 'muenzen_searchform_choices', type => 1}) %]
+
+<script type="text/javascript">
+[% regent_array = [];
+
+   regent_string = searchform_choices.regent.join('", "') ;
+   regent_string = "\"${regent_string}\"";
+
+   region_string = searchform_choices.region.join('", "') ;
+   region_string = "\"${region_string}\"";
+
+   city_string = searchform_choices.stadt.join('", "') ;
+   city_string = "\"${city_string}\"";
+
+   nominal_string = searchform_choices.nominal.join('", "') ;
+   nominal_string = "\"${nominal_string}\"";
+
+   area_string = searchform_choices.area.join('", "') ;
+   area_string = "\"${area_string}\"";
+
+   material_string = searchform_choices.material.join('", "') ;
+   material_string = "\"${material_string}\"";
+
+   magistrate_string = searchform_choices.magistrate.join('", "') ;
+   magistrate_string = "\"${magistrate_string}\"";
+
+   ruling_family_string = searchform_choices.ruling_family.join('", "') ;
+   ruling_family_string = "\"${ruling_family_string}\"";
+
+%]
+  
+$(document).ready(function(){
+      var available_regents = [ [% regent_string %] ];
+
+      $("#autocomplete_per").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Regenten auswählen") %]",
+         data: available_regents
+      });
+
+      var available_regions = [ [% region_string %] ];
+
+      $("#autocomplete_subj").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Region auswählen") %]",
+         data: available_regions
+      });
+
+      var available_cities = [ [% city_string %] ];
+
+      $("#autocomplete_cln").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Stadt auswählen") %]",
+         data: available_cities
+      });
+
+      var available_nominals = [ [% nominal_string %] ];
+
+      $("#autocomplete_t0338").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Nominal auswählen") %]",
+         data: available_nominals
+      });
+      
+      var available_areas = [ [% area_string %] ];
+
+      $("#autocomplete_t0410").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Herrschaftsbereich auswählen") %]",
+         data: available_areas
+      });
+      
+      var available_magistrates = [ [% magistrate_string %] ];
+
+      $("#autocomplete_t0533").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Magistrat auswählen") %]",
+         data: available_magistrates
+      });
+      
+      var available_ruling_families = [ [% ruling_family_string %] ];
+
+      $("#autocomplete_t0531").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Regenten auswählen") %]",
+         data: available_ruling_families
+      });
+      
+      var available_materials = [ [% material_string %] ];
+
+      $("#autocomplete_ftyp").select2({
+         allowClear: true,
+	 placeholder: "[% msg.maketext("Bitte Nominal auswählen") %]",
+         data: available_materials
+      });
+});
+</script>
+
+<input type="hidden" name="novrp" value="1" />
+<input type="hidden" name="srt" value="year_asc" />
+
+[%- searchfield = config.get('searchfield') -%]
+
+[%- cgiparam = searchfield.id.prefix ;
+    this_searchfield = 'id';
+-%]
+<div class="form-group">
+<label for="to_focus">[% msg.maketext("Id") %]</label>
+<input class="form-control" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.freesearch.prefix ;
+    this_searchfield = 'freesearch';
+-%]
+<div class="form-group">
+<label for="to_focus">[% msg.maketext("Freie Suche") %]</label>
+<input class="form-control" id="to_focus" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.title.prefix;
+    this_searchfield = 'title';
+ -%]
+<div class="form-group">
+<label for="[% cgiparam %]">[% msg.maketext("Legende") %]</label>
+<input class="form-control keyboardInput" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.person.prefix;
+    this_searchfield = 'person';
+ -%]
+<div class="form-group">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0100-muenzen") %]</label>
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]"/>
+</div>
+
+[%- cgiparam = searchfield.subject.prefix;
+    this_searchfield = 'subject';
+ -%]
+<div class="form-group">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0710-muenzen") %]</label>
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.classification.prefix;
+    this_searchfield = 'classification';
+ -%]
+<div class="form-group">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0700-muenzen") %]</label>
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.mediatypestring.prefix;
+    this_searchfield = 'mediatypestring';
+ -%]
+<div class="form-group">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0800-muenzen") %]</label>
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.t0619.prefix;
+    this_searchfield = 't0619';
+ -%]
+<div class="form-group">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Regierungsjahr (Alexandrinische Münzen)") %]</label>
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[% IF 0 == 1 %]
+[%- cgiparam      = searchfield.year.prefix;
+    this_searchfield = 'year';
+ -%]
+<div class="form-group">
+<label for="[% cgiparam %]">[% msg.maketext("Jahr der Datierung") %]</label>
+<input class="form-control" id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="4" maxlength="4" />
+</div>
+[% END %]
+
+[%- cgiparam      = searchfield.year.prefix -%]
+[%- cgiparam_from = "${cgiparam}_from";
+    this_searchfield_from = 'year_from';
+ -%]
+[%- cgiparam_to   = "${cgiparam}_to";
+    this_searchfield_to = 'year_to';
+   -%]
+<div class="form-group">
+<label for="[% cgiparam_from %]">[% msg.maketext("Zeitraum der Datierung") %] [% msg.maketext("von") %]</label>
+<input class="form-control" id="[% cgiparam_from %]" type="text" name="[% cgiparam_from %]" value="[% searchquery.cgiparam_from.val | html %]" size="4" maxlength="4" />
+</div>
+<div class="form-group">
+<label for="[% cgiparam_to %]">[% msg.maketext("Zeitraum") %] [% msg.maketext("bis") %]</label>
+<input class="form-control" id="[% cgiparam_to %]" type="text" name="[% cgiparam_to %]" value="[% searchquery.cgiparam_to.val | html %]" size="4" maxlength="4" />
+</div>
+
+[%- cgiparam = searchfield.t0338.prefix;
+    this_searchfield = 't0338';
+ -%]
+<div class="form-group">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0338-muenzen") %]</label>
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.t0410.prefix;
+    this_searchfield = 't0410';
+ -%]
+<div class="form-group">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0410-muenzen") %]</label>
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.t0531.prefix;
+    this_searchfield = 't0531';
+ -%]
+<div class="form-group">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0531-muenzen") %]</label>
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.t0533.prefix;
+    this_searchfield = 't0533';
+ -%]
+<div class="form-group">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0533-muenzen") %]</label>
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.t0508.prefix;
+    this_searchfield = 't0508';
+ -%]
+<div class="form-group">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0508-muenzen") %]</label>
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+[%- cgiparam = searchfield.t0600.prefix;
+    this_searchfield = 't0600';
+ -%]
+<div class="form-group">
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("T0600-muenzen") %]</label>
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+</div>
+
+<p/>
+
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Suchen") %]</button>
+

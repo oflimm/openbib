@@ -1,0 +1,3 @@
+[% config.get_templatetext('info_netiquette',view,lang) %]
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Netiquette") %]</div>

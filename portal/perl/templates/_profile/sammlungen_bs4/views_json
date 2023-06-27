@@ -1,0 +1,62 @@
+[%-
+
+all_views = [] ;
+
+FOREACH viewinfo IN views ;
+
+  databases = [];
+  FOREACH item IN config.get_viewdbs(viewinfo.viewname).sort ;
+    databases.push({
+            link = {
+                rel = 'self'
+                href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${item}.json?l=${lang}"
+            }
+
+            id     = item
+            dbname = item
+            description       = dbinfo.get('dbnames').${item}.full
+            description_short = dbinfo.get('dbnames').${item}.short
+            schema            = dbinfo.get('schema').${item}
+            url               = dbinfo.get('urls').${item}
+  });
+  END ;
+
+  this_profile = {
+    link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('profiles_loc')}/id/${viewinfo.profile_name}.json?l=${lang}"
+    }
+
+    id          = viewinfo.profile_name
+    profilename = viewinfo.profile_name
+    description = viewinfo.profile_description
+  }
+
+  this_view = {
+    link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('views_loc')}/id/${viewinfo.viewname}.json?l=${lang}"
+    }
+
+    id          = viewinfo.viewname
+    viewname    = viewinfo.viewname
+    description = viewinfo.description
+    active      = viewinfo.active
+    profile     = this_profile,
+    databases   = databases,
+  };
+  
+  all_views.push(this_view);
+END;
+
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('views_loc')}.json?l=${lang}"
+     }
+     views = all_views
+ };
+
+to_json(this_json_output) ;
+
+-%]

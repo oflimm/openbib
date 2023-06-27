@@ -1,0 +1,10 @@
+[%-
+
+x = csv.print(r,['hostip','tstamp_start','duration','title_count']);
+
+FOREACH logentry IN databaseinfo.search_related("updatelogs", {}, { order_by => 'tstamp_start DESC' } ) ;
+x = csv.print(r,[logentry.serverid.hostip,logentry.tstamp_start,logentry.duration,logentry.title_count]);
+END ;
+
+-%]
+[%- r.print_buffer -%]

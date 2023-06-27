@@ -1,0 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_impressum
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Impressum
+#
+#######################################################################
+-%]
+
+[% config.get_templatetext('info_impressum',view,lang) %]
+

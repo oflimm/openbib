@@ -1,0 +1,17 @@
+[%-
+
+  this_json_output = rssinfo;
+  this_json_output = {
+       link = {
+          rel = 'self'
+          href = "${path_prefix}/${config.get('databases_loc')}/id/${katalog.dbname}/rss/${feed.id}.json?l=${lang}"
+
+       }
+       id     => rssinfo.id
+       type   => rssinfo.type
+       active => rssinfo.active
+  };
+
+  to_json(this_json_output);
+
+-%]

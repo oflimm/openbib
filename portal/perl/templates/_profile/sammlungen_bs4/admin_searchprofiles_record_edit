@@ -1,0 +1,102 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='OpenBib Administration - Suchprofil bearbeiten' %]
+
+  <body>
+
+<!-- skip link navigation -->
+<ul class="ym-skiplinks">
+	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
+	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
+</ul>
+
+<div class="ym-wrapper">
+  <div class="ym-wbox">
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
+
+    <!-- begin: main content area #main -->
+    <div id="main">
+
+   <div class="ob-functional_nav">
+     <div class="ob-breadcrumb">
+       <ul>
+         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
+         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Suchprofile") %]</a></li>
+         <li><a href="#" class="lastitem">[% searchprofileid %]</a></li>
+       </ul>
+     </div>
+    <div class="ob-representation">
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('searchprofiles_loc') %]/id/[% searchprofileid %].json?l=[% lang %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+    </div>
+   </div>
+
+    <div class="ym-column linearize-level-1">
+      <div class="ym-col1">
+        <div class="ym-cbox" class="ym-clearfix">
+[% PROCESS common/subtemplate name="users_navigation" active_submenu="admin_searchprofiles_record" active_subsubmenu="admin_searchprofiles_record" %]
+        </div>
+      </div>
+      <!-- end: #col1 -->
+      <!-- begin: #col3 static column -->
+      <div class="ym-col3" >
+        <div class="ym-cbox" class="ym-clearfix">
+
+<form method="post" action="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% searchprofileid %]" class="ym-form">
+<input type="hidden" name="_method"     value="PUT" />
+
+<fieldset class="ym-columnar">
+
+<legend>[% msg.maketext("Suchprofil bearbeiten") %]</legend>
+
+<div class="ym-fbox-text">
+<label>[% msg.maketext("Id") %]</label>
+[% searchprofileid %]
+</div>
+
+
+<div class="ym-fbox-select">
+<label for="profilename">[% msg.maketext("Eigener Index") %]</label>
+<select id="own_index" name="own_index">
+<option value="1" [% IF searchprofile.own_index %]selected="selected"[% END %]>[% msg.maketext("Ja") %]</option>
+<option value="0" [% IF NOT searchprofile.own_index %]selected="selected"[% END %]>[% msg.maketext("Nein") %]</option>
+</select>
+</div>
+
+<div class="ym-fbox-text">
+<label>[% msg.maketext("Kataloge") %]</label>
+<ul>[% FOREACH dbname IN config.get_databases_of_searchprofile(searchprofileid) %]<li>[% dbinfo.get('dbnames').${dbname}.short %]</li>[% END %]</ul>
+</div>
+
+<div class="ym-fbox-button">
+<input type="submit" value="[% msg.maketext("Ändern") %]" />
+</div>
+
+</fieldset>
+
+</form>
+
+
+        </div>
+        <div class="ym-ie-clearing">&nbsp;</div>
+        <!-- End: IE Column Clearing -->
+      </div>
+     </div> <!-- end: ym-column -->
+    </div>
+    <!-- end: #main -->
+
+[% PROCESS common/subtemplate name="std_footer" %]

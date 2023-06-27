@@ -1,0 +1,50 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = 'Administration - &Uuml;bersicht Statistikdaten'
+      
+      'main_template' = 'admin_statistics_html'
+      'sidebar_template' = 'users_navigation'
+
+      'active_menu' = 'admin'
+      'active_submenu' = 'admin_statistics'
+      'active_subsubmenu' = 'general'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Administration')
+	     url  = "${path_prefix}/${config.get('admin_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Statistiken')
+	     url  = '#'
+	  }
+	  {
+	     desc = msg.maketext('Allgemein')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('statistics_loc')}.json?l=${lang}"
+	  }
+       ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="admin_statistics_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="admin_statistics_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="admin_statistics_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

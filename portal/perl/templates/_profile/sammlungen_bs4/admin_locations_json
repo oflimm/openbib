@@ -1,0 +1,31 @@
+[%-
+
+all_locationinfo = [] ;
+FOREACH thislocation IN locations ;
+  this_locationinfo = {
+    link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('locations_loc')}/id/${thislocation.identifier}.json?l=${lang}"
+    }
+
+    id          = thislocation.identifier
+    description = thislocation.description
+    shortdesc   = thislocation.shortdesc
+    type        = thislocation.type
+    identifier  = thislocation.identifier
+  };
+  all_locationinfo.push(this_locationinfo);
+END;
+
+this_json_output = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('locations_loc')}.json?l=${lang}"
+     }
+
+    locations = all_locationinfo
+};
+
+to_json(this_json_output) ;
+
+-%]

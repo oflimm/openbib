@@ -1,0 +1,7 @@
+[%-
+
+success = { success = 1, msg = msg.maketext("Ihre ausgewählten nutzergenerierten Inhalte (Literaturlisten, Tags, Merkliste) wurden erfolgreich von Ihrer alten Kennung zu dieser Kennung verschoben.") };
+
+to_json(success);
+
+-%]

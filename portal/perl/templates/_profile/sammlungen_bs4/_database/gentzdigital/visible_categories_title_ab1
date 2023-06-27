@@ -1,0 +1,26 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_titset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%-# Ausgabekategorien -%]
+[%- categories = [
+                'TXXXX', # msg.maketext("TXXXX-gentzdigital") DOI
+                'T0451', # msg.maketext("T0451-gentzdigital") Basisdaten erhoben am:
+                'T0100', # msg.maketext("T0100-gentzdigital") Briefaussteller
+                'T0101', # msg.maketext("T0101-gentzdigital") Briefempfaenger
+                'Ausstellort', # msg.maketext("T0410-gentzdigital") Ausstellungsort
+                'T0424', # msg.maketext("T0424-gentzdigital") Datum
+                'T0523', # msg.maketext("T0523-gentzdigital") Praesentationsvermerk (presented_on)
+                'T0336', # msg.maketext("T0336-gentzdigital") Incipit
+                ]
+
+-%]

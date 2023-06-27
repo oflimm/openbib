@@ -1,0 +1,22 @@
+<div class="pt-1" style="border-top: 1px solid #dbdbdb;">
+<!--<div class="card">
+
+<div class="card-header">[% msg.maketext("Weitergehende Suchhinweise") %]</div>
+<div class="card-body"> -->
+
+<p>
+[% msg.maketext("Konnten Sie nicht das Gewünschte finden?") %]
+</p>
+
+<p>
+<b><span style="font-size:1.2em">[% msg.maketext("Allgemeine Hinweise") %]</span></b>
+</p>
+
+<ul>
+<li>[% msg.maketext("Prüfen Sie die Schreibweise Ihrer Suchbegriffe.") %]</li>
+<li>[% msg.maketext("Verwenden Sie andere Begriffe mit derselben Bedeutung, falls Sie nach einem bestimmten Thema suchen.") %]</li>
+<li>[% msg.maketext("Suchen Sie mit wenigen Begriffen, z.B. mit einem Wort aus dem Titel und dem Nachnamen des Autors.") %]</li>
+<li>[% msg.maketext("Verwenden Sie das Sternchen (*) als Platzhalter.") %]</li>
+</ul>
+
+</div>

@@ -1,0 +1,27 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_templates_record_edit
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Templates
+#
+#######################################################################
+-%]
+
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<tr><th>[% msg.maketext("Id") %]</th><td>[% templateinfo.id %]</td></tr>
+<tr><th>[% msg.maketext("Name") %]</th><td>[% templateinfo.templatename %]</td></tr>
+<tr><th>[% msg.maketext("Sprache") %]</th><td>[% templateinfo.templatelang %]</td></tr>
+<tr><th>[% msg.maketext("View") %]</th><td>[% templateinfo.viewid.viewname %]: [% templateinfo.viewid.description %]</td></tr>
+<tr><th>[% msg.maketext("Darstellung") %]</th><td>[% templateinfo.templatetext %]</td></tr>
+<tr><th>[% msg.maketext("Text") %]</th><td>[% templateinfo.templatetext | html%]</td></tr>
+[% IF templateinfo.templateinforevisions %]
+<tr><th>[% msg.maketext("Revisionen") %]</th><td><a href="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/revisions.html?l=[% lang %]">[% templateinfo.templateinforevisions.size %]</a></td></tr>
+[% END %]
+</table>
+</div>

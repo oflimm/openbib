@@ -1,0 +1,33 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_databases_record_json
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+[%
+
+  this_json_output = {
+    link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${databaseinfo.dbname}.json?l=${lang}"
+    }
+    id          = databaseinfo.dbname
+    description = databaseinfo.description
+    active      = databaseinfo.active
+    dbname      = databaseinfo.dbname
+    system      = databaseinfo.system
+    schema      = databaseinfo.schema
+    sigel       = databaseinfo.sigel
+    url         = databaseinfo.url
+  };
+
+to_json(this_json_output) ;
+
+%]

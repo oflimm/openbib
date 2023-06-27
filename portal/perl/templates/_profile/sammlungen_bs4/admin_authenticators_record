@@ -1,0 +1,64 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_databases_record
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Kataloge
+# mit ihren wichtigsten Informationen
+#
+# Einrichtung eines neuen Kataloges
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = 'Administration - Anmeldeziel anzeigen'
+
+      'main_template' = 'admin_authenticators_record_html'
+      'sidebar_template' = 'users_navigation'
+
+      'active_menu' = 'admin'
+      'active_submenu' = 'admin_authenticators_record'
+      'active_subsubmenu' = 'admin_authenticators_record_main'      
+
+      'active_menu' = 'admin'
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Administration')
+	     url  = "${path_prefix}/${config.get('admin_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Anmeldung')
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('authenticators_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = authenticatorinfo.description
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('authenticators_loc')}/id/${authenticator.id}.json?l=${lang}"
+	  }
+       ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="admin_authenticators_record_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="admin_authenticators_record_json" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

@@ -1,0 +1,82 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_databases_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Kataloge
+# mit ihren wichtigsten Informationen
+#
+# Einrichtung eines neuen Kataloges
+#
+#######################################################################
+-%]
+
+[% IF locations.size > 0 %]
+
+<h3>[% msg.maketext("Standorte") %]</h3>
+
+<p>
+<div id="map_canvas" style="width: 100%; height: 500px"></div>
+</p>
+
+<script src="https://openlayers.org/api/OpenLayers.js"></script>
+
+<script type="text/javascript">
+    var map = new OpenLayers.Map("map_canvas");
+    map.addLayer(new OpenLayers.Layer.OSM());
+
+    var lonLatCenter = new OpenLayers.LonLat( 6.928751,50.925755[% locationinfo.fields.${"L0280"}.first.content.split(',').reverse.join(',') %] ).transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            map.getProjectionObject() // to Spherical Mercator Projection
+          );
+
+    var zoom=14;
+
+    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    map.addLayer(markers);
+
+[% FOREACH location IN locations %]
+[%  coordinates = location.fields.${"L0280"}.first.content.split(',').reverse.join(',') %]
+[%  IF coordinates %]
+    var lonLat[% location.id %] = new OpenLayers.LonLat( [% coordinates %] ).transform(
+            new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
+            map.getProjectionObject() // to Spherical Mercator Projection
+          );
+
+    var size[% location.id %] = new OpenLayers.Size(32,32);
+    var offset[% location.id %] = new OpenLayers.Pixel(-(size[% location.id %].w/2), -size[% location.id %].h);
+    var icon[% location.id %] = new OpenLayers.Icon('https://kug.ub.uni-koeln.de/images/openbib/blue-marker.png',size[% location.id %],offset[% location.id %]);
+
+    var marker[% location.id %] = new OpenLayers.Marker(lonLat[% location.id %],icon[% location.id %]); 
+    markers.addMarker(marker[% location.id %]);
+    marker[% location.id %].icon.imageDiv.title = "[% location.description.replace('"','\'') %]";
+[%  END %]
+[% END %]
+
+    map.setCenter (lonLatCenter, zoom);
+</script>
+
+[%# USE dumper;dumper.dump(locations)%]
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<tr><th>[% msg.maketext("Identifier") %]</th><th>[% msg.maketext("Typ") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Kurzbeschreibung") %]</th></tr>
+[% FOREACH location IN locations %]
+[%   IF location.type == 'ISIL' %]
+<tr>
+<td><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% location.identifier %].html?l=[% lang %]">[% location.identifier %]</a></td>
+<td>[% location.type %]</td>
+<td>[% location.description %]</td>
+<td>[% location.shortdesc %]</td>
+</tr>
+[%   END %]
+[% END %]
+
+</table>
+</div>
+[% ELSE %]
+[% msg.maketext("Es wurden noch keine Standorte definiert.") %]
+[% END %]

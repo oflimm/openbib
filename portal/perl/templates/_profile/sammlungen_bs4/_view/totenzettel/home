@@ -1,0 +1,12 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'css_id' = 'ob-startpage'
+      'main_template' = 'home_html'
+      'without_home_navigation_search' = 1
+
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

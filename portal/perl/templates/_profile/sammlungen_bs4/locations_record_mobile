@@ -1,0 +1,117 @@
+[%#-
+#######################################################################
+#
+# Templatename: locations_record
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe eines Standortes
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='' %]
+  <body onload="initialize_google_maps()">
+
+<div data-role="page">
+
+       <div  data-role="header"> 
+	   <h1>[% IF view %][% config.get_viewdesc_from_viewname(view) %][% ELSE %]K&ouml;lner Universit&auml;tsGesamtkatalog[% END %]</h1> 
+       </div>
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="info" %]
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].mobile">
+<input type="hidden" name="num"        value="20" />
+<input type="hidden" name="page"       value="1" />
+
+<input type="hidden" name="srt"        value="relevance" />
+<input type="hidden" name="srto"       value="desc" />
+<input type="hidden" name="st"         value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+[% IF config.get('drilldown') %]
+<input type="hidden" name="dd"         value="1" />
+[% END %]
+
+    <fieldset> 
+      <div data-role="fieldcontain">
+        <center>
+         <input type="search" name="fs" id="search" value="" />
+         </center>
+      </div>
+    </fieldset> 
+    </form>
+
+       <div data-role="content">
+
+[% PROCESS common/subtemplate name="visible_categories_location" %]
+
+[%# USE dumper;dumper.dump(locationinfo.fields)%]
+
+<h3>[% IF locationinfo.type == 'ISIL' %][% msg.maketext("Bibliotheksinformationen") %]: [% END %][% locationinfo.description %]</h3>
+
+[%- IF locationinfo.fields.${"L0280"}.first.content -%]
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
+
+<script type="text/javascript">
+  function initialize_google_maps() {
+    var latlng = new google.maps.LatLng([% locationinfo.fields.${"L0280"}.first.content %]);
+    var myOptions = {
+      zoom: 15,
+      center: latlng,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    var map = new google.maps.Map(document.getElementById("map_canvas"),
+        myOptions);
+
+    var marker = new google.maps.Marker({
+      position: latlng, 
+      map: map, 
+      title:"[% locationinfo.description %]"
+  });   
+  }
+</script>
+
+<p>
+<div id="map_canvas" style="width: 100%; height: 300px"></div>
+</p>
+
+[% END %]
+
+<table class="ym-full">
+[%-
+FOREACH category IN categories;
+
+    IF locationinfo.fields.${category} ;
+      FOREACH item IN locationinfo.fields.$category;
+        content  = item.content;
+        mult     = item.mult;
+        subfield = item.subfield;
+
+        # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+        # in Config.pm fuer die entsprechende Datenbank definiert
+        # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+        # kodiert.
+        thiscategory = category ;
+        IF config.get('categorymapping').${locationinfo.databaseinfos.dbname}.$category ;
+          thiscategory = "${category}-${record.database}" ;
+        END;
+-%]
+<tr><th>[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+[%-   END ;
+   END ;
+END ;-%]
+</table>
+
+<!--
+         <ul data-role="listview" data-inset="true">
+           <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/elise_richter.mobile?l=[% lang %]">Elise Richter</a></li>
+           <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/helene_richter.mobile?l=[% lang %]">Helene Richter</a></li>
+         </ul>
+-->
+
+       </div>
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

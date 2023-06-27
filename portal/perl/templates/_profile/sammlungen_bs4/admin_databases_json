@@ -1,0 +1,56 @@
+[%-
+
+all_databaseinfo = [] ;
+FOREACH database IN catalogs ;
+  this_databaseinfo = {
+    link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}/id/${database.dbname}.json?l=${lang}"
+    }
+
+    description = database.description
+    shortdesc   = database.shortdesc
+    active      = database.active
+    dbname      = database.dbname
+    system      = database.system
+    sigel       = database.sigel
+    url         = database.url
+
+    host        = database.host
+    protocol    = database.protocol
+    remotepath  = database.remotepath
+    remoteuser  = database.remoteuser
+    remotepassword  = "NoneOfYourBusiness" # database.remotepassword
+    titlefile   = database.titlefile
+    personfile  = database.personfile
+    corporatebodyfile = database.corporatebodyfile
+    subjectfile = database.subjectfile
+    classificationfile = database.classificationfile
+    holdingfile = database.holdingfile
+    autoconvert = database.autoconvert
+
+    circ        = database.circ
+    circurl     = database.circurl
+    circwsurl   = database.circwsurl
+    circdb      = database.circdb
+
+    count_all      = database.allcount
+    count_digital  = database.digitalcount
+    count_journals = database.journalcount
+    count_articles = database.articlecount
+  };
+  all_databaseinfo.push(this_databaseinfo);
+END;
+
+this_json_output = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('admin_loc')}/${config.get('databases_loc')}.json?l=${lang}"
+     }
+
+    databases = all_databaseinfo
+};
+
+to_json(this_json_output) ;
+
+-%]

@@ -1,0 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: viewadmin_user_search
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Trefferseite bei einer Nutzerrecherche
+#
+#######################################################################
+-%]
+[%-
+
+  to_json(userlist);
+
+-%]

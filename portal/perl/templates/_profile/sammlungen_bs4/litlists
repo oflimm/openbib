@@ -1,0 +1,46 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = 'Öffentliche Literaturlisten anzeigen'
+
+      'main_template' = 'litlists_html'
+      'sidebar_template' = 'litlists_navigation'
+
+      'active_submenu' = 'litlists_all'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Literaturlisten')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('litlists_loc')}.json?l=${lang}"
+	  },
+          {
+	     type = 'rss'
+	     url  = "${path_prefix}/${config.get('litlists_loc')}.rss?l=${lang}"
+	  },
+       ]
+    };
+
+    show_foot_banner = 1 ;
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'rdf' -%]
+[%- PROCESS common/subtemplate name="litlists_rdf" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="litlists_json" -%]
+[%- ELSIF representation == 'bibtex' -%]
+[%- PROCESS common/subtemplate name="litlists_bibtex" -%]
+[%- ELSIF representation == 'refer' -%]
+[%- PROCESS common/subtemplate name="litlists_refer" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

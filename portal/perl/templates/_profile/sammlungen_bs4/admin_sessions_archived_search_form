@@ -1,0 +1,51 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_session
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller aktiver Sessions
+# mit ihren wichtigsten Informationen
+#
+#
+#######################################################################
+-%]
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = 'Administration - Archivierte Session suchen'
+
+      'main_template' = 'admin_sessions_archived_search_form_html'
+      'sidebar_template' = 'users_navigation'
+
+      'active_menu' = 'admin'
+      'active_submenu' = 'admin_sessions'
+      'active_subsubmenu' = 'archived'      
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Administration')
+	     url  = "${path_prefix}/${config.get('admin_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Sessions')
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('sessions_loc')}/active.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext("Explorer")
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

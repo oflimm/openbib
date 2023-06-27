@@ -1,0 +1,581 @@
+\documentclass[11pt, twoside, a4paper, BCOR11mm, DIV12, bibtotoc,idxtotoc]{scrbook}
+\usepackage{german}
+\usepackage{typearea}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[utf8x]{inputenc}
+
+% Header anpassbar
+\usepackage{fancyhdr}
+
+% Headings umdefinieren
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO]{\nouppercase{\rightmark}}
+\fancyhead[LE]{\nouppercase{\leftmark}}
+\fancyfoot[RO, LE]{\thepage}
+
+%\addtolength{\headwidth}{\marginparsep}
+%\addtolength{\headwidth}{\marginparwidth}
+%\addtolength{\headwidth}{1.3cm}
+
+% Oberer Rand nach unten
+\voffset0.8cm
+
+\parindent0.0mm
+\parskip0.3cm    
+%\typearea{13}
+
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+\renewcommand{\thechapter}{\Alph{chapter}}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\begin{document}
+
+\frontmatter
+
+\begin{titlepage}
+\thispagestyle{empty}
+
+\vspace*{2cm}
+
+\begin{center}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Elektronische Schriftenreihe\\[0.5cm] der Universit"ats- und Stadtbibliothek K"oln, 6}
+
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+
+\vspace*{1cm}
+
+\begin{center}
+\includegraphics[width=11cm]{/usr/share/images/openbib/views/pruessen/Portrait_Illa_Pruessen_gross.jpg}
+\end{center}
+
+\begin{center}
+\includegraphics[width=11cm]{/usr/share/images/openbib/views/pruessen/pruessen_dank_gross.jpg}
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+
+\vspace*{1cm}
+
+\begin{center}
+\includegraphics[width=12.5cm]{/usr/share/images/openbib/views/pruessen/Portrait2_gross.jpg}
+\end{center}
+
+\begin{center}
+\includegraphics[width=5cm]{/usr/share/images/openbib/views/pruessen/pruessen_unterschrift_gross.jpg}
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+
+\vspace*{3cm}
+
+\newpage
+\thispagestyle{empty}
+
+\vspace{5cm}
+
+\begin{center}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont Die Sammlung Eduard Pr"ussen in der\\Universit"ats- und Stadtbibliothek K"oln\\[1cm]Gesamtverzeichnis}
+
+  \vspace{0.5cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Juli 2013}
+
+\vspace{1cm}
+
+\includegraphics[width=12cm]{/usr/share/images/openbib/views/pruessen/pruessen-stempel.jpg}
+
+  \vspace*{3cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont Universit"ats- und Stadtbibliothek K"oln}
+
+\end{center}
+
+\newpage
+\thispagestyle{empty}
+
+\vspace*{16.5cm}
+
+\textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{10}{10pt}\selectfont Herausgeber: Der Direktor der Universit"ats- und Stadtbibliothek K"oln\\Prof. Dr. Wolfgang Schmitz\\Anschrift: Universit"atsstr. 33, 50931 K"oln\\Internet: http://www.ub.uni-koeln.de\\Erfassung: Ernst Stinner\\Redaktion \& Layout: Christiane Hoffrath, Oliver Flimm\\Druck und Bindung: USB K"oln\\ISBN: 978-3-931596-76-7\\ \\\copyright 2011-2013 USB K"oln}
+
+\end{titlepage}
+
+%\thispagestyle{empty}
+
+%\begin{verbatim}
+
+
+%Copyright (c) 2005-2011 Oliver Flimm <flimm@openbib.org>
+
+%Es wird die Erlaubnis gegeben dieses Dokument zu kopieren, verteilen 
+%und/oder zu veraendern unter den Bedingungen der GNU Free
+%Documentation License, Version 1.1 oder einer spaeteren, von der Free 
+%Software Foundation veroeffentlichten Version; mit den
+%Unveraenderlichen Abschnitten DEREN TITEL AUFGEZAEHLT sind, mit den 
+%Vorderseitentexten die AUFGEZAEHLT sind, und mit den Rueckseitentexten
+%die AUFGEZAEHLT sind. Eine Kopie dieser Lizenz ist in dem Abschnitt 
+%enthalten, der mit "GNU Free Documentation License"
+%\end{verbatim}
+
+\mainmatter
+
+\tableofcontents
+
+\addchap{Vorwort}
+
+Die Hauptaufgabe der Universit"ats- und Stadtbibliothek K"oln ist es,
+ihrer Universit"at als zentrale Informationsbibliothek f"ur Forschung
+und Lehre zu dienen. Als H"uterin des alten st"adtischen
+Bibliotheksbestandes steht sie dar"uber hinaus in der Tradition des
+Sammelns und Bewahrens kommunalen und landesgeschichtlichen
+Kulturgutes.
+
+Die "uber Jahre und Jahrzehnte zusammengetragenen Objekte
+repr"asentieren jeweils eine einzigartige Absicht, denn
+Sammlungsinhalte wie B"ucher und / oder Bilder dienen der
+Verwirklichung der Idee: Wissen, K"onnen und "`Ansichten"' unter einem
+bestimmten leitenden Aspekt zusammenzustellen. Dabei muss der
+Sammelschwerpunkt nicht nur auf das Buch als klassisches
+Bibliotheksgut ausgerichtet sein. Als Beispiele seien die bereits im
+Jahr 2008 in einer begleitenden Ausstellung pr"asentierte
+"`Portraitsammlung"' oder die "`Sammlung Lesen"' in der USB K"oln
+genannt. F"ur solcherart Bestandserweiterungen, wie sie auch die
+Sammlung von Eduard Pr"ussen darstellt, ist die USB auf die
+Unterst"utzung von Freunden und F"orderern des Hauses angewiesen. Mit
+der Aufbereitung einer Sammlung "ubernimmt die Bibliothek gegen"uber den
+Sammlern und Spendern die Verpflichtung, konservatorische Ma"snahmen zu
+ergreifen und den Weg zu den Objekten auf vielfache Weise zu ebnen,
+denn durch die Erschlie"sung und Pr"asentation soll allen Benutzern der
+Universit"ats- und Stadtbibliothek der Zugang zu den besonderen
+Materialien offen stehen. Diese grunds"atzliche Bedingung dient somit
+gleicherma"sen der Forschung und Lehre der Hochschule, dem kulturellen
+Ged"achtnis der Stadt und dem Andenken des Stifters.
+
+
+Im Jahr 2010 entschloss sich Eduard Pr"ussen seine umfangreiche
+Kollektion eigener k"unstlerischer Werke der Universit"ats- und
+Stadtbibliothek K"oln zu "ubergeben. Die Sammlung besteht vorwiegend aus
+Illustrationen in druckgraphischer Technik als Holz- und Linolschnitte
+und als Radierungen. Mit diesem Vorlass erwirbt die Bibliothek das
+Werk eines bedeutenden Buchillustrators, Buchk"unstlers und Graphikers,
+der in diesem Fall nicht nur als K"unstler, sondern auch als Sammler
+deutlich hervortritt.
+
+Eduard Pr"ussen wurde 1930 in K"oln geboren. Seine k"unstlerische
+Ausbildung erwarb er bei Anton Wolff und Professor Heinrich Hu"smann an
+den K"olner Werkschulen. 1953 bis 1955 wirkte er am K"olner
+Rautenstrauch-Joest-Museum (V"olkerkundemuseum). In dieser Zeit
+entstanden wissenschaftliche Zeichnungen und Ausstellungsplakate.
+
+Von 1955 bis 1958 war Eduard Pr"ussen als Graphic Artist und
+Exhibition Specialist im K"olner Amerika-Haus t"atig. Seit Ende der
+f"unfziger Jahre arbeitet er als freier Graphiker und Illustrator in
+seiner Heimatstadt, deren kulturellem Leben er seit Jahren eng
+verbunden ist.
+
+Er hat nicht nur die Autoren bedeutender Werke wie B"oll, Tschechov,
+Fontane, Kafka und viele andere mehr illustriert, er verlegt und
+gestaltet mit seiner 1962 etablierten Handpresse "`Donkey-Press"' wahre
+bibliophile Sammlerst"ucke. In den Sonderdrucken der Donkey-Press
+gelingt es ihm auf humorvolle und k"unstlerische Art seine Arbeiten
+geschickt zu bewerben.
+
+Der K"unstler war von 1971 bis 1996 als Stadtgraphiker in Bergisch
+Gladbach t"atig und in dieser Zeit f"ur das gesamte graphische
+Erscheinungsbild der Stadt verantwortlich. Neben vielen Plakaten,
+Drucksachen, Kalendern, Stadt- und Wanderpl"anen ist besonders der
+graphisch aufbereitete Namensschriftzug der Stadt bekannt, der zum
+offiziellen Markenzeichen Bergisch Gladbachs geworden ist. Damit
+geh"ort Eduard Pr"ussen nicht nur zu den Buchillustratoren und
+Buchmachern, sondern er hat immer auch als klassischer Graphiker
+gearbeitet, dessen Ideen und Werke bis heute standhalten und nicht
+einem fortschreitenden Zeitgeist unterliegen. F"ur seine beispielhafte
+Anzeigengestaltung (illustrativ gestaltete Anzeigenserie) wurde er
+folglich mit einer Medaille des Bayerischen Werbe-Fachverbandes
+ausgezeichnet.
+
+Als Eduard Pr"ussen anl"asslich seines 80. Geburtstags seine Sammlung
+der Universit"ats- und Stadtbibliothek "ubergab, bedankte sich die USB
+mit der Herausgabe des Buches "`K"olner K"opfe"', das als
+Sonderver"offentlichung der Schriften der Universit"ats- und
+Stadtbibliothek 2010 erschienen ist. Bei den "`K"olner K"opfen"' handelt
+es sich um Portr"ats herausragender Pers"onlichkeiten der Stadt von
+seiner Hand. In einer verkleinerten Version hatte der K"unstler die
+zweifarbigen Linolschnitte f"ur die Titelbilder auf den Einladungen zur
+Teestunde der Gesellschaft geschaffen. Die begleitenden Texte der
+dargestellten Pers"onlichkeiten, die jedes Portr"at beschreiben,
+verfasste Dr. Werner Sch"afke, ehemaliger Direktor des K"olnischen
+Stadtmuseums.
+
+Mit dem gedruckten Werkverzeichnis m"ochten wir dem Wunsch nach einem
+weiteren Pr"ussen-Buch entgegenkommen. Zur Erschlie"sung einer solchen
+Sammlung bedarf es der ungeteilten Aufmerksamkeit des erschlie"senden
+Bibliothekars, der sich tief in die spezielle Materie einf"uhlen
+muss. Ein besonderer Dank gilt daher unserem ehrenamtlichen
+Mitarbeiter Herrn Bibliotheksamtsrat i. R. Ernst Stinner, der sich
+dieser Aufgabe mit gro"sem Engagement und gro"ser Gewissenhaftigkeit
+gewidmet hat. Der Katalog der Sammlung Pr"ussen bildet das Herzst"uck
+des gleichnamigen Online-Portals, das unter der URL
+http://pruessen.ub.uni-koeln.de erreichbar ist. Neben vielf"altigen
+Recherchem"oglichkeiten sind hier viele Informationen zu Eduard
+Pr"usssen und seinen Werken zusammengestellt worden. Frau
+Dipl.-Bibl. Christiane Hoffrath ist dabei f"ur ihre unerm"udliche
+Unterst"utzung (z.B. die IT-Betreuung), aber auch ihre Begeisterung zu
+danken, mit der sie das Projekt vorantrieb.
+
+2011 ver"offentlichte die USB bereits ein Werkverzeichnis der Buch-und
+Presse-Illustrationen. Dieser Katalog hat Aufnahme in das vorliegende
+Gesamtverzeichnis gefunden. In chronologischer Reihenfolge sind neben
+den beiden genannten wichtigen S"aulen der Pr"ussenschen Produktion nun
+auch die Werbe-Illustrationen, Plakate, Exlibris und viele weitere
+Publikationsformen des K"unstlers verzeichnet.
+
+Ein Abschluss dieser kleinen Reihe "`Werkverzeichnisse"' ist nicht
+abzusehen, da der K"unstler weiterhin aktiv ist und wir
+zugegebenerma"sen recht eigenn"utzig hoffen, dass ein oder andere heute
+noch nicht existente St"uck ebenfalls in die Sammlung einf"ugen zu
+d"urfen.
+
+Eduard Pr"ussen hat f"ur seine Sammlung ein Selbstportr"at gefertigt, das
+sowohl das Onlinesammlungs-Portal als auch dieses Werkverzeichnis
+schm"uckt. Gedankt sei den Buchbinderinnen der Buchbinderei der USB,
+die den Katalog in einen Handeinband gebunden haben. Wir bieten mit
+diesem in limitierter Auflage erscheinendem bibliophilen Sammlerst"uck
+einen detaillierten Einblick in die Sammlung und er"offnen damit die
+M"oglichkeit zu einer intensiven Besch"aftigung mit dem Werk des
+K"unstlers.
+
+
+Prof. Dr. Wolfgang Schmitz\\
+Direktor der Universit"ats- und Stadtbibliothek K"oln
+
+\addchap{Einleitung}
+
+\minisec{Anlass zum Vorlass - ein Gl"ucksfall !}
+
+Mit dieser Feststellung beginne ich den Einblick in meine Gedanken und
+"Uberlegungen zum Verbleib meiner illustrativen Arbeiten, die nunmehr
+als "`Sammlung Pr"ussen"' in die Obhut der K"olner Universit"ats- und
+Stadtbibliothek aufgenommen worden sind.
+
+Dieser erste Band des Werkverzeichnisses beinhaltet zun"achst die Buch-
+und Presse-Illustrationen.
+
+Des Weiteren folgen erg"anzend die Auflistungen der Angewandten
+Graphik, ExLibris, Werbe-Illustrationen, Plakate und Graphiken zur
+Eigenwerbung. Wesentlich: Zu fast allen Arbeiten sind die Vorentw"urfe
+und Skizzen sowie die Entw"urfe der endg"ultigen Fassung erhalten.
+
+\minisec{Wie kommt es zu einem Vorlass?}
+
+Bei mir war es so, dass im so genannten reiferen Alter, so zwischen 70
+und 80, beim Betrachten der im Laufe einer rund f"unfzigj"ahrigen
+k"unstlerischen T"atigkeit entstandenen und nun in Schubladen
+"uberquellenden Graphiken sich unerbittlich die Frage stellte: Was wird
+einmal aus alledem, wo wird es im besten Falle bleiben?
+
+Diese meine Arbeit, zumeist Illustrationen in druckgraphischer Technik
+als Holz- und Linolschnitte oder Radierungen entstanden, ist und war
+immer bestimmender Teil meines Lebens. In dieser Arbeit und mit ihr
+gestaltete sich mein ganzes Dasein. So sei doch wahrlich
+nachzuvollziehen, dass die Gedanken um das "`Weiterleben"' dieser
+Lebensarbeit mit der Zeit in begr"undete Besorgnis "ubergingen.
+
+Die Wunschvorstellung, dass mit einer "Ubergabe, einer Schenkung, alles
+beisammen bleiben k"onne, die Skizzen und Vorarbeiten, die Entw"urfe,
+die endg"ultige, zur Ver"offentlichung gedachte Arbeit sowie der Abdruck
+im Buch, in Zeitschrift oder Prospekt, war lange Zeit einer
+Verwirklichung fern und herbe Entt"auschungen, auch mit einem gro"sen
+deutschen Museum, mussten "uberstanden werden.
+
+Ein Vorlass wurde auch deshalb angestrebt, um das ganze Geschehen, die
+"Uberlassung eines so wesentlichen Teils meines Lebens, noch lebend und
+lebendig, also mit Elan, begleiten zu k"onnen. Das ist dann sozusagen
+ein Teil des eingangs erw"ahnten Gl"ucksfalls.
+
+Der andere Teil ist dann in diesem Fall die Universit"ats- und
+Stadtbibliothek in Person von Professor Dr. Wolfgang Schmitz, der mich
+mit meinem Anliegen mit offenen Armen aufnahm, aber auch seiner engen
+und engagierten Mitarbeiterin Frau Dipl.-Bibliothekarin Christiane
+Hoffrath, M.A., sowie dem so zuverl"assigen ehrenamtlichen
+Bibliotheks\-amts\-rat i. R. Herrn Ernst Stinner zuzuschreiben. Sie k"onnen
+aber nun auch bei all der M"uhe mit Erfassung und Archivierung den
+Sch"opfer der "uberlassenen Bl"atter, B"ucher und Plakate um alle
+notwendigen Ausk"unfte bitten und dadurch exakt kennzeichnend und mit
+erg"anzenden Angaben ordnend das Leben der Sammlung festigen und
+weitgehend erhalten.
+
+In meinen ersten Gespr"achen mit Professor Schmitz habe ich als
+Bedingung, es war aber auch die einzige, die Erwartung ge"au"sert, dass
+die Sammlung "offentlich gemacht werde, also, dass sie Menschen
+nahegebracht und zur Verf"ugung gestellt werde. Das alles scheint mir
+nun mit der Einordnung meiner Sammlung in die Universit"ats- und
+Stadtbibliothek besonders gut gelungen zu sein. Hier ist es eben
+m"oglich, Interesse zu wecken und in Studien Zugang zu finden, mit der
+M"oglichkeit, auf ein k"unstlerisches Arbeitsleben zur"uckzugreifen,
+welches ausschlie"slich noch auf Papier entstanden ist und fern dem
+Computer reiche Ernte eingefahren hat.
+
+Fast alle Arbeiten waren an Termine gebunden. Die
+Presse-Illustrationen waren an Erscheinungsdaten der Zeitungen
+gekoppelt, dabei ging es um Tage oder Stunden, und auch f"ur die
+Buchillustrationen stand die Drucklegung fest. So manche Nacht war
+solcherma"sen der Entwurfsarbeit, einer Radierung oder einem
+Linolschnitt vorbehalten, um nach getaner Arbeit umso erl"oster in den
+fr"uhen Morgen hinein zu schlafen. Auch solche unter Zeitdruck
+entstandene Arbeiten waren erf"ullend und lebensbereichernd.
+
+Um abschlie"send noch bei dem erw"ahnten Gl"ucksfall zu bleiben: Ich
+freue mich, mein bisher entstandenes k"unstlerisches Lebenswerk gesamt
+in so sympathischer und sorgsamer Obhut zu wissen und hoffe, dass mir
+ein holdes Schicksal noch weitere Zeit bel"asst, immer wieder mit Rat
+und Ausk"unften mit allen Verantwortlichen in lebendigem Austausch zu
+bleiben. Auch denen, die m"oglicherweise im Rahmen ihres Studiums f"ur
+meine Arbeiten Neugier und Interesse zeigen, eine fruchtbare
+Vermittlung zu bieten und etwas von dem, was mir ein so reiches und
+gl"uckliches Leben beschert hat, weitergeben zu k"onnen.
+
+Ich will aber auch weiterhin t"atig sein - es dr"angt mich danach - und
+so erscheint in mir schon die Vision eines zweiten Vorlasses, bevor
+mein Verschwinden von der B"uhne meines sch"onen Lebens trauriger Anlass
+zum Nachlass werden k"onnte.
+
+Jedoch die Freude und Hoffnung auf ein weiteres Schaffen ist bislang
+ungetr"ubt und wird noch durch die Aufnahme meines \OE{}uvres von der
+Universit"ats- und Stadtbibliothek zus"atzlich erhellt.
+
+Eduard Pr"ussen, Juli 2011
+
+\chapter{Buchillustrationen [% buchillustrationen_year_min %] - [% buchillustrationen_year_max %]}
+
+[% FOREACH year IN buchillustrationen_available_years %]
+[% anzahl = buchillustrationen_recordlist.${year}.size %]
+[% IF year %]
+\section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
+[%    FOREACH record IN buchillustrationen_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="buch" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Presse-Illustrationen [% presseillustrationen_year_min %] - [% presseillustrationen_year_max %]}
+
+[% FOREACH year IN presseillustrationen_available_years %]
+[% anzahl = buchillustrationen_recordlist.${year}.size %]
+[% IF year %]
+\section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
+
+[%    FOREACH record IN presseillustrationen_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
+[% NEXT IF thistitset.${"T5001"}.first.content %]
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="presse" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Plakate [% plakate_year_min %] - [% plakate_year_max %]}
+
+[% FOREACH year IN plakate_available_years %]
+[% anzahl = plakate_recordlist.${year}.size %]
+[% IF year %]
+\section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
+
+[%    FOREACH record IN plakate_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="plakate" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Werbe-Illustrationen [% werbeillustrationen_year_min %] - [% werbeillustrationen_year_max %]}
+
+[% FOREACH year IN werbeillustrationen_available_years %]
+[% anzahl = werbeillustrationen_recordlist.${year}.size %]
+[% IF year %]
+\section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
+
+[%    FOREACH record IN werbeillustrationen_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="werbeillustrationen" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{ExLibris [% exlibris_year_min %] - [% exlibris_year_max %]}
+
+[% FOREACH year IN exlibris_available_years %]
+[% anzahl = exlibris_recordlist.${year}.size %]
+[% IF year %]
+\section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
+
+[%    FOREACH record IN exlibris_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="exlibris" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Donkey-Press [% donkeypress_year_min %] - [% donkeypress_year_max %]}
+
+[% FOREACH year IN donkeypress_available_years %]
+[% anzahl = donkeypress_recordlist.${year}.size %]
+[% IF year %]
+\section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
+
+[%    FOREACH record IN donkeypress_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="donkeypress" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Bergisch Gladbach [% gladbach_year_min %] - [% gladbach_year_max %]}
+
+[% FOREACH year IN gladbach_available_years %]
+[% anzahl = gladbach_recordlist.${year}.size %]
+[% IF year %]
+\section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
+
+[%    FOREACH record IN gladbach_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="gladbach" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Verschiedenes [% misc_year_min %] - [% misc_year_max %]}
+
+[% FOREACH year IN misc_available_years %]
+[% anzahl = misc_recordlist.${year}.size %]
+[% IF year %]
+\section{Das Jahr [% year %]}
+[% ELSE %]
+\section{Nicht datiert}
+[% END%]
+
+[%    FOREACH record IN misc_recordlist.${year} %]
+[%       thistitset = record.get_fields %]
+[%       thismexset = record.get_holding %]
+[%# NEXT IF thistitset.${"T5001"}.first.content %]
+
+[% NEXT IF thistitset.${"T0800"}.first.content == "Aufsatz" %]
+
+[% PROCESS pruessen_werkverzeichnis_einzeltitel illu="misc" %]
+
+[%    END %]
+
+[% END %]
+
+\chapter{Eduard Pr"ussens Donkey-Press-Serien}
+
+\section{Schmunzel-Postille}
+
+eine bescheidene, aber h"ochst eigenn"utzige Empfehlung, den - mir
+wohlgesonnenen - Verlegern, B"uchermachern und Sammlern "uberreichte
+Original-Graphik als Pr"asent und zur gef"alligen Erinnerung an den
+Herausgeber und Illustrator. 11 Ausgaben. 1966-1967.
+
+\section{Donkey-Post}
+
+eine Hauszeitschrift f"ur Freunde und Interessenten meiner
+Arbeiten. 1962-1993, 1967-1978 u.d.T.: Fr"uchte mit Maden: satirische
+Skizzen.
+
+\section{Bibliokomik}
+
+Thematische Einladungen zur Frankfurter Buchmesse. 27
+Ausgaben. 1987-2008.
+
+\section{Kleine Reihe}
+
+Broschur mit einem Gedicht und vier Radierungen, (Plattenformat 6 x 6
+cm), 10 einseitig bedruckte Bl"atter, 11,5 x 14,8 cm,
+B"uttenumschlag. 20 Ausgaben. 1993-2007.
+
+\section{Origill}
+
+Original-Illustrationen von Eduard Pr"ussen. Im Verlagsauftrag
+entstandene Illustrationsfolgen, (Linolschnitte), ohne Text, 22 x 31
+cm, farbiger B"uttenumschlag, Blockbuchbindung. 17 Ausgaben in 40
+nummerierten und signierten Exemplaren. 1972-1989.
+
+\section{Neujahrsgraphiken}
+
+Linolschnitte / Farblinolschnitte auf Ger"auschlos-B"utten, (zumeist 30
+x 40 cm). Seit 1961.
+
+\end{document}
+

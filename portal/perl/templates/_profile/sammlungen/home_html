@@ -11,14 +11,30 @@
 #
 #######################################################################
 -%]
-[%-
 
-   session_sort = "year_desc";
-   IF qopts.get_option('srt') && NOT qopts.get_option('srt').match('_') && qopts.get_option('srto') ;
-     session_sort = "${qopts.get_option('srt')}_${qopts.get_option('srto')}";
-   END;
+<!--
+<script>
+$(function () {
+    var image_div = $('#ob-startpage .landing-page-img');
+    var backgrounds = [
+      'url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/uni-hauptgebaeude-blur.jpg)', 
+      'url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/uni-hauptgebaeude-oil.jpg)', 
+      'url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/kugproto_startpages-oil.jpg)'];
+    var current = 0;
 
--%]
+    function nextBackground() {
+        image_div.css(
+            'background-image',
+        backgrounds[current = ++current % backgrounds.length]);
+
+        setTimeout(nextBackground, 5000);
+    }
+    setTimeout(nextBackground, 500);
+    image_div.css('background-image', backgrounds[0]);
+});
+</script>
+-->
+
 <style>
 @media all
 {
@@ -82,16 +98,16 @@
   animation-name: fadeInOut;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
-  animation-duration: 70s;
+  animation-duration: 60s;
   animation-direction: alternate;
 }
 
 .animated-image:nth-of-type(1) {
-  animation-delay: 40s;
+  animation-delay: 30s;
 }
 
 .animated-image:nth-of-type(2) {
-  animation-delay: 20s;
+  animation-delay: 15s;
 }
 
 .animated-image:nth-of-type(3) {
@@ -99,20 +115,19 @@
 }
 
 .image-1 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magazinansicht01_V2.jpg);
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/Treppenhaus02_V2.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   }
 
 .image-2 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/AnsichtUniversitaetsstrasseV2b.png);
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/Magazinansicht01_V2.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   }
 
 .image-3 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magnus_Froschperspektive_50.jpg);
-  background-position: 10% 10%;
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/AnsichtUniversitaetsstrasseV2b.png);
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -122,17 +137,18 @@
 @media only screen and (max-width: 800px) {
 
 .image-1 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magazinansicht01_V2_500px.jpg);
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/Treppenhaus02_V2_500px.jpg);
 
   }
 
 .image-2 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/AnsichtUniversitaetsstrasseV2_500px.jpg);
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/Magazinansicht01_V2_500px.jpg);
+
   }
 
 .image-3 {
-  background-position: 40% 10%;
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magnus_Froschperspektive_50_500px.jpg);
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/AnsichtUniversitaetsstrasseV2_500px.jpg);
+
 }
 
 
@@ -155,7 +171,7 @@
 <input type="hidden" name="page"       value="1" />
 <input type="hidden" name="l"          value="[% lang %]" />
 
-<input type="hidden" name="srt"        value="[% session_sort %]" />
+<input type="hidden" name="srt"        value="year_asc" />
 <input type="hidden" name="st"         value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
 <input type="hidden" name="profile"    value="[% searchprofileid_of_view %]" />
@@ -164,9 +180,9 @@
     <div class="row">    
         <div class="col">
             <div class="input-group">
-                <input required="required" id="to_focus" class="form-control" type="search" name="fs" value="" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Geben Sie hier Ihre Suchbegriffe ein") %]" hx-post="[% path_prefix%]/connector/livesearch" hx-trigger="keyup changed delay:500ms, q" hx-target="#to_focus" />
+                <input required="required" id="to_focus" class="form-control" type="search" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Geben Sie hier Ihre Suchbegriffe ein") %]" />
                 <span class="input-group-btn ps-1">
-                    <button class="btn btn-primary" type="submit" aria-label="[% msg.maketext("Anfrage abschicken") %]"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
+                    <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
                     <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>
                 </span>
             </div>
@@ -184,9 +200,6 @@
 	    </li>      	  
             <li class="list-group-item pe-1 pt-3" style="border: none" >
 	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-formattitle="[% msg.maketext("Suchhistorie") %]" data-formaturl="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
-	   </li>
-            <li class="list-group-item pe-1 pt-3" style="border: none" >
-	     <a href="[% path_prefix %]/[% config.get('info_loc') %]/help.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/help.include?l=[% lang %]" title="[% msg.maketext("Hilfe") %]"><i class="fas fa-question-circle"></i></a>
 	   </li>
          </ul>
     </div><!-- col -->
@@ -207,34 +220,35 @@
 
 <div class="container pb-5">
   <div class="row">
-    <div class="col-md-4 ps-3 pe-1 pb-2">
-     <a class="text-white" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/classifications.html?l=[% lang %]">
+    <div class="col-md-3 ps-3 pe-1 pb-2">
       <div class="card mt-2 h-100 ob-shortlink">
-	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-book-open pe-2"></i> [% msg.maketext("Zeitschriften") %]</div>
+	<div class="card-header pt-3 text-center fs-4"><i class="fab fa-hubspot pe-2"></i> <a class="text-white" href="[% path_prefix %]/[% config.get('info_loc') %]/portal.html?l=[% lang %]">[% msg.maketext("Das Portal") %]</a></div>
+<!--	<div class="card-body pb-0">
+	  <p class="card-text">[% msg.maketext("Wissenslandkarten entdecken, erkunden, erforschen") %]</p>
+	  <a class="btn btn-primary" href="https://yewno.ub.uni-koeln.de/" target="_blank">[% msg.maketext("Mehr") %]</a></div>-->
       </div>
-     </a>
-    </div>
-    <div class="col-md-4 ps-3 pe-1 pb-2">
-     <a class="text-white" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/classifications.html?l=[% lang %]">
+    </div>  
+    <div class="col-md-3 ps-3 pe-1 pb-2">
       <div class="card mt-2 h-100 ob-shortlink">
-	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-database pe-2"></i> [% msg.maketext("Datenbanken") %]</div>
+	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-book-open pe-2"></i> <a class="text-white" href="[% path_prefix %]/[% config.get('info_loc') %]/sammmlung.html?l=[% lang %]">[% msg.maketext("Die Sammlungen") %]</a></div>
+<!--	<div class="card-body pb-0">
+	  <p class="card-text">[% msg.maketext("Online-Zugriff auf alle Elektronischen Zeitschriften an der Universität") %]</p> 
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/classifications.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>-->
       </div>
-     </a>
     </div>
-    <div class="col-md-4 ps-3 pe-1 pb-2">
-[% IF view.match('inst\d\d\d') %]          
-     <a class="text-white" href="[% path_prefix %]/[% config.get('locations_loc') %]/id/DE-38-[% view.replace('inst','') %].html?l=[% lang %]">
+    <div class="col-md-3 ps-3 pe-1 pb-2">
       <div class="card mt-2 h-100 ob-shortlink">
-	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-map-marker-alt pe-2"></i> [% msg.maketext("Bibliothek") %]</div>
+	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-database pe-2"></i> <a class="text-white" href="[% path_prefix %]/[% config.get('info_loc') %]/forschung.html?l=[% lang %]">[% msg.maketext("Forschung") %]</a></div>
+<!--	<div class="card-body pb-0">
+	  <p class="card-text">[% msg.maketext("Online-Zugang zu allen Datenbanken an der Universität.") %]</p>
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/forschung.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>-->
+      </div>
     </div>
-   </a>
-[% ELSE %]
-     <a class="text-white" href="[% path_prefix %]/[% config.get('locations_loc') %].html?l=[% lang %]">
+    
+    <div class="col-md-3 ps-3 pe-1 pb-2">
       <div class="card mt-2 h-100 ob-shortlink">
-	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-map-marker-alt pe-2"></i> [% msg.maketext("Bibliotheken") %]</div>
-     </div>
-    </a>     
-[% END %]
+	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-map-marker-alt pe-2"></i> <a class="text-white" href="[% path_prefix %]/[% config.get('info_loc') %]/other_portals.html?l=[% lang %]">[% msg.maketext("Jenseits der USB") %]</a></div>
+    </div>
   </div>
 </div>
 

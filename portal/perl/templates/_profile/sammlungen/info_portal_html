@@ -20,12 +20,7 @@ database = viewdbs.first;
 
 [%-
 
-  dboverview = config.get_dbinfo_overview;
-  FOREACH dbinfo IN dboverview ;
-    IF dbinfo.dbname == database ;
-        sammlungsurl = dbinfo.url;
-    END ;
-  END;
+  sammlungsurl = dbinfo.get('urls').${database};
 
 #  USE dumper;dumper.dump(dboverview);
 -%]
@@ -77,12 +72,20 @@ database = viewdbs.first;
 </div>
 </div>
 
-[% IF viewdbs.size == 1 %]
+[% IF viewdbs.size >= 1 %]
 <div class="card h-100 mb-3">
 <div class="card-header"><h4>[% msg.maketext("Bestandsaufbau in Wortwolken") %]</h4></div>
 
 <div class="card-body">
-    <ul>
+
+[% FOREACH database IN viewdbs %]
+
+[% IF viewdbs.size > 1 %]
+[% dbdesc   = dbinfo.get('dbnames').${database}.full %]
+<h3 class="mb-2">[% dbdesc %]</h3>
+[% END %]
+
+    <ul class="mb-2">
 [% IF statistics.result_exists({ id => database, type => 9 }) %]
    <li><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
 [% END %]
@@ -99,6 +102,7 @@ database = viewdbs.first;
    <li><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/classification.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
 [% END %]
 </ul>
+[% END %]
 
 </div>
 </div>

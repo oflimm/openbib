@@ -130,6 +130,8 @@ $logger->info("Generating opp package file");
 
 system("tar --directory=$tmpdir -cf ./${database}.opp pool.dump index.tgz ; rm $tmpdir/pool.dump $tmpdir/index.tgz");
 
+$logger->info("Dumping done");
+
 
 sub print_help {
     print << "ENDHELP";

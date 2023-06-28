@@ -137,6 +137,8 @@ $logger->info("Restoring Xapian index of database $database");
 
 system("cd $config->{'base_dir'}/ft/xapian/index/ ; tar xzf $tmpdir/index.tgz");
 
+$logger->info("Importing done");
+
 unlink "$tmpdir/pool.dump";
 unlink "$tmpdir/index.tgz";
 

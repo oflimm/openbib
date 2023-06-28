@@ -1,3 +1,8 @@
+CREATE INDEX datacache_id ON datacache (id);
+CREATE INDEX datacache_tstamp ON datacache (tstamp);
+CREATE INDEX datacache_subkey ON datacache (subkey);
+CREATE INDEX datacache_type ON datacache (type);
+
 ALTER TABLE databaseinfo ADD PRIMARY KEY (id);
 ALTER TABLE databaseinfo ADD CONSTRAINT uq_databaseinfo_dbname UNIQUE (dbname);
 ALTER TABLE databaseinfo ADD CONSTRAINT fk_databaseinfo_db FOREIGN KEY (parentdbid) REFERENCES databaseinfo (id);

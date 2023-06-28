@@ -8,6 +8,15 @@ CREATE EXTENSION "uuid-ossp";
 /* General configuration                           */
 /* ----------------------------------------------- */
 
+drop table IF EXISTS datacache;
+CREATE TABLE datacache (
+ id          TEXT,
+ tstamp      TIMESTAMP,
+ type        INT,
+ subkey      TEXT,
+ data        TEXT
+);
+
 drop table IF EXISTS databaseinfo;
 CREATE TABLE databaseinfo (
  id          BIGSERIAL,

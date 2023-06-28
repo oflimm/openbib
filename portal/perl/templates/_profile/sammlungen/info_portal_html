@@ -1,0 +1,76 @@
+<h2>Dieses Portal</h2>
+
+<div class="card h-100 mb-3 mt-3">
+<div class="card-header"><h4>[% msg.maketext("Kennzahlen") %]</h4></div>
+
+<div class="card-body">
+
+[% titlecount = config.get_number_of_titles({view = view}) %]
+
+<style>
+.ob-right_align td {
+   text-align:right;
+}
+</style>
+<div class="table-responsive">
+<table class="table table-striped table-hover ob-right_align">
+<tr>
+<th>[% msg.maketext("Kataloge") %]</th>
+<td>[% config.get_viewdbs(view).size %]</td>
+</tr>
+<tr>
+<th>[% msg.maketext("Titel") %]</th>
+<td>[% titlecount.allcount.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon Zeitschriften/Serien") %]</td>
+<td>[% titlecount.journalcount.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon Artikel") %]</td>
+<td>[% titlecount.articlecount.chunk(-3).join('.') %]</td>
+</tr>
+<tr>
+<td>&nbsp;&nbsp;[% msg.maketext("davon Digital") %]</td>
+<td>[% titlecount.digitalcount.chunk(-3).join('.') %]</td>
+</tr>
+</table>
+</div>
+
+</div>
+</div>
+
+[%-
+
+viewdbs  = config.get_dbs_of_view(view);
+database = viewdbs.first;
+
+-%]
+
+[% IF viewdbs.size == 1 %]
+<div class="card h-100 mb-3">
+<div class="card-header"><h4>[% msg.maketext("Bestandsaufbau in Wortwolken") %]</h4></div>
+
+<div class="card-body">
+    <ul>
+[% IF statistics.result_exists({ id => database, type => 9 }) %]
+   <li><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
+[% END %]
+[% IF statistics.result_exists({ id => database, type => 6 }) %]
+   <li><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/person.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
+[% END %]
+[% IF statistics.result_exists({ id => database, type => 5 }) %]
+   <li><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/corporatebody.html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
+[% END %]
+[% IF statistics.result_exists({ id => database, type => 3 }) %]
+   <li><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
+[% END %]
+[% IF statistics.result_exists({ id => database, type => 4 }) %]
+   <li><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/classification.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
+[% END %]
+</ul>
+
+</div>
+</div>
+
+[% END %]

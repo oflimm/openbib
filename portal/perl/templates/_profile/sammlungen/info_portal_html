@@ -1,6 +1,43 @@
 <h2>Dieses Portal</h2>
 
 <div class="card h-100 mb-3 mt-3">
+<div class="card-header"><h4>[% msg.maketext("Informationen zur Sammlung") %]</h4></div>
+
+<div class="card-body">
+
+<p>In diesem Portal können Sie lediglich den Bestand der Sammlung recherchieren.</p>
+
+[%-
+
+viewdbs  = config.get_dbs_of_view(view);
+database = viewdbs.first;
+
+-%]
+
+[% IF viewdbs.size == 1 %]
+
+<p>Genauere Informationen zur Sammlung können Sie jedoch unter folgendem URL finden:</p>
+
+[%-
+
+  dboverview = config.get_dbinfo_overview;
+  FOREACH dbinfo IN dboverview ;
+    IF dbinfo.dbname == database ;
+        sammlungsurl = dbinfo.url;
+    END ;
+  END;
+
+#  USE dumper;dumper.dump(dboverview);
+-%]
+
+<p>
+<a class="exturl" href="[% sammlungsurl %]" target="_blank">[% sammlungsurl %]</a>
+</p>
+[% END %]
+</div>
+</div>
+
+<div class="card h-100 mb-3">
 <div class="card-header"><h4>[% msg.maketext("Kennzahlen") %]</h4></div>
 
 <div class="card-body">
@@ -39,13 +76,6 @@
 
 </div>
 </div>
-
-[%-
-
-viewdbs  = config.get_dbs_of_view(view);
-database = viewdbs.first;
-
--%]
 
 [% IF viewdbs.size == 1 %]
 <div class="card h-100 mb-3">

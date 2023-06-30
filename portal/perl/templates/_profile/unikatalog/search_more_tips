@@ -38,7 +38,11 @@
 	<div class="card-body">
 	  [% msg.maketext("Bestellen Sie Literatur aus anderen Bibliotheken per Fernleihe: ") %]
 	  <ul style="margin-top:0.5em;">
+[% IF NOT alma_disable_ill_books %]	  
             <li><a href="https://usb-koeln.digibib.net/ill/books[% IF fl_all_args.size > 0 %]?[% fl_all_args.join('&') %][% END %]" target="monofernleihsuche">Buch bestellen</a></li>
+[% ELSE %]
+            <li>[% msg.maketext("Wegen des Umstiegs auf das neue Bibliothekssystem Alma sind bis ca. 6.9.2023 keine Fernleihbestellungen von Büchern möglich") %]</li>
+[% END %]
             <li><a href="https://usb-koeln.digibib.net/ill/articles[% IF fl_all_args.size > 0 %]?[% fl_all_args.join('&') %][% END %]">Zeitschriftenartikel bestellen</a></li>
           </ul>
 	</div>
@@ -64,7 +68,11 @@
 	  <ul>
             <li><a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/index_ger.html">Effektiv Suchen</a></li>
             <li><a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/index_ger.html">Suche nach Medienarten</a></li>           
+[% IF NOT alma_disable_suggestions %]
             <li><a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/anschaffungsvorschlag/index_ger.html">Anschaffungsvorschlag</a></li>
+[% ELSE %]
+             <li>[% msg.maketext("Wegen des Umstiegs auf das neue Bibliothekssystem Alma sind bis ca. 6.9.2023 keine Anschaffungsvorschläge möglich") %]</li>
+[% END %]	    
             <li><a href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/ueberregional/index_ger.html">Hinweise zur Fernleihe</a></li>
             <li><a href="https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/audio/index_ger.html"><img src="/images/openbib/uzk15/youtube_icon.jpg" width="20px" alt="YouTube-Icon" title="Bibliothek erkunden" class="imageyt" style="margin-right:0.6em;" />Bibliothek erkunden</a></li>
           </ul>

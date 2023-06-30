@@ -113,10 +113,13 @@
 <div class="card-header">[% msg.maketext("Anschaffungsvorschläge") %]</div>
 <div class="card-body">
 
+[% IF NOT alma_disable_suggestions %]
 <p>[% msg.maketext("Sie benötigen ein Buch, das Sie bei uns nicht finden können? Machen Sie einen Anschaffungsvorschlag.") %]</p>
 
 <a class="btn btn-primary mt-2 mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/suggestions.html?l=[% lang %]">[% msg.maketext("Anschaffungsvorschlag") %]</a>
-
+[% ELSE %]
+<p>[% msg.maketext("Wegen des Umstiegs auf das neue Bibliothekssystem Alma sind bis ca. 6.9.2023 keine Anschaffungsvorschläge möglich.") %]</p>
+[% END %]
 </div>
 </div>
 

@@ -93,16 +93,43 @@ sub process_vlb {
         $client_ip=$1;
     }
 
-    my $size           = $query->param('size')              || 's';
+    my $size         = $query->param('size')              || 's';
+
+    my $redirect_url = "/images/openbib/no_img.png";
+
+    # Notloesung, wenn 'falsche' Cover bei der Anzeige gemeldet werden:
+    # Nachweislich problematische ISBNs, z.B. mehrfach vom Verlag vergeben.
+    my $isbn_is_invalid_ref = {
+	'3453520130' => 1,
+	    '3886800563'    => 1,
+	    '3518067443'    => 1,
+	    '3518065823'    => 1,
+	    '0810103249'    => 1,
+	    '9783931596453' => 1,
+	    '3807701605'    => 1,
+	    '9788841861998' => 1,
+	    '3880100004'    => 1,
+	    '3701707847'    => 1,
+	    '9783774306073' => 1,
+	    '3776612606'    => 1,
+	    '3590290234'    => 1,
+	    '3290234'       => 1,
+	    '3170330489'    => 1,
+    };
     
     my $isbn = $self->id2isbnX($id);
-
+    
     if ($logger->is_debug){
         $logger->debug("ISBN von ID $id: ".YAML::Dump($isbn));
     }
 
-    my $redirect_url = "/images/openbib/no_cover.png";
-
+    # Kein Cover bei 'problematischen' ISBNs
+    if (defined $isbn_is_invalid_ref->{$isbn->{isbn10}} || defined $isbn_is_invalid_ref->{$isbn->{isbn13}}){
+	$logger->debug("Kein Cover zur ISBN $id");
+	$self->redirect($redirect_url);
+	return '';
+    }
+    
     my $api_config_ref = $config->{'covers'}{'vlb'};
 
     if ($logger->is_debug){
@@ -122,8 +149,6 @@ sub process_vlb {
         my $request  = HTTP::Request->new('GET', $url);
         my $response = $ua->request($request);
 
-	my $redirect_url = "/images/openbib/no_img.png";
-	
         if ( $response->is_error() ) {
             $logger->info("ISBN $isbn->{isbn13} NOT found in VLB");
             $logger->debug("Error-Code:".$response->code());

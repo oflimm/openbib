@@ -16,6 +16,7 @@
 <div class="card-header">[% msg.maketext("Anschaffungsvorschläge") %]</div>
 <div class="card-body">
 
+[% IF NOT alma_disable_suggestions %]
 <p>
 [% msg.maketext("Sie finden ein bestimmtes aktuelles Buch nicht im Kölner Universitätskatalog? Dann machen Sie uns einen Anschaffungsvorschlag! ") %]
 </p>
@@ -99,6 +100,9 @@
 <button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Vorschlag absenden") %]</button>
 
 </form>
+[% ELSE %]
+<p>[% msg.maketext("Wegen des Umstiegs auf das neue Bibliothekssystem Alma sind bis ca. 6.9.2023 keine Anschaffungsvorschläge möglich.") %]</p>
+[% END %]
 
 </div>
 </div>

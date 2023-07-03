@@ -359,6 +359,12 @@ FOREACH field IN normdata;
 	   main_title.push(thisfield.${'c'});	 
 	 END;
 
+         volume = "";
+	 
+         IF thisfield.${'n'} ;
+	   volume = thisfield.${'n'};	 
+	 END;
+
          IF main_title.size > 0 ;
 	   content = main_title.join(' ');
            content   = "<b>${highlightquery(searchquery,content)}</b>";
@@ -367,6 +373,13 @@ FOREACH field IN normdata;
 	     content_map.${'Titel'} = [];
 	   END;
            content_map.${'Titel'}.push(content);
+	 END;
+
+         IF volume ;
+           IF NOT content_map.${'Band'} ;
+	     content_map.${'Band'} = [];
+	   END;
+           content_map.${'Band'}.push(volume);
 	 END;
 
     CASE "T0250"; # Auflage

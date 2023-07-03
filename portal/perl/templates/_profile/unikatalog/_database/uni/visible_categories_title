@@ -13,7 +13,8 @@
 -%]
 [%-# Ausgabekategorien -%]
 [%- categories = [
-                'T0310', # msg.maketext("T0310") AST  
+                'T0310', # msg.maketext("T0310") AST
+		'Band',  # msg.maketext("Band") Bandangabe
                 'Titel', # msg.maketext("Titel") HST
                 #'T0335', # msg.maketext("T0335") Zusatz zum HST
                 'T0089', # msg.maketext("T0089") Bandangabe  

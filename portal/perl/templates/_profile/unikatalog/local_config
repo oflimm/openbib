@@ -84,4 +84,7 @@
      current_tab = 'books';   
    END;
 
+
+   alma_disable_suggestions = 1; # Keine Anschaffungsvorschlaege wg. Umstieg auf Alma
+   alma_disable_ill_books   = 1; # Keine Buecherfernleihe wg. Umstieg auf Alma 
 -%]

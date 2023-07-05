@@ -544,6 +544,16 @@ FOREACH field IN normdata;
            content_map.${'Hinweis'}.push(content);
 	 END;
 
+    CASE "T0515";    
+         content = thisfield.${'a'};
+
+         IF content ;
+           IF NOT content_map.${'Erscheinungsweise'} ;
+	      content_map.${'Erscheinungsweise'} = [];
+	   END;
+           content_map.${'Erscheinungsweise'}.push(content);
+	 END;
+
     CASE "T0520";    
          content = thisfield.${'a'};
 
@@ -552,6 +562,31 @@ FOREACH field IN normdata;
 	      content_map.${'Zusammenfassung'} = [];
 	   END;
            content_map.${'Zusammenfassung'}.push(content);
+	 END;
+
+    CASE [ "T0770" "T0776" ];    
+         content = thisfield.${'i'};
+         thistitle = thisfield.${'t'};
+         thisid    = thisfield.${'w'};
+
+         # ggf. verlinken
+         IF 0 == 1 && thistitle && thisid ;
+	    thisid = thisid.replace('\(.+?\)','');
+            searchterm    = thisid;
+            searchprefix  = config.get('searchfield').zdbid.prefix;
+
+            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+
+	    thistitle = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+	 END;
+
+         content = "${content} ${thistitle}";
+	 
+         IF content ;
+           IF NOT content_map.${'Hinweis'} ;
+	      content_map.${'Hinweis'} = [];
+	   END;
+           content_map.${'Hinweis'}.push(content);
 	 END;
 
     CASE "T0856";

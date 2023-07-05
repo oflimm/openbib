@@ -14,8 +14,8 @@
 [%-# Ausgabekategorien -%]
 [%- supplemental_categories = [
                 'T0435', # msg.maketext("T0435") Format
-                'T0405', # msg.maketext("T0405") Erscheinungsverlauf
-                'T0523', # msg.maketext("T0523") Erscheinungsweise
+                'Erscheinungsverlauf', # msg.maketext("Erscheinungsverlauf") Erscheinungsverlauf
+                'Erscheinungsweise', # msg.maketext("Erscheinungsweise") Erscheinungsweise
                 'T0591', # msg.maketext("T0591") Verfasser Quelle
                 'T0594', # msg.maketext("T0594") ErschOrt Quelle
                 'T0595', # msg.maketext("T0595") ErschJahr Quelle

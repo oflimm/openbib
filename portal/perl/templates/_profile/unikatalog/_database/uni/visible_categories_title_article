@@ -20,7 +20,7 @@
                 'T0101', # msg.maketext("T0101") Person
                 'T0103', # msg.maketext("T0103") Gefeierte Person
                 'T0451', # msg.maketext("T0451") GesTit Vorl
-                'T0089', # msg.maketext("T0089") Bandangabe  
+		'Band',  # msg.maketext("Band") Bandangabe
                 'T0304', # msg.maketext("T0304") EST 
                 'T0370', # msg.maketext("T0370") WST
                 'T0341', # msg.maketext("T0341") PSTVorlage

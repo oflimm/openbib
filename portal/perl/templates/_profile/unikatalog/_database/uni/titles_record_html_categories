@@ -361,18 +361,24 @@ FOREACH field IN normdata;
 	 END;
 
     CASE "T0245"; # HST
-         main_title = [];
-    
+         main_title         = "";
+	 supplemental_title = "";
+	 published_by       = "";
+	 
          IF thisfield.${'a'} ;
-	   main_title.push(thisfield.${'a'});
+	   main_title = thisfield.${'a'};
 	 END;
 	 
          IF thisfield.${'b'} ;
-	   main_title.push(thisfield.${'b'});	 
+	   supplemental_title = thisfield.${'b'};	 
 	 END;
 
          IF thisfield.${'c'} ;
-	   main_title.push(thisfield.${'c'});	 
+	   published_by = thisfield.${'c'};	 
+	 END;
+
+         IF supplemental_title ;
+	    main_title = "${main_title} : ${supplemental_title}";
 	 END;
 
          volume = "";
@@ -381,8 +387,8 @@ FOREACH field IN normdata;
 	   volume = thisfield.${'n'};	 
 	 END;
 
-         IF main_title.size > 0 ;
-	   content = main_title.join(' ');
+         IF main_title ;
+	   content = main_title;
            content   = "<b>${highlightquery(searchquery,content)}</b>";
 
            IF NOT content_map.${'Titel'} ;
@@ -396,6 +402,13 @@ FOREACH field IN normdata;
 	     content_map.${'Band'} = [];
 	   END;
            content_map.${'Band'}.push(volume);
+	 END;
+
+         IF published_by ;
+           IF NOT content_map.${'Verfasserangabe'} ;
+	     content_map.${'Verfasserangabe'} = [];
+	   END;
+           content_map.${'Verfasserangabe'}.push(published_by);
 	 END;
 
     CASE "T0246"; # Weitere Titel
@@ -422,14 +435,15 @@ FOREACH field IN normdata;
          ortverlagjahr = [];
 
          IF thisfield.${'a'} ; # Ort
-	   ortverlagjahr.push(thisfield.${'a'});
+	   ort = thisfield.${'a'};
+	   ortverlagjahr.push("${ort}: ");
 	 END;
 
          IF thisfield.${'b'} ; # Verlag
            ortverlagjahr.push(thisfield.${'b'});
          END;
 
-	 IF thisfield.${'c'} ;
+	 IF thisfield.${'c'} ; # Jahr
            ortverlagjahr.push(thisfield.${'c'});	 
 	 END;
 

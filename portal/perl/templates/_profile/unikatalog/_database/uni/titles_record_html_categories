@@ -444,7 +444,8 @@ FOREACH field IN normdata;
          END;
 
 	 IF thisfield.${'c'} ; # Jahr
-           ortverlagjahr.push(thisfield.${'c'});	 
+	   jahr = thisfield.${'c'};
+           ortverlagjahr.push("(${jahr})");	 
 	 END;
 
          ortverlagjahrcontent = ortverlagjahr.join(' ');

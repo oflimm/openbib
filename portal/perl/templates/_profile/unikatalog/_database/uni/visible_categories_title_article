@@ -22,7 +22,7 @@
                 'T0451', # msg.maketext("T0451") GesTit Vorl
 		'Band',  # msg.maketext("Band") Bandangabe
                 'T0304', # msg.maketext("T0304") EST 
-                'T0370', # msg.maketext("T0370") WST
+                'Weitere Titel', # msg.maketext("Weitere Titel") WST
                 'T0341', # msg.maketext("T0341") PSTVorlage
                 'T0200', # msg.maketext("T0200") Urheber
                 'Institution', # msg.maketext("Institution") Koerperschaft
@@ -38,7 +38,7 @@
                 'Ausgabe', # msg.maketext("Ausgabe") Auflage T250a
                 'Ort/Verlag/Jahr', # msg.maketext("Ort/Verlag/Jahr") T260a/b/c
                 #'Jahr', # msg.maketext("Jahr") T260c
-                'T0405', # msg.maketext("T0405") Erscheinungsverlauf
+                'Erscheinungsverlauf', # msg.maketext("Erscheinungsverlauf") Erscheinungsverlauf
                 'T0523', # msg.maketext("T0523") Erscheinungsweise
                 'T0591', # msg.maketext("T0591") Verfasser Quelle
                 'T0594', # msg.maketext("T0594") ErschOrt Quelle

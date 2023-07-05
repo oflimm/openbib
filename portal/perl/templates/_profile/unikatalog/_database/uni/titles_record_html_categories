@@ -300,7 +300,7 @@ FOREACH field IN normdata;
 
          IF content ;
            IF NOT content_map.${"Sprache"} ;
-	      content_map.${"sprache"} = [];
+	      content_map.${"Sprache"} = [];
 	   END;
            content_map.${"Sprache"}.push(content);
 	 END;
@@ -398,6 +398,16 @@ FOREACH field IN normdata;
            content_map.${'Band'}.push(volume);
 	 END;
 
+    CASE "T0246"; # Weitere Titel
+         content = thisfield.${'a'} ;
+
+         IF content ;
+           IF NOT content_map.${'Weitere Titel'} ;
+	     content_map.${'Weitere Titel'} = [];
+	   END;
+           content_map.${'Weitere Titel'}.push(content);
+	 END;
+
     CASE "T0250"; # Auflage
          content = thisfield.${'a'} ;
 
@@ -455,6 +465,16 @@ FOREACH field IN normdata;
 	   END;
            content_map.${'Umfang'}.push(umfangcontent);
          END;
+
+    CASE "T0362"; # Erscheinungsverlauf
+         content = thisfield.${'a'} ;
+
+         IF content ;
+           IF NOT content_map.${'Erscheinungsverlauf'} ;
+	     content_map.${'Erscheinungsverlauf'} = [];
+	   END;
+           content_map.${'Erscheinungsverlauf'}.push(content);
+	 END;
 
     CASE "T0082";    
          content = thisfield.${'a'};

@@ -158,6 +158,8 @@
           standort = "ausgelagerter Bestand. Lieferzeit ca. 14. Tage (ausleihbar nach Bestellung)";
         ELSIF signatur.match('^ZTG') ;
           standort = "Zeitungsbestand. USB-Magazin<br/>Bitte füllen Sie einen konventionellen Bestellschein aus (erhältlich an der Auskunft und der Lesesaal-Theke im 1. OG)";
+	ELSIF bemerkung.match('Ungebundene Hefte') ;
+	   standort = '-';
        ELSIF NOT signatur.match('\s') ;
           standort = "USB-Magazin";
        END; # End: Standort nach Signaturanfang
@@ -237,7 +239,7 @@
 [% IF this_item.signatur %]
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
 [% END %]
-[% IF this_item.standort != '-' %]
+[% IF this_item.standort != '-'  %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
 [% END %]
 [% IF this_item.bemerkung %]

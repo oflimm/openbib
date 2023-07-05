@@ -234,7 +234,9 @@
 [% FOREACH this_item IN this_cluster.items %]
 <li>
 <strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %]</strong><br/>
+[% IF this_item.signatur %]
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
+[% END %]
 [% IF this_item.standort != '-' %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
 [% END %]

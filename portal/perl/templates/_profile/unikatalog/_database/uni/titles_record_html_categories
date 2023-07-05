@@ -204,6 +204,8 @@ rswkswt_done      = {};
 
 # Preprocessing
 
+rswkswt_done = {};
+
 # Switching processed links
 
 IF normdata.${'T4662'}.defined ;
@@ -481,14 +483,16 @@ FOREACH field IN normdata;
            content_map.${'Klassifikation'}.push(content);
 	 END;
 
-    CASE [ "T0600" "T0610" "T0648" "T0650" "T0651" "T0655" "T0688" ];    
+    CASE [ "T0600" "T0610" "T0648" "T0650" "T0651" "T0655" "T0688" "T0689" ];    
          content = thisfield.${'a'};
          thisid  = thisfield.${'6'};
          supplement = "";
-	 
+
          searchterm    = uri_escape(content);
          searchprefix  = config.get('searchfield').subjectstring.prefix;
 
+         NEXT IF rswkswt_done.${searchterm} == 1;
+	 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${thisid}";
          localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
@@ -507,6 +511,8 @@ FOREACH field IN normdata;
 	   END;
            content_map.${'Schlagwort'}.push(content);
 	 END;
+
+         rswkswt_done.${searchterm} = 1;
 
     CASE [ "T0500" "T0504" ];    
          content = thisfield.${'a'};

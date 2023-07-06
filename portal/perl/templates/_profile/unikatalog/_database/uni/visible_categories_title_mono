@@ -17,7 +17,7 @@
                 'Titel', # msg.maketext("Titel") HST
                 #'T0335', # msg.maketext("T0335") Zusatz zum HST
 		'Band',  # msg.maketext("Band") Bandangabe
-                'T0304', # msg.maketext("T0304") EST 
+                'Originaltitel', # msg.maketext("Originaltitel") EST 
                 'Weitere Titel', # msg.maketext("Weitere Titel") WST
                 'T0341', # msg.maketext("T0341") PSTVorlage
                 'Person', # msg.maketext("Person") Verfasser
@@ -40,7 +40,7 @@
                 'T0552', # msg.maketext("T0552") Identifier/DOI
                 'T0652', # msg.maketext("T0652") EDV Material
                 'T0655', # msg.maketext("T0655") EDV Adress
-                'T0451', # msg.maketext("T0451") GesTit Vorl
+                'Gesamttitel', # msg.maketext("Gesamttitel") GesTit Vorl
                 'T0662', # msg.maketext("T0662") EDVurl
                 'URL', # msg.maketext("URL") EDVurl
                 'T2663', # msg.maketext("T2663") USB URLInfo

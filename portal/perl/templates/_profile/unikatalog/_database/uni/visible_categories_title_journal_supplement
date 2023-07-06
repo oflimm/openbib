@@ -18,7 +18,7 @@
                 'T0334', # msg.maketext("T0334") Material
                 'T0652', # msg.maketext("T0652") EDV Material
                 'T0655', # msg.maketext("T0655") EDV Adress
-                'T0451', # msg.maketext("T0451") GesTit Vorl
+                'Gesamttitel', # msg.maketext("Gesamttitel") GesTit Vorl
                 'T0590', # msg.maketext("T0590") HSTQuelle
                 'T0585', # msg.maketext("T0585") ISSN der Quelle
                 'Hinweis', # msg.maketext("Hinweis") Bemerkung

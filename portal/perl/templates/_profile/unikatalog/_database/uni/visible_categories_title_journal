@@ -18,7 +18,7 @@
                 'Verfasserangabe', # msg.maketext("Verfasserangabe") Vorl. Verfasser/Koerperschaft
                 #'T0335', # msg.maketext("T0335") Zusatz zum HST
 		'Band',  # msg.maketext("Band") Bandangabe
-                'T0304', # msg.maketext("T0304") EST 
+                'Originaltitel', # msg.maketext("Originaltitel") EST 
                 'Weitere Titel', # msg.maketext("Weitere Titel") WST
                 'T0341', # msg.maketext("T0341") PSTVorlage
                 'T0100', # msg.maketext("T0100") Verfasser

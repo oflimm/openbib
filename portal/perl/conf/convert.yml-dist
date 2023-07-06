@@ -11609,8 +11609,18 @@ convtab:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+        'e':
+          index:
+            'ft4100': 1
+            'classification': 1
+            'classificationstring': 1
       '4102':         # Topic
         '':
+          index:
+            'topic': 1
+          facet:
+            'topic': 1
+        'e':
           index:
             'topic': 1
           facet:
@@ -11619,12 +11629,22 @@ convtab:
         '':
           index:
             'toc': 1
+        'e':
+          index:
+            'toc': 1
       '4113':         # Register
         '':
           index:
             'reg': 1
+        'e':
+          index:
+            'reg': 1
       '4200':         # Wikipedia
         '':
+          index:
+            'content': 1
+            'freesearch': 1
+        'e':
           index:
             'content': 1
             'freesearch': 1
@@ -11633,8 +11653,16 @@ convtab:
           index:
             'content': 1
             'freesearch': 1
+        'e':
+          index:
+            'content': 1
+            'freesearch': 1
       '4202':         # Wikipedia
         '':
+          index:
+            'content': 1
+            'freesearch': 1
+        'e':
           index:
             'content': 1
             'freesearch': 1
@@ -11647,8 +11675,27 @@ convtab:
             'ft4300': 1
           facet:
             'subject': 1
+        'e':
+          index:
+            'subject': 20
+            'subjectstring': 20
+            'freesearch': 20
+            'ft4300': 1
+          facet:
+            'subject': 1
       '4306':         # Provenienzen Sammlung
         '':
+          index:
+            'subject': 20
+            'subjectstring': 20
+            'freesearch': 20
+            't4306': 1
+            'ft4306': 1
+            'provenance': 20
+            'provenancestring': 20
+          facet:
+            'provenance': 1
+        'e':
           index:
             'subject': 20
             'subjectstring': 20
@@ -11671,8 +11718,30 @@ convtab:
             'provenancestring': 20
           facet:
             'provenance': 1
+        'e':
+          index:
+            'corporatebody': 20
+            'corporatebodystring': 20
+            'freesearch': 20
+            't4307': 1
+            'ft4307': 1
+            'provenance': 20
+            'provenancestring': 20
+          facet:
+            'provenance': 1
       '4308':         # Provenienzen Person
         '':
+          index:
+            'personbody': 20
+            'personstring': 20
+            'freesearch': 20
+            't4308': 1
+            'ft4308': 1
+            'provenance': 20
+            'provenancestring': 20
+          facet:
+            'provenance': 1
+        'e':
           index:
             'personbody': 20
             'personstring': 20
@@ -11689,14 +11758,31 @@ convtab:
             'freesearch': 20
             't4310': 1
             'ft4310': 1
+        'e':
+          index:
+            'freesearch': 20
+            't4310': 1
+            'ft4310': 1
       '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder presence_[immediate|order]
         '':
           index:
             'availabilitystring': 1
           facet:
             'availability' : 1
+        'e':
+          index:
+            'availabilitystring': 1
+          facet:
+            'availability' : 1
       '4410':         # Medientyp
         '':
+          index:
+            'mediatype': 1
+            'mediatypestring': 1
+            'freesearch': 1
+          facet:
+            'mediatype': 1
+        'e':
           index:
             'mediatype': 1
             'mediatypestring': 1
@@ -12614,8 +12700,18 @@ convtab:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+        'e':
+          index:
+            'ft4100': 1
+            'classification': 1
+            'classificationstring': 1
       '4102':         # Topic
         '':
+          index:
+            'topic': 1
+          facet:
+            'topic': 1
+        'e':
           index:
             'topic': 1
           facet:
@@ -12624,12 +12720,22 @@ convtab:
         '':
           index:
             'toc': 1
+        'e':
+          index:
+            'toc': 1
       '4113':         # Register
         '':
           index:
             'reg': 1
+        'e':
+          index:
+            'reg': 1
       '4200':         # Wikipedia
         '':
+          index:
+            'content': 1
+            'freesearch': 1
+        'e':
           index:
             'content': 1
             'freesearch': 1
@@ -12638,8 +12744,16 @@ convtab:
           index:
             'content': 1
             'freesearch': 1
+        'e':
+          index:
+            'content': 1
+            'freesearch': 1
       '4202':         # Wikipedia
         '':
+          index:
+            'content': 1
+            'freesearch': 1
+        'e':
           index:
             'content': 1
             'freesearch': 1
@@ -12652,8 +12766,27 @@ convtab:
             'ft4300': 1
           facet:
             'subject': 1
+        'e':
+          index:
+            'subject': 20
+            'subjectstring': 20
+            'freesearch': 20
+            'ft4300': 1
+          facet:
+            'subject': 1
       '4306':         # Provenienzen Sammlung
         '':
+          index:
+            'subject': 20
+            'subjectstring': 20
+            'freesearch': 20
+            't4306': 1
+            'ft4306': 1
+            'provenance': 20
+            'provenancestring': 20
+          facet:
+            'provenance': 1
+        'e':
           index:
             'subject': 20
             'subjectstring': 20
@@ -12676,8 +12809,30 @@ convtab:
             'provenancestring': 20
           facet:
             'provenance': 1
+        'e':
+          index:
+            'corporatebody': 20
+            'corporatebodystring': 20
+            'freesearch': 20
+            't4307': 1
+            'ft4307': 1
+            'provenance': 20
+            'provenancestring': 20
+          facet:
+            'provenance': 1
       '4308':         # Provenienzen Person
         '':
+          index:
+            'personbody': 20
+            'personstring': 20
+            'freesearch': 20
+            't4308': 1
+            'ft4308': 1
+            'provenance': 20
+            'provenancestring': 20
+          facet:
+            'provenance': 1
+        'e':
           index:
             'personbody': 20
             'personstring': 20
@@ -12694,14 +12849,31 @@ convtab:
             'freesearch': 20
             't4310': 1
             'ft4310': 1
+        'e':
+          index:
+            'freesearch': 20
+            't4310': 1
+            'ft4310': 1
       '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder presence_[immediate|order]
         '':
           index:
             'availabilitystring': 1
           facet:
             'availability' : 1
+        'e':
+          index:
+            'availabilitystring': 1
+          facet:
+            'availability' : 1
       '4410':         # Medientyp
         '':
+          index:
+            'mediatype': 1
+            'mediatypestring': 1
+            'freesearch': 1
+          facet:
+            'mediatype': 1
+        'e':
           index:
             'mediatype': 1
             'mediatypestring': 1

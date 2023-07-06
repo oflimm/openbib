@@ -1090,12 +1090,18 @@ sub normalize {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return "" unless (defined $content);
+
     if ($logger->is_debug){
         $logger->debug("IN: $content / Type $type");
     }
-    
-    return "" unless (defined $content);
 
+    # Spezielle Id-Prefixe verarbeiten
+    $content =~s{\(DE-605\)}{hbz}ig;
+    $content =~s{\(DE-600\)}{zdb}ig;
+    $content =~s{\(DE-588\)}{gnd}ig;
+    $content =~s{\(DE-38\)}{usb}ig;
+        
 #    my $chars_to_replace   = $self->{chars_to_replace};
 #    my %char_replacements  = %{$self->{char_replacements}};
     

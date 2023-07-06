@@ -14,8 +14,8 @@
 [%-# Ausgabekategorien -%]
 [%- supplemental_categories = [
                 'T0435', # msg.maketext("T0435") Format
-                'T0405', # msg.maketext("T0405") Erscheinungsverlauf
-                'T0523', # msg.maketext("T0523") Erscheinungsweise
+                'Erscheinungsverlauf', # msg.maketext("Erscheinungsverlauf") Erscheinungsverlauf
+                'Erscheinungsweise', # msg.maketext("Erscheinungsweise") Erscheinungsweise
                 'T0591', # msg.maketext("T0591") Verfasser Quelle
                 'T0594', # msg.maketext("T0594") ErschOrt Quelle
                 'T0595', # msg.maketext("T0595") ErschJahr Quelle
@@ -108,7 +108,7 @@
                 'T4211', # msg.maketext("T4211") Preis
                 'T4212', # msg.maketext("T4212") Waehrung
                 'T4210', # msg.maketext("T4210") Copyright-Information
-                'Hinweise', # msg.maketext("Hinweise") Fussnoten		
+                'Hinweis', # msg.maketext("Hinweis") Bemerkung/Fussnoten		
                 ]
 
 -%]

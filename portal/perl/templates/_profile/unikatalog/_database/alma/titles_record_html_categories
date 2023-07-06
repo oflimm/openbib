@@ -33,6 +33,20 @@
 [%# USE dumper;dumper.dump(record.get_fields)%]
 [%# USE dumper;dumper.dump(normdata)%]
 
+<script>
+$(document).on("click", ".ob-more_button", function () {
+const supplemental_collection = document.getElementsByClassName("ob-field_supplemental");
+Array.prototype.forEach.call(supplemental_collection, function(element) {
+  $(element.tagName).prop("hidden", false);
+});
+$(this).prop("hidden", true)
+
+const wikipedia_articles = document.getElementById("ob-title_wikipedia_articles");
+$(wikipedia_articles).prop("hidden", false)
+
+});
+</script>
+
 <div class="table-responsive">
 <table class="table table-striped table-hover ob-title_fields">
 
@@ -190,6 +204,8 @@ rswkswt_done      = {};
 
 # Preprocessing
 
+rswkswt_done = {};
+
 # Switching processed links
 
 IF normdata.${'T4662'}.defined ;
@@ -284,9 +300,36 @@ FOREACH field IN normdata;
 
          IF content ;
            IF NOT content_map.${"Sprache"} ;
-	      content_map.${"sprache"} = [];
+	      content_map.${"Sprache"} = [];
 	   END;
            content_map.${"Sprache"}.push(content);
+	 END;
+
+    CASE "T0082";    
+         content = thisfield.${'a'};
+         thisid  = thisfield.${'6'};
+         supplement = "";
+	 
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').classificationstring.prefix;
+
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         normdataicon = "";
+
+         IF thisid && catalog_has_authorities ;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         icons     = "<span>${normdataicon}</span>";
+
+         IF content ;
+           content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
+           IF NOT content_map.${'Klassifikation'} ;
+	      content_map.${'Klassifikation'} = [];
+	   END;
+           content_map.${'Klassifikation'}.push(content);
 	 END;
 
     CASE [ "T0100" "T0700" ];
@@ -345,28 +388,64 @@ FOREACH field IN normdata;
 	 END;
 
     CASE "T0245"; # HST
-         main_title = [];
-    
+         main_title         = "";
+	 supplemental_title = "";
+	 published_by       = "";
+	 
          IF thisfield.${'a'} ;
-	   main_title.push(thisfield.${'a'});
+	   main_title = thisfield.${'a'};
 	 END;
 	 
          IF thisfield.${'b'} ;
-	   main_title.push(thisfield.${'b'});	 
+	   supplemental_title = thisfield.${'b'};	 
 	 END;
 
          IF thisfield.${'c'} ;
-	   main_title.push(thisfield.${'c'});	 
+	   published_by = thisfield.${'c'};	 
 	 END;
 
-         IF main_title.size > 0 ;
-	   content = main_title.join(' ');
+         IF supplemental_title ;
+	    main_title = "${main_title} : ${supplemental_title}";
+	 END;
+
+         volume = "";
+	 
+         IF thisfield.${'n'} ;
+	   volume = thisfield.${'n'};	 
+	 END;
+
+         IF main_title ;
+	   content = main_title;
            content   = "<b>${highlightquery(searchquery,content)}</b>";
 
            IF NOT content_map.${'Titel'} ;
 	     content_map.${'Titel'} = [];
 	   END;
            content_map.${'Titel'}.push(content);
+	 END;
+
+         IF volume ;
+           IF NOT content_map.${'Band'} ;
+	     content_map.${'Band'} = [];
+	   END;
+           content_map.${'Band'}.push(volume);
+	 END;
+
+         IF published_by ;
+           IF NOT content_map.${'Verfasserangabe'} ;
+	     content_map.${'Verfasserangabe'} = [];
+	   END;
+           content_map.${'Verfasserangabe'}.push(published_by);
+	 END;
+
+    CASE "T0246"; # Weitere Titel
+         content = thisfield.${'a'} ;
+
+         IF content ;
+           IF NOT content_map.${'Weitere Titel'} ;
+	     content_map.${'Weitere Titel'} = [];
+	   END;
+           content_map.${'Weitere Titel'}.push(content);
 	 END;
 
     CASE "T0250"; # Auflage
@@ -383,15 +462,17 @@ FOREACH field IN normdata;
          ortverlagjahr = [];
 
          IF thisfield.${'a'} ; # Ort
-	   ortverlagjahr.push(thisfield.${'a'});
+	   ort = thisfield.${'a'};
+	   ortverlagjahr.push("${ort}: ");
 	 END;
 
          IF thisfield.${'b'} ; # Verlag
            ortverlagjahr.push(thisfield.${'b'});
          END;
 
-	 IF thisfield.${'c'} ;
-           ortverlagjahr.push(thisfield.${'c'});	 
+	 IF thisfield.${'c'} ; # Jahr
+	   jahr = thisfield.${'c'};
+           ortverlagjahr.push("(${jahr})");	 
 	 END;
 
          ortverlagjahrcontent = ortverlagjahr.join(' ');
@@ -427,41 +508,66 @@ FOREACH field IN normdata;
            content_map.${'Umfang'}.push(umfangcontent);
          END;
 
-    CASE "T0082";    
-         content = thisfield.${'a'};
-         thisid  = thisfield.${'6'};
-         supplement = "";
-	 
-         searchterm    = uri_escape(content);
-         searchprefix  = config.get('searchfield').classificationstring.prefix;
-
-         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-         normdataicon = "";
-
-         IF thisid && catalog_has_authorities ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
-         END;
-
-         icons     = "<span>${normdataicon}</span>";
+    CASE "T0362"; # Erscheinungsverlauf
+         content = thisfield.${'a'} ;
 
          IF content ;
-           content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
-           IF NOT content_map.${'Klassifikation'} ;
-	      content_map.${'Klassifikation'} = [];
+           IF NOT content_map.${'Erscheinungsverlauf'} ;
+	     content_map.${'Erscheinungsverlauf'} = [];
 	   END;
-           content_map.${'Klassifikation'}.push(content);
+           content_map.${'Erscheinungsverlauf'}.push(content);
 	 END;
 
-    CASE [ "T0600" "T0610" "T0648" "T0650" "T0651" "T0655" "T0688" ];    
+    CASE "T0490"; # Gesamttitel
+         content = thisfield.${'a'} ;
+
+         IF content ;
+           IF NOT content_map.${'Gesamttitel'} ;
+	     content_map.${'Gesamttitel'} = [];
+	   END;
+           content_map.${'Gesamttitel'}.push(content);
+	 END;
+
+    CASE [ "T0500" "T0504" ];    
+         content = thisfield.${'a'};
+
+         IF content ;
+           IF NOT content_map.${'Hinweis'} ;
+	      content_map.${'Hinweis'} = [];
+	   END;
+           content_map.${'Hinweis'}.push(content);
+	 END;
+
+    CASE "T0515";    
+         content = thisfield.${'a'};
+
+         IF content ;
+           IF NOT content_map.${'Erscheinungsweise'} ;
+	      content_map.${'Erscheinungsweise'} = [];
+	   END;
+           content_map.${'Erscheinungsweise'}.push(content);
+	 END;
+
+    CASE "T0520";    
+         content = thisfield.${'a'};
+
+         IF content ;
+           IF NOT content_map.${'Zusammenfassung'} ;
+	      content_map.${'Zusammenfassung'} = [];
+	   END;
+           content_map.${'Zusammenfassung'}.push(content);
+	 END;
+
+    CASE [ "T0600" "T0610" "T0648" "T0650" "T0651" "T0655" "T0688" "T0689" ];    
          content = thisfield.${'a'};
          thisid  = thisfield.${'6'};
          supplement = "";
-	 
+
          searchterm    = uri_escape(content);
          searchprefix  = config.get('searchfield').subjectstring.prefix;
 
+         NEXT IF rswkswt_done.${searchterm} == 1;
+	 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${thisid}";
          localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
@@ -481,24 +587,31 @@ FOREACH field IN normdata;
            content_map.${'Schlagwort'}.push(content);
 	 END;
 
-    CASE [ "T0500" "T0504" ];    
-         content = thisfield.${'a'};
+         rswkswt_done.${searchterm} = 1;
 
+    CASE [ "T0770" "T0776" ];    
+         content = thisfield.${'i'};
+         thistitle = thisfield.${'t'};
+         thisid    = thisfield.${'w'};
+
+         # ggf. verlinken
+         IF 0 == 1 && thistitle && thisid ;
+	    thisid = thisid.replace('\(.+?\)','');
+            searchterm    = thisid;
+            searchprefix  = config.get('searchfield').zdbid.prefix;
+
+            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+
+	    thistitle = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+	 END;
+
+         content = "${content} ${thistitle}";
+	 
          IF content ;
            IF NOT content_map.${'Hinweis'} ;
 	      content_map.${'Hinweis'} = [];
 	   END;
            content_map.${'Hinweis'}.push(content);
-	 END;
-
-    CASE "T0520";    
-         content = thisfield.${'a'};
-
-         IF content ;
-           IF NOT content_map.${'Zusammenfassung'} ;
-	      content_map.${'Zusammenfassung'} = [];
-	   END;
-           content_map.${'Zusammenfassung'}.push(content);
 	 END;
 
     CASE "T0856";
@@ -515,6 +628,72 @@ FOREACH field IN normdata;
 	    content_map.${'URL'} = [];
 	 END;
          content_map.${'URL'}.push(content);
+
+    CASE "T0983";    
+         content = thisfield.${'b'};
+
+         supplement = "";
+	 
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').classificationstring.prefix;
+
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         normdataicon = "";
+
+         IF thisid && catalog_has_authorities ;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         icons     = "<span>${normdataicon}</span>";
+
+         bkdesc = ""; 
+         IF content.match('\d\d\.\d\d');         
+           bkresult      = bklookup.${content};
+	   IF bkresult ;
+	      bkdesc = "(${bkresult})";
+	   END;
+         END;
+
+         IF content ;
+           content   = "<a class=\"inturl\" href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${bkdesc} ${supplement} ${icons}";
+	   
+           IF NOT content_map.${'Klassifikation'} ;
+	      content_map.${'Klassifikation'} = [];
+	   END;
+           content_map.${'Klassifikation'}.push(content);
+	 END;
+
+    CASE "T4102";
+         content = thisfield.${'e'};
+	 
+         topicdesc   = topic_map.${content};
+         IF topicdesc ;
+            content   = topicdesc ;
+         END ;
+         IF NOT content_map.${'E4102'} ;
+	    content_map.${'E4102'} = [];
+	 END;
+         content_map.${'E4102'}.push(content);
+
+    CASE "T4300";
+         content = thisfield.${'e'};
+
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').ft4300.prefix;
+
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         NEXT IF extsubj_done.${content} == 1;
+         extsubj_done.${content} = 1;
+	 
+	 content       = "<a class=\"inturl\" href=\"${localurl}\">${content}</a>";
+
+         IF NOT content_map.${'E4300'} ;
+	    content_map.${'E4300'} = [];
+	 END;
+         content_map.${'E4300'}.push(content);
 
     CASE "T5001";
          searchterms = [];
@@ -621,6 +800,55 @@ END;
 [%- IF currently_unavailable -%]
 <tr><th class="ob-field">[% msg.maketext("Volltext")%]</th><td>derzeit nicht verf&uuml;gbar (z.B. noch im Erwerbungsvorgang)</td></tr>
 [%- END -%]
+[%-
+
+  show_more = 0;
+
+  IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} ;
+    show_more = 1;
+  END;
+  
+  FOREACH category IN supplemental_categories;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+   IF content_map.${category}.first;
+      IF display_types.${category} == 'list' ;
+        IF content_map.${category}.size > 1 ;
+          content = "<ul>";
+          FOREACH thiscontent IN content_map.${category};
+	    content="${content}<li>${thiscontent}</li>";
+	  END;
+	  content = "${content}</ul>";
+	ELSE ;
+	  content = content_map.${category}.first;
+	END;
+      ELSE ;
+        content = content_map.${category}.join(' ; ');
+      END;
+
+      # Titel hervorheben
+      IF category == "T0331";
+        content = "<span class=\"ob-title\">${content}</span>";
+      END;
+
+      show_more = 1;
+-%]
+<tr class="ob-field_supplemental" hidden><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+[%
+   END;
+END;
+-%]
+[% IF show_more %]
+<tr class="ob-field ob-more_button"><th><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></th><td></td></tr>
+[% END %]
 </table>
 </div>
 [%# USE dumper;dumper.dump(content_map) %]

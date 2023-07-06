@@ -19,10 +19,10 @@
                 'Person', # msg.maketext("Person") Verfasser
                 'T0101', # msg.maketext("T0101") Person
                 'T0103', # msg.maketext("T0103") Gefeierte Person
-                'T0451', # msg.maketext("T0451") GesTit Vorl
-                'T0089', # msg.maketext("T0089") Bandangabe  
+                'Gesamttitel', # msg.maketext("Gesamttitel") GesTit Vorl
+		'Band',  # msg.maketext("Band") Bandangabe
                 'T0304', # msg.maketext("T0304") EST 
-                'T0370', # msg.maketext("T0370") WST
+                'Weitere Titel', # msg.maketext("Weitere Titel") WST
                 'T0341', # msg.maketext("T0341") PSTVorlage
                 'T0200', # msg.maketext("T0200") Urheber
                 'Institution', # msg.maketext("Institution") Koerperschaft
@@ -36,10 +36,10 @@
                 'T0369', # msg.maketext("T0369") Gemeins. Angaben Verfasser
                 'T0360', # msg.maketext("T0360") Vorl. Unterreihe
                 'Ausgabe', # msg.maketext("Ausgabe") Auflage T250a
-                'Ort/Verlag', # msg.maketext("Ort/Verlag") T260b/a
-                'Jahr', # msg.maketext("Jahr") T260c
-                'T0405', # msg.maketext("T0405") Erscheinungsverlauf
-                'T0523', # msg.maketext("T0523") Erscheinungsweise
+                'Ort/Verlag/Jahr', # msg.maketext("Ort/Verlag/Jahr") T260a/b/c
+                #'Jahr', # msg.maketext("Jahr") T260c
+                'Erscheinungsverlauf', # msg.maketext("Erscheinungsverlauf") Erscheinungsverlauf
+                'Erscheinungsweise', # msg.maketext("Erscheinungsweise") Erscheinungsweise
                 'T0591', # msg.maketext("T0591") Verfasser Quelle
                 'T0594', # msg.maketext("T0594") ErschOrt Quelle
                 'T0595', # msg.maketext("T0595") ErschJahr Quelle

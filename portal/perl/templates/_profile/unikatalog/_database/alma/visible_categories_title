@@ -13,22 +13,23 @@
 -%]
 [%-# Ausgabekategorien -%]
 [%- categories = [
-                'T0310', # msg.maketext("T0310") AST  
+                'T0310', # msg.maketext("T0310") AST
+		'Band',  # msg.maketext("Band") Bandangabe
                 'Titel', # msg.maketext("Titel") HST
                 #'T0335', # msg.maketext("T0335") Zusatz zum HST
                 'T0089', # msg.maketext("T0089") Bandangabe  
                 'T0304', # msg.maketext("T0304") EST 
-                'T0370', # msg.maketext("T0370") WST
+                'Weitere Titel', # msg.maketext("Weitere Titel") WST
                 'T0341', # msg.maketext("T0341") PSTVorlage
                 'Person', # msg.maketext("Person") Verfasser
                 'Institution', # msg.maketext("Institution") Koerperschaft
                 'Ausgabe', # msg.maketext("Ausgabe") Auflage T250a
                 #'T0410', # msg.maketext("T0410") Verlagsort
-                'Ort/Verlag', # msg.maketext("Ort/Verlag") T260b/a
-                'Jahr', # msg.maketext("Jahr") T260c
+                'Ort/Verlag/Jahr', # msg.maketext("Ort/Verlag/Jahr") T260a/b/c
+                #'Jahr', # msg.maketext("Jahr") T260c
                 'T0424', # msg.maketext("T0424") ErschJahr/Ansetzung
-                'T0405', # msg.maketext("T0405") Erscheinungsverlauf
-                'T0523', # msg.maketext("T0523") Erscheinungsweise
+                'Erscheinungsverlauf', # msg.maketext("Erscheinungsverlauf") Erscheinungsverlauf
+                'Erscheinungsweise', # msg.maketext("Erscheinungsweise") Erscheinungsweise
                 'T0591', # msg.maketext("T0591") Verfasser Quelle
                 'T0594', # msg.maketext("T0594") ErschOrt Quelle
                 'T0595', # msg.maketext("T0595") ErschJahr Quelle
@@ -45,7 +46,7 @@
                 'ISSN', # msg.maketext("ISSN") ISSN
                 'T0652', # msg.maketext("T0652") EDV Material
                 'T0655', # msg.maketext("T0655") EDV Adress
-                'T0451', # msg.maketext("T0451") GesTit Vorl
+                'Gesamttitel', # msg.maketext("Gesamttitel") GesTit Vorl
                 'T0590', # msg.maketext("T0590") HSTQuelle
                 'URL', # msg.maketext("URL") EDVurl
                 'T1664', # msg.maketext("T1664") Provenienz

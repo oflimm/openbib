@@ -19,12 +19,12 @@
 <tr><th>[% msg.maketext("Standort") %]</th><th>QR</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Ausleihstatus") %]</th></tr>
 </thead>
 <tbody>
-[%# USE dumper;dumper.dump(circulation)%]
+[%# USE dumper;dumper.dump(circulation) %]
 [%-
    # First pass
    FOREACH thiscirculation IN circulation ;
      IF thiscirculation.location_mark.match('#$') ; # LBS-Exemplare: Mediennummer statt Signatur anzeigen
-       thiscirculation.location_mark = thiscirculation.holdingid ;
+       thiscirculation.location_mark = thiscirculation.barcode ;
      END;
 
      IF thiscirculation.remark && NOT thiscirculation.remark.match('^\(.*\)$') ; # z.B. 16L7924 (FussNoten=Kopie)
@@ -51,82 +51,44 @@
        availability_info = thiscirculation.unavailability_info.first.content ;
      END;
      
-     IF thiscirculation.department_id == "0"; # Abteilung bei entliehenen Exemplaren der Hauptabteilung ausblenden, da diese nach einer Vormerkung nicht in der Abteilung, sondern in den Abholregalen bereitgestellt werden
+     IF thiscirculation.department_id == "38"; # Abteilung bei entliehenen Exemplaren der Hauptabteilung ausblenden, da diese nach einer Vormerkung nicht in der Abteilung, sondern in den Abholregalen bereitgestellt werden
        IF thiscirculation.availability == 'lent' ;
-          standort = standort.replace('^Hauptabt.* \/ .*','Hauptabteilung');
+          standort = standort.replace('^Universitäts- und Stadtbibliothek Köln \/ .*','Hauptabteilung');
        END;
      END ;
 
      # Fix: Greinstr. wird auch bei HF ausgegeben ( 5 == FB Chemie )
-     IF thiscirculation.department_id != 5 && availability_info.match('(Fachbibl. Chemie, Greinstr. 4)');
+     IF thiscirculation.department_id != "38-507" && availability_info.match('(Fachbibl. Chemie, Greinstr. 4)');
         availability_info = availability_info.replace('\(Fachbibl. Chemie, Greinstr. 4\)','');
      END;
 
-     IF standort.match('Handapp.');
-       IF thiscirculation.department_id.match('^(0|6|10|15)$');
-          standort = "Handapp." ; #.replace('^(.*Handapp\.).*','$1'); # Handapp. der Hauptabteilung und FBs: Namen verbergen, z.B. ID=6445402
-       ELSIF thiscirculation.department_id.match('^20$');
-          standort = "KMB / Handapp.";
-        END;
-     END;
+     # IF standort.match('Handapp.');
+     #   IF thiscirculation.department_id.match('^(38|38-101|38-132|38-418)$');
+     #      standort = "Handapp." ; #.replace('^(.*Handapp\.).*','$1'); # Handapp. der Hauptabteilung und FBs: Namen verbergen, z.B. ID=6445402
+     #   ELSIF thiscirculation.department_id.match('^20$');
+     #      standort = "KMB / Handapp.";
+     #    END;
+     # END;
 
      # Bestimmung department_url
      library_isil = "";
 
-     IF standort.match('Hauptabt.') ;
+     IF thiscirculation.department_id.match('^(38|38-HLS)$');
        library_isil = "DE-38";
-     ELSIF standort.match('Humanwiss. Abteilung') ;
+     ELSIF thiscirculation.department_id.match('^38-HWA$') ;
        library_isil = "DE-38-HWA";     
-     ELSIF thiscirculation.department_id.match('^[0-9][0-9][0-9]');
-       kuerzel = thiscirculation.department_id.match("^([0-9][0-9][0-9])").first ;
+     ELSIF thiscirculation.department_id.match('^38-[0-9][0-9][0-9]');
+       kuerzel = thiscirculation.department_id.match("^38-([0-9][0-9][0-9])").first ;
        IF kuerzel ;
           library_isil = "DE-38-${kuerzel}";
        END ;
-     ELSIF standort.match('Bibliothek für Informatik und Wirtschaftsinformatik');
-       library_isil = "DE-38-526";
-     ELSIF standort.match('VWL');
-       library_isil = "DE-38-101";
-     ELSIF standort.match('HF-Bibliothek');
-       library_isil = "DE-38-307";
-     ELSIF standort.match('Archäologisches Institut');
-       library_isil = "DE-38-427";
-     ELSIF standort.match('Forschungsstelle Afrika');
-       library_isil = "DE-38-438";
-     ELSIF standort.match('Institut für Ur- u. Frühgeschichte');
-       library_isil = "DE-38-426";
-     ELSIF standort.match('China');
-       library_isil = "DE-38-450";
-     ELSIF standort.match('Japanologie');
-       library_isil = "DE-38-459";
-     ELSIF standort.match('Slavistik');
-       library_isil = "DE-38-418";
-     ELSIF standort.match('Soziologie');
-       library_isil = "DE-38-132";
-     ELSIF standort.match('Theaterwiss. Sammlung');
-       library_isil = "DE-38-429";
-     ELSIF standort.match('Inst. für Medienkultur u. Theater');
-       library_isil = "DE-38-448";
-     ELSIF standort.match('Philosophisches Seminar');
-       library_isil = "DE-38-401";
-     ELSIF standort.match('Fachbibliothek Chemie');
-       library_isil = "DE-38-507";
      END ;
 
-     IF standort.match('Historisches Institut \/ Osteuropäische Geschichte');
-       library_isil = "DE-38-425";
-     ELSIF standort.match('Kunstgeschichte \/ Architekturgeschichte');
-       library_isil = "DE-38-445";
-     ELSIF standort.match('Altertumskunde \/ Byzantinistik');
-       library_isil = "DE-38-460";
-    ELSIF standort.match('Altertumskunde \/ Mittellatein und Neulatein');
-       library_isil = "DE-38-461";
-     END;
-
-     IF database.match('inst[0-9][0-9][0-9]') && NOT database.match('inst001');
-       library_isil = database.replace('inst','');
-       library_isil = "DE-38-${library_isil}";
-       thiscirculation.department.id = 0;
-     END;
+     # IF database.match('inst[0-9][0-9][0-9]') && NOT database.match('uni');
+     #   library_isil = database.replace('inst','');
+     #   library_isil = "DE-38-${library_isil}";
+     #   thiscirculation.department.id = 0;
+     # END;
 
      
      IF library_isil ;
@@ -206,21 +168,22 @@
         title = "${title} (${super_title})";
      END;
 
+     # Preprocessing location_mark
+     thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','');
+
 -%]
-<tr><td><strong>[% standort_with_url %]</strong></td>
+<tr><td><strong>[% standort_with_url %][%# USE dumper;dumper.dump(thiscirculation) %]</strong></td>
 <td><a href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] [% thiscirculation.remark | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur" data-bs-toggle="modal" data-bs-target="#qrcodeModal" data-bs-modaltitle="QR-Code" data-bs-modalurl="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] [% thiscirculation.remark | uri %][% END %]"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
 [%-
 
-thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','');
-
 -%]
-<td><strong>[% thiscirculation.location_mark %]</strong>
+<td><span class="fw-bold" aria-label="[% msg.maketext("Signatur") %]" title="[% msg.maketext("Signatur") %]">[% thiscirculation.location_mark %]</span>
 [% IF thiscirculation.remark %] [% thiscirculation.remark %][% END %]
 [% IF thiscirculation.boundcollection == "Y" %]<img src="/USB/img/bindeeinheit.gif" width="28px" height="26px" title="Dieser Titel ist Teil einer Bindeeinheit, die verschiedene Medien zusammenfasst." alt="Bindeeinheit" style="vertical-align:middle;" />[% END %]
-[% IF NOT thiscirculation.department_id.match('^(19|20|204|212|213|214|217|219|223|228|230|308|319|321|325|328|403|405|420|422|423|425|431|134|108|125|222|465|119|314|315|317)$') # Mediennummer fuer Zweigstellen 19, 20, 405, ... immer unterdruecken %]
-[%   IF thiscirculation.location_mark != thiscirculation.holdingid # Anzeige der Mediennummer fuer USB-Treffer, falls ungleich Signatur %] 
+[% IF NOT thiscirculation.department_id.match('^(38-201|KN3|38-204|38-212|38-213|38-214|38-217|38-219|38-223|38-228|38-230|38-308|38-319|38-321|38-325|38-328|38-403|38-405|38-420|38-422|38-423|38-425|38-431|38-134|38-108|38-125|38-222|38-465|38-119|38-314|38-315|38-317)$') # Mediennummer fuer Zweigstellen 19, 20, 405, ... immer unterdruecken %]
+[%   IF thiscirculation.location_mark != thiscirculation.barcode # Anzeige der Mediennummer fuer USB-Treffer, falls ungleich Signatur %] 
 [%     IF NOT thiscirculation.location_mark.match('^(JUR|BWL|VERSW)$') %]
-<br /><span style="color:silver">[% thiscirculation.barcode %]</span>
+<br /><span class="fst-italic" aria-label="[% msg.maketext("Mediennummer") %]" title="[% msg.maketext("Mediennummer") %]"><i class="fas fa-barcode pe-2"></i>[% thiscirculation.barcode %]</span>
 [%     END %]
 [%   END %]
 [% END %]
@@ -235,7 +198,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
     corona = 0;
 
     # Ggf. anhand konkreter Anforderungen ueberarbeiten
-    IF thiscirculation.department_id.match('^(15|506)$') && thiscirculation.availability.match('^(order|lent)$') && NOT thiscirculation.availability_info.first.limitation;
+    IF thiscirculation.department_id.match('^(15|38-506)$') && thiscirculation.availability.match('^(order|lent)$') && NOT thiscirculation.availability_info.first.limitation;
       corona = 1;
     END
 -%]
@@ -256,19 +219,19 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 &nbsp;<a class="btn btn-primary mb-1" [% IF NOT user.ID %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=1;redirect_to=[% anon_redirect_url | uri %]"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/default?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];realm=usb">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%############### HANDAPPARAT ################# %]
-[% ELSIF standort.match('Handapp.') %]
-[%   IF thiscirculation.department_id.match('^(0|6|10|15|18|406)$') ; # Handapp. der Hauptabteilung und FBs: Bestellformular einblenden, z.B. ID=6445402, ID=6781850 %]
+[% ELSIF thiscirculation.storage_id.match('-HAP$') %]
+[%   IF thiscirculation.department_id.match('^(38|38-101|38-132|38-418|38-106|38-406)$') ; # Handapp. der Hauptabteilung und FBs: Bestellformular einblenden, z.B. ID=6445402, ID=6781850 %]
 <strong>entliehen</strong>
 [%    IF config.get('active_ils') %]
-[%      IF    thiscirculation.department_id.match('^6$') ;
+[%      IF    thiscirculation.department_id.match('^38-101$') ;
           realm = "vwl";
-	ELSIF thiscirculation.department_id.match('^10$') ;
+	ELSIF thiscirculation.department_id.match('^38-132$') ;
           realm = "soz";
-	ELSIF thiscirculation.department_id.match('^15$') ;
+	ELSIF thiscirculation.department_id.match('^38-418$') ;
           realm = "slav";
-	ELSIF thiscirculation.department_id.match('^18$') ;
+	ELSIF thiscirculation.department_id.match('^38-106$') ;
           realm = "bwl";
-	ELSIF thiscirculation.department_id.match('^406$') ;
+	ELSIF thiscirculation.department_id.match('^38-406$') ;
           realm = "nl";
 	ELSE;
 	  realm = "usb";
@@ -359,9 +322,9 @@ Präsenzbestand
 Präsenzbestand
 [%     ELSIF thiscirculation.location_mark.match('^ZBM/') %]
 Bestände zur Zeit nicht verfügbar
-[%     ELSIF thiscirculation.department_id.match('^(19|222)$') %]
+[%     ELSIF thiscirculation.department_id.match('^(19|38-222)$') %]
 Präsenzbestand
-[%     ELSIF thiscirculation.department_id.match('^(420)$') %]
+[%     ELSIF thiscirculation.department_id.match('^(38-420)$') %]
 [%       IF standort.match('Magazin') %]
 Bitte nutzen Sie das <a href="https://neuere-geschichte.phil-fak.uni-koeln.de/bibliothek/benutzung/ausleihmodalitaeten/bestellformular">Bestellformular</a>.
 [%       ELSE %]
@@ -383,6 +346,7 @@ Präsenzbestand
 [%            textparts = availability_info.match('^(.*) (\(.*\).*?)$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
 [% textparts.first %]<br/>[% textparts.last %]
 [%         ELSE %]
+[%             IF availability_info == 'bestellt' ; availability_info = 'entliehen' ; END %]
 [%            availability_info %]
 [%         END %]
 [%     END %]
@@ -405,16 +369,21 @@ Präsenzbestand
 [% IF thiscirculation.availability.match('^(order)$') %]
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/orders">
    <input type="hidden" name="validtarget"   value="[% database %]" />
-   <input type="hidden" name="holdingid"     value="[% uri_escape(thiscirculation.holdingid)  %]" />
+   <input type="hidden" name="titleid"       value="[% record.id %]" />
+   <input type="hidden" name="holdingid"     value="[% thiscirculation.holdingid  %]" />
    <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
    <input type="hidden" name="unit_desc"     value="[% standort %]" />
-   <!-- Kein Parameter pickup_location = Ausgabeort bestimmen -->
+   <input type="hidden" name="storage"       value="[% thiscirculation.storage_id %]" />
+[% IF thiscirculation.availability_info.first.defined('limitation') %]
+   <input type="hidden" name="limitation"    value="[% thiscirculation.availability_info.first.limitation %]" />
+[% END %]
+   <!-- Kein Parameter pickup_location => Ausgabeort bestimmen -->
 [%   IF NOT corona %]
 [%     IF config.get('active_ils') %]
    <input type="submit" value="Bestellen" class="btn btn-primary mb-1" title="Dieses Buch steht in einem nicht-öffentlichen Bereich. Wir suchen es für Sie heraus." />
 [%     END %]
 [%   ELSE %]
-[%     IF thiscirculation.department_id.match('^(16|506)$') %]
+[%     IF thiscirculation.department_id.match('^(16|38-506)$') %]
 <b style='color:red'>Infolge der aktuellen Corona-Maßnahmen sind derzeit keine Ausleihen oder Bestellungen von Medien  möglich!</b>
 [%     ELSIF thiscirculation.department_id.match('^(15)$') %]
 <b style='color:red'>Kein Zugriff auf Bestell- und Vormerkfunktionen.</b>
@@ -422,11 +391,11 @@ Präsenzbestand
 [%   END %]
 </form>
 [%############### VORMERKBUTTON ######### %]
-[% ELSIF thiscirculation.availability.match('^(lent)$') && thiscirculation.unavailability_info.first.queue.defined %]
+[% ELSIF thiscirculation.availability.match('^(lent|ordered)$') && thiscirculation.unavailability_info.first.defined('queue') %]
 [%   
      vormerkbutton = 1 ;
 
-     IF thiscirculation.department_id == "0" && (standort.match('Lehrbuchsammlung') || record.id == 8224428);
+     IF thiscirculation.department_id == "38" && (standort.match('Lehrbuchsammlung') || record.id == 8224428);
        # Kein Vormerkbutton bei ausgeliehenen LBS-Ex., falls andere LBS-Ex. in ZW 0 verfuegbar sind
        # Kein Vormerkbutton bei bei ipads, falls andere Geraete verfuegbar sind (katkey: 8224428)
        FOREACH checkcirculation IN circulation ;
@@ -459,11 +428,15 @@ Präsenzbestand
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/reservations">
    <input type="hidden" name="l"             value="[% lang %]" />
    <input type="hidden" name="validtarget"   value="[% database %]" />
-   <input type="hidden" name="holdingid"     value="[% uri_escape(thiscirculation.holdingid)  %]" />
    <input type="hidden" name="titleid"       value="[% record.id %]" />
+   <input type="hidden" name="holdingid"     value="[% thiscirculation.holdingid  %]" />
    <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
    <input type="hidden" name="unit_desc"     value="[% standort %]" />
+   <input type="hidden" name="storage"       value="[% thiscirculation.storage_id %]" />
    <input type="hidden" name="num_holdings_in_unit"  value="[% num_holdings_in_unit %]" />
+[% IF thiscirculation.availability_info.first.defined('limitation') %]
+   <input type="hidden" name="limitation"    value="[% thiscirculation.availability_info.first.limitation %]" />
+[% END %]
    <!-- Kein Parameter pickup_location = Ausgabeort bestimmen -->
    <input type="submit" value="Vormerken" class="btn btn-primary mb-1" />
 </form>

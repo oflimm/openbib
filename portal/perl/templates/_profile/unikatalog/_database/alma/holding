@@ -14,9 +14,8 @@
 #
 #######################################################################
 -%]
-xxx
 [%-
- USE dumper;dumper.dump(holding);
+
     holding_categories = [
                 'X0004', # msg.maketext("X0004") # Titel-ID
                 'X0005', # msg.maketext("X0005") # Inventarnummer
@@ -38,7 +37,7 @@ xxx
     is_journal = 0;
 
     FOREACH thisholding IN holding ;
-      IF thisholding.defined('X1204'); # Bestandsverlauf
+      IF thisholding.defined('X1204') && thisholding.${"X1204"}.content != "-"; # Bestandsverlauf
         is_journal = 1;
       END;
     END;

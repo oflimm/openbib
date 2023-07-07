@@ -3808,7 +3808,7 @@ sub to_custom_field_scheme_1 {
 
 	    if (defined $self->{_fields}{$fieldname}){
 		foreach my $item_ref (@{$self->{_fields}{$fieldname}}){
-		    $item_ref->{subfield} = "0" unless ($item_ref->{subfield});
+		    $item_ref->{subfield} = "" unless (defined $item_ref->{subfield});
 		    unless ($item_ref->{mult}){
 			$item_ref->{mult} = (defined $field_mult_ref->{$fieldname})?$field_mult_ref->{$fieldname}++:1;
 		    }

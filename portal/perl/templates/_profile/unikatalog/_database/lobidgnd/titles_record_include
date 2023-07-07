@@ -121,7 +121,7 @@
 
 <div class="images"><!-- Begin Images -->
 [% IF gnd.depiction.first.thumbnail %]
-<img src="[% gnd.depiction.first.thumbnail %]" alt="Bild zu [% gnd.preferredName %] />
+<img src="[% gnd.depiction.first.thumbnail %]" alt="Bild zu [% gnd.preferredName %]\" />
 [% END %]
 </div><!-- End Images -->
 

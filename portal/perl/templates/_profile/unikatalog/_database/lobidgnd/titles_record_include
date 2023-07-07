@@ -1,0 +1,131 @@
+[%#-
+#######################################################################
+#
+# Templatename: titles_record_html
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines GND-Normdatensatzes als HTML-Seite im Portal
+#
+#######################################################################
+-%]
+[%-
+
+   catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
+   
+   resourceurl             = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}";
+
+   gnd = record.get_fields.${'lobid_source'}.first.content;
+
+#   USE dumper;dumper.dump(gnd);
+-%]
+
+<div class="details ob-authority_record"><!-- Begin Details -->
+<!-- GND begins here -->
+
+<div class="ob-category_header">Gemeinsame Normdatei</div>
+
+<div class="row">
+
+<div class="categories col-md-12"><!-- Begin Categories -->
+
+<h4>[% msg.maketext("Index-Eintrag (Normdaten)") %]</h4>
+
+<div class="table-responsive">
+<table class="table table-striped">
+
+[%-
+
+# Subfelder 806
+# msg.maketext("Sonstige Daten")
+# msg.maketext("Lebensdaten")
+# msg.maketext("Wirkungsdaten")
+# msg.maketext("Geburtsort")
+# msg.maketext("Sterbeort")
+# msg.maketext("Nationalität")
+# msg.maketext("Sprache")
+# msg.maketext("Beruf")
+# msg.maketext("Funktion")
+# msg.maketext("Akademische Titel")
+# msg.maketext("Dienstgrad")
+# msg.maketext("Berufsbezeichnung")
+
+# Subfelder 830
+# msg.maketext("Pseudonym")
+# msg.maketext("Wirklicher Name")
+# msg.maketext("Früherer Name")
+# msg.maketext("Späterer Name")
+# msg.maketext("Zeitweiser Name")
+-%]
+
+[% IF gnd.preferredName %]
+<tr><th class="ob-field">[% msg.maketext("Name") %]</th><td>[% gnd.preferredName %]</td></tr>
+[% END %]
+
+
+[% FOREACH definition IN gnd.definition %]
+<tr><th class="ob-field">[% msg.maketext("Definition") %]</th><td>[% definition %]</td></tr>
+[% END %]
+
+[% IF gnd.variantName %]
+<tr><th class="ob-field">[% msg.maketext("Andere Namen") %]</th><td>
+[% gnd.variantName.join(' ; ') %]
+</td></tr>
+[% END %]
+
+[% IF gnd.professionOrOccupation %]
+<tr><th class="ob-field">[% msg.maketext("Beruf") %]</th><td>
+[% professions = [];
+   FOREACH profession IN gnd.professionOrOccupation;
+     professions.push(profession.label);
+   END;
+%]
+[% professions.join(' ; ') %]
+</td></tr>
+[% END %]
+
+[% IF gnd.gndSubjectCategory %]
+<tr><th class="ob-field">[% msg.maketext("GND Fachgebiet(e)") %]</th><td>
+[% subjectcategories = [];
+   FOREACH subject IN gnd.gndSubjectCategory;
+     subjectcategories.push(subject.label);
+   END;
+%]
+[% subjectcategories.join(' ; ') %]
+</td></tr>
+[% END %]
+
+[% IF gnd.relatedTerm %]
+<tr><th class="ob-field">[% msg.maketext("Verwandte Begriffe") %]</th><td>
+[% relatedterms = [];
+   FOREACH item IN gnd.relatedTerm;
+     gndid = item.id.replace('https://d-nb.info/gnd/','');
+     resourceurl = "${path_prefix}/databases/id/lobidgnd/titles/id/${gndid}";
+     content = "<a class=\"inturl\" title=\"GND-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\" href=\"${resourceurl}.html?l=${lang}\">${item.label}</a>";
+     relatedterms.push(item.label);
+   END;
+%]
+[% relatedterms.join(' ; ') %]
+</td></tr>
+[% END %]
+
+</table>
+</div>
+
+
+</div><!-- End Categories -->
+
+
+
+<div class="images"><!-- Begin Images -->
+[% IF gnd.depiction.first.thumbnail %]
+<img src="[% gnd.depiction.first.thumbnail %]" alt="Bild zu [% gnd.preferredName %] />
+[% END %]
+</div><!-- End Images -->
+
+</div><!-- End row -->
+</div><!-- End Details -->
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Eintrag in der GND") %]</div>

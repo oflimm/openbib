@@ -25,7 +25,7 @@
 <div class="details ob-authority_record"><!-- Begin Details -->
 <!-- GND begins here -->
 
-<div class="ob-category_header">Gemeinsame Normdatei</div>
+<div class="ob-category_header">Gemeinsame Normdatei (GND)</div>
 
 <div class="row">
 
@@ -72,6 +72,29 @@
 [% IF gnd.variantName %]
 <tr><th class="ob-field">[% msg.maketext("Andere Namen") %]</th><td>
 [% gnd.variantName.join(' ; ') %]
+</td></tr>
+[% END %]
+
+[% IF gnd.dateOfBirth %]
+[%- lebensdaten = gnd.dateOfBirth.first;
+
+    IF gnd.placeOfBirth.first.label;
+      lebensdaten = "${lebensdaten} (${gnd.placeOfBirth.first.label})";
+    END ;
+
+    IF gnd.dateOfDeath;
+      lebensdaten = "${lebensdaten} - ${gnd.dateOfDeath.first}";
+   
+      IF gnd.placeOfDeath.first.label;
+        lebensdaten = "${lebensdaten} (${gnd.placeOfDeath.first.label})";
+      END ;
+    ELSE ;
+      lebensdaten = "${lebensdaten} - ";    
+    END;
+
+-%]
+<tr><th class="ob-field">[% msg.maketext("Lebensdaten") %]</th><td>
+[% lebensdaten %]
 </td></tr>
 [% END %]
 
@@ -223,6 +246,7 @@
 </div>
 [% END %]
 
+<p>[% msg.maketext("Quelle") %]: <a href="https://lobid.org/gnd" class="exturl" target="_blank">Lobid GND</a> / <a href="https://www.hbz-nrw.de" class="exturl" target="_blank">hbz NRW</a></p>
 </div><!-- End Details -->
 
 [%

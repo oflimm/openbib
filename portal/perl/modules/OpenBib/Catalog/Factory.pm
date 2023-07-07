@@ -39,6 +39,7 @@ use OpenBib::Catalog::Backend::EDS;
 use OpenBib::Catalog::Backend::DBIS;
 use OpenBib::Catalog::Backend::GVI;
 use OpenBib::Catalog::Backend::Gesis;
+use OpenBib::Catalog::Backend::LobidGND;
 use OpenBib::Catalog::Backend::PostgreSQL;
     
 sub create_catalog {
@@ -65,6 +66,7 @@ sub create_catalog {
     return new OpenBib::Catalog::Backend::EDS($arg_ref) if ($system eq "Backend: EDS");
     return new OpenBib::Catalog::Backend::GVI($arg_ref) if ($system eq "Backend: GVI");
     return new OpenBib::Catalog::Backend::Gesis($arg_ref) if ($system eq "Backend: Gesis");
+    return new OpenBib::Catalog::Backend::LobidGND($arg_ref) if ($system eq "Backend: LobidGND");
     return new OpenBib::Catalog::Backend::PostgreSQL($arg_ref); # Default
 }
 

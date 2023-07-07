@@ -29,7 +29,7 @@
 
 <div class="row">
 
-<div class="categories col-md-6"><!-- Begin Categories -->
+<div class="categories [% IF gnd.depiction.first.thumbnail %]col-md-6[% ELSE %]col-md-12[% END %]"><!-- Begin Categories -->
 
 <h4>[% msg.maketext("Index-Eintrag (Normdaten)") %]</h4>
 
@@ -75,10 +75,24 @@
 </td></tr>
 [% END %]
 
-[% IF gnd.professionOrOccupation %]
+[% IF gnd.geographicAreaCode %]
+<tr><th class="ob-field">[% msg.maketext("Land") %]</th><td>
+[% countries = [];
+   FOREACH country IN gnd.geographicAreaCode;
+     countries.push(country.label);
+   END;
+%]
+[% countries.join(' ; ') %]
+</td></tr>
+[% END %]
+
+[% IF gnd.professionOrOccupation || gnd.professionOrOccupationAsLiteral %]
 <tr><th class="ob-field">[% msg.maketext("Beruf") %]</th><td>
 [% professions = [];
    FOREACH profession IN gnd.professionOrOccupation;
+     professions.push(profession.label);
+   END;
+   FOREACH profession IN gnd.professionOrOccupationAsLiteral;
      professions.push(profession.label);
    END;
 %]
@@ -114,18 +128,114 @@
 </table>
 </div>
 
-
 </div><!-- End Categories -->
 
-
-
-<div class="images col-md-6"><!-- Begin Images -->
 [% IF gnd.depiction.first.thumbnail %]
+<div class="images col-md-6"><!-- Begin Images -->
 <img src="[% gnd.depiction.first.thumbnail %]" alt="Bild zu [% gnd.preferredName %]\" />
-[% END %]
 </div><!-- End Images -->
+[% END %]
 
 </div><!-- End row -->
+
+[% IF gnd.wikipedia %]
+<!-- DBpedia Definition -->
+[%
+    article_name = gnd.wikipedia.first.id.replace('https?://.+?\.wikipedia.org/wiki/','');
+
+    dbpedia_result = {};
+
+    IF article_name ;
+       dbpedia_result = record.enrich_dbpedia(article_name);
+    END;
+
+    dbpedia_abstract = {};
+
+    dbpedia_resource_name = "http://dbpedia.org/resource/${article_name}";
+    dbpedia_resource = dbpedia_result.${dbpedia_resource_name};
+
+    IF dbpedia_resource.defined('http://dbpedia.org/ontology/abstract') ;
+      FOREACH abstract IN dbpedia_resource.${"http://dbpedia.org/ontology/abstract"};
+         IF abstract.lang == 'de' ;
+	    dbpedia_abstract.de = abstract.value;
+         ELSIF abstract.lang == 'en' ;
+	    dbpedia_abstract.en = abstract.value;
+	 END;
+      END;
+    ELSIF dbpedia_resource.defined('http://dbpedia.org/ontology/wikiPageRedirects') && dbpedia_resource.${'http://dbpedia.org/ontology/wikiPageRedirects'}.first.value.match('http://dbpedia.org/resource/');
+      article_name = dbpedia_resource.${'http://dbpedia.org/ontology/wikiPageRedirects'}.first.value.replace('http://dbpedia.org/resource/',''); 
+
+      dbpedia_result = record.enrich_dbpedia(article_name);
+
+      dbpedia_resource_name = "http://dbpedia.org/resource/${article_name}";
+      dbpedia_resource = dbpedia_result.${dbpedia_resource_name};
+
+      IF dbpedia_resource.defined('http://dbpedia.org/ontology/abstract') ;
+        FOREACH abstract IN dbpedia_resource.${"http://dbpedia.org/ontology/abstract"};
+         IF abstract.lang == 'de' ;
+	    dbpedia_abstract.de = abstract.value;
+         ELSIF abstract.lang == 'en' ;
+	    dbpedia_abstract.en = abstract.value;
+	 END;
+        END;
+
+      END;
+
+    END;
+
+    other_lang = "";
+    IF lang == 'de';
+      other_lang = 'en';
+    ELSIF lang == 'en';
+      other_lang = 'de';
+    END;
+%]
+
+[% IF dbpedia_abstract.${lang} %]
+<h4 class="mt-2">[% msg.maketext("Wikipedia") %] ([% lang %])</h4>
+
+<p>
+[% dbpedia_abstract.${lang} %]
+</p>
+[% ELSIF dbpedia_abstract.${other_lang} %]
+<h4 class="mt-2">[% msg.maketext("Wikipedia") %] ([% other_lang %])</h4>
+
+<p>
+[% dbpedia_abstract.${other_lang} %]
+</p>
+[% END %]
+
+[% END %]
+
+
+[% IF gnd.sameAs %]
+<h4>[% msg.maketext("Weiterführende Links") %]</h4>
+
+<div class="table-responsive">
+<table class="table table-striped ob-normdata_fields">
+[% FOREACH item IN gnd.sameAs %]
+[%-   name = item.collection.name ;
+      name = name.replace('Gemeinsame Normdatei \(GND\) im Katalog der Deutschen Nationalbibliothek','Deutschen Nationalbibliothek');
+-%]
+<tr><th class="ob-field">[% name %]</th><td><a href="[% item.id %]" target="_blank">[% item.id %]</a></td></tr>
+[% END %]
+</table>
+</div>
+[% END %]
+
 </div><!-- End Details -->
 
-<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Eintrag in der GND") %]</div>
+[%
+   modal_title = msg.maketext("Eintrag in der GND");
+
+   FOREACH type IN gnd.type;
+      IF type == 'Person';
+         modal_title = msg.maketext("Personen-Information");
+      ELSIF type == 'CorporateBody';
+         modal_title = msg.maketext("Körperschafts-Information");
+      ELSIF type == 'SubjectHeading';
+         modal_title = msg.maketext("Schlagwort-Information");
+      END;    
+   END;
+%]
+<div id="genericModalLabel" hx-swap-oob="true">[% modal_title %]</div>

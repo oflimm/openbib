@@ -93,7 +93,7 @@
      professions.push(profession.label);
    END;
    FOREACH profession IN gnd.professionOrOccupationAsLiteral;
-     professions.push(profession.label);
+     professions.push(profession);
    END;
 %]
 [% professions.join(' ; ') %]

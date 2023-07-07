@@ -22,7 +22,10 @@
    END;
 
    normdata = record.to_custom_field_scheme_1;
-   
+
+   #USE dumper;dumper.dump(normdata);
+
+
    catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
 -%]
 [% IF format == "full" %]
@@ -31,7 +34,6 @@
 [%   PROCESS common/subtemplate name="titles_record_html_sammlungslinks" %]
 
 [%# USE dumper;dumper.dump(record.get_fields)%]
-[%# USE dumper;dumper.dump(normdata)%]
 
 <script>
 $(document).on("click", ".ob-more_button", function () {
@@ -334,19 +336,24 @@ FOREACH field IN normdata;
 
     CASE [ "T0100" "T0700" ];
          content = thisfield.${'a'} ;
-	 supplement = thisitem.${'e'} ;
-         thisid  = thisfield.${'6'};
+	 supplement = thisfield.${'e'} ;
+         thisid  = thisfield.${'0'};
 
+         gndid = "";
+	 IF thisid.match('(DE-588)');
+	    gndid = thisid.replace('\(DE-588\)','');
+	 END;
+	 
          searchterm    = uri_escape(content);
          searchprefix  = config.get('searchfield').person.prefix;
 
-         resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${thisid}";
+         resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/lobidgnd/${config.get('titles_loc')}/id/${gndid}";
          localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
          normdataicon = "";
 
-         IF thisid && catalog_has_authorities ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         IF gndid ;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"GND-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 
          icons     = "<span>${normdataicon}</span>";
@@ -361,7 +368,7 @@ FOREACH field IN normdata;
 
     CASE [ "T0110" "T0710" ];
          content = thisfield.${'a'} ;
-	 supplement = thisitem.${'e'} ;
+	 supplement = thisfield.${'e'} ;
          thisid  = thisfield.${'6'};
 
          searchterm    = uri_escape(content);
@@ -587,6 +594,13 @@ FOREACH field IN normdata;
     CASE [ "T0600" "T0610" "T0648" "T0650" "T0651" "T0655" "T0688" "T0689" ];    
          content = thisfield.${'a'};
          thisid  = thisfield.${'6'};
+         thisid  = thisfield.${'0'};
+
+         gndid = "";
+	 IF thisid.match('(DE-588)');
+	    gndid = thisid.replace('\(DE-588\)','');
+	 END;
+
          supplement = "";
 
          searchterm    = uri_escape(content);
@@ -594,12 +608,12 @@ FOREACH field IN normdata;
 
          NEXT IF rswkswt_done.${searchterm} == 1;
 	 
-         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${thisid}";
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/lobidgnd/${config.get('titles_loc')}/id/${gndid}";
          localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
          normdataicon = "";
 
-         IF thisid && catalog_has_authorities ;
+         IF gndid ;
             normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Schlagwort-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
          END;
 

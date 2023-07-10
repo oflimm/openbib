@@ -205,6 +205,8 @@ if ($scheme){
     $logger->info("### $database: Using scheme $scheme");
 }
 
+$scheme = (defined $scheme)?$scheme:'mab2';
+
 # Verbindung zur SQL-Datenbank herstellen
 my $statisticsdbh
     = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})

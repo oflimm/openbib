@@ -112,7 +112,9 @@ if ($withalias){
     $logger->info("New index for $database: $indexname");    
 }
 
-open(SEARCHENGINE, "<:raw","searchengine.json"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
+open(SEARCHENGINE, "zcat searchengine.json.gz|"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
+
+binmode(SEARCHENGINE,":raw");
 
 my $atime = new Benchmark;
 

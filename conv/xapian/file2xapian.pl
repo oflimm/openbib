@@ -104,7 +104,9 @@ my $FLINT_BTREE_MAX_KEY_LEN = $config->{xapian_option}{max_key_length};
 
 $logger->info("### POOL $database");
 
-open(SEARCHENGINE, "<:raw","searchengine.json"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
+open(SEARCHENGINE, "zcat searchengine.json.gz |"  ) || die "SEARCHENGINE konnte nicht geoeffnet werden";
+
+binmode(SEARCHENGINE,":raw");
 
 if (!$incremental){
     $logger->info("Loeschung des alten Index fuer Datenbank $database");

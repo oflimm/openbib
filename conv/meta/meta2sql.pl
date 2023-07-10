@@ -270,37 +270,37 @@ if (exists $conv_config->{local_enrichmnt} && -e "$enrichmntdumpdir/enrichmntdat
 
 my $stammdateien_ref = {
     person => {
-        infile             => "meta.person",
-        outfile            => "person.dump",
+        infile             => "meta.person.gz",
+        outfile            => "person.dump.gz",
         deletefile         => "person.delete",
-        outfile_fields     => "person_fields.dump",
+        outfile_fields     => "person_fields.dump.gz",
         class              => "OpenBib::Importer::JSON::Person",
         type               => "Person",
     },
 
     corporatebody => {
-        infile             => "meta.corporatebody",
-        outfile            => "corporatebody.dump",
+        infile             => "meta.corporatebody.gz",
+        outfile            => "corporatebody.dump.gz",
         deletefile         => "corporatebody.delete",
-        outfile_fields     => "corporatebody_fields.dump",
+        outfile_fields     => "corporatebody_fields.dump.gz",
         class              => "OpenBib::Importer::JSON::CorporateBody",
         type               => "Corporatebody",
     },
     
     subject => {
-        infile             => "meta.subject",
-        outfile            => "subject.dump",
+        infile             => "meta.subject.gz",
+        outfile            => "subject.dump.gz",
         deletefile         => "subjects.delete",
-        outfile_fields     => "subject_fields.dump",
+        outfile_fields     => "subject_fields.dump.gz",
         class              => "OpenBib::Importer::JSON::Subject",
         type               => "Subject",
     },
     
     classification => {
-        infile             => "meta.classification",
-        outfile            => "classification.dump",
+        infile             => "meta.classification.gz",
+        outfile            => "classification.dump.gz",
         deletefile         => "classification.delete",
-        outfile_fields     => "classification_fields.dump",
+        outfile_fields     => "classification_fields.dump.gz",
         class              => "OpenBib::Importer::JSON::Classification",
         type               => "Classification",
     },
@@ -351,8 +351,10 @@ foreach my $type (keys %{$stammdateien_ref}) {
                 $incremental_status_map{$result_ref->{id}}{old} = $result_ref->{import_hash};
             }
             
-            open(IN ,           "<:raw", $stammdateien_ref->{$type}{infile} )        || die "IN konnte nicht geoeffnet werden";
+            open(IN , "zcat ".$stammdateien_ref->{$type}{infile}." | " )        || die "IN konnte nicht geoeffnet werden";
 
+	    binmode (IN, ":raw");
+		;
             my $record_ref;
             
             while (my $jsonline = <IN>){
@@ -391,10 +393,16 @@ foreach my $type (keys %{$stammdateien_ref}) {
         
         $logger->info("### $database: Bearbeite $stammdateien_ref->{$type}{infile} / $stammdateien_ref->{$type}{outfile}");
         
-        open(IN ,           "<:raw", $stammdateien_ref->{$type}{infile} )        || die "IN konnte nicht geoeffnet werden";
-        open(OUT,           ">:utf8",$stammdateien_ref->{$type}{outfile})        || die "OUT konnte nicht geoeffnet werden";
-        open(OUTFIELDS,     ">:utf8",$stammdateien_ref->{$type}{outfile_fields}) || die "OUTFIELDS konnte nicht geoeffnet werden";
+        open(IN , "zcat ".$stammdateien_ref->{$type}{infile}." | " )        || die "IN konnte nicht geoeffnet werden";
 
+	binmode(IN,":raw");
+	
+        open(OUT,           "| gzip > ".$stammdateien_ref->{$type}{outfile})        || die "OUT konnte nicht geoeffnet werden";	
+        open(OUTFIELDS,     "| gzip > ".$stammdateien_ref->{$type}{outfile_fields}) || die "OUTFIELDS konnte nicht geoeffnet werden";
+
+	binmode(OUT,":utf8");
+	binmode(OUTFIELDS,":utf8");
+	
         my $class = $stammdateien_ref->{$type}{class};
         
         my $importer = $class->new({
@@ -466,22 +474,30 @@ foreach my $type (keys %{$stammdateien_ref}) {
 #######################
 
 $stammdateien_ref->{holding} = {
-    infile             => "meta.holding",
-    outfile            => "holding.dump",
+    infile             => "meta.holding.gz",
+    outfile            => "holding.dump.gz",
     deletefile         => "holding.delete",
-    outfile_fields     => "holding_fields.dump",
+    outfile_fields     => "holding_fields.dump.gz",
+    outfile_titleholding => "title_holding.dump.gz",
     inverted_ref       => $conv_config->{inverted_holding},
     type               => "Holding",
 };
 
-if (-f "meta.holding"){
+if (-f $stammdateien_ref->{holding}{infile}){
     $logger->info("### $database: Bearbeite meta.holding");
 
-    open(IN ,                   "<:raw", "meta.holding")               || die "IN konnte nicht geoeffnet werden";
-    open(OUT,                   ">:utf8","holding.dump")               || die "OUT konnte nicht geoeffnet werden";
-    open(OUTFIELDS,             ">:utf8","holding_fields.dump")        || die "OUTFIELDS konnte nicht geoeffnet werden";
-    open(OUTTITLEHOLDING,       ">:utf8","title_holding.dump")         || die "OUTTITLEHOLDING konnte nicht geoeffnet werden";
+    open(IN , "zcat ".$stammdateien_ref->{'holding'}{'infile'}." | ")               || die "IN konnte nicht geoeffnet werden";
 
+    binmode (IN, ":raw");
+
+    open(OUT,                   "| gzip > ".$stammdateien_ref->{holding}{outfile})               || die "OUT konnte nicht geoeffnet werden";
+    open(OUTFIELDS,             "| gzip > ".$stammdateien_ref->{holding}{outfile_fields})        || die "OUTFIELDS konnte nicht geoeffnet werden";
+    open(OUTTITLEHOLDING,       "| gzip > ".$stammdateien_ref->{holding}{outfile_titleholding})         || die "OUTTITLEHOLDING konnte nicht geoeffnet werden";
+
+    binmode(OUT,":utf8");
+    binmode(OUTFIELDS,":utf8");
+    binmode (OUTTITLEHOLDING,":utf8");
+    
     my $atime = new Benchmark;
     
     $count = 1;
@@ -542,7 +558,7 @@ if (-f "meta.holding"){
     close(OUTTITLEHOLDING);
     close(IN);
 
-    unlink "meta.holding" unless ($keepfiles);
+    unlink $stammdateien_ref->{'holding'}{infile} unless ($keepfiles);
 
     $storage_ref = $importer->get_storage;
 
@@ -550,18 +566,24 @@ if (-f "meta.holding"){
     $logger->error("### $database: meta.holding nicht vorhanden!");
 }
 
-open(OUTTITLETITLE,         ">:utf8","title_title.dump")           || die "OUTTITLETITLE konnte nicht geoeffnet werden";
-open(OUTTITLEPERSON,        ">:utf8","title_person.dump")          || die "OUTTITLEPERSON konnte nicht geoeffnet werden";
-open(OUTTITLECORPORATEBODY, ">:utf8","title_corporatebody.dump")   || die "OUTTITLECORPORATEBODY konnte nicht geoeffnet werden";
-open(OUTTITLESUBJECT,       ">:utf8","title_subject.dump")         || die "OUTTITLESUBJECT konnte nicht geoeffnet werden";
-open(OUTTITLECLASSIFICATION,">:utf8","title_classification.dump")  || die "OUTTITLECLASSIFICATION konnte nicht geoeffnet werden";
+open(OUTTITLETITLE,          "| gzip > title_title.dump.gz")           || die "OUTTITLETITLE konnte nicht geoeffnet werden";
+open(OUTTITLEPERSON,         "| gzip > title_person.dump.gz")          || die "OUTTITLEPERSON konnte nicht geoeffnet werden";
+open(OUTTITLECORPORATEBODY,  "| gzip > title_corporatebody.dump.gz")   || die "OUTTITLECORPORATEBODY konnte nicht geoeffnet werden";
+open(OUTTITLESUBJECT,        "| gzip > title_subject.dump.gz")         || die "OUTTITLESUBJECT konnte nicht geoeffnet werden";
+open(OUTTITLECLASSIFICATION, "| gzip > title_classification.dump.gz")  || die "OUTTITLECLASSIFICATION konnte nicht geoeffnet werden";
+
+binmode(OUTTITLETITLE,":utf8");
+binmode(OUTTITLEPERSON,":utf8");
+binmode(OUTTITLECORPORATEBODY,":utf8");
+binmode(OUTTITLESUBJECT,":utf8");
+binmode(OUTTITLECLASSIFICATION,":utf8");
 
 $stammdateien_ref->{title} = {
-    infile             => "meta.title",
-    outfile            => "title.dump",
+    infile             => "meta.title.gz",
+    outfile            => "title.dump.gz",
     deletefile         => "title.delete",
     insertfile         => "title.insert",
-    outfile_fields     => "title_fields.dump",
+    outfile_fields     => "title_fields.dump.gz",
     inverted_ref       => $conv_config->{inverted_title},
     blacklist_ref      => $conv_config->{blacklist_title},
     type               => "Title",
@@ -570,7 +592,9 @@ $stammdateien_ref->{title} = {
 if ($addsuperpers) {
     $logger->info("### $database: Option addsuperpers ist aktiviert");
     $logger->info("### $database: 1. Durchgang: Uebergeordnete Titel-ID's finden");
-    open(IN ,           "<:raw","meta.title"          ) || die "IN konnte nicht geoeffnet werden";
+    open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | ") || die "IN konnte nicht geoeffnet werden";
+
+    binmode (IN, ":raw");
 
     $count = 1;
 
@@ -618,7 +642,9 @@ if ($addsuperpers) {
     close(IN);
     
     $logger->info("### $database: 2. Durchgang: Informationen in uebergeordneten Titeln finden und merken");
-    open(IN ,           "<:raw","meta.title"          ) || die "IN konnte nicht geoeffnet werden";
+    open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | " ) || die "IN konnte nicht geoeffnet werden";
+
+    binmode (IN, ":raw");
 
     $count = 1;
 
@@ -668,10 +694,17 @@ if ($addsuperpers) {
 
 $logger->info("### $database: Bearbeite meta.title");
 
-open(IN ,           "<:raw" ,"meta.title"         )     || die "IN konnte nicht geoeffnet werden";
-open(OUT,           ">:utf8","title.dump"         )     || die "OUT konnte nicht geoeffnet werden";
-open(OUTFIELDS,     ">:utf8","title_fields.dump"  )     || die "OUTFIELDS konnte nicht geoeffnet werden";
-open(SEARCHENGINE,  ">:raw" ,"searchengine.json"  )     || die "SEARCHENGINE konnte nicht goeffnet werden";
+open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | " )     || die "IN konnte nicht geoeffnet werden";
+
+binmode (IN, ":raw");
+
+open(OUT,           "| gzip > title.dump.gz"         )     || die "OUT konnte nicht geoeffnet werden";
+open(OUTFIELDS,     "| gzip > title_fields.dump.gz"  )     || die "OUTFIELDS konnte nicht geoeffnet werden";
+open(SEARCHENGINE,  "| gzip > searchengine.json.gz"  )     || die "SEARCHENGINE konnte nicht goeffnet werden";
+
+binmode (OUT, ":utf8");
+binmode (OUTFIELDS, ":utf8");
+binmode (SEARCHENGINE, ":raw");
 
 my $locationid = $config->get_locationid_of_database($database);
 
@@ -691,7 +724,9 @@ if ($incremental){
         $incremental_status_map{$result_ref->{id}}{old} = $result_ref->{import_hash};
     }
     
-    open(INHASH ,           "<:raw", $stammdateien_ref->{'title'}{infile} )        || die "IN konnte nicht geoeffnet werden";
+    open(INHASH , "zcat ".$stammdateien_ref->{'title'}{infile}." | " )        || die "IN konnte nicht geoeffnet werden";
+
+    binmode (INHASH, ":raw");
     
     my $record_ref;
     
@@ -998,8 +1033,8 @@ ITEMTRUNC
         print CONTROL << "DELETEITEM";
 DELETE FROM ${type}_fields WHERE ${type}id IN (select id from ${type}_delete);
 DELETE FROM $type WHERE id IN (select id from ${type}_delete);
-COPY ${type}_tmp FROM '$dir/$stammdateien_ref->{$type}{outfile}' WITH DELIMITER '' NULL AS '';
-COPY ${type}_fields_tmp FROM '$dir/$stammdateien_ref->{$type}{outfile_fields}' WITH DELIMITER '' NULL AS '';
+COPY ${type}_tmp FROM PROGRAM 'zcat $dir/$stammdateien_ref->{$type}{outfile}' WITH DELIMITER '' NULL AS '';
+COPY ${type}_fields_tmp FROM PROGRAM 'zcat $dir/$stammdateien_ref->{$type}{outfile_fields}' WITH DELIMITER '' NULL AS '';
 DELETEITEM
         if ($type eq "title"){
             print CONTROL << "INSERTITEM";
@@ -1017,8 +1052,8 @@ INSERTITEM
     }
     elsif (!$incremental) {
         print CONTROL << "ITEM";
-COPY $type FROM '$dir/$stammdateien_ref->{$type}{outfile}' WITH DELIMITER '' NULL AS '';
-COPY ${type}_fields FROM '$dir/$stammdateien_ref->{$type}{outfile_fields}' WITH DELIMITER '' NULL AS '';
+COPY $type FROM PROGRAM 'zcat $dir/$stammdateien_ref->{$type}{outfile}' WITH DELIMITER '' NULL AS '';
+COPY ${type}_fields FROM PROGRAM 'zcat $dir/$stammdateien_ref->{$type}{outfile_fields}' WITH DELIMITER '' NULL AS '';
 ITEM
     }
 }
@@ -1037,8 +1072,8 @@ if ($incremental){
     print CONTROL << "TITLEITEM";
 TRUNCATE TABLE holding, holding_fields cascade;
 
-COPY holding FROM '$dir/$stammdateien_ref->{'holding'}{outfile}' WITH DELIMITER '' NULL AS '';
-COPY holding_fields FROM '$dir/$stammdateien_ref->{'holding'}{outfile_fields}' WITH DELIMITER '' NULL AS '';
+COPY holding FROM PROGRAM 'zcat $dir/$stammdateien_ref->{'holding'}{outfile}' WITH DELIMITER '' NULL AS '';
+COPY holding_fields FROM PROGRAM 'zcat $dir/$stammdateien_ref->{'holding'}{outfile_fields}' WITH DELIMITER '' NULL AS '';
 
 DROP TABLE IF EXISTS title_title_tmp;
 CREATE TABLE title_title_tmp (
@@ -1090,12 +1125,12 @@ classificationid  TEXT NOT NULL,
 supplement        TEXT
 );
 
-COPY title_title_tmp FROM '$dir/title_title.dump' WITH DELIMITER '' NULL AS '';
-COPY title_person_tmp FROM '$dir/title_person.dump' WITH DELIMITER '' NULL AS '';
-COPY title_corporatebody_tmp FROM '$dir/title_corporatebody.dump' WITH DELIMITER '' NULL AS '';
-COPY title_subject_tmp FROM '$dir/title_subject.dump' WITH DELIMITER '' NULL AS '';
-COPY title_classification_tmp FROM '$dir/title_classification.dump' WITH DELIMITER '' NULL AS '';
-COPY title_holding FROM '$dir/title_holding.dump' WITH DELIMITER '' NULL AS '';
+COPY title_title_tmp FROM PROGRAM 'zcat $dir/title_title.dump.gz' WITH DELIMITER '' NULL AS '';
+COPY title_person_tmp FROM PROGRAM 'zcat $dir/title_person.dump.gz' WITH DELIMITER '' NULL AS '';
+COPY title_corporatebody_tmp FROM PROGRAM 'zcat $dir/title_corporatebody.dump.gz' WITH DELIMITER '' NULL AS '';
+COPY title_subject_tmp FROM PROGRAM 'zcat $dir/title_subject.dump.gz' WITH DELIMITER '' NULL AS '';
+COPY title_classification_tmp FROM PROGRAM 'zcat $dir/title_classification.dump.gz' WITH DELIMITER '' NULL AS '';
+COPY title_holding FROM PROGRAM 'zcat $dir/title_holding.dump.gz' WITH DELIMITER '' NULL AS '';
 
 INSERT INTO title_title (field,mult,source_titleid,target_titleid,supplement) select field,mult,source_titleid,target_titleid,supplement from title_title_tmp; 
 INSERT INTO title_person (field,mult,titleid,personid,supplement) select field,mult,titleid,personid,supplement from title_person_tmp; 
@@ -1143,12 +1178,12 @@ TITLEITEM
 }
 else {
     print CONTROL << "TITLEITEM";
-COPY title_title FROM '$dir/title_title.dump' WITH DELIMITER '' NULL AS '';
-COPY title_person FROM '$dir/title_person.dump' WITH DELIMITER '' NULL AS '';
-COPY title_corporatebody FROM '$dir/title_corporatebody.dump' WITH DELIMITER '' NULL AS '';
-COPY title_subject FROM '$dir/title_subject.dump' WITH DELIMITER '' NULL AS '';
-COPY title_classification FROM '$dir/title_classification.dump' WITH DELIMITER '' NULL AS '';
-COPY title_holding FROM '$dir/title_holding.dump' WITH DELIMITER '' NULL AS '';
+COPY title_title FROM PROGRAM 'zcat $dir/title_title.dump.gz' WITH DELIMITER '' NULL AS '';
+COPY title_person FROM PROGRAM 'zcat $dir/title_person.dump.gz' WITH DELIMITER '' NULL AS '';
+COPY title_corporatebody FROM PROGRAM 'zcat $dir/title_corporatebody.dump.gz' WITH DELIMITER '' NULL AS '';
+COPY title_subject FROM PROGRAM 'zcat $dir/title_subject.dump.gz' WITH DELIMITER '' NULL AS '';
+COPY title_classification FROM PROGRAM 'zcat $dir/title_classification.dump.gz' WITH DELIMITER '' NULL AS '';
+COPY title_holding FROM PROGRAM 'zcat $dir/title_holding.dump.gz' WITH DELIMITER '' NULL AS '';
 TITLEITEM
 }
 

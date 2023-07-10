@@ -291,6 +291,9 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
         system("$config->{autoconv_dir}/filter/$database/alt_conv.pl $database");
     }
     else {
+
+	system("cd $rootdir/data/$database ; gzip meta.*");
+	
         my $cmd = "$meta2sqlexe --loglevel=$loglevel -add-superpers -add-mediatype --add-language --database=$database";
 
         if ($incremental){
@@ -697,10 +700,10 @@ unless ($incremental || $searchengineonly){
     my $catalog = new OpenBib::Catalog({ database => $databasetmp });
 
     foreach my $resultset (keys %$table_map_ref){
-        my $dumpfilename = "$config->{autoconv_dir}/data/$database/$table_map_ref->{$resultset}.dump";
+        my $dumpfilename = "$config->{autoconv_dir}/data/$database/$table_map_ref->{$resultset}.dump.gz";
         
         my $count_in_db = $catalog->get_schema->resultset($resultset)->count;
-        my ($count_in_file) = `wc -l $dumpfilename` =~m/(\d+)\s+/;
+        my ($count_in_file) = `zcat $dumpfilename | wc -l` =~m/(\d+)\s+/;
 
         if ($count_in_db != $count_in_file){
             $logger->fatal("Inkonsistenz Datenbank! Problem mit $resultset: $count_in_file in Datei / $count_in_db in Datenbank");

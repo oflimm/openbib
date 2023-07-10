@@ -9942,7 +9942,7 @@ convtab:
       - 'X0014:a'
       - 'popularity'
     sorting:
-      'T0800':
+      'P0800':
         'sortfield': 'authority' # Normdaten-Ansetzungsform Person
         'type': 'stringfield'
       'C0800':
@@ -10928,7 +10928,7 @@ convtab:
       - 'X0014:a'
       - 'popularity'
     sorting:
-      'T0800':
+      'P0800':
         'sortfield': 'authority' # Normdaten-Ansetzungsform Person
         'type': 'stringfield'
       'C0800':
@@ -12019,7 +12019,7 @@ convtab:
       - 'X0014:a'
       - 'popularity'
     sorting:
-      'T0800':
+      'P0800':
         'sortfield': 'authority' # Normdaten-Ansetzungsform Person
         'type': 'stringfield'
       'C0800':

@@ -797,8 +797,8 @@ while (my ($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten,$updateco
 	    my $erschneg = $erschverlbufneg{$multkey};
             #$sigel=~s!^38/!!;
 
-	    # Leere Saetze ignorieren
-	    if (!$signatur && !$standort && !$inventar && !$erschpos){
+	    # Leere Saetze ignorieren, falls nicht das USB-Schema verwendet wird. Dort kann z.B. ein Satz nur aus einer Bemerkung bestehen z.B. "Ungebundene Hefte: Lesesaalausgabe"
+	    if (!$useusbschema && !$signatur && !$standort && !$inventar && !$erschpos){
 		$k++;
 		next;
 	    }

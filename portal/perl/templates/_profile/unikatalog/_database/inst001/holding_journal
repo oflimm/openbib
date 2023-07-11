@@ -19,7 +19,7 @@
     processed_holding_by_sigel = {};
 
     # Interimsloesung: Holding aus Titeldaten holen
-    holdings_from_title = 1;
+    holdings_from_title = 0;
 
     IF holdings_from_title;
        holding_by_mult = {};
@@ -205,7 +205,7 @@
     processed_holding_by_sigel.${sigel}.${'items'}.push(this_iteminfo);
 
   END; # End: holding-Schleife
-  #USE dumper;dumper.dump(processed_holding_by_sigel);
+  # USE dumper;dumper.dump(processed_holding_by_sigel);
 -%]
 [% IF processed_holding_by_sigel.keys > 0 %]
 <div class="table-responsive">
@@ -235,8 +235,8 @@
 <ul>
 [% FOREACH this_item IN this_cluster.items %]
 <li>
-<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %]</strong><br/>
-[% IF this_item.signatur %]
+<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% IF this_item.bestandsverlauf && this_item.bestandsverlauf != '-' %][% this_item.bestandsverlauf %][% END %]</strong><br/>
+[% IF this_item.signatur && this_item.signatur != '-' %]
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
 [% END %]
 [% IF this_item.standort && this_item.standort != '-'  %]

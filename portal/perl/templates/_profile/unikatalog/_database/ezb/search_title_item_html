@@ -17,6 +17,8 @@
     dburl    = dbinfo.get('urls').${database} ;
     request_base    = [] ;#num=${hitrange};srt=${sorttype};srto=${sortorder};" ;
 
+    with_ezb_index = 0;
+
     IF searchquery.get_option('num') ;
        request_base.push("num=${searchquery.get_option('num')}");
     END;
@@ -99,7 +101,7 @@
 <h3>[% msg.maketext("Fachgebiet:") %] [% classification_desc %]</h3>
 [% END %]
 
-[% IF NOT searchquery.get_searchfield('title').val %]
+[% IF with_ezb_index && NOT searchquery.get_searchfield('title').val %]
 [%-
 
    indexstelle = searchquery.get_searchfield('titlestring').val ; 

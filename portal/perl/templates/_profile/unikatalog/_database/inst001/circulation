@@ -111,6 +111,8 @@
        library_isil = "DE-38-401";
      ELSIF standort.match('Fachbibliothek Chemie');
        library_isil = "DE-38-507";
+     ELSIF standort.match('Fachbibliothek Versicherungswiss');
+       library_isil = "DE-38-123";
      END ;
 
      IF standort.match('Historisches Institut \/ Osteuropäische Geschichte');

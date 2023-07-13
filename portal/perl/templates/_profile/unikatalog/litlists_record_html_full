@@ -184,7 +184,7 @@ FOREACH category IN categories;
 
     CASE "T1600";
          IF content.match('Sie einen Bestellschein aus');
-             content = "${content} Ebenso können Sie eine Mail an die <a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/ortsleihe/index_ger.html\" target=\"_blank\">Ortsleihe</a> schicken";
+             content = "${content} Ebenso können Sie eine Mail an die <a href=\"${cms_links.kontaktol}\" target=\"_blank\">Ortsleihe</a> schicken";
          END;
 
     CASE "T4500";

@@ -29,7 +29,7 @@
 
 <div class="form-check mt-3 mb-4">
 <input class="form-check-input" type="checkbox" name="confirmation" id="confirmation" />
-<label for="confirmation">Hiermit erkenne ich die <a class="exturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/regelung/index_ger.html" target="_blank">Gebühren- und Nutzungsordnungen</a> an.</label>
+<label for="confirmation">Hiermit erkenne ich die <a class="exturl" href="[% cms_links.bno %]" target="_blank">Gebühren- und Nutzungsordnungen</a> an.</label>
 </div>
 
 <h4>[% msg.maketext("Persönliches Passwort") %]</h4>

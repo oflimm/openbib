@@ -37,7 +37,7 @@
     standort_ls      = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaele/index_ger.html"
     standort_ls_hp   = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaal_heilpaedagogik/index_ger.html"
     standort_ls_hf   = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaal_humanwissenschaft/index_ger.html"
-    suchen_allgmein  = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/index_ger.html"
+    suchen_allgemein  = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/index_ger.html"
     suchen_medienart = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/index_ger.html"
     audio            = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/audio/index_ger.html"
     kurse            = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/kurse/index_ger.html"

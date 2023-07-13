@@ -2,7 +2,7 @@
   
   <h5>[% msg.maketext("Lizenzrechtliche Hinweise") %]</h5> 
   <p> 
-    Bitte beachten Sie die <a class="exturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/nutzungshinweise/index_ger.html#e20990">Nutzungsbedingungen</a> des Verlages bzw. Herausgebers.
+    Bitte beachten Sie die <a class="exturl" href="[% cms_links.vpn %]">Nutzungsbedingungen</a> des Verlages bzw. Herausgebers.
   </p>
   <div class="powered">
     

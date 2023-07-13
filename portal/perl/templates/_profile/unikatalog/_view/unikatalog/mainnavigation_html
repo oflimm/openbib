@@ -289,7 +289,7 @@
 <div class="navbottom ps-4 row">
 
       <div class="col-md-9 mx-auto brandname">
-        <a href="[% path_prefix %]/home"><span class="d-sm-none">[% msg.maketext("Universitätskatalog") %] <b style="color: orange">[% msg.maketext("Prototyp") %]</b></span><span class="d-none d-sm-block">[% msg.maketext("Kölner Universitätskatalog") %] <b style="color: orange">[% msg.maketext("Prototyp") %] (Beta)</b></span></a>
+        <a href="[% path_prefix %]/home"><span class="d-sm-none">[% msg.maketext("Universitätskatalog") %] <b style="color: orange">Beta</b></span><span class="d-none d-sm-block">[% msg.maketext("Kölner Universitätskatalog") %] <b style="color: orange">Beta</b></span></a>
       </div>
       
        <div class="col-md-3 text-end d-none d-md-block">

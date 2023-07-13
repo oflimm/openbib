@@ -45,6 +45,30 @@
   <label for="cln[% sidebar_suffix %]"><b>[% msg.maketext("Fachgebiet") %]</b></label>
 </div>
 
+
+<div class="form-floating mb-3">
+  <select class="form-select" id="typ[% sidebar_suffix %]" name="typ">
+<option value="">Alle</option>
+<option value="1">Adress- und Firmenverzeichnis</option>
+<option value="15">Allgemeines Auskunftsmittel</option>
+<option value="9">Aufsatzdatenbank</option>
+<option value="7">Bestandsverzeichnis</option>
+<option value="16">Bilddatenbank</option>
+<option value="3">Biographische Datenbank</option>
+<option value="6">Buchhandelsverzeichnis</option>
+<option value="13">Dissertationsverzeichnis</option>
+<option value="11">Fachbibliographie</option>
+<option value="17">Faktendatenbank</option>
+<option value="12">National-, Regionalbibliographie</option>
+<option value="14">Portal</option>
+<option value="4">Volltextdatenbank</option>
+<option value="5">Wörterbuch, Enzyklopädie, Nachschlagewerk</option>
+<option value="8">Zeitung</option>
+<option value="10">Zeitungs-, Zeitschriftenbibliographie</option>
+  </select>
+  <label for="typ[% sidebar_suffix %]"><b>[% msg.maketext("Datenbank-Typ") %]</b></label>
+</div>
+
 <button class="btn btn-primary mb-2" type="submit" name="search">[% msg.maketext("Suchen") %]</button>
 
 </form>

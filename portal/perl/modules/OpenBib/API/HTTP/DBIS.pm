@@ -980,6 +980,10 @@ sub parse_query {
 #        push @searchstrings, "gebiete[]=all";
 #    }
 
+    if (defined $searchquery->get_searchfield('mediatype')->{val} && $searchquery->get_searchfield('mediatype')->{val}){
+        push @searchstrings, "db_type[]=".$searchquery->get_searchfield('mediatype')->{val};
+    }
+    
     my $dbisquerystring = join("&",@searchstrings);
     $logger->debug("DBIS-Querystring: $dbisquerystring");
     $self->{_querystring} = $dbisquerystring;

@@ -47,6 +47,7 @@
     kultur           = "https://www.ub.uni-koeln.de/ueber_uns/kulturpartner/index_ger.html"
     auskunft         = "https://www.ub.uni-koeln.de/res/auskunft/index_ger.html"
     direktor         = "https://www.ub.uni-koeln.de/ueber_uns/ansprechpartner/personal/neuhausen/index_ger.html"
+    ezeitungen       = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/e_zeitungen/index_ger.html"
     
     uzk_rektor       = "https://www.portal.uni-koeln.de/rektor.html"
     uzk_studium      = "http://www.portal.uni-koeln.de/studium.html"

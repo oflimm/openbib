@@ -81,4 +81,4 @@
 
 <a class="btn btn-primary mt-3 mb-3" href="http://ezb.ur.de/ezeit/fl.phtml?bibid=USBK&colors=7&lang=de" target="_blank"><i class="fas fa-globe me-2"></i>Direkt in der EZB recherchieren</a>
 
-<a class="btn btn-primary mt-3 mb-3 ms-2" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/e_zeitungen/index_ger.html" target="_blank"><i class="fas fa-globe me-2"></i>Liste von E-Zeitungen</a>
+<a class="btn btn-primary mt-3 mb-3 ms-2" href="[% cms_links.ezeitungen %]" target="_blank"><i class="fas fa-globe me-2"></i>Liste von E-Zeitungen</a>

@@ -113,6 +113,8 @@
        library_isil = "DE-38-507";
      ELSIF standort.match('Fachbibliothek Versicherungswiss');
        library_isil = "DE-38-123";
+     ELSIF standort.match('Gemeinsame Fachbibliothek Betriebswirtschaftslehre');
+       library_isil = "DE-38-106";
      END ;
 
      IF standort.match('Historisches Institut \/ Osteuropäische Geschichte');

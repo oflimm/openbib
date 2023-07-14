@@ -230,6 +230,28 @@ sub view_list_db {
     }
 }
 
+sub view_list_location {
+
+    my $config = new OpenBib::Config;
+    
+    if (!$view){
+	$logger->error("Missing arg view");
+	exit;
+    }
+
+    unless ($config->view_exists($view)){
+	$logger->info("View $view doesn't exist");
+	exit;
+    }
+    
+    my @viewlocations = $config->get_viewlocations($view);
+
+    foreach my $loc (@viewlocations){
+	print $loc,"\n";
+    }
+}
+
+
 sub view_list {
 
     my $config = new OpenBib::Config;

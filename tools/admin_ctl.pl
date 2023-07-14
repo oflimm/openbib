@@ -230,6 +230,27 @@ sub view_list_dbs {
     }
 }
 
+sub view_list {
+
+    my $config = new OpenBib::Config;
+
+    my $viewinfo_overview_ref = $config->get_viewinfo_overview;
+
+    foreach my $info_ref (@$viewinfo_overview_ref){
+	print $info_ref->{viewname},"\n";
+    }
+}
+
+sub view_listinfo {
+
+    my $config = new OpenBib::Config;
+
+    my $viewinfo_overview_ref = $config->get_viewinfo_overview;
+
+    print YAML::Dump($viewinfo_overview_ref),"\n";
+
+}
+
 
 sub print_help {
     print << "ENDHELP";
@@ -240,15 +261,38 @@ Generel Options:
    --logfile=...         : logfile (default: ./es_ctl.log)
    --loglevel=...        : loglevel (default: INFO)
 
+List views
+   --scope=view
+   --do=list
+
+List information on all views (YAML)
+   --scope=view
+   --do=listinfo
+
+List databases of view
+   --scope=view
+   --do=list_db
+   --viewe=...           : View name
+
 Add database to view
    --scope=view
    --do=add_db
    --db=...              : Database name
    --viewe=...           : View name
 
+Delete database in view
+   --scope=view
+   --do=delete_db
+   --db=...              : Database name
+   --viewe=...           : View name
+
 e.g:
 
+./admin_ctl.pl --scope=view --do=list_db --view=unikatalog
+
 ./admin_ctl.pl --scope=view --do=add_db --view=unikatalog --db=inst123
+
+./admin_ctl.pl --scope=view --do=delete_db --view=unikatalog --db=inst123
 
 ENDHELP
     exit;

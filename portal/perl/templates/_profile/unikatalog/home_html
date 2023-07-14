@@ -163,7 +163,7 @@
     <div class="row">    
         <div class="col">
             <div class="input-group">
-                <input required="required" id="to_focus" class="form-control" type="search" name="fs" value="" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Bücher, E-Medien, Aufsätze &amp; mehr") %]"  hx-get="[% path_prefix%]/connector/livesearch" hx-trigger="keyup changed delay:800ms, q" hx-target="#livesearch"  />
+                <input required="required" id="to_focus" class="form-control" type="search" name="fs" value="" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Bücher, E-Medien, Aufsätze &amp; mehr") %]" />
                 <span class="input-group-btn ps-1">
                     <button class="btn btn-primary" type="submit" aria-label="[% msg.maketext("Anfrage abschicken") %]"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
                     <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>
@@ -185,9 +185,6 @@
             <li class="list-group-item pe-1 pt-3" style="border: none" >
 	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
 	   </li>
-<!--            <li class="list-group-item pe-1 pt-3" style="border: none" >
-	     <a href="[% path_prefix %]/[% config.get('info_loc') %]/tipps.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/tipps.include?l=[% lang %]" title="[% msg.maketext("Hilfe") %]"><i class="fas fa-question-circle"></i></a>
-	   </li> -->
          </ul>
     </div><!-- col -->
   </div><!-- row -->
@@ -225,11 +222,19 @@
      </a>
     </div>
     <div class="col-md-4 ps-3 pe-1 pb-2">
+[% IF view.match('inst\d\d\d') %]          
+     <a class="text-white" href="[% path_prefix %]/[% config.get('locations_loc') %]/id/DE-38-[% view.replace('inst','') %].html?l=[% lang %]">
+      <div class="card mt-2 h-100 ob-shortlink">
+	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-map-marker-alt pe-2"></i> [% msg.maketext("Bibliothek") %]</div>
+    </div>
+   </a>
+[% ELSE %]
      <a class="text-white" href="[% path_prefix %]/[% config.get('locations_loc') %].html?l=[% lang %]">
       <div class="card mt-2 h-100 ob-shortlink">
 	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-map-marker-alt pe-2"></i> [% msg.maketext("Bibliotheken") %]</div>
-    </div>
-   </a>
+     </div>
+    </a>     
+[% END %]
   </div>
 </div>
 

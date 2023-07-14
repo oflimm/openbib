@@ -27,8 +27,6 @@
   
   <!-- AKTUELL [% current_profile %] - BOOKS [% searchprofileid_of_books %] - ARTICLES [% searchprofileid_of_articles %]  -->
 
-  <div><!-- Start anon div -->
-
     <div id="spinner" class="d-flex justify-content-center htmx-indicator spinner-large">
       <img src="/images/openbib/uni-siegel-spinner.png" class="uzk-spinner" alt="[% msg.maketext("Lade-Animation mit UzK Logo") %]"/>
     </div>
@@ -119,8 +117,6 @@
     <div id="ob-searchresult_tab_books" class="row flex-md-row">
 [% PROCESS common/subtemplate name="search_title_combined_include" %]
     </div>
-
-  </div><!-- End anon div -->
 
 <script>
 document.body.addEventListener('htmx:beforeHistorySave', function(evt) {

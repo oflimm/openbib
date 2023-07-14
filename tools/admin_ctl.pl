@@ -209,7 +209,7 @@ sub view_delete_db {
     
 }
 
-sub view_list_dbs {
+sub view_list_db {
 
     my $config = new OpenBib::Config;
     

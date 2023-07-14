@@ -36,14 +36,14 @@ use YAML;
 
 use OpenBib::Config;
 
-our ($do,$scope,$view,$db,$location,$help,$loglevel,$logfile);
+our ($do,$scope,$view,$db,$loc,$help,$loglevel,$logfile);
 
 &GetOptions("do=s"            => \$do,
 
 	    "scope=s"         => \$scope,
 	    "view=s"          => \$view,
 	    "db=s"            => \$db,
-	    "location=s"      => \$location,	    
+	    "loc=s"           => \$loc,	    
 	    
             "logfile=s"       => \$logfile,
             "loglevel=s"      => \$loglevel,
@@ -98,12 +98,12 @@ sub view_add_db {
     $logger->info("Adding DB $db to view $view");       
 
     unless ($config->view_exists($view)){
-	$logger->info("View $view doesn't exist");
+	$logger->error("View $view doesn't exist");
 	exit;
     }
 
     unless ($config->db_exists($db)){
-	$logger->info("DB $db doesn't exist");
+	$logger->error("DB $db doesn't exist");
 	exit;
     }
 
@@ -166,7 +166,7 @@ sub view_delete_db {
     $logger->info("Removing DB $db from view $view");       
 
     unless ($config->view_exists($view)){
-	$logger->info("View $view doesn't exist");
+	$logger->error("View $view doesn't exist");
 	exit;
     }
     
@@ -219,7 +219,7 @@ sub view_list_db {
     }
 
     unless ($config->view_exists($view)){
-	$logger->info("View $view doesn't exist");
+	$logger->error("View $view doesn't exist");
 	exit;
     }
     
@@ -230,7 +230,117 @@ sub view_list_db {
     }
 }
 
-sub view_list_location {
+sub view_add_loc {
+
+    my $config = new OpenBib::Config;
+
+    if (!$view || !$loc){
+	$logger->error("Missing args db or loc");
+	exit;
+    }
+
+    $logger->info("Adding location $loc to view $view");       
+
+    unless ($config->view_exists($view)){
+	$logger->error("View $view doesn't exist");
+	exit;
+    }
+
+    unless ($config->location_exists($loc)){
+	$logger->error("Location $loc doesn't exist");
+	exit;
+    }
+
+    my @viewlocations = $config->get_viewlocations($view);
+
+    if (grep(/$loc/,@viewlocations)){
+	$logger->error("Location $loc already in view $view");
+	exit;
+    }
+    
+    eval {
+	my $viewid = $config->get_viewinfo->single({ viewname => $view })->id;
+
+	$config->get_schema->resultset('ViewLocation')->search_rs({ viewid => $viewid})->delete;
+	
+	push @viewlocations, $loc;
+
+        my $this_location_ref = [];
+        foreach my $location (@viewlocations){
+            my $locationid = $config->get_locationinfo->single({ identifier => $location })->id;
+                
+            push @$this_location_ref, {
+                viewid     => $viewid,
+                locationid => $locationid,
+            };
+        }
+
+	$logger->debug(YAML::Dump($this_location_ref));
+        
+        # Dann die zugehoerigen Datenbanken eintragen
+        $config->get_schema->resultset('ViewLocation')->populate($this_location_ref);
+    };
+
+    # Flushen und aktualisieren in Memcached
+    if (defined $config->{memc}){
+        $config->memc_cleanup_viewinfo($view);
+    }
+}
+
+sub view_delete_loc {
+
+    my $config = new OpenBib::Config;
+
+    if (!$view || !$loc){
+	$logger->error("Missing args loc or view");
+	exit;
+    }
+
+    $logger->info("Removing location $loc from view $view");       
+
+    unless ($config->view_exists($view)){
+	$logger->error("View $view doesn't exist");
+	exit;
+    }
+
+    my @viewlocations = $config->get_viewlocations($view);
+
+    unless (grep(/$loc/,@viewlocations)){
+	$logger->error("Location $loc not in view $view");
+	exit;
+    }
+
+    eval {
+	my $viewid = $config->get_viewinfo->single({ viewname => $view })->id;
+
+	$config->get_schema->resultset('ViewLocation')->search_rs({ viewid => $viewid})->delete;
+
+	@viewlocations = grep (!/$loc/,@viewlocations);
+
+        my $this_location_ref = [];
+        foreach my $location (@viewlocations){
+            my $locationid = $config->get_locationinfo->single({ identifier => $location })->id;
+                
+            push @$this_location_ref, {
+                viewid     => $viewid,
+                locationid => $locationid,
+            };
+        }
+
+	$logger->debug(YAML::Dump($this_location_ref));
+        
+        # Dann die zugehoerigen Datenbanken eintragen
+        $config->get_schema->resultset('ViewLocation')->populate($this_location_ref);
+    };
+
+    # Flushen und aktualisieren in Memcached
+    if (defined $config->{memc}){
+        $config->memc_cleanup_viewinfo($view);
+    }
+    
+}
+
+sub view_list_loc {
 
     my $config = new OpenBib::Config;
     
@@ -240,14 +350,14 @@ sub view_list_location {
     }
 
     unless ($config->view_exists($view)){
-	$logger->info("View $view doesn't exist");
+	$logger->error("View $view doesn't exist");
 	exit;
     }
     
     my @viewlocations = $config->get_viewlocations($view);
 
-    foreach my $loc (@viewlocations){
-	print $loc,"\n";
+    foreach my $location (@viewlocations){
+	print $location,"\n";
     }
 }
 
@@ -308,13 +418,40 @@ Delete database in view
    --db=...              : Database name
    --viewe=...           : View name
 
+List locations of view
+   --scope=view
+   --do=list_loc
+   --view=...           : View name
+
+Add database to view
+   --scope=view
+   --do=add_loc
+   --loc=...              : Database name
+   --view=...           : View name
+
+Delete database in view
+   --scope=view
+   --do=delete_loc
+   --loc=...              : Database name
+   --view=...           : View name
+
 e.g:
+
+./admin_ctl.pl --scope=view --do=list --view=unikatalog
+
+./admin_ctl.pl --scope=view --do=listinfo --view=unikatalog
 
 ./admin_ctl.pl --scope=view --do=list_db --view=unikatalog
 
 ./admin_ctl.pl --scope=view --do=add_db --view=unikatalog --db=inst123
 
 ./admin_ctl.pl --scope=view --do=delete_db --view=unikatalog --db=inst123
+
+./admin_ctl.pl --scope=view --do=list_loc --view=unikatalog
+
+./admin_ctl.pl --scope=view --do=add_loc --view=unikatalog --loc=DE-38-123
+
+./admin_ctl.pl --scope=view --do=delete_loc --view=unikatalog --loc=DE-38-123
 
 ENDHELP
     exit;

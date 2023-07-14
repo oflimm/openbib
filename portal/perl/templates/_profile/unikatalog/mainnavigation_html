@@ -211,9 +211,9 @@
           <li>
 	   <a class="drowdown-item" href="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-formattitle="[% msg.maketext("Suchhistorie") %]" data-formaturl="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
 	  </li>
-          <li>
+<!--          <li>
 	   <a class="drowdown-item" href="[% path_prefix %]/[% config.get('info_loc') %]/tipps.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/tipps.include?l=[% lang %]" title="[% msg.maketext("Hilfe") %]"><i class="fas fa-question-circle"></i></a>
-	  </li>
+	  </li> -->
         </ul>
       </li>
 
@@ -351,9 +351,9 @@
             <li class="list-group-item pe-1 pt-3" style="border: none" >
 	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-formattitle="[% msg.maketext("Suchhistorie") %]" data-formaturl="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
 	   </li>
-            <li class="list-group-item pe-1 pt-3" style="border: none" >
+<!--            <li class="list-group-item pe-1 pt-3" style="border: none" >
 	     <a href="[% path_prefix %]/[% config.get('info_loc') %]/tipps.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/tipps.include?l=[% lang %]" title="[% msg.maketext("Hilfe") %]"><i class="fas fa-question-circle"></i></a>
-	   </li>
+	   </li> -->
          </ul>
     </div><!-- col -->
   </div><!-- row -->

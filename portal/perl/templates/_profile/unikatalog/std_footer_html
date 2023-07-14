@@ -13,7 +13,7 @@
 -%]
 <!-- begin: footer -->
 
-[% footer_type = "info" # info | usb | uzk %]
+[% footer_type = "uzk" # info | usb | uzk %]
 
 [% IF NOT hide_foot_banner %]
 <footer class="uzk15__mainfooter" role="contentinfo">

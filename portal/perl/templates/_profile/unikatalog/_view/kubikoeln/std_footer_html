@@ -1,0 +1,54 @@
+[%#-
+#######################################################################
+#
+# Templatename: std_footer
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Seiten-Footers
+#
+#######################################################################
+-%]
+<!-- begin: footer -->
+
+[% IF NOT hide_foot_banner %]
+<footer class="uzk15__mainfooter" role="contentinfo">
+
+<div class="w-100 pt-4">
+
+  <div class="ps-2 pe-2">      
+    <div class="uzk15__grid_100 pb-2 pt-2">
+      <div class="row">
+	<div class="col-md-6">
+	  <span style="color:#fff;"> <a href="https://www.ub.uni-koeln.de/" target="_blank">[% msg.maketext("KunstBibliothek Käln ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]</a></span>
+	</div>
+	<div id="ob-essential_statements_small" class="col-md-6">
+	  <a target="_blank" href="[% cms_links.impressum %]">[% msg.maketext("Impressum") %]</a>&nbsp;|&nbsp;<a target="_blank" href="[% path_prefix %]/info/datenschutz.html" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.include?l=[% lang %]">[% msg.maketext("Datenschutzerklärung") %]</a> | <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/netiquette.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/netiquette.include?l=[% lang %]">[% msg.maketext("Netiquette") %]</a>
+	</div>
+      </div>
+    </div>
+  </div><!-- end d-md-none -->  
+
+</div>
+</footer>
+[% END %]
+
+[% IF addon_logo_footer %]
+<div id="extended-info" class="d-none d-flex justify-content-center footer-logo-box pt-3 pb-3">
+    <div>
+            <ul class="list-group list-group-horizontal flex-column flex-md-row justify-content-center">
+                <a class="navbar-brand" href="https://www.ub.uni-koeln.de/" title="Universitäts- und Stadtbibliothek Köln" target="_blank">
+                    <img src="/images/openbib/views/muenzen/USB_logo_1500_transparent.png"  height="50" class="d-inline-block align-top" alt="Logo USB">
+                </a>
+                <a class="navbar-brand" href="https://www.uni-koeln.de/" title="Universität zu Köln" target="_blank">
+                    <img src="/images/openbib/views/muenzenproto/013_Unisiegel_plus_Schriftzug_DE.jpg"  height="50" class="d-inline-block align-top" alt="Logo UzK">
+                </a> 
+           </ul>
+    </div>
+</div>
+[% END %]
+
+<!-- end: footer -->
+

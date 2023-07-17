@@ -1,0 +1,27 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_simple
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der einfachen Suchmaske
+#
+#######################################################################
+-%]
+[%-
+
+   session_sort = "year_desc";
+   IF qopts.get_option('srt') && NOT qopts.get_option('srt').match('_') && qopts.get_option('srto') ;
+     session_sort = "${qopts.get_option('srt')}_${qopts.get_option('srto')}";
+   END;
+
+-%]
+
+<div class="p-3 bg-white text-black">
+[% config.get_templatetext('home',view,lang) %]
+</div>
+
+[%# PROCESS common/subtemplate name="home_html_bottom" %]

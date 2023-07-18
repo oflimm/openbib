@@ -118,7 +118,7 @@
 <nav class="navbar navbar-expand-lg ps-2">
  
   <span class="navbar-brand">
-   <a href="https://www.kubi-koeln.de/" target="_blank">
+   <a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">
      <h1>[% msg.maketext("KunstBibliothek Köln") %]</h1>
    </a>
   </span>

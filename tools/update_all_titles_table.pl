@@ -72,7 +72,7 @@ my $config     = new OpenBib::Config;
 my $enrichment = new OpenBib::Enrichment;
 my $normalizer = new OpenBib::Normalizer;
 
-my ($database,$help,$logfile,$incremental,$bulkinsert,$keepfiles,$withtitlecache,$deletefilename,$insertfilename,$reducemem);
+my ($database,$help,$logfile,$incremental,$bulkinsert,$keepfiles,$scheme,$withtitlecache,$deletefilename,$insertfilename,$reducemem);
 
 &GetOptions("database=s"        => \$database,
             "logfile=s"         => \$logfile,
@@ -80,6 +80,7 @@ my ($database,$help,$logfile,$incremental,$bulkinsert,$keepfiles,$withtitlecache
             "with-titlecache"   => \$withtitlecache,
             "bulk-insert"       => \$bulkinsert,
             "keep-files"        => \$keepfiles,
+            "scheme=s"          => \$scheme,
             "reduce-mem"        => \$reducemem,
             "delete-filename=s" => \$deletefilename,
             "insert-filename=s" => \$insertfilename,
@@ -279,7 +280,8 @@ ALLTITLECONTROL
     $enrichment->get_schema->resultset('AllTitleByWorkkey')->search_rs(
         $where_ref
     )->delete;
-    
+
+    # MAB2 default
     $where_ref = {
         -or => [
 	     'title_fields.field' => '0540',
@@ -300,6 +302,16 @@ ALLTITLECONTROL
         ],
     };
 
+    if ($scheme eq "marc"){
+	$where_ref = {
+	    'title_fields.field' => '0020',
+		-or => [
+		'title_fields.subfield' => 'a', # ISBN
+		'title_fields.subfield' => 'z', # cancelled or invalid ISBN
+		],
+	};	  
+    }
+    
     if ($incremental){
         $where_ref->{'title_fields.titleid'} = { -in => \@titleids_to_insert };
     }
@@ -542,8 +554,22 @@ ALLTITLECONTROL
 
     $logger->info("### $database: Getting ISSNs from database $database and adding to enrichmntdb");
 
+    # MAB2
     $where_ref = { 'title_fields.field' => '0543' };
 
+    if ($scheme eq "marc"){
+	$where_ref = {
+	    'title_fields.field' => '0022',
+		-or => [
+		'title_fields.subfield' => 'a', # ISSN
+		'title_fields.subfield' => 'l', # ISSN-L
+		'title_fields.subfield' => 'm', # canceled ISSN-L
+		'title_fields.subfield' => 'y', # incorrect
+		'title_fields.subfield' => 'z', # canceled
+		],
+	};
+    }
+    
     if ($incremental){
         $where_ref->{'title_fields.titleid'} = { -in => \@titleids_to_insert };
     }    
@@ -811,9 +837,9 @@ update_all_titles_table.pl - Aktualisierung der all_titles_by-Tabelle, in der di
    -incremental          : Nur geaenderte Titel aus vereinheitlichtem Incremental-Updateverfahren
    --delete-filename=aa  : Fuer -incremental: Dateiname mit IDs der geloeschten und geaenderten Titel
    --insert-filename=bb  : Fuer -incremental: Dateiname mit IDs der neuen und geaenderten Titel
-
+   --scheme=...          : Kategorienschema mab2 | marc Default: mab2
    -keep-files           : Einladedateien (bei -bulk-insert) nicht loeschen
-
+   -reduce-mem           : Hauptspeicherfreundlich arbeiten (via DB-Files)
 
 ENDHELP
     exit;

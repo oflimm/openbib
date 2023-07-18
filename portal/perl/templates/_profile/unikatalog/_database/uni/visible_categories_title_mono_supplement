@@ -97,7 +97,7 @@
                 #'T4220', # msg.maketext("T4220") Nutzername
                 #'T4230', # msg.maketext("T4230") Standort-ID		
                 #'T4500', # msg.maketext("T4500") Nutzer-Tags
-                'T4700', # msg.maketext("T4700") Sammlungsschwerpunkt
+                'Sammlungs-Portal', # msg.maketext("Sammlungs-Portal") Sammlungsschwerpunkt
                 #'T4702', # msg.maketext("T4702") Ehemal. Instituts-Katkey
                 #'T4712', # msg.maketext("T4712") Markierung Wirtschafswissenschaften
                 #'T4715', # msg.maketext("T4715") Markierung EDZ

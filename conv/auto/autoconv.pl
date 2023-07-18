@@ -276,7 +276,7 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
         system("$config->{autoconv_dir}/filter/$database/pre_conv.pl $database");
     }
 
-    # Deterministische JSON-Serialisierung erzwingen
+    # Kanonische und deterministische JSON-Serialisierung erzwingen
     system("$tooldir/canonify-json.pl < $rootdir/data/$database/meta.title > $rootdir/data/$database/meta.title.tmp ; mv -f $rootdir/data/$database/meta.title.tmp $rootdir/data/$database/meta.title");
     system("$tooldir/canonify-json.pl < $rootdir/data/$database/meta.person > $rootdir/data/$database/meta.person.tmp ; mv -f $rootdir/data/$database/meta.person.tmp $rootdir/data/$database/meta.person");
     system("$tooldir/canonify-json.pl < $rootdir/data/$database/meta.subject > $rootdir/data/$database/meta.subject.tmp ; mv -f $rootdir/data/$database/meta.subject.tmp $rootdir/data/$database/meta.subject");
@@ -284,6 +284,8 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
     system("$tooldir/canonify-json.pl < $rootdir/data/$database/meta.corporatebody > $rootdir/data/$database/meta.corporatebody.tmp ; mv -f $rootdir/data/$database/meta.corporatebody.tmp $rootdir/data/$database/meta.corporatebody");
     system("$tooldir/canonify-json.pl < $rootdir/data/$database/meta.holding > $rootdir/data/$database/meta.holding.tmp ; mv -f $rootdir/data/$database/meta.holding.tmp $rootdir/data/$database/meta.holding");
 
+    system("cd $rootdir/data/$database ; gzip meta.*");
+	    
     $logger->info("### $database: Konvertierung Exportdateien -> SQL");
 
     if ($database && -e "$config->{autoconv_dir}/filter/$database/alt_conv.pl"){
@@ -292,8 +294,6 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
     }
     else {
 
-	system("cd $rootdir/data/$database ; gzip meta.*");
-	
         my $cmd = "$meta2sqlexe --loglevel=$loglevel -add-superpers -add-mediatype --add-language --database=$database";
 
         if ($incremental){

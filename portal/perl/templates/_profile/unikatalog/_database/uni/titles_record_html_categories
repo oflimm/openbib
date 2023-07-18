@@ -681,7 +681,7 @@ FOREACH field IN normdata;
          IF sammlungen.${sammlung}.defined ;
            sammlungsurl = sammlungen.${sammlung};
            sammlungsvermerk = "<i class=\"me-2 fas fa-archway\"></i><a href=\"${sammlungsurl}\" target=\"_blank\"><b>${sammlung}</b></a>" ;
-         ELSE ;
+         ELSIF sammlung ;
            sammlungsvermerk = "${sammlung} (Portal im Aufbau)" ;
          END ;
 

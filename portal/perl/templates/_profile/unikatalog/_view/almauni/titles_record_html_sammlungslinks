@@ -1,0 +1,78 @@
+[%#-
+#######################################################################
+#
+# Templatename: titles_record_html_sammlungslinks
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Links zu Sammlungs-Portalen anreichern
+#            
+#######################################################################
+-%]
+[%-
+
+sammlungen = {
+   'Sammlung H. C. Artmann - Sammlung Karl-Heinz Knupfer' => 'https://artmann.ub.uni-koeln.de/'
+   'Sammlung Georg Andreas und Gerlinde Bachem' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/georg-andreas-und-gerlinde-bachem'
+   'Sammlung Fred Bänfer' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/baenfer'
+   'Sammlung Friedrich Wilhelm Bäumker' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/baeumker'
+   'Sammlung Hermann Heinrich Becker' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/becker'
+   'Sammlung Belgisches Haus' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/belgisches-haus'
+   'Sammlung Breslauer Dissertationen' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/breslaudiss'
+   'Sammlung Dante - Sammlung Wilhelm Reiners' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/dante'
+   'Sammlung Herbert von Dirksen' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/dirksen'
+   'Sammlung Hans Engländer' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/englaender'
+   'Sammlung Evangelische Bibliothek' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/ebk'
+   'Sammlung Johannes Fastenrath' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/fastenrath'
+   'Sammlung Gernot Uwe Gabel' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/gabel'
+   'Sammlung Gymnasialbibliothek' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/gymnasialbibliothek'
+   'Sammlung Günter Herterich' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/gentz'
+   'Sammlung Rudolf Hilferding' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/hilferding'
+   'Sammlung Jakob Ignaz Hittorff' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/hittorff'
+   'Sammlung Inkunabeln und Blockbücher' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/inkunabeln'
+   'Sammlung Islandica' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/islandica'
+   'Sammlung Jesuitenbibliothek' => 'https://jesuitensammlung.ub.uni-koeln.de/'
+   'Sammlung Kölnische Bibliotheksgesellschaft' => 'https://typo3.ub.uni-koeln.de/die-usb/koelnische-bibliotheksgesellschaft'
+   'Sammlung Königsberger Dissertationen' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/koenigsberg'
+   'Sammlung Kölner Dissertationen vor 1800' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/dissertationen1800'
+   'Sammlung Kölner Provenienzportal' => 'http://provenienzen.ub.uni-koeln.de/'
+   'Sammlung Gertrud von Le Fort' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/lefort'
+   'Sammlung Otto Löffler' => 'https://https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/islandica'
+   'Sammlung Fachbibliothek Medienkultur und Theater' => 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/gfb/index_ger.html'
+   'Sammlung Gustav von Mevissen' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/mevissen'
+   'Sammlung Melanie von Mevissen' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/mevissen'
+   'Sammlung Mathilde von Mevissen' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/mevissen'
+   'Sammlung Immo Mikloweit' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/mikloweit'
+   'Sammlung Ernst von Oidtman' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/oidtmann'
+   'Sammlung Josef Quint' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/quint'
+   'Sammlung Publikationen der Ges. für Rheinische Geschichtsforschung' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/grhg'
+   'Sammlung Elise und Helene Richter' => 'https://richterbibliothek.ub.uni-koeln.de/'
+   'Bibliothek Eugen Schmalenbach' => 'https://schmalenbach.ub.uni-koeln.de/'
+   'Sammlung Fachbibliothek Schmalenbach' => 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/gfb/index_ger.html'
+   'Sammlung Hanns-Theo Schmitz-Otto' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/familie-schmitz-otto'
+   'Sammlung Jürgen Scholle' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/scholle'
+   'Sammlung Klassiker der Soziologie' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/klassiker-der-soziologie'
+   'Sammlung Martin Stankowski' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/stankowski'
+   'Sammlung Otto Stein' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/stein'
+   'Sammlung Syndikatsbibliothek' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/syndikatsbibliothek'
+   'Sammlung Thomas a Kempis' => 'http://kempis.ub.uni-koeln.de/'
+   'Sammlung Franz Thorbecke' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/thorbecke'
+   'Sammlung Ferdinand Franz Wallraf' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/wallraf'
+   'Sammlung Franz Weinkauff' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/weinkauff'
+   'Sammlung Westerholt' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/westerholt'
+   'Sammlung Fritz von Westerholt' => 'http://http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/westerholt'
+   'Sammlung Wilhelmine von Westerholt' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/westerholt'
+   'Sammlung Eberhard Wolff' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/eberhard-wolff'
+   'Sammlung Otto Wolff' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/otto-wolff'
+   'Sammlung Schriften aus dem Monschauer Land' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/monschau'
+   'Sammlung Hallische Jahrbücher' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/hallische'
+   'Sammlung Publikationen aus und über Kölner Hochschulen' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/koelnerhochschulen'
+   'Sammlung Rheinische Monographien' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/rheinischemonographien'
+   'Sammlung Rheinische Zeitschriften' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/rheinischezeitschriften'
+   'Sammlung Wilhelm Alff' => 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/alff'
+   'Sammlung Kölner Personal- und Vorlesungsverzeichnisse' => 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/vorlesung'
+};
+
+%]

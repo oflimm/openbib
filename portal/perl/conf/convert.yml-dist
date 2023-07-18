@@ -3315,6 +3315,12 @@ convtab:
             'mark': 1
             'markstring': 1
             'freesearch': 1
+      '0015':
+        '':
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
       '0065':         # RDA: Schlagwort (eher Medientyp...)
         '':
           index:

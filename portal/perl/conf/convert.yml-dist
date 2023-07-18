@@ -11590,6 +11590,13 @@ convtab:
           index:
             'markstring': 1
             'mark': 1
+      '0980':         # Provenienzen (Sammlungskennzeichnungen, "Koelner Modell")
+        's':
+          index:
+            'provenance': 20
+            'provenancestring': 20
+          facet:
+            'provenance': 1
       '1942': 
         'a': # GND Anreicherung: Verweisungsform Person
           index:
@@ -12681,6 +12688,13 @@ convtab:
           index:
             'markstring': 1
             'mark': 1
+      '0980':         # Provenienzen (Sammlungskennzeichnungen, "Koelner Modell")
+        's':
+          index:
+            'provenance': 20
+            'provenancestring': 20
+          facet:
+            'provenance': 1
       '1942': 
         'a': # GND Anreicherung: Verweisungsform Person
           index:
@@ -12886,13 +12900,6 @@ convtab:
             'freesearch': 1
           facet:
             'mediatype': 1
-      # '4700':         # Provenienzen (Sammlungskennzeichnungen, "Koelner Modell")
-      #   '':
-      #     index:
-      #       'provenance': 20
-      #       'provenancestring': 20
-      #     facet:
-      #       'provenance': 1
       # '4710':         # Migriertes Schlagwort
       #   '':
       #     index:

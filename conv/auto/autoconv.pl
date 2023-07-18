@@ -857,6 +857,16 @@ unless ($searchengineonly){
 
     # Ansonsten bei jedem Node
     my $cmd = "$config->{'base_dir'}/bin/update_all_titles_table.pl --database=$database -reduce-mem";
+
+    if ($scheme){
+	$cmd.=" --scheme=$scheme";
+    }
+    else {
+	my $dbschema = $config->get_databaseinfo->single({ dbname => $database })->schema ;
+	if ($dbschema eq "marc21"){
+	    $cmd.=" --scheme=marc";
+	}
+    }
     
     $logger->info("### $database: Updating All-Titles table");
     system($cmd);

@@ -2282,76 +2282,79 @@ sub process_marc {
         }
     }
 
-    # Todo: Bibkey-Generierung mit MARC-Records
+    # Bibkey-Generierung mit MARC-Records
 	    
     # Bibkey-Kategorie 5050 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
 
-#     my $bibkey = "";
+    my $bibkey = "";
 
-#     if ((defined $fields_ref->{'0100'} || defined $fields_ref->{'0101'}) && defined $fields_ref->{'0331'} && (defined $fields_ref->{'0424'} || defined $fields_ref->{'0425'})){
+    if ((defined $fields_ref->{'0100'} || defined $fields_ref->{'0700'}) && defined $fields_ref->{'0245'} && (defined $fields_ref->{'0264'})){
 
-#         my $bibkey_record_ref = {
-#             'T0100' => $fields_ref->{'0100'},
-#             'T0101' => $fields_ref->{'0101'},
-#             'T0331' => $fields_ref->{'0331'},
-#             'T0425' => $fields_ref->{'0425'},
-#         };
+	my $bibkey_record_ref = {
+	    'T0100' => $fields_ref->{'0100'},
+		'T0700' => $fields_ref->{'0700'},
+		'T0245' => $fields_ref->{'0245'},
+		'T0264' => $fields_ref->{'0264'},
+	};
+	
+        my $bibkey_base = $normalizer->gen_bibkey_base({ fields => $bibkey_record_ref, scheme => 'marc'});
+	
+        $bibkey      = ($bibkey_base)?$normalizer->gen_bibkey({ bibkey_base => $bibkey_base }):"";
 
-#         if ($fields_ref->{'0424'} && !$fields_ref->{'0425'}){
-#             $bibkey_record_ref->{'T0425'} = $fields_ref->{'0424'};
-#         }
-
-#         my $bibkey_base = $normalizer->gen_bibkey_base({ fields => $bibkey_record_ref});
-
-#         $bibkey      = ($bibkey_base)?$normalizer->gen_bibkey({ bibkey_base => $bibkey_base }):"";
+	if ($logger->is_debug){
+	    $logger->debug("Generating bibkey for ".YAML::Dump($bibkey_record_ref)." Got base $bibkey_base and bibkey $bibkey");
+	}
         
-#         if ($bibkey) {
-#             push @{$fields_ref->{'5050'}}, {
-#                 mult      => 1,
-#                 content   => $bibkey,
-#                 subfield  => '',
-#             };
+        if ($bibkey) {
+            push @{$fields_ref->{'5050'}}, {
+                mult      => 1,
+                content   => $bibkey,
+                subfield  => '',
+            };
                 
-#             push @{$fields_ref->{'5051'}}, {
-#                 mult      => 1,
-#                 content   => $bibkey_base,
-#                 subfield   => '',
-#             };
+            push @{$fields_ref->{'5051'}}, {
+                mult      => 1,
+                content   => $bibkey_base,
+                subfield   => '',
+            };
 
-#             # Bibkey merken fuer Recherche ueber Suchmaschine
-# #            $index_doc->add_index('bkey',1, ['T5050',$bibkey]);
-# #            $index_doc->add_index('bkey',1, ['T5051',$bibkey_base]);
-#         }
-#     }
+            # Bibkey merken fuer Recherche ueber Suchmaschine
+#            $index_doc->add_index('bkey',1, ['T5050',$bibkey]);
+#            $index_doc->add_index('bkey',1, ['T5051',$bibkey_base]);
+        }
+    }
 
-#     # Workkey-Kategorie 5055 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
-#     if ((defined $fields_ref->{'0100'} || defined $fields_ref->{'0101'}) && defined $fields_ref->{'0331'} && (defined $fields_ref->{'0424'} || defined $fields_ref->{'0425'}) && defined $fields_ref->{'0412'}){
-#         # Erscheinungsjahr muss existieren, damit nur 'ordentliche' Titel untersucht werden
+    # Workkey-Kategorie 5055 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
+    if ((defined $fields_ref->{'0100'} || defined $fields_ref->{'0700'}) && defined $fields_ref->{'0245'} && defined $fields_ref->{'0264'}){
+        # Erscheinungsjahr muss existieren, damit nur 'ordentliche' Titel untersucht werden
         
-#         my $workkey_record_ref = {
-#             'T0100' => $fields_ref->{'0100'}, # Verfasser
-#             'T0101' => $fields_ref->{'0101'}, # Person
-#             'T0331' => $fields_ref->{'0331'}, # HST
-#             'T0412' => $fields_ref->{'0412'}, # Verlag
-#             'T0424' => $fields_ref->{'0424'}, # Jahr
-#             'T0425' => $fields_ref->{'0425'}, # Jahr
-#             'T0304' => $fields_ref->{'0304'}, # EST
-#             'T0403' => $fields_ref->{'0403'}, # Auflage als Suffix
-#             'T4301' => $fields_ref->{'4301'}, # Angereicherte Sprache
-#             'T4400' => $fields_ref->{'4400'}, # Zugriff: online
-#         };
+        my $workkey_record_ref = {
+            'T0100' => $fields_ref->{'0100'}, # Verfasser
+            'T0700' => $fields_ref->{'0101'}, # Weitere Personen
+            'T0245' => $fields_ref->{'0245'}, # HST
+            'T0264' => $fields_ref->{'0264'}, # Jahr, Verlag
+            'T0130' => $fields_ref->{'0130'}, # EST
+            'T0240' => $fields_ref->{'0240'}, # EST
+            'T0250' => $fields_ref->{'0250'}, # Auflage als Suffix
+            'T4301' => $fields_ref->{'4301'}, # Angereicherte Sprache
+            'T4400' => $fields_ref->{'4400'}, # Zugriff: online
+        };
 
-#         my @workkeys = $normalizer->gen_workkeys({ fields => $workkey_record_ref});
+        my @workkeys = $normalizer->gen_workkeys({ fields => $workkey_record_ref, scheme => 'marc'});
 
-#         my $mult = 1;
-#         foreach my $workkey (@workkeys) {
-#             push @{$fields_ref->{'5055'}}, {
-#                 mult      => $mult++,
-#                 content   => $workkey,
-#                 subfield  => '',
-#             };
-#         }
-#     }
+	if ($logger->is_debug){
+	    $logger->debug("Got workkeys: ".YAML::Dump(\@workkeys));
+	}
+
+        my $mult = 1;
+        foreach my $workkey (@workkeys) {
+            push @{$fields_ref->{'5055'}}, {
+                mult      => $mult++,
+                content   => $workkey,
+                subfield  => '',
+            };
+        }
+    }
 
     my $title_matchkey = "$database:$id";
     

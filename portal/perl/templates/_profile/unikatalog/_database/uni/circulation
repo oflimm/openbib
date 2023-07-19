@@ -198,7 +198,7 @@
     corona = 0;
 
     # Ggf. anhand konkreter Anforderungen ueberarbeiten
-    IF thiscirculation.department_id.match('^(15|38-506)$') && thiscirculation.availability.match('^(order|lent)$') && NOT thiscirculation.availability_info.first.limitation;
+    IF thiscirculation.department_id.match('^(38-418|38-506)$') && thiscirculation.availability.match('^(order|lent)$') && NOT thiscirculation.availability_info.first.limitation;
       corona = 1;
     END
 -%]
@@ -358,7 +358,7 @@ Präsenzbestand
 
    scan_dienst = "campus"; # Default: Campuslieferdienst
 
-   IF view == "ilias";
+   IF view == "esa";
      scan_dienst = "ilias"; # Elektronischer Semesterapparat / ILIAS
    END;
 
@@ -379,13 +379,17 @@ Präsenzbestand
 [% END %]
    <!-- Kein Parameter pickup_location => Ausgabeort bestimmen -->
 [%   IF NOT corona %]
-[%     IF config.get('active_ils') %]
+[%     IF config.get('active_ils') && (NOT user.ID || authenticator.type == 'ils')  %]
+[%       IF NOT user.ID || authenticator.type == 'ils' %]
+[%         IF NOT valid_ilias_session %]
    <input type="submit" value="Bestellen" class="btn btn-primary mb-1" title="Dieses Buch steht in einem nicht-öffentlichen Bereich. Wir suchen es für Sie heraus." />
+[%         END %]
+[%       END %]
 [%     END %]
 [%   ELSE %]
-[%     IF thiscirculation.department_id.match('^(16|38-506)$') %]
+[%     IF thiscirculation.department_id.match('^(38-006|38-506)$') %]
 <b style='color:red'>Infolge der aktuellen Corona-Maßnahmen sind derzeit keine Ausleihen oder Bestellungen von Medien  möglich!</b>
-[%     ELSIF thiscirculation.department_id.match('^(15)$') %]
+[%     ELSIF thiscirculation.department_id.match('^(38-418)$') # FB Slavistik %]
 <b style='color:red'>Kein Zugriff auf Bestell- und Vormerkfunktionen.</b>
 [%     END %]
 [%   END %]
@@ -411,6 +415,8 @@ Präsenzbestand
            vormerkbutton = 0 ;
          END;
        END;
+     ELSIF valid_ilias_session ;
+       vormerkbutton = 0;
      END;
 
 %]
@@ -462,7 +468,7 @@ Präsenzbestand
 
 [%############### ANFANG CAMPUSLIEFERDIENST ######### %]
 [% ELSIF scan_dienst == "campus" %]
-[%  IF thiscirculation.department_id.match('^(0|4)$') && username.match('^(B|S)') && NOT thiscirculation.location_mark.match('^ZBM/') %]
+[%  IF thiscirculation.department_id.match('^(38|38-HWA)$') && username.match('^(B|S)') && NOT thiscirculation.location_mark.match('^ZBM/') %]
 [%    
       subdomain = "";
       IF thiscirculation.availability.match('^(lent)$') ;
@@ -480,17 +486,17 @@ Präsenzbestand
       END;
 %]
 [%    IF thiscirculation.availability != 'vermisst' %]
-[%      IF config.get('active_ils') %]
+[%      IF config.get('active_ils') && (NOT user.ID || authenticator.type == 'ils') %]
 <p>
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/campusorders">
    <input type="hidden" name="l"             value="[% lang %]" />
    <input type="hidden" name="validtarget"   value="[% database %]" />
-   <input type="hidden" name="label"         value="[% thiscirculation.location_mark |uri  %]" />
+   <input type="hidden" name="label"         value="[% thiscirculation.location_mark %]" />
    <input type="hidden" name="titleid"       value="[% record.id %]" />
    <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
-   <input type="hidden" name="unit_desc"     value="[% standort |uri %]" />
-   <input type="hidden" name="domain"        value="[% domain |uri %]" />
-   <input type="hidden" name="subdomain"     value="[% subdomain |uri %]" />
+   <input type="hidden" name="unit_desc"     value="[% standort %]" />
+   <input type="hidden" name="domain"        value="[% domain %]" />
+   <input type="hidden" name="subdomain"     value="[% subdomain %]" />
    <input type="hidden" name="confirm"     value="1" />
 
    <input type="submit" value="[% msg.maketext("Campuslieferdienst") %]" class="btn btn-primary mb-1" />
@@ -504,24 +510,25 @@ Präsenzbestand
 
 [%############### ANFANG ILIAS ######### %]
 [% ELSIF scan_dienst == "ilias" %]
-[%   session_cache = session.get_datacache %]
-[%  IF thiscirculation.department_id.match('^(0|4)$') && session_cache.ilias.defined %]
+[%  IF thiscirculation.department_id.match('^(38|38-HWA)$') && valid_ilias_session %]
 [%    IF thiscirculation.availability != 'vermisst' %]
 [%      IF config.get('active_ils') %]
-<p>
+<p/>
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/ilias/[% config.get('circulations_loc') %]/id/iliasorders">
    <input type="hidden" name="l"             value="[% lang %]" />
    <input type="hidden" name="database"      value="[% database %]" />
-   <input type="hidden" name="label"         value="[% thiscirculation.location_mark |uri  %]" />
+   <input type="hidden" name="label"         value="[% thiscirculation.location_mark %]" />
    <input type="hidden" name="titleid"       value="[% record.id %]" />
    <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
-   <input type="hidden" name="unit_desc"     value="[% standort |uri %]" />
-   <input type="hidden" name="domain"        value="[% domain |uri %]" />
-   <input type="hidden" name="subdomain"     value="[% subdomain |uri %]" />
-   <input type="hidden" name="confirm"     value="1" />
+   <input type="hidden" name="unit_desc"     value="[% standort %]" />
+   <input type="hidden" name="domain"        value="[% domain %]" />
+   <input type="hidden" name="subdomain"     value="[% subdomain %]" />
+   <input type="hidden" name="confirm"       value="1" />
 
-   <input type="submit" value="[% msg.maketext("E-Semesterapparat") %]" class="btn btn-primary mb-1" />
+   <strong>[% msg.maketext("E-Semesterapparat") %]</strong>
    <p>Ausgewählte Seiten aus diesem Buch als PDF-Datei für Ihren Elektronischen Semesterapparat bestellen.</p>
+
+   <input type="submit" value="[% msg.maketext("Ilias-Bestellung") %]" class="btn btn-primary mb-1" />
 </form>
 
 [%      END %]

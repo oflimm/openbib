@@ -110,7 +110,7 @@ sub create_record {
     my $volume         = $input_data_ref->{'volume'};
     my $source         = $input_data_ref->{'source'};
     my $articleauthor  = $input_data_ref->{'articleauthor'};
-    my $articletitle   = $input_data_ref->{'artitletitle'};
+    my $articletitle   = $input_data_ref->{'articletitle'};
     my $issue          = $input_data_ref->{'issue'};
     my $pages          = $input_data_ref->{'pages'};
     my $remark         = $input_data_ref->{'remark'};

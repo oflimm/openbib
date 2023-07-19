@@ -124,6 +124,23 @@
 [% ELSE %]
 <div class="p-5 bg-white">
 <h1>[% msg.maketext("Sie haben keinen Zugriff zu dieser Seite.") %]</h1>
+
+<p>
+ref_id: [% ref_id %] / userid: [% userid %] / ts: [% ts %] / email: [% email %] 
+</p>
+
+<p>
+  token: [% token %]
+</p>
+
+<p>
+verication result: [% USE dumper;dumper.dump(verification_result ) %]
+</p>
+
+<p>
+validity: [% verification_result.validity %]
+</p>
+
 </div>
 [% END %]
 

@@ -424,7 +424,7 @@ Präsenzbestand
 
    scan_dienst = "campus"; # Default: Campuslieferdienst
 
-   IF view == "ilias";
+   IF view == "esa";
      scan_dienst = "ilias"; # Elektronischer Semesterapparat / ILIAS
    END;
 
@@ -442,7 +442,9 @@ Präsenzbestand
 [%   IF NOT corona %]
 [%     IF config.get('active_ils') && (NOT user.ID || authenticator.type == 'ils')  %]
 [%       IF NOT user.ID || authenticator.type == 'ils' %]
+[%         IF NOT session_cache.ilias.defined %]
    <input type="submit" value="Bestellen" class="btn btn-primary mb-1" title="Dieses Buch steht in einem nicht-öffentlichen Bereich. Wir suchen es für Sie heraus." />
+[%         END %]
 [%       END %]
 [%     END %]
 [%   ELSE %]
@@ -474,6 +476,8 @@ Präsenzbestand
            vormerkbutton = 0 ;
          END;
        END;
+     ELSIF session_cache.ilias.defined ;
+       vormerkbutton = 0;
      END;
 
 %]
@@ -578,8 +582,10 @@ Präsenzbestand
    <input type="hidden" name="subdomain"     value="[% subdomain |uri %]" />
    <input type="hidden" name="confirm"     value="1" />
 
-   <input type="submit" value="[% msg.maketext("E-Semesterapparat") %]" class="btn btn-primary mb-1" />
+   <strong>[% msg.maketext("E-Semesterapparat") %]</strong>
    <p>Ausgewählte Seiten aus diesem Buch als PDF-Datei für Ihren Elektronischen Semesterapparat bestellen.</p>
+
+   <input type="submit" value="[% msg.maketext("Ilias-Bestellung") %]" class="btn btn-primary mb-1" />
 </form>
 
 [%      END %]

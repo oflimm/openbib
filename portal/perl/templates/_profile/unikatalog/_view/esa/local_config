@@ -152,7 +152,7 @@
      END;
    ELSE ;
      session_cache = session.get_datacache ;     
-     IF session_cache.ilias.defined ;
+     IF session_cache.ilias.defined('refid') ;
        valid_ilias_session = 1;
      END;
    END;

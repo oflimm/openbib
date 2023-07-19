@@ -145,6 +145,14 @@ verication result: [% USE dumper;dumper.dump(verification_result ) %]
 validity: [% verification_result.validity %]
 </p>
 
+<p>
+session cache: [% USE dumper;dumper.dump(session_cache) %]
+</p>
+
+<p>
+valid ilias session: [% valid_ilias_session %]
+</p>
+
 </div>
 [% END %]
 

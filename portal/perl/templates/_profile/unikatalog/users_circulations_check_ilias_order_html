@@ -65,9 +65,9 @@
   ELSIF fields.${"T0553"}.defined;
     isbn = fields.${"T0553"}.first.content;  
   ELSIF super && super.fields.${"0540"};
-    issn = super.fields.${"0540"}.first.content;  
+    isbn = super.fields.${"0540"}.first.content;  
   ELSIF super && super.fields.${"0553"};
-    issn = super.fields.${"0553"}.first.content;  
+    isbn = super.fields.${"0553"}.first.content;  
   END;
 
   IF fields.${"T0543"}.defined;

@@ -2362,7 +2362,7 @@ sub send_alma_api_call {
 	
 	# Concurrent API-Limit reached
 	if ($api_result_ref->{'http_status_code'} == 419){
-	    $logger->fatal("Alma concurrent API limit reached");
+	    $logger->fatal("Alma concurrent API request limit reached");
 	    
 	    $api_result_ref->{'response'} = {
 		"code" => $api_result_ref->{'http_status_code'},

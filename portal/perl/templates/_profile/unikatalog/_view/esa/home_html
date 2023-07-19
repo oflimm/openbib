@@ -13,6 +13,22 @@
 -%]
 <div class="pt-5 ps-5 pe-5">
 
+<p>
+ref_id: [% ref_id %] / userid: [% userid %] / ts: [% ts %] / email: [% email %] 
+</p>
+
+<p>
+  token: [% token %]
+</p>
+
+<p>
+verication result: [% USE dumper;dumper.dump(verification_result ) %]
+</p>
+
+<p>
+validity: [% verification_result.validity %]
+</p>
+
 <h1>[% msg.maketext("Bestellung von Dokumenten für Elektronische Semesterapparate in ILIAS") %]</h1>
 
 <p>

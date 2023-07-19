@@ -233,7 +233,21 @@
 </td>
 <td>
 <ul>
+[%-
+
+   usb_signatur        = "";
+   usb_standort        = "";
+   usb_bestandsverlauf = "";
+
+-%]
 [% FOREACH this_item IN this_cluster.items %]
+[%-
+
+   usb_signatur        = this_item.signatur ;
+   usb_standort        = this_item.standort ;
+   usb_bestandsverlauf = this_item.bestandsverlauf;
+
+-%]
 <li>
 <strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% IF this_item.bestandsverlauf && this_item.bestandsverlauf != '-' %][% this_item.bestandsverlauf %][% END %]</strong><br/>
 [% IF this_item.signatur && this_item.signatur != '-' %]
@@ -245,9 +259,39 @@
 [% IF this_item.bemerkung %]
 <emph>[% msg.maketext("Hinweis") %]:</emph> [% this_item.bemerkung %]<br/>
 [% END %]
+
+[%############### ANFANG ILIAS ######### %]
+[% IF view == "esa" %]
+[%  session_cache = session.get_datacache %]
+[%  IF session_cache.ilias.defined %]
+[%    IF config.get('active_ils') && (NOT user.ID || authenticator.type == 'ils')  %]
+ <div class="pt-2">
+  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/ilias/[% config.get('circulations_loc') %]/id/iliasorders">
+   <input type="hidden" name="l"             value="[% lang %]" />
+   <input type="hidden" name="database"      value="[% database %]" />
+   <input type="hidden" name="label"         value="[% usb_signatur %]" />
+   <input type="hidden" name="titleid"       value="[% record.id %]" />
+   <input type="hidden" name="unit"          value="0" />
+   <input type="hidden" name="unit_desc"     value="[% usb_standort %]" />
+   <input type="hidden" name="domain"        value="[% domain %]" />
+   <input type="hidden" name="subdomain"     value="[% subdomain %]" />
+   <input type="hidden" name="confirm"       value="1" />
+
+   <strong>[% msg.maketext("E-Semesterapparat") %]</strong>
+   <p>Ausgewählte Seiten aus diesem Buch als PDF-Datei für Ihren Elektronischen Semesterapparat bestellen.</p>
+
+   <input type="submit" value="[% msg.maketext("Ilias-Bestellung") %]" class="btn btn-primary mb-1" />
+ </form>
+</div>
+[%      END %]
+[%    END %]
+[% END %]
+[%############### ENDE ILIAS ######### %]
+
 </li>
 [% END %]
 </ul>
+
 </td>
 </tr>
 [%  END %]

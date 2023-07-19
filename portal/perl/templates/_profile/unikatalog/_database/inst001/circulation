@@ -442,7 +442,7 @@ Präsenzbestand
 [%   IF NOT corona %]
 [%     IF config.get('active_ils') && (NOT user.ID || authenticator.type == 'ils')  %]
 [%       IF NOT user.ID || authenticator.type == 'ils' %]
-[%         IF NOT session_cache.ilias.defined %]
+[%         IF NOT valid_ilias_session %]
    <input type="submit" value="Bestellen" class="btn btn-primary mb-1" title="Dieses Buch steht in einem nicht-öffentlichen Bereich. Wir suchen es für Sie heraus." />
 [%         END %]
 [%       END %]
@@ -476,7 +476,7 @@ Präsenzbestand
            vormerkbutton = 0 ;
          END;
        END;
-     ELSIF session_cache.ilias.defined ;
+     ELSIF valid_ilias_session ;
        vormerkbutton = 0;
      END;
 
@@ -566,8 +566,7 @@ Präsenzbestand
 
 [%############### ANFANG ILIAS ######### %]
 [% ELSIF scan_dienst == "ilias" %]
-[%   session_cache = session.get_datacache %]
-[%  IF thiscirculation.department_id.match('^(0|4)$') && session_cache.ilias.defined %]
+[%  IF thiscirculation.department_id.match('^(0|4)$') && valid_ilias_session %]
 [%    IF thiscirculation.availability != 'vermisst' %]
 [%      IF config.get('active_ils') && (NOT user.ID || authenticator.type == 'ils')  %]
 <p>

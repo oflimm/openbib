@@ -261,9 +261,7 @@
 [% END %]
 
 [%############### ANFANG ILIAS ######### %]
-[% IF view == "esa" %]
-[%  session_cache = session.get_datacache %]
-[%  IF session_cache.ilias.defined %]
+[% IF view == "esa" && valid_ilias_session %]
 [%    IF config.get('active_ils') && (NOT user.ID || authenticator.type == 'ils')  %]
  <div class="pt-2">
   <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/ilias/[% config.get('circulations_loc') %]/id/iliasorders">
@@ -283,7 +281,6 @@
    <input type="submit" value="[% msg.maketext("Ilias-Bestellung") %]" class="btn btn-primary mb-1" />
  </form>
 </div>
-[%      END %]
 [%    END %]
 [% END %]
 [%############### ENDE ILIAS ######### %]

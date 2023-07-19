@@ -1,0 +1,576 @@
+[%#-
+#######################################################################
+#
+# Templatename: std_footer
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Seiten-Footers
+#
+#######################################################################
+-%]
+<!-- begin: footer -->
+
+[% footer_type = "usb" # info | usb | uzk %]
+
+[% IF NOT hide_foot_banner %]
+<footer class="uzk15__mainfooter" role="contentinfo">
+
+[% IF footer_type == "info" %]
+  
+<div class="w-100 pt-4">
+  <div class="uzk15__mainwrapper d-none d-md-block">
+    <div class="uzk15__grid_100">
+      <h2 class="w-100">
+	[% msg.maketext("Literatur suchen und finden") %]
+      </h2>
+      <div class="uzk15__columnlist">
+	<nav class="uzk15__footercolumn">
+	  <h3>[% msg.maketext("Effektiv suchen") %]</h3>
+	  <br/>
+	  <ul>
+            <li>
+	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/help.html?l=[% lang %]" target="_blank" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/help.include?l=[% lang %]">[% msg.maketext("Informationen zum Unikatalog") %]</a>
+	    </li>
+            <li>
+	      <a target="_blank" href="[% path_prefix %]/info/medienarten.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/medienarten.include?l=[% lang %]">[% msg.maketext("Nach Datenbanken und E-Medien suchen") %]</a>
+	    </li>
+            <li>
+	      <a target="_blank" href="[% cms_links.kurse %]" target="_blank">[% msg.maketext("Kursangebot der USB") %]</a>
+	    </li>
+	  </ul>
+	</nav>
+	<nav class="uzk15__footercolumn">
+	  <h3>[% msg.maketext("Nichts gefunden?!") %]</h3>
+	  <br/>
+	  <ul>
+	    <li>
+	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.include?l=[% lang %]">[% msg.maketext("Alles rund um die Fernleihe") %]</a>
+	    </li>
+	    <li>
+	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/internetquellen.html?l=[% lang %]" target="_blank" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/internetquellen.include?l=[% lang %]">[% msg.maketext("Weitere Recherchemöglichkeiten") %]</a>
+	    </li>
+	    <li>
+	      <a target="_blank" href="[% path_prefix %]/info/anschaffung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/anschaffung.include?l=[% lang %]">[% msg.maketext("Bücher zum Kauf vorschlagen") %]</a>
+	    </li>
+	  </ul>
+	</nav>
+	<nav class="uzk15__footercolumn">
+	  <h3>[% msg.maketext("Weitere Services") %]</h3>
+	  <br/>
+	  <ul>
+	    <li>
+	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.include?l=[% lang %]">[% msg.maketext("Ausleihen oder einsehen") %]</a>
+	    </li>
+	    
+	    <li>
+	      <a target="_blank" href="[% path_prefix %]/info/neuerwerbung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/neuerwerbung.include?l=[% lang %]">[% msg.maketext("Neuerwerbungslisten abonnieren") %]</a>
+	    </li>
+	    
+	    <li>
+	      <a target="_blank" href="[% cms_links.fragen %]" target="_blank">[% msg.maketext("Fragen Sie uns") %]</a>
+	    </li>
+          </ul>
+	</nav>
+      </div>
+    </div>
+    <div class="uzk15__grid_100 pb-2">
+      <div class="row">
+	<div class="col-md-6">
+	  <span> <a style="color:#fff; padding-top:5px;" href="https://www.ub.uni-koeln.de/" target="_blank">[% msg.maketext("Der Kölner Universitätskatalog ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]</a></span>
+	</div>
+	<div id="ob-essential_statements" class="col-md-6 ps-3 justify-content-right">
+	  <a target="_blank" href="[% cms_links.impressum %]">[% msg.maketext("Impressum") %]</a>&nbsp;|&nbsp;<a target="_blank" href="[% path_prefix %]/info/datenschutz.html" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.include?l=[% lang %]">[% msg.maketext("Datenschutzerklärung") %]</a> |  <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/netiquette.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/netiquette.include?l=[% lang %]">[% msg.maketext("Netiquette") %]</a>
+	</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-md-none ps-2 pe-2">      
+    <div class="w-100 d-md-flex">
+      <h2>
+	[% msg.maketext("Literatur suchen und finden") %]
+      </h2>
+      
+      <div class="w-100 ps-0">
+	
+	<div id="dropdown_effective_search" class="dropdown">
+	  <button id="dropdownMenu_effective_search" class="btn dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Effektiv suchen") %]</button>
+	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_effective_search">
+            <li>
+	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/help.html?l=[% lang %]" target="_blank"  data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/help.include?l=[% lang %]">[% msg.maketext("Informationen zum Unikatalog") %]</a>
+	    </li>
+            <li>
+	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/info/medienarten.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/medienarten.include?l=[% lang %]">[% msg.maketext("Nach Datenbanken und E-Medien suchen") %]</a>
+	    </li>
+            <li>
+	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/[% config.get('browse_loc') %]/topics.html?l=[% lang %]" target="_blank" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('browse_loc') %]/topics.include?l=[% lang %]">[% msg.maketext("In Ihrem Fachgebiet suchen") %]</a>
+	    </li>
+	  </ul>
+	</div>
+	<div id="dropdown_nothing_found" class="dropdown mt-2">
+	  <button id="dropdownMenu_nothing_found" class="btn dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Nichts gefunden?!") %]</button>
+	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_nothing_found">
+	    <li>
+	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/fernleihe.include?l=[% lang %]">[% msg.maketext("Alles rund um die Fernleihe") %]</a>
+	    </li>
+	    <li>
+	      <a class="dropdown-item" target="_blank" href="[% cms_links.kurse %]" target="_blank">[% msg.maketext("Kursangebot der USB") %]</a>
+	    </li>
+	    <li>
+	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/info/anschaffung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/anschaffung.include?l=[% lang %]">[% msg.maketext("Bücher zum Kauf vorschlagen") %]</a>
+	    </li>
+	  </ul>
+	</div>
+	<div id="dropdown_more_services" class="dropdown mt-2 mb-2">
+	  <button id="dropdownMenu_more_services" class="btn dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Weitere Services") %]</button>
+	  <ul class="dropdown-menu" aria-labelledby="dropdownMenu_more_services">
+	    <li>
+	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/zugriff.include?l=[% lang %]">[% msg.maketext("Ausleihen oder einsehen") %]</a>
+	    </li>
+	    
+	    <li>
+	      <a class="dropdown-item" target="_blank" href="[% path_prefix %]/info/neuerwerbung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/neuerwerbung.include?l=[% lang %]">[% msg.maketext("Neuerwerbungslisten abonnieren") %]</a>
+	    </li>
+	    
+	    <li>
+	      <a class="dropdown-item" target="_blank" href="[% cms_links.fragen %]" target="_blank">[% msg.maketext("Fragen Sie uns") %]</a>
+	    </li>
+	  </ul>
+	</div>
+      </div>
+    </div>
+
+    <div class="uzk15__grid_100 pb-2 pt-2">
+      <div class="row">
+	<div class="col-md-6">
+	  <span style="color:#fff;"> <a href="https://www.ub.uni-koeln.de/" target="_blank">[% msg.maketext("Der Kölner Universitätskatalog ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]</a></span>
+	</div>
+	<div id="ob-essential_statements_small" class="col-md-6">
+	  <a target="_blank" href="[% cms_links.impressum %]">[% msg.maketext("Impressum") %]</a>&nbsp;|&nbsp;<a target="_blank" href="[% path_prefix %]/info/datenschutz.html" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.include?l=[% lang %]">[% msg.maketext("Datenschutzerklärung") %]</a> | <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/netiquette.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/netiquette.include?l=[% lang %]">[% msg.maketext("Netiquette") %]</a>
+	</div>
+      </div>
+    </div>
+
+  </div><!-- end d-md-none -->  
+
+</div>
+[% END %]
+
+[% IF footer_type == "usb"  %]
+<!-- <div class="uzk15__footersection1">
+  <div class="uzk15__mainwrapper">
+   <div class="uzk15__grid_100">
+    <p class="uzk15__autordatum">
+    <span>[% msg.maketext("zuletzt geändert am") %] 06.05.2020</span>
+    
+     <span>, [% msg.maketext("Autor/in") %]: [% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</span> 
+    </p>
+   </div>
+  </div>
+ </div> -->
+<div class="uzk15__footersection3 usb__footersection2">
+  <div class="uzk15__mainwrapper">
+    <div class="uzk15__grid_100">
+      <h2><a href="https://www.ub.uni-koeln.de/" target="_blank">[% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</a></h2>
+      
+      <div class="uzk15__columnlist uzk15__box">
+	<h2 class="uzk15__smallerheadlines">[% msg.maketext("Social-Media-Kanäle der Universitäts- und Stadtbibliothek  Köln") %]</h2> 
+	<div class="uzk15__socialmedia">
+	  <a href="https://www.facebook.com/usbkoeln" target="_blank">
+	    <span class="uzk15__icon uzk15__icon-facebook"> 
+	      <svg class="uzk15__svg-facebook">
+		<use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#fb" />
+	      </svg>
+	    </span>
+	    <span class="uzk15__invisible">Facebook</span>
+	  </a>
+	  
+	  <a href="https://twitter.com/unibibkoeln" target="_blank"> 
+	    <span class="uzk15__icon uzk15__icon-twitter"> 
+	      <svg class="uzk15__svg-twitter">
+		<use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#twitter" />
+	      </svg>
+	    </span>
+	    <span class="uzk15__invisible">Twitter</span>
+	  </a>
+	  <a href="http://www.youtube.com/user/usbkoeln" target="_blank"> 
+	    <span class="uzk15__icon uzk15__icon-youtube"> 
+	      <svg class="uzk15__svg-youtube">
+		<use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#youtube" />
+	      </svg>
+	    </span>
+	    <span class="uzk15__invisible">Youtube</span>
+	  </a>
+	  <a href="https://openbiblio.social/@unibibkoeln" class="uzk15__mastodon" target="_blank"> 
+	    <span class="uzk15__sozpartner"> 
+	      <img src="/images/openbib/uzk15/logo_mastodon.png" alt="Logo Mastodon"/>
+	    </span>
+	    <span class="uzk15__invisible">Mastodon</span>
+	  </a>
+	</div>
+	<nav class="uzk15__footercolumn">
+	  <h3 class="uzk15__invisible">[% msg.maketext("Kontakt") %]</h3> 
+	  <ul>
+            <li>
+              <a target="_blank" href="[% cms_links.fragen %]">[% msg.maketext("Kontakt") %]</a>
+	    </li>
+            <li>
+              <a target="_blank" href="[% cms_links.usbinfo %]">[% msg.maketext("Newsletter") %]</a>
+	    </li>
+            <li>
+              <a target="_blank" href="[% cms_links.events %]">[% msg.maketext("Kulturprogramm") %]</a>
+	    </li>
+	  </ul>
+	</nav>
+	<nav class="uzk15__footercolumn">
+	  <h3 class="uzk15__invisible">[% msg.maketext("Impressum / Datenschutzerklärung") %]</h3> 
+	  <ul>
+	    <li>
+              <a target="_blank" href="[% cms_links.impressum %]">[% msg.maketext("Impressum") %]</a>
+	    </li>
+	    <li>
+              <a target="_blank" href="[% path_prefix %]/info/datenschutz.html">[% msg.maketext("Datenschutzerklärung") %]</a>
+	    </li>
+	  </ul>
+	</nav>
+      </div>
+      <!--
+	  <h2 class="uzk15__smallerheadlines">[% msg.maketext("Unsere Partner machen uns stark!") %]</h2> 
+	  
+	  <div class="uzk15__partner">
+	    <a href="[% cms_links.kultur %]">
+	      <span class="uzk15__icon ">
+		<img src="/images/openbib/uzk15/logo_wdr.png" />
+	      </span>
+	      <span class="uzk15__invisible">[% msg.maketext("Kulturpartner") %]</span>
+	    </a>
+	  </div>
+	  <h2 class="uzk15__smallerheadlines uzk15__bottom"><a href="[% cms_links.kultur %]">[% msg.maketext("...und viele weitere Kulturpartner und Förderer.") %]</a></h2>
+	  -->
+	  
+    </div>
+  </div>
+</div>
+[% END %]
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+// Begin Togglen / UzK Footer
+// Bild setzen 
+                    $("#footertrigger").attr("aria-controls", "footerbox");
+                    $("#footertrigger").attr("aria-expanded", "false");
+                    $("#footerbox").hasClass("uzk15__open") ? $("#footerbox").attr("aria-hidden", "false") : $("#footerbox").attr("aria-hidden", "true");
+                    $("#footertrigger").on("click",
+                        function() {
+                            $("#footerbox, #footertrigger").toggleClass("uzk15__open");
+                            $("#footertrigger").hasClass("uzk15__open") ? $("#footertrigger").attr("aria-expanded", "true") : $("#footertrigger").attr("aria-expanded", "false");
+                            $("#footerbox").hasClass("uzk15__open") ? $("#footerbox").attr("aria-hidden", "false") : $("#footerbox").attr("aria-hidden", "true")
+                        });
+
+
+                    $("#footertrigger_small").attr("aria-controls", "footerbox_small");
+                    $("#footertrigger_small").attr("aria-expanded", "false");
+                    $("#footerbox_small").hasClass("uzk15__open") ? $("#footerbox_small").attr("aria-hidden", "false") : $("#footerbox_small").attr("aria-hidden", "true");
+                    $("#footertrigger_small").on("click",
+                        function() {
+                            $("#footerbox_small, #footertrigger_small").toggleClass("uzk15__open");
+                            $("#footertrigger_small").hasClass("uzk15__open") ? $("#footertrigger_small").attr("aria-expanded", "true") : $("#footertrigger_small").attr("aria-expanded", "false");
+                            $("#footerbox_small").hasClass("uzk15__open") ? $("#footerbox_small").attr("aria-hidden", "false") : $("#footerbox_small").attr("aria-hidden", "true")
+                        });
+
+});
+</script>
+
+[% IF footer_type == "uzk" %]
+<div class="uzk15__footersection3">
+  <div class="d-none d-md-block">
+    <div class="uzk15__mainwrapper">
+      <div class="uzk15__grid_100">
+	<h2 class="uzk15__triggerhead w-100">
+	  <a id="footertrigger" aria-expanded="false" aria-controls="footerbox">[% msg.maketext("Die Universität zu Köln") %]</a>
+	</h2>
+	<div class="uzk15__columnlist uzk15__hidebox" id="footerbox" aria-hidden="true">
+	  <nav class="uzk15__footercolumn">
+	    <h3 class="w-100">[% msg.maketext("Informationen für") %]</h3>
+	    <ul>
+              <li>
+		<a target="_blank" href="[% cms_links.uzk_studium %]">[% msg.maketext("Studierende") %]</a>
+	      </li>
+              <li>
+		<a target="_blank" href="[% cms_links.uzk_interessierte %]">[% msg.maketext("Studieninteressierte") %]</a>
+	      </li>
+              <li>
+		<a target="_blank" href="[% cms_links.uzk_promotion %]">[% msg.maketext("Promotion") %]</a>
+	      </li>
+              <li>
+		<a target="_blank" href="[% cms_links.uzk_forschung %]">[% msg.maketext("Forschung und Transfer") %]</a>
+	      </li>
+              <li>
+		<a target="_blank" href="[% cms_links.uzk_international %]">[% msg.maketext("International") %]</a>
+	      </li>
+              <li>
+		<a target="_blank" href="[% cms_links.uzk_alumni %]">[% msg.maketext("Alumni und Förderer") %]</a>
+	      </li>
+              <li>
+		<a target="_blank" href="[% cms_links.uzk_presse %]">[% msg.maketext("Presse und Marketing") %]</a>
+	      </li>
+	    </ul>
+	  </nav>
+	  <nav class="uzk15__footercolumn">
+	    <h3>[% msg.maketext("Fakultäten") %]</h3>
+	    <ul>
+	      <li>
+		<a target="_blank" href="[% cms_links.uzk_wiso %]">[% msg.maketext("Wirtschafts- und Sozialwissenschaften") %]</a>
+	      </li>
+	      <li>
+		<a target="_blank" href="[% cms_links.uzk_jura %]">[% msg.maketext("Rechtswissenschaften") %]</a>
+	      </li>
+	      <li>
+		<a target="_blank" href="[% cms_links.uzk_medizin %]">[% msg.maketext("Medizin") %]</a>
+	      </li>
+	      <li>
+		<a target="_blank" href="[% cms_links.uzk_phil %]">[% msg.maketext("Philosophie") %]</a>
+	      </li>
+	      <li>
+		<a target="_blank" href="[% cms_links.uzk_matnat %]">[% msg.maketext("Mathematik &amp; Naturwissenschaften") %]</a>
+	      </li>
+	      <li>
+		<a target="_blank" href="[% cms_links.uzk_hf %]">[% msg.maketext("Humanwissenschaften") %]</a>
+	      </li>
+	    </ul>
+	  </nav>
+	  <nav class="uzk15__footercolumn">
+	    <h3>[% msg.maketext("Schnellzugriff") %]</h3>
+	    <ul>
+	      <li>
+		<a target="_blank" href="https://www.ub.uni-koeln.de/">[% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</a></li>
+	      
+	      <li>
+		<a target="_blank" href="[% cms_links.uzk_uni %]">[% msg.maketext("Universität") %]</a></li>
+	      <li>
+		<a target="_blank" href="[% cms_links.uzk_sekretariat %]">[% msg.maketext("Studierendensekretariat") %]</a>
+	      </li>
+	      <li>
+		<a target="_blank" href="[% cms_links.uzk_kontakt %]">[% msg.maketext("Kontakt") %]</a>
+	      </li>
+	      <li>
+		<a target="_blank" href="[% cms_links.uzk_mensa %]">[% msg.maketext("Mensa") %]</a>
+	      </li>
+	      <li>
+		<a target="_blank" href="[% cms_links.uzk_termine %]">[% msg.maketext("Terminkalender") %]</a>
+	      </li>
+	      <li>
+		<a target="_blank" href="[% cms_links.uzk_webmail %]">[% msg.maketext("Webmail") %]</a>
+	      </li>
+	    </ul>
+	  </nav>
+	</div>
+      </div>
+    </div>
+  </div><!-- End: d-none d-md-block -->
+  
+  <div class="d-md-none ps-2 pe-3">      
+    <div class="w-100 row d-md-flex">
+      <h2>
+	<a id="footertrigger_small" aria-expanded="false" aria-controls="footerbox_small">[% msg.maketext("Die Universität zu Köln") %]</a>
+      </h2>
+
+      <div class="uzk15__columnlist uzk15__hidebox" id="footerbox_small" aria-hidden="true">
+      <div id="dropdown_information_for" class="dropdown">
+	<button id="dropdownMenu_information_for" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Informationen für") %]</button>
+	<ul class="dropdown-menu" aria-labelledby="dropdownMenu_information_for">
+          <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_studium %]">[% msg.maketext("Studierende") %]</a>
+	  </li>
+          <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_interessierte %]">[% msg.maketext("Studieninteressierte") %]</a>
+	  </li>
+          <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_promotion %]">[% msg.maketext("Promotion") %]</a>
+	  </li>
+          <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_forschung %]">[% msg.maketext("Forschung und Transfer") %]</a>
+	  </li>
+          <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_international %]">[% msg.maketext("International") %]</a>
+	  </li>
+          <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_alumni %]">[% msg.maketext("Alumni und Förderer") %]</a>
+	  </li>
+          <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_presse %]">[% msg.maketext("Presse und Marketing") %]</a>
+	  </li>
+	</ul>
+      </div>
+      <div id="dropdown_faculties" class="dropdown mt-2">
+	<button id="dropdownMenu_faculties" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Fakultäten") %]</button>
+	<ul class="dropdown-menu" aria-labelledby="dropdownMenu_faculties">
+	  <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_wiso %]">[% msg.maketext("Wirtschafts- und Sozialwissenschaften") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_jura %]">[% msg.maketext("Rechtswissenschaften") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_medizin %]">[% msg.maketext("Medizin") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_phil %]">[% msg.maketext("Philosophie") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_matnat %]">[% msg.maketext("Mathematik &amp; Naturwissenschaften") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_hf %]">[% msg.maketext("Humanwissenschaften") %]</a>
+	  </li>
+	</ul>
+      </div>
+      <div id="dropdown_quicklinks" class="dropdown mt-2 mb-2">
+	<button id="dropdownMenu_quicklinks" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">[% msg.maketext("Schnellzugriff") %]<span class="float-right"><i class="fas fas-search"></i></span></button>
+	<ul class="dropdown-menu" aria-labelledby="dropdownMenu_quicklinks">
+	  <li class="dropdown-item">
+	    <a target="_blank" href="https://www.ub.uni-koeln.de/">[% msg.maketext("Universitäts- und Stadtbibliothek Köln") %]</a>
+	  </li>       
+	  <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_uni %]">[% msg.maketext("Universität") %]</a></li>
+	  <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_sekretariat %]">[% msg.maketext("Studierendensekretariat") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_kontakt %]">[% msg.maketext("Kontakt") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_mensa %]">[% msg.maketext("Mensa") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_termine %]">[% msg.maketext("Terminkalender") %]</a>
+	  </li>
+	  <li class="dropdown-item">
+	    <a target="_blank" href="[% cms_links.uzk_webmail %]">[% msg.maketext("Webmail") %]</a>
+	  </li>
+	</ul>
+      </div>
+      </div>
+    </div>
+  </div><!-- end d-md-none -->
+</div>
+
+<div class="uzk15__footersection4">
+  <div class="uzk15__mainwrapper">
+    <div class="uzk15__grid_100">
+      <h2 class="uzk15__smallerheadlines">[% msg.maketext("Social-Media-Kanäle der Universität zu Köln") %]</h2>
+      <div class="uzk15__socialmedia">
+	<a target="_blank" href="https://www.facebook.com/pages/Universit%C3%A4t-zu-K%C3%B6ln/180703865199">
+	  <span class="uzk15__icon uzk15__icon-facebook"> 
+	    <svg class="uzk15__svg-facebook">
+              <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#fb" />
+	    </svg>
+	  </span>
+	  <span class="uzk15__invisible">Facebook</span>
+	</a>
+	
+	<a target="_blank" href="https://twitter.com/UniCologne"> 
+	  <span class="uzk15__icon uzk15__icon-twitter"> 
+	    <svg class="uzk15__svg-twitter">
+              <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#twitter" />
+	    </svg>
+	  </span>
+	  <span class="uzk15__invisible">Twitter</span>
+	</a>
+	
+	<a target="_blank" href="http://www.xing.com/net/universitaetzukoeln/"> 
+	  <span class="uzk15__icon uzk15__icon-xing"> 
+	    <svg class="uzk15__svg-xing">
+              <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#xing" />
+	    </svg>
+	  </span> 
+	  <span class="uzk15__invisible">Xing</span>
+	</a>
+
+	<a target="_blank" href="http://www.youtube.com/user/UniversitaetzuKoeln"> 
+	  <span class="uzk15__icon uzk15__icon-youtube"> 
+	    <svg class="uzk15__svg-youtube">
+              <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#youtube" />
+	    </svg>
+	  </span>
+	  <span class="uzk15__invisible">Youtube</span>
+	</a>
+	
+	<a target="_blank" href="https://www.linkedin.com/company/university-of-cologne?trk=biz-companies-cym"> 
+	  <span class="uzk15__icon"> 
+	    <svg class="uzk15__svg-linkedin">
+              <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#linkedin" />
+	    </svg>
+	  </span>
+	  <span class="uzk15__invisible">LinkedIn</span>
+	</a>
+	
+	<a target="_blank" href="http://itunes.apple.com/de/institution/universitat-zu-koln/id426341691"> 
+	  <span class="uzk15__icon"> 
+	    <svg class="uzk15__svg-itunes">
+              <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#itunes" />
+	    </svg>
+	  </span>
+	  <span class="uzk15__invisible">iTunes</span>
+	</a>
+	
+	<a target="_blank" href="https://instagram.com/universityofcologne/"> 
+	  <span class="uzk15__icon"> 
+	    <svg class="uzk15__svg-itunes">
+              <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#instagram" />
+	    </svg>
+	  </span>
+	  <span class="uzk15__invisible">Instagram</span>
+	</a>
+      </div>
+      <div class="uzk15__copyright">
+	<small>© [% msg.maketext("Universität zu Köln") %]</small><br/>
+	<a target="_blank" href="[% path_prefix %]/info/datenschutz.html">[% msg.maketext("Datenschutzerklärung") %]</a> <a target="_blank" href="[% cms_links.impressum %]">[% msg.maketext("Impressum") %]</a>
+      </div>
+
+      <div class="uzk15__seperator"></div>
+      <div class="uzk15__accreditation">
+	<h2 class="uzk15__smallerheadlines">[% msg.maketext("Qualitätslabels der Universität zu Köln:") %]</h2>
+	<div class="uzk15__accreditationlist">
+	  <dl>
+	    <dt>    
+	      <a target="_blank" href="[% cms_links.uzk_tea %]"><abbr title="Total E-Quality">[% msg.maketext("Total Equality Award") %]</abbr></a>
+	      <a target="_blank" href="[% cms_links.uzk_equis %]"><abbr title="European Quality Improvement System">EQUIS</abbr></a>
+	      <a target="_blank" href="[% cms_links.uzk.cems %]"><abbr title="CEMS International Management">CEMS</abbr></a>
+	      <a target="_blank" href="[% cms_links.uzk_aqas %]"><abbr title="Akkreditierte Studienprogramme">AQAS</abbr></a>
+	      <a target="_blank" href="[% cms_links.uzk_charta %]"><abbr title="Charta der Vielfalt">[% msg.maketext("Charta der Vielfalt") %]</abbr></a>
+	      <a target="_blank" href="[% cms_links.uzk_hrk %]"><abbr title="HRK-Audit">[% msg.maketext("HRK-Audit Internationalisierung") %]</abbr></a>
+	    </dt>
+	    <dd>
+	    </dd>
+	  </dl>
+	</div>
+      </div>
+    </div>
+  </div>
+</div>
+[% END %]
+</footer>
+[% END %]
+
+[% IF addon_logo_footer %]
+<div id="extended-info" class="d-none d-flex justify-content-center footer-logo-box pt-3 pb-3">
+    <div>
+            <ul class="list-group list-group-horizontal flex-column flex-md-row justify-content-center">
+                <a class="navbar-brand" href="https://www.ub.uni-koeln.de/" title="Universitäts- und Stadtbibliothek Köln" target="_blank">
+                    <img src="/images/openbib/views/muenzen/USB_logo_1500_transparent.png"  height="50" class="d-inline-block align-top" alt="Logo USB">
+                </a>
+                <a class="navbar-brand" href="https://www.uni-koeln.de/" title="Universität zu Köln" target="_blank">
+                    <img src="/images/openbib/views/muenzenproto/013_Unisiegel_plus_Schriftzug_DE.jpg"  height="50" class="d-inline-block align-top" alt="Logo UzK">
+                </a> 
+           </ul>
+    </div>
+</div>
+[% END %]
+
+<!-- end: footer -->
+

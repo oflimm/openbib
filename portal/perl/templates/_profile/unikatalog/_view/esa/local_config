@@ -1,0 +1,160 @@
+[%-
+
+   cms_links = {
+    anmeldung        = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausweis/ohneuccard/index_ger.html"
+    anschaff         = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/anschaffungsvorschlag/index_ger.html"
+    # ausweisverl      = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausweis/index_ger.html"
+    bezahlen         = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/kosten/index_ger.html"
+    # paymend          = "https://www.ub.uni-koeln.de/finding_borrowing/borrowing/fees/index_eng.html"
+    bno              = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/regelung/index_ger.html"
+    # bnr              = "https://www.ub.uni-koeln.de/fragen/ausweis/benutzernr/index_ger.html"
+    bnrgesperrt      = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausweis/sperre/index_ger.html"
+    # edzdb            = "https://www.ub.uni-koeln.de/ueber_uns/dach/edz/datenbanken/index_ger.html"
+    # fachauskunft     = "https://www.ub.uni-koeln.de/ueber_uns/ansprechpartner/fachreferate/index_ger.html"
+    fernleihe        = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/ueberregional/index_ger.html"
+    # kontakt          = "https://www.ub.uni-koeln.de/lernen_arbeiten/arbeitenusb/oeffnungszeiten/index_ger.html"
+    # kontaktezb       = "mailto:ezb@ub.uni-koeln.de"
+    # kontaktdb        = "mailto:dbfragen@ub.uni-koeln.de"
+    # kontaktfl        = "mailto:fernleihe@ub.uni-koeln.de"
+    kontaktol        = "mailto:ortsleihe@ub.uni-koeln.de"
+    # kopierer         = "https://www.ub.uni-koeln.de/lernen_arbeiten/arbeitenusb/tech/index_ger.html"
+    # neliabo          = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/neuerwerbungsliste/index_ger.html"
+    # oeffzeit         = "https://www.ub.uni-koeln.de/lernen_arbeiten/arbeitenusb/oeffnungszeiten/index_ger.html"
+    # oeffzeitausleihe = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausleihinfos/ausleihe/index_ger.html#text30451"
+    # oeffzeithwa      = "https://www.ub.uni-koeln.de/lernen_arbeiten/arbeitenusb/oeffnungszeiten/oeffzeithwa/index_ger.html"
+    # oeffzeithwamag   = "https://www.ub.uni-koeln.de/lernen_arbeiten/arbeitenusb/oeffnungszeiten/oeffzeithwa/index_ger.html"
+    # pda              = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/anschaffungsvorschlag/index_ger.html"
+    # paymend          = "https://www.ub.uni-koeln.de/finding_borrowing/borrowing/fees/index_eng.html"
+    registration     = "https://www.ub.uni-koeln.de/finding_borrowing/borrowing/card/withoutuccard/index_eng.html"
+    # tipps            = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/portalsuche/index_ger.html"
+    usbinfo          = "https://www.ub.uni-koeln.de/res/newsletter/index_ger.html"
+    # uccard           = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausweis/uccard/index_ger.html"
+    # uccarden         = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausweis/uccard/index_eng.html"
+    vpn              = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/nutzungshinweise/index_ger.html"
+    druck_download   = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/besonderheiten/index_ger.html"
+    standort_sab     = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/sofortausleihbereich/index_ger.html"
+    standort_lbs     = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lbs/index_ger.html"
+    standort_ls      = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaele/index_ger.html"
+    standort_ls_hs   = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaele/index_ger.html"
+    standort_ls_hp   = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaal_heilpaedagogik/index_ger.html"
+    standort_ls_hf   = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaal_humanwissenschaft/index_ger.html"
+    suchen_allgemein  = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/index_ger.html"
+    suchen_medienart = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/index_ger.html"
+    audio            = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/audio/index_ger.html"
+    kurse            = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/kurse/index_ger.html"
+    fragen           = "https://www.ub.uni-koeln.de/suchen_ausleihen/fragen/index_ger.html"
+    impressum        = "https://www.ub.uni-koeln.de/res/impressum/index_ger.html"
+    events           = "https://www.ub.uni-koeln.de/events/index_ger.html"
+    kultur           = "https://www.ub.uni-koeln.de/ueber_uns/kulturpartner/index_ger.html"
+    auskunft         = "https://www.ub.uni-koeln.de/res/auskunft/index_ger.html"
+    direktor         = "https://www.ub.uni-koeln.de/ueber_uns/ansprechpartner/personal/neuhausen/index_ger.html"
+    ezeitungen       = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/e_zeitungen/index_ger.html"
+    
+    uzk_rektor       = "https://www.portal.uni-koeln.de/rektor.html"
+    uzk_studium      = "http://www.portal.uni-koeln.de/studium.html"
+    uzk_interessierte = "http://www.portal.uni-koeln.de/studieninteressierte.html"
+    uzk_promotion    = "http://amgc.uni-koeln.de/"
+    uzk_forschung    = "http://www.portal.uni-koeln.de/forschung.html"
+    uzk_international = "http://www.international.uni-koeln.de/"
+    uzk_alumni       = "http://portal.uni-koeln.de/alumni-foerdernde.html"
+    uzk_presse       = "http://portal.uni-koeln.de/presse-marketing.html"
+    uzk_wiso         = "http://www.wiso.uni-koeln.de/"
+    uzk_jura         = "http://www.uni-koeln.de/jur-fak/www/index.shtml"
+    uzk_medizin      = "http://www.medfak.uni-koeln.de/"
+    uzk_phil         = "http://www.uni-koeln.de/phil-fak/"
+    uzk_matnat       = "http://www.mathnat.uni-koeln.de/"
+    uzk_hf           = "http://www.hf.uni-koeln.de/"
+    uzk_uni          = "http://www.portal.uni-koeln.de/universitaet.html"
+    uzk_sekretariat  = "http://verwaltung.uni-koeln.de/studsek/content/"
+    uzk_kontakt      = "http://www.portal.uni-koeln.de/kontakt.html"
+    uzk_mensa        = "http://www.kstw.de/index.php?option=com_content&amp;view=article&amp;id=182&amp;Itemid=121&amp;lang=de"
+    uzk_termine      = "http://www.portal.uni-koeln.de/termine.html"
+    uzk_webmail      = "https://webmail.uni-koeln.de/login.php"
+    uzk_tea          = "https://portal.uni-koeln.de/13951.html"
+    uzk_equis        = "http://www.wiso.uni-koeln.de/21732.html"
+    uzk_cems         = "http://www.wiso.uni-koeln.de/30432.html"
+    uzk_aqas         = "http://www.aqas.de/"
+    uzk_charta       = "http://www.charta-der-vielfalt.de/unterzeichner/unterzeichner-der-charta-der-vielfalt/zeige/universitaet-zu-koeln.html"
+    uzk_hrk          = "http://www.uni-koeln.de/img/dist/HRK-Audit-Zertifikat.jpg"
+   };
+
+   IF NOT viewdbs ;
+       viewdbs = config.get_dbs_of_view(view);
+   END ;
+   IF NOT prevprofile ;
+       prevprofile = session.get_profile ;
+   END ;
+   IF NOT searchprofileid_of_view ;
+      searchprofileid_of_view  = config.get_searchprofile_of_view(view);
+   END ;
+   IF NOT searchprofileid_of_books ;
+      searchprofileid_of_books  = config.get_searchprofile_of_orgunit('unikatalog','books') ;
+   END ;
+   IF NOT searchprofileid_of_articles ;
+      searchprofileid_of_articles = config.get_searchprofile_of_orgunit('unikatalog','articles');
+   END ;
+
+   IF database && NOT searchprofileid_of_title ;
+      searchprofileid_of_title = config.get_searchprofile_of_database(database);
+   ELSIF record && record.database && NOT searchprofileid_of_title ;
+      searchprofileid_of_title = config.get_searchprofile_of_database(record.database);
+   END ;
+
+   IF NOT searchprofileid_of_web ;
+      searchprofileid_of_web = config.get_searchprofile_of_orgunit('unikatalog','web');
+   END ;
+
+   current_profile = "";
+   IF query.param('profile');
+     current_profile = escape_html(query.param('profile'));
+   ELSIF searchprofileid_of_title == searchprofileid_of_articles ;
+     current_profile = searchprofileid_of_articles ;
+   ELSIF searchprofileid_of_title == searchprofileid_of_web ;
+     current_profile = searchprofileid_of_web ;
+   ELSIF searchprofileid_of_title == searchprofileid_of_view ;
+     current_profile = searchprofileid_of_view ;
+   ELSE;
+     current_profile = searchprofileid_of_books;
+   END;
+
+   idsuffix = "";
+
+   current_tab = escape_html(query.param('tab'));
+   
+   IF current_profile == searchprofileid_of_articles;
+     idsuffix = "_articles" ;
+     current_tab = 'articles';
+   ELSE;
+     idsuffix = "_books";
+     current_tab = 'books';   
+   END;
+
+
+   alma_disable_suggestions = 1; # Keine Anschaffungsvorschlaege wg. Umstieg auf Alma
+   alma_disable_ill_books   = 1; # Keine Buecherfernleihe wg. Umstieg auf Alma 
+
+   valid_ilias_session = 0;
+
+   refid  = query.param('REF_ID');
+   userid = query.param('USR_ID');
+   ts     = query.param('TS');
+   email  = query.param('EMAIL');
+   token  = query.param('ILTOKEN');
+
+   IF refid && userid && ts && email && token ;
+     data = "${refid}${userid}${ts}${email}";
+     verification_result = cgiapp.verify_gpg_data(data,token);
+
+     IF verification_result && verification_result.validity == "GOOD" ;
+        session.set_datacache_by_key('ilias',{ refid = refid, userid = userid, ts = ts, email = email, token = token });
+
+        valid_ilias_session = 1;
+     END;
+   ELSE ;
+     session_cache = session.get_datacache ;     
+     IF session_cache.ilias.defined ;
+       valid_ilias_session = 1;
+     END;
+   END;
+
+-%]

@@ -11,40 +11,9 @@
 #
 #######################################################################
 -%]
-<p class="mt-5">
-[%-
+<div class="pt-5 ps-5 pe-5">
 
-   valid_ilias_request = 0;
-
-   refid  = query.param('REF_ID');
-   userid = query.param('USR_ID');
-   ts     = query.param('TS');
-   email  = query.param('EMAIL');
-   token  = query.param('ILTOKEN');
-
-   IF refid && userid && ts && email && token ;
-     data = "${refid}${userid}${ts}${email}";
-     verification_result = cgiapp.verify_gpg_data(data,token);
-
-     IF verification_result && verification_result.validity == "GOOD" ;
-        session.set_datacache_by_key('ilias',{ refid = refid, userid = userid, ts = ts, email = email, token = token });
-
-        valid_ilias_request = 1;
-     END;
-   ELSE ;
-     session_cache = session.get_datacache ;     
-     IF session_cache.ilias.defined ;
-       valid_ilias_request = 1;
-     END;
-   END;
-
--%]
-
-[% IF NOT valid_ilias_request %]
-[%   PROCESS common/subtemplate name="error_html" error_msg=msg.maketext("Sie haben keinen Zugriff zu dieser Seite.") %]
-[% ELSE %]
-<div class="m-5">
-<h1 class="display-5">[% msg.maketext("Bestellung von Dokumenten für Elektronische Semesterapparate in ILIAS") %]</h1>
+<h1>[% msg.maketext("Bestellung von Dokumenten für Elektronische Semesterapparate in ILIAS") %]</h1>
 
 <p>
 Über diesen Dienst können Sie Aufsätze aus Zeitschriften bzw. kleine Teile aus Büchern aus dem Bestand der USB Köln bestellen.
@@ -91,7 +60,7 @@ Bitte beachten Sie, dass sich die Bereitstellung der Materialien in den ILIAS-Ku
 </form>
 <!-- </nav> -->
 
-<div class="m-5">
+<div class="p-5">
 <p>
 Um einen Zeitschriftenaufsatz oder ein Buchkapitel zu bestellen, recherchieren Sie bitte zunächst den Titel der Zeitschrift bzw. des Buches im USB-Katalog. Bei Titeln, die in der USB in gedruckter Form vorliegen, finden Sie in der Detailanzeige den Button "ILIAS-Bestellung", der Sie direkt zum Bestellformular führt.
 </p>
@@ -103,5 +72,3 @@ Titel, die bereits in elektronischer Form vorliegen (E-Books, E-Journals etc.), 
 
 
 </div>
-
-[% END # valid_ilias_request %]

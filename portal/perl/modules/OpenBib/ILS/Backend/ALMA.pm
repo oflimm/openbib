@@ -42,6 +42,7 @@ use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
 use MLDBM qw(DB_File Storable);
 use Net::LDAP;
+use SOAP::Lite;
 use Storable ();
 use YAML::Syck;
 
@@ -868,6 +869,170 @@ sub cancel_order {
     $arg_ref->{alma_request_type} = "order";
     
     return $self->cancel_alma_request($arg_ref);    
+}
+
+sub cancel_order_by_mail {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $username        = exists $arg_ref->{username} # Nutzername im Bibliothekssystem
+        ? $arg_ref->{username}       : undef;
+    
+    my $katkey          = exists $arg_ref->{titleid}  # Katkey
+        ? $arg_ref->{titleid}        : undef;
+
+    my $gsi             = exists $arg_ref->{holdingid} # Mediennummer
+        ? $arg_ref->{holdingid}      : undef;
+
+    my $zw              = exists $arg_ref->{unit}     # Zweigstelle
+        ? $arg_ref->{unit}           : undef;
+
+    my $zwname          = exists $arg_ref->{unitname} # Zweigstellename
+        ? $arg_ref->{unitname}       : undef;
+
+    my $title           = exists $arg_ref->{title}
+        ? $arg_ref->{title}          : '';
+
+    my $author          = exists $arg_ref->{author}
+        ? $arg_ref->{author}         : '';
+
+    my $date            = exists $arg_ref->{date}
+        ? $arg_ref->{date}           : '';
+
+    my $receipt         = exists $arg_ref->{receipt}
+        ? $arg_ref->{receipt}           : '';
+
+    my $remark          = exists $arg_ref->{remark}
+        ? $arg_ref->{remark}            : '';
+    
+    my $username_full   = exists $arg_ref->{username_full} # Vorname Nachname
+        ? $arg_ref->{username_full}            : '';
+    
+    my $email           = exists $arg_ref->{email}
+        ? $arg_ref->{email}             : '';
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $SIG{'DIE'} = 'IGNORE';
+
+    my $database = $self->get_database;
+    my $config   = $self->get_config;
+
+    my $response_ref = {};
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    $logger->debug("Cancel reservation via USB-SOAP");
+
+    unless ($username && ($gsi || $katkey)){
+	$response_ref =  {
+	    error => "missing parameter",
+	};
+
+	return $response_ref;
+    }
+	
+    my @args = ($title, $author, $gsi, $zwname, $date, $username, $username_full, $receipt, $email, $remark);
+	    
+    my $uri = "urn:/Mail";
+	    
+    $logger->debug("Trying connection to uri $uri at ".$config->get('usbwsmail_url'));
+    
+    $logger->debug("Using args ".YAML::Dump(\@args));    
+    
+    my $result_ref;
+    
+    eval {
+	my $soap = SOAP::Lite
+	    -> uri($uri)
+	    -> proxy($config->get('usbwsmail_url'));
+
+	my $result = $soap->submit_storno(@args);
+	
+	unless ($result->fault) {
+	    $result_ref = $result->result;
+	    if ($logger->is_debug){
+		$logger->debug("SOAP Result: ".YAML::Dump($result_ref));
+	    }
+	}
+	else {
+	    $logger->error("SOAP Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+
+	    $response_ref = {
+		error => $result->faultcode,
+		error_description => $result->faultstring,
+	    };
+	    
+	    return $response_ref;
+
+	}
+    };
+	    
+    if ($@){
+	$logger->error("SOAP-Target ".$config->get('usbwsmail_url')." with Uri $uri konnte nicht erreicht werden: ".$@);
+
+	$response_ref = {
+	    error => "connection error",
+	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	};
+	
+	return $response_ref;
+    }
+
+    # Allgemeine Fehler
+    if (defined $result_ref->{NotOK} ){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $result_ref->{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+    
+    if ($logger->is_debug){
+	$logger->debug("Cancel order result".YAML::Dump($result_ref));
+    }
+
+    if (defined $result_ref->{OK} ){
+	$response_ref = {
+	    "successful"   => 1,
+	     author        => $author,
+	     title         => $title,
+	     username_full => $username_full,
+	     email         => $email,
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+	
+    }
+    else {
+	$response_ref = {
+	    "code" => 403,
+		"error" => "cancel order failed",
+	};
+
+	if (defined $result_ref->{NotOK}){
+	    $response_ref->{error_description} = $result_ref->{NotOK};
+	}
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+    
+    return $response_ref;
 }
 
 sub cancel_alma_request {
@@ -2197,6 +2362,8 @@ sub send_alma_api_call {
 	
 	# Concurrent API-Limit reached
 	if ($api_result_ref->{'http_status_code'} == 419){
+	    $logger->fatal("Alma concurrent API limit reached");
+	    
 	    $api_result_ref->{'response'} = {
 		"code" => $api_result_ref->{'http_status_code'},
 		    "error" => "error",

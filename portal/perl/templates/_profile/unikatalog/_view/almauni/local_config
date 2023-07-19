@@ -35,6 +35,7 @@
     standort_sab     = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/sofortausleihbereich/index_ger.html"
     standort_lbs     = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lbs/index_ger.html"
     standort_ls      = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaele/index_ger.html"
+    standort_ls_hs   = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaele/index_ger.html"
     standort_ls_hp   = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaal_heilpaedagogik/index_ger.html"
     standort_ls_hf   = "https://www.ub.uni-koeln.de/lernen_arbeiten/lernen/standorte/lesesaal_humanwissenschaft/index_ger.html"
     suchen_allgemein  = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/index_ger.html"

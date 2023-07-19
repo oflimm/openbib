@@ -1,0 +1,281 @@
+[%-
+
+  fields       = record.to_custom_field_scheme_1;
+#  holdings     = record.get_holding;
+#  circulations = record.load_circulation.get_circulation;
+
+  title     = fields.${"T0245"}.${'a'};
+
+  IF NOT title && fields.${'T0245'}.${'n'};
+     title = fields.${'T0245'}.${'n'};
+  END ;
+
+  IF fields.${"T0245"}.defined('b') ;
+     titlesup = fields.${"T0245"}.${'b'};
+     title = "${title} : ${titlesup}";
+  END;
+
+  persons   = [];
+  FOREACH thisfield IN ['T0100','T0700'];
+    IF fields.${thisfield}.defined('a');
+        persons.push(fields.${thisfield}.${'a'});
+    END;
+  END;
+  person = persons.join(' ; ');
+
+  corporatebodies   = [];
+  FOREACH thisfield IN ['T0110','T0710'];
+    IF fields.${thisfield}.defined('a');
+        corporatebodies.push(fields.${thisfield}.${'a'});
+    END;
+  END;
+  corporatebody = corporatebodies.join(' ; ');
+
+  pubplace = [];
+  publisher = fields.${"T0264"}.${'b'};
+  place     = fields.${"T0264"}.${'a'};
+
+  IF place ;
+    pubplace.push(place);
+  END;
+
+  IF publisher ;
+    pubplace.push(publisher);
+  END;
+
+  publisher = pubplace.join(' : ');
+  
+  year      = fields.${"T0264"}.${'c'};
+
+  super = "";
+  # 1. Ueberordnung?
+  IF fields.${'T5005'}.first.content;
+     super = from_json(fields.${'T5005'}.first.content);
+  END;
+
+  IF fields.${"T0020"}.defined('9');
+    isbn = fields.${"T0020"}.${'9'};  
+  ELSIF fields.${"T0020"}.defined('a');
+    isbn = fields.${"T0020"}.${'a'};
+  ELSIF super && super.fields.${"0020"}.defined('9');
+    isbn = super.fields.${"0020"}.${'9'};  
+  ELSIF super && super.fields.${"0020"}.defined('a');
+    isbn = super.fields.${"0020"}.${'a'};  
+  END;
+
+  IF fields.${"T0022"}.defined('9');
+    issn = fields.${"T0022"}.${'9'};  
+  ELSIF fields.${"T0022"}.defined('a');
+    issn = fields.${"T0022"}.${'a'};
+  ELSIF super && super.fields.${"0022"}.defined('9');
+    issn = super.fields.${"0022"}.${'9'};  
+  ELSIF super && super.fields.${"0020"}.defined('a');
+    issn = super.fields.${"0022"}.${'a'};  
+  END;
+
+  source    = "";
+  IF fields.${"T0490"}.defined('a');
+    source  = fields.${"T0490"}.${'a'};
+  ELSIF super ;
+     IF super.fields.${'0331'} ;
+        source   = super.fields.${'0245'}.${'a'};
+     END ;
+  END;
+
+  titleid   = record.id;
+  
+-%]
+
+[%# USE dumper;dumper.dump(super)%]
+<div class="card mt-5 mb-5 me-5">
+<div class="card-header">[% msg.maketext("Digitalisierungsauftrag") %]</div>
+<div class="card-body">
+
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/campusorders">
+ 
+     <input type="hidden" name="unit_desc"   value="[% unit_desc %]" />
+     <input type="hidden" name="unit"        value="[% unit %]" />
+     <input type="hidden" name="titleid"     value="[% titleid %]" />
+     <input type="hidden" name="validtarget" value="[% validtarget %]" />
+     <input type="hidden" name="title"       value="[% title %]" />
+
+<legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
+
+[% IF title %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% title %]</span>
+      <label for="title">Titel</label>
+</div>
+[% END %]
+
+[% IF person %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% person %]</span>
+     <input type="hidden" name="author"     value="[% person %]" />
+      <label for="person">[% msg.maketext("Verfasser") %]:</label>
+</div>
+[% END %]
+
+[% IF corporatebody %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% corporatebody %]</span>
+     <input type="hidden" name="corporation"     value="[% corporatebody %]" />
+      <label for="corporation">[% msg.maketext("Körperschaft") %]:</label>
+</div>
+[% END %]
+
+[% IF publisher %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% publisher %]</span>
+     <input type="hidden" name="publisher"     value="[% publisher %]" />
+      <label for="publisher">[% msg.maketext("Ort/Verlag") %]:</label>
+</div>
+[% END %]
+
+[%
+     signatur = "";
+     IF label ;
+       signatur = label ;
+     ELSE ;
+       signatur = holdingid ;
+     END;
+%]
+
+[% IF signatur %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% signatur %]</span>
+      <input type="hidden" name="label" value="[% signatur %]" />
+      <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
+</div>
+[% END %]
+
+[% IF isbn %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% isbn %]</span>
+      <input type="hidden" name="isbn" value="[% isbn %]" />
+      <label for="location_mark">[% msg.maketext("ISBN") %]:</label>
+</div>
+[% END %]
+
+[% IF issn %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% issn %]</span>
+      <input type="hidden" name="isbn" value="[% issn %]" />
+      <label for="location_mark">[% msg.maketext("ISSN") %]:</label>
+</div>
+[% END %]
+
+[% IF source %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% source %]</span>
+      <input type="hidden" name="source" value="[% source %]" />
+      <label for="source">[% msg.maketext("In") %]:</label>
+</div>
+[% END %]
+
+[% IF numbering %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% numbering %]</span>
+      <input type="hidden" name="numbering" value="[% numbering %]" />
+     <label for="numbering">[% msg.maketext("Bestand in der USB") %]:</label>
+</div>
+[% END %]
+
+<p>Mit * gekennzeichnete Felder sind Pflichtfelder</p>
+
+[% is_zeitschrift = fields.${"T0405"}.first.content # hat Erscheinungsverlauf %]
+[% IF is_zeitschrift %]
+<div class="form-floating mb-3">
+      <input class="form-control" type="text" name="articleauthor" value="" placeholder="[% msg.maketext("Bitte Autor des Artikels eingeben, falls vorhanden") %]"/>
+      <label for="articleauthor">[% msg.maketext("Artikelautor") %] (*):</label>
+</div>
+
+<div class="form-floating mb-3">
+      <input class="form-control" type="text" name="articletitle" value="" placeholder="[% msg.maketext("Bitte Titel des Artikels eingeben, falls vorhanden") %]"/>
+      <label for="articletitle">[% msg.maketext("Artikeltitel") %] (*):</label>
+</div>
+
+<div class="form-floating mb-3">
+      <input class="form-control" type="text" name="volume" value="" placeholder="[% msg.maketext("Bitte Bandangabe eingeben, falls vorhanden") %]"/>
+      <label for="volume">[% msg.maketext("Band") %] (*):</label>
+</div>
+
+<div class="form-floating mb-3">
+      <input class="form-control" type="text" name="issue" value="" placeholder="[% msg.maketext("Bitte Heft eingeben, falls vorhanden") %]"/>
+      <label for="issue">[% msg.maketext("Heft") %]:</label>
+</div>
+
+<div class="form-floating mb-3">
+      <input class="form-control" type="text" name="year" value="" placeholder="[% msg.maketext("Bitte Jahr eingeben, falls vorhanden") %]"/>
+      <label for="year">[% msg.maketext("Jahrgang") %] (*):</label>
+</div>
+
+<div class="form-floating mb-3">
+      <input class="form-control" type="text" name="pages" value="" placeholder="[% msg.maketext("Bitte Seitenangaben, z.B. 3-9, eingeben") %]" />
+      <label for="pages">[% msg.maketext("Seitenangaben") %] (*):</label>
+</div>
+[% ELSE # Monographie %]
+
+[%   IF year %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% year %]</span>
+      <input type="hidden" name="year" value="[% year %]" />
+      <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
+</div>
+[%   END %]
+
+<div class="form-floating mb-3">
+      <input class="form-control" type="text" name="pages" value="" placeholder="[% msg.maketext("Bitte Seitenangaben, z.B. 3-9, eingeben") %]"/>
+      <label for="pages">[% msg.maketext("Seitenangaben") %] (*):</label>
+</div>
+
+<div class="form-floating mb-3">
+      <input class="form-control" type="text" name="articleauthor" value="" placeholder="[% msg.maketext("Bitte Autor des Artikels eingeben, falls vorhanden") %]" />
+      <label for="articleauthor">[% msg.maketext("Artikelautor") %]:</label>
+</div>
+
+<div class="form-floating mb-3">
+      <input class="form-control" type="text" name="articletitle" value=""  placeholder="[% msg.maketext("Bitte Titel des Artikels eingeben, falls vorhanden") %]" />
+      <label for="articletitle">[% msg.maketext("Artikeltitel") %]:</label>
+</div>
+
+<div class="form-floating mb-3">
+      <input class="form-control" type="text" name="volume" value=""  placeholder="[% msg.maketext("Bitte Bandangabe eingeben, falls vorhanden") %]" />
+      <label for="volume">[% msg.maketext("Band") %]:</label>
+</div>
+[% END %]
+
+<legend class="mt-2">[% msg.maketext("Weitere Angaben zur Bestellung") %]</legend>
+
+[%# USE dumper;dumper.dump(userinfo)%]
+<div class="form-floating mb-3">
+      <span class="form-control">[% userinfo.fullname %]</span>
+      <label for="username">[% msg.maketext("Nachname, Vorname") %] (*):</label>
+</div>
+
+<div class="form-floating mb-3">
+      <span class="form-control">[% userinfo.email %]</span>
+      <label for="email">[% msg.maketext("E-Mail") %] (*):</label>
+</div>
+
+<legend class="mt-2">[% msg.maketext("Bestellquittung") %]</legend>
+<div class="form-check">
+
+      <input class="form-check-input" type="checkbox" name="receipt"/>
+      <label class="form-check-label" for="receipt">[% msg.maketext("Ja, ich möchte eine Kopie dieser Bestellung als E-Mail erhalten") %].</label>
+</div>
+
+<p/>
+
+<div class="form-floating mb-3">
+      <textarea class="form-control" type="text" name="remark" placeholder="[% msg.maketext("Geben Sie hier bitte ggf. Bemerkungen zu Ihrer Bestellung ein") %]" value="" maxlength="120" size="37" ></textarea>
+      <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
+</div>
+
+
+<button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Bestellen") %]</button>
+
+</form>
+
+</div>
+</div>

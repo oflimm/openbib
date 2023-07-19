@@ -27,7 +27,7 @@
    <input type="hidden" name="type"          value="by_holding" />
 
 [%  checked = 0 %]
-[% IF unit == '38' && ( storage == '38-MAG' || storage == '38-AWM' ) %]
+[% IF unit == '38' && ( storage == '38-MAG' || storage == '38-AWM' || storage == '38-LBS' ) %]
 [%  FOREACH pickup_location IN pickup_locations %]
 [%   IF limitation && limitation.match('Lesesaal') && pickup_location.name.match('LS-Ausgabe') %]
 <div class="form-check">

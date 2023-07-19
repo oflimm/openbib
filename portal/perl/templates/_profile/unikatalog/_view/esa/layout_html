@@ -126,7 +126,11 @@
 <h1>[% msg.maketext("Sie haben keinen Zugriff zu dieser Seite.") %]</h1>
 
 <p>
-ref_id: [% ref_id %] / userid: [% userid %] / ts: [% ts %] / email: [% email %] 
+refid: [% refid %] / userid: [% userid %] / ts: [% ts %] / email: [% email %] 
+</p>
+
+<p>
+data: [% data %]
 </p>
 
 <p>

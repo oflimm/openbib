@@ -57,6 +57,17 @@
 </thead>
 <tbody>
 [%- FOREACH loan = loans.items -%]
+[%-
+
+    IF loan.department.id == "38" ;
+       IF loan.policy == "Lesesaalausleihe";
+         loan.pickup_location = { about = "Lesesaalausgabe" };
+       ELSE ;
+         loan.pickup_location = { about = "Abholregale" };
+       END ;
+    END ;
+
+-%]
 <tr>
 <td>
  <i>[% loan.about %]</i>

@@ -39,11 +39,11 @@
 	  [% msg.maketext("Bestellen Sie Literatur aus anderen Bibliotheken per Fernleihe: ") %]
 	  <ul style="margin-top:0.5em;">
 [% IF NOT alma_disable_ill_books %]	  
-            <li><a href="https://usb-koeln.digibib.net/ill/books[% IF fl_all_args.size > 0 %]?[% fl_all_args.join('&') %][% END %]" target="monofernleihsuche">Buch bestellen</a></li>
+            <li><a class="exturl" href="https://usb-koeln.digibib.net/ill/books[% IF fl_all_args.size > 0 %]?[% fl_all_args.join('&') %][% END %]" target="monofernleihsuche">Buch bestellen</a></li>
 [% ELSE %]
             <li>[% msg.maketext("Wegen des Umstiegs auf das neue Bibliothekssystem Alma sind bis ca. 6.9.2023 keine Fernleihbestellungen von Büchern möglich") %]</li>
 [% END %]
-            <li><a href="https://usb-koeln.digibib.net/ill/articles[% IF fl_all_args.size > 0 %]?[% fl_all_args.join('&') %][% END %]">Zeitschriftenartikel bestellen</a></li>
+            <li><a class="exturl" href="https://usb-koeln.digibib.net/ill/articles[% IF fl_all_args.size > 0 %]?[% fl_all_args.join('&') %][% END %]" target="artikelfernleihe">Zeitschriftenartikel bestellen</a></li>
           </ul>
 	</div>
       </div>
@@ -53,10 +53,12 @@
 	<div class="card-header pb-2 text-center"><h5>[% msg.maketext("Tipps zur Suche") %]</h5></div>
 	<div class="card-body">
 	  <ul>
-            <li>Suchen Sie mit wenigen Begriffen, z.&nbsp;B. mit einem Wort aus dem Titel und dem Nachnamen des Autors.</li>
+            <li>[% msg.maketext("Suchen Sie mit wenigen Begriffen, z.&nbsp;B. mit einem Wort aus dem Titel und dem Nachnamen des Autors.") %]</li>
             
-            <li>Verwenden Sie am Wortende das Sternchen&nbsp;<strong>*</strong>&nbsp;als Platzhalter.</li>
-            
+            <li>[% msg.maketext("Verwenden Sie am Wortende das Sternchen&nbsp;<strong>*</strong>&nbsp;als Platzhalter.") %]</li>
+
+            <li>[% msg.maketext("Verwenden Sie für die Suche nach Titeln von konkreten Personen die Phrasensuche mit \" in der Form \"Nachname, Vorname\".") %]</li>
+
           </ul>
 	</div>
       </div>
@@ -67,12 +69,12 @@
 	<div class="card-body">
 	  <ul>
 [% IF NOT alma_disable_suggestions %]
-            <li><a href="[% cms_links.anschaff %]">Anschaffungsvorschlag</a></li>
+            <li>[% msg.maketext("In Ihrem Benutzerkonto können Sie uns einen Anschaffungsvorschlag machen.") %]</li>
 [% ELSE %]
              <li>[% msg.maketext("Wegen des Umstiegs auf das neue Bibliothekssystem Alma sind bis ca. 6.9.2023 keine Anschaffungsvorschläge möglich") %]</li>
 [% END %]	    
-            <li><a href="[% cms_links.campuslieferung %]">Campuslieferdienst der USB</a></li>
-            <li><a href="[% cms_links.nutzungsordnung %]">Nutzungsordnungen</a></li>           
+            <li><a class="exturl" href="[% cms_links.campuslieferung %]" target="_blank">[% msg.maketext("Campuslieferdienst der USB") %]</a></li>
+            <li><a class="exturl" href="[% cms_links.nutzungsordnung %]" target="_blank">[% msg.maketext("Nutzungsordnungen") %]</a></li>           
           </ul>
 	</div>
       </div>

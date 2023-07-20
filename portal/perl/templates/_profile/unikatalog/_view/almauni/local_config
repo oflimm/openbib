@@ -49,6 +49,8 @@
     auskunft         = "https://www.ub.uni-koeln.de/res/auskunft/index_ger.html"
     direktor         = "https://www.ub.uni-koeln.de/ueber_uns/ansprechpartner/personal/neuhausen/index_ger.html"
     ezeitungen       = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/e_zeitungen/index_ger.html"
+    campuslieferung  = "https://typo3.ub.uni-koeln.de/lernen-ausleihen/digitale-services/campuslieferdienst"
+    nutzungsordnung  = "https://typo3.ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/nutzungsordnungen"
     
     uzk_rektor       = "https://www.portal.uni-koeln.de/rektor.html"
     uzk_studium      = "http://www.portal.uni-koeln.de/studium.html"

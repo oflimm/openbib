@@ -32,9 +32,6 @@
 <p>
 [% msg.maketext("Eine Verlängerung der Leihfrist ist derzeit bei [_1] Medien möglich.",loans.num_renewables) %]
 </p>
-<p>
-<a class="btn btn-primary" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/renew_loans" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]</a>
-</p>
 [% ELSE %]
 <p>
 [% msg.maketext("Eine Verlängerung der Leihfrist ist derzeit bei keinem der von Ihnen ausgeliehenen Medien möglich.") %]

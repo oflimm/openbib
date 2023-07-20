@@ -751,6 +751,8 @@ sub get_loans {
 	    if ($logger->is_debug){
 		$response_ref->{debug} = $json_result_ref;
 	    }
+
+	    my $num_renewables = 0;
 	    
 	    foreach my $item_ref (@{$json_result_ref->{'item_loan'}}){
 		
@@ -802,10 +804,11 @@ sub get_loans {
 		
 		if (defined $item_ref->{renewable} && $item_ref->{renewable}){
 		    $this_response_ref->{renewable} = 1;
+		    $num_renewables++;
 		}
 			
-		if (defined $item_ref->{VlText}){
-		    $this_response_ref->{renewable_remark} = $item_ref->{VlText};
+		if (defined $item_ref->{last_renew_status} && $item_ref->{last_renew_status}{desc}){
+		    $this_response_ref->{renewable_remark} = $item_ref->{last_renew_status}{desc};
 		}
 		
 		if (defined $item_ref->{Star}){
@@ -819,6 +822,8 @@ sub get_loans {
 
 		push @{$response_ref->{items}}, $this_response_ref;
 	    }
+
+	    $response_ref->{num_renewables} = $num_renewables;
 	}
     }
     

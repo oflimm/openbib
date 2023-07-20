@@ -218,9 +218,6 @@
               <a target="_blank" href="[% cms_links.fragen %]">[% msg.maketext("Kontakt") %]</a>
 	    </li>
             <li>
-              <a target="_blank" href="[% cms_links.usbinfo %]">[% msg.maketext("Newsletter") %]</a>
-	    </li>
-            <li>
               <a target="_blank" href="[% cms_links.events %]">[% msg.maketext("Kulturprogramm") %]</a>
 	    </li>
 	  </ul>

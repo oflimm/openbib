@@ -220,7 +220,7 @@
 [%    END %]
 [%############### HANDAPPARAT ################# %]
 [% ELSIF thiscirculation.storage_id.match('-HAP$') %]
-[%   IF thiscirculation.department_id.match('^(38|38-101|38-132|38-418|38-106|38-406)$') ; # Handapp. der Hauptabteilung und FBs: Bestellformular einblenden, z.B. ID=6445402, ID=6781850 %]
+[%   IF thiscirculation.department_id.match('^(38|38-101|38-132|38-418|38-106|38-406|38-307)$') ; # Handapp. der Hauptabteilung und FBs: Bestellformular einblenden, z.B. ID=6445402, ID=6781850 %]
 <strong>entliehen</strong>
 [%    IF config.get('active_ils') %]
 [%      IF    thiscirculation.department_id.match('^38-101$') ;
@@ -233,6 +233,8 @@
           realm = "bwl";
 	ELSIF thiscirculation.department_id.match('^38-406$') ;
           realm = "nl";
+	ELSIF thiscirculation.department_id.match('^38-307$') ;
+          realm = "hp";
 	ELSE;
 	  realm = "usb";
 	END;
@@ -240,7 +242,7 @@
         anon_redirect_url = "${path_prefix}/${config.get('users_loc')}/id/me/${config.get('circulations_loc')}/id/mail/handset.html?l=${lang};dbname=${database};titleid=${record.id};label=${uri_escape(thiscirculation.location_mark)};location=${uri_escape(standort)};realm=${realm}";
 
 %]
-&nbsp;<a class="btn btn-primary mb-1" [% IF NOT user.ID %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=1;redirect_to=[% anon_redirect_url | uri %]"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/handset.html?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];realm=[% realm %]">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
+<br/><a class="btn btn-primary mb-1" [% IF NOT user.ID %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=1;redirect_to=[% anon_redirect_url | uri %]"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/handset.html?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];realm=[% realm %]">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%   ELSE %]
 [% availability_info %]

@@ -785,6 +785,10 @@ sub get_loans {
 			about => $item_ref->{'location_code'}{'name'},
 		    };
 		}
+
+		if (defined $item_ref->{'item_policy'}){
+		    $this_response_ref->{'policy'} = $item_ref->{'item_policy'}{'description'};
+		}
 		
 		# if (defined $item_ref->{LesesaalNr} && $item_ref->{LesesaalNr} >= 0 && $item_ref->{LesesaalTxt} ){
 		#     $this_response_ref->{pickup_location} = {

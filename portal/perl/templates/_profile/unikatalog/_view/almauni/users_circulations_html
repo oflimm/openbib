@@ -97,20 +97,6 @@
 <p/>
 
 <div class="card">
-<div class="card-header">[% msg.maketext("Newsletterverwaltung") %]</div>
-<div class="card-body">
-
-<ul>
-<li><a href="[% cms_links.usbinfo %]" target="_blank">[% msg.maketext("USB-Info") %]</a><br/>[% msg.maketext("Allgemeine Informationen zum Dienstleistungsangebot der USB.") %]</li>
-</ul>
-
-</div>
-</div>
-
-<p/>
-
-
-<div class="card">
 <div class="card-header">[% msg.maketext("Anschaffungsvorschläge") %]</div>
 <div class="card-body">
 

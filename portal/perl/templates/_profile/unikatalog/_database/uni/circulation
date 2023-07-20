@@ -101,6 +101,28 @@
         standort_with_url = standort;   
      END;
 
+     # Innenraum-Plan vorhanden?
+
+     raumplan = "";
+
+     IF library_isil.match('^DE-38$');
+       IF standort.match('Lesesaal');
+         raumplan = "<a class=\"exturl\" href=\"${cms_links.standort_ls}\" target=\"_blank\">Raumplan</a>";
+       ELSIF standort.match('Lehrbuchsammlung');
+         raumplan = "<a class=\"exturl\" href=\"${cms_links.standort_lbs}\" target=\"_blank\">Raumplan</a>";
+       ELSIF standort.match('Sofortausleihbereich');
+         raumplan = "<a class=\"exturl\" href=\"${cms_links.standort_sab}\" target=\"_blank\">Raumplan</a>";
+       END;
+     ELSIF library_isil.match('^DE-38-307$');
+       IF standort.match('Heilpädagogik-LS');
+         raumplan = "<a class=\"exturl\" href=\"${cms_links.standort_ls_hp}\" target=\"_blank\">Raumplan</a>";
+       END;
+     ELSIF library_isil.match('^DE-38-HWA$');
+       IF standort.match('Lesesaal Humanwissenschaft') && NOT standort.match('Sonderstandort');
+         raumplan = "<a class=\"exturl\" href=\"${cms_links.standort_ls_hf}\" target=\"_blank\">Raumplan</a>";
+       END;
+     END;
+
      # Titel konstruieren
      title = normdata.${'T0331'}.first.content;
      IF normdata.${'T0310'}.first.content;
@@ -172,7 +194,7 @@
      thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','');
 
 -%]
-<tr><td><strong>[% standort_with_url %][%# USE dumper;dumper.dump(thiscirculation) %]</strong></td>
+<tr><td><i class="fas fa-map-marker-alt"></i> <strong>[% standort_with_url %][%# USE dumper;dumper.dump(thiscirculation) %]</strong> [% IF raumplan %]/ <i class="fas fa-map"></i> [% raumplan %][% END %]</td>
 <td><a href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] [% thiscirculation.remark | uri %][% END %]" title="Titel :: Bibliothek :: Standort :: Signatur" data-bs-toggle="modal" data-bs-target="#qrcodeModal" data-bs-modaltitle="QR-Code" data-bs-modalurl="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% standort | uri %] :: [% thiscirculation.location_mark | uri %][% IF thiscirculation.remark %] [% thiscirculation.remark | uri %][% END %]"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
 [%-
 

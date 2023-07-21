@@ -70,12 +70,12 @@
 
 </form>
 
-<p><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %];authenticatorid=[% available_authenticator_types.${"ils"} %]">[% msg.maketext("»Passwort vergessen?") %]</a></p>
+<!-- <p><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %];authenticatorid=[% available_authenticator_types.${"ils"} %]">[% msg.maketext("»Passwort vergessen?") %]</a></p> -->
 
 <h5>[% msg.maketext("Sie haben noch keinen Bibliotheksausweis?") %]</h5>
 <ul>
- <li><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('uccard_activations_loc') %].html?l=[% lang %]">[% msg.maketext("Möchten Sie als Student:in Ihre UCCard als Bibliotheksausweis freischalten?") %]</a></li>
- <li><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('librarycard_registrations_loc') %].html?l=[% lang %]">[% msg.maketext("Sie sind keine Student:in und möchten online einen Bibliotheksausweis beantragen?") %]</a></li>
+ <li>[% msg.maketext("Als Student:in ist Ihre UCCard der Bibliotheksausweis. Bei erstmaliger Benutzung ist Ihr Password Ihr Geburtsdatum in der Form TTMMJJJJ. Bitte ändern Sie dieses auf ein sicheres Passwort unter Benutzerkonto im Portal.") %]</li>
+ <li><a class="exturl" href="[% IF lang == 'de' %][% cms_links.anmeldung %][% ELSE %][% cms_links.registration %][% END %]" target="_blank">[% msg.maketext("Sie sind keine Student:in und möchten online einen Bibliotheksausweis beantragen?") %]</a></li>
 </ul>
 
 </div><!-- End: tabpanel-->

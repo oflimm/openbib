@@ -1463,7 +1463,7 @@ sub get_mediastatus {
 		    };
 		}
 		# Ausleihbar vor Ort
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $policy eq "A" && $this_circ_conf->{'loan'}){ 
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && ($policy eq "A" || $policy eq "LBS") && $this_circ_conf->{'loan'}){ 
 		    push @$available_ref, {
 			service => 'loan',
 			content => "ausleihbar",

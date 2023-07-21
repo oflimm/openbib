@@ -393,6 +393,16 @@ $(document).on("click", ".ob-less_button", function () {
 <!-- End database facet -->
 
 <!-- Begin availability facet -->
+[%
+
+     processed_availability = [];
+     FOREACH termitem IN facets.availability ;
+        NEXT IF NOT termitem.0.match("online") && NOT termiten.0.match("presence");
+	processed_availability.push(termitem);
+     END;
+
+     facets.availability = processed_availability;
+%]
 [%         IF facets.defined('availability') && facets.availability.size > 0 %]
         <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-availability[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Verfügbarkeit") %] 

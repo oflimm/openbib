@@ -1,42 +1,5 @@
-[%-
+[% PROCESS common/subtemplate name="titles_record_abstract_fields" %]
 
-  fields    = record.to_abstract_fields;
-
-  title     = fields.title;
-   
-  IF fields.titlesup;
-    title   = "${title} : ${fields.titlesup}";
-  END;
-
-  persons   = fields.authors;
-  person    = persons.join(' ; ');
-
-  corporatebodies = fields.corp;
-
-  corporatebody   = corporatebodies.join(' ; ');
-
-  pubplace  = [];
-  publisher = fields.publisher;
-  place     = fields.place;
-
-  IF place ;
-    pubplace.push(place);
-  END;
-
-  IF publisher ;
-    pubplace.push(publisher);
-  END;
-
-  publisher = pubplace.join(' : ');
-  year      = fields.year;
-  isbn      = fields.isbn;
-  issn      = fields.issn;
-  source    = fields.series;  
-  titleid   = record.id;
-  
--%]
-
-[%# USE dumper;dumper.dump(super)%]
 <div class="card mt-5 mb-5 me-5">
 <div class="card-header">[% msg.maketext("ILIAS-Bestellung") %]</div>
 <div class="card-body">

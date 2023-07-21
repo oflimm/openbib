@@ -192,7 +192,7 @@
     <h1 class="ms-0">[% msg.maketext("Universität zu Köln") %]</h1>
   </a>
   <div id="ob-header_navbarmenu_small" class="d-flex justify-content-end">
-    <span class="d-lg-none me-4 p-1" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_user" aria-controls="offcanvasSidebar"><i class="fas fa-user fa-2x"></i></span>
+    <span class="d-lg-none me-4 p-1 [% IF user.ID %]ob-logged_in[% END %]" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_user" aria-controls="offcanvasSidebar"><i class="fas fa-user fa-2x"></i></span>
     <span class="d-lg-none p-1 pe-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_hamburger" aria-controls="offcanvasSidebar"><i class="fas fa-bars fa-2x"></i></span>
   </div>
   <div class="collapse navbar-collapse"">
@@ -234,7 +234,7 @@
     [%  IF username %]
       [% IF NOT suppress_unauthorized %]
            <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %] dropdown">
-	        <a class="nav-link dropdown-toggle" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/edit.html?l=[% lang %]" data-bs-toggle="dropdown">[% msg.maketext("Mein Konto") %]</a>
+	        <a class="nav-link dropdown-toggle" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/edit.html?l=[% lang %]" data-bs-toggle="dropdown"><span class="[% IF user.ID %]ob-logged_in[% END %]">[% msg.maketext("Mein Konto") %]</span></a>
 		<div class="dropdown-menu ob-dropdown">
     [% PROCESS common/subtemplate name="users_navigation_dropdown" %] 
 		</div>

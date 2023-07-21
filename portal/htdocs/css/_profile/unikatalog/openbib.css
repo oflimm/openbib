@@ -106,6 +106,10 @@
 	z-index: 49;
     }
 
+    .ob-logged_in {
+	color: orange;
+    }
+    
     .ob-title {
 	font-size: 1.2em;
     }
@@ -1966,6 +1970,12 @@ a.ext {
     background: red;
     color: #000;
 }
+.ob-availability_error {
+    width: 9em;
+    background: lightgrey ; /* Contrast: WCAG 2.1 AA */ 
+    color: #000;    
+}
+
 
 .ob-highlight_searchterm {
     color:#990000;
@@ -2118,28 +2128,34 @@ a.ext {
     }
 
     .ob-availability_online {
-	width: auto;
+	width: 3em;
 	background: #90c4eb;    
 
 	color: #fff;
     }
     
     .ob-availability_lendable {
-	width: auto;
+	width: 3em;
 	background: green;    
 	color: #fff;
     }
     .ob-availability_presence {
-	width: auto;
+	width: 3em;
 	background: orange;
 	color: #fff;	
     }
     .ob-availability_borrowed {
-	width: auto;
+	width: 3em;
 	background: red;
 	color: #fff;
     }
 
+    .ob-availability_error {
+	width: 3em;
+	background: lightgrey ; /* Contrast: WCAG 2.1 AA */ 
+	color: #000;    
+    }
+    
 }
 
 @media screen and (max-width:480px) {

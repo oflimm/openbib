@@ -1,39 +1,23 @@
 [%-
 
-  fields       = record.to_custom_field_scheme_1;
-#  holdings     = record.get_holding;
-#  circulations = record.load_circulation.get_circulation;
+  fields    = record.to_abstract_fields;
 
-  title     = fields.${"T0245"}.${'a'};
-
-  IF NOT title && fields.${'T0245'}.${'n'};
-     title = fields.${'T0245'}.${'n'};
-  END ;
-
-  IF fields.${"T0245"}.defined('b') ;
-     titlesup = fields.${"T0245"}.${'b'};
-     title = "${title} : ${titlesup}";
+  title     = fields.title;
+   
+  IF fields.titlesup;
+    title   = "${title} : ${fields.titlesup}";
   END;
 
-  persons   = [];
-  FOREACH thisfield IN ['T0100','T0700'];
-    IF fields.${thisfield}.defined('a');
-        persons.push(fields.${thisfield}.${'a'});
-    END;
-  END;
-  person = persons.join(' ; ');
+  persons   = fields.authors;
+  person    = persons.join(' ; ');
 
-  corporatebodies   = [];
-  FOREACH thisfield IN ['T0110','T0710'];
-    IF fields.${thisfield}.defined('a');
-        corporatebodies.push(fields.${thisfield}.${'a'});
-    END;
-  END;
-  corporatebody = corporatebodies.join(' ; ');
+  corporatebodies = fields.corp;
 
-  pubplace = [];
-  publisher = fields.${"T0264"}.${'b'};
-  place     = fields.${"T0264"}.${'a'};
+  corporatebody   = corporatebodies.join(' ; ');
+
+  pubplace  = [];
+  publisher = fields.publisher;
+  place     = fields.place;
 
   IF place ;
     pubplace.push(place);
@@ -44,44 +28,10 @@
   END;
 
   publisher = pubplace.join(' : ');
-  
-  year      = fields.${"T0264"}.${'c'};
-
-  super = "";
-  # 1. Ueberordnung?
-  IF fields.${'T5005'}.first.content;
-     super = from_json(fields.${'T5005'}.first.content);
-  END;
-
-  IF fields.${"T0020"}.defined('9');
-    isbn = fields.${"T0020"}.${'9'};  
-  ELSIF fields.${"T0020"}.defined('a');
-    isbn = fields.${"T0020"}.${'a'};
-  ELSIF super && super.fields.${"0020"}.defined('9');
-    isbn = super.fields.${"0020"}.${'9'};  
-  ELSIF super && super.fields.${"0020"}.defined('a');
-    isbn = super.fields.${"0020"}.${'a'};  
-  END;
-
-  IF fields.${"T0022"}.defined('9');
-    issn = fields.${"T0022"}.${'9'};  
-  ELSIF fields.${"T0022"}.defined('a');
-    issn = fields.${"T0022"}.${'a'};
-  ELSIF super && super.fields.${"0022"}.defined('9');
-    issn = super.fields.${"0022"}.${'9'};  
-  ELSIF super && super.fields.${"0020"}.defined('a');
-    issn = super.fields.${"0022"}.${'a'};  
-  END;
-
-  source    = "";
-  IF fields.${"T0490"}.defined('a');
-    source  = fields.${"T0490"}.${'a'};
-  ELSIF super ;
-     IF super.fields.${'0331'} ;
-        source   = super.fields.${'0245'}.${'a'};
-     END ;
-  END;
-
+  year      = fields.year;
+  isbn      = fields.isbn;
+  issn      = fields.issn;
+  source    = fields.series;  
   titleid   = record.id;
   
 -%]

@@ -136,3 +136,12 @@
 </div>
 
 </div>
+<script>
+document.body.addEventListener('htmx:beforeHistorySave', function(evt) {
+   //evt.detail.path = 'abc';
+   let links = document.getElementById('ob-searchresult_tabs').getElementsByTagName('a');
+   let active_links = Array.from(links).filter(element => element.classList.contains('active'))
+   console.log(active_links);
+});
+
+</script>

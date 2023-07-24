@@ -300,7 +300,6 @@ my $denylist_ref = {
     'usbebooks' => 1,
     'usbhwa' => 1,
     'usbsab' => 1,
-    'vubpda' => 1,
     'proquestpda' => 1,
     'roemkepda' => 1,
     'dreierpda' => 1,
@@ -364,7 +363,7 @@ autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['proquestp
 
 $logger->info("### PRINTPDA");
 
-autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','vubpda','schweitzerpda','roemkepda'] });
+autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['dreierpda','schweitzerpda','roemkepda'] });
 
 ##############################
 

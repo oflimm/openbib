@@ -1020,7 +1020,7 @@ yearslider_to[% facet_prefix %][% idsuffix %].addEventListener('change', functio
    'Sammlung Martin Stankowski' = 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/stankowski'
    'Sammlung Mathilde von Mevissen' = 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/mevissen'
    'Sammlung Melanie von Mevissen' = 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/mevissen'
-   'Sammlung Otto Löffler' = 'https://https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/islandica'
+   'Sammlung Otto Löffler' = 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/islandica'
    'Sammlung Otto Stein' = 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/stein'
    'Sammlung Otto Wolff' = 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/otto-wolff'
    'Sammlung Poetica' = 'https://poetica.ub.uni-koeln.de/portal/home.html?l=de'
@@ -1033,7 +1033,6 @@ yearslider_to[% facet_prefix %][% idsuffix %].addEventListener('change', functio
    'Sammlung Syndikatsbibliothek' = 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/syndikatsbibliothek'
    'Sammlung Thomas a Kempis' = 'http://kempis.ub.uni-koeln.de/'
    'Sammlung Westerholt' = 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/westerholt'
-   'Sammlung Westerholt' = 'http://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/westerholt'
    'Sammlung Wilhelm Alff' = 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/alff'
    'Sammlung Wilhelmine von Westerholt' = 'https://typo3.ub.uni-koeln.de/sammlungen-und-schwerpunkte/westerholt'
   }

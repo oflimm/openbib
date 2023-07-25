@@ -132,7 +132,7 @@ sub new {
 
     my $ua = LWP::UserAgent->new();
     $ua->agent('USB Koeln/1.0');
-    $ua->timeout(30);
+    $ua->timeout(5);
 
     $self->{client}        = $ua;
         
@@ -983,6 +983,12 @@ sub parse_query {
             elsif ($field eq "issn" && $searchtermstring) {
                 push @searchterms, {
                     field   => 'IS',
+                    content => $searchtermstring
+                };
+            }
+            elsif ($field eq "zdbid" && $searchtermstring) {
+                push @searchterms, {
+                    field   => 'ZD',
                     content => $searchtermstring
                 };
             }

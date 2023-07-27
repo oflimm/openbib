@@ -3663,10 +3663,21 @@ sub delete_locationinfo {
     my $locationinfo = $self->get_schema->resultset('Locationinfo')->single({ identifier => $locationid });
 
     eval {
-        $locationinfo->databaseinfos->update({ locationid => \'NULL' });
-        $locationinfo->view_locations->delete;
-        $locationinfo->locationinfo_fields->delete;
-        $locationinfo->delete;
+	if ($locationinfo){
+	  if ($locationinfo->search_related('databaseinfos')){
+            $locationinfo->databaseinfos->update({ locationid => \'NULL' });
+          }
+	  if ($locationinfo->search_related('view_locations')){
+            $locationinfo->view_locations->delete;
+          }
+	  if ($locationinfo->search_related('user_searchlocations')){
+            $locationinfo->user_searchlocations->delete;
+          }
+	  if ($locationinfo->search_related('locationinfo_fields')){
+            $locationinfo->locationinfo_fields->delete;
+          }
+          $locationinfo->delete;
+        }
     };
 
     if ($@){

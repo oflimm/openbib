@@ -180,6 +180,12 @@ sub get_titles_record {
 	content => $json_result_ref
     };
 
+    push @{$fields_ref->{'T0010'}}, {
+	content => $json_result_ref->{gndIdentifier},
+	mult => 1,
+	subfield => 'a',
+    };
+    
     push @{$fields_ref->{'T0331'}}, {
 	content => $json_result_ref->{preferredName},
 	mult => 1,

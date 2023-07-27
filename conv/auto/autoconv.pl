@@ -763,6 +763,10 @@ unless ($incremental || $searchengineonly){
 	}
 	else {
 	    if ($use_searchengine_ref->{"xapian"}){
+		if (-d "$config->{xapian_index_base_path}/${database}tmp2"){
+		    system("rm $config->{xapian_index_base_path}/${database}tmp2/* ; rmdir $config->{xapian_index_base_path}/${database}tmp2");
+		}
+		
 		if (-d "$config->{xapian_index_base_path}/$database"){
 		    system("mv $config->{xapian_index_base_path}/$database $config->{xapian_index_base_path}/${database}tmp2");
 		}

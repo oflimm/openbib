@@ -35,6 +35,13 @@ __PACKAGE__->table("view_rss");
   is_foreign_key: 1
   is_nullable: 0
 
+=head2 id
+
+  data_type: 'bigint'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'view_rss_id_seq'
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -42,7 +49,26 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
   "rssid",
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
+  "id",
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "view_rss_id_seq",
+  },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
+__PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
 
@@ -77,8 +103,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2023-01-03 08:17:58
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:fjsq6ZH744pSE3oxFxY37w
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2023-07-27 13:41:13
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oOtVb40sAg7PIxWJXcsuPg
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

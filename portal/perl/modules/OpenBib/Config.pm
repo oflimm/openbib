@@ -3280,33 +3280,36 @@ sub del_databaseinfo {
     eval {
         my $databaseinfo =  $self->get_schema->resultset('Databaseinfo')->single({ dbname => $dbname});
 
-    if ($databaseinfo->search_related('orgunit_dbs')){
-	$databaseinfo->orgunit_dbs->delete;
-    }
+        if ($databaseinfo){
+          if ($databaseinfo->search_related('orgunit_dbs')){
+            $databaseinfo->orgunit_dbs->delete;
+          }
     
-    if ($databaseinfo->search_related('rssinfos')){
-	#$databaseinfo->rssinfos->rsscaches->delete if ($databaseinfo->rssinfos->search_related('rsscaches'));
-	if ($databaseinfo->rssinfos->search_related('view_rsses')){
-	    $databaseinfo->rssinfos->search_related('view_rsses')->delete;
-	}
-	$databaseinfo->rssinfos->delete;
-    }
-    if ($databaseinfo->search_related('updatelogs')){
-	$databaseinfo->updatelogs->delete;
-    }
+          if ($databaseinfo->search_related('rssinfos')){
+	  #$databaseinfo->rssinfos->rsscaches->delete if ($databaseinfo->rssinfos->search_related('rsscaches'));
+  	    if ($databaseinfo->rssinfos->search_related('view_rsses')){
+	      $databaseinfo->rssinfos->search_related('view_rsses')->delete;
+	    }
+	    $databaseinfo->rssinfos->delete;
+          }
 
-    if ($databaseinfo->search_related('databaseinfo_searchengines')){
-	$databaseinfo->databaseinfo_searchengines->delete;
-    }
-    if ($databaseinfo->search_related('searchprofile_dbs')){
-	$databaseinfo->searchprofile_dbs->delete;
-    }
-    if ($databaseinfo->search_related('view_dbs')){
-	$databaseinfo->view_dbs->delete;
-    }
-    $databaseinfo->update({ locationid => \'NULL' });
-    $databaseinfo->delete;
+          if ($databaseinfo->search_related('updatelogs')){
+	    $databaseinfo->updatelogs->delete;
+          }
 
+          if ($databaseinfo->search_related('databaseinfo_searchengines')){
+	    $databaseinfo->databaseinfo_searchengines->delete;
+          }
+          if ($databaseinfo->search_related('searchprofile_dbs')){
+	    $databaseinfo->searchprofile_dbs->delete;
+          }
+          if ($databaseinfo->search_related('view_dbs')){
+	    $databaseinfo->view_dbs->delete;
+          }
+
+          $databaseinfo->update({ locationid => \'NULL' });
+          $databaseinfo->delete;
+      }
     };
     
     if ($@){

@@ -2108,7 +2108,7 @@ sub process_marc {
 		
 		if ($item_ref->{subfield} eq "6"){ # Linkage		
 		    my $mult            = $item_ref->{mult};
-		    my $corporatebodyid = $item_ref->{id};
+		    my $corporatebodyid = $item_ref->{content};
 		    my $titleid    = $id;
 		    my $supplement = "";
 		    
@@ -2163,7 +2163,7 @@ sub process_marc {
 
 		if ($item_ref->{subfield} eq "6"){ # Linkage		
 		    my $mult             = $item_ref->{mult};                
-		    my $classificationid = $item_ref->{id};
+		    my $classificationid = $item_ref->{content};
 		    my $titleid          = $id;
 		    my $supplement       = "";
 		    
@@ -2211,7 +2211,7 @@ sub process_marc {
 
 		if ($item_ref->{subfield} eq "6"){ # Linkage		
 		    my $mult       = $item_ref->{mult};                
-		    my $subjectid  = $item_ref->{id};
+		    my $subjectid  = $item_ref->{content};
 		    my $titleid    = $id;
 		    my $supplement = "";
 		    

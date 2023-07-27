@@ -68,6 +68,9 @@
 	<div class="card-header pb-2 text-center"><h5>[% msg.maketext("Weitere Informationen") %]</h5></div>
 	<div class="card-body">
 	  <ul>
+	    <li>
+              <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/faq.html?l=de" target="_blank" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/faq.include?l=[% lang %]">[% msg.maketext("FAQ") %]</a>
+	    </li>
 [% IF NOT alma_disable_suggestions %]
             <li>[% msg.maketext("In Ihrem Benutzerkonto können Sie uns einen Anschaffungsvorschlag machen.") %]</li>
 [% ELSE %]

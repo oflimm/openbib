@@ -3280,15 +3280,33 @@ sub del_databaseinfo {
     eval {
         my $databaseinfo =  $self->get_schema->resultset('Databaseinfo')->single({ dbname => $dbname});
 
-	if ($databaseinfo){
-            $databaseinfo->update({ locationid => \'NULL' });
-            $databaseinfo->orgunit_dbs->delete;
-            $databaseinfo->rssinfos->delete;
-            $databaseinfo->updatelogs->delete;
-            $databaseinfo->searchprofile_dbs->delete;
-            $databaseinfo->view_dbs->delete;
-            $databaseinfo->delete
-        }
+    if ($databaseinfo->search_related('orgunit_dbs')){
+	$databaseinfo->orgunit_dbs->delete;
+    }
+    
+    if ($databaseinfo->search_related('rssinfos')){
+	#$databaseinfo->rssinfos->rsscaches->delete if ($databaseinfo->rssinfos->search_related('rsscaches'));
+	if ($databaseinfo->rssinfos->search_related('view_rsses')){
+	    $databaseinfo->rssinfos->search_related('view_rsses')->delete;
+	}
+	$databaseinfo->rssinfos->delete;
+    }
+    if ($databaseinfo->search_related('updatelogs')){
+	$databaseinfo->updatelogs->delete;
+    }
+
+    if ($databaseinfo->search_related('databaseinfo_searchengines')){
+	$databaseinfo->databaseinfo_searchengines->delete;
+    }
+    if ($databaseinfo->search_related('searchprofile_dbs')){
+	$databaseinfo->searchprofile_dbs->delete;
+    }
+    if ($databaseinfo->search_related('view_dbs')){
+	$databaseinfo->view_dbs->delete;
+    }
+    $databaseinfo->update({ locationid => \'NULL' });
+    $databaseinfo->delete;
+
     };
     
     if ($@){
@@ -6005,6 +6023,178 @@ sub del_authtoken {
     )->delete_all;
     
     return;
+}
+
+sub set_datacache {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id           } : undef;
+
+    my $type              = exists $arg_ref->{type}
+        ? $arg_ref->{type  }        : undef;
+
+    my $subkey            = exists $arg_ref->{subkey}
+        ? $arg_ref->{subkey  }      : '';
+
+    my $data_ref          = exists $arg_ref->{data}
+        ? $arg_ref->{data  }        : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("About to store result");
+
+    return undef unless (defined $id && defined $type && defined $data_ref);
+
+    # DBI: "delete from result_data where id=? and type=?";
+    my $where_ref     = {
+        id   => $id,
+        type => $type,
+    };
+    
+    if ($subkey){
+        $where_ref->{subkey}=$subkey;
+    }
+
+    eval {
+        $self->get_schema->resultset('Datacache')->search($where_ref)->delete;
+    };
+
+    if ($@){
+        $logger->error("Couldn't delete item(s)");
+    }
+
+    if ($logger->is_debug){
+        $logger->debug("Storing:\n".YAML::Dump($data_ref));
+        $logger->debug(ref $data_ref);
+    }
+    
+    if (ref $data_ref eq "ARRAY" && !@$data_ref){
+        $logger->debug("Aborting: No Data");
+        return;
+    }
+
+    my $datastring = encode_json $data_ref;
+
+    # DBI: "insert into result_data values (?,NULL,?,?,?)"
+    $self->get_schema->resultset('Datacache')->create(
+        {
+            id     => $id,
+            type   => $type,
+            subkey => $subkey,
+            tstamp => \'NOW()',
+            data   => decode_utf8($datastring)
+        }
+    );
+
+    return;
+}
+
+sub get_datacache {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id           } : undef;
+    my $type              = exists $arg_ref->{type}
+        ? $arg_ref->{type  }        : undef;
+    my $subkey            = exists $arg_ref->{subkey}
+        ? $arg_ref->{subkey  }      : '';
+    my $hashkey           = exists $arg_ref->{hashkey}
+        ? $arg_ref->{hashkey}       : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my ($atime,$btime,$timeall);
+        
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    $logger->debug("Getting Result");
+    
+    return undef unless (defined $id && defined $type);
+
+    # DBI: "select data from result_data where id=? and type=?"
+    my $where_ref     = {
+        id   => $id,
+        type => $type,
+    };
+    
+    if ($subkey){
+        $where_ref->{subkey}=$subkey;
+    }
+    
+    my $resultdatas = $self->get_schema->resultset('Datacache')->search($where_ref,{ columns => qw/ data / });
+
+    $logger->debug("Searching data for Id: $id / Type: $type");
+
+    my $data_ref;
+    foreach my $resultdata ($resultdatas->all){
+        my $datastring = encode_utf8($resultdata->data);
+
+	$logger->debug("Found a Record: $datastring");
+
+        $data_ref     = decode_json $datastring;
+    }
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($data_ref));        
+        $logger->debug("Ref: ".(ref $data_ref));
+    }
+    
+    if (ref $data_ref eq "HASH" && $hashkey){
+        if ($logger->is_debug){
+            $logger->debug("Returning Ref: ".(ref $data_ref));
+        }
+        
+    if ($self->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
+    }
+
+        return $data_ref->{$hashkey};
+    }
+
+    if ($self->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
+    }
+    
+    return $data_ref;
+}
+
+sub datacache_exists {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id           } : undef;
+    my $type              = exists $arg_ref->{type}
+        ? $arg_ref->{type  }        : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return 0 unless (defined $id && defined $type);
+
+    # DBI: "select count(data) as resultcount from result_data where id=? and type=? and length(data) > 300"
+    # length WHY? ;-)
+    my $where_ref     = {
+        id   => $id,
+        type => $type,
+    };
+    
+    my $resultcount = $self->get_schema->resultset('Datacache')->search($where_ref)->count;
+
+    $logger->debug("Found: $resultcount");
+    
+    return $resultcount;
 }
     
 sub cleanup_pg_content {

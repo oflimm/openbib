@@ -76,6 +76,7 @@ CREATE INDEX view_db_dbid ON view_db (dbid);
 CREATE INDEX view_db_viewid ON view_db (viewid);
 
 
+ALTER TABLE view_rss ADD PRIMARY KEY (id);
 ALTER TABLE view_rss ADD CONSTRAINT fk_viewrss_rss FOREIGN KEY (rssid) REFERENCES rssinfo (id);
 ALTER TABLE view_rss ADD CONSTRAINT fk_viewrss_view FOREIGN KEY (viewid) REFERENCES viewinfo (id);
 CREATE INDEX view_rss_rssid ON view_rss (rssid);

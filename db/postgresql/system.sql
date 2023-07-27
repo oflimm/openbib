@@ -170,6 +170,7 @@ CREATE TABLE view_db (
 
 drop table IF EXISTS view_rss;
 CREATE TABLE view_rss (
+ id        BIGSERIAL,
  viewid    BIGINT NOT NULL,
  rssid     BIGINT NOT NULL
 );

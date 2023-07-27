@@ -383,6 +383,19 @@ sub view_listinfo {
 
 }
 
+sub database_delete {
+
+    my $config = new OpenBib::Config;
+
+    if (!$db){
+	$logger->error("Missing arg db");
+	exit;
+    }
+
+    my $result = $config->del_databaseinfo($db);
+
+}
+
 
 sub print_help {
     print << "ENDHELP";
@@ -423,17 +436,22 @@ List locations of view
    --do=list_loc
    --view=...           : View name
 
-Add database to view
+Add location to view
    --scope=view
    --do=add_loc
-   --loc=...              : Database name
+   --loc=...            : Location
    --view=...           : View name
 
-Delete database in view
+Delete location in view
    --scope=view
    --do=delete_loc
-   --loc=...              : Database name
+   --loc=...            : Location
    --view=...           : View name
+
+Delete database
+   --scope=database
+   --do=delete
+   --db=...             : Database name
 
 e.g:
 

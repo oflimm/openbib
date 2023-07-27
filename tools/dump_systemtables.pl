@@ -86,10 +86,66 @@ my $pg_dump    = "/usr/bin/pg_dump";
 my $gzip       = "/bin/gzip";
 my $tar        = "/bin/tar";
 
+my @system_tables = (
+    'databaseinfo',
+    'databaseinfo_searchengine',
+    'locationinfo',
+    'locationinfo_fields',
+    'locationinfo_occupancy',
+    'rssinfo',
+    'rsscache',
+    'profileinfo',
+    'orgunitinfo',
+    'orgunit_db',
+    'viewinfo',
+    'view_db',
+    'view_rss',
+    'view_location',
+    'clusterinfo',
+    'serverinfo',
+    'userinfo',
+    'user_searchlocation',
+    'roleinfo',
+    'role_view',
+    'role_viewadmin',
+    'role_right',
+    'user_role',
+    'user_db',
+    'templateinfo',
+    'user_template',
+    'templateinforevision',
+    'registration',
+    'authtoken',
+    'authenticatorinfo',
+    'authenticator_view',
+    'searchprofile',
+    'searchprofile_db',
+    'user_searchprofile',
+    'searchfield',
+    'livesearch',
+    'user_cartitem',
+    'tag',
+    'tit_tag',
+    'review',
+    'reviewrating',
+    'litlist',
+    'litlistitem',
+    'topic',
+    'litlist_topic',
+    'topicclassification',
+    'dbrtopic',
+    'dbistopic',
+    'dbrtopic_dbistopic',
+    'dbisdb',
+    'dbistopic_dbisdb',
+    'paia',
+    );
+
+my $table_string = join(' ', map { "-T $_"} @system_tables);
 
 system("echo \"*:*:*:$config->{'systemdbuser'}:$config->{'systemdbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
 
-system("$pg_dump -U $config->{'systemdbuser'} -c -T 'updatelog*' -T 'session*' -T 'recordhistory*' -T 'event*' -T 'queries*' -T 'searchhistory*' openbib_system | $gzip > system_tables.sql.gz");
+system("$pg_dump -U $config->{'systemdbuser'} -h $config->{'systemdbhost'} -c $table_string openbib_system | $gzip > system_tables.sql.gz");
 
 sub print_help {
     print << "ENDHELP";

@@ -3509,15 +3509,33 @@ sub del_view {
     eval {
         my $view = $self->get_schema->resultset('Viewinfo')->single({ viewname => $viewname });
 
-        $view->view_dbs->delete;
-	$view->role_views->delete;
-	$view->authenticator_views->delete;
-	$view->view_locations->delete;
-        $view->view_rsses->delete;
-	$view->registrations->delete;
-	$view->templateinfos->delete;
-	$view->userinfos->delete;
-        $view->delete;
+	if ($view){
+	    if ($view->search_related('view_dbs')){
+		$view->view_dbs->delete;
+	    }
+	    if ($view->search_related('role_views')){	    
+		$view->role_views->delete;
+	    }
+	    if ($view->search_related('authenticator_views')){
+		$view->authenticator_views->delete;
+	    }
+	    if ($view->search_related('view_locations')){
+		$view->view_locations->delete;
+	    }
+	    if ($view->search_related('view_rsses')){
+		$view->view_rsses->delete;
+	    }
+	    if ($view->search_related('registrations')){
+		$view->registrations->delete;
+	    }
+	    if ($view->search_related('templateinfos')){
+		$view->templateinfos->delete;		
+	    }
+	    if ($view->search_related('userinfos')){
+		$view->userinfos->delete;
+	    }
+	    $view->delete;
+	}
     };
 
     if ($@){

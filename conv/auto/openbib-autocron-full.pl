@@ -486,7 +486,7 @@ sub threadB {
 
     $logger->info("### Master: Alma Uni Katalog");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['uni'] });
+    #autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['uni'] });
 #    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, databases => ['inst001'] });
     
     ##############################

@@ -1,0 +1,3 @@
+[% config.get_templatetext('info_ezeitungen',view,lang) %]
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Elektronische Zeitungen") %]</div>

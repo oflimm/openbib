@@ -79,6 +79,6 @@
       </div>
     </div>
 
-<a class="btn btn-primary mt-3 mb-3" href="http://ezb.ur.de/ezeit/fl.phtml?bibid=USBK&colors=7&lang=de" target="_blank"><i class="fas fa-globe me-2"></i>Direkt in der EZB recherchieren</a>
+<a class="btn btn-primary mt-3 mb-3 me-2" href="http://ezb.ur.de/ezeit/fl.phtml?bibid=USBK&colors=7&lang=de" target="_blank"><i class="fas fa-globe me-2"></i>Direkt in der EZB recherchieren</a>
 
-<a class="btn btn-primary mt-3 mb-3 ms-2" href="[% cms_links.ezeitungen %]" target="_blank"><i class="fas fa-globe me-2"></i>Liste von E-Zeitungen</a>
+<a class="btn btn-primary mt-3 mb-3" href="[% path_prefix %]/[% config.get('info_loc') %]/ezeitungen.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/ezeitungen.include?l=[% lang %]" title="[% msg.maketext("Elektronische Zeitungen") %]"><i class="fas fa-globe me-2"></i>Liste von E-Zeitungen</a>

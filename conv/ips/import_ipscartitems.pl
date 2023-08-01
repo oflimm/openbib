@@ -113,6 +113,10 @@ while (my $line = <JSONIN>){
 	foreach my $cartitem_ref (@{$input_ref->{'items'}}){
 	    my $dbname = $cartitem_ref->{dbname};
 	    my $titleid = $cartitem_ref->{titleid};
+
+	    if (defined $cartitem_ref->{success} && $cartitem_ref->{success}){
+		next;
+	    }
 	    
 	    $logger->debug("Processing DB $dbname ID $titleid");	    
 	    if (!$config->db_exists($dbname)){

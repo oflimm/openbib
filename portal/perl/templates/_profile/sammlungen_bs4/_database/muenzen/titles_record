@@ -48,7 +48,7 @@
        layout_param.representations = [
           {
 	     type = 'dfg'
-	     url  = "https://dfg-viewer.de/show/?set[mets]=http%3A%2F%2Fwww.ub.uni-koeln.de%2Fcdm4%2Fmets_gateway.php%3FCISOROOT%3D%2Fmuenzen%26CISOPTR%3D${cdmid}"
+	     url  = "https://dfg-viewer.de/show/?set[mets]=https%3A%2F%2Fservices.ub.uni-koeln.de%2Fcdm4%2Fmets_gateway.php%3FCISOROOT%3D%2Fmuenzen%26CISOPTR%3D${cdmid}"
 	  },
           {
 	     type = 'json'

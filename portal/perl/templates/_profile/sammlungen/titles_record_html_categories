@@ -224,23 +224,23 @@ END;
 
 # Switching processed links
 
-IF normdata.defined('T4662');
-   normdata.${'T0662'} = normdata.${'T4662'};
-   normdata.${'T0663'} = normdata.${'T4663'};
-   normdata.${'T2662'} = [];
-   normdata.${'T2662'}.delete;
-   normdata.${'T2663'} = [];
-   normdata.${'T2663'}.delete;   
-ELSIF record.database != 'eds'; # EDS hat kein Preprocessing von Links
-   normdata.${'T0662'} = [];
-   normdata.${'T0663'} = [];
-   normdata.${'T2662'} = [];
-   normdata.${'T2663'} = [];
-   normdata.${'T0662'}.delete;
-   normdata.${'T0663'}.delete;
-   normdata.${'T2662'}.delete;
-   normdata.${'T2663'}.delete;
-END;
+# IF normdata.defined('T4662');
+#    normdata.${'T0662'} = normdata.${'T4662'};
+#    normdata.${'T0663'} = normdata.${'T4663'};
+#    normdata.${'T2662'} = [];
+#    normdata.${'T2662'}.delete;
+#    normdata.${'T2663'} = [];
+#    normdata.${'T2663'}.delete;   
+# ELSIF record.database != 'eds'; # EDS hat kein Preprocessing von Links
+#    normdata.${'T0662'} = [];
+#    normdata.${'T0663'} = [];
+#    normdata.${'T2662'} = [];
+#    normdata.${'T2663'} = [];
+#    normdata.${'T0662'}.delete;
+#    normdata.${'T0663'}.delete;
+#    normdata.${'T2662'}.delete;
+#    normdata.${'T2663'}.delete;
+# END;
 
 # Preprocessing lizensiert, OA oder Nationallizens
 

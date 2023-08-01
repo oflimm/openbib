@@ -158,14 +158,14 @@ Sie werden über den Eingang der Bestellung <b>nicht</b> gesondert benachrichtig
 
 <div class="form-floating mb-3">
       <span class="form-control">[% signatur %]</span>
-      <input type="hidden" name="label" value="[% uri_escape(signatur) %]" />
+      <input type="hidden" name="label" value="[% signatur %]" />
       <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
 </div>
 
 [% IF numbering %]
 <div class="form-floating mb-3">
       <span class="form-control">[% numbering %]</span>
-      <input type="hidden" name="numbering" value="[% uri_escape(numbering) %]" />
+      <input type="hidden" name="numbering" value="[% numbering %]" />
      <label for="numbering">[% msg.maketext("Bestand in der USB") %]:</label>
 </div>
 [% END %]
@@ -188,7 +188,7 @@ Sie werden über den Eingang der Bestellung <b>nicht</b> gesondert benachrichtig
 <p>Mit * gekennzeichnete Felder sind Pflichtfelder und müssen ausgefüllt werden.</p>
 
 <div class="form-floating mb-3">
-      <input class="form-control" type="text" name="loginname" value="" />
+      <input class="form-control" type="text" name="username" value="" />
      <label for="username">[% msg.maketext("Name, Vorname") %] (*):</label>
 </div>
 

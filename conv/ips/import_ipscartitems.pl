@@ -103,6 +103,7 @@ while (my $line = <JSONIN>){
     }
     
     if (!$user->user_exists($this_username)){
+	print JSONOUT encode_json $input_ref,"\n";	
 	$logger->error("NO_USER: $this_username");
 	next;
     }
@@ -115,6 +116,7 @@ while (my $line = <JSONIN>){
 	    my $titleid = $cartitem_ref->{titleid};
 
 	    if (defined $cartitem_ref->{success} && $cartitem_ref->{success}){
+		$logger->debug("NOT processing DB $dbname ID $titleid - already imported");	    
 		next;
 	    }
 	    

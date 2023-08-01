@@ -6,11 +6,11 @@
   <ul class="pagination d-flex justify-content-center">
 [% IF nav.current_page > 1 %]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page - 1 %][% IF query_args_base %];[% query_args_base %][% END %]">Zurück</a>
+       <a class="page-link" href="[% path %]?page=[% nav.current_page - 1 %][% IF query_args_base %];[% query_args_base %][% END %]">[% msg.maketext("Zurück") %]</a>
     </li>
 [% ELSE %]
     <li class="page-item disabled">
-       <span class="page-link">Zurück</a>
+       <span class="page-link">[% msg.maketext("Zurück") %]</a>
     </li>
 [% END %]
 [%- IF nav.pages_in_set.first > nav.first_page -%]
@@ -45,11 +45,11 @@
 
 [% IF nav.current_page < nav.last_page %]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page + 1 %][% IF query_args_base %];[% query_args_base %][% END %]">Vor</a>
+       <a class="page-link" href="[% path %]?page=[% nav.current_page + 1 %][% IF query_args_base %];[% query_args_base %][% END %]">[% msg.maketext("Vor") %]</a>
     </li>
 [% ELSE %]
     <li class="page-item disabled">
-       <span class="page-link">Vor</span>
+       <span class="page-link">[% msg.maketext("Vor") %]</span>
     </li>
 [% END %]
   </ul>

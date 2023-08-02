@@ -167,7 +167,7 @@ sub authenticate {
 	$logger->debug("Trying to authenticate user");
     }
     
-    my $authentications_ref = $ils->uccard_login($input_data_ref);
+    my $authentications_ref = $ils->authenticate_uccard($input_data_ref);
 
     if ($logger->is_debug){
 	$logger->debug("Login UCCard: ".YAML::Dump($input_data_ref));
@@ -265,7 +265,7 @@ sub activate {
     
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $dbname });
 
-    my $authentications_ref = $ils->uccard_login($input_data_ref);
+    my $authentications_ref = $ils->authenticate_uccard($input_data_ref);
     
     if ($logger->is_debug){
 	$logger->debug("Trying to authenticate user with UCCard");
@@ -286,7 +286,7 @@ sub activate {
     # Studentid aus Authentifizierunginformationen zur Missbrauchsvermeidung
     $input_data_ref->{studentid} = $authentications_ref->{studentid};
     
-    my $activations_ref = $ils->uccard_activate($input_data_ref);
+    my $activations_ref = $ils->activate_uccard($input_data_ref);
 
     if ($logger->is_debug){
 	$logger->debug("Activate UCCard: ".YAML::Dump($input_data_ref));

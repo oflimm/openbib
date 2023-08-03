@@ -97,7 +97,7 @@ Sie werden über den Eingang der Bestellung <b>nicht</b> gesondert benachrichtig
 <p>Mit * gekennzeichnete Felder sind Pflichtfelder und müssen ausgefüllt werden.</p>
 
 <div class="form-floating mb-3">
-      <input class="form-control" type="text" name="freeusername" value="" />
+      <input class="form-control" type="text" name="freeusername"  />
      <label for="freeusername">[% msg.maketext("Name, Vorname") %] (*):</label>
 </div>
 

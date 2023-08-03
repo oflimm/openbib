@@ -9,10 +9,12 @@
 #
 # Ausgabe der Startseite
 #
-#######################################################################
+#######################################################################  
 -%]
+[%  ilias_debug = 0 %]
 <div class="pt-5 ps-5 pe-5">
 
+[% IF ilias_debug %]
 <!--
 
 Ilias Debugging Info
@@ -32,6 +34,7 @@ session cache: [% USE dumper;dumper.dump(session_cache) %]
 valid ilias session: [% valid_ilias_session %]
 
 -->
+[% END %]
 
 <h1>[% msg.maketext("Bestellung von Dokumenten für Elektronische Semesterapparate in ILIAS") %]</h1>
 
@@ -40,7 +43,7 @@ valid ilias session: [% valid_ilias_session %]
 
 Die bestellten Dokumente werden von der USB digitalisiert und als PDF-Dateien automatisch in Ihren Kurs (ref_id=[% qopts.get_option('ref_id') %]) auf der ILIAS-Plattform übertragen.
 
-Bitte beachten Sie, dass sich die Bereitstellung der Materialien in den ILIAS-Kursen aufgrund der bestehenden COVID19-Schutzmaßnahmen (insbes. Schließungen von Bibliotheken) verzögern kann.
+<!-- Bitte beachten Sie, dass sich die Bereitstellung der Materialien in den ILIAS-Kursen aufgrund der bestehenden COVID19-Schutzmaßnahmen (insbes. Schließungen von Bibliotheken) verzögern kann. -->
 </p>
 
 </div>

@@ -172,6 +172,7 @@ sub authenticate {
 
     if ($logger->is_debug){
 	$logger->debug("Login UCCard: ".YAML::Dump($input_data_ref));
+	$logger->debug("Login UCCard result: ".YAML::Dump($authentications_ref));
     }
 
     if ($authentications_ref->{error}){
@@ -270,6 +271,8 @@ sub activate {
     
     if ($logger->is_debug){
 	$logger->debug("Trying to authenticate user with UCCard");
+	$logger->debug("Login UCCard: ".YAML::Dump($input_data_ref));
+	$logger->debug("Login UCCard result: ".YAML::Dump($authentications_ref));
     }
 
     if (!defined $authentications_ref->{successful} || !$authentications_ref->{successful}){
@@ -291,6 +294,7 @@ sub activate {
 
     if ($logger->is_debug){
 	$logger->debug("Activate UCCard: ".YAML::Dump($input_data_ref));
+	$logger->debug("Activate UCCard result: ".YAML::Dump($activations_ref));
     }
 
     if ($activations_ref->{error}){

@@ -1,65 +1,4 @@
-[%-
-
-  fields = record.get_fields;
-
-  title     = fields.${"T0331"}.first.content;
-
-  persons   = [];
-  FOREACH thisfield IN ['P0100','P0101','P0102','P0103'];
-    IF fields.${thisfield}.defined;
-      persons.push(fields.${thisfield}.first.content);  
-    END;
-  END;
-  person = persons.join(' ; ');
-
-  corporatebodies   = [];
-  FOREACH thisfield IN ['C0200','C0201'];
-    IF fields.${thisfield}.defined;
-      corporatebodies.push(fields.${thisfield}.first.content);  
-    END;
-  END;
-  corporatebody = corporatebodies.join(' ; ');
-
-  publisher = fields.${"T0412"}.first.content;
-
-  year      = fields.${"T0425"}.first.content;
-  IF fields.${"T0424"}.defined;
-    year      = fields.${"T0424"}.first.content;  
-  END;
-
-  super = "";
-  # 1. Ueberordnung?
-  IF fields.${'T5005'}.first.content;
-     super = from_json(fields.${'T5005'}.first.content);
-  END;
-
-  source    = "";
-  IF fields.${"T0451"}.defined;
-    source  = fields.${"T0451"}.first.content;  
-  ELSIF fields.${"T0508"}.defined;
-    source  = fields.${"T0508"}.first.content;  
-  ELSIF fields.${"T0590"}.defined;
-    source  = fields.${"T0590"}.first.content;
-  ELSIF super ;
-     super_title = super.fields.${'0451'}.first.content;
-     IF super.fields.${'0331'} ;
-        source   = super.fields.${'0331'}.first.content;
-     END ;
-  END;
-
-  titleid   = record.id;
-
-   name = "";
-   IF userinfo.nachname || userinfo.vorname ;
-        IF userinfo.nachname ;
-          name = userinfo.nachname ;
-	END ;
-	IF userinfo.vorname ;
-	  name = "${userinfo.vorname} ${name}";
-	END;
-   END;
-
--%]
+[% PROCESS common/subtemplate name="titles_record_abstract_fields" %]
 *** Bestellung in den [% pickup_location %] vom [% current_date %] ***
 
    Signatur: [% label %]
@@ -69,7 +8,6 @@
       Körp.: [% corporatebody %]
  Ort/Verlag: [% publisher %]
      E-Jahr: [% year %]
-    Bestand: [% numbering %]
          In: [% source %]
     
      Katkey: [% titleid %]
@@ -77,6 +15,6 @@
 	
 Bemerkungen: [% remark %]
 
-       Name: [% name %]
+       Name: [% freeusername %]
 E-Mail-Adr.: [% email %]
 

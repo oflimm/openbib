@@ -43,7 +43,6 @@ valid ilias session: [% valid_ilias_session %]
 
 Die bestellten Dokumente werden von der USB digitalisiert und als PDF-Dateien automatisch in Ihren Kurs (ref_id=[% qopts.get_option('ref_id') %]) auf der ILIAS-Plattform übertragen.
 
-<!-- Bitte beachten Sie, dass sich die Bereitstellung der Materialien in den ILIAS-Kursen aufgrund der bestehenden COVID19-Schutzmaßnahmen (insbes. Schließungen von Bibliotheken) verzögern kann. -->
 </p>
 
 </div>

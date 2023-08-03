@@ -175,7 +175,8 @@ sub create_record {
     my $titleid         = ($query->param('titleid'        ))?$query->param('titleid'):undef;
     my $limitation      = ($query->param('limitation'     ))?$query->param('limitation'):undef;
 
-    
+    $holdingid = uri_unescape($holdingid) if ($holdingid);
+
     unless ($config->get('active_ils')){
 	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
     }
@@ -311,7 +312,7 @@ sub delete_record {
     my $receipt         = ($query->param('receipt'        ))?$query->param('receipt'):undef;
     my $remark          = ($query->param('remark'         ))?$query->param('remark'):undef;
     
-    $holdingid = uri_unescape($holdingid);
+    $holdingid = uri_unescape($holdingid) if ($holdingid);
     
     # Aktive Aenderungen des Nutzerkontos
 

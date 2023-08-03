@@ -479,7 +479,7 @@ sub renew_single_loan {
     my $loanid          = ($query->param('loanid'         ))?$query->param('loanid'):undef; # Loanid (fuer Alma)
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0; # Zweigstelle
 
-    $holdingid = uri_unescape($holdingid);
+    $holdingid = uri_unescape($holdingid) if ($holdingid);
     
     # Aktive Aenderungen des Nutzerkontos
 

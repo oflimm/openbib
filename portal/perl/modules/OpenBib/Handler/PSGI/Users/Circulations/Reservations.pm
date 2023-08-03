@@ -182,7 +182,7 @@ sub create_record {
 
     my $type            = ($query->param('type'           ))?$query->param('type'):'';
 
-    $holdingid = uri_unescape($holdingid);
+    $holdingid = uri_unescape($holdingid) if ($holdingid);    
     
     unless ($config->get('active_ils')){
 	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."));	
@@ -313,7 +313,7 @@ sub delete_record {
     my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
 
-    $holdingid = uri_unescape($holdingid);
+    $holdingid = uri_unescape($holdingid) if ($holdingid);        
     
     # Aktive Aenderungen des Nutzerkontos
 

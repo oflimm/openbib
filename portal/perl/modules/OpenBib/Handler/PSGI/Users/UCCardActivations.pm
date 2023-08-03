@@ -38,6 +38,7 @@ use Email::Valid;               # EMail-Adressen testen
 use Email::Stuffer;
 use File::Slurper 'read_binary';
 use Encode 'decode_utf8';
+use HTML::Entities;
 use Log::Log4perl qw(get_logger :levels);
 use Captcha::reCAPTCHA;
 use POSIX;

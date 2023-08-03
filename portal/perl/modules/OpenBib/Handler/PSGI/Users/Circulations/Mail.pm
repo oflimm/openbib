@@ -662,7 +662,7 @@ sub mail_kmb {
     my $location       = $input_data_ref->{'location'};
     # Kein Receipt, da unauthentifiziert!
     my $remark         = $input_data_ref->{'remark'};
-    my $username       = $input_data_ref->{'username'};
+    my $freeusername   = $input_data_ref->{'freeusername'};
     my $email          = $input_data_ref->{'email'};
     my $pickup_location= $input_data_ref->{'pickup_location'};
     
@@ -677,7 +677,15 @@ sub mail_kmb {
     }
     
     # Zentrale Ueberpruefung der Authentifizierung bereits in show_form
-    
+
+    if (!$freeusername){
+	return $self->print_warning("Bitte geben Sie Ihren Namen an.");
+    }
+
+    if (!$email){
+	return $self->print_warning("Bitte geben Sie Ihre E-Mail-Adresse an.");
+    }
+
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
         if (!defined $config->get('mail')->{realm}{$realm}) {
@@ -694,6 +702,7 @@ sub mail_kmb {
     my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
     $record->load_brief_record;
 
+    $logger->debug("User: $freeusername");
     # TT-Data erzeugen
     
     my $ttdata={
@@ -707,7 +716,7 @@ sub mail_kmb {
         label       => $label,
 	title_location    => $location, # Standort = Zweigstelle / Abteilung
 	email       => $email,
-	username    => $username,
+	freeusername  => $freeusername,
 	remark      => $remark,
 	pickup_location => $pickup_location,	
 	
@@ -802,7 +811,7 @@ sub mail_kmbcopy {
     my $pages          = $input_data_ref->{'pages'};
     my $shipment       = $input_data_ref->{'shipment'};
     my $customergroup  = $input_data_ref->{'customergroup'};
-    my $username       = $input_data_ref->{'username'};
+    my $freeusername   = $input_data_ref->{'freeusername'};
     my $address        = $input_data_ref->{'address'};
     # Kein Receipt, da unauthentifiziert!
     my $remark         = $input_data_ref->{'remark'};
@@ -829,7 +838,7 @@ sub mail_kmbcopy {
 	return $self->print_warning("Bitte geben Sie die gewünschten Seiten an.");
     }
 
-    if (!$username){
+    if (!$freeusername){
 	return $self->print_warning("Bitte geben Sie Ihren Namen an.");
     }
 
@@ -901,7 +910,7 @@ sub mail_kmbcopy {
 	pages         => $pages,
 	shipment      => $shipment,
 	customergroup => $customergroup,
-	username      => $username,
+	freeusername  => $freeusername,
 	address       => $address,
 	numbering     => $numbering,
 	
@@ -1189,6 +1198,11 @@ sub get_input_definition {
             type     => 'scalar',
         },
         username => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        freeusername => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',

@@ -337,12 +337,26 @@ sub authenticate_uccard {
 
 	$response_ref = {
 	    error => "connection error",
-	    error_description => "Problem bei der Verbindung zum Ausleihsystem",
+	    error_description => "Problem bei der Verbindung zum IDM",
 	};
 	
 	return $response_ref;
     }
 
+    if (defined $result_ref->{NotOK} && $result_ref->{NotOK}){
+	$response_ref = {
+	    "code" => 400,
+		"error" => "authentication error",
+		"error_description" => $result_ref->{NotOK},
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+    
     # Allgemeine Fehler
     if (!defined $result_ref->{OK} && !$result_ref->{OK}){
 	$response_ref = {

@@ -301,10 +301,6 @@ sub authenticate_uccard {
 	    
     my $uri = "urn:/Account";
 	    
-    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	$uri = "urn:/Account_inst";
-    }
-	        
     $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));    

@@ -16,8 +16,8 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('uccard_activations_loc') %]" enctype="application/x-www-form-urlencoded">
 
-<input type="hidden" name="ucusername" value="[% logindata.ucusername %]";
-<input type="hidden" name="ucpassword" value="[% logindata.ucpassword %]";
+<input type="hidden" name="ucusername" value="[% logindata.ucusername %]"/>
+<input type="hidden" name="ucpassword" value="[% logindata.ucpassword %]"/>
 
 <div class="form-floating mb-3">
 <span id="username">[% authentications.username %]</span>

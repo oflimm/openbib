@@ -19,10 +19,10 @@
 <input type="hidden" name="ucusername" value="[% logindata.ucusername %]"/>
 <input type="hidden" name="ucpassword" value="[% logindata.ucpassword %]"/>
 
-<div class="form-floating mb-3">
-<span id="username">[% authentications.username %]</span>
-<label for="username">[% msg.maketext("Ihre Benutzernummer") %]</label>
-</div>
+
+<h2>[% msg.maketext("Ihre Benutzernummer") %]</h2>
+
+<h3>[% authentications.username %]</h3>
 
 
 <h4>[% msg.maketext("Anerkennung der Benutzungsordnung") %]</h4>

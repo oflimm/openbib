@@ -241,7 +241,7 @@ sub activate {
 	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, Online-Anmeldung, UCCard Freischaltung usw.) sind aktuell systemweit deaktiviert."));	
     }
 
-    if ($confirmation != 1){
+    if ($confirmation ne "on"){
         my $code   = -4;
 	my $reason = $self->get_error_message($code);
         return $self->print_warning($reason,$code);

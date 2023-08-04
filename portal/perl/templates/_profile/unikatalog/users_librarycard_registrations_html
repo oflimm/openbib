@@ -37,17 +37,17 @@
 </div>
 
 <div class="form-floating mt-3">
-<input class="form-control" type="text" name="forename" id="forename" value="" />
+<input class="form-control" type="text" name="forename" id="forename" />
 <label for="forename">[% msg.maketext("Vorname") %]*</label>
 </div>
 
 <div class="form-floating mt-3">
-<input class="form-control" type="text" name="surname" id="surname" value="" />
+<input class="form-control" type="text" name="surname" id="surname"  />
 <label for="surname">[% msg.maketext("Nachname") %]*</label>
 </div>
 
 <div class="form-floating mt-3 mb-4">
-<input class="form-control" type="text" name="birthdate" size="8" id="birthdate" value="" />
+<input class="form-control" type="text" name="birthdate" size="8" id="birthdate" />
 <label for="birthdate">[% msg.maketext("Geburtsdatum") %]*</label>
 Format: TT.MM.JJJJ
 </div>
@@ -55,24 +55,24 @@ Format: TT.MM.JJJJ
 <h4>[% msg.maketext("Anschrift") %]</h4>
 
 <div class="form-floating mt-3">
-<input class="form-control" type="text" name="street" id="street" value="" />
+<input class="form-control" type="text" name="street" id="street" />
 <label for="street">[% msg.maketext("Straße / Nr") %]*</label>
 </div>
 
 <div class="form-floating mb-3">
-<input class="form-control" type="text" name="zip" id="zip" value="" />
+<input class="form-control" type="text" name="zip" id="zip" />
 <label for="zip">[% msg.maketext("Postleitzahl") %]*</label>
 </div>
 
 <div class="form-floating mt-3 mb-4">
-<input class="form-control" type="text" name="city" id="city" value="" />
+<input class="form-control" type="text" name="city" id="city" />
 <label for="city">[% msg.maketext("Stadt") %]*</label>
 </div>
 
 <h4>[% msg.maketext("Adresse für die Benachrichtung per E-Mail") %]</h4>
 
 <div class="form-floating mt-3 mb-4">
-<input class="form-control" type="text" name="email" id="email_username" value="" />
+<input class="form-control" type="text" name="email" id="email_username" />
 <label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
 </div>
 

@@ -38,6 +38,7 @@ use Email::Valid;               # EMail-Adressen testen
 use Email::Stuffer;
 use File::Slurper 'read_binary';
 use Encode 'decode_utf8';
+use HTML::Entities;
 use Log::Log4perl qw(get_logger :levels);
 use Captcha::reCAPTCHA;
 use POSIX;
@@ -178,6 +179,7 @@ sub register {
 	    unless ( $recaptcha_result->{is_valid} ) {
 		my $code   = -13;
 		my $reason = $self->get_error_message($code);
+		$logger->info("Library Card registration failed for user $forename $surname: $reason");	
 		return $self->print_warning($reason,$code);
 	    }
 	}
@@ -200,72 +202,84 @@ sub register {
     else {
         my $code   = -1;
 	my $reason = $self->get_error_message($code);
+	$logger->info("Library Card registration failed for user $forename $surname: $reason");	
         return $self->print_warning($reason,$code);
     }
 
     if (!$forename){
         my $code   = -2;
 	my $reason = $self->get_error_message($code);
+	$logger->info("Library Card registration failed for user $forename $surname: $reason");	
         return $self->print_warning($reason,$code);
     }
 
     if (!$surname){
         my $code   = -3;
 	my $reason = $self->get_error_message($code);
+	$logger->info("Library Card registration failed for user $forename $surname: $reason");	
         return $self->print_warning($reason,$code);
     }
 
     if ($birthdate !~ /^\d{2}\.\d{2}\.\d{4}$/){
         my $code   = -4;
 	my $reason = $self->get_error_message($code);
+	$logger->info("Library Card registration failed for user $forename $surname: $reason");	
         return $self->print_warning($reason,$code);
     }
 
     if (! ($street  && $zip && $city)){
         my $code   = -5;
 	my $reason = $self->get_error_message($code);
+	$logger->info("Library Card registration failed for user $forename $surname: $reason");	
         return $self->print_warning($reason,$code);
     }
 
     if ($email && ! Email::Valid->address($email)){
         my $code   = -6;
 	my $reason = $self->get_error_message($code);
+	$logger->info("Library Card registration failed for user $forename $surname: $reason");	
         return $self->print_warning($reason,$code);
     }
 
     if (length(decode_utf8($password1)) != 6){
         my $code   = -7;
 	my $reason = $self->get_error_message($code);
+	$logger->info("Library Card registration failed for user $forename $surname: $reason");	
         return $self->print_warning($reason,$code);
     }
 
     if ($password1 !~ /^[a-zA-Z0-9]+$/ or $password1 !~ /[0-9]/ or $password1 !~ /[a-zA-Z]/){
         my $code   = -8;
 	my $reason = $self->get_error_message($code);
+	$logger->info("Library Card registration failed for user $forename $surname: $reason");	
         return $self->print_warning($reason,$code);
     }
 
     if (!$password2){
         my $code   = -9;
 	my $reason = $self->get_error_message($code);
+	$logger->info("Library Card registration failed for user $forename $surname: $reason");	
         return $self->print_warning($reason,$code);
     }
 
     if ($password1 ne $password2){
         my $code   = -10;
 	my $reason = $self->get_error_message($code);
+	$logger->info("Library Card registration failed for user $forename $surname: $reason");	
         return $self->print_warning($reason,$code);
     }
 
     if (!$confirmation){
         my $code   = -11;
 	my $reason = $self->get_error_message($code);
+	$logger->info("Library Card registration failed for user $forename $surname: $reason");	
         return $self->print_warning($reason,$code);
     }
 
     if (!$dbname || !$config->db_exists($dbname)){
         my $code   = -12;
 	my $reason = $self->get_error_message($code);
+	$logger->info("Library Card registration failed for user $forename $surname: $reason");	
         return $self->print_warning($reason,$code);
     }
     
@@ -283,13 +297,20 @@ sub register {
 
     if ($register_ref->{error}){
 	if ($register_ref->{error_description}){
-	    return $self->print_warning(encode_entities($register_ref->{error_description}));
+	    my $reason = encode_entities($register_ref->{error_description});
+	    $logger->info("Library Card registration failed for user $forename $surname: $reason");	
+
+	    return $self->print_warning($reason);
 	}
 	else {
+	    $logger->info("Library Card registration failed for user $forename $surname: unknown reason");	
+
 	    return $self->print_warning($msg->maketext("Eine Neuanmeldung durch Sie ist leider nicht möglich"));
 	}
     }
     elsif ($register_ref->{successful}){
+	$logger->info("Library Card registration successful for user $forename $surname. New username: ".$register_ref->{username});	
+	
 	# TT-Data erzeugen
 	my $ttdata={
 	    registration   => $register_ref,

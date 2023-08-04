@@ -147,18 +147,21 @@ sub authenticate {
     if (!$username){
         my $code   = -1;
 	my $reason = $self->get_error_message($code);
+	$logger->info("UCCard authentication failed for IDM user $username: $reason");
         return $self->print_warning($reason,$code);
     }
 
     if (!$password){
         my $code   = -2;
 	my $reason = $self->get_error_message($code);
+	$logger->info("UCCard authentication failed for IDM user $username: $reason");
         return $self->print_warning($reason,$code);
     }
 
     if (!$dbname || ! $config->db_exists($dbname)){
         my $code   = -3;
 	my $reason = $self->get_error_message($code);
+	$logger->info("UCCard authentication failed for IDM user $username: $reason");
         return $self->print_warning($reason,$code);
     }
 
@@ -177,13 +180,19 @@ sub authenticate {
 
     if ($authentications_ref->{error}){
 	if ($authentications_ref->{error_description}){
-	    return $self->print_warning(encode_entities($authentications_ref->{error_description}));
+	    my $reason = encode_entities($authentications_ref->{error_description});
+	    $logger->info("UCCard authentication failed for IDM user $username: $reason");
+
+	    return $self->print_warning($reason);
 	}
 	else {
+	    $logger->info("UCCard authentication failed for IDM user $username: unknown reason");
 	    return $self->print_warning($msg->maketext("Eine Authentifizierung für die UC-Card durch Sie ist leider nicht möglich"));
 	}
     }
     elsif ($authentications_ref->{successful}){
+	$logger->info("UCCard authentication successful for IDM user $username");
+
 	# TT-Data erzeugen
 	my $ttdata={
 	    authentications   => $authentications_ref,

@@ -22,7 +22,7 @@
 
 <h2>[% msg.maketext("Ihre Benutzernummer") %]</h2>
 
-<h3>[% authentications.username %]</h3>
+<h3 class="pb-3>[% authentications.username %]</h3>
 
 
 <h4>[% msg.maketext("Anerkennung der Benutzungsordnung") %]</h4>

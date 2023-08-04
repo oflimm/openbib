@@ -187,11 +187,7 @@ sub register_librarycard {
     my @args = ($arg_ref->{salutation},$arg_ref->{forename},$arg_ref->{surname},$arg_ref->{birthdate},$arg_ref->{street},$arg_ref->{zip},$arg_ref->{city},"","","",$arg_ref->{email},$arg_ref->{password1});
 	    
     my $uri = "urn:/Account";
-	    
-    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	$uri = "urn:/Account_inst";
-    }
-	        
+	    	        
     $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));    
@@ -423,10 +419,6 @@ sub activate_uccard {
 	    
     my $uri = "urn:/Account";
 	    
-    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	$uri = "urn:/Account_inst";
-    }
-	        
     $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));    
@@ -539,10 +531,6 @@ sub update_email {
 	    
     my $uri = "urn:/Account";
 	    
-    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	$uri = "urn:/Account_inst";
-    }
-	        
     $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));    
@@ -636,11 +624,7 @@ sub update_phone {
     my @args = ($username,$phone);
 	    
     my $uri = "urn:/Account";
-	    
-    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	$uri = "urn:/Account_inst";
-    }
-	        
+	    	        
     $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));    
@@ -734,11 +718,7 @@ sub update_password {
     my @args = ($username,$oldpassword,$newpassword);
 	    
     my $uri = "urn:/Account";
-	    
-    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	$uri = "urn:/Account_inst";
-    }
-	        
+	    	        
     $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));    
@@ -834,11 +814,7 @@ sub reset_password {
     my @args = ($username,$newpassword);
 	    
     my $uri = "urn:/Account";
-	    
-    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	$uri = "urn:/Account_inst";
-    }
-	        
+	    	        
     $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));    
@@ -1338,11 +1314,7 @@ sub make_reservation {
     my @args = ($username,$gsi,$zw,$aort,$katkey,$type);
 	    
     my $uri = "urn:/Loan";
-	    
-    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	$uri = "urn:/Loan_inst";
-    }
-	        
+	    	        
     $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));
@@ -1477,11 +1449,7 @@ sub cancel_reservation {
     my @args = ($username,$gsi,$zw);
 	    
     my $uri = "urn:/Loan";
-	    
-    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	$uri = "urn:/Loan_inst";
-    }
-	        
+	    	        
     $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));    
@@ -1621,10 +1589,6 @@ sub make_order {
 	    
     my $uri = "urn:/Loan";
 	    
-    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	$uri = "urn:/Loan_inst";
-    }
-	        
     $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));    
@@ -1916,10 +1880,6 @@ sub renew_loans {
 	    
     my $uri = "urn:/Account";
 	    
-    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	$uri = "urn:/Account_inst";
-    }
-	        
     $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));    
@@ -2093,11 +2053,7 @@ sub renew_single_loan {
     my @args = ($username,$holdingid,$unit);
 	    
     my $uri = "urn:/Account";
-	    
-    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	$uri = "urn:/Account_inst";
-    }
-	        
+	    	        
     $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));    
@@ -2274,13 +2230,7 @@ sub get_mediastatus {
 	    my @args = ($titleid,"0"); # Immer mit Zweigstelle 0 starten
 	    
 	    my $uri = "urn:/Loan";
-	    
-	    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-		$uri = "urn:/Loan_inst";
-		push @args, undef; # Keine Benutzernummer		
-		push @args, $database;
-	    }
-	    
+	    	    
 	    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
 	    
 	    eval {
@@ -2592,11 +2542,7 @@ sub check_order {
     my @args = ($username,$gsi,$zw);
 	    
     my $uri = "urn:/Loan";
-	    
-    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	$uri = "urn:/Loan_inst";
-    }
-	        
+	    	        
     $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));
@@ -2757,12 +2703,7 @@ sub check_reservation {
     my @args = ($username,$gsi,$zw);
 	    
     my $uri = "urn:/Loan";
-	    
-    if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	$uri = "urn:/Loan_inst";
-    }
-	    
-    
+	        
     $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
     
     $logger->debug("Using args ".YAML::Dump(\@args));
@@ -2898,12 +2839,7 @@ sub send_account_request {
 	my @args = ($username,$type_ref->{type});
 	
 	my $uri = "urn:/Account";
-	
-	if ($circinfotable->get($database)->{circdb} ne "sisis"){
-	    $uri = "urn:/Account_inst";
-	    push @args, $database;
-	}
-	
+		
 	eval {
 	    my $soap = SOAP::Lite
 		-> uri($uri)

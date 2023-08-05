@@ -417,7 +417,7 @@ sub renew_loans {
     my $authenticator = $session->get_authenticator;
 
     if ($logger->is_info){
-	$logger->info("Trying to renew loans for user $loginname in ils for $database");
+	$logger->info("Trying to renew loans for user $loginname ($userid) in ils for $database");
     }
     
     my $response_renew_loans_ref = $ils->renew_loans($loginname);
@@ -429,16 +429,16 @@ sub renew_loans {
     if ($response_renew_loans_ref->{error}){
 	if ($response_renew_loans_ref->{error_description}){
 	    my $reason = encode_entities($response_renew_loans_ref->{error_description});
-	    $logger->info("Renew loans for user $userid failed: $reason");
+	    $logger->info("Renew loans for user $loginname ($userid) failed: $reason");
 	    return $self->print_warning($reason);
 	}
 	else {
-	    $logger->info("Renew loans for user $userid failed: unknown reason");
+	    $logger->info("Renew loans for user $loginname ($userid) failed: unknown reason");
 	    return $self->print_warning($msg->maketext("Eine Gesamtkontoverlängerung durch Sie ist leider nicht möglich"));
 	}
     }
     elsif ($response_renew_loans_ref->{successful}){
-	$logger->info("Renew loans for user $userid successful");
+	$logger->info("Renew loans for user $loginname ($userid) successful");
 	# TT-Data erzeugen
 	my $ttdata={
 	    userid        => $userid,

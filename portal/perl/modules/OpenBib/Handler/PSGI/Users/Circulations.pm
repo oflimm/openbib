@@ -516,7 +516,7 @@ sub renew_single_loan {
     my $authenticator = $session->get_authenticator;
 
     if ($logger->is_info){
-	$logger->info("Trying to renew single loan for user $loginname via ils for $database with holdingid $holdingid in unit $unit");
+	$logger->info("Trying to renew single loan for user $loginname ($userid) via ils for $database with holdingid $holdingid in unit $unit");
     }
     
     my $response_renew_single_loan_ref = $ils->renew_single_loan($loginname,$holdingid,$unit,$loanid);
@@ -528,17 +528,17 @@ sub renew_single_loan {
     if ($response_renew_single_loan_ref->{error}){
 	if ($response_renew_single_loan_ref->{error_description}){
 	    my $reason = encode_entities($response_renew_single_loan_ref->{error_description});
-	    $logger->info("Renew single loan for user $userid and holdingid $holdingid failed: $reason");
+	    $logger->info("Renew single loan for user $loginname ($userid) and holdingid $holdingid failed: $reason");
 
 	    return $self->print_warning($reason);
 	}
 	else {
-	    $logger->info("Renew single loan for user $userid and holdingid $holdingid failed: unknown reason");
+	    $logger->info("Renew single loan for user $loginname ($userid) and holdingid $holdingid failed: unknown reason");
 	    return $msg->maketext("Eine Verlängerung durch Sie ist leider nicht möglich");
 	}
     }
     elsif ($response_renew_single_loan_ref->{successful}){
-	$logger->info("Renew single loan for user $userid and holdingid $holdingid successful");	
+	$logger->info("Renew single loan for user $loginname ($userid) and holdingid $holdingid successful");	
 	# TT-Data erzeugen
 	my $ttdata={
 	    userid        => $userid,

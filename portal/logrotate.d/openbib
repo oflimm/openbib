@@ -1,8 +1,24 @@
 /var/log/openbib/*.log {
         daily
+        maxsize 200M
         copytruncate
+        rotate 12
         missingok
-        rotate 7
         compress
-        notifempty
+        ifempty
+        su openbib www-data
+        create 664 openbib www-data
 }
+
+/var/log/openbib/*/*.log {
+        monthly
+        maxsize 200M
+        copytruncate
+        rotate 12
+        missingok
+        compress
+        ifempty
+        su openbib www-data
+        create 664 openbib www-data
+}
+

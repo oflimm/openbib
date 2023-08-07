@@ -147,21 +147,21 @@ sub authenticate {
     if (!$username){
         my $code   = -1;
 	my $reason = $self->get_error_message($code);
-	$logger->info("UCCard authentication failed for IDM user $username: $reason");
+	$logger->error("UCCard authentication failed for IDM user $username: $reason");
         return $self->print_warning($reason,$code);
     }
 
     if (!$password){
         my $code   = -2;
 	my $reason = $self->get_error_message($code);
-	$logger->info("UCCard authentication failed for IDM user $username: $reason");
+	$logger->error("UCCard authentication failed for IDM user $username: $reason");
         return $self->print_warning($reason,$code);
     }
 
     if (!$dbname || ! $config->db_exists($dbname)){
         my $code   = -3;
 	my $reason = $self->get_error_message($code);
-	$logger->info("UCCard authentication failed for IDM user $username: $reason");
+	$logger->error("UCCard authentication failed for IDM user $username: $reason");
         return $self->print_warning($reason,$code);
     }
 
@@ -181,12 +181,12 @@ sub authenticate {
     if ($authentications_ref->{error}){
 	if ($authentications_ref->{error_description}){
 	    my $reason = encode_entities($authentications_ref->{error_description});
-	    $logger->info("UCCard authentication failed for IDM user $username: $reason");
+	    $logger->error("UCCard authentication failed for IDM user $username: $reason");
 
 	    return $self->print_warning($reason);
 	}
 	else {
-	    $logger->info("UCCard authentication failed for IDM user $username: unknown reason");
+	    $logger->error("UCCard authentication failed for IDM user $username: unknown reason");
 	    return $self->print_warning($msg->maketext("Eine Authentifizierung für die UC-Card durch Sie ist leider nicht möglich"));
 	}
     }
@@ -253,28 +253,28 @@ sub activate {
     if ($confirmation ne "on"){
         my $code   = -4;
 	my $reason = $self->get_error_message($code);
-	$logger->info("UCCard activation failed for IDM user $ucusername: $reason");
+	$logger->error("UCCard activation failed for IDM user $ucusername: $reason");
         return $self->print_warning($reason,$code);
     }
     
     if (length(decode_utf8($password1)) != 6){
         my $code   = -5;
 	my $reason = $self->get_error_message($code);
-	$logger->info("UCCard activation failed for IDM user $ucusername: $reason");
+	$logger->error("UCCard activation failed for IDM user $ucusername: $reason");
         return $self->print_warning($reason,$code);
     }
 
     if ($password1 !~ /^[a-zA-Z0-9]+$/ or $password1 !~ /[0-9]/ or $password1 !~ /[a-zA-Z]/){
         my $code   = -6;
 	my $reason = $self->get_error_message($code);
-	$logger->info("UCCard activation failed for IDM user $ucusername: $reason");	
+	$logger->error("UCCard activation failed for IDM user $ucusername: $reason");	
         return $self->print_warning($reason,$code);
     }
 
     if ($password1 ne $password2){
         my $code   = -7;
 	my $reason = $self->get_error_message($code);
-	$logger->info("UCCard activation failed for IDM user $ucusername: $reason");
+	$logger->error("UCCard activation failed for IDM user $ucusername: $reason");
         return $self->print_warning($reason,$code);
     }
     
@@ -291,14 +291,14 @@ sub activate {
     if (!defined $authentications_ref->{successful} || !$authentications_ref->{successful}){
         my $code   = -5;
 	my $reason = $self->get_error_message($code);
-	$logger->info("UCCard activation failed for IDM user $ucusername: $reason");
+	$logger->error("UCCard activation failed for IDM user $ucusername: $reason");
         return $self->print_warning($reason,$code);
     }
 
     if (!defined $authentications_ref->{studentid} || !$authentications_ref->{studentid}){
         my $code   = -6;
 	my $reason = $self->get_error_message($code);
-	$logger->info("UCCard activation failed for IDM user $ucusername: $reason");	
+	$logger->error("UCCard activation failed for IDM user $ucusername: $reason");	
         return $self->print_warning($reason,$code);
     }
 
@@ -316,12 +316,12 @@ sub activate {
 	if ($activations_ref->{error_description}){
 	    my $reason = encode_entities($activations_ref->{error_description});
 					 
-	    $logger->info("UCCard activation failed for IDM user $ucusername: $reason");
+	    $logger->error("UCCard activation failed for IDM user $ucusername: $reason");
 
 	    return $self->print_warning($reason);
 	}
 	else {
-	    $logger->info("UCCard activation failed for IDM user $ucusername: unknown reason");
+	    $logger->error("UCCard activation failed for IDM user $ucusername: unknown reason");
 
 	    return $self->print_warning($msg->maketext("Eine Freischaltung der UCCard durch Sie ist leider nicht möglich"));
 	}

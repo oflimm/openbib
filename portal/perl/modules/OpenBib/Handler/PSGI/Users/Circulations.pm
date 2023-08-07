@@ -429,11 +429,11 @@ sub renew_loans {
     if ($response_renew_loans_ref->{error}){
 	if ($response_renew_loans_ref->{error_description}){
 	    my $reason = encode_entities($response_renew_loans_ref->{error_description});
-	    $logger->info("Renew loans for user $loginname ($userid) failed: $reason");
+	    $logger->error("Renew loans for user $loginname ($userid) failed: $reason");
 	    return $self->print_warning($reason);
 	}
 	else {
-	    $logger->info("Renew loans for user $loginname ($userid) failed: unknown reason");
+	    $logger->error("Renew loans for user $loginname ($userid) failed: unknown reason");
 	    return $self->print_warning($msg->maketext("Eine Gesamtkontoverlängerung durch Sie ist leider nicht möglich"));
 	}
     }
@@ -450,7 +450,7 @@ sub renew_loans {
 	
     }
     else {
-	$logger->info("Renew loans for user $userid failed: unexpected error");
+	$logger->error("Renew loans for user $userid failed: unexpected error");
 	return $self->print_warning($msg->maketext("Bei der Gesamtkontoverlängerung ist ein unerwarteter Fehler aufgetreten"));
     }
 }
@@ -528,12 +528,12 @@ sub renew_single_loan {
     if ($response_renew_single_loan_ref->{error}){
 	if ($response_renew_single_loan_ref->{error_description}){
 	    my $reason = encode_entities($response_renew_single_loan_ref->{error_description});
-	    $logger->info("Renew single loan for user $loginname ($userid) and holdingid $holdingid failed: $reason");
+	    $logger->error("Renew single loan for user $loginname ($userid) and holdingid $holdingid failed: $reason");
 
 	    return $self->print_warning($reason);
 	}
 	else {
-	    $logger->info("Renew single loan for user $loginname ($userid) and holdingid $holdingid failed: unknown reason");
+	    $logger->error("Renew single loan for user $loginname ($userid) and holdingid $holdingid failed: unknown reason");
 	    return $msg->maketext("Eine Verlängerung durch Sie ist leider nicht möglich");
 	}
     }

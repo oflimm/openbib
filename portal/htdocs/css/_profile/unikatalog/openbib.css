@@ -1986,6 +1986,10 @@ table.ob-title_fields td a {
     text-decoration: underline;
 }
 
+table.ob-title_fields td a.btn {
+    text-decoration: none;
+}
+
 @media only screen and (max-width: 1400px) {
 
     #ob-startpage .ob-mainsearchform .container {

@@ -217,7 +217,9 @@ sub create_record {
     my $authenticator = $session->get_authenticator;
     
     if (!defined $pickup_location){
-	$logger->debug("Checking order for pickup locations");
+	if ($logger->is_info){
+	    $logger->info("Trying to check order for pickup locations for user $username and holdingid $holdingid in unit $unit");
+	}
 	
 	my $response_check_order_ref = $ils->check_order({ username => $username, titleid => $titleid, holdingid => $holdingid, unit => $unit, storage => $storage, limitation => $limitation});
 
@@ -226,9 +228,14 @@ sub create_record {
 	}
 	
 	if ($response_check_order_ref->{error}){
-            return $self->print_warning(encode_entities($response_check_order_ref->{error_description}));
+	    my $reason = encode_entities($response_check_order_ref->{error_description});
+	    $logger->error("Order check for pickup location failed for user $username and holdingid $holdingid: $reason");	
+
+            return $self->print_warning($reason);
 	}
 	elsif ($response_check_order_ref->{successful}){
+	    $logger->info("Order check for pickup location successful for user $username and holdingid $holdingid");	
+	    
 	    # TT-Data erzeugen
 	    my $ttdata={
 		database      => $database,
@@ -246,7 +253,9 @@ sub create_record {
 	}		
     }
     else {
-	$logger->debug("Making order");
+	if ($logger->is_info){
+	    $logger->info("Trying to make order for user $username and holdingid $holdingid in unit $unit and pickup location $pickup_location");
+	}
 	
 	my $response_make_order_ref = $ils->make_order({ username => $username, titleid => $titleid, holdingid => $holdingid, unit => $unit, storage => $storage, pickup_location => $pickup_location});
 
@@ -255,18 +264,23 @@ sub create_record {
 	}
 	
 	if ($response_make_order_ref->{error}){
-            return $self->print_warning(encode_entities($response_make_order_ref->{error_description}));
+	    my $reason = encode_entities($response_make_order_ref->{error_description});
+	    $logger->error("Making order failed for user $username and holdingid $holdingid: $reason");	
+
+            return $self->print_warning($reason);
 	}
 	elsif ($response_make_order_ref->{successful}){
+	    $logger->info("Make order successful for user $username and holdingid $holdingid in pickup location $pickup_location");	
+	    
 	    # TT-Data erzeugen
 	    my $ttdata={
-		database      => $database,
-		unit          => $unit,
-		storage       => $storage,
-		holdingid     => $holdingid,
+		database        => $database,
+		unit            => $unit,
+		storage         => $storage,
+		holdingid       => $holdingid,
 		pickup_location => $pickup_location,
-		validtarget   => $validtarget,
-		order         => $response_make_order_ref,
+		validtarget     => $validtarget,
+		order           => $response_make_order_ref,
 	    };
 	    
 	    return $self->print_page($config->{tt_users_circulations_make_order_tname},$ttdata);
@@ -302,7 +316,7 @@ sub delete_record {
     # Aktive Aenderungen des Nutzerkontos
     my $validtarget     = ($query->param('validtarget'    ))?$query->param('validtarget'):undef;
     my $holdingid       = ($query->param('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
-    my $requestid       = ($query->param('requestid'      ))?$query->param('requestid'):undef; # Requestid (fuer Alma)
+    my $requestid       = ($query->param('requestid'      ))?$query->param('requestid'):''; # Requestid (fuer Alma)
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
     my $unitname        = ($query->param('unitname'       ))?$query->param('unitname'):undef;
     my $titleid         = ($query->param('titleid'        ))?$query->param('titleid'):undef;
@@ -353,16 +367,21 @@ sub delete_record {
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $database });
 
     my $authenticator = $session->get_authenticator;
-
-    $logger->debug("Canceling order for $holdingid in unit $unit for $username");
     
     my $userinfo_ref = $ils->get_userdata($username);
 
     my $username_full = $userinfo_ref->{fullname} || 'Kein Name vorhanden';
     my $email         = $userinfo_ref->{email};
 
+    if ($logger->is_info){
+	$logger->info("Trying to cancel order for user $username ($sessionuserid) with holdingid $holdingid / requestid $requestid in unit $unit");
+    }
+    
     if ($receipt && !$email){
-	return $self->print_warning($msg->maketext("Es existiert keine E-Mail-Addresse für eine Kopie der Stornierungs-Mail an Sie."));
+	my $reason = $msg->maketext("Es existiert keine E-Mail-Addresse für eine Kopie der Stornierungs-Mail an Sie.");
+	$logger->error("Cancel order failed for user $username ($sessionuserid) and holdingid $holdingid / requestid  $requestid: $reason");	
+	
+	return $self->print_warning($reason);
     }
     
     my $response_cancel_order_ref = $ils->cancel_order({ title => $title, author => $author, requestid => $requestid, holdingid => $holdingid, unit => $unit, unitname => $unitname, date => $date, username => $username, username_full => $username_full, email => $email, remark => $remark, receipt => $receipt });
@@ -373,13 +392,21 @@ sub delete_record {
     
     if ($response_cancel_order_ref->{error}){
 	if (defined $response_cancel_order_ref->{error_description}){
-	    return $self->print_warning(encode_entities($response_cancel_order_ref->{error_description}));
+	    my $reason = encode_entities($response_cancel_order_ref->{error_description});
+	    $logger->error("Cancel order failed for user $username ($sessionuserid) and holdingid $holdingid / requestid  $requestid: $reason");	
+
+	    return $self->print_warning($reason);
 	}
 	else {
+	    $logger->error("Cancel order failed for user $username ($sessionuserid) and holdingid $holdingid / requestid  $requestid: unknown reason");	
+	    
 	    return $self->print_warning($msg->maketext("Eine Stornierung der Bestellung für dieses Medium durch Sie ist leider nicht möglich"));
 	}
     }
     elsif ($response_cancel_order_ref->{successful}){
+
+	$logger->info("Cancel order successful for user $username ($sessionuserid) and holdingid $holdingid / requestid  $requestid: unknown reason");	
+
 	# TT-Data erzeugen
 	my $ttdata = {
 	    userid        => $userid,
@@ -395,6 +422,7 @@ sub delete_record {
 	
     }
     else {
+	$logger->error("Cancel order failed for user $username ($sessionuserid) and holdingid $holdingid / requestid  $requestid: unexpected error");		
 	return $self->print_warning($msg->maketext("Bei der Stornierung der Vormerkung ist ein unerwarteter Fehler aufgetreten"));
     }
     

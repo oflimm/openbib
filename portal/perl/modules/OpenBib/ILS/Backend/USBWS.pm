@@ -2976,8 +2976,8 @@ sub send_account_request {
 		}
 
 		
-		if (defined $itemlist->{Konto}{KontoVlBarAnz}){
-		    $response_ref->{num_renewables} = $itemlist->{Konto}{KontoVlBarAnz};
+		if (defined $itemlist->{KontoVlBarAnz}){
+		    $response_ref->{num_renewables} = $itemlist->{KontoVlBarAnz};
 		}
 		
 		my $all_items_ref = [];

@@ -125,6 +125,16 @@ sub show_collection {
     if ($logger->is_debug){
 	$logger->debug("Got loans: ".YAML::Dump($loans_ref));
     }
+
+    # Sortierung der Ausleihen nach Rueckgabedatum aufsteigend
+
+    if (defined $loans_ref->{items} && @{$loans_ref->{items}}){
+	my $loans_items = $loans_ref->{items};
+
+	my @sorted_loans_items = sort _by_enddate_asc @$loans_items;
+
+	$loans_ref->{items} = \@sorted_loans_items;
+    }
     
     my $authenticator = $session->get_authenticator;
     
@@ -142,6 +152,21 @@ sub show_collection {
     return $self->print_page($config->{tt_users_circulations_loans_tname},$ttdata);
 }
 
+sub _by_enddate_asc {
+    my %line1=%{$a};
+    my %line2=%{$b};
+
+    my $line1=(defined $line1{endtime} && $line1{endtime})?$line1{endtime}:"00.00.0000";
+    my $line2=(defined $line2{endtime} && $line2{endtime})?$line2{endtime}:"00.00.0000";
+
+    my ($day1,$month1,$year1)=$line1=~m/(\d\d)\.(\d\d)\.(\d\d\d\d)/;
+    my ($day2,$month2,$year2)=$line2=~m/(\d\d)\.(\d\d)\.(\d\d\d\d)/;
+
+    my $dateline1 = "$year1$month1$day1";
+    my $dateline2 = "$year2$month2$day2";
+
+    $dateline1 <=> $dateline2;
+}
 
 1;
 __END__

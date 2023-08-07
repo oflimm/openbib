@@ -1982,6 +1982,10 @@ a.ext {
 }
 
 
+table.ob-title_fields td a {
+    text-decoration: underline;
+}
+
 @media only screen and (max-width: 1400px) {
 
     #ob-startpage .ob-mainsearchform .container {

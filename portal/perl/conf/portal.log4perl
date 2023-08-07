@@ -1,4 +1,5 @@
-Log4perl.category.OpenBib = DEBUG, Syncer
+Log4perl.category.OpenBib = FATAL, Syncer
+#Log4perl.category.OpenBib = DEBUG, Syncer
 
 log4perl.appender.Logfile           = Log::Log4perl::Appender::File
 log4perl.appender.Logfile.autoflush = 1
@@ -8,3 +9,5 @@ log4perl.appender.Logfile.layout.ConversionPattern=%d %p> %F{1}:%L %M - %m%n
 
 log4perl.appender.Syncer            = Log::Log4perl::Appender::Synchronized
 log4perl.appender.Syncer.appender   = Logfile
+
+log4perl.oneMessagePerAppender      = 1

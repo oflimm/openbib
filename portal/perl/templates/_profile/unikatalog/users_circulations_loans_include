@@ -36,7 +36,7 @@
 <div class="table-responsive">
 <table class="table table-striped ">
 <thead>
-<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %] / [% msg.maketext("Bestellnr.") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Verlängerungen") %]</th><th>[% msg.maketext("Leihfrist") %]</th><th>[% msg.maketext("Aktion") %]</th></tr>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %] / [% msg.maketext("Bestellnr.") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Verlängerungen") %]</th><th>[% msg.maketext("Leihfrist") %]</th><th>[% msg.maketext("Verlängerung") %]</th></tr>
 </thead>
 <tbody>
 [%- FOREACH loan = loans.items -%]
@@ -62,7 +62,7 @@
 [% IF loan.renewable %]
 <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/renew_single_loan?unit=[% loan.department.id %];holdingid=[% uri_escape(loan.item) %]" title="[% msg.maketext("Verlängerung durchführen") %]">[% msg.maketext("Verlängerung durchführen") %]</a>
 [% ELSE %]
-[% msg.maketext("Keine Aktion möglich") %]
+[% msg.maketext("Keine Verlängerung möglich") %]
 [% END %]
 </td>
 </tr>

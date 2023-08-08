@@ -2427,6 +2427,10 @@ a.card-link, a.card-link:hover {
 
 }
 
+.modal-xl {
+    max-width: 1350px;
+}
+
 @media all and (min-width: 992px) {
     .navbar .nav-item .dropdown-menu {
 	display: none;

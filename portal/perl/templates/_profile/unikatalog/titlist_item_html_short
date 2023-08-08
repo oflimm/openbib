@@ -443,7 +443,7 @@
          <br /><i class="fas fa-map-marker-alt"></i>
 [%-  IF locations.size >= 1 -%]
 [%      IF locations.size == 1 %]
-         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].html?l=[% lang %]">[% locinfo.identifier.${locations.first}.description %]</a>
+         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].html?l=[% lang %]">[% locinfo.identifier.${locations.first}.description %]</a> [% IF locations.first.match('^(emedien|freemedia)') && record.database != 'inst001' %]([% dbinfo.get('dbnames').${record.database}.short %])[% END %]
 [%      ELSIF locations.size > 1 %]
          [% msg.maketext('Verschiedene Standorte') %]
 [%      END %]

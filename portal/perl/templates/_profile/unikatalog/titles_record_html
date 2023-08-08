@@ -302,9 +302,9 @@ $(document).ready(function(){
     <div class="card-header" id="headingMainInformation">
       <h5 class="mb-0">        
 [%-  IF is_freemedia -%]
-         [% locinfo.identifier.${"freemedia"}.description %]
+         [% locinfo.identifier.${"freemedia"}.description %] [% IF locations.first.match('^(emedien|freemedia)') && record.database != 'inst001' %]([% dbinfo.get('dbnames').${record.database}.short %])[% END %]
 [%-  ELSIF is_licensedmedia -%]
-         [% locinfo.identifier.${"emedien"}.description %]
+         [% locinfo.identifier.${"emedien"}.description %] [% IF locations.first.match('^(emedien|freemedia)') && record.database != 'inst001' %]([% dbinfo.get('dbnames').${record.database}.short %])[% END %]
 [%-  ELSIF locations.size >= 1 -%]
 [%      IF locations.size == 1 %]
          [% locinfo.identifier.${locations.first}.description %]

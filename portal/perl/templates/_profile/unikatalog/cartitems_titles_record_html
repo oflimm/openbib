@@ -137,15 +137,19 @@
      IF normdata.${'T4410'}.first.content.match('Monographie');
        record_type = "mono";
        PROCESS common/subtemplate name="visible_categories_title_mono";
+       PROCESS common/subtemplate name="visible_categories_title_mono_supplement";
      ELSIF normdata.${'T4410'}.first.content.match('Zeitschrift/Serie');
        record_type = "journal";        
        PROCESS common/subtemplate name="visible_categories_title_journal";
+       PROCESS common/subtemplate name="visible_categories_title_journal_supplement";
      ELSIF  normdata.${'T4410'}.first.content.match('Aufsatz');
        record_type = "article";
        PROCESS common/subtemplate name="visible_categories_title_article";
+       PROCESS common/subtemplate name="visible_categories_title_article_supplement";
      ELSE;
        record_type = "default";
        PROCESS common/subtemplate name="visible_categories_title";
+       PROCESS common/subtemplate name="visible_categories_title_supplement";
      END;
 -%]
 
@@ -161,23 +165,6 @@ Zugriff nur im <a class="inturl" href="[% cms_links.vpn %]">Netz der Universitä
 </div>
 [% END %]
 
-<h5 class="pb-2">Weitere Informationen</h5>
-
-<div id="title_supplemental_information">
-[%-
-     IF record_type == 'mono';
-       PROCESS common/subtemplate name="visible_categories_title_mono_supplement";
-     ELSIF record_type == 'journal';
-       PROCESS common/subtemplate name="visible_categories_title_journal_supplement";
-     ELSIF record_type == 'article';
-       PROCESS common/subtemplate name="visible_categories_title_article_supplement";
-     ELSE;
-       PROCESS common/subtemplate name="visible_categories_title_supplement";
-     END;
--%]
-
-[%   PROCESS common/subtemplate name="titles_record_html_categories" %]
-</div>
 
 [% ELSE %]
 <h2>[% msg.maketext("Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden.") %]</h2>

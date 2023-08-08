@@ -36,9 +36,9 @@
 <p>[% msg.maketext("Übersicht über Ihre Ausleihen, Bestellungen und Vormerkungen.") %]</p>
 
 <ul>
-<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-bs-class="modal-xl" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.include?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a>: [% account.num_loans %]</li>
-<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-bs-class="modal-xl" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders.include?l=[% lang %]">[% msg.maketext("Offene Bestellungen") %]</a>: [% account.num_orders %]</li>
-<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-bs-class="modal-xl" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations.include?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a>: [% account.num_reservations %]</li>
+<li><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-bs-class="modal-xl" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.include?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a>: [% account.num_loans %]</li>
+<li><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-bs-class="modal-xl" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders.include?l=[% lang %]">[% msg.maketext("Offene Bestellungen") %]</a>: [% account.num_orders %]</li>
+<li><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-bs-class="modal-xl" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations.include?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a>: [% account.num_reservations %]</li>
 </ul>
 
 </div>
@@ -53,13 +53,13 @@
 <p> [% msg.maketext("Übersicht über die Bücher, die Sie über die Fernleihe bestellt haben sowie ihren aktuellen Bearbeitungsstatus.") %]</a></p>
 
 <ul>
-<li><a href="https://usb-koeln.digibib.net/account/ill/books/orderlist" target="fernleihkonto_aufsaetze">[% msg.maketext("Buchbestellungen") %]</a></li>
+<li><a class="exturl" href="https://usb-koeln.digibib.net/account/ill/books/orderlist" target="fernleihkonto_aufsaetze">[% msg.maketext("Buchbestellungen") %]</a></li>
 </ul>
 
 <p> [% msg.maketext("Übersicht über die Zeitschriftenartikel und Abschnitte aus Büchern, die Sie als Kopie über die Fernleihe bestellt haben sowie ihren aktuellen Bearbeitungsstatus.") %]</a></p>
 
 <ul>
-<li><a href="https://usb-koeln.digibib.net/account/ill/articles/orderlist" target="fernleihkonto_aufsaetze">[% msg.maketext("Aufsatzbestellungen") %]</a></li>
+<li><a class="exturl" href="https://usb-koeln.digibib.net/account/ill/articles/orderlist" target="fernleihkonto_aufsaetze">[% msg.maketext("Aufsatzbestellungen") %]</a></li>
 </ul>
 
 </div>
@@ -72,7 +72,7 @@
 <div class="card-body">
 
 <ul>
-<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/fees.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-bs-class="modal-xl" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/fees.include?l=[% lang %]">[% msg.maketext("Offene Gebühren") %]</a>: EUR [% account.amount_fees %]</li>
+<li><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/fees.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-bs-class="modal-xl" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/fees.include?l=[% lang %]">[% msg.maketext("Offene Gebühren") %]</a>: EUR [% account.amount_fees %]</li>
 </ul>
 
 </div>
@@ -85,10 +85,10 @@
 <div class="card-body">
 
 <ul>
-<li><a href="#" data-bs-toggle="modal" data-bs-target="#addressModal">[% msg.maketext("Persönliche Angaben anzeigen") %]</a></li>
-<li><a href="#" data-bs-toggle="modal" data-bs-target="#emailModal">[% msg.maketext("E-Mail-Adresse eintragen bzw. ändern") %]</li></a>
+<li><a class="inturl" href="#" data-bs-toggle="modal" data-bs-target="#addressModal">[% msg.maketext("Persönliche Angaben anzeigen") %]</a></li>
+<li><a class="inturl" href="#" data-bs-toggle="modal" data-bs-target="#emailModal">[% msg.maketext("E-Mail-Adresse eintragen bzw. ändern") %]</li></a>
 <!-- <li><a href="#" data-bs-toggle="modal" data-bs-target="#phoneModal">[% msg.maketext("Telefonnummer eintragen bzw. ändern") %]</a></li> -->
-<li><a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal">[% msg.maketext("Passwort ändern") %]</a></li>
+<li><a class="inturl" href="#" data-bs-toggle="modal" data-bs-target="#passwordModal">[% msg.maketext("Passwort ändern") %]</a></li>
 </ul>
 
 </div>
@@ -101,7 +101,7 @@
 <div class="card-body">
 
 <ul>
-<li><a href="[% cms_links.usbinfo %]" target="_blank">[% msg.maketext("USB-Info") %]</a><br/>[% msg.maketext("Allgemeine Informationen zum Dienstleistungsangebot der USB.") %]</li>
+<li><a class="exturl" href="[% cms_links.usbinfo %]" target="_blank">[% msg.maketext("USB-Info") %]</a><br/>[% msg.maketext("Allgemeine Informationen zum Dienstleistungsangebot der USB.") %]</li>
 </ul>
 
 </div>

@@ -84,7 +84,7 @@
           library_isil = "DE-38-${kuerzel}";
        END ;
      ELSIF standort.match('Bibliothek für Informatik und Wirtschaftsinformatik');
-       library_isil = "DE-38-526";
+       library_isil = "DE-38-006";
      ELSIF standort.match('VWL');
        library_isil = "DE-38-101";
      ELSIF standort.match('HF-Bibliothek');

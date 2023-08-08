@@ -655,7 +655,7 @@ while (<>){
 		    }
 		    elsif ($public_note =~m/(Lizenz|lizenzpflichtig)/i){
 			my $description = "E-Book im Volltext";
-			my $access      = "g"; # green
+			my $access      = "y"; # yellow
 			
 			push @{$record_ref->{fields}{'4662'}}, {
 			    mult     => $mult,

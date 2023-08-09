@@ -1991,7 +1991,7 @@ sub add_tags {
         my $record;
         
         eval {
-            $record = OpenBib::Record::Title->new({database => $dbname, id => $titleid})->load_brief_record;
+            $record = OpenBib::Record::Title->new({database => $dbname, id => $titleid})->load_full_record;
         };
         
         if ($@){
@@ -3771,7 +3771,7 @@ sub add_litlistentry {
         
         return if ($litlistitem);
         
-        my $cached_title = OpenBib::Record::Title->new({ id => $titleid, database => $dbname, config => $config })->load_brief_record->to_json;
+        my $cached_title = OpenBib::Record::Title->new({ id => $titleid, database => $dbname, config => $config })->load_full_record->to_json;
         
         $logger->debug("Caching Bibliographic Data: $cached_title");
 
@@ -5118,7 +5118,7 @@ sub add_item_to_collection {
         
         if (!$have_title) {
             my $cached_title = new OpenBib::Record::Title({ database => $dbname , id => $titleid, config => $config });
-            my $record_json = $cached_title->load_brief_record->to_json;
+            my $record_json = $cached_title->load_full_record->to_json;
             
             $logger->debug("Adding Title to Usercollection: $record_json");
             

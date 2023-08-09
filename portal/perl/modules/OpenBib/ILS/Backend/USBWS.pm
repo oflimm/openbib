@@ -2462,11 +2462,11 @@ sub get_mediastatus {
 			push @$unavailable_ref, $this_unavailable_ref;
 			
 		    }
-		    elsif ($circ_ref->{Leihstatus} =~m/^(LSVermisst)$/){
+		    elsif ($circ_ref->{Leihstatus} =~m/^(LSVermisst|LSVerlust)$/){
 			my $this_unavailable_ref = {
 			    service => 'loan',
 			    content => $circ_ref->{LeihstatusText},
-#			    expected => 'lost',
+			    expected => 'missing',
 			};
 			
 			push @$unavailable_ref, $this_unavailable_ref;

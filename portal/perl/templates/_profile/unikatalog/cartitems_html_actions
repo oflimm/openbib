@@ -209,6 +209,8 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 <p/>
 
+<button class="btn btn-primary mt-3 ms-2" type="submit" name="do_cartitems_delentry" value="1"><i class="fas fa-trash"></i><span class="d-none d-sm-inline ms-2">[% msg.maketext("Ausgewählte Titel löschen") %]</span></button>
+
 
 </div> <!-- End: Reuse Data -->
 [% END %]

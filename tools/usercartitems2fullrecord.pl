@@ -115,7 +115,7 @@ if ($userid){
     $where_ref->{'userid.authenticatorid'} = 1; # nur USB Ausweis
 }
 
-$logger->info("Where: ".YAML::Dump($where_ref));
+$logger->debug("Where: ".YAML::Dump($where_ref));
 
 my $usercartitems = $user->get_schema->resultset('UserCartitem')->search_rs(
     $where_ref,
@@ -141,9 +141,9 @@ while (my $thiscartitem = $cartitems->next()){
     my $titleid = $thiscartitem->get_column('titleid');
     my $dbname  = $thiscartitem->get_column('dbname');
 
-    my $system  = $dbinfo->get('system')->{$dbname};
+    my $system  = (defined $dbinfo->get('system')->{$dbname})?$dbinfo->get('system')->{$dbname}:"";
 
-    if ($system =~m/Backend/){
+    if (!$system || $system =~m/Backend/){
 	$logger->info("DB $dbname -> System $system ignored");
 	next;
     }

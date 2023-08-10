@@ -169,6 +169,11 @@ while (my $thiscartitem = $cartitems->next()){
 	next;
     }
 
+    if (!$config->db_exists($dbname)){
+	$logger->error("NO_DB: $dbname");
+	next;
+    }
+    
     my $record = new OpenBib::Record::Title({ database => $dbname , id => $titleid, config => $config })->load_full_record;
 
     if ($record->record_exists){

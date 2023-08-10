@@ -34,6 +34,7 @@ use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Benchmark ':hireswallclock';
 use DBI;
+use DBIx::Class::ResultClass::HashRefInflator;
 use Getopt::Long;
 use Unicode::Collate;
 use YAML;
@@ -44,13 +45,15 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::User;
 
-my ($username,$from,$to,$dryrun,$help,$logfile,$loglevel);
+my ($username,$from,$to,$listusers,$authenticatorid,$dryrun,$help,$logfile,$loglevel);
 
 &GetOptions(
     "username=s"      => \$username,
     "from=s"          => \$from,
     "to=s"            => \$to,
+    "authenticatorid=s" => \$authenticatorid,
     "dry-run"         => \$dryrun,
+    "list-users"      => \$listusers,
     "loglevel=s"      => \$loglevel,
     "logfile=s"       => \$logfile,	    
     "help"            => \$help
@@ -60,11 +63,11 @@ if ($help){
     print_help();
 }
 
-$from     = ($from)?$from:"1970-01-01 00:00:00";
-$to       = ($to)?$to:"2100-01-01 00:00:00";
-
-$logfile  = ($logfile)?$logfile:'/var/log/openbib/usercartitems2fullrecord.log';
-$loglevel = ($loglevel)?$loglevel:'INFO';
+$from            = ($from)?$from:"1970-01-01 00:00:00";
+$to              = ($to)?$to:"2100-01-01 00:00:00";
+$authenticatorid = ($authenticatorid)?$authenticatorid:1; # Default 1 = USB Ausweis
+$logfile         = ($logfile)?$logfile:'/var/log/openbib/usercartitems2fullrecord.log';
+$loglevel        = ($loglevel)?$loglevel:'INFO';
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=$loglevel, LOGFILE, Screen
@@ -108,14 +111,34 @@ my $where_ref = {
     	 'cartitemid.tstamp' => { '>' => $from },
     	 'cartitemid.tstamp' => { '<' => $to },
     	],
+	
+	'userid.authenticatorid' => 1, # nur USB Ausweis
 };
 
 if ($userid){
     $where_ref->{'userid.id'} = $userid;
-    $where_ref->{'userid.authenticatorid'} = 1; # nur USB Ausweis
 }
 
 $logger->debug("Where: ".YAML::Dump($where_ref));
+
+if ($listusers){
+    my $usercartitems = $user->get_schema->resultset('UserCartitem')->search_rs(
+	$where_ref,
+	{
+	    select  => ['userid.username'],
+	    as       => ['thisusername'],
+	    group_by => ['userid.username'],
+	    order_by => ['userid.username ASC'],	
+	    join     => ['userid','cartitemid'],
+	    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+	}
+	);
+
+    while (my $thisuser = $usercartitems->next()){
+	print $thisuser->{thisusername},"\n";
+    }
+    exit;
+}
 
 my $usercartitems = $user->get_schema->resultset('UserCartitem')->search_rs(
     $where_ref,
@@ -173,8 +196,13 @@ usercartitems2fullrecord.pl - Upgrade des Merklisten Titelcaches auf komplette T
 
    Optionen:
    -help                 : Diese Informationsseite
+   -dry-run              : Testlauf ohne Aenderungen
+   -list-users           : Anzeige der Nutzeraccounts mit Merklisten
+   --from=...            : Von Erstellungsdatum (z.B. 2013-01-01 00:00:00)
+   --to=...              : Bis Erstellungsdatum (z.B. 2013-01-02 00:00:00)
    --username=...        : Einzelner Nutzer
    --logfile=...         : Alternatives Logfile
+   --loglevel=...        : Alternatives Loglevel
 
 ENDHELP
     exit;

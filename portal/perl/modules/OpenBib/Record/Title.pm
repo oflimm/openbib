@@ -3928,6 +3928,7 @@ sub to_hash {
         'id'          => $self->{id},
         'database'    => $self->{database},
         'fields'      => $self->{_fields},
+        'locations'   => $self->{_locations},
         'items'       => $self->{_holding},
 	 'circulation' => $self->{_circulation},
 	 'generic_attributes' => $self->{generic_attributes},   
@@ -3945,6 +3946,7 @@ sub from_hash {
     $self->set_fields($hash_ref->{fields});
     $self->set_holding($hash_ref->{items});
     $self->set_circulation($hash_ref->{circulation});
+    $self->set_locations($hash_ref->{locations});
     $self->set_generic_attributes($hash_ref->{generic_attributes});
 	
     return $self;

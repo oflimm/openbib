@@ -164,7 +164,18 @@ while (my $thiscartitem = $cartitems->next()){
     my $titleid = $thiscartitem->get_column('titleid');
     my $dbname  = $thiscartitem->get_column('dbname');
 
-    my $system  = (defined $dbinfo->get('system')->{$dbname})?$dbinfo->get('system')->{$dbname}:"";
+    my $system  = "";
+
+    eval {
+	if (defined $dbinfo->get('system')->{$dbname}){
+	    $system = $dbinfo->get('system')->{$dbname};
+	}
+    };
+    
+    if ($@){
+	$logger->error("System for $dbname: ".$@);
+	next;
+    }
 
     if (!$system || $system =~m/Backend/){
 	$logger->info("DB $dbname -> System $system ignored");

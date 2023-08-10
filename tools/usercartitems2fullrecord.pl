@@ -172,6 +172,21 @@ while (my $thiscartitem = $cartitems->next()){
     my $record = new OpenBib::Record::Title({ database => $dbname , id => $titleid, config => $config })->load_full_record;
 
     if ($record->record_exists){
+	
+	if (!$record->get_locations){
+	    my $fields_ref = $record->get_fields;
+
+	    my $locations_ref = [];
+	    
+	    foreach my $item_ref (@{$fields_ref->{'T4230'}}){
+		push @{$locations_ref}, $item_ref->{content};
+	    }
+
+	    if (@{$locations_ref}){
+		$record->set_locations($locations_ref);
+	    }
+	}
+	
 	my $record_json = $record->to_json;
 
 	if ($dryrun){

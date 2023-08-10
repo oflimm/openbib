@@ -112,6 +112,7 @@ CREATE INDEX sessioninfo_viewname ON sessioninfo (viewname);
 ALTER TABLE cartitem ADD PRIMARY KEY (id);
 CREATE INDEX cartitem_dbname ON cartitem (dbname);
 CREATE INDEX cartitem_titleid ON cartitem (titleid);
+CREATE INDEX cartitem_tstamp ON cartitem (tstamp);
 
 ALTER TABLE session_cartitem ADD CONSTRAINT fk_sessioncartitem_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
 ALTER TABLE session_cartitem ADD CONSTRAINT fk_sessioncartitem_cartitem FOREIGN KEY (cartitemid) REFERENCES cartitem (id);

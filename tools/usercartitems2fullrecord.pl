@@ -108,8 +108,8 @@ if ($username){
 
 my $where_ref = {
     -and => [
-    	 'cartitemid.tstamp' => { '>' => $from },
-    	 'cartitemid.tstamp' => { '<' => $to },
+    	 'cartitemid.tstamp' => { '>=' => $from },
+    	 'cartitemid.tstamp' => { '<=' => $to },
     	],
 	
 	'userid.authenticatorid' => 1, # nur USB Ausweis

@@ -112,7 +112,7 @@ my $where_ref = {
     	 'cartitemid.tstamp' => { '<=' => $to },
     	],
 	
-	'userid.authenticatorid' => 1, # nur USB Ausweis
+	'userid.authenticatorid' => $authenticatorid,
 };
 
 if ($userid){

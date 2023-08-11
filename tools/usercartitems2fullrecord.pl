@@ -45,14 +45,14 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::User;
 
-my ($username,$from,$to,$listusers,$authenticatorid,$viewid,$dryrun,$help,$logfile,$loglevel);
+my ($username,$from,$to,$listusers,$authenticatorid,$viewname,$dryrun,$help,$logfile,$loglevel);
 
 &GetOptions(
     "username=s"      => \$username,
     "from=s"          => \$from,
     "to=s"            => \$to,
     "authenticatorid=s" => \$authenticatorid,
-    "viewid=s"        => \$viewid,
+    "viewname=s"      => \$viewname,
     "dry-run"         => \$dryrun,
     "list-users"      => \$listusers,
     "loglevel=s"      => \$loglevel,
@@ -120,7 +120,24 @@ if ($userid){
     $where_ref->{'userid.id'} = $userid;
 }
 
-if ($viewid){
+if ($viewname){
+
+    if (!$config->view_exists($viewname)){
+	$logger->error("View $viewname existiert nicht");
+	exit;
+    }
+    
+    my $viewid;
+
+    eval {
+	$viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
+    };
+
+    if ($@){
+	$logger->error($@);
+	exit;
+    }
+    
     $where_ref->{'userid.viewid'} = $viewid;
 }
 

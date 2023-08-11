@@ -45,13 +45,14 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::User;
 
-my ($username,$from,$to,$listusers,$authenticatorid,$dryrun,$help,$logfile,$loglevel);
+my ($username,$from,$to,$listusers,$authenticatorid,$viewid,$dryrun,$help,$logfile,$loglevel);
 
 &GetOptions(
     "username=s"      => \$username,
     "from=s"          => \$from,
     "to=s"            => \$to,
     "authenticatorid=s" => \$authenticatorid,
+    "viewid=s"        => \$viewid,
     "dry-run"         => \$dryrun,
     "list-users"      => \$listusers,
     "loglevel=s"      => \$loglevel,
@@ -117,6 +118,10 @@ my $where_ref = {
 
 if ($userid){
     $where_ref->{'userid.id'} = $userid;
+}
+
+if ($viewid){
+    $where_ref->{'userid.viewid'} = $viewid;
 }
 
 $logger->debug("Where: ".YAML::Dump($where_ref));

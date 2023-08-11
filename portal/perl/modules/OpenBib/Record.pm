@@ -243,6 +243,12 @@ sub get_database {
     return (defined $self->{database})?$self->{database}:undef;
 }
 
+sub get_date {
+    my ($self)=@_;
+
+    return (defined $self->{date})?$self->{date}:undef;
+}
+
 sub get_fields {
     my ($self,$msg)=@_;
 

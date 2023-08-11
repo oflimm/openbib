@@ -897,7 +897,7 @@ sub add_item_to_collection {
         
         if (!$have_title) {
             my $cached_title = new OpenBib::Record::Title({ database => $dbname , id => $titleid});
-            my $record_json = $cached_title->load_brief_record->to_json;
+            my $record_json = $cached_title->load_full_record->to_json;
             
             $logger->debug("Adding Title to Collection: $cached_title");
             

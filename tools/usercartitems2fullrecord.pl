@@ -117,7 +117,7 @@ my $where_ref = {
 };
 
 if ($userid){
-    $where_ref->{'userid.id'} = $userid;
+    $where_ref->{'userid.username'} = $username;
 }
 
 if ($viewname){

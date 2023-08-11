@@ -27,7 +27,7 @@
       END ;
    END;
 
-   cdmurl = "http://www.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fzas&start=1&maxrecs=100&field0=title&mode0=exact&string0=";
+   cdmurl = "https://services.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fzas&start=1&maxrecs=100&field0=title&mode0=exact&string0=";
 %]
 [% cdm = record.enrich_cdm(bezeichner,cdmurl)%]
 [% IF cdm.total > 0 ;

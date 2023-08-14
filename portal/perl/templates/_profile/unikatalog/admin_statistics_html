@@ -39,10 +39,19 @@
       funcargs = { id => 'cartitems', type => 17 } ;
       resultlist = statistics.get_result(funcargs);
 
+      cutoff = 20;
+      lessequal_cutoff  = 0;
+      greater_cutoff    = 0;
+      
       cartitemcount = [];
       usercount     = [];
 
       FOREACH cartitem IN resultlist;
+        IF cartitem.cartitemcount <= cutoff;
+	  lessequal_cutoff = lessequal_cutoff + cartitem.usercount;
+	ELSE ;
+	  greater_cutoff = greater_cutoff + cartitem.usercount;	
+	END;
         cartitemcount.push(cartitem.cartitemcount);
         usercount.push(cartitem.usercount);
       END;
@@ -87,3 +96,8 @@ var typeChart_cartitems = new Chart(type_ctx_cartitems, {
 </script>
 
 </div>
+
+<p>[% msg.maketext("Festgelegte Grenze der Merklistengröße") %]: [% cutoff %]</p>
+<p>[% msg.maketext("Zahl der Nutzer mit weniger großen Merklisten") %]: [% lessequal_cutoff %]</p>
+<p>[% msg.maketext("Zahl der Nutzer mit größeren Merklisten") %]: [% greater_cutoff %]</p>
+

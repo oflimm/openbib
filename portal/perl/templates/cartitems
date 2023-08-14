@@ -1,7 +1,7 @@
 [%- IF representation == '' || representation == 'html' ;
 
     layout_param = {
-      'page_title' = 'Merkliste'
+      'page_title' = msg.maketext('Merkliste')
      
       'main_template' = 'cartitems_html'
       
@@ -18,6 +18,8 @@
 	  }
       ]
     };
+
+    cartitems_warning_cutoff = 50
 -%]
 [%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'include' -%]

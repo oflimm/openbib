@@ -33,7 +33,7 @@
 
 <h3>[% msg.maketext("Zahl der Nutzer pro gegebener Merklistengröße") %]</h3>
 
-<div style="max-width:600px;">
+<div style="max-width:800px;">
 
 [%
       funcargs = { id => 'cartitems', type => 17 } ;

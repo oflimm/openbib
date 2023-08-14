@@ -118,7 +118,7 @@ var typeChart_cartitems = new Chart(type_ctx_cartitems, {
 	END;
       END;
 -%]
-<tr><td>[% cutoff %]</td><td>[% lessequal_cutoff %]</td><td>[% greater_cutoff %]</td></tr>
+<tr><td>[% cutoff %]</td><td>[% lessequal_cutoff %] ([% lessequal_cutoff * 100 / (lessequal_cutoff + greater_cutoff)  FILTER format("%.2f") %] %)</td><td>[% greater_cutoff %] ([% greater_cutoff * 100 / (lessequal_cutoff + greater_cutoff)  FILTER format("%.2f") %] %)</td></tr>
 [%  END%]
 </tbody>
 </table>

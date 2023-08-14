@@ -35,6 +35,7 @@ use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Benchmark ':hireswallclock';
 use DBI;
+use DBIx::Class::ResultClass::HashRefInflator;
 use Getopt::Long;
 use Unicode::Collate;
 use YAML;
@@ -133,6 +134,48 @@ my $is_subject_field_ref = {
     '0942' => 1,
     '0947' => 1,
 };
+
+# Typ 17 => Besetzungszahlen der Merklisten 
+if ($type == 17){
+    
+    my $metrics_ref=[];
+
+    my $histogram_ref = {};
+    
+    my $cartitemusage = $config->get_schema->resultset('UserCartitem')->search_rs(
+	{
+	},
+	{
+	    select   => [{'count' => 'me.userid'}],
+	    as       => ['cartitemcount'],
+	    group_by => ['me.userid'],
+	    join     => ['cartitems'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+	}
+	);
+    
+    while (my $thiscount = $cartitemusage->next()){
+	my $count    = $thiscount->{'cartitemcount'};
+	
+	my $current_count = (defined $histogram_ref->{$count})?$histogram_ref->{$count}:0;
+
+	$current_count++;
+	$histogram_ref->{$count} = $current_count;
+    }
+
+    foreach my $count (sort keys %$histogram_ref){
+	push @$metrics_ref, {
+	    cartitemcount  => $count,
+	    usercount => $histogram_ref->{$count},
+	};
+    }
+    
+    $statistics->cache_data({
+	type => 17,
+	id   => 'cartitems',
+	data => $metrics_ref,
+			    });
+}
 
 # Typ 1 => Meistaufgerufene Titel pro Datenbank
 if ($type == 1){
@@ -1297,6 +1340,7 @@ if ($type == 16){
 
 }
 
+
 sub gen_cloud_class {
     my ($arg_ref) = @_;
     
@@ -1385,6 +1429,7 @@ gen_metrics.pl - Erzeugen und Cachen von Metriken aus Katalog- oder Statistik-Da
   14 => Meistvorkommender Feldinhalt pro Datenbank
   15 => Besetzungszahlen der Titel in der USB LS-Systematik
   16 => Besetzungszahlen der Titel in der USB LBS-Systematik
+  17 => Besetzungszahlen der Merklisten
 ENDHELP
     exit;
 }

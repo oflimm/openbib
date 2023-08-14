@@ -30,3 +30,66 @@
 </td></td>
 </table>
 </div>
+
+
+<h3>[% msg.maketext("Titelumfang der Merklisten pro Nutzer") %]</h3>
+
+[%
+      funcargs = { id => 'cartitems', type => 17 } ;
+      resultlist = statistics.get_result(funcargs);
+
+      cartitemcount = [];
+      usercount     = [];
+
+      FOREACH cartitem IN resultlist;
+        cartitemcount.push(cartitem.cartitemcount);
+        usercount.push(cartitem.usercount);
+      END;
+%]
+
+<canvas id="ob-cartitemChart" width="300" height="200"></canvas>
+
+[% USE dumper; dumper.dump(cartitemcount) ; dumper.dump(usercount); %]
+
+<script>
+var type_ctx_cartitems = document.getElementById('ob-cartitemChart');
+var typeChart_cartitems = new Chart(type_ctx_cartitems, {
+    type: 'bar',
+    data: {    
+        labels: [[% cartitemcount.join(',') %]],
+        datasets: [{
+            label: 'Zahl der Nutzer',
+            data: [[% usercount.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+            BarThickness: 8,
+        }],
+    },
+    options: {
+        legend: {
+           display: false
+        },
+        tooltips: {
+          callbacks: {
+             label: function(tooltipItem) {
+                  return tooltipItem.yLabel;
+             }
+          }
+        },
+        scales: {
+           xAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }],
+           yAxes: [{
+                ticks: {
+		    stepSize: 1,
+                    beginAtZero: true
+                }
+            }]
+        },	
+    }
+});
+</script>

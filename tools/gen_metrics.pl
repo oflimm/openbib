@@ -163,7 +163,7 @@ if ($type == 17){
 	$histogram_ref->{$count} = $current_count;
     }
 
-    foreach my $count (sort keys %$histogram_ref){
+    foreach my $count (sort { $a <=> $b }  keys %$histogram_ref){
 	push @$metrics_ref, {
 	    cartitemcount  => $count,
 	    usercount => $histogram_ref->{$count},

@@ -102,7 +102,7 @@ var typeChart_cartitems = new Chart(type_ctx_cartitems, {
 <div class="table-responsive">
 <table class="table table-striped table-flippable">
 <thead>
-<tr><th>[% msg.maketext("Merklistengröße") %]</th><th>[% msg.maketext("Nutzer mit weniger großen Merklisten") %]</th><th>[% msg.maketext("Nutzer mit größeren Merklisten") %]</th></tr>
+<tr><th>[% msg.maketext("Merklistengröße") %]</th><th>[% msg.maketext("Nutzer mit kleineren oder gleichgroßen Merklisten") %]</th><th>[% msg.maketext("Nutzer mit größeren Merklisten") %]</th></tr>
 </thead>
 <tbody>
 

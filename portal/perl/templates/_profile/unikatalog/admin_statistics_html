@@ -56,7 +56,7 @@ var typeChart_cartitems = new Chart(type_ctx_cartitems, {
     data: {    
         labels: [[% cartitemcount.join(',') %]],
         datasets: [{
-            label: 'Zahl der Nutzer',
+            label: 'Zahl der Nutzer mit #Merklistentiteln',
             data: [[% usercount.join(',') %]],
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
@@ -83,7 +83,6 @@ var typeChart_cartitems = new Chart(type_ctx_cartitems, {
             }],
            yAxes: [{
                 ticks: {
-		    stepSize: 1,
                     beginAtZero: true
                 }
             }]

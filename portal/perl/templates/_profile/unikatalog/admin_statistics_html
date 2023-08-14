@@ -97,7 +97,29 @@ var typeChart_cartitems = new Chart(type_ctx_cartitems, {
 
 </div>
 
-<p>[% msg.maketext("Festgelegte Grenze der Merklistengröße") %]: [% cutoff %]</p>
-<p>[% msg.maketext("Zahl der Nutzer mit weniger großen Merklisten") %]: [% lessequal_cutoff %]</p>
-<p>[% msg.maketext("Zahl der Nutzer mit größeren Merklisten") %]: [% greater_cutoff %]</p>
+<p>[% msg.maketext("Nutzerverteilung für verschiedene Merklistengrößen") %]</p>
 
+<div class="table-responsive">
+<table class="table table-striped table-flippable">
+<thead>
+<tr><th>[% msg.maketext("Merklistengröße") %]</th><th>[% msg.maketext("Zahl der Nutzer mit weniger großen Merklisten") %]</th><th>[% msg.maketext("Zahl der Nutzer mit größeren Merklisten") %]</th></tr>
+</thead>
+<tbody>
+
+[%- FOREACH cutoff IN [20,40,60,100] ;
+      lessequal_cutoff  = 0;
+      greater_cutoff    = 0;
+
+      FOREACH cartitem IN resultlist;
+        IF cartitem.cartitemcount <= cutoff;
+	  lessequal_cutoff = lessequal_cutoff + cartitem.usercount;
+	ELSE ;
+	  greater_cutoff = greater_cutoff + cartitem.usercount;	
+	END;
+      END;
+-%]
+<tr><td>[% cutoff %]</td><td>[% lessequal_cutoff %]</td><td>[% greater_cutoff %]</td></tr>
+[%  END%]
+</tbody>
+</table>
+</div>

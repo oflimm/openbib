@@ -31,8 +31,9 @@
 </table>
 </div>
 
+<h3>[% msg.maketext("Zahl der Nutzer pro gegebener Merklistengröße") %]</h3>
 
-<h3>[% msg.maketext("Titelumfang der Merklisten pro Nutzer") %]</h3>
+<div style="max-width:600px;">
 
 [%
       funcargs = { id => 'cartitems', type => 17 } ;
@@ -47,16 +48,17 @@
       END;
 %]
 
-<canvas id="ob-cartitemChart" width="300" height="200"></canvas>
+<canvas id="ob-cartitemChart"></canvas>
 
 <script>
 var type_ctx_cartitems = document.getElementById('ob-cartitemChart');
 var typeChart_cartitems = new Chart(type_ctx_cartitems, {
     type: 'bar',
+    label: '[% msg.maketext("Zahl der Nutzer je Merklistengröße") %]',
     data: {    
         labels: [[% cartitemcount.join(',') %]],
         datasets: [{
-            label: 'Zahl der Nutzer mit #Merklistentiteln',
+            label: 'Zahl der Nutzer',
             data: [[% usercount.join(',') %]],
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
@@ -67,13 +69,6 @@ var typeChart_cartitems = new Chart(type_ctx_cartitems, {
     options: {
         legend: {
            display: false
-        },
-        tooltips: {
-          callbacks: {
-             label: function(tooltipItem) {
-                  return tooltipItem.yLabel;
-             }
-          }
         },
         scales: {
            xAxes: [{
@@ -90,3 +85,5 @@ var typeChart_cartitems = new Chart(type_ctx_cartitems, {
     }
 });
 </script>
+
+</div>

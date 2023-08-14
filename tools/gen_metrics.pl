@@ -149,7 +149,7 @@ if ($type == 17){
 	    select   => [{'count' => 'me.userid'}],
 	    as       => ['cartitemcount'],
 	    group_by => ['me.userid'],
-	    join     => ['cartitems'],
+	    join     => ['cartitemid'],
             result_class => 'DBIx::Class::ResultClass::HashRefInflator',
 	}
 	);

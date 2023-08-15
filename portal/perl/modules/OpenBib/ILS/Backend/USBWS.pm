@@ -2271,11 +2271,15 @@ sub get_mediastatus {
 	}
 
 	# Allgemeine Fehler
-	if (defined $circexlist->{NotOK} ){
+	my $itemstring = (defined $circexlist->{Exemplardaten})?'Exemplardaten':'PresentExemplardaten';
+
+	if (defined $circexlist->{NotOK} || defined $circexlist->{$itemstring}{NotOK}){
+	    my $notok = (defined $circexlist->{NotOK})?$circexlist->{NotOK}:(defined $circexlist->{$itemstring}{NotOK})?$circexlist->{$itemstring}{NotOK}:'unspecified error';
+	    
 	    $response_ref = {
 		"code" => 400,
 		    "error" => "error",
-		    "error_description" => $circexlist->{NotOK},
+		    "error_description" => $notok,
 	    };
 	    
 	    if ($logger->is_debug){

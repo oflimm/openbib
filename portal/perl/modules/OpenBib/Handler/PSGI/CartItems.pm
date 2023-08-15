@@ -37,10 +37,13 @@ use utf8;
 use URI::Escape;
 
 use DBI;
+use Data::Pageset;
 use Email::Valid;
-use Encode 'decode_utf8';
+use Encode qw/decode_utf8 encode_utf8/;
 use Email::Stuffer;
-use File::Slurper 'read_binary';
+use File::Slurper qw/read_binary read_text/;
+use HTML::Entities qw/decode_entities/;
+use HTML::Escape qw/escape_html/;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 
@@ -110,7 +113,7 @@ sub show_collection {
     my $show                    = $query->param('show')                    || 'short';
     my $type                    = $query->param('type')                    || 'HTML';
     my $format                  = $query->param('format')                  || 'short';
-
+    
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
     }
@@ -126,23 +129,34 @@ sub show_collection {
     # die Session nicht authentifiziert ist
 
     $logger->info("SessionID: $session->{ID}");
-        
+    
     my $recordlist = $self->get_items_in_collection();
 
-    if ($recordlist->get_size() != 0) {
-        my $sorttype          = $queryoptions->get_option('srt');
-        my $sortorder         = $queryoptions->get_option('srto');
+    # if ($recordlist->get_size() != 0) {
+    #     my $sorttype          = $queryoptions->get_option('srt');
+    #     my $sortorder         = $queryoptions->get_option('srto');
         
-        if ($sortorder && $sorttype){
-            $recordlist->sort({order=>$sortorder,type=>$sorttype});
-        }
-    }
+    #     if ($sortorder && $sorttype){
+    #         $recordlist->sort({order=>$sortorder,type=>$sorttype});
+    #     }
+    # }
+
+    my $total_count = $self->get_number_of_items_in_collection();
+    
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $total_count,
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
     
     # TT-Data erzeugen
     my $ttdata={
         qopts             => $queryoptions->get_options,
         format            => $format,
 
+	hits              => $total_count,
+	nav               => $nav,
         recordlist        => $recordlist,
 
 	highlightquery    => \&highlightquery,
@@ -574,12 +588,20 @@ sub print_collection {
     # Druck eines Titels
     if ($id && $database) {
         $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
+	$recordlist->load_full_records;	
     }
     else {
         $recordlist = $self->get_items_in_collection()
     }
     
-    $recordlist->load_full_records;
+    my $total_count = $self->get_number_of_items_in_collection();    
+
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $total_count,
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
     
     # TT-Data erzeugen
     my $ttdata={
@@ -635,17 +657,28 @@ sub save_collection {
     
     if ($id && $database) {
         $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
+	$recordlist->load_full_records;
     }
     else {
         $recordlist = $self->get_items_in_collection()
     }
     
-    $recordlist->load_full_records;
+    my $total_count = $self->get_number_of_items_in_collection();
+    
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $total_count,
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
     
     # TT-Data erzeugen
     my $ttdata={
         qopts       => $queryoptions->get_options,		
         format      => $format,
+
+	hits        => $total_count,
+	nav         => $nav,		
         recordlist  => $recordlist,
 
 	highlightquery    => \&highlightquery,
@@ -714,12 +747,20 @@ sub mail_collection {
     
     if ($id && $database) {
         $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
+	$recordlist->load_full_records;
     }
     else {
         $recordlist = $self->get_items_in_collection()
     }
+
+    my $total_count = $self->get_number_of_items_in_collection();
     
-    $recordlist->load_full_records;
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $total_count,
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
     
     # TT-Data erzeugen
     my $ttdata={
@@ -729,6 +770,9 @@ sub mail_collection {
         username    => $username,
         titleid     => $id,
         database    => $database,
+
+	hits        => $total_count,
+	nav         => $nav,	
         recordlist  => $recordlist,
 
 	highlightquery    => \&highlightquery,
@@ -765,9 +809,9 @@ sub mail_collection_send {
     # CGI Args
     my $email     = ($query->param('email'))?$query->param('email'):'';
     my $subject   = ($query->param('subject'))?$query->param('subject'):'Ihre Merkliste';
-    $id        = $query->param('id');
+    $id           = $query->param('id');
     my $mail      = $query->param('mail');
-    $database  = $query->param('db');
+    $database     = $query->param('db');
     my $format    = $query->param('format')||'full';
 
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
@@ -786,12 +830,20 @@ sub mail_collection_send {
     
     if ($id && $database) {
         $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
+	$recordlist->load_full_records;
     }
     else {
         $recordlist = $self->get_items_in_collection();
     }
 
-    $recordlist->load_full_records;
+    my $total_count = $self->get_number_of_items_in_collection();
+    
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $total_count,
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
     
     # TT-Data erzeugen
     
@@ -802,6 +854,9 @@ sub mail_collection_send {
         sessionID   => $session->{ID},
 	qopts       => $queryoptions->get_options,
         format      => $format,
+
+	hits        => $total_count,
+	nav         => $nav,		
         recordlist  => $recordlist,
         
         config      => $config,
@@ -820,6 +875,7 @@ sub mail_collection_send {
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config->{tt_include_path},
             ABSOLUTE       => 1,
+  	    ENCODING     => 'utf8',	    
         }) ],
         #        ABSOLUTE      => 1,
         #        INCLUDE_PATH  => $config->{tt_include_path},
@@ -832,7 +888,7 @@ sub mail_collection_send {
   
 
     my $mimetype="text/html";
-    my $filename="kug-merkliste";
+    my $filename="merkliste";
     my $datatemplatename=$config->{tt_cartitems_mail_html_tname};
 
     $logger->debug("Using view $view in profile $sysprofile");
@@ -854,7 +910,7 @@ sub mail_collection_send {
 
     $logger->debug("Using database/view specific Template $datatemplatename");
     
-    $datatemplate->process($datatemplatename, $ttdata) || do {
+    $datatemplate->process($datatemplatename, $ttdata, undef, {binmode => ':utf8'}) || do {
         $logger->error($datatemplate->error());
         $self->header_add('Status',400); # server error
         return;
@@ -877,6 +933,7 @@ sub mail_collection_send {
         # Es ist wesentlich, dass OUTPUT* hier und nicht im
         # Template::Provider definiert wird
         RECURSION      => 1,
+	ENCODING     => 'utf8',
         OUTPUT_PATH   => '/tmp',
         OUTPUT        => $afile,
     });
@@ -1035,9 +1092,10 @@ sub get_single_item_in_collection {
 sub get_items_in_collection {
     my $self = shift;
 
-    my $session = $self->param('session');
-
-    return $session->get_items_in_collection();
+    my $session      = $self->param('session');
+    my $queryoptions = $self->param('qopts');
+    
+    return $session->get_items_in_collection({ queryoptions => $queryoptions });
 }
 
 

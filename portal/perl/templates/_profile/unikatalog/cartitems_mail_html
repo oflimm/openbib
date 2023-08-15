@@ -39,6 +39,7 @@
 </form>
 
 <p/>
+[% show_record_with_supplemental_fields = 1 %]
 
 [% IF format == 'short' %]
   [%- PROCESS common/subtemplate name="cartitems_html_short"  show_bibsonomy=1 -%]

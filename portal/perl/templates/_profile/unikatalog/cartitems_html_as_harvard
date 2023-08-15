@@ -19,10 +19,10 @@
 [% IF NOT representation == 'include' %]<h3>[% IF title %][% title %][% ELSE %][% msg.maketext("Merkliste im Harvard-Zitierstil") %][% END %]</h3>[% END %]
 
 [% END %]
-[%- FOREACH record IN recordlist.load_full_records.get_records -%]
+[%- FOREACH record IN recordlist.get_records -%]
 
 [%   IF data_only %]
-[%     record.to_harvard_citation %]
+[%     record.to_harvard_citation({ no_html = no_html }) %]
 [%   ELSE %]
 <p>[%     record.to_harvard_citation %]</p>
 [%   END %]

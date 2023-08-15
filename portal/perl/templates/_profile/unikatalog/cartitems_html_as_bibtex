@@ -20,7 +20,7 @@
 
     <pre>
 [% END %]
-[%- FOREACH record IN recordlist.load_full_records.get_records -%]
+[%- FOREACH record IN recordlist.get_records -%]
 [% record.to_bibtex %]
 
 [% END -%]

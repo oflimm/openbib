@@ -39,6 +39,8 @@ use DBIx::Class::ResultClass::HashRefInflator;
 use DBI;
 use Digest::MD5;
 use Encode 'decode_utf8';
+use HTML::Entities;
+use HTML::Strip;
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
@@ -2643,6 +2645,10 @@ sub to_bibtex {
 sub to_harvard_citation {
     my ($self,$arg_ref) = @_;
 
+    # Set defaults
+    my $no_html               = exists $arg_ref->{no_html}
+        ? $arg_ref->{no_html}             : 0;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -2851,14 +2857,24 @@ sub to_harvard_citation {
 	}
     }
 
+    if ($no_html){
+	my $hs = HTML::Strip->new();
+	
+	$citation = $hs->parse($citation);
+    }
+
     $logger->debug("Harvard Citation: $citation");
-    
+
     return $citation;
 }
 
 sub to_mla_citation {
     my ($self,$arg_ref) = @_;
 
+    # Set defaults
+    my $no_html               = exists $arg_ref->{no_html}
+        ? $arg_ref->{no_html}             : 0;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -3017,6 +3033,12 @@ sub to_mla_citation {
 	}    
     }
 
+    if ($no_html){
+	my $hs = HTML::Strip->new();
+	
+	$citation = $hs->parse($citation);
+    }
+    
     $logger->debug("MLA Citation: $citation");
     
     return $citation;
@@ -3025,6 +3047,10 @@ sub to_mla_citation {
 sub to_apa_citation {
     my ($self,$arg_ref) = @_;
 
+    # Set defaults
+    my $no_html               = exists $arg_ref->{no_html}
+        ? $arg_ref->{no_html}             : 0;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -3179,6 +3205,12 @@ sub to_apa_citation {
 	}    
     }
 
+    if ($no_html){
+	my $hs = HTML::Strip->new();
+	
+	$citation = $hs->parse($citation);
+    }
+    
     $logger->debug("APA Citation: $citation");
     
     return $citation;

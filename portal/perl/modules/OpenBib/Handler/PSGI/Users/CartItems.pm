@@ -137,10 +137,11 @@ sub get_single_item_in_collection {
 sub get_items_in_collection {
     my $self = shift;
 
-    my $user = $self->param('user');
-    my $view = $self->param('view');
-
-    return $user->get_items_in_collection({view => $view});
+    my $user         = $self->param('user');
+    my $view         = $self->param('view');
+    my $queryoptions = $self->param('qopts');
+    
+    return $user->get_items_in_collection({view => $view, queryoptions => $queryoptions });
 }
 
 sub return_baseurl {

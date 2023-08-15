@@ -781,10 +781,31 @@ sub get_number_of_items_in_collection {
 }
 
 sub get_items_in_collection {
-    my ($self)=@_;
+    my ($self,$arg_ref)=@_;
 
+    my $queryoptions        = exists $arg_ref->{queryoptions}
+        ? $arg_ref->{queryoptions}        : new OpenBib::QueryOptions;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $config = $self->get_config;
+    
+    my $sorttype          = $queryoptions->get_option('srt');
+    my $sortorder         = $queryoptions->get_option('srto');
+
+    # Wenn srto in srt enthalten, dann aufteilen
+    if ($sorttype =~m/^([^_]+)_([^_]+)$/){
+        $sorttype=$1;
+        $sortorder=$2;
+        $logger->debug("srt Option split: srt = $1, srto = $2");
+    }
+    
+    # Pagination parameters
+    my $page              = ($queryoptions->get_option('page'))?$queryoptions->get_option('page'):1;
+    my $num               = ($queryoptions->get_option('num'))?$queryoptions->get_option('num'):20;
+
+    my $offset = $page*$num-$num;
     
     my $recordlist = new OpenBib::RecordList::Title();
     
@@ -799,6 +820,12 @@ sub get_items_in_collection {
             select => [ 'cartitemid.dbname', 'cartitemid.titleid', 'cartitemid.titlecache', 'cartitemid.id', 'cartitemid.tstamp', 'cartitemid.comment' ],
             as     => [ 'thisdbname', 'thistitleid', 'thistitlecache', 'thislistid','thiststamp','thiscomment' ],
             join   => ['sid','cartitemid'],
+
+	    order_by => ["cartitemid.tstamp $sortorder"],
+
+	    offset => $offset,
+	    rows   => $num,
+	    
             result_class => 'DBIx::Class::ResultClass::HashRefInflator',                        
         }
     );
@@ -814,15 +841,51 @@ sub get_items_in_collection {
 	if ($logger->is_debug()){
 	    $logger->debug("Found Cartitem - DB: $database / ID: $titleid / Cache:$titlecache");
 	}
+
+        my $record;	
+	my $record_exists = 0;
+
+	# Record fuer die Anzeige aus Performance-Gruenden immer aus Titlecache
+        if ($titlecache){
+            eval {
+  	      $record = OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment, config => $config })->from_json($titlecache);
+              # $record->set_status('from_cache',1);
+
+              $record_exists = $record->record_exists;
+	      $logger->debug("Trying titlecache $titlecache : Records Exists? $record_exists");
+            };
+
+	    if ($@){
+		$logger->error($@);
+	    }
+        }
+
+	# Titelcache nicht vorhanden oder Verarbeitung fehlgeschlagen, dann Titel per DB/ID referenziert. Laden aus der DB
 	
-        if ($titlecache) {
-            my $record = new OpenBib::Record::Title({listid => $listid, date => $tstamp, comment => $comment});
-            $record->from_json($titlecache);
-            $recordlist->add($record);
+        if (!$record_exists && $titleid && $database){
+            eval {
+		$record = OpenBib::Record::Title->new({id =>$titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment, config => $config })->load_full_record;
+		$record_exists = $record->record_exists;
+		
+		$logger->debug("Trying DB: $database / ID: $titleid : Records Exists? $record_exists");
+	    };
+
+	    if ($@){
+		$logger->error($@);
+	    }
         }
-        elsif ($database && $titleid){
-            $recordlist->add(new OpenBib::Record::Title({ database => $database, id => $titleid, listid => $listid, date => $tstamp, comment => $comment})->load_brief_record);
+
+        # Weder in DB vorhanden, noch gecached? Dann leerer Record
+        if (!$record_exists && $titleid && $database){
+	    $record = OpenBib::Record::Title->new({id => $titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment, config => $config });
+	    $logger->debug("Record with DB: $database / ID: $titleid is empty");
         }
+        elsif (!$record_exists) {
+	    $record = OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment, config => $config });
+	    $logger->debug("Record without DB / ID is empty");
+        }
+
+        $recordlist->add($record);
     }
 
     return $recordlist;

@@ -127,7 +127,7 @@ sub show_collection {
     if ($logger->is_debug){
 	$logger->debug("Got orders: ".YAML::Dump($orders_ref));
     }
-    
+
     my $authenticator = $session->get_authenticator;
 
     # TT-Data erzeugen
@@ -325,7 +325,8 @@ sub delete_record {
     my $date            = ($query->param('date'           ))?$query->param('date'):undef;
     my $receipt         = ($query->param('receipt'        ))?$query->param('receipt'):undef;
     my $remark          = ($query->param('remark'         ))?$query->param('remark'):undef;
-    
+
+    $title     = uri_unescape($title) if ($title);    
     $holdingid = uri_unescape($holdingid) if ($holdingid);
     
     # Aktive Aenderungen des Nutzerkontos
@@ -405,7 +406,7 @@ sub delete_record {
     }
     elsif ($response_cancel_order_ref->{successful}){
 
-	$logger->info("Cancel order successful for user $username ($sessionuserid) and holdingid $holdingid / requestid  $requestid: unknown reason");	
+	$logger->info("Cancel order successful for user $username ($sessionuserid) and holdingid $holdingid / requestid  $requestid");	
 
 	# TT-Data erzeugen
 	my $ttdata = {
@@ -471,8 +472,6 @@ sub confirm_delete_record {
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
 
     $holdingid = uri_unescape($holdingid) if ($holdingid);
-    $date      = uri_unescape($date) if ($date);
-    $unitname  = uri_unescape($unitname) if ($unitname);
     
     # Aktive Aenderungen des Nutzerkontos
 

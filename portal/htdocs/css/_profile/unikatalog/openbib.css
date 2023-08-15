@@ -122,7 +122,7 @@
     }
 
     /* kein caret */
-    #ob-titlist_options .dropdown-toggle::after, #ob-titlist_options_books .dropdown-toggle::after, #ob-titlist_options_articles .dropdown-toggle::after{
+    #ob-titlist_options .dropdown-toggle::after, #ob-titlist_options_books .dropdown-toggle::after, #ob-titlist_options_articles .dropdown-toggle::after, #ob-titlist_options_cartitems .dropdown-toggle::after, #ob-titlist_options_litlists .dropdown-toggle::after{
 	display: none;
     }
     

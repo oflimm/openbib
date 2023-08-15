@@ -210,7 +210,7 @@ sub authenticate {
     if (!$authenticator_is_valid){
 	my $code   = -6;
 	my $reason = $self->get_error_message($code);
-	
+	$logger->error("Authentication Error for user $username: $reason ");
 	return $self->print_warning($reason,$code);
     }
     
@@ -223,7 +223,8 @@ sub authenticate {
 	if (!$user->can_access_view($view)){
 	    my $code   = -5;
 	    my $reason = $self->get_error_message($code);
-
+	    $logger->error("Authentication Error for user $username: $reason ");
+	    
 	    return $self->print_warning($reason,$code);
 	}
 	
@@ -264,6 +265,8 @@ sub authenticate {
 	
 	my $code   = -1;
 	my $reason = $self->get_error_message($code);
+
+	$logger->error("Authentication Error for user $username: $reason ");
 	
 	if ($self->param('representation') eq "html"){
 	    $logger->debug("Redirecting to $redirecturl");
@@ -285,7 +288,8 @@ sub authenticate {
 
 	    my $code   = -7;
 	    my $reason = $self->get_error_message($code);
-	    
+	    $logger->error("Authentication Error for user $username: $reason ");
+    
 	    return $self->print_warning($reason,$code);	    
 	}
     }
@@ -311,12 +315,15 @@ sub authenticate {
 	    
 	    my $code   = -5;
 	    my $reason = $self->get_error_message($code);
+	    $logger->error("Authentication Error for user $username: $reason ");
 	    
 	    return $self->print_warning($reason,$code);
 	}
 	
 	# Jetzt wird die Session mit der Benutzerid assoziiert
-	
+
+	$logger->info("Authentication successful for user $username");
+
 	$user->connect_session({
 	    sessionID        => $session->{ID},
 	    userid           => $userid,

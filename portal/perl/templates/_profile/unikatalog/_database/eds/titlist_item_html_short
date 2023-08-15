@@ -471,6 +471,8 @@
 [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
 [% END %]
 
+[% IF record.get_date %]<br /><i class="far fa-calendar-alt"></i> [% msg.maketext("hinzugefügt") %] [% record.get_date.replace('\.\d+$','') %][% END %]
+
 [% IF record_from_cache %]
           <br/><i class="fas fa-exclamation"></i><b class="ps-2">[% msg.maketext("Der Titel wurde im Katalog gelöscht. Sie sehen die ursprünglichen Informationen.") %]</b>
 [% END %]

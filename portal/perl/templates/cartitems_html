@@ -76,6 +76,10 @@ function update_collection(yourform, checked, item) {
   [%-  PROCESS common/subtemplate name="cartitems_html_as_endnote" show_bibsonomy=1 -%]
 [%   END %]
 
+<div class="d-flex justify-content-center">
+[% PROCESS common/subtemplate name="pagination" %]
+</div>
+
 [% ELSE %]
          <div class="jumbotron">
 <h1 class="display-4">[% msg.maketext("Derzeit ist Ihre Merkliste leer") %]</h1>

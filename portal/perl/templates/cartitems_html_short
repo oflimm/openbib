@@ -16,6 +16,17 @@
 [%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
 [%- popularity_i18n = msg.maketext("Popularität") -%]
 
+[%-
+    request_base    = "num=${qopts.get_option('num')};srt=tstamp_desc;page=1;" ;
+    start_range     = nav.current_page*qopts.get_option('num')-qopts.get_option('num') + 1;
+    end_range       = nav.current_page*qopts.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
+
 <!-- Titlelist begins here -->
 <div class="ob-resultlist">
   <div class="row pl-2">
@@ -30,7 +41,7 @@
   <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [% IF format == 'short' %]
 [%- FOREACH record IN recordlist.get_records -%]
-[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database with_id_checkbox=1 with_cartitems_delete=1 start_range=1 %] 
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database with_id_checkbox=1 with_cartitems_delete=1 %] 
 [%- END -%]
 
 [%-END -%]

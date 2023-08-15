@@ -70,6 +70,42 @@
 -%]
 [%- persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
 [%- END -%]
+[%- FOREACH part IN item.${'T0100'}  -%]
+[%-  searchterm    = uri_escape(part.content);
+     searchprefix  = config.get('searchfield').personstring.prefix;
+
+     globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}searchall=1;${searchprefix}=${searchterm}";
+-%]
+[%-  persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'T0101'}  -%]
+[%-  searchterm    = uri_escape(part.content);
+     searchprefix  = config.get('searchfield').personstring.prefix;
+
+     globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}searchall=1;${searchprefix}=${searchterm}";
+-%]
+[%-  persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'T0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%-  searchterm    = uri_escape(part.content);
+     searchprefix  = config.get('searchfield').corporatebodystring.prefix;
+
+     globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}searchall=1;${searchprefix}=${searchterm}";
+-%]
+[%- persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN item.${'T0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%-  searchterm    = uri_escape(part.content);
+     searchprefix  = config.get('searchfield').corporatebodystring.prefix;
+
+     globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}searchall=1;${searchprefix}=${searchterm}";
+-%]
+[%- persons.push("<a href=\"${globalurl}\">${part.content}</a>")-%]
+[%- END -%]
 [%- person = persons.join(' ; ') -%]
 [%# Titel konstruieren %]
 [%- title = item.${'T0331'}.first.content -%]

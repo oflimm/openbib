@@ -69,6 +69,7 @@ $to              = ($to)?$to:"2100-01-01 00:00:00";
 $authenticatorid = ($authenticatorid)?$authenticatorid:1; # Default 1 = USB Ausweis
 $logfile         = ($logfile)?$logfile:'/var/log/openbib/usercartitems2fullrecord.log';
 $loglevel        = ($loglevel)?$loglevel:'INFO';
+$viewname        = ($viewname)?$viewname:'';
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=$loglevel, LOGFILE, Screen
@@ -99,7 +100,7 @@ if ($username){
 	exit;
     }
     
-    $userid = $user->get_userid_for_username($username);
+    $userid = $user->get_userid_for_username($username,$viewname);
 
     $logger->info("userid is $userid for username $username");
 }

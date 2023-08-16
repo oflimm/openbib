@@ -1999,8 +1999,13 @@ sub renew_loans {
 	    if (defined $item_ref->{LesesaalNr} && $item_ref->{LesesaalNr} >= 0 && $item_ref->{LesesaalTxt} ){
 		$this_response_ref->{pickup_location} = {
 		    about => $item_ref->{LesesaalTxt},
-		    id => $item_ref->{LesesaalNr}
-		}
+		    id => $item_ref->{LesesaalNr},
+		};
+	    }
+	    elsif (defined $item_ref->{LesesaalTxt} ){
+		$this_response_ref->{pickup_location} = {
+		    about => $item_ref->{LesesaalTxt},
+		};
 	    }
 	    
 	    push @{$response_ref->{items}}, $this_response_ref;	    
@@ -2163,8 +2168,13 @@ sub renew_single_loan {
 	if (defined $item_ref->{LesesaalNr} && $item_ref->{LesesaalNr} >= 0 && $item_ref->{LesesaalTxt} ){
 	    $response_ref->{pickup_location} = {
 		about => $item_ref->{LesesaalTxt},
-		id => $item_ref->{LesesaalNr}
-	    }
+		id => $item_ref->{LesesaalNr},
+	    };
+	}
+	elsif (defined $item_ref->{LesesaalTxt} ){
+	    $response_ref->{pickup_location} = {
+		about => $item_ref->{LesesaalTxt},
+	    };
 	}
 
 	$response_ref->{"endtime"}  = $item_ref->{LeihfristendeNeu};
@@ -3024,13 +3034,13 @@ sub send_account_request {
 		    if (defined $item_ref->{LesesaalNr} && $item_ref->{LesesaalNr} >= 0 && $item_ref->{LesesaalTxt} ){
 			$this_response_ref->{pickup_location} = {
 			    about => $item_ref->{LesesaalTxt},
-			    id => $item_ref->{LesesaalNr}
-			}
+			    id => $item_ref->{LesesaalNr},
+			};
 		    }
 		    elsif (defined $item_ref->{LesesaalTxt} ){
 			$this_response_ref->{pickup_location} = {
 			    about => $item_ref->{LesesaalTxt},
-			}
+			};
 		    }
 		    
 		    if ($type_ref->{type} eq "AUSLEIHEN"){

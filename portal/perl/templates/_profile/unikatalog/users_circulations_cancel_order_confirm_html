@@ -24,7 +24,7 @@
 
 <div class="form-floating mb-3">
       <span class="form-control">[% unitname %]</span>
-      <input type="hidden" name="unitname" value="[% unitname %]" />
+      <input type="hidden" name="unitname" value="[% uri_escape(unitname) %]" />
       <label for="date">Zweigstelle</label>
 </div>
 

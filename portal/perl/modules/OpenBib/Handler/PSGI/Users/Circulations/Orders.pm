@@ -326,6 +326,7 @@ sub delete_record {
     my $receipt         = ($query->param('receipt'        ))?$query->param('receipt'):undef;
     my $remark          = ($query->param('remark'         ))?$query->param('remark'):undef;
 
+    $unitname  = uri_unescape($unitname) if ($unitname);    
     $title     = uri_unescape($title) if ($title);    
     $holdingid = uri_unescape($holdingid) if ($holdingid);
     
@@ -471,6 +472,7 @@ sub confirm_delete_record {
     my $unitname        = ($query->param('unitname'       ))?$query->param('unitname'):''; 
     my $unit            = ($query->param('unit'           ) >= 0)?$query->param('unit'):0;
 
+    $unitname  = uri_unescape($unitname) if ($unitname);    
     $holdingid = uri_unescape($holdingid) if ($holdingid);
     
     # Aktive Aenderungen des Nutzerkontos

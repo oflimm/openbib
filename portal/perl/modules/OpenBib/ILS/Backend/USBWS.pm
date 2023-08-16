@@ -3027,6 +3027,11 @@ sub send_account_request {
 			    id => $item_ref->{LesesaalNr}
 			}
 		    }
+		    elsif (defined $item_ref->{LesesaalTxt} ){
+			$this_response_ref->{pickup_location} = {
+			    about => $item_ref->{LesesaalTxt},
+			}
+		    }
 		    
 		    if ($type_ref->{type} eq "AUSLEIHEN"){
 			$this_response_ref->{starttime} = $item_ref->{Datum};

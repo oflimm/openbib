@@ -25,13 +25,13 @@
   #USE dumper;dumper.dump(available_authenticators);dumper.dump(available_authenticator_types);
 %]
 
- 	 <div class="alert alert-info">Zur Nutzung der Bibliothek (Ausleihen, Vormerken, etc.) müssen Sie sich mit Ihrem Benutzerausweis anmelden. Ohne vorhandenen Bibliotheksausweis kann das Portal jedoch mit der Anmeldung per E-Mail-Adresse genutzt werden (Merklisten).</div>
+ 	 <div class="alert alert-info">Zur Nutzung der Bibliothek (Ausleihen, Vormerken, etc.) müssen Sie sich mit Ihrem Benutzerausweis anmelden.</div>
 
 	 <div id="login_targets">
 
 <ul class="nav nav-tabs">
 <li class="nav-item"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-login_ils">[% msg.maketext("Mit einem Benutzerausweis") %]</a></li>
-<li class="nav-item"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-login_selfreg">[% msg.maketext("Mit einer E-Mail-Adresse") %]</a></li>
+<li class="nav-item"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-login_selfreg">[% msg.maketext("Ohne Benutzerausweis") %]</a></li>
 </ul>
 
 <div class="tab-content pt-3">

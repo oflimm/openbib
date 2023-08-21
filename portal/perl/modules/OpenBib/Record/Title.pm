@@ -3216,6 +3216,159 @@ sub to_apa_citation {
     return $citation;
 }
 
+sub to_isbd {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $no_html               = exists $arg_ref->{no_html}
+        ? $arg_ref->{no_html}             : 0;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $fields_ref = $self->to_abstract_fields();
+
+    # Source: https://wiki.fachbereich-aub.de/wiki/index.php/ISBD-Format
+    
+    my $isbd = "";
+
+    # Erste Zeile
+    my $line1="";
+    if ($fields_ref->{title}){
+	my $title = $fields_ref->{title};
+	$title=~s/([\w']+)/\u\L$1/g;
+	$line1 = $title;
+    }
+
+    if ($fields_ref->{titlesup}){
+	my $titlesup = $fields_ref->{titlesup};
+	if ($line1){
+	    $line1.=" : ";
+	}
+	$line1 .=$titlesup;
+    }
+
+    my @perscorp = ();
+    if (defined $fields_ref->{authors} && @{$fields_ref->{authors}}){
+	push @perscorp, @{$fields_ref->{authors}} ;
+    }
+    
+    if (defined $fields_ref->{corp} && @{$fields_ref->{corp}}){
+	push @perscorp, @{$fields_ref->{corp}} ;
+    }
+    
+    if (defined $fields_ref->{editors} && @{$fields_ref->{editors}}){
+	push @perscorp, @{$fields_ref->{editors}} ;
+    }
+
+    if (@perscorp){
+	my $perscorp = join (', ',@perscorp);
+	if ($line1){
+	    $line1.=" / ";
+	}
+	$line1.="von $perscorp";
+    }
+
+    $isbd.="$line1. -\n" if ($line1); # Ende erste Zeile
+
+    # Zweite Zeile
+
+    my $line2 = "";
+    
+    if ($fields_ref->{edition}){
+	$line2.=$fields_ref->{edition};
+    }
+
+    if ($fields_ref->{place}){
+	if ($fields_ref->{edition}){
+	    $line2.=". - "
+	}
+	$line2.=$fields_ref->{place};
+    }
+
+    if ($fields_ref->{publisher}){
+	if ($fields_ref->{place}){
+	    $line2.=" : ";
+	}
+	$line2.=$fields_ref->{publisher};
+    }
+
+    if ($fields_ref->{year}){
+	if ($fields_ref->{publisher}){
+	    $line2.=", ";
+	}
+	$line2.=$fields_ref->{year};
+    }
+
+    $isbd.="$line2. -\n" if ($line2); # Ende zweite Zeile
+
+    # Dritte Zeile
+
+    my $line3 = "";
+
+    if ($fields_ref->{pages}){
+	$line3.=$fields_ref->{pages};
+    }
+
+    if ($fields_ref->{source}){
+	if ($line3){
+	    $line3.=". - ";
+	}
+	if ($fields_ref->{source_journal}){
+	    $line3.="(".$fields_ref->{source_journal};
+	}
+
+	if ($fields_ref->{source_volume}){
+	    if ($fields_ref->{source_journal}){
+		$line3.=" ; ";
+	    }
+	    $line3.=$fields_ref->{source_volume};
+	}
+	$line3.=")";
+
+    }
+    elsif ($fields_ref->{series}){
+	if ($line3){
+	    $line3.=". - ";
+	}
+	$line3.="(".$fields_ref->{series};
+	if ($fields_ref->{series_volume}){
+	    if ($fields_ref->{series}){
+		$line3.=" ; ";
+	    }
+	    $line3.=$fields_ref->{series_volume};
+	}
+	$line3.=")";
+    }
+
+    $isbd.="$line3\n" if ($line3); # Ende dritte Zeile
+
+    # Vierte Zeile fuer Fussnoten bleibt leer
+
+    # Fuenfte Zeile
+    
+    my $line5 = "";
+
+    if ($fields_ref->{isbn}){
+	$line5.=$fields_ref->{isbn};
+    }
+    elsif ($fields_ref->{issn}){
+	$line5.=$fields_ref->{issn};
+    }
+
+    $isbd.="$line5\n" if ($line5); # Ende fuenfte Zeile
+
+    if ($no_html){
+	my $hs = HTML::Strip->new();
+	
+	$isbd = $hs->parse($isbd);
+    }
+    
+    $logger->debug("ISBD: $isbd");
+    
+    return $isbd;
+}
+
 sub to_abstract_fields {
     my ($self) = @_;
 
@@ -3277,7 +3430,8 @@ sub to_abstract_fields_mab2 {
     #   source_year    : Quelle Jahr
     #
     # pages     : Kollation
-    # series    : Gesamttitelangabe 0451
+    # series    : Gesamttitelangabe (0451)
+    # series_volume    : Band (0089 bzw. 0455)
     # edition   : Auflage
     # type      : Medientyp (article,book,periodical)
     
@@ -3340,7 +3494,7 @@ sub to_abstract_fields_mab2 {
     $abstract_fields_ref->{place} = (exists $self->{_fields}->{T0410})?$self->{_fields}->{T0410}[0]{content}:'';
 
     # Titel
-    $abstract_fields_ref->{title} = (exists $self->{_fields}->{T0331})?$self->{_fields}->{T0331}[0]{content}:'';
+    $abstract_fields_ref->{title} = (exists $self->{_fields}->{T0310})?$self->{_fields}->{T0310}[0]{content}:(exists $self->{_fields}->{T0331})?$self->{_fields}->{T0331}[0]{content}:'';
 
     # Zusatz zum Titel
     $abstract_fields_ref->{titlesup} = (exists $self->{_fields}->{T0335})?$self->{_fields}->{T0335}[0]{content}:'';
@@ -3365,6 +3519,9 @@ sub to_abstract_fields_mab2 {
 
     # Series
     $abstract_fields_ref->{series} = (exists $self->{_fields}->{T0451})?$self->{_fields}->{T0451}[0]{content}:'';
+
+    # Band
+    $abstract_fields_ref->{series_volume} = (exists $self->{_fields}->{T0089})?$self->{_fields}->{T0089}[0]{content}:(exists $self->{_fields}->{T0455})?$self->{_fields}->{T0455}[0]{content}:'';
     
     # Mediatyp
     if ($abstract_fields_ref->{issn}){

@@ -385,6 +385,13 @@ sub delete_record {
 	
 	return $self->print_warning($reason);
     }
+
+    if (!$remark){
+	my $reason = $msg->maketext("Bitte geben Sie einen Stornierungsgrund an.");
+	$logger->error("Cancel order failed for user $username ($sessionuserid) and holdingid $holdingid / requestid  $requestid: $reason");	
+	
+	return $self->print_warning($reason);
+    }
     
     my $response_cancel_order_ref = $ils->cancel_order({ title => $title, author => $author, requestid => $requestid, holdingid => $holdingid, unit => $unit, unitname => $unitname, date => $date, username => $username, username_full => $username_full, email => $email, remark => $remark, receipt => $receipt });
     

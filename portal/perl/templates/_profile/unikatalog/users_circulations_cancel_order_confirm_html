@@ -112,9 +112,8 @@
       <label for="username">[% msg.maketext("Name") %]:</label>
 </div>
 
-<!--
 <div class="form-floating mb-3">
-      <select name="remark" id="remark" class="form-control" size="1" style="width:15em;">
+      <select name="remark" id="remark" class="form-control" size="1">
         <option value="">[ Bitte wählen Sie aus ]</option>
         <option value="Buch eingesehen bzw. kopiert [1]">Habe das Buch am Abholregal eingesehen bzw. kopiert</option>
         <option value="Falsches Buch bestellt [2]">Falsches Buch bestellt</option>
@@ -125,9 +124,8 @@
         <option value="Buch in den Abholregalen nicht auffindbar [7]">Kann das Buch in den Abholregalen nicht finden</option>
         <option value="Anderer Grund [8]">Anderer Grund ...</option>
      </select>
-      <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Stornogrund") %]:</label>
+      <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Stornogrund") %]*:</label>
 </div>
--->
 
 <p/>
 
@@ -143,6 +141,8 @@
       <input type="hidden" name="email" value="[% userinfo.email %]" />
       <label for="email">[% msg.maketext("E-Mail") %]:</label>
 </div>
+
+<p>[% msg.maketext("Eingabefelder mit * müssen ausgefüllt werden.") %]</p>
 
 <button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Stornieren") %]</button>
 

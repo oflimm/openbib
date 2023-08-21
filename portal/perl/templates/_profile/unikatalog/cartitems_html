@@ -87,6 +87,8 @@ function update_collection(yourform, checked, item) {
 [%-  PROCESS common/subtemplate name="cartitems_html_as_bibtex" -%]
 [%   ELSIF format == 'EndNote' %]
 [%-  PROCESS common/subtemplate name="cartitems_html_as_endnote" -%]
+[%   ELSIF format == 'ISBD' %]
+[%-  PROCESS common/subtemplate name="cartitems_html_as_isbd" -%]
 [%   ELSIF format == 'apa' %]
 [%-  PROCESS common/subtemplate name="cartitems_html_as_apa" -%]
 [%   ELSIF format == 'harvard' %]
@@ -131,6 +133,7 @@ function update_collection(yourform, checked, item) {
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %].include?l=[% lang %];format=BibTeX;page=[% qopts.get_option('page') %];num=[% qopts.get_option('num') %]" title="[% msg.maketext("BibTeX") %]">[% msg.maketext("BibTeX") %]</a></li>
     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %].include?l=[% lang %];format=EndNote;page=[% qopts.get_option('page') %];num=[% qopts.get_option('num') %]" title="[% msg.maketext("EndNote") %]">[% msg.maketext("EndNote") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %].include?l=[% lang %];format=ISBD;page=[% qopts.get_option('page') %];num=[% qopts.get_option('num') %]" title="[% msg.maketext("ISBD") %]">[% msg.maketext("ISBD") %]</a></li>
                </ul>
              </div>
           </div>

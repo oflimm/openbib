@@ -421,6 +421,7 @@ Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es au
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#bibtexModal">[% msg.maketext("BibTeX") %]</a></li>
     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#endnoteModal">[% msg.maketext("EndNote") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#isbdModal">[% msg.maketext("ISBD") %]</a></li>
   </ul>
  </div>
              </div>

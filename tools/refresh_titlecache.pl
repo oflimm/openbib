@@ -1,9 +1,10 @@
 #!/usr/bin/perl
 #####################################################################
 #
-#  usercartitems2fullrecord.pl
+#  refresh_titlecache.pl
 #
-#  Aktualisierung des Title-Caches bei Merklisteneintraegen auf kompletten Titelsatz
+#  Aktualisierung des Title-Caches bei Merklisten- und Literaturlisten-
+#  eintraegen
 #
 #  Dieses File ist (C) 2023 Oliver Flimm <flimm@openbib.org>
 #
@@ -45,9 +46,10 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::User;
 
-my ($username,$from,$to,$listusers,$authenticatorid,$viewname,$dryrun,$help,$logfile,$loglevel);
+my ($type,$username,$from,$to,$listusers,$authenticatorid,$viewname,$dryrun,$help,$logfile,$loglevel);
 
 &GetOptions(
+    "type=s"          => \$type,
     "username=s"      => \$username,
     "from=s"          => \$from,
     "to=s"            => \$to,
@@ -70,6 +72,7 @@ $authenticatorid = ($authenticatorid)?$authenticatorid:1; # Default 1 = USB Ausw
 $logfile         = ($logfile)?$logfile:'/var/log/openbib/usercartitems2fullrecord.log';
 $loglevel        = ($loglevel)?$loglevel:'INFO';
 $viewname        = ($viewname)?$viewname:'';
+$type            = ($type)?$type:'';
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=$loglevel, LOGFILE, Screen
@@ -92,6 +95,13 @@ my $config     = OpenBib::Config->new;
 my $user       = new OpenBib::User;
 my $dbinfo     = new OpenBib::Config::DatabaseInfoTable;
 
+
+
+if (!$type){
+    $logger->error("Type ist nicht gesetzt. Bitte geben Sie als --type= entweder cart oder litlist ein.");
+    exit;
+}
+
 my $userid = 0;
 
 if ($username){
@@ -106,123 +116,241 @@ if ($username){
 }
 
 
-# Persistente Cartitems von Nutzern bestimmen
+if ($type eq "litlist"){
+    # Persistente Cartitems von Nutzern bestimmen
 
-my $where_ref = {
-    -and => [
-    	 'cartitemid.tstamp' => { '>=' => $from },
-    	 'cartitemid.tstamp' => { '<=' => $to },
-    	],
-	
-	'userid.authenticatorid' => $authenticatorid,
-};
-
-if ($userid){
-    $where_ref->{'userid.username'} = $username;
-}
-
-if ($viewname){
-
-    if (!$config->view_exists($viewname)){
-	$logger->error("View $viewname existiert nicht");
-	exit;
-    }
-    
-    my $viewid;
-
-    eval {
-	$viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
+    my $where_ref = {
+	-and => [
+	     'litlistitems.tstamp' => { '>=' => $from },
+	     'litlistitems.tstamp' => { '<=' => $to },
+	    ],
+	    
+	    'userid.authenticatorid' => $authenticatorid,
     };
 
-    if ($@){
-	$logger->error($@);
+    if ($userid){
+	$where_ref->{'userid.username'} = $username;
+    }
+
+    if ($viewname){
+
+	if (!$config->view_exists($viewname)){
+	    $logger->error("View $viewname existiert nicht");
+	    exit;
+	}
+	
+	my $viewid;
+
+	eval {
+	    $viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
+	};
+
+	if ($@){
+	    $logger->error($@);
+	    exit;
+	}
+	
+	$where_ref->{'userid.viewid'} = $viewid;
+    }
+
+    $logger->debug("Where: ".YAML::Dump($where_ref));
+
+    if ($listusers){
+	my $litlistitems = $user->get_schema->resultset('Litlist')->search_rs(
+	    $where_ref,
+	    {
+		select  => ['userid.username'],
+		as       => ['thisusername'],
+		group_by => ['userid.username'],
+		order_by => ['userid.username ASC'],	
+		join     => ['userid','litlistitems'],
+		result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+	    }
+	    );
+
+	while (my $thisuser = $litlistitems->next()){
+	    print $thisuser->{thisusername},"\n";
+	}
 	exit;
     }
-    
-    $where_ref->{'userid.viewid'} = $viewid;
-}
 
-$logger->debug("Where: ".YAML::Dump($where_ref));
-
-if ($listusers){
-    my $usercartitems = $user->get_schema->resultset('UserCartitem')->search_rs(
+    my $userlitlistitems = $user->get_schema->resultset('Litlist')->search_rs(
 	$where_ref,
 	{
-	    select  => ['userid.username'],
-	    as       => ['thisusername'],
-	    group_by => ['userid.username'],
-	    order_by => ['userid.username ASC'],	
-	    join     => ['userid','cartitemid'],
-	    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+	    columns  => ['litlistitems.id'],
+	    group_by => ['litlistitems.id'],	
+	    join     => ['userid','litlistitems'],
 	}
 	);
 
-    while (my $thisuser = $usercartitems->next()){
-	print $thisuser->{thisusername},"\n";
-    }
-    exit;
-}
+    my $litlistitems = $user->get_schema->resultset('Litlistitem')->search_rs(
+	{
+	    id => { -in => $userlitlistitems->as_query },
+	}
+	);
 
-my $usercartitems = $user->get_schema->resultset('UserCartitem')->search_rs(
-    $where_ref,
-    {
-	columns  => ['cartitemid.id'],
-	group_by => ['cartitemid.id'],	
-	join     => ['userid','cartitemid'],
-    }
-    );
+    my $litlistitems_count = $litlistitems->count;
 
-my $cartitems = $user->get_schema->resultset('Cartitem')->search_rs(
-    {
-	id => { -in => $usercartitems->as_query },
-    }
-    );
+    $logger->info("$litlistitems_count litlistitems found");
 
-my $cartitems_count = $cartitems->count;
+    while (my $thislitlistitem = $litlistitems->next()){
+	my $id      = $thislitlistitem->get_column('id');    
+	my $titleid = $thislitlistitem->get_column('titleid');
+	my $dbname  = $thislitlistitem->get_column('dbname');
 
-$logger->info("$cartitems_count cartitems found");
+	if ($dbname=~m/^(eds|dbis|ezb)$/){
+	    $logger->info("ID $titleid in DB $dbname ignored");
+	    next;
+	}
 
-while (my $thiscartitem = $cartitems->next()){
-    my $id      = $thiscartitem->get_column('id');    
-    my $titleid = $thiscartitem->get_column('titleid');
-    my $dbname  = $thiscartitem->get_column('dbname');
+	if (!$config->db_exists($dbname)){
+	    $logger->error("NO_DB: $dbname");
+	    next;
+	}
+	
+	my $record = new OpenBib::Record::Title({ database => $dbname , id => $titleid, config => $config })->load_full_record;
 
-    if ($dbname=~m/^(eds|dbis|ezb)$/){
-	$logger->info("ID $titleid in DB $dbname ignored");
-	next;
-    }
+	if ($record->record_exists){
+	    
+	    my $record_json = $record->to_json;
 
-    if (!$config->db_exists($dbname)){
-	$logger->error("NO_DB: $dbname");
-	next;
-    }
-    
-    my $record = new OpenBib::Record::Title({ database => $dbname , id => $titleid, config => $config })->load_full_record;
-
-    if ($record->record_exists){
-		
-	my $record_json = $record->to_json;
-
-	if ($dryrun){
-	    $logger->info("Would try to update id $id ($dbname/$titleid) with content $record_json");
+	    if ($dryrun){
+		$logger->info("Would try to update id $id ($dbname/$titleid) with content $record_json");
+	    }
+	    else {
+		$thislitlistitem->update({
+		    titlecache => $record_json	    
+				      });
+	    }
 	}
 	else {
-	    $thiscartitem->update({
-		titlecache => $record_json	    
-				  });
+	    $logger->error("Litlistitemid $id: DB: $dbname - TITLEID: $titleid existiert nicht!");
 	}
     }
-    else {
-	$logger->error("Cartitemid $id: DB: $dbname - TITLEID: $titleid existiert nicht!");
+}
+elsif ($type eq "cart"){
+    # Persistente Cartitems von Nutzern bestimmen
+
+    my $where_ref = {
+	-and => [
+	     'cartitemid.tstamp' => { '>=' => $from },
+	     'cartitemid.tstamp' => { '<=' => $to },
+	    ],
+	    
+	    'userid.authenticatorid' => $authenticatorid,
+    };
+
+    if ($userid){
+	$where_ref->{'userid.username'} = $username;
     }
+
+    if ($viewname){
+
+	if (!$config->view_exists($viewname)){
+	    $logger->error("View $viewname existiert nicht");
+	    exit;
+	}
+	
+	my $viewid;
+
+	eval {
+	    $viewid = $config->get_viewinfo->single({ viewname => $viewname })->id;
+	};
+
+	if ($@){
+	    $logger->error($@);
+	    exit;
+	}
+	
+	$where_ref->{'userid.viewid'} = $viewid;
+    }
+
+    $logger->debug("Where: ".YAML::Dump($where_ref));
+
+    if ($listusers){
+	my $usercartitems = $user->get_schema->resultset('UserCartitem')->search_rs(
+	    $where_ref,
+	    {
+		select  => ['userid.username'],
+		as       => ['thisusername'],
+		group_by => ['userid.username'],
+		order_by => ['userid.username ASC'],	
+		join     => ['userid','cartitemid'],
+		result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+	    }
+	    );
+
+	while (my $thisuser = $usercartitems->next()){
+	    print $thisuser->{thisusername},"\n";
+	}
+	exit;
+    }
+
+    my $usercartitems = $user->get_schema->resultset('UserCartitem')->search_rs(
+	$where_ref,
+	{
+	    columns  => ['cartitemid.id'],
+	    group_by => ['cartitemid.id'],	
+	    join     => ['userid','cartitemid'],
+	}
+	);
+
+    my $cartitems = $user->get_schema->resultset('Cartitem')->search_rs(
+	{
+	    id => { -in => $usercartitems->as_query },
+	}
+	);
+
+    my $cartitems_count = $cartitems->count;
+
+    $logger->info("$cartitems_count cartitems found");
+
+    while (my $thiscartitem = $cartitems->next()){
+	my $id      = $thiscartitem->get_column('id');    
+	my $titleid = $thiscartitem->get_column('titleid');
+	my $dbname  = $thiscartitem->get_column('dbname');
+
+	if ($dbname=~m/^(eds|dbis|ezb)$/){
+	    $logger->info("ID $titleid in DB $dbname ignored");
+	    next;
+	}
+
+	if (!$config->db_exists($dbname)){
+	    $logger->error("NO_DB: $dbname");
+	    next;
+	}
+	
+	my $record = new OpenBib::Record::Title({ database => $dbname , id => $titleid, config => $config })->load_full_record;
+
+	if ($record->record_exists){
+	    
+	    my $record_json = $record->to_json;
+
+	    if ($dryrun){
+		$logger->info("Would try to update id $id ($dbname/$titleid) with content $record_json");
+	    }
+	    else {
+		$thiscartitem->update({
+		    titlecache => $record_json	    
+				      });
+	    }
+	}
+	else {
+	    $logger->error("Cartitemid $id: DB: $dbname - TITLEID: $titleid existiert nicht!");
+	}
+    }
+}
+else {
+    $logger->error("Der Typ $type wird nicht unterstuetzt");
 }
 
 sub print_help {
     print << "ENDHELP";
-usercartitems2fullrecord.pl - Upgrade des Merklisten Titelcaches auf komplette Titeldaten von Kurzkategorienformat
+refresh_titlecache.pl - Refresh des Titelcaches von Merk- und Literaturlisten mit aktuellen (Komplett)Daten
 
    Optionen:
    -help                 : Diese Informationsseite
+   --type=...            : Welchen Titelcache? (cart|litlist)
    -dry-run              : Testlauf ohne Aenderungen
    -list-users           : Anzeige der Nutzeraccounts mit Merklisten
    --from=...            : Von Erstellungsdatum (z.B. 2013-01-01 00:00:00)

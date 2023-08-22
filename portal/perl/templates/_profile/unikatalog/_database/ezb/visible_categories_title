@@ -14,7 +14,7 @@
 [%-# Ausgabekategorien -%]
 [%- categories = [
 #                'Titel', # msg.maketext("Titel") HST
-                'Lizensierter Zeitraum', # msg.maketext("Lizensierter Zeitraum") Lizensierter Zeitraum
+                'Lizenzierter Zeitraum', # msg.maketext("Lizenzierter Zeitraum") Lizenzierter Zeitraum
                 'Homepage', # msg.maketext("Homepage") Homepage
 		'Volltext online seit', # msg.maketext("Volltext online seit") 0405 Erste Ausgabe
 		'Verlag', # msg.maketext("Verlag") Verlag

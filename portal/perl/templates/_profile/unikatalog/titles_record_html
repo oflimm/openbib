@@ -53,9 +53,9 @@
   END;
 
    # Andere Locations aus Aufsatzkatalog entfernen
-   IF locations.grep('aufsaetze');
-     locations = ['aufsaetze'];
-   END;
+   # IF locations.grep('aufsaetze');
+   #   locations = ['aufsaetze'];
+   # END;
    
    bibkey = record.to_bibkey ;
    isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
@@ -127,6 +127,8 @@
 
     IF normdata.${"T0540"} ;
       q_isbn   = normdata.${"T0540"}.first.content ;
+    ELSIF normdata.${"T0586"} ;
+      q_isbn   = normdata.${"T0586"}.first.content ;
     END;
 
     IF normdata.${"T0089"} ;

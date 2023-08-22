@@ -46,10 +46,11 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::User;
 
-my ($type,$username,$from,$to,$listusers,$authenticatorid,$viewname,$dryrun,$help,$logfile,$loglevel);
+my ($type,$username,$from,$to,$listusers,$selectobsolete,$authenticatorid,$viewname,$dryrun,$help,$logfile,$loglevel);
 
 &GetOptions(
     "type=s"          => \$type,
+    "select-obsolete" => \$selectobsolete,
     "username=s"      => \$username,
     "from=s"          => \$from,
     "to=s"            => \$to,
@@ -132,6 +133,11 @@ if ($type eq "litlist"){
 	$where_ref->{'userid.username'} = $username;
     }
 
+    # Obsolete Titlecaches im Kurzformat besitzen das Feld PC0001
+    if ($selectobsolete){
+	$where_ref->{'litlistitems.titlecache'} = {'~' => 'PC0001'};
+    }
+    
     if ($viewname){
 
 	if (!$config->view_exists($viewname)){
@@ -244,6 +250,11 @@ elsif ($type eq "cart"){
 	$where_ref->{'userid.username'} = $username;
     }
 
+    # Obsolete Titlecaches im Kurzformat besitzen das Feld PC0001
+    if ($selectobsolete){
+	$where_ref->{'cartitems.titlecache'} = {'~' => 'PC0001'};
+    }
+    
     if ($viewname){
 
 	if (!$config->view_exists($viewname)){
@@ -353,6 +364,7 @@ refresh_titlecache.pl - Refresh des Titelcaches von Merk- und Literaturlisten mi
    --type=...            : Welchen Titelcache? (cart|litlist)
    -dry-run              : Testlauf ohne Aenderungen
    -list-users           : Anzeige der Nutzeraccounts mit Merklisten
+   -select-obsolete      : Eingrenzung auf obsolete Kurztitel mit PC0001
    --from=...            : Von Erstellungsdatum (z.B. 2013-01-01 00:00:00)
    --to=...              : Bis Erstellungsdatum (z.B. 2013-01-02 00:00:00)
    --username=...        : Einzelner Nutzer

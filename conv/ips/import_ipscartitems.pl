@@ -135,6 +135,10 @@ while (my $line = <JSONIN>){
 		$import_fields = 1;
 	    }
 
+	    if ($dbname eq "UBK"){
+		$dbname="inst001";
+	    }
+	    
 	    $logger->debug("Processing DB $dbname ID $titleid");
 	    
 	    if (!$config->db_exists($dbname)){

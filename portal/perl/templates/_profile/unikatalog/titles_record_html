@@ -53,9 +53,9 @@
   END;
 
    # Andere Locations aus Aufsatzkatalog entfernen
-   # IF locations.grep('aufsaetze');
-   #   locations = ['aufsaetze'];
-   # END;
+   IF locations.grep('aufsaetze').size > 0;
+      locations = ['aufsaetze'];
+    END;
    
    bibkey = record.to_bibkey ;
    isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
@@ -125,10 +125,10 @@
       q_issn   = normdata.${"T0543"}.first.content ;
     END;
 
-    IF normdata.${"T0540"} ;
-      q_isbn   = normdata.${"T0540"}.first.content ;
-    ELSIF normdata.${"T0586"} ;
+    IF normdata.${"T0586"} ;
       q_isbn   = normdata.${"T0586"}.first.content ;
+    ELSIF normdata.${"T0540"} ;
+      q_isbn   = normdata.${"T0540"}.first.content ;
     END;
 
     IF normdata.${"T0089"} ;
@@ -432,10 +432,17 @@ Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es au
   </ul>
  </div>
              </div>
-[% IF record.database == 'eds' # Verfuegbarkeit ermitteln %]
-	    <div class="pe-1 pb-3">	    
+[% IF record.database == 'eds' || record.database == 'aufsaetze' # Verfuegbarkeit ermitteln %]
+[%
+    IF record.database == 'eds';
+     q_sid = "EBSCO:Academic%20Search%20Ultimate";
+    ELSIF record.database == 'aufsaetze';
+     q_sid = "UBK:Aufsaetze";
+    END;
+%]
+	    <div class="pe-1 pb-3">
 <!--              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="[% path_prefix %]/availability/search.html?issn=[% issn %];jrnl=[% journal %];vol=[% volume %];issue=[% issue %];tit=[% title %];per=[% person %]" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a> -->
-              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="https://usb-koeln.digibib.net/openurl?genre=[% q_openurltype %]&isbn=[% q_isbn %]&issn=[% q_issn %]&title=[% q_journal %]&volume=[% q_volume %]&issue=[% q_issue %]&date=[% q_year %]&atitle=[% q_title %]&aufirst=[% q_aufirst %]&aulast=[% q_aulast %]&spage=[% q_spage %]&pages=[% q_pages %]&sid=EBSCO:Academic%20Search%20Ultimate&pid=%3Clocation%3E038%3C%2Flocation%3E" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a>
+              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="https://usb-koeln.digibib.net/openurl?genre=[% q_openurltype %]&isbn=[% q_isbn %]&issn=[% q_issn %]&title=[% q_journal |uri %]&volume=[% q_volume %]&issue=[% q_issue %]&date=[% q_year %]&atitle=[% q_title |uri %]&aufirst=[% q_aufirst %]&aulast=[% q_aulast |uri %]&spage=[% q_spage %]&pages=[% q_pages %]&sid=[% q_sid %]&pid=%3Clocation%3E038%3C%2Flocation%3E" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a>
 	    </div>
 [% END %]
 	     

@@ -15,6 +15,11 @@
         <div class="ob-jumbotron">
          <h1 class="display-4">[% msg.maketext("Neuanmeldung für einen Bibliotheksausweis") %]</h1>
 
+[% IF alma_disable_librarycard %]
+<div class="alert alert-info">
+Wegen der Umstellung auf das neue Bibliothekssystem Alma können bis voraussichtlich 6.9.2023 keine Bibliotheksausweise beantragt werden.
+</div>
+[% ELSE %]
 <p class="alert alert-warning">[% msg.maketext("Nur, wenn Sie keine UCCard der Uni Köln besitzen!") %]</p>
 
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('librarycard_registrations_loc') %]" enctype="application/x-www-form-urlencoded">
@@ -122,4 +127,5 @@ Format: TT.MM.JJJJ
 
 </form>
 
+[% END %]
 </div><!-- End: ob-jumbotron -->

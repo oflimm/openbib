@@ -126,5 +126,8 @@
 
 
    alma_disable_suggestions = 1; # Keine Anschaffungsvorschlaege wg. Umstieg auf Alma
-   alma_disable_ill_books   = 1; # Keine Buecherfernleihe wg. Umstieg auf Alma 
+   alma_disable_ill_books   = 1; # Keine Buecherfernleihe wg. Umstieg auf Alma
+   alma_disable_librarycard = 1; # Keine Online-Anmeldung
+   alma_disable_uccard      = 0; # Keine UCCard Freischaltung
+   alma_disable_circulation = 0; # Keine Bestellung/Vormerkung/Campuslieferdienst
 -%]

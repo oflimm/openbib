@@ -17,7 +17,7 @@
 
 [% IF alma_disable_librarycard %]
 <div class="alert alert-info">
-Wegen der Umstellung auf das neue Bibliothekssystem Alma können bis voraussichtlich 6.9.2023 keine Bibliotheksausweise beantragt werden.
+Wegen der Umstellung auf das neue Bibliothekssystem Alma ist bis voraussichtlich 6.9.2023 keine Online-Anmeldung möglich.
 </div>
 [% ELSE %]
 <p class="alert alert-warning">[% msg.maketext("Nur, wenn Sie keine UCCard der Uni Köln besitzen!") %]</p>

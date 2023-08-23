@@ -14,6 +14,14 @@
 <p />
 
 [%# USE dumper;dumper.dump(dbinfo)%]
+[% IF alma_disable_circulation %]
+<div class="alert alert-info m-2">
+Aufgrund der Umstellung auf das neue Bibliothekssystem Alma können Sie ab
+sofort keine Bestellungen/Vormerkungen mehr aufgeben. Die Ausleihe von
+Büchern ist noch bis einschließlich 30. August möglich. Ab dem 6. September
+steht das gesamte Serviceangebot sukzessive wieder zur Verfügung.
+</div>
+[% END %]
 <div class="table-responsive">
 <table class="table table-striped table-flippable">
 <thead>
@@ -364,6 +372,7 @@ entliehen
 [% ELSE %]
 [%############### AUSLEIHBAR/BESTELLBAR ############################## %]
 [%   IF thiscirculation.availability.match('^(order|loan)$') %]
+[% IF alma_disable_circulation && thiscirculation.availability.match('^(order)$')%]nicht [% END %]
 [%     IF availability_info.match('\(') %]
 [%        textparts = availability_info.match('^(.*) (\(.*\).*?)$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
 [% textparts.first %]<br/>[% textparts.last %]
@@ -432,7 +441,7 @@ Präsenzbestand
 
 [%############### ANFANG MEDIENSTATUSAKTIONEN ######### %]
 [%############### BESTELLBUTTON ######### %]
-[% IF thiscirculation.availability.match('^(order)$') %]
+[% IF thiscirculation.availability.match('^(order)$') && NOT alma_disable_circulation %]
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID && authenticator.type == 'ils' %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/orders">
    <input type="hidden" name="validtarget"   value="[% database %]" />
    <input type="hidden" name="holdingid"     value="[% uri_escape(thiscirculation.holdingid)  %]" />
@@ -456,7 +465,7 @@ Präsenzbestand
 [%   END %]
 </form>
 [%############### VORMERKBUTTON ######### %]
-[% ELSIF thiscirculation.availability.match('^(lent)$') && thiscirculation.unavailability_info.first.queue.defined %]
+[% ELSIF thiscirculation.availability.match('^(lent)$') && thiscirculation.unavailability_info.first.queue.defined && NOT alma_disable_circulation%]
 [%   
      vormerkbutton = 1 ;
 
@@ -524,7 +533,7 @@ Präsenzbestand
 
 [%############### ANFANG CAMPUSLIEFERDIENST ######### %]
 [% ELSIF scan_dienst == "campus" %]
-[%  IF thiscirculation.department_id.match('^(0|4)$') && username.match('^(B|S)') && NOT thiscirculation.location_mark.match('^ZBM/') %]
+[%  IF thiscirculation.department_id.match('^(0|4)$') && username.match('^(B|S)') && NOT thiscirculation.location_mark.match('^ZBM/')  && NOT alma_disable_circulation %]
 [%    
       subdomain = "";
       IF thiscirculation.availability.match('^(lent)$') ;

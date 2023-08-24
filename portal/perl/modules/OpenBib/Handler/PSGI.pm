@@ -89,7 +89,7 @@ sub cgiapp_init {
     my $view         = $self->param('view');
 
     my $config       = OpenBib::Config->new;
-
+        
     $self->param('config',$config);
     
     my ($atime,$btime,$timeall)=(0,0,0);
@@ -1039,6 +1039,12 @@ sub print_page {
     my $url            = $self->param('url');
 
     $logger->debug("Entering print_page with template $templatename");
+        
+    if (!$config->view_is_active($view)){
+	$logger->error("View $view doesn't exist");	
+	$self->header_add('Status' => 404); # Not found
+        return;
+    }
     
     my ($atime,$btime,$timeall)=(0,0,0);
 
@@ -2472,6 +2478,10 @@ sub verify_gpg_data {
     
     $verification_token = decode_base64($verification_token);
 
+    if ($logger->is_debug){
+	$logger->debug("Verifying with decoded token $verification_token");
+    }
+    
     my ($plaintext, $sig) = $gpg->verify($verification_token, $data);
 
     if ($logger->is_debug){

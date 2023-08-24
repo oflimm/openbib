@@ -524,7 +524,20 @@ sub view_exists {
     my $logger = get_logger();
 
     # DBI: "select count(viewname) as rowcount from viewinfo where viewname = ?"
-    my $count = $self->get_schema->resultset('Viewinfo')->search({ viewname => $viewname})->count;
+    my $count = $self->get_schema->resultset('Viewinfo')->search({ viewname => $viewname })->count;
+    
+    return $count;
+}
+
+sub view_is_active {
+    my $self     = shift;
+    my $viewname = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # DBI: "select count(viewname) as rowcount from viewinfo where viewname = ?"
+    my $count = $self->get_schema->resultset('Viewinfo')->search({ viewname => $viewname, active => 1})->count;
     
     return $count;
 }

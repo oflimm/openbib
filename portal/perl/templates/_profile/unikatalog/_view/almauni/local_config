@@ -1,13 +1,13 @@
 [%-
 
    cms_links = {
-    anmeldung        = "https://typo3.ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/bibliotheksausweis/bibliotheksausweis-beantragen"
+    anmeldung        = "https://ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/bibliotheksausweis/bibliotheksausweis-beantragen"
     # ausweisverl      = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausweis/index_ger.html"
-    bezahlen         = "https://typo3.ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/gebuehren-und-preise"
+    bezahlen         = "https://ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/gebuehren-und-preise"
     # paymend          = "https://www.ub.uni-koeln.de/finding_borrowing/borrowing/fees/index_eng.html"
-    bno              = "https://typo3.ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/nutzungsordnungen"
+    bno              = "https://ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/nutzungsordnungen"
     # bnr              = "https://www.ub.uni-koeln.de/fragen/ausweis/benutzernr/index_ger.html"
-    bnrgesperrt      = "https://typo3.ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/bibliotheksausweis/ihr-bibliotheksausweis-ist-gesperrt"
+    bnrgesperrt      = "https://ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/bibliotheksausweis/ihr-bibliotheksausweis-ist-gesperrt"
     # edzdb            = "https://www.ub.uni-koeln.de/ueber_uns/dach/edz/datenbanken/index_ger.html"
     # fachauskunft     = "https://www.ub.uni-koeln.de/ueber_uns/ansprechpartner/fachreferate/index_ger.html"
     # kontakt          = "https://www.ub.uni-koeln.de/lernen_arbeiten/arbeitenusb/oeffnungszeiten/index_ger.html"
@@ -23,27 +23,27 @@
     # oeffzeithwamag   = "https://www.ub.uni-koeln.de/lernen_arbeiten/arbeitenusb/oeffnungszeiten/oeffzeithwa/index_ger.html"
     # pda              = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/anschaffungsvorschlag/index_ger.html"
     # paymend          = "https://www.ub.uni-koeln.de/finding_borrowing/borrowing/fees/index_eng.html"
-    registration     = "https://typo3.ub.uni-koeln.de/en/working-borrowing/visiting-borrowing/library-card/library-card-order-pick-up-and-extend"
+    registration     = "https://ub.uni-koeln.de/en/working-borrowing/visiting-borrowing/library-card/library-card-order-pick-up-and-extend"
     # tipps            = "https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/portalsuche/index_ger.html"
     # uccard           = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausweis/uccard/index_ger.html"
     # uccarden         = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausweis/uccard/index_eng.html"
-    vpn              = "https://typo3.ub.uni-koeln.de/lernen-ausleihen/digitale-services/e-medien"
-    druck_download   = "https://typo3.ub.uni-koeln.de/lernen-ausleihen/digitale-services/e-medien/besonderheiten-der-e-book-anbieter"
-    standort_sab     = "https://typo3.ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/ausleihmoeglichkeiten/literatur-direkt-ausleihen#c3573"
-    standort_lbs     = " https://typo3.ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/ausleihmoeglichkeiten/literatur-direkt-ausleihen#c3574"
-    standort_ls      = "https://typo3.ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/ausleihmoeglichkeiten/nur-vort-ort-einsehbar/lesesaele"
-    standort_ls_hp   = "https://typo3.ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/ausleihmoeglichkeiten/nur-vort-ort-einsehbar#c3716"
-    standort_ls_hf   = "https://typo3.ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/ausleihmoeglichkeiten/nur-vort-ort-einsehbar#c3715"
-    kurse            = "https://typo3.ub.uni-koeln.de/kurse-beratung"
-    fragen           = "https://typo3.ub.uni-koeln.de/kurse-beratung/information-beratung/information"
-    impressum        = "https://typo3.ub.uni-koeln.de/impressum"
-    events           = "https://typo3.ub.uni-koeln.de/kulturprogramm"
-    kultur           = "https://typo3.ub.uni-koeln.de/kulturprogramm/kulturpartner-foerderer"
-    auskunft         = "https://typo3.ub.uni-koeln.de/kurse-beratung/information-beratung/information"
-    direktor         = "https://typo3.ub.uni-koeln.de/die-usb/ansprechpartnerinnen/personal/dr-neuhausen"
-    ezeitungen       = "https://typo3.ub.uni-koeln.de/lernen-ausleihen/digitale-services/e-medien/elektronische-zeitungen"
-    campuslieferung  = "https://typo3.ub.uni-koeln.de/lernen-ausleihen/digitale-services/campuslieferdienst"
-    nutzungsordnung  = "https://typo3.ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/nutzungsordnungen"
+    vpn              = "https://ub.uni-koeln.de/lernen-ausleihen/digitale-services/e-medien"
+    druck_download   = "https://ub.uni-koeln.de/lernen-ausleihen/digitale-services/e-medien/besonderheiten-der-e-book-anbieter"
+    standort_sab     = "https://ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/ausleihmoeglichkeiten/literatur-direkt-ausleihen#c3573"
+    standort_lbs     = " https://ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/ausleihmoeglichkeiten/literatur-direkt-ausleihen#c3574"
+    standort_ls      = "https://ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/ausleihmoeglichkeiten/nur-vort-ort-einsehbar/lesesaele"
+    standort_ls_hp   = "https://ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/ausleihmoeglichkeiten/nur-vort-ort-einsehbar#c3716"
+    standort_ls_hf   = "https://ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/ausleihmoeglichkeiten/nur-vort-ort-einsehbar#c3715"
+    kurse            = "https://ub.uni-koeln.de/kurse-beratung"
+    fragen           = "https://ub.uni-koeln.de/kurse-beratung/information-beratung/information"
+    impressum        = "https://ub.uni-koeln.de/impressum"
+    events           = "https://ub.uni-koeln.de/kulturprogramm"
+    kultur           = "https://ub.uni-koeln.de/kulturprogramm/kulturpartner-foerderer"
+    auskunft         = "https://ub.uni-koeln.de/kurse-beratung/information-beratung/information"
+    direktor         = "https://ub.uni-koeln.de/die-usb/ansprechpartnerinnen/personal/dr-neuhausen"
+    ezeitungen       = "https://ub.uni-koeln.de/lernen-ausleihen/digitale-services/e-medien/elektronische-zeitungen"
+    campuslieferung  = "https://ub.uni-koeln.de/lernen-ausleihen/digitale-services/campuslieferdienst"
+    nutzungsordnung  = "https://ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/nutzungsordnungen"
     
     uzk_rektor       = "https://www.portal.uni-koeln.de/rektor.html"
     uzk_studium      = "http://www.portal.uni-koeln.de/studium.html"
@@ -123,5 +123,7 @@
      idsuffix = "_books";
      current_tab = 'books';   
    END;
+
+   alma_disable_listitem_status = 0;
 
 -%]

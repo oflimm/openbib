@@ -112,7 +112,7 @@
 <script src="/js/jquery.autocomplete.js"></script>
 <script src="/js/Chart.bundle.min.js"></script>
 <script src="/js/nouislider.min.js"></script>
-<script src="/js/htmx-1.9.0/htmx.min.js"></script>
+<script src="/js/htmx-1.9.4/htmx.min.js"></script>
 
 <!-- <script src="/js/bootstrap-material-design.min.js"></script> -->
 

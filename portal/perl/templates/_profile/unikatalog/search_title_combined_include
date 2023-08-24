@@ -13,6 +13,10 @@
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
 
+<script>
+window.scrollTo(0, 0);
+</script>
+
 [%
 # IF idsuffix == '_books' ;
 #   separate_facets = 1 ;

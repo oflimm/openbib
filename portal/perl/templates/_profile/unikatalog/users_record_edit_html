@@ -49,10 +49,13 @@
 <label for="authenticator">[% msg.maketext("Authentifizierung") %]</label>
 </div>
 [%# USE dumper;dumper.dump(views)%]
+
+<!--
 <div class="form-floating mb-3">
 <span class="form-control" id="view">[% IF userinfo.viewname %][% config.get_viewdesc_from_viewname(userinfo.viewname) %][% ELSE %][% msg.maketext("Zugriff auf alle Portale") %][% END %]</span>
 <label for="view">[% msg.maketext("Portal") %]</label>
 </div>
+-->
 
 <div class="form-floating mb-3">
 [% IF authenticator.id == 'selfreg' %]

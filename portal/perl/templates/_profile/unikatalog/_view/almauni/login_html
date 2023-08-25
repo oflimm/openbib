@@ -13,6 +13,8 @@
 #######################################################################
 -%]
 
+<h2 class="pt-2 pb-2">[% msg.maketext("Mein Konto") %] | [% msg.maketext("Anmelden") %]</h2>
+
 [%
 
   available_authenticators = config.get_authenticators_by_view(view);
@@ -25,17 +27,19 @@
   #USE dumper;dumper.dump(available_authenticators);dumper.dump(available_authenticator_types);
 %]
 
- 	 <div class="alert alert-info mt-3">Zur Nutzung der Bibliothek (Ausleihen, Vormerken, etc.) müssen Sie sich mit Ihrem Benutzerausweis anmelden. Ohne vorhandenen Bibliotheksausweis kann das Portal jedoch mit der Anmeldung per E-Mail-Adresse genutzt werden (Merklisten).</div>
+ 	 <div class="alert alert-info">Zur Nutzung der Bibliothek (Ausleihen, Vormerken, etc.) müssen Sie sich mit Ihrem Benutzerausweis anmelden.</div>
 
 	 <div id="login_targets">
 
-<ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-login_ils">[% msg.maketext("Mit einem Benutzerausweis") %]</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-login_selfreg">[% msg.maketext("Mit einer E-Mail-Adresse") %]</a></li>
+<ul class="nav nav-tabs">
+<li class="nav-item"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-login_ils">[% msg.maketext("Mit einem Benutzerausweis") %]</a></li>
+<li class="nav-item"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-login_selfreg">[% msg.maketext("Ohne Benutzerausweis") %]</a></li>
 </ul>
 
 <div class="tab-content pt-3">
 <div role="tabpanel" class="tab-pane fade-in active p-3" id="ob-login_ils">
+
+<p><b>[% msg.maketext("Nach der Umstellung auf Alma ab 6.9.2023") %]:</b> [% msg.maketext("Bei erstmaliger Benutzung ist Ihr Password Ihr Geburtsdatum in der Form TTMMJJJJ. Bitte ändern Sie dieses auf ein sicheres Passwort unter Benutzerkonto im Portal.") %] [% msg.maketext("Zur Ausleihe bei den Selbstverbuchern benötigen Sie eine 4-stellige numerische PIN. Diese besteht standardmäßig aus Tag und Monat Ihres Geburtsdatums in der Form TTMM.") %] [% msg.maketext("Die Ausleih-PIN können Sie ebenfalls unter Benutzerkonto im Portal ändern.") %]</p>
 
 <form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded">
 
@@ -55,13 +59,13 @@
 
 
 <div class="form-floating mb-3">
-<input class="form-control" type="text" name="username" id="username" value="[% username %]" />
-<label for="username">[% msg.maketext("Benutzernummer") %]</label>
+<input class="form-control" type="text" name="username" id="username_ils" value="[% username %]" />
+<label for="username_ils">[% msg.maketext("Benutzernummer") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<input class="form-control" type="password" name="password" id="password" />
-<label for="password"/>[% msg.maketext("Passwort") %]</label>
+<input class="form-control" type="password" name="password" id="password_ils" />
+<label for="password_ils" />[% msg.maketext("Passwort") %]</label>
 </div>
 
 <p/>
@@ -74,7 +78,7 @@
 
 <h5>[% msg.maketext("Sie haben noch keinen Bibliotheksausweis?") %]</h5>
 <ul>
- <li>[% msg.maketext("Als Student:in ist Ihre UCCard der Bibliotheksausweis. Bei erstmaliger Benutzung ist Ihr Password Ihr Geburtsdatum in der Form TTMMJJJJ. Bitte ändern Sie dieses auf ein sicheres Passwort unter Benutzerkonto im Portal.") %]</li>
+ <li>[% msg.maketext("Als Student:in ist Ihre UCCard der Bibliotheksausweis.") %]</li>
  <li><a class="exturl" href="[% IF lang == 'de' %][% cms_links.anmeldung %][% ELSE %][% cms_links.registration %][% END %]" target="_blank">[% msg.maketext("Sie sind keine Student:in und möchten online einen Bibliotheksausweis beantragen?") %]</a></li>
 </ul>
 
@@ -98,13 +102,13 @@
 <p/>
 
 <div class="form-floating mb-3">
-<input class="form-control" type="text" name="username" id="email_username" value="[% username %]" />
-<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
+<input class="form-control" type="text" name="username" id="email_username_selfreg" value="[% username %]" />
+<label for="email_username_selfreg">[% msg.maketext("E-Mail-Adresse") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<input class="form-control" type="password" name="password" id="email_username" />
-<label for="email_password"/>[% msg.maketext("Passwort") %]</label>
+<input class="form-control" type="password" name="password" id="email_password_selfreg" />
+<label for="email_password_selfreg"/>[% msg.maketext("Passwort") %]</label>
 </div>
 
 <div>

@@ -39,7 +39,7 @@
 <div class="tab-content pt-3">
 <div role="tabpanel" class="tab-pane fade-in active p-3" id="ob-login_ils">
 
-<p><b>[% msg.maketext("Nach der Umstellung auf Alma ab 6.9.2023") %]:</b> [% msg.maketext("Bei erstmaliger Benutzung ist Ihr Password Ihr Geburtsdatum in der Form TTMMJJJJ. Bitte ändern Sie dieses auf ein sicheres Passwort unter Benutzerkonto im Portal.") %] [% msg.maketext("Zur Ausleihe bei den Selbstverbuchern benötigen Sie eine 4-stellige numerische PIN. Diese besteht standardmäßig aus Tag und Monat Ihres Geburtsdatums in der Form TTMM.") %] [% msg.maketext("Die Ausleih-PIN können Sie ebenfalls unter Benutzerkonto im Portal ändern.") %]</p>
+<p><b>[% msg.maketext("Nach der Umstellung auf Alma ab 6.9.2023") %]:</b> [% msg.maketext("Das Passwort besteht aus dem Geburtsdatum sechsstellig (TTMMJJ). Wir empfehlen die Änderung auf ein sicheres Passwort. Für die Ausleih-Automaten benötigen Sie eine gesonderte PIN. Sie besteht aus dem Geburtsdatum vierstellig (TTMM). Das Passwort und die Ausleih-PIN können Sie unter „Mein Konto“ ändern.") %]</p>
 
 <form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded">
 

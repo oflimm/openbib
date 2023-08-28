@@ -70,10 +70,7 @@
 
 </form>
 
-[% IF NOT alma_disable_circulation %]
 <p><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %];authenticatorid=[% available_authenticator_types.${"ils"} %]">[% msg.maketext("»Passwort vergessen?") %]</a></p>
-[% END %]
-
 
 <h5>[% msg.maketext("Sie haben noch keinen Bibliotheksausweis?") %]</h5>
 <ul>

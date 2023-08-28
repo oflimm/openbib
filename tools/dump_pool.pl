@@ -48,10 +48,11 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::User;
 
-my ($database,$help,$loglevel,$logfile);
+my ($database,$filename,$help,$loglevel,$logfile);
 
 &GetOptions(
     "database=s"      => \$database,
+    "filename=s"      => \$filename,
     "logfile=s"       => \$logfile,
     "loglevel=s"      => \$loglevel,
     "help"            => \$help
@@ -63,6 +64,7 @@ if ($help){
 
 $loglevel = ($loglevel)?$loglevel:"INFO";
 $logfile  = ($logfile)?$logfile:'/var/log/openbib/dump_pool.log';
+$filename = ($filename)?$filename:"${database}.opp";
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=$loglevel, LOGFILE, Screen
@@ -98,7 +100,7 @@ if (!-d $tmpdir){
     mkdir $tmpdir;
 }
 
-unlink "${database}.opp";
+unlink $filename;
 
 system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
 
@@ -126,9 +128,9 @@ if (! -f "$tmpdir/pool.dump" || ! -f "$tmpdir/index.tgz"){
     exit;
 }
 
-$logger->info("Generating opp package file");
+$logger->info("Generating opp package file $filename");
 
-system("tar --directory=$tmpdir -cf ./${database}.opp pool.dump index.tgz ; rm $tmpdir/pool.dump $tmpdir/index.tgz");
+system("tar --directory=$tmpdir -cf ./${filename} pool.dump index.tgz ; rm $tmpdir/pool.dump $tmpdir/index.tgz");
 
 $logger->info("Dumping done");
 
@@ -139,7 +141,8 @@ dump_pool.pl - Export eines Pools (DB+Index) als OpenBib Pool Package Archiv (.o
 
    Optionen:
    -help                 : Diese Informationsseite
-   --database=...        : Einzelner Katalog
+   --database=...        : Name des Katalogs
+   --filename=...        : Ausgabedatei (default: <databasename>.opp)
    --logfile=...         : Alternatives Logfile
    --loglevel=...        : Alternatives Loglevel
 ENDHELP

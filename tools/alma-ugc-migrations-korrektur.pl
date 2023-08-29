@@ -40,9 +40,12 @@ use OpenBib::Record::Title;
 use Business::ISBN;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Encode 'decode_utf8';
+use IO::File;
+use IO::Uncompress::Gunzip;
 use Log::Log4perl qw(get_logger :levels);
 use Benchmark ':hireswallclock';
 use DB_File;
+use JSON::XS;
 use MLDBM qw(DB_File Storable);
 use Storable ();
 use Getopt::Long;
@@ -50,20 +53,22 @@ use YAML::Syck;
 
 my $config      = OpenBib::Config->new;
 
-my ($sourcedatabase,$targetdatabase,$masterdatabase,$targetlocation,$migratelitlists,$migratecartitems,$migratetags,$dryrun,$help,$logfile,$loglevel);
+my ($sourcedatabase,$targetdatabase,$titlefile,$migratelitlists,$migratecartitems,$migratetags,$dryrun,$help,$logfile,$loglevel);
 
 &GetOptions(
-	    "migrate-litlists"      => \$migratelitlists,
-	    "migrate-cartitems"     => \$migratecartitems,
-	    "migrate-tags"          => \$migratetags,
-	    "dry-run"               => \$dryrun,
-            "logfile=s"             => \$logfile,
-            "loglevel=s"            => \$loglevel,
-	    "help"                  => \$help
-	    );
+    "migrate-litlists"      => \$migratelitlists,
+    "migrate-cartitems"     => \$migratecartitems,
+    "migrate-tags"          => \$migratetags,
+    "target-titlefile=s"    => \$titlefile,
+    
+    "dry-run"               => \$dryrun,
+    "logfile=s"             => \$logfile,
+    "loglevel=s"            => \$loglevel,
+    "help"                  => \$help
+    );
 
-my $source_database="inst001";
-my $target_database="uni";
+$sourcedatabase="inst001";
+$targetdatabase="uni";
 
 if ($help){
     print_help();
@@ -127,60 +132,106 @@ my $tag_titles = $config->get_schema->resultset('TitTag')->search(
     }
 );
 
-my %source_titleid_hash = ();
-
-while (my $litlist_title = $litlist_titles->next()){
-    $source_titleid_hash{$litlist_title->{titleid}} = 1;
-}
-
-while (my $cartitem_title = $cartitem_titles->next()){
-    $source_titleid_hash{$cartitem_title->{titleid}} = 1;
-}
-
-while (my $tag_title = $tag_titles->next()){
-    $source_titleid_hash{$tag_title->{titleid}} = 1;
-}
-
-my @source_titleids = keys %source_titleid_hash;
-
-$logger->debug("$#source_titleids Source Titleids: ".YAML::Dump(\@source_titleids));
-
-$logger->info("MMS zu den Titleids von Literaturlisten, Merklisten und Tags");
-
-my $target_catalog = OpenBib::Catalog::Factory->create_catalog({ database => $targetdatabase});
+$logger->info("Bestimmung der Mappings von MMSIDs zu den Katkeys");
 
 my %katkey2mmsid = ();
 
-unlink "./katkey2mmsid.db";
-        
-eval {
-    tie %katkey2mmsid,        'MLDBM', "./katkey2mmsid.db";
-};
+my $target_catalog = OpenBib::Catalog::Factory->create_catalog({ database => $targetdatabase});
 
-if ($@){
-    $logger->error_die("$@: Could not tie ./katkey2mmsid.db.db");
-}
 
-my $titlemmsids = $target_catalog->get_schema->resultset('TitleField')->search(
-    {
-	field => 981,
-	subfield => 'a',
-    },
-    {
-	column => [ qw/titleid content/ ],
-	result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+my $input_io;
+
+if ($titlefile){
+    if ($titlefile =~/\.gz$/){
+        $input_io = IO::Uncompress::Gunzip->new($titlefile);
     }
-    );
-
-while (my $thistitle = $titlemmsids->next()){
-    my $katkey = $thistitle->{content};
-    my $mmsid  = $thistitle->{titleid};
-
-    next unless ($katkey =~m/\(DE-38\)/);
-    $katkey=~s/\(DE-38\)//;
-
-    $katkey2mmsid{$katkey} = $mmsid;
+    else {
+        $input_io = IO::File->new($titlefile);
+    }
 }
+
+my $idx     = 1;
+my $idx_all = 0;
+while (my $jsonline = <$input_io>){
+    my $record_ref = decode_json($jsonline);
+
+    my $mmsid = $record_ref->{id};
+    
+    my $fields_ref = $record_ref->{fields};
+
+    if (defined $fields_ref->{'0981'}){
+	foreach my $item_ref (@{$fields_ref->{'0981'}}){
+	    if ($item_ref->{subfield} eq "a"){
+		my $katkey = $item_ref->{content};
+		
+		$logger->debug("$katkey -> $mmsid");
+
+		next unless ($katkey =~m/\(DE-38\)/);
+		$katkey=~s/\(DE-38\)//;
+		
+		$logger->debug("Post $katkey -> $mmsid");
+		
+		$katkey2mmsid{$katkey} = $mmsid;
+    
+		if ($idx % 10000 == 0){
+		    $logger->info("$idx mappings processed");
+		}
+		
+		$idx++;
+	    }
+	}
+    }
+
+    $idx_all++;
+}
+
+close $input_io;
+
+$logger->info("$idx_all records processed");
+$logger->info(($idx - 1)." mappings found");
+
+# unlink "./katkey2mmsid.db";
+        
+# eval {
+#     tie %katkey2mmsid,        'MLDBM', "./katkey2mmsid.db";
+# };
+
+# if ($@){
+#     $logger->error_die("$@: Could not tie ./katkey2mmsid.db.db");
+# }
+
+# my $titlemmsids = $target_catalog->get_schema->resultset('TitleField')->search(
+#     {
+# 	field => 981,
+# 	subfield => 'a',
+#     },
+#     {
+# 	select => [ 'titleid', 'content' ],
+# 	as     => [ 'mmsid', 'katkey' ],
+# 	result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+#     }
+#     );
+
+# my $idx = 1;
+# while (my $thistitle = $titlemmsids->next()){
+#     my $katkey = $thistitle->{katkey};
+#     my $mmsid  = $thistitle->{mmsid};
+
+#     $logger->info("$katkey -> $mmsid");
+    
+#     if ($idx % 10000 == 0){
+# 	$logger->info("$idx processed");
+#     }
+    
+#     next unless ($katkey =~m/\(DE-38\)/);
+#     $katkey=~s/\(DE-38\)//;
+
+#     $logger->info("Post $katkey -> $mmsid");
+    
+#     $katkey2mmsid{$katkey} = $mmsid;
+#     $idx++;
+# }
+
 
 if ($migratelitlists){
     $logger->info("Literaturlisten-Eintraege korrigieren");
@@ -282,11 +333,16 @@ alma-ugc-migrations-korrektur.pl - Korrektur des User Generated Contents (Litera
    Optionen:
    -help                 : Diese Informationsseite
    -dry-run              : Testlauf ohne Aenderungen
+   -target-titlefile     : meta.title.gz Datei des Alma-Systems
    -migrate-litlists     : Literaturlisten migrieren
    -migrate-cartitems    : Merklisten migrieren
    -migrate-tags         : Tags migrieren
    --logfile=...         : Alternatives Logfile
    --type=...            : Metrik-Typ
+
+Bsp:
+
+./alma-ugc-migrations-korrektur.pl -dry-run -migrate-litlists --target-titlefile=/opt/openbib/autoconv/pools/uni/meta.title.gz
 
 ENDHELP
     exit;

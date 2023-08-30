@@ -41,6 +41,7 @@ use Unicode::Collate;
 use YAML;
 
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Catalog;
 use OpenBib::Schema::Catalog;
 use OpenBib::Schema::System;
@@ -49,14 +50,15 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::User;
 
-my ($type,$database,$profile,$field,$view,$help,$num,$logfile,$loglevel);
+my ($type,$database,$scheme,$profile,$field,$view,$help,$num,$logfile,$loglevel);
 
 &GetOptions("type=s"          => \$type,
             "database=s"      => \$database,
             "profile=s"       => \$profile,
             "view=s"          => \$view,
+            "scheme=s"        => \$scheme,
             "loglevel=s"      => \$loglevel,
-            "logfile=s"      => \$logfile,	    
+            "logfile=s"       => \$logfile,	    
             "field=s"         => \$field,
             "num=s"           => \$num,
 	    "help"            => \$help
@@ -91,6 +93,7 @@ my $logger = get_logger();
 my $config     = OpenBib::Config->new;
 my $user       = new OpenBib::User;
 my $statistics = OpenBib::Statistics->instance;
+my $dbinfo     = new OpenBib::Config::DatabaseInfoTable;
 
 # Verbindung zur SQL-Datenbank herstellen
 my $statisticsdbh = DBI->connect("DBI:Pg:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},{'pg_enable_utf8'    => 1})
@@ -100,6 +103,8 @@ if (!$type){
   $logger->fatal("Kein Type mit --type= ausgewaehlt");
   exit;
 }
+
+$scheme = (defined $scheme)?$scheme:(defined $database)?$dbinfo->get('schema')->{$database}:'';
 
 my $is_person_field_ref = {
     '0100' => 1,
@@ -1182,7 +1187,7 @@ if ($type == 14 && $field){
         }	
         else {
 	    # DBI: "select count(distinct id) as scount, content from title where category=425 and content regexp ? group by content order by scount DESC" mit RegEXP "^[0-9][0-9][0-9][0-9]\$"
-	    $usage = $catalog->get_schema->resultset('Title')->search_rs(
+	    $usage = $catalog->get_schema->resultset('Title')->search_rs( # 
 		{
 		    'title_fields.field' => $field,
 		},
@@ -1304,7 +1309,7 @@ if ($type == 16){
 
     foreach my $base (keys %$cls){
        foreach my $group (keys %{$cls->{$base}{sub}}){
-         $counter_ref->{$group} = 0;
+         $counter_ref->{$group} = 0; # 
        }
     }
 
@@ -1312,10 +1317,16 @@ if ($type == 16){
 
     my $catalog = new OpenBib::Catalog({ database => $database });
 
+    my $where_ref = {
+       'title_fields.field' => 351,
+    };
+
+    if ($scheme && $scheme eq "marc21"){
+       $where_ref->{'title_fields.field'} = 1002;
+    }
+
     my $usage = $catalog->get_schema->resultset('Title')->search_rs(
-            {
-                'title_fields.field' => 351,
-            },
+            $where_ref,
             {
                 select   => ['title_fields.content', {'count' => 'title_fields.titleid'}],
                 as       => ['thiscontent','titlecount'],

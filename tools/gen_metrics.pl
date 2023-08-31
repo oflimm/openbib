@@ -1267,10 +1267,16 @@ if ($type == 15){
 
     my $catalog = new OpenBib::Catalog({ database => $database });
 
+    my $where_ref = {
+       'title_fields.field' => 351,
+    };
+
+    if ($scheme && $scheme eq "marc21"){
+       $where_ref->{'title_fields.field'} = 1002;
+    }
+
     my $usage = $catalog->get_schema->resultset('Title')->search_rs(
-            {
-                'title_fields.field' => 351,
-            },
+            $where_ref,
             {
                 select   => ['title_fields.content', {'count' => 'title_fields.titleid'}],
                 as       => ['thiscontent','titlecount'],

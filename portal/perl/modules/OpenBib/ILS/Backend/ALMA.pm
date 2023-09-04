@@ -874,6 +874,15 @@ sub cancel_order {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    return $self->cancel_order_by_mail($arg_ref);        
+};
+
+sub cancel_order_by_api {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
     
     $arg_ref->{alma_request_type} = "order";
     

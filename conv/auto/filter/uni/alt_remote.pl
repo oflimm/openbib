@@ -136,7 +136,7 @@ if ($do_publish){
 	# Fuer jeden Lauf Daten aktualisieren, sonst Probleme
 	# beim Datumswechsel waehrend eines Laufs
 	my $to_date   = Date::Manip::ParseDate("now");
-	my $from_date = Date::Manip::DateCalc($to_date,"-25hours");
+	my $from_date = Date::Manip::DateCalc($to_date,"-70hours");
 	
 	my $cancel = Date_Cmp($cancel_date,$to_date);
 	

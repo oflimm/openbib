@@ -71,8 +71,6 @@ my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->s
 
 my $filename      = $dbinfo->titlefile;
 
-system("cd $pooldir/$pool ; rm meta.* ");
-
 my $ils = OpenBib::ILS::Factory->create_ils({ database => $pool });
 
 my $api_key = $config->get('alma')->{'api_key'};
@@ -189,6 +187,8 @@ if ($do_publish){
     }
 
     print "### $pool: Kopieren von $newest_file to  $filename\n";    
+
+    system("cd $pooldir/$pool ; rm meta.* ");
 
     system("cp /alma/export/$newest_file $pooldir/$pool/$filename");    
 }

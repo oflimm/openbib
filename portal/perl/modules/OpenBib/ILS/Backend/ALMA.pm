@@ -540,6 +540,10 @@ sub get_userdata {
 	$logger->debug(YAML::Dump($entry));
 	
     }
+
+    foreach my $key (keys %$response_ref){
+	$response_ref->{$key} = decode_utf8($response_ref->{$key});
+    }
     
     return $response_ref;
 }

@@ -56,7 +56,7 @@
 <td>
 [%#- Die Signatur wird nur dann ausgeben, falls sie nicht Teil der Mediennummer ist -%]
 [% IF order.label && order.requestid && NOT order.requestid.match(order.label) %]
-[% order.label %]
+[% order.label %][% IF order.item %]&nbsp;/&nbsp;[% order.item %][% END %]
 [% ELSIF order.label %]
 [% order.label %]
 [% END %]

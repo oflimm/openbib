@@ -128,7 +128,7 @@ if ($do_publish){
     my $start_date   = Date::Manip::ParseDate("now");
     
     # Maximal 12 Stunden warten
-    my $cancel_date = Date::Manip::DateCalc($start_date,"+12hours");
+    my $cancel_date = Date::Manip::DateCalc($start_date,"+60hours");
     
     my $job_completed = 0;
     

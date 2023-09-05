@@ -241,6 +241,14 @@
 <label for="[% cgiparam %]">GND</label>
 </div>
 
+[%- cgiparam = searchfield.zdbid.prefix;
+    this_searchfield = 'zdbid';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">ZDB-ID</label>
+</div>
+
 [% IF available_searchfields.hss.active %]
 [%- cgiparam = searchfield.hss.prefix;
     this_searchfield = 'hss';

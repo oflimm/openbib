@@ -235,12 +235,15 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
 [% PROCESS common/subtemplate name="search_pagination" %]
 
 [% ELSE %]
-  <div class="ob-no_hits">
+  <div class="ob-no_hits pt-5">
     <h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>
 
+  </div>
+
+  <div class="ps-5 pe-5">
     [% PROCESS common/subtemplate name="search_more_tips" %]
-   
-  </div>  
+  </div>
+
 [% END %]
 
 

@@ -244,7 +244,7 @@
 [%- cgiparam = searchfield.zdbid.prefix;
     this_searchfield = 'zdbid';
  -%]
-<div class="form-floating mb-3">
+<div class="form-floating mb-3 d-none">
 <input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">ZDB-ID</label>
 </div>

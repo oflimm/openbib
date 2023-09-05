@@ -81,7 +81,7 @@
 <h5>[% msg.maketext("Sie haben noch keinen Bibliotheksausweis?") %]</h5>
 <ul>
  <li>[% msg.maketext("Als Student:in ist Ihre UCCard der Bibliotheksausweis.") %]</li>
- <li><a class="exturl" href="[% IF lang == 'de' %][% cms_links.anmeldung %][% ELSE %][% cms_links.registration %][% END %]" target="_blank">[% msg.maketext("Sie sind keine Student:in und möchten online einen Bibliotheksausweis beantragen?") %]</a></li>
+ <li><a class="exturl" href="[% cms_links.anmeldung %]" target="_blank">[% msg.maketext("Sie sind keine Student:in und möchten online einen Bibliotheksausweis beantragen?") %]</a></li>
 </ul>
 
 </div><!-- End: tabpanel-->

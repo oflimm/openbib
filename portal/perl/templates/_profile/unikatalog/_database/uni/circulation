@@ -45,6 +45,7 @@
      END ;
 
      availability_info = "";
+
      IF thiscirculation.availability_info ;
        availability_info = thiscirculation.availability_info.first.content ;
      ELSIF thiscirculation.unavailability_info ;
@@ -227,6 +228,11 @@
 [%############### END CORONASONDERBEHANDLUNG ######### %]
 
 [%############### ANFANG MEDIENSTATUSAUSGABE ######### %]
+[% expected = "";
+   IF thiscirculation.unavailability_info && thiscirculation.unavailability_info.first.expected ;
+     expected  = thiscirculation.unavailability_info.first.expected.match('([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9])').first;
+   END;
+%]
 [%############### BESTELLSCHEIN ################# %]
 [% IF availability_info.match('Bestellschein') %]
 [%    bestellscheinparts = availability_info.match('^.* (\(.*\))'); %]
@@ -372,6 +378,9 @@ Präsenzbestand
 [%         ELSE %]
 [%             IF availability_info == 'bestellt' ; availability_info = 'entliehen' ; END %]
 [%            availability_info %]
+[%         END %]
+[%         IF expected %]
+([% msg.maketext("bis") %] [% expected %])
 [%         END %]
 [%     END %]
 [%   END %]

@@ -38,11 +38,6 @@
 </div>
 
 <div class="form-floating mb-3">
-      <input class="form-control" type="text" name="publisher"    value="" />
-      <label for="publisher">[% msg.maketext("Verlag") %]:</label>
-</div>
-
-<div class="form-floating mb-3">
       <input class="form-control" type="text" name="year"    value="" />
       <label for="year">[% msg.maketext("Erscheinungsjahr") %]: *</label>
 </div>

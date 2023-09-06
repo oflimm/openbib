@@ -2372,7 +2372,8 @@ sub send_alma_api_call {
 	
 	my $response = $ua->request($request);
 	
-	$api_result_ref->{'http_status_code'} = $response->code();
+	$api_result_ref->{'http_status_code'}    = $response->code();
+	$api_result_ref->{'http_status_message'} = $response->message();	
 
 	if ($logger->is_debug){
 	    $logger->debug("Response Headers: ".$response->headers_as_string);
@@ -2390,6 +2391,19 @@ sub send_alma_api_call {
 		"code" => $api_result_ref->{'http_status_code'},
 		    "error" => "error",
 		    "error_description" => $msg->maketext("Ihre Anfrage konnte nicht bearbeitet werden, da das Cloud-Bibliothekssystem Alma derzeit überlastet ist und keine Anfragen mehr annimmt. Bitte versuchen Sie es später noch einmal."),
+	    };
+	    
+	    return $api_result_ref;
+	}
+
+	# Timeout reached
+	if ($api_result_ref->{'http_status_code'} == 500 && $api_result_ref->{'http_status_message'} eq "read timeout"){
+	    $logger->fatal("Timeout reached");
+	    
+	    $api_result_ref->{'response'} = {
+		"code" => $api_result_ref->{'http_status_code'},
+		    "error" => "error",
+		    "error_description" => $msg->maketext("Ihre Anfrage konnte nicht bearbeitet werden, da das Cloud-Bibliothekssystem Alma derzeit zu langsam antwortet und der Timeout von 30 Sekunden erreicht wurde."),
 	    };
 	    
 	    return $api_result_ref;

@@ -46,7 +46,7 @@ ELSE ;
   isil = "DE-${sigel}";
 END ;
 
-
+normset = record.get_fields;
 
 title    = normset.${"T0331"}.first.content ;
 IF  normset.${"T0310"}.first.content ;
@@ -55,7 +55,8 @@ END ;
 
 standort = thisholding.${"X0016"}.content;
 
-IF thisholding.${"X3330"}.content.match('^38$');
+IF standort.content.match('^Hauptabteilung');
+  isil = "DE-38";
   IF thisholding.${"X0014"}.content.match('^FHM ') ;
     standort = "USB-Freihandmagazin (1. OG)";
   ELSIF thisholding.${"X0014"}.content.match('^EWA Z') ;
@@ -86,6 +87,15 @@ IF thisholding.${"X3330"}.content.match('^38$');
   ELSIF thisholding.${"X0014"}.content.match('^ZTG') ;
     standort = "Zeitungsbestand. USB-Magazin<br/>Bitte füllen Sie einen konventionellen Bestellschein aus (erhältlich an der Auskunft und der Lesesaal-Theke im 1. OG)";
   END;
+ELSIF standort.match("^inst[0-9][0-9][0-9]");
+    sigel = standort.match("^inst([0-9][0-9][0-9])").first;
+    IF sigel ;
+      isil = "DE-38-${sigel}";
+    END;
+    abteilung = standort.match("/ (.+)$").first;
+    IF abteilung ;
+      standort = abteilung;
+    END;
 END;
 
 IF isil;

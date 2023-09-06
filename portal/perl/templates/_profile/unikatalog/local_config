@@ -1,7 +1,7 @@
 [%-
 
    cms_links = {
-    anmeldung        = "https://ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/bibliotheksausweis/bibliotheksausweis-beantragen"
+    anmeldung        = "https://ub.uni-koeln.de/formulare/selbstregistrierung"
     # ausweisverl      = "https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/ausweis/index_ger.html"
     bezahlen         = "https://ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/gebuehren-und-preise"
     # paymend          = "https://www.ub.uni-koeln.de/finding_borrowing/borrowing/fees/index_eng.html"

@@ -115,7 +115,12 @@
 
 [%- END # Ende Alles -%]
 
-  </div>   
+  </div>
+
+  <div class="d-flex justify-content-center">
+[% PROCESS common/subtemplate name="pagination" %]
+  </div>
+
 </div>
 <!-- Titlelist ends here -->
 

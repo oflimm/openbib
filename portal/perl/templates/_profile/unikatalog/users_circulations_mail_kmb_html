@@ -24,7 +24,7 @@ Bitte füllen Sie das Bestellformular vollständig aus. Ihr Bestellwunsch wird p
 Sie werden über den Eingang der Bestellung <b>nicht</b> gesondert benachrichtigt.
 </p>
 
- <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/me/[% config.get('circulations_loc') %]/id/mail/kmb">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/mail/kmb">
  
      <input type="hidden" name="realm"       value="[% realm %]" />
      <input type="hidden" name="location"    value="[% title_location %]" />
@@ -87,41 +87,58 @@ Sie werden über den Eingang der Bestellung <b>nicht</b> gesondert benachrichtig
 
 <div class="form-floating mb-3">
       <span class="form-control">[% signatur %]</span>
-      <input type="hidden" name="label" value="[% signatur %]" />
+      <input type="hidden" name="label" value="[% uri_escape(signatur) %]" />
       <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
 </div>
 
+[% IF numbering %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% numbering %]</span>
+      <input type="hidden" name="numbering" value="[% uri_escape(numbering) %]" />
+     <label for="numbering">[% msg.maketext("Bestand in der USB") %]:</label>
+</div>
+[% END %]
+
+[%
+   name = "";
+   IF userinfo.nachname || userinfo.vorname ;
+        IF userinfo.nachname ;
+          name = userinfo.nachname ;
+	END ;
+	IF userinfo.vorname ;
+	  name = "${userinfo.vorname} ${name}";
+	END;
+   END;
+
+%]
 
 <legend class="mt-2">[% msg.maketext("Weitere Angaben zur Bestellung") %]</legend>
 
 <p>Mit * gekennzeichnete Felder sind Pflichtfelder und müssen ausgefüllt werden.</p>
 
 <div class="form-floating mb-3">
-      <input class="form-control" type="text" name="freeusername"  />
-     <label for="freeusername">[% msg.maketext("Name, Vorname") %] (*):</label>
+      <input class="form-control" type="text" name="loginname" value="" />
+     <label for="username">[% msg.maketext("Name, Vorname") %] (*):</label>
 </div>
+
+<p/>
 
 <legend class="mt-2">[% msg.maketext("Bereitstellungsort") %] (*)</legend>
 
-[% checked = 0 %]
-
 [% IF hide_pickup != "LUDWIG" %]
-<div>
 <div class="form-check">
-      <input class="form-check-input" type="radio" name="pickup_location" value="Lesesaal im Museum Ludwig" id="pickup_location_ludwig" [% IF checked == 0%]checked[% checked = 1 ; END; %]/>
-      <label class="form-check-label" for="pickup_location_ludwig">Lesesaal im Museum Ludwig</label>
-</div>
+      <input class="form-check-input" type="radio" name="pickup_location" value="Lesesaal im Museum Ludwig"/>
+      <label class="form-check-label" for="pickup_location">Lesesaal im Museum Ludwig</label>
 </div>
 [% END %]
 
 [% IF hide_pickup != "KUNST" %]
-<div>
 <div class="form-check">
-      <input class="form-check-input" type="radio" name="pickup_location" value="Lesesaal im Museum für angewandte Kunst" id="pickup_location_makk" [% IF checked == 0%]checked[% checked = 1 ; END; %]/>
-      <label class="form-check-label" for="pickup_location_makk">Lesesaal im Museum für angewandte Kunst</label>
+      <input class="form-check-input" type="radio" name="pickup_location" value="Lesesaal im Museum für angewandte Kunst"/>
+      <label class="form-check-label" for="pickup_location">Lesesaal im Museum für angewandte Kunst</label>
 </div>
 [% END %]
-</div>
+
 <p/>
 
 <div class="form-floating mb-3">

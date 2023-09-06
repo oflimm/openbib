@@ -1,5 +1,11 @@
 [% PROCESS common/subtemplate name="titles_record_abstract_fields" %]
 
+[%
+
+  unitname = decode_utf8(unitname);
+
+%]
+
 <div class="card mt-5 mb-5 me-5">
 <div class="card-header">[% msg.maketext("Bestellung stornieren") %]</div>
 <div class="card-body">

@@ -15,66 +15,39 @@
 [%# USE dumper; dumper.dump(pickup_locations) %]
 
 <div class="card mt-5 mb-5 me-5">
-<div class="card-header">[% msg.maketext("Auswahl") %]</div>
+<div class="card-header">[% msg.maketext("Anzeige des Abholorts") %]</div>
 <div class="card-body">
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations">
    <input type="hidden" name="validtarget"   value="[% database %]" />
-   <input type="hidden" name="holdingid"     value="[% holdingid  %]" />
    <input type="hidden" name="titleid"       value="[% titleid  %]" />
+   <input type="hidden" name="holdingid"     value="[% holdingid  %]" />
    <input type="hidden" name="unit"          value="[% unit %]" />
    <input type="hidden" name="unit_desc"     value="[% standort %]" />
+   <input type="hidden" name="storage"       value="[% storage %]" />
+   <input type="hidden" name="type"          value="by_holding" />
 
-[%
-
-  showreservationform = 0;
-  IF num_holdings_in_unit > 1 ; # Auswahl der Vormerkart, falls mehr als ein Exemplar in der Zweigstelle existiert
-     IF unit == 4 ; # Ausnahme: HWA, da LBS-Buecher hier nicht vorgemerkt werden duerfen (Medientyp-Einstellung in der Admin greift nicht!)
-         showreservationform = 0;
-     ELSIF holdingid.match('^IPAD'); # bei IPADS keine qualifizierte Vormerkung
-         showreservationform = 0;
-     ELSE ;
-         showreservationform = 1;
-     END ;
-  END;
-
-%]
-
-<legend class="mt-2">[% msg.maketext("Art der Vormerkung") %]</legend>
-
-[% IF showreservationform == 1 # Auswahl der Vormerkart anzeigen %]
-<div class="form-check">
-<input class="form-check-input" type="radio" name="type" id="type_by_title" value="by_title" checked />
-<label class="form-check-label" for="type_by_title">Das nächst frei werdende Exemplar vormerken</label>
-</div>
-[%   IF NOT holdingid.match('[A-Z]{2}[0-9]+#[0-9]') ; %]
-<div class="form-check">
-<input class="form-check-input" type="radio" name="type" id="type_by_holding" value="by_holding" checked />
-<label class="form-check-label" for="type_by_holding">Genau dieses Exemplar vormerken</label>
-</div>
-[%   END;
-   ELSE ;
-     IF NOT holdingid.match('^IPAD') ; # Bei ipads nur teilqualifizierte Vormerkungen %]
-<div class="form-check">
-<input class="form-check-input" type="radio" name="type" id="type_by_title" value="by_title" checked />
-<label class="form-check-label" for="type_by_title">Das nächst frei werdende Exemplar vormerken</label>
-</div>
-[%   ELSE %]
-<div class="form-check">
-<input class="form-check-input" type="radio" name="type" id="type_by_holding" value="by_holding" checked />
-<label class="form-check-label" for="type_by_holding">Genau dieses Exemplar vormerken</label>
-</div>
-[%   END %]
-[% END %]
-
-<legend class="mt-2">[% msg.maketext("Abholort") %]</legend>
-
-[%# USE dumper;dumper.dump(reservation)%]
-[% checked = 0 %]
-[% FOREACH pickup_location IN pickup_locations %]
+[%  checked = 0 %]
+[% IF unit == '38' && ( storage == '38-MAG' || storage == '38-AWM' || storage == '38-LBS' ) %]
+[%  FOREACH pickup_location IN pickup_locations %]
+[%   IF limitation && limitation.match('Lesesaal') && pickup_location.name.match('LS-Ausgabe') %]
 <div class="form-check">
 <input class="form-check-input" type="radio" name="pickup_location" id="pickup_[% pickup_location.name %]" value="[% pickup_location.name %]" [% IF checked == 0%]checked[% checked = 1 ; END; %]/>
 <label class="form-check-label" for="pickup_[% pickup_location.name %]">[% pickup_location.about %]</label>
 </div>
+[%   ELSIF NOT limitation && NOT pickup_location.name.match('LS-Ausgabe')  %]
+<div class="form-check">
+<input class="form-check-input" type="radio" name="pickup_location" id="pickup_[% pickup_location.name %]" value="[% pickup_location.name %]" [% IF checked == 0%]checked[% checked = 1 ; END; %]/>
+<label class="form-check-label" for="pickup_[% pickup_location.name %]">[% pickup_location.about %]</label>
+</div>
+[%   END %]
+[%  END %]
+[% ELSE %]
+[%  FOREACH pickup_location IN pickup_locations %]
+<div class="form-check">
+<input class="form-check-input" type="radio" name="pickup_location" id="pickup_[% pickup_location.name %]" value="[% pickup_location.name %]" [% IF checked == 0%]checked[% checked = 1 ; END; %]/>
+<label class="form-check-label" for="pickup_[% pickup_location.name %]">[% pickup_location.about %]</label>
+</div>
+[%  END %]
 [% END %]
 
 <button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Vormerken") %]</button>

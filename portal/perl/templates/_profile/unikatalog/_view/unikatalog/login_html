@@ -13,6 +13,8 @@
 #######################################################################
 -%]
 
+<h2 class="pt-2 pb-2">[% msg.maketext("Mein Konto") %] | [% msg.maketext("Anmelden") %]</h2>
+
 [%
 
   available_authenticators = config.get_authenticators_by_view(view);
@@ -25,17 +27,19 @@
   #USE dumper;dumper.dump(available_authenticators);dumper.dump(available_authenticator_types);
 %]
 
- 	 <div class="alert alert-info mt-3">Zur Nutzung der Bibliothek (Ausleihen, Vormerken, etc.) müssen Sie sich mit Ihrem Benutzerausweis anmelden.</div>
+ 	 <div class="alert alert-info">Zur Nutzung der Bibliothek (Ausleihen, Vormerken, etc.) müssen Sie sich mit Ihrem Benutzerausweis anmelden.</div>
 
 	 <div id="login_targets">
 
-<ul class="nav nav-tabs" role="tablist">
-<li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-login_ils">[% msg.maketext("Mit einem Benutzerausweis") %]</a></li>
-<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-login_selfreg">[% msg.maketext("Ohne Bibliotheksausweis") %]</a></li>
+<ul class="nav nav-tabs">
+<li class="nav-item"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-login_ils">[% msg.maketext("Mit einem Benutzerausweis") %]</a></li>
+<li class="nav-item"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-login_selfreg">[% msg.maketext("Ohne Benutzerausweis") %]</a></li>
 </ul>
 
 <div class="tab-content pt-3">
 <div role="tabpanel" class="tab-pane fade-in active p-3" id="ob-login_ils">
+
+<p><b>[% msg.maketext("Nach der Umstellung auf Alma ab 6.9.2023") %]:</b> [% msg.maketext("Das Passwort besteht aus dem Geburtsdatum sechsstellig (TTMMJJ), also z.B. 241201 für den 24.12.2001. Wir empfehlen die Änderung auf ein sicheres Passwort. Für die Ausleih-Automaten benötigen Sie eine gesonderte PIN. Sie besteht aus dem Geburtsdatum vierstellig (TTMM). Das Passwort und die Ausleih-PIN können Sie unter „Mein Konto“ (Bibliothekskonto bzw. Gesamtübersicht) ändern.") %]</p>
 
 <form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded">
 
@@ -55,13 +59,13 @@
 
 
 <div class="form-floating mb-3">
-<input class="form-control" type="text" name="username" id="username" value="[% username %]" />
-<label for="username">[% msg.maketext("Benutzernummer") %]</label>
+<input class="form-control" type="text" name="username" id="username_ils" value="[% username %]" />
+<label for="username_ils">[% msg.maketext("Benutzernummer") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<input class="form-control" type="password" name="password" id="password" />
-<label for="password"/>[% msg.maketext("Passwort") %]</label>
+<input class="form-control" type="password" name="password" id="password_ils" />
+<label for="password_ils" />[% msg.maketext("Passwort") %]</label>
 </div>
 
 <p/>
@@ -70,12 +74,14 @@
 
 </form>
 
-<p><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %];authenticatorid=[% available_authenticator_types.${"ils"} %]">[% msg.maketext("»Passwort vergessen?") %]</a></p>
+<!-- <p><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %];authenticatorid=[% available_authenticator_types.${"ils"} %]">[% msg.maketext("»Passwort vergessen?") %]</a></p> -->
+
+<p>[% msg.maketext("Passwort vergessen?") %] [% msg.maketext("Wir setzen es an der Anmeldung in der USB auf Ihr Geburtsdatum zurück.") %]</p>
 
 <h5>[% msg.maketext("Sie haben noch keinen Bibliotheksausweis?") %]</h5>
 <ul>
- <li>[% IF alma_disable_uccard %]Wegen der Umstellung auf das neue Bibliothekssystem Alma ist bis voraussichtlich 6.9.2023 keine Freischaltung Ihrer UCCard möglich. Danach wird sie automatisch freigeschaltet und eine manuelle Freischaltung durch Sie entfällt.[% ELSE %]<a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('uccard_activations_loc') %].html?l=[% lang %]">[% msg.maketext("Möchten Sie als Student:in Ihre UCCard als Bibliotheksausweis freischalten?") %]</a>[% END %]</li>
- <li>[% IF alma_disable_librarycard %]Wegen der Umstellung auf das neue Bibliothekssystem Alma ist bis voraussichtlich 6.9.2023 keine Online-Anmeldung möglich.[% ELSE %]<a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('librarycard_registrations_loc') %].html?l=[% lang %]">[% msg.maketext("Sie sind keine Student:in und möchten online einen Bibliotheksausweis beantragen?") %]</a>[% END %]</li>
+ <li>[% msg.maketext("Als Student:in ist Ihre UCCard der Bibliotheksausweis.") %]</li>
+ <li><a class="exturl" href="[% cms_links.anmeldung %]" target="_blank">[% msg.maketext("Sie sind keine Student:in und möchten online einen Bibliotheksausweis beantragen?") %]</a></li>
 </ul>
 
 </div><!-- End: tabpanel-->
@@ -98,13 +104,13 @@
 <p/>
 
 <div class="form-floating mb-3">
-<input class="form-control" type="text" name="username" id="email_username" value="[% username %]" />
-<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
+<input class="form-control" type="text" name="username" id="email_username_selfreg" value="[% username %]" />
+<label for="email_username_selfreg">[% msg.maketext("E-Mail-Adresse") %]</label>
 </div>
 
 <div class="form-floating mb-3">
-<input class="form-control" type="password" name="password" id="email_username" />
-<label for="email_password"/>[% msg.maketext("Passwort") %]</label>
+<input class="form-control" type="password" name="password" id="email_password_selfreg" />
+<label for="email_password_selfreg"/>[% msg.maketext("Passwort") %]</label>
 </div>
 
 <div>

@@ -23,18 +23,15 @@
    IF related_records.get_size > 0 %]
 <ul class="list-group">
 [% FOREACH related_record IN related_records.sort({order = 'asc', type = 'title'}).get_records %]
-[% item = related_record.get_fields %]
+[% item = related_record.to_abstract_fields %]
 [% item_location = related_record.get_locations.first %]
 [% related_url = "${path_prefix}/${config.get('databases_loc')}/id/${related_record.database}/${config.get('titles_loc')}/id/${related_record.get_encoded_id}.html?l=${lang}" %]
 [%# Titel konstruieren %]
-[%- title = item.${'T0331'}.first.content -%]
-[%- IF item.${'T0310'}.first.content -%]
-[%- title = item.${'T0310'}.first.content -%]
-[%- END -%]
+[%- title = item.title -%]
 [%# Ejahr konstruieren %]
-[%- yearofpub = item.${'T0425'}.first.content -%]
+[%- yearofpub = item.year -%]
 [%# Edition konstruieren %]
-[%- edition   = item.${'T0403'}.first.content -%]
+[%- edition   = item.edition -%]
 <li class="list-group-item"><a href="[% related_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />aus: [% locinfo.get('identifier').${item_location}.description %]</li>
 [% END %]
 </ul>

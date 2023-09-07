@@ -627,6 +627,9 @@ sub enrich_related_records {
 
     my $profilename = exists $arg_ref->{profilename}
         ? $arg_ref->{profilename}           : '';
+
+    my $orgunitname = exists $arg_ref->{orgunitname}
+        ? $arg_ref->{orgunitname}        : '';
     
     my $viewname = exists $arg_ref->{viewname}
         ? $arg_ref->{viewname}              : '';
@@ -704,8 +707,7 @@ sub enrich_related_records {
         }
     }
 
-    my @filter_databases = ($profilename)?$config->get_profiledbs($profilename):
-        ($viewname)?$config->get_viewdbs($viewname):();
+    my @filter_databases = ($orgunitname && $profilename)?$config->get_orgunitdbs($profilename,$orgunitname):($profilename)?$config->get_profiledbs($profilename):($viewname)?$config->get_viewdbs($viewname):();
         
     if ($config->{benchmark}) {
         $btime=new Benchmark;
@@ -1026,6 +1028,9 @@ sub enrich_similar_records {
 
     my $profilename = exists $arg_ref->{profilename}
         ? $arg_ref->{profilename}        : '';
+
+    my $orgunitname = exists $arg_ref->{orgunitname}
+        ? $arg_ref->{orgunitname}        : '';
     
     my $viewname = exists $arg_ref->{viewname}
         ? $arg_ref->{viewname}        : '';
@@ -1087,10 +1092,8 @@ sub enrich_similar_records {
         }
     }
 
-    my @filter_databases = ($profilename)?$config->get_profiledbs($profilename):
-        ($viewname)?$config->get_viewdbs($viewname):();
+    my @filter_databases = ($orgunitname && $profilename)?$config->get_orgunitdbs($profilename,$orgunitname):($profilename)?$config->get_profiledbs($profilename):($viewname)?$config->get_viewdbs($viewname):();
 
-    
     if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
@@ -1219,6 +1222,9 @@ sub enrich_same_records {
 
     my $profilename = exists $arg_ref->{profilename}
         ? $arg_ref->{profilename}        : '';
+
+    my $orgunitname = exists $arg_ref->{orgunitname}
+        ? $arg_ref->{orgunitname}        : '';
     
     my $viewname = exists $arg_ref->{viewname}
         ? $arg_ref->{viewname}        : '';
@@ -1283,9 +1289,7 @@ sub enrich_same_records {
         }
     }
 
-    my @filter_databases = ($profilename)?$config->get_profiledbs($profilename):
-        ($viewname)?$config->get_viewdbs($viewname):();
-
+    my @filter_databases = ($orgunitname && $profilename)?$config->get_orgunitdbs($profilename,$orgunitname):($profilename)?$config->get_profiledbs($profilename):($viewname)?$config->get_viewdbs($viewname):();
     
     if ($config->{benchmark}) {
         $btime=new Benchmark;

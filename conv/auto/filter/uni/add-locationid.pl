@@ -337,8 +337,8 @@ while (<>){
 
     my $element_ref = [];
 
-    if (defined $title_ref->{fields}{'0944'}){
-	foreach my $location_ref (@{$title_ref->{fields}{'0944'}}){
+    if (defined $title_ref->{fields}{'1944'}){
+	foreach my $location_ref (@{$title_ref->{fields}{'1944'}}){
 	    next unless ($location_ref->{subfield} eq "k");
 	    
 	    if ($location_ref->{content} =~m/^38$/){

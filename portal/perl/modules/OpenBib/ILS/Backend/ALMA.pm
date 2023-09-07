@@ -1469,7 +1469,7 @@ sub get_mediastatus {
 		    };
 		}
 		# Bestellbar
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && $policy eq "A" && $this_circ_conf->{'order'} && ( !defined $circ_ref->{'item_data'}{'requested'} || !$circ_ref->{'item_data'}{'requested'}) ){ 
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && ($policy eq "A"  || $policy eq "LBS") && $this_circ_conf->{'order'} && ( !defined $circ_ref->{'item_data'}{'requested'} || !$circ_ref->{'item_data'}{'requested'}) ){ 
 		    push @$available_ref, {
 			service => 'order',
 			content => "bestellbar",

@@ -124,6 +124,6 @@
   '38-307-FHM':
     'order': 0
     'loan': 1
-    'reservation': 0
+    'reservation': 1
 
 

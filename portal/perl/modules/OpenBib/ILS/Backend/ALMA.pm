@@ -2413,6 +2413,19 @@ sub send_alma_api_call {
 	    $logger->info($response->code . ' - ' . $response->message);
 	    return $api_result_ref;
 	}	    
+
+	# Empty response
+	if ($response->content eq '{}'){
+	    $logger->fatal("Empty response");
+	    
+	    $api_result_ref->{'response'} = {
+		"code" => $api_result_ref->{'http_status_code'},
+		    "error" => "error",
+		    "error_description" => $msg->maketext("Ihre Anfrage konnte nicht bearbeitet werden, da das Cloud-Bibliothekssystem Alma bei der Abfrage keine Daten geliefert hat. Als Abhilfe können wir Ihnen leider nur empfehlen über den Reload-Button in Ihrem Web-Browser diese Seite mehrmals aufzurufen bis es ggf. funktioniert."),
+	    };
+	    
+	    return $api_result_ref;
+	}
 	
 	eval {
 	    $api_result_ref->{'data'} = decode_json $response->content;

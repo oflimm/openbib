@@ -253,12 +253,13 @@ sub authenticate {
     #
     #  0: unspecified
     # -1: no username and/or password
-    # -2: max_login_failure reached
+    # -2: max_login_failure reached selfref
     # -3: wrong password
     # -4: user does not exist
     # -5: view denied
     # -6: wrong authenticator
     # -7: username is no email
+    # -8: max_login_failure reached other
     
     if ($username eq "" || $password eq "") {
         $redirecturl="$path_prefix/$config->{login_loc}/failure?code=-1";
@@ -491,7 +492,10 @@ sub get_error_message {
 
 	-6 => $msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen. Wrong authenticator"),
 
-	-7 => $msg->maketext("Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"), 
+	-7 => $msg->maketext("Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"),
+
+        -8 => $msg->maketext("Die Anmeldung mit Ihrer angegebenen Benutzerkennung und Passwort ist zu oft fehlgeschlagen. Die Kennung ist gesperrt. Wenn Sie Ihr Passwort vergessen haben, dann lassen Sie es bitte in der USB auf Ihr Geburtsdatum zuruecksetzen."),
+	
 	);
 
     my $unspecified = $msg->maketext("Unspezifischer Fehler-Code");

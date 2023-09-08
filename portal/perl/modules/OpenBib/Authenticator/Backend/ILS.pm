@@ -101,7 +101,7 @@ sub authenticate {
         $logger->debug("Got Userid $userid with login failure $login_failure and status $status");
 
 	if ($userid && $login_failure > $max_login_failure){
-	    $userid = -2; # Status: max_login_failure reached
+	    $userid = -8; # Status: max_login_failure reached
 	    return $userid;
 	}
 	elsif ($userid) {

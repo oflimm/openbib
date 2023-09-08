@@ -477,15 +477,15 @@ sub get_error_message {
 
     my %messages = (
 
-        -1 => $msg->maketext("Sie haben entweder kein Passwort oder keinen Benutzernamen eingegeben"),
+        -1 => $msg->maketext("Sie haben entweder kein Passwort oder keinen Benutzerkennung eingegeben"),
 
-        -2 => $msg->maketext("Die Anmeldung mit Ihrem angegebenen Benutzernamen und Passwort ist zu oft fehlgeschlagen. Das Account ist gesperrt. Bitte fordern Sie ein neues Passwort über 'Passwort vergessen' an."),
+        -2 => $msg->maketext("Die Anmeldung mit Ihrer angegebenen Benutzerkennung und Passwort ist zu oft fehlgeschlagen. Die Kennung ist gesperrt. Bitte fordern Sie ein neues Passwort über 'Passwort vergessen' ."),
 
 	# wrong password
-        -3 => $msg->maketext("Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"),
+        -3 => $msg->maketext("Sie konnten mit Ihrer angegebenen Benutzerkennung und Passwort nicht erfolgreich authentifiziert werden"),
 
 	# user does not exist
-        -4 => $msg->maketext("Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"),
+        -4 => $msg->maketext("Sie konnten mit Ihrer angegebenen Benutzerkennung und Passwort nicht erfolgreich authentifiziert werden"),
 
 	-5 => $msg->maketext("Ihre Kennung ist nicht zur Nutzung dieses Portals zugelassen."),
 

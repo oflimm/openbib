@@ -19,7 +19,7 @@
 <input type="hidden" name="_method"    value="PUT" />
 
 <!-- Beispiel: Ablage von weiteren Informationen in mixed_bag -->
-[%# USE dumper;dumper.dump(userinfo.mixed_bag)%]
+[%# USE dumper;dumper.dump(userinfo)%]
 
 <!--
 <div class="form-floating mb-3 mt-4">
@@ -44,19 +44,15 @@
 <label for="username">[% msg.maketext("Benutzername") %]</label>
 </div>
 
-[% IF authenticator.type == 'self' %]
-[%   IF userinfo.username != 'admin' %]
+[% IF authenticator.type == 'self' && user.is_admin && userinfo.username == 'admin' %]
 <div class="form-floating mb-3">
 <input class="form-control" id="password" type="text" name="password" value="" size="30" maxlength="200" />
 <label for="password">[% msg.maketext("Neues Passwort") %]</label>
 </div>
-[%   ELSE %]
-<span>[% msg.maketext('Das Passwort des Administrators kann nur in seinen Accounteinstellungen geändert werden')%]</span>
-[%   END %]
 [% END %]
 
 <div class="form-floating mb-3">
-<span class="form-control" id="authenticator">[% authenticator.description %]</span>
+<span class="form-control" id="authenticator">[% IF userinfo.authenticatorid %][% config.get_authenticator_by_id(userinfo.authenticatorid).description %][% ELSE %][% msg.maketext("nicht zugeordnet") %][% END %]</span>
 <label for="authenticator">[% msg.maketext("Authentifizierung") %]</label>
 </div>
 
@@ -91,11 +87,20 @@
 <label for="email">[% msg.maketext("E-Mail") %]</label>
 </div>
 
+[% IF 0 == 1 %]
 <div class="form-floating mb-3">
 <span class="form-control" id="status">[% userinfo.status %]</span>
 <label for="status">[% msg.maketext("Status") %]</label>
 </div>
+[% END %]
 
+<div class="form-floating mb-3">
+<input type="hidden" name="login_failure" value="[% userinfo.login_failure %]" />
+<span class="form-control" id="login_failure">[% userinfo.login_failure %]</span>
+<label for="status">[% msg.maketext("Fehlversuche Anmeldung") %]</label>
+</div>
+
+[% IF 0 == 1 %]
 <div class="form-floating mb-3">
 <span class="form-control" id="sperre">
 [%- IF userinfo.sperre -%]
@@ -106,8 +111,13 @@
 </span>
 <label for="sperre">[% msg.maketext("Sperre") %]</label>
 </div>
+[% END %]
 
 <button class="btn btn-primary mb-2 mt-4" type="submit">[% msg.maketext("&Auml;ndern") %]</button>
+
+[% IF user.has_right({ scope => 'admin_users', right => 'update' });%]
+<a class="btn btn-primary mb-2 mt-4" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]?_method=POST;login_failure=0">[% msg.maketext("Anmeldefehlversuche zurücksetzen") %]</a>
+[% END %]
 
 [% IF authenticator.type == 'self' %]
 [%   IF userinfo.username != 'admin' %]

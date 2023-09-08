@@ -27,9 +27,6 @@
          <a  class="btn btn-primary text-nowrap" aria-described-by="[% msg.maketext("Zurück") %]" href="javascript:history.back()" title="[% msg.maketext("Zurück") %]"><i class="fas fa-arrow-circle-left"></i> <span>[% msg.maketext("Zurück") %]</span></a>
    </div>
 
-   <div class="pe-1 pb-3">
-      <a class="btn btn-primary" href="[% url %]"><i class="fas fa-redo pe-2"></i> [% msg.maketext("Neu laden") %]</a>
-   </div>
  </div>   
 </div>
 [% ELSE %]

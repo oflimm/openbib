@@ -300,6 +300,13 @@ sub update_record {
 	$input_data_ref->{mixed_bag} = $contentstring; 
     }
 
+    # Leere Felder entfernen
+
+    foreach my $key (keys %$input_data_ref){
+	next if ($key eq "login_failure" || $key eq "viewid"); # kann valide 0 sein
+	delete $input_data_ref->{$key} unless (defined $input_data_ref->{$key} && $input_data_ref->{$key});	
+    }
+    
     my $user = new OpenBib::User({ ID => $userid });
     $user->update_userinfo($input_data_ref) if (keys %$input_data_ref);
 
@@ -502,6 +509,11 @@ sub get_input_definition {
         },
 	password_again => {
             default  => undef,
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	login_failure => {
+            default  => 0,
             encoding => 'none',
             type     => 'scalar',
         },

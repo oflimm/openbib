@@ -1,11 +1,12 @@
 *** Anschaffungsvorschlag vom [% current_date %] ***
 
       Titel: [% title %]
-      Autor: [% author %]
-      Körp.: [% corporation %]
+     Person: [% person %]
  Ort/Verlag: [% publisher %]
      E-Jahr: [% year %]
+       ISBN: [% isbn %]     
  Vormerkung: [% reservation %]
+  Bemerkung: [% remark %]
 
        Name: [% userinfo.fullname %]
         BNR: [% userinfo.username %]      

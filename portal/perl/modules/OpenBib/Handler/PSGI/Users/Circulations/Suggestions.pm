@@ -163,7 +163,7 @@ sub create_record {
 
     # CGI Args
     my $title          = $input_data_ref->{'title'};
-    my $author         = $input_data_ref->{'author'};
+    my $person         = $input_data_ref->{'person'};
     my $corporation    = $input_data_ref->{'corporation'};
     my $publisher      = $input_data_ref->{'publisher'};
     my $year           = $input_data_ref->{'year'};
@@ -172,6 +172,7 @@ sub create_record {
     my $classification = $input_data_ref->{'classification'};
     my $reservation    = $input_data_ref->{'reservation'};
     my $receipt        = $input_data_ref->{'receipt'};
+    my $remark         = $input_data_ref->{'remark'};
     my $confirm        = $input_data_ref->{'confirm'};
    
     unless ($config->get('active_suggestion')){
@@ -218,6 +219,10 @@ sub create_record {
 	return $self->print_warning("Für einen Anschaffungsvorschlag ist eine E-Mail-Adresse in Ihrem Bibliothekskonto erforderlich.");
     }
 
+    if (!$title || !$person || !$year || !$publisher){
+	return $self->print_warning("Bitte geben Sie alle Pflichtfelder ein.");
+    }
+    
     my $current_date = strftime("%d.%m.%Y, %H:%M Uhr", localtime);
     $current_date    =~ s!^\s!0!;
 
@@ -227,13 +232,14 @@ sub create_record {
 	userinfo     => $userinfo_ref,
 	current_date => $current_date,
 	title        => $title,
-	author       => $author,
+	person       => $person,
 	corporation  => $corporation,
 	publisher    => $publisher,
 	year         => $year,
 	isbn         => $isbn,
 	reservation  => $reservation,
 	receipt      => $receipt,
+	remark       => $remark,
 	
         config       => $config,
         user         => $user,
@@ -274,6 +280,7 @@ sub create_record {
 
     Email::Stuffer->to($mail_to)
 	->from($config->{mail}{realm}{suggestion}{sender})
+	->reply_to($email)
 	->subject("Neuanschaffungsvorschlag")
 	->text_body(read_binary($anschfile))
 	->send;
@@ -303,7 +310,7 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'scalar',
         },
-        author => {
+        person => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',
@@ -339,6 +346,11 @@ sub get_input_definition {
             type     => 'scalar',
         },
         reservation => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        remark => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',

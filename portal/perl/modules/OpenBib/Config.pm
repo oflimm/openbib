@@ -2585,6 +2585,35 @@ sub load_yaml {
     return $yaml_ref 
 }
 
+sub load_alma_circulation_config {
+    my ($self) = @_;
+
+    $YAML::Syck::ImplicitTyping  = 1;
+    $YAML::Syck::ImplicitUnicode = 1;
+
+    my $memc_key = "config:alma_circulation";
+
+    my $circ_config_ref = {};
+
+    if ($self->{memc}){
+        $circ_config_ref = $self->{memc}->get($memc_key);
+
+	if ($circ_config_ref){
+	    return $circ_config_ref;
+	}
+    }
+
+    eval {				      
+       $circ_config_ref = YAML::Syck::LoadFile("/opt/openbib/conf/alma-circulation.yml");
+
+       if ($self->{memc}){
+ 	  $self->{memc}->set($memc_key,$circ_config_ref,$self->{memcached_expiration}{$memc_key});
+       }
+    };
+
+    return $circ_config_ref;
+}
+
 sub load_bk {
     my ($self) = @_;
 

@@ -535,7 +535,12 @@ sub get_userdata {
     $response_ref->{phone2}            = $entry->get_value('USBztel');
     $response_ref->{email}             = $entry->get_value('USBEmailAdr');
     $response_ref->{email2}            = $entry->get_value('USB2Emailadr');
-    $response_ref->{block_reason}      = $entry->get_value('ALMASperrgrund');
+
+    my @block_reasons                  = $entry->get_value('ALMASperrgrund');
+
+    @block_reasons = map { m/^([^:]+)::/ } @block_reasons;
+    
+    $response_ref->{block_reason}      = join (' ; ',@block_reasons);
        
     if ($logger->is_debug){
 	$logger->debug(YAML::Dump($entry));

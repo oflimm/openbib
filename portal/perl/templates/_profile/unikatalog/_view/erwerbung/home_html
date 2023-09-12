@@ -131,6 +131,7 @@
   }
 
 .image-3 {
+  background-position: 40% 10%;
   background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magnus_Froschperspektive_50_500px.jpg);
 }
 
@@ -140,9 +141,9 @@
 </style>
 
 <div id="image-area">
-  <div class="animated-image image-1"></div>
-  <div class="animated-image image-2"></div>
-  <div class="animated-image image-3"></div>
+  <div class="animated-image image-1" alt="[% msg.maketext("Hintergrundbild Haupteingang Universität") %]"></div>
+  <div class="animated-image image-2" alt="[% msg.maketext("Hintergrundbild Ansicht der Universitäts- und Stadtbibliothek") %]"></div>
+  <div class="animated-image image-3" alt="[% msg.maketext("Hintergrundbild Ansicht Magazintrakt der USB") %]"></div>
 
 <div class="ob-jumbotron ob-jumbotron-fluid mb-0 landing-page-img ps-2">
 
@@ -157,12 +158,13 @@
 <input type="hidden" name="srt"        value="[% session_sort %]" />
 <input type="hidden" name="st"         value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
+<input type="hidden" name="tab"        value="books" />
 
 <div class="container justify-content-center border shadow rounded ps-2 pe-2 pt-3 pb-2 mb-4">
     <div class="row">    
         <div class="col">
             <div class="input-group">
-                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Geben Sie hier Ihre Suchbegriffe ein") %]" />
+                <input required="required" id="to_focus" class="form-control" type="search" name="fs" value="" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Bücher, E-Medien, Aufsätze &amp; mehr") %]"  hx-get="[% path_prefix%]/connector/livesearch" hx-trigger="keyup changed delay:800ms, q" hx-target="#livesearch"  />
                 <span class="input-group-btn ps-1">
                     <button class="btn btn-primary" type="submit" aria-label="[% msg.maketext("Anfrage abschicken") %]"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
                     <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>
@@ -170,18 +172,22 @@
             </div>
        </div>
     </div>
+    <div id="livesearch"  style="position: absolute; top: 3.5em; z-index:1000;">
+    </div>
     <div class="row pt-1 pb-0">     
       <div class="col collapse d-md-block p-0" id="search_options">
-       
          <ul class="list-group flex-row flex-wrap justify-content-center">
             <li class="list-group-item pe-1" style="border: none" >
        	      [% PROCESS common/subtemplate name="searchforms_record_profile" %]
             </li>
             <li class="list-group-item pe-1 pt-3" style="border: none" >
-             <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-formattitle="[% msg.maketext("Erweiterte Suche") %]" data-formaturl="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
+	     <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-indicator=".spinner-border" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
 	    </li>      	  
             <li class="list-group-item pe-1 pt-3" style="border: none" >
-	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-formattitle="[% msg.maketext("Suchhistorie") %]" data-formaturl="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	   </li>
+            <li class="list-group-item pe-1 pt-3" style="border: none" >
+	     <a href="[% path_prefix %]/[% config.get('info_loc') %]/tipps.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/tipps.include?l=[% lang %]" title="[% msg.maketext("Hilfe") %]"><i class="fas fa-question-circle"></i></a>
 	   </li>
          </ul>
     </div><!-- col -->
@@ -200,36 +206,38 @@
 </div>
 </div>
 
-<div class="container pb-5">
+<div id="ob-start_tiles" class="container pb-5">
+
+[% PROCESS common/subtemplate name="home_alert" %]
+
   <div class="row">
-    <div class="col-md-4 ps-3 pe-1 pb-2">
+    <div class="col-md-3 ps-3 pe-1 pb-2">
+     <a class="text-white" href="[% path_prefix %]/[% config.get('browse_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]">
+      <div class="card mt-2 h-100 ob-shortlink">
+	<div class="card-body pt-3 text-center fs-4"><i class="far fa-compass pe-2"></i> [% msg.maketext("Themengebiete") %]</div>
+      </div>
+     </a>
+    </div>  
+    <div class="col-md-3 ps-3 pe-1 pb-2">
      <a class="text-white" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/classifications.html?l=[% lang %]">
       <div class="card mt-2 h-100 ob-shortlink">
-	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-book-open pe-2"></i> [% msg.maketext("Zeitschriften") %]</div>
+	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-book-open pe-2"></i> [% msg.maketext("E-Zeitschriften") %]</div>
       </div>
      </a>
     </div>
-    <div class="col-md-4 ps-3 pe-1 pb-2">
+    <div class="col-md-3 ps-3 pe-1 pb-2">
      <a class="text-white" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/classifications.html?l=[% lang %]">
       <div class="card mt-2 h-100 ob-shortlink">
 	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-database pe-2"></i> [% msg.maketext("Datenbanken") %]</div>
       </div>
      </a>
     </div>
-    <div class="col-md-4 ps-3 pe-1 pb-2">
-[% IF view.match('inst\d\d\d') %]          
-     <a class="text-white" href="[% path_prefix %]/[% config.get('locations_loc') %]/id/DE-38-[% view.replace('inst','') %].html?l=[% lang %]">
-      <div class="card mt-2 h-100 ob-shortlink">
-	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-map-marker-alt pe-2"></i> [% msg.maketext("Bibliothek") %]</div>
-    </div>
-   </a>
-[% ELSE %]
+    <div class="col-md-3 ps-3 pe-1 pb-2">
      <a class="text-white" href="[% path_prefix %]/[% config.get('locations_loc') %].html?l=[% lang %]">
       <div class="card mt-2 h-100 ob-shortlink">
 	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-map-marker-alt pe-2"></i> [% msg.maketext("Bibliotheken") %]</div>
-     </div>
-    </a>     
-[% END %]
+    </div>
+   </a>
   </div>
 </div>
 

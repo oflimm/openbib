@@ -1,0 +1,132 @@
+[%#-
+#######################################################################
+#
+# Templatename: login
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Eingabemaske fuer die Authentifizierung am Portal
+# entsprechend verschiedener Authentifizierungs-Ziele
+#
+#######################################################################
+-%]
+
+<h2 class="pt-2 pb-2">[% msg.maketext("Mein Konto") %] | [% msg.maketext("Anmelden") %]</h2>
+
+[%
+
+  available_authenticators = config.get_authenticators_by_view(view);
+
+  available_authenticator_types = {};
+  FOREACH authenticator IN available_authenticators ;
+     available_authenticator_types.${authenticator.type} = authenticator.id;
+  END;
+  
+  #USE dumper;dumper.dump(available_authenticators);dumper.dump(available_authenticator_types);
+%]
+
+ 	 <div class="alert alert-info">
+           An diesem Portal können sich nur registrierte Mitarbeiter der USB Erwerbungsabteilung anmelden.
+         </div>
+
+	 <div id="login_targets">
+
+<ul class="nav nav-tabs">
+<li class="nav-item"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-login_ils">[% msg.maketext("Mit einem Benutzerausweis") %]</a></li>
+<li class="nav-item"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-login_selfreg">[% msg.maketext("Ohne Benutzerausweis") %]</a></li>
+</ul>
+
+<div class="tab-content pt-3">
+<div role="tabpanel" class="tab-pane fade-in active p-3" id="ob-login_ils">
+
+<p><b>[% msg.maketext("Nach der Umstellung auf Alma ab 6.9.2023") %]:</b> [% msg.maketext("Das Passwort besteht aus dem Geburtsdatum sechsstellig (TTMMJJ), also z.B. 241201 für den 24.12.2001. Wir empfehlen die Änderung auf ein sicheres Passwort. Für die Ausleih-Automaten benötigen Sie eine gesonderte PIN. Sie besteht aus dem Geburtsdatum vierstellig (TTMM). Das Passwort und die Ausleih-PIN können Sie unter „Mein Konto“ (Bibliothekskonto bzw. Gesamtübersicht) ändern.") %]</p>
+
+<form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded">
+
+[% IF redirect_to %]
+<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+[% ELSE %]
+<input type="hidden" name="redirect_to" value="[% path_prefix %]/[% config.get("home_loc") %]">
+[% END %]
+
+<p/>
+
+[%- FOREACH authenticator IN available_authenticators -%]
+[%-   NEXT IF authenticator.type != 'ils' -%]
+[%-   NEXT IF NOT authenticator.description.match('USB') -%]
+<input type="hidden" name="authenticatorid" value="[% authenticator.id %]"/>
+[%- END -%]
+
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="username" id="username_ils" value="[% username %]" />
+<label for="username_ils">[% msg.maketext("Benutzernummer") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="password" name="password" id="password_ils" />
+<label for="password_ils" />[% msg.maketext("Passwort") %]</label>
+</div>
+
+<p/>
+
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Anmelden") %]</button>
+
+</form>
+
+<!-- <p><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %];authenticatorid=[% available_authenticator_types.${"ils"} %]">[% msg.maketext("»Passwort vergessen?") %]</a></p> -->
+
+<p>[% msg.maketext("Passwort vergessen?") %] [% msg.maketext("Wir setzen es an der Anmeldung in der USB auf Ihr Geburtsdatum zurück.") %]</p>
+
+<h5>[% msg.maketext("Sie haben noch keinen Bibliotheksausweis?") %]</h5>
+<ul>
+ <li>[% msg.maketext("Als Student:in ist Ihre UCCard der Bibliotheksausweis.") %]</li>
+ <li><a class="exturl" href="[% cms_links.anmeldung %]" target="_blank">[% msg.maketext("Sie sind keine Student:in und möchten online einen Bibliotheksausweis beantragen?") %]</a></li>
+</ul>
+
+</div><!-- End: tabpanel-->
+
+<div role="tabpanel" class="tab-pane fade-in p-3" id="ob-login_selfreg">
+<form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
+
+[% IF redirect_to %]
+<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+[% ELSE %]
+<input type="hidden" name="redirect_to" value="[% path_prefix %]/[% config.get("home_loc") %]">
+[% END %]
+
+[%- FOREACH authenticator IN authenticators -%]
+[%-   IF authenticator.type == 'self' -%]
+<input type="hidden" name="authenticatorid" value="[% authenticator.id %]">
+[%-   END -%]
+[%- END -%]
+
+<p/>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="username" id="email_username_selfreg" value="[% username %]" />
+<label for="email_username_selfreg">[% msg.maketext("E-Mail-Adresse") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="password" name="password" id="email_password_selfreg" />
+<label for="email_password_selfreg"/>[% msg.maketext("Passwort") %]</label>
+</div>
+
+<div>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %];authenticatorid=[% available_authenticator_types.${"self"} %]">[% msg.maketext("Passwort vergessen oder Konto gesperrt?") %]</a>
+</div>
+
+<p/>
+
+<p/>
+
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Anmelden") %]</button>
+
+</form>
+
+</div><!-- End: tabpanel-->
+</div><!-- End: tabcontent-->
+</div>

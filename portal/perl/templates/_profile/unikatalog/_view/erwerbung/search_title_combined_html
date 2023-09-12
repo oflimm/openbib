@@ -11,82 +11,8 @@
 #
 #######################################################################
 -%]
+
 [%- PROCESS common/subtemplate name="local_config" -%] 
-
-[%
-# IF idsuffix == '_books' ;
-#   separate_facets = 1 ;
-# END;
- separate_facets = 0 ;
-
- session_sort = "year_desc";
- IF qopts.get_option('srt') && NOT qopts.get_option('srt').match('_') && qopts.get_option('srto') ;
-    session_sort = "${qopts.get_option('srt')}_${qopts.get_option('srto')}";
- END;
- 
-%]
-<p/>
-
-<div class="sticky-top">
-
-  <form class="ob-mainsearchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
-    
-    <input type="hidden" name="num"        value="20" />
-    <input type="hidden" name="page"       value="1" />
-    <input type="hidden" name="l"          value="[% lang %]" />
-    
-    <input type="hidden" name="srt"        value="[% session_sort %]" />
-    <input type="hidden" name="st"         value="1" />
-    <input type="hidden" name="lt"         value="[% qopts.lt %]" />
-    <input type="hidden" name="tab"        value="[% current_tab %]" />
-<!--
-[% IF idsuffix == '_books' %]    
-    <input type="hidden" name="facets"     value="none" />
-[% END %]
--->
-    <div class="container justify-content-center border shadow rounded ps-4 pe-4 pt-3 pb-2 mb-3">
-      <div class="row">    
-        <div class="col">
-          <div class="input-group">
-            <input required="required" class="form-control" type="text" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Geben Sie Ihre Suchbegriffe ein") %]" />
-            <span class="input-group-btn ps-1">
-              <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
-              <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options[% idsuffix %]" aria-expanded="false"></span>
-            </span>
-          </div>
-	</div>
-      </div>
-      <div class="row pt-1 pb-0">     
-	<div class="col collapse d-md-block p-0" id="search_options[% idsuffix %]">
-	  
-          <ul class="list-group flex-row flex-wrap justify-content-center">
-	      <li class="list-group-item pe-1" style="border: none" >
-       	      [% PROCESS common/subtemplate name="searchforms_record_profile" %]
-              </li>
-            <li class="list-group-item pe-1 pt-3" style="border: none" >
-             <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
-	    </li>      	  
-            <li class="list-group-item pe-1 pt-3" style="border: none" >
-	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
-	   </li>
-            <li class="list-group-item pe-1 pt-3" style="border: none" >
-	     <a href="[% path_prefix %]/[% config.get('info_loc') %]/tipps.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/tipps.include?l=[% lang %]">[% msg.maketext("Tipps") %]</a>
-	   </li>
-          </ul>
-	</div><!-- col -->
-      </div><!-- row -->
-    </div>
-
-[%# sysprofile%]
-[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(sysprofile)) ; %]
-[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(dbchoice)) ; %]
-<!-- [% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.allcount.chunk(-3).join('.')}","${alldbs}") %] -->
-
-    
-  </form>
-<!-- </nav> -->
-</div><!-- End: sticky-top -->
-
 
 <style>
 [data-bs-toggle="collapse"] {
@@ -97,159 +23,109 @@
 
 </style>
 
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar[% idsuffix %]" aria-labelledby="offcanvasSidebarLabel">
-
-  <div class="offcanvas-header">
-    <h3 class="offcanvas-title" id="offcanvasSidebarLabel[% idsuffix %]">[% msg.maketext("Suchergebnis filtern") %]</h3>
-    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <div>
-[% IF hits > 0 %]
-
-[% PROCESS common/subtemplate name="search_facet" facet_prefix="sidebar" offcanvas=1 %]
-
-[% ELSE %]
-[%   IF viewdbs.size == 1 %]  
-<div class="ob-facets">
-  [% PROCESS common/subtemplate name="search_radius" %]
-</div>
-[%   END %]
-[% END %]
-    </div>
-    
-    <div class="offcanvas-footer">
-      <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar[% idsuffix %]">[% msg.maketext("Schließen") %]</button>
-    </div>
-  </div>
-</div>
-
-
-[% IF hits > 0 %]
-<div id="ob-searchresult[% idsuffix %]" class="row flex-md-row">
+<div class="ps-2 mt-2" id="ob-searchresult_tabs"><!-- Begin ob-searchresult_tabs -->
   
-  <div id="ob-search_refine[% idsuffix %]" class="col-xs-6 col-md-3 d-none d-md-block ">
+  <!-- AKTUELL [% current_profile %] - BOOKS [% searchprofileid_of_books %] - ARTICLES [% searchprofileid_of_articles %]  -->
 
-[% IF hits > 0 %]
-[% IF separate_facets %]
-<script>
-$(document).ready(function(){
-   $.get("[% path_prefix %]/[% config.get('search_loc') %]/facets.include?[% cgiapp.to_cgi_querystring({ exclude = ['page','facets','num','page']}) %];facets=location,availability,person,year,subject;facet_prefix=main",
-     function (txt){
-        $("#ob-separate_facets_main").html(txt);
-   });
-});
-</script>
-<div id="ob-separate_facets_main">
-<h4 class="d-none d-md-block">[% msg.maketext("Suchergebnis filtern") %]</h4>
-
-<h5>[% msg.maketext("Die Filter-Kriterien werden bestimmt") %]</h5>
-
-<div class="text-center">
-<i class="fas fa-circle-notch fa-spin fa-4x"></i>
-</div>
-</div>
-[% ELSE %]
-[% PROCESS common/subtemplate name="search_facet" facet_prefix="main" offcanvas=0%]
-[% END %]
-[% ELSE %]
-[%   IF viewdbs.size == 1 %]  
-<div class="ob-facets">
-[% PROCESS common/subtemplate name="search_radius" %]
-</div>
-[%   END %]
-[% END %]
-
-  </div><!-- End: sidebar -->
-  
-  
-  <div class="col-md-9">
-
-[% IF spelling_suggestion.resultlist %]
-[%    suggestion = searchquery.get_spelling_suggestion %]
-[%     IF suggestion%]
-[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% escape_html(query.param('num')) %];srt=year_desc;st=[% escape_html(query.param('st')) %]fs=[% suggestion %]">[% suggestion %]</a></b>
-[%     END %]
-[% END %]
-
-[% IF hits > 0 %]
-<!-- Beginn Result Item -->
-[%-
-    request_base    = "num=${queryoptions.get_option('num')};profile=${current_profile};srt=${session_sort};page=1;" ;
-    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
-    end_range       = nav.current_page*queryoptions.get_option('num');
-    IF end_range >= hits ;
-       end_range       = hits;
-    END;
-
-    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
--%]
-
-<div class="ob-resultlist">
-  <div class="ob-resultheader pb-4">
-    <div class="left">
-      <div class="navbar navbar-default">
-        <div class="container-fluid d-block d-md-none ps-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
-          <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar[% idsuffix %]">
-            <i class="fa fa-sliders-h"></i> [% msg.maketext("Filtern") %]
-          </button>
-	</div>
-        <div class="d-none d-lg-block mt-2"	>
-[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range.chunk(-3).join('.') %]-[% end_range.chunk(-3).join('.') %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b id="numhits[% idsuffix %]">[% hits.chunk(-3).join('.') %]</b>
-        </div>
-      </div>
+    <div id="spinner" class="d-flex justify-content-center htmx-indicator spinner-large">
+      <img src="/images/openbib/uni-siegel-spinner.png" class="uzk-spinner" alt="[% msg.maketext("Lade-Animation mit UzK Logo") %]"/>
     </div>
-    <div class="right mt-2">
 
-[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') %]
+<!-- See: https://loading.io/css/ CC0 -->
+    <style>
 
+
+.lds-dual-ring {
+  display: inline-block;
+}
+
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;  
+  border-radius: 50%;
+  border: 6px solid #000;
+  border-color: #000 transparent #000 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*
+.spinner-large {
+	 position: absolute !important;
+         width: 100%;
+	 height: 100%;
+}
+*/
+
+.spinner-large {
+	 position: fixed !important;
+	 top: 0px;
+	 width: 100vw!important;
+	 height:100%;
+}
+
+.spinner-small {
+	 position: relative;
+         width: 80px;
+	 height: 80px;
+}
+
+.htmx-indicator {
+         display: block;  
+         background-color: #eee;
+	 z-index: -999 !important;
+
+         opacity:0;
+         transition: opacity 500ms ease-in;
+	
+}
+
+.htmx-request.htmx-indicator{
+        z-index: 10000 !important;
+        opacity:0.8;
+}
+
+@keyframes uzk-spinner {
+    from { transform: rotate(0deg) }
+    to { transform: rotate(360deg) }
+}
+
+.uzk-spinner {
+    opacity: 1;
+    margin-top: 200px;
+    width: 100px;
+    height: 100px;
+    animation-name: uzk-spinner;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    /* linear | ease | ease-in | ease-out | ease-in-out */
+    animation-timing-function: linear;
+}
+
+    </style>
+
+    <div id="ob-searchresult_tab_books" class="row flex-md-row">
+[% PROCESS common/subtemplate name="search_title_combined_include" %]
     </div>
-  </div>
-  <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
-[%- FOREACH record IN recordlist.get_records -%]
-[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database %] 
-[%- END -%]
-<div class="ob-footer">
-
-<div class="ob-resulttime">
-in: [% resulttime %] [% msg.maketext("Sekunden") %]
-</div>
-</div><!-- End: ob-footer -->
-  </div>
-
-  <div class="ob-resultfooter">
-    [% PROCESS common/subtemplate name="search_more_tips" %]
-   
-  </div>
-</div>
-
-<p/>
-[% END %]
-
-  </div><!-- End: col -->
-
-[% PROCESS common/subtemplate name="search_pagination" %]
-
-</div><!-- End: row -->
-
-[% ELSE %]
-  <div class="ob-no_hits">
-    <h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>
-
-    [% PROCESS common/subtemplate name="search_more_tips" %]
-   
-  </div>  
-[% END %]
-
 
 <script>
-$(document).ready(function(){
-        var numhits_[% current_tab %] = $("#numhits_[% current_tab %]").text();
-        if (numhits_[% current_tab %]){
-            $("#ob-searchresult_[% current_tab %]_count").html(" ("+numhits_[% current_tab %]+")");
-        }
-        else {
-            $("#ob-searchresult_[% current_tab %]_count").html(" (0)");
-        }
+document.body.addEventListener('htmx:beforeHistorySave', function(evt) {
+   //evt.detail.path = 'abc';
+   let links = document.getElementById('ob-searchresult_tabs').getElementsByTagName('a');
+   let active_links = Array.from(links).filter(element => element.classList.contains('active'))
+   console.log(active_links);
 });
+
 </script>
+  
+</div><!-- End ob-searchresult_tabs -->

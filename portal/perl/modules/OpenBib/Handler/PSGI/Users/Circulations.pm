@@ -551,6 +551,10 @@ sub renew_single_loan {
 	
     }
     else {
+	if ($logger->is_fatal){
+	    $logger->fatal("Unexpected error trying to renew single loan for user $loginname ($userid) via ils for $database with holdingid $holdingid in unit $unit. Response was: ".YAML::Dump($response_renew_single_loan_ref));
+	}
+
 	return $self->print_warning($msg->maketext("Bei der Verlängerung des Mediums ist ein unerwarteter Fehler aufgetreten"));
     }
 }

@@ -25,6 +25,9 @@
 </ul>
 
 <p>[% msg.maketext("Online-Ressourcen dürfen in aller Regel aus urheberrechtlichen Gründen nicht abgespeichert und in externe Systeme hochgeladen werden.") %]</p>
+
+<p>[% msg.maketext("Eine Bestellung über den Campuslieferdienst ist daher nicht möglich.") %]</p>
+
 </div>
 
 [% ELSIF uzk_online # Online Bestand, daher keine Bestellung, nur Hinweis %]
@@ -47,9 +50,11 @@
 </ul>
 
 [% IF NOT online_out  %]
-[% msg.maketext("Es konnte kein Link zum Titel bestimmt werden.") %]
+<p>[% msg.maketext("Es konnte kein Link zum Titel bestimmt werden.") %]</p>
 [% END %]
 </div>
+
+<p>[% msg.maketext("Eine Bestellung über den Campuslieferdienst ist daher nicht möglich.") %]</p>
 
 [% ELSE # Bestellung abgeschickt %]
 <div class="ob-jumbotron mt-3">

@@ -1273,6 +1273,8 @@ sub renew_single_loan {
 	    if ($logger->is_debug){
 		$response_ref->{debug} = $json_result_ref;
 	    }
+
+	    $response_ref->{"successful"} = 1;
 	    
 	    return $response_ref;
 	}

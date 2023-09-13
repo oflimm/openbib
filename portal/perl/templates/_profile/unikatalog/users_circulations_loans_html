@@ -50,7 +50,7 @@
 <div class="table-responsive">
 <table class="table table-striped ">
 <thead>
-<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Verlängerungen") %]</th><th>[% msg.maketext("Leihfrist") %]</th><th>[% msg.maketext("Aktion") %]</th></tr>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Leihfrist") %]</th><th>[% msg.maketext("Aktion") %]</th></tr>
 </thead>
 <tbody>
 [%- FOREACH loan = loans.items -%]
@@ -81,7 +81,6 @@
 [% END %]
 </td>
 <td>[% loan.department.about %][% IF loan.pickup_location.about %] / [% loan.pickup_location.about %][% END %]</td>
-<td>[% IF loan.renewals %][% loan.renewals %][% ELSE %][% msg.maketext("keine") %][% END %]</td>
 <td>[% IF loan.emergency_remark %]<span style="font-weight:bold;color:red;">[% END %][% loan.starttime.replace('T.*','') %] [% msg.maketext("bis") %] <b>[% loan.endtime.replace('T.*','') %]</b>[% IF loan.emergency_remark %]</span>[% END %]</td>
 <td>
 [% IF loan.renewable %]

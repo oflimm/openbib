@@ -1224,7 +1224,11 @@ sub renew_single_loan {
 	$url.="?$args";
 	
 	my $api_result_ref = $self->send_alma_api_call({ method => 'POST', url => $url });
-	
+
+	if ($logger->is_debug){
+	    $logger->debug("Renew API Result: ".YAML::Dump($api_result_ref));
+	}
+	   	
 	# Preprocessed response? Return it
 	if (defined $api_result_ref->{'response'}){
 	    return $api_result_ref->{'response'}

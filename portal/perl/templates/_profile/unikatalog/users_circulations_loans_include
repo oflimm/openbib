@@ -38,6 +38,7 @@
 </p>
 [% END %]
 
+<p><b>[% msg.maketext("Eine Verlängerung ist erst in den letzten 7 Tagen vor Leihfristende möglich.") %]</b></p>
 
 [%# USE dumper;dumper.dump(loans) %]
 <div class="table-responsive">

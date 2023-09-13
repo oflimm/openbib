@@ -2422,7 +2422,7 @@ sub send_alma_api_call {
 
 	# Empty response
 	if ($response->content eq '{}'){
-	    $logger->fatal("Empty response");
+	    $logger->fatal("Empty response (Method: $method - URL: $url)");
 	    
 	    $api_result_ref->{'response'} = {
 		"code" => $api_result_ref->{'http_status_code'},

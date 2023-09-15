@@ -242,6 +242,8 @@ FOREACH item IN normdata.${'T4120'} ;
    END;
 END;
 
+is_bindeeinheit = 0;
+
 content_map = {};
 
 FOREACH field IN normdata;
@@ -658,6 +660,29 @@ FOREACH field IN normdata;
            content_map.${'Hinweis'}.push(content);
 	 END;
 
+
+    CASE [ "T0773" ];    
+         thisinfo  = thisfield.${'p'};
+         thistitle = thisfield.${'t'};
+         thisid    = thisfield.${'w'};
+
+         content   = "";
+	 
+         # ggf. verlinken
+         IF thisinfo == 'AngebundenAn' && thistitle && thisid.match('^[0-9]+$') ;
+            localurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${thisid}.html?l=${lang}";
+
+	    content = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+	 END;
+
+         IF content ;
+	   is_bindeeinheit = 1;
+           IF NOT content_map.${'Zur Bindeeinheit'} ;
+	      content_map.${'Zur Bindeeinheit'} = [];
+	   END;
+           content_map.${'Zur Bindeeinheit'}.push(content);
+	 END;
+
     CASE "T0856";
          content = thisfield.${'3'};
 	 url     = thisfield.${'u'};
@@ -914,6 +939,22 @@ END;
 <tr class="ob-field ob-more_button"><th><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></th><td></td></tr>
 [% END %]
 </table>
+
+[% IF is_bindeeinheit %]
+<div class="alert alert-info">
+<p>[% msg.maketext("Dieser Titel ist Teil einer Bindeeinheit, d.h. er bildet mit anderen zusammen ein Exemplar.") %]</p>
+
+<p>[% msg.maketext("Zur Bindeeinheit") %]</p>
+
+<ul>
+[% FOREACH bindeeinheit IN content_map.${"Zur Bindeeinheit"} %]
+<li>[% bindeeinheit %]</li>
+[% END %]
+</ul>
+
+</div>
+[% END %]
+
 </div>
 [%# USE dumper;dumper.dump(content_map) %]
 [% ELSIF format == "BibTeX" %]

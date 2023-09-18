@@ -263,6 +263,12 @@ while (<DAT>){
 	    
 	    $field_mult_ref->{$field_nr} = 1 unless (defined $field_mult_ref->{$field_nr});
 
+	    my $ind = "";
+	    
+	    if (defined $field_ref->{$field}{ind1} && defined $field_ref->{$field}{ind2}){
+		$ind = $field_ref->{$field}{ind1}.$field_ref->{$field}{ind2};
+	    }
+	    	    
 	    my $subfields_ref = [];
 
 	    if (ref $field_ref->{$field} eq "HASH" && defined $field_ref->{$field}{subfields}){
@@ -276,6 +282,7 @@ while (<DAT>){
 		    push @{$title_ref->{'fields'}{$field_nr}}, {
 			subfield => $subfield_code,
 			content  => $content,
+			ind      => $ind,
 			mult     => $field_mult_ref->{$field_nr},
 		    };
 		    
@@ -327,6 +334,7 @@ while (<DAT>){
 		    push @{$title_ref->{'fields'}{$field_nr}}, {
 			subfield => '6', # Linkage-Subfield
 			content  => $linkage,
+			ind      => $ind,
 			mult     => $field_mult_ref->{$field_nr},
 		    } if ($linkage);
 		}
@@ -358,6 +366,7 @@ while (<DAT>){
 		    push @{$title_ref->{'fields'}{$field_nr}}, {
 			subfield => '6', # Linkage-Subfield
 			content  => $linkage,
+			ind      => $ind,
 			mult     => $field_mult_ref->{$field_nr},
 		    } if ($linkage);
 		}
@@ -385,6 +394,7 @@ while (<DAT>){
 		    push @{$title_ref->{'fields'}{$field_nr}}, {
 			subfield => '6', # Linkage-Subfield
 			content  => $linkage,
+			ind      => $ind,
 			mult     => $field_mult_ref->{$field_nr},
 		    } if ($linkage);
 		}
@@ -420,6 +430,7 @@ while (<DAT>){
 		    push @{$title_ref->{'fields'}{$field_nr}}, {
 			subfield => '6', # Linkage-Subfield
 			content  => $linkage,
+			ind      => $ind,
 			mult     => $field_mult_ref->{$field_nr},
 		    } if ($linkage);
 		}
@@ -469,6 +480,7 @@ while (<DAT>){
 				     mult     => 1,
 				     subfield => '',
 				     content  => $title_ref->{id},
+				     ind      => $ind,
 				 },
 				],
 		    },
@@ -531,6 +543,7 @@ while (<DAT>){
 
 	# Reorganisieren der umgstaendlich gepublishten Holding-Informationen
 	foreach my $field_ref (@$holdings_ref){
+	    
 	    my $subfields_ref =  $field_ref->{'HOL'}{'subfields'};
 
 	    # if ($logger->is_debug){

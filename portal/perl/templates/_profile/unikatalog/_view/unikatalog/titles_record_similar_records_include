@@ -8,21 +8,27 @@
 <p class="alert-info p-1">[% msg.maketext("Zu diesem Titel existieren andere Ausgaben (andere Sprache, andere Auflage usw.)") %]:</p>
 
 <ul class="list-group">
-[% FOREACH similar_record IN similar_records.get_records %]
-[% item = similar_record.get_fields %]
+[%
+   similar_records_done = {};
+   
+   FOREACH similar_record IN similar_records.get_records ;
+    similar_records_matchkey = "${similar_record.database}:${similar_record.id}";
+    NEXT IF similar_records_done.defined(similar_records_matchkey);
+    similar_records_done.${similar_records_matchkey} = 1;
 
-[% item_location = similar_record.get_locations.first %]
-[% similar_url = "${path_prefix}/${config.get('databases_loc')}/id/${similar_record.database}/${config.get('titles_loc')}/id/${similar_record.get_encoded_id}.html" %]
-[%# Titel konstruieren %]
-[%- title = item.${'T0331'}.first.content -%]
-[%- IF item.${'T0310'}.first.content -%]
-[%- title = item.${'T0310'}.first.content -%]
-[%- END -%]
-[%# Ejahr konstruieren %]
-[%- yearofpub = item.${'T0425'}.first.content -%]
-[%# Edition konstruieren %]
-[%- edition   = item.${'T0403'}.first.content -%]
-<li class="list-group-item"><a href="[% similar_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />in: [% dbinfo.get('dbnames').${similar_record.database}.short %]</li>
+
+    item = similar_record.to_abstract_fields ;
+
+    item_location = similar_record.get_locations.first ;
+    similar_url = "${path_prefix}/${config.get('databases_loc')}/id/${similar_record.database}/${config.get('titles_loc')}/id/${similar_record.get_encoded_id}.html" ;
+    # Titel konstruieren
+    title = item.title ;
+    # Ejahr konstruieren
+    yearofpub = item.year ;
+    # Edition konstruieren
+    edition   = item.edition ;
+%]    
+<li class="list-group-item"><a href="[% similar_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />in: <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% item_location %].html?l=[% lang %]">[% locinfo.get('identifier').${item_location}.description %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

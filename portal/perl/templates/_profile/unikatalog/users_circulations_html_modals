@@ -72,7 +72,7 @@
             <label for="password2">[% msg.maketext("Passwort bestätigen") %]</label>
 	  </div>
 
-	  <p style="color: red; font-size:0.8em;">* [% msg.maketext("mindestens 6 Zeichen, nur Zahlen und lateinische Buchstaben, ohne Umlaute und ß, mindestens eine Zahl und ein Klein- oder Großbuchstabe") %]</p>
+	  <p style="color: red; font-size:0.8em;">* [% msg.maketext("mindestens 6 Zeichen, nur Zahlen und lateinische Buchstaben, ohne Umlaute und ß, mindestens eine Zahl und ein Klein- oder Großbuchstabe, d.h. a-z, A-Z, 0-9 sowie -!\"#%&'()*,./:;?@[]_{}.") %]</p>
 	  
 	  
 	</div>

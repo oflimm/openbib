@@ -37,6 +37,7 @@ use utf8;
 use DBI;
 use Digest::MD5;
 use Encode 'decode_utf8';
+use HTML::Entities qw/decode_entities/;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Socket;
@@ -281,6 +282,14 @@ sub authenticate {
 	}
     }
 
+    eval {
+	$password    = decode_entities($password);
+	
+	# if ($logger->is_debug){
+	#     $logger->debug("Using password $password");
+	# }
+    };    
+    
     my $authenticator = OpenBib::Authenticator::Factory->create_authenticator({ id => $authenticatorid, config => $config, session => $session});
 
     # Konsistenzchecks

@@ -39,7 +39,7 @@ use DBI;
 use Digest::MD5;
 use Email::Valid;
 use Encode qw/decode_utf8 encode_utf8/;
-use HTML::Entities;
+use HTML::Entities qw/decode_entities/;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use SOAP::Lite;
@@ -195,7 +195,7 @@ sub update_ilsaccount {
     unless ($config->get('active_ils')){
 	return $self->print_warning($msg->maketext("Die Ausleihfunktionen (Bestellunge, Vormerkungen, usw.) sind aktuell systemweit deaktiviert."),1,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");	
     }
-    
+
     if (!$field){
         my $code   = -1;
 	my $reason = $msg->maketext("Es wurde keine Information uebergeben welches Feld aktualisiert werden soll");
@@ -236,19 +236,37 @@ sub update_ilsaccount {
 	    
 	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
 	}
-	elsif ($password1 ne $password2){
+
+	eval {
+	    $oldpassword    = decode_entities($oldpassword);
+	    $password1      = decode_entities($password1);
+	    $password2      = decode_entities($password2);
+
+	    # if ($logger->is_debug){
+	    # 	$logger->debug("Change Password $oldpassword to $password1 / $password2");
+	    # }
+	};
+
+	if ($@){
+	    my $code   = -1;
+	    my $reason = $msg->maketext("Es ist ein Dekodierungsfehler des Passworts aufgetreten.");
+	    
+	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");	    
+	}
+        
+	if ($password1 ne $password2){
 	    my $code   = -1;
 	    my $reason = $msg->maketext("Die beiden neuen Passwörter, die Sie eingegeben haben, stimmen nicht überein.");
 	    
 	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
 	}
-	# elsif (length(decode_utf8($password1)) != 6 ){
-	#     my $code   = -1;
-	#     my $reason = $msg->maketext("Ihr neues Passwort muss 6-stellig sein.");
+	elsif (length(decode_utf8($password1)) < 6 ){
+	    my $code   = -1;
+	    my $reason = $msg->maketext("Ihr neues Passwort muss mindestens 6-stellig sein.");
 	    
-	#     return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
-	# }
-	elsif ($password1 !~ /^[a-zA-Z0-9]+$/ or $password1 !~ /[0-9]/ or $password1 !~ /[a-zA-Z]/){
+	    return $self->print_warning($msg->maketext($reason),$code,"$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{circulations_loc}");
+	}
+	elsif ($password1 !~ /^[a-zA-Z0-9[:punct:]]+$/ or $password1 !~ /[0-9]/ or $password1 !~ /[a-zA-Z]/){
 	    my $code   = -1;
 	    my $reason = $msg->maketext("Bitte geben Sie ein Passwort ein, welches den Vorgaben entspricht.");
 	    

@@ -517,7 +517,7 @@ Präsenzbestand
         END ;
       END;
 %]
-[%    IF thiscirculation.availability != 'vermisst' %]
+[%    IF thiscirculation.availability.match('^(order)$') %]
 [%      IF config.get('active_ils') && (NOT user.ID || authenticator.type == 'ils') %]
 <p>
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/campusorders">
@@ -535,15 +535,16 @@ Präsenzbestand
 </form>
 
 [%      END %]
-
+[%    ELSE %]
+<p class="mt-2 mb-2"><i class="fas fa-exclamation-triangle me-2"></i>[% msg.maketext("Über den Campuslieferdienst ist keine Bestellung entliehener Medien möglich.") %]</p>
 [%    END %]
 [%  END %]
 [%############### ENDE CAMPUSLIEFERDIENST ######### %]
 
 [%############### ANFANG ILIAS ######### %]
 [% ELSIF scan_dienst == "ilias" %]
-[%  IF thiscirculation.department_id.match('^(38|38-HWA)$') && valid_ilias_session %]
-[%    IF thiscirculation.availability != 'vermisst' %]
+[%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && valid_ilias_session %]
+[%    IF thiscirculation.availability.match('^(order)$') %]
 [%      IF config.get('active_ils') %]
 <p/>
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/ilias/[% config.get('circulations_loc') %]/id/iliasorders">
@@ -564,7 +565,8 @@ Präsenzbestand
 </form>
 
 [%      END %]
-
+[%    ELSE %]
+<p class="mt-2 mb-2"><i class="fas fa-exclamation-triangle me-2"></i>[% msg.maketext("Über den E-Semesterapparat ist keine Bestellung entliehener Medien möglich.") %]</p>
 [%    END %]
 [%  END %]
 [% END %]

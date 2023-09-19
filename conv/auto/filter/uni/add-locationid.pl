@@ -344,8 +344,12 @@ while (<>){
 	    if ($location_ref->{content} =~m/^38$/){
 		push @{$element_ref}, "DE-38";
 	    }
-	    elsif ($location_ref->{content} =~m/^38-MAG/){
+	    elsif ($location_ref->{content} =~m/^(38-MAG|38-AWM)/){
 		push @{$element_ref}, "DE-38";
+	    }
+	    elsif ($location_ref->{content} =~m/^38-HLS/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-HLS";		
 	    }
 	    elsif ($location_ref->{content} =~m/^38-HWA/){
 		push @{$element_ref}, "DE-38";

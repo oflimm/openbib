@@ -3742,7 +3742,11 @@ sub to_abstract_fields_marc21 {
     # type      : Medientyp (article,book,periodical)
 
     my $field_ref = $self->to_custom_field_scheme_1;
-    
+
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump($field_ref));
+    }
+	
     # Verfasser und Herausgeber konstruieren
     my $authors_ref=[];
     my $editors_ref=[];
@@ -3795,11 +3799,10 @@ sub to_abstract_fields_marc21 {
     # Auflage
     $abstract_fields_ref->{edition} = (defined $field_ref->{T0250}  && defined $field_ref->{T0250}[0]{a})?$field_ref->{T0250}[0]{a}:'';
 
-    # Verleger
-    $abstract_fields_ref->{publisher} = (defined $field_ref->{T0260} && defined $field_ref->{T0260}[0]{b})?$field_ref->{T0260}[0]{b}:'';
+    $abstract_fields_ref->{publisher} = (defined $field_ref->{T0264} && defined $field_ref->{T0264}[0]{b})?$field_ref->{T0264}[0]{b}:'';
 
     # Verlagsort
-    $abstract_fields_ref->{place} = (defined $field_ref->{T0260} && defined $field_ref->{T0260}[0]{a})?$field_ref->{T0260}[0]{a}:'';
+    $abstract_fields_ref->{place} = (defined $field_ref->{T0264} && defined $field_ref->{T0264}[0]{a})?$field_ref->{T0264}[0]{a}:'';
 
     # Titel
     $abstract_fields_ref->{title} = (defined $field_ref->{T0245} && defined $field_ref->{T0245}[0]{a})?$field_ref->{T0245}[0]{a}:'';
@@ -3940,7 +3943,13 @@ sub to_abstract_fields_marc21 {
 
     # Edition
     $abstract_fields_ref->{edition} = (exists $field_ref->{T0250})?$field_ref->{T0250}[0]{a}:'';
-        
+
+    # # Cleanup fields from marc21 junk
+    # foreach my $key (keys %{$abstract_fields_ref}){
+    # 	$logger->debug("Ref $key:".(ref $abstract_fields_ref->{$key}));
+    # 	$abstract_fields_ref->{$key} =~s{\s*[,:./]\s*$}{} if (ref $abstract_fields_ref->{$key} ne "ARRAY") ;
+    # }
+    
     if ($logger->is_debug){
 	$logger->debug(YAML::Dump($abstract_fields_ref));
     }
@@ -4005,8 +4014,12 @@ sub to_custom_field_scheme_1 {
 		    unless ($item_ref->{mult}){
 			$item_ref->{mult} = (defined $field_mult_ref->{$fieldname})?$field_mult_ref->{$fieldname}++:1;
 		    }
-		    
-		    $tmp_scheme_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content} if (defined $item_ref->{mult} && defined $item_ref->{subfield} && $item_ref->{content});
+
+		    if (defined $item_ref->{mult} && defined $item_ref->{subfield} && $item_ref->{content}){
+			$item_ref->{content} =~s{\s*[,:./]\s*$}{} if ($fieldname=~m/(T0245|T0250|T0264|T0300)/); # Cleanup MARC21 junk
+			
+			$tmp_scheme_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content};
+		    }
 		}
 	    }
 

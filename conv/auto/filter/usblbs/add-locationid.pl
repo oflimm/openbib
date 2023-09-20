@@ -337,15 +337,19 @@ while (<>){
 
     my $element_ref = [];
 
-    if (defined $title_ref->{fields}{'0944'}){
-	foreach my $location_ref (@{$title_ref->{fields}{'0944'}}){
+    if (defined $title_ref->{fields}{'1944'}){
+	foreach my $location_ref (@{$title_ref->{fields}{'1944'}}){
 	    next unless ($location_ref->{subfield} eq "k");
 	    
 	    if ($location_ref->{content} =~m/^38$/){
 		push @{$element_ref}, "DE-38";
 	    }
-	    elsif ($location_ref->{content} =~m/^38-MAG/){
+	    elsif ($location_ref->{content} =~m/^(38-MAG|38-AWM)/){
 		push @{$element_ref}, "DE-38";
+	    }
+	    elsif ($location_ref->{content} =~m/^38-HLS/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-HLS";		
 	    }
 	    elsif ($location_ref->{content} =~m/^38-HWA/){
 		push @{$element_ref}, "DE-38";

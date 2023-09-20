@@ -20,9 +20,6 @@
 <!-- Anfang einzelner Treffer -->
 [%- PROCESS common/subtemplate name="titles_record_preprocess" -%]
 [%-
-     # Redirect to uni catalogue
-     record.database = 'uni';
-
      ebook_i18n      = msg.maketext("E-Book");
      toc_i18n        = msg.maketext("Inhaltsverzeichnis");
      popularity_i18n = msg.maketext("Popularität");

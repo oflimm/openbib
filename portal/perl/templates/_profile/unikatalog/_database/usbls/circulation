@@ -45,6 +45,7 @@
      END ;
 
      availability_info = "";
+
      IF thiscirculation.availability_info ;
        availability_info = thiscirculation.availability_info.first.content ;
      ELSIF thiscirculation.unavailability_info ;
@@ -227,6 +228,11 @@
 [%############### END CORONASONDERBEHANDLUNG ######### %]
 
 [%############### ANFANG MEDIENSTATUSAUSGABE ######### %]
+[% expected = "";
+   IF thiscirculation.unavailability_info && thiscirculation.unavailability_info.first.expected ;
+     expected  = thiscirculation.unavailability_info.first.expected.match('([0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9])').first;
+   END;
+%]
 [%############### BESTELLSCHEIN ################# %]
 [% IF availability_info.match('Bestellschein') %]
 [%    bestellscheinparts = availability_info.match('^.* (\(.*\))'); %]
@@ -373,6 +379,9 @@ Präsenzbestand
 [%             IF availability_info == 'bestellt' ; availability_info = 'entliehen' ; END %]
 [%            availability_info %]
 [%         END %]
+[%         IF expected %]
+([% msg.maketext("bis") %] [% expected %])
+[%         END %]
 [%     END %]
 [%   END %]
 [% END %]
@@ -477,11 +486,10 @@ Präsenzbestand
 [%############### ANFANG KMB,CAMPUSLIEFERDIENST,ILLIAS ######### %]
 
 [%############### ANFANG KMB ######### %]
-[% IF thiscirculation.department_id == '20' # KMB: Bestellbutton mit Sprung ins KuBi-Portal bzw. zur Bestellmaske, z.B. ID=inst001:7140497 %]
-[%   IF NOT standort.match('(Museum für Angewandte Kunst|Graphische Sammlung|Schwarze Lade)') # Bestellfunktionen fuer KMB-Bestand im MAKK, WRM (Graphische Sammlung) und DSL unterdruecken %]
+[% IF thiscirculation.department_id == 'KN3' # KMB: Bestellbutton mit Sprung ins KuBi-Portal bzw. zur Bestellmaske, z.B. ID=inst001:7140497 %]
+[%   IF thiscirculation.storage_id.match('KN3-KMB') # Bestellfunktionen fuer KMB-Bestand im MAKK, WRM (Graphische Sammlung) und DSL unterdruecken. Nur KMB selbst %]
 [%#     IF config.get('active_ils') %]
-<br/><span style="color: red"> Die Nutzung der Lesesäle ist momentan nur nach Terminvereinbarung möglich.</span>
-<p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];dbname=[% database %];location=[% standort |uri %];realm=kmb">[% msg.maketext("In den Lesesaal bestellen") %]</a></p> 
+<p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];dbname=[% database %];location=[% standort |uri %];realm=kmb">[% msg.maketext("In den KMB Lesesaal bestellen") %]</a></p> 
 <p>
 <b>KMB-Dokumentlieferdienst:</b><br/>
 <a href="https://www.subito-doc.de/" target="_blank">Aufsatzbestellung</a>
@@ -492,7 +500,7 @@ Präsenzbestand
 
 [%############### ANFANG CAMPUSLIEFERDIENST ######### %]
 [% ELSIF scan_dienst == "campus" %]
-[%  IF thiscirculation.department_id.match('^(38|38-HWA)$') && username.match('^(B|S)') && NOT thiscirculation.location_mark.match('^ZBM/') %]
+[%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && username.match('^(B|S)') && NOT thiscirculation.location_mark.match('^ZBM/') %]
 [%    
       subdomain = "";
       IF thiscirculation.availability.match('^(lent)$') ;
@@ -509,7 +517,7 @@ Präsenzbestand
         END ;
       END;
 %]
-[%    IF thiscirculation.availability != 'vermisst' %]
+[%    IF thiscirculation.availability.match('^(order)$') %]
 [%      IF config.get('active_ils') && (NOT user.ID || authenticator.type == 'ils') %]
 <p>
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/campusorders">
@@ -527,15 +535,16 @@ Präsenzbestand
 </form>
 
 [%      END %]
-
+[%    ELSE %]
+<p class="mt-2 mb-2"><i class="fas fa-exclamation-triangle me-2"></i>[% msg.maketext("Über den Campuslieferdienst ist keine Bestellung entliehener Medien möglich.") %]</p>
 [%    END %]
 [%  END %]
 [%############### ENDE CAMPUSLIEFERDIENST ######### %]
 
 [%############### ANFANG ILIAS ######### %]
 [% ELSIF scan_dienst == "ilias" %]
-[%  IF thiscirculation.department_id.match('^(38|38-HWA)$') && valid_ilias_session %]
-[%    IF thiscirculation.availability != 'vermisst' %]
+[%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && valid_ilias_session %]
+[%    IF thiscirculation.availability.match('^(order)$') %]
 [%      IF config.get('active_ils') %]
 <p/>
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/ilias/[% config.get('circulations_loc') %]/id/iliasorders">
@@ -556,7 +565,8 @@ Präsenzbestand
 </form>
 
 [%      END %]
-
+[%    ELSE %]
+<p class="mt-2 mb-2"><i class="fas fa-exclamation-triangle me-2"></i>[% msg.maketext("Über den E-Semesterapparat ist keine Bestellung entliehener Medien möglich.") %]</p>
 [%    END %]
 [%  END %]
 [% END %]

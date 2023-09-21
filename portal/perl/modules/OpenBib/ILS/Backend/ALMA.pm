@@ -1341,6 +1341,17 @@ sub get_mediastatus {
 	
 	# Preprocessed response? Return it
 	if (defined $api_result_ref->{'response'}){
+
+	    # MMSID not valid = NZ MSSID, then ignore and return no items
+	    if ($api_result_ref->{'response'}{'code'} == 402203){
+		return {
+		    id          => $titleid,
+		    database    => $database,
+		    items       => $items_ref,
+		    timestamp   => $self->get_timestamp,
+		};
+	    }
+	    
 	    return $api_result_ref->{'response'}
 	}
 	

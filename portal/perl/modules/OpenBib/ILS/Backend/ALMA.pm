@@ -1732,6 +1732,19 @@ sub check_alma_request {
 	    $json_result_ref = $api_result_ref->{'data'};
 	}
 
+	# Empty response = blocked user
+	if (! %{$json_result_ref}){
+	    $logger->fatal("Empty response (Status code: ".$api_result_ref->{'http_status_code'}." - Method: GET - URL: $url)");
+
+	    $response_ref = {
+		"code" => 403,
+		    "error" => "user blocked",
+		    "error_description" => $msg->maketext("Für Sie ist keine Bestellung möglich, weil Ihr Benutzerausweis gesperrt ist."),
+	    };
+	    
+	    return $response_ref;
+	}
+	
 	# Processing data	    
 	if (defined $json_result_ref->{'request_option'}){
 	    my $hold_available = 0;
@@ -2425,19 +2438,6 @@ sub send_alma_api_call {
 	    $logger->info($response->code . ' - ' . $response->message);
 	    return $api_result_ref;
 	}	    
-
-	# Empty response
-	if ($response->content eq '{}'){
-	    $logger->fatal("Empty response (Status code: ".$api_result_ref->{'http_status_code'}." - Method: $method - URL: $url)");
-	    
-	    $api_result_ref->{'response'} = {
-		"code" => $api_result_ref->{'http_status_code'},
-		    "error" => "error",
-		    "error_description" => $msg->maketext("Ihre Anfrage konnte nicht bearbeitet werden, da das Cloud-Bibliothekssystem Alma bei der Abfrage keine Daten geliefert hat. Als Abhilfe können wir Ihnen leider nur empfehlen über den Reload-Button in Ihrem Web-Browser diese Seite mehrmals aufzurufen bis es ggf. funktioniert."),
-	    };
-	    
-	    return $api_result_ref;
-	}
 	
 	eval {
 	    $api_result_ref->{'data'} = decode_json $response->content;

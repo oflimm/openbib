@@ -296,6 +296,7 @@ my $denylist_ref = {
     'kups'     => 1,
     'emedienkauf' => 1,
     'tmpebooks' => 1,
+    'uni' => 1,
     'usbebooks' => 1,
     'usbhwa' => 1,
     'usbsab' => 1,
@@ -381,22 +382,22 @@ system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");
 
 $logger->info("### Dumping isbns");
 
-system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_usb 2>&1 > /dev/null");
-system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_kmb 2>&1 > /dev/null");
-system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_uni 2>&1 > /dev/null");
-system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett 2>&1 > /dev/null");
-system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=abgleich_ebookpda 2>&1 > /dev/null");
-system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett_ohne_tmpebooks 2>&1 > /dev/null");
-system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett_ohne_proquestpda 2>&1 > /dev/null");
-system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=tmpebooks 2>&1 > /dev/null");
-system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=emedienkauf 2>&1 > /dev/null");
+# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_usb 2>&1 > /dev/null");
+# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_kmb 2>&1 > /dev/null");
+# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_uni 2>&1 > /dev/null");
+# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett 2>&1 > /dev/null");
+# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=abgleich_ebookpda 2>&1 > /dev/null");
+# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett_ohne_tmpebooks 2>&1 > /dev/null");
+# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett_ohne_proquestpda 2>&1 > /dev/null");
+# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=tmpebooks 2>&1 > /dev/null");
+# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=emedienkauf 2>&1 > /dev/null");
 
-$logger->info("### Finding corresponding ebooks in inst526/inst006");
+# $logger->info("### Finding corresponding ebooks in inst526/inst006");
 
-system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst526 --database=usbebooks --filename=/var/www.kug/extra/inst526/abgleich-inst526-usbebooks.csv 2>&1 > /dev/null");
-system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst526 --database=tmpebooks --filename=/var/www.kug/extra/inst526/abgleich-inst526-tmpebooks.csv 2>&1 > /dev/null");
-system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst006 --database=usbebooks --filename=/var/www.kug/extra/inst006/abgleich-inst006-usbebooks.csv 2>&1 > /dev/null");
-system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst006 --database=tmpebooks --filename=/var/www.kug/extra/inst006/abgleich-inst006-tmpebooks.csv 2>&1 > /dev/null");
+# system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst526 --database=usbebooks --filename=/var/www.kug/extra/inst526/abgleich-inst526-usbebooks.csv 2>&1 > /dev/null");
+# system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst526 --database=tmpebooks --filename=/var/www.kug/extra/inst526/abgleich-inst526-tmpebooks.csv 2>&1 > /dev/null");
+# system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst006 --database=usbebooks --filename=/var/www.kug/extra/inst006/abgleich-inst006-usbebooks.csv 2>&1 > /dev/null");
+# system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst006 --database=tmpebooks --filename=/var/www.kug/extra/inst006/abgleich-inst006-tmpebooks.csv 2>&1 > /dev/null");
 
 if ($updatemaster && $maintenance){
     $logger->info("### Updating clouds");
@@ -426,9 +427,9 @@ if ($maintenance){
 
     system("cd /tmp ; rm kmbregister/* ; rmdir kmbregister");
     
-    $logger->info("### Enriching USB BK's");
+    # $logger->info("### Enriching USB BK's");
     
-    system("$config->{'base_dir'}/conv/usb_bk2enrich.pl");
+    # system("$config->{'base_dir'}/conv/usb_bk2enrich.pl");
 
     $logger->info("### Dumping Enrichment-DB");    
     
@@ -476,22 +477,22 @@ sub threadB {
 
     $logger->info("### -> $thread_description");    
 
-    $logger->info("### Master: USB Katalog");
+#    $logger->info("### Master: USB Katalog");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
+#    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['inst001'] });
 #    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, databases => ['inst001'] });
     
     ##############################
     
-    $logger->info("### Aufgesplittete Teil-Kataloge aus USB Katalog");
+#    $logger->info("### Aufgesplittete Teil-Kataloge aus USB Katalog");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['digisoz','provenienzen','jesuiten','lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa','usbsab', 'dissertationen','usbphil'] });
+#    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['digisoz','provenienzen','jesuiten','lehrbuchsmlg','rheinabt','edz','lesesaal', 'usbhwa','usbsab', 'dissertationen','usbphil'] });
     
     ##############################
     
-    $logger->info("### Aufgesplittete Sammlungen aus dem USB Katalog");
+#    $logger->info("### Aufgesplittete Sammlungen aus dem USB Katalog");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['afrikaans','alff','artmann','auslaender','baenfer','baeumker','becker','belgischeshaus','benelux','bers','conrady','dante','digitalis','dirksen','englaender','evang','fichte','frauenlektuere','gabel','gruen','gymnasialbibliothek','herbschneider','herterich','hilferding','hinck','hochschulschriften','islandica','kbg','kempis','kroh','lefort','loeffler','mukluweit','modernedtlit','modernelyrik','nevissen','oidtman','ostasiatica','quint','schia','schirmer','schmalenbach','schneider','schmitzotto','scholle','syndikatsbibliothek','thorbecke','tietz','tillich','vormweg','wallraf','weinkauff','westerholt','wolff'] });
+#    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['afrikaans','alff','artmann','auslaender','baenfer','baeumker','becker','belgischeshaus','benelux','bers','conrady','dante','digitalis','dirksen','englaender','evang','fichte','frauenlektuere','gabel','gruen','gymnasialbibliothek','herbschneider','herterich','hilferding','hinck','hochschulschriften','islandica','kbg','kempis','kroh','lefort','loeffler','mukluweit','modernedtlit','modernelyrik','nevissen','oidtman','ostasiatica','quint','schia','schirmer','schmalenbach','schneider','schmitzotto','scholle','syndikatsbibliothek','thorbecke','tietz','tillich','vormweg','wallraf','weinkauff','westerholt','wolff'] });
 
     return $thread_description;
 }
@@ -603,10 +604,10 @@ sub threadC {
     $logger->info("### Diverse Kataloge");
    
     # instzs wurde in eigenes Steuerscript ausgelagert, da die Lieferung des hbz erst Montag morgen erfolgt 
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['spoho','zbmed'] });
+#    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['spoho','zbmed'] });
 #    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['instzs','spoho'] });
 
-    autoconvert({ updatemaster => $updatemaster, denylist => $denylist_ref, sync => 1, databases => ['usbweb'] });
+#    autoconvert({ updatemaster => $updatemaster, denylist => $denylist_ref, sync => 1, databases => ['usbweb'] });
     
     ##############################
     

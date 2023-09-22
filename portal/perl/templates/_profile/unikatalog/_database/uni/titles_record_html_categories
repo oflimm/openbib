@@ -588,7 +588,17 @@ FOREACH field IN normdata;
            content_map.${'Erscheinungsweise'}.push(content);
 	 END;
 
-    CASE "T0520";    
+    CASE [ "T0505" ];    
+         content = thisfield.${'t'};
+
+         IF content ;
+           IF NOT content_map.${'Zusammenfassung'} ;
+	      content_map.${'Zusammenfassung'} = [];
+	   END;
+           content_map.${'Zusammenfassung'}.push(content);
+	 END;
+
+    CASE [ "T0520" ];    
          content = thisfield.${'a'};
 
          IF content ;
@@ -840,12 +850,12 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'T5005'}.push(content);
 
-    CASE ;
-         content   = highlightquery(searchquery,item.content);
-         IF NOT content_map.${category} ;
-	    content_map.${category} = [];
-	 END;
-         content_map.${category}.push(content);
+    # CASE ;
+    #      content   = highlightquery(searchquery,item.content);
+    #      IF NOT content_map.${category} ;
+    # 	    content_map.${category} = [];
+    # 	 END;
+    #      content_map.${category}.push(content);
     END;
  END;
 END;

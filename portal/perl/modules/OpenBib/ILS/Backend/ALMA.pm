@@ -1338,18 +1338,24 @@ sub get_mediastatus {
 	my $url     = $config->get('alma')->{'api_baseurl'}."/bibs/$titleid/holdings/ALL/items?limit=100&offset=0&expand=due_date,due_date_policy,requests&view=brief&lang=$lang&apikey=$api_key&order_by=library,location,enum_a,enum_b&direction=asc";
 	
 	my $api_result_ref = $self->send_alma_api_call({ method => 'GET', url => $url });
+
+	if ($logger->is_debug){
+	    $logger->debug("api_result_ref: ".YAML::Dump($api_result_ref));
+	}
 	
 	# Preprocessed response? Return it
 	if (defined $api_result_ref->{'response'}){
 
+	    $logger->debug("XXX".$api_result_ref->{'data'}{'errorList'}{'error'}[0]{'errorCode'});
+
 	    # MMSID not valid = NZ MSSID, then ignore and return no items
-	    if ($api_result_ref->{'response'}{'code'} == 402203){
+	    if ($api_result_ref->{'response'}{'error_code'} == 402203){
 		return {
 		    id          => $titleid,
 		    database    => $database,
-		    items       => $items_ref,
+		    items       => [],
 		    timestamp   => $self->get_timestamp,
-		};
+		    };
 	    }
 	    
 	    return $api_result_ref->{'response'}
@@ -1358,8 +1364,8 @@ sub get_mediastatus {
 	# Result data? Use it for further processing
 	if (defined $api_result_ref->{'data'}){
 	    $json_result_ref = $api_result_ref->{'data'};
-	}
-
+	}	    
+	
 	# Processing data	    
 	if (defined $json_result_ref->{'item'}) {
 	    
@@ -2465,6 +2471,7 @@ sub send_alma_api_call {
 	    "code" => 400,
 		"error" => "error",
 		"error_description" => $api_result_ref->{'data'}{'errorList'}{'error'}[0]{'errorMessage'},
+		"error_code" => $api_result_ref->{'data'}{'errorList'}{'error'}[0]{'errorCode'},
 	};
 	
 	return $api_result_ref;

@@ -446,6 +446,24 @@ while (<>){
 			}
 		    }
 		}
+		# Keine Public note
+		else {
+		    my $access = "f"; # zunaechst unbestimmt zugreifbar. Spaeter ggf. postprocessing bei Zugehoerigkeit zu einem Paket
+		    push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => $access,
+			content  => $url,
+		    };
+		    
+		    push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => "Volltext",
+			
+		    };
+		    
+		    $url_done_ref->{$url} = 1;			
+		}
 		# elsif (defined $field1209_ref->{$item_ref->{mult}} && $field1209_ref->{$item_ref->{mult}} =~m/^fzo$/){
 		#     my $description = "Volltext";
 		#     my $access      = "g"; # green

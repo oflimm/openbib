@@ -320,9 +320,9 @@
        title = "${title} ${d}";
      END;
      
-     IF item.${'T0246'}.first.${'a'}; # AST
-         title = item.${'T0246'}.first.${'a'};
-     END;
+     # IF item.${'T0246'}.first.${'a'}; # AST
+     #     title = item.${'T0246'}.first.${'a'};
+     # END;
 
      band = item.${"T0245"}.first.${'n'};
      gesamttitel = item.${"T0490"}.first.${'a'};

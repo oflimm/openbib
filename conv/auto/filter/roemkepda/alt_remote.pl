@@ -33,6 +33,7 @@
 
 use DBI;
 use OpenBib::Config;
+use HTML::Entities qw/decode_entities/;
 
 my $config = new OpenBib::Config();
 
@@ -47,7 +48,7 @@ my $pool          = $ARGV[0];
 
 my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-my $url    = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
+my $url    = $dbinfo->protocol."://".$dbinfo->host."/".decode_entities($dbinfo->remotepath)."/".decode_entities($dbinfo->titlefile);
 
 print "### $pool: Datenabzug via http von $url\n";
 system("cd $pooldir/$pool ; rm data.json");

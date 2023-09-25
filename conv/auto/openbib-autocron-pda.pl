@@ -76,6 +76,10 @@ $logger->info("###### Starting PDA update");
 
 autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bestellungen','dreierpda','vubpda','schweitzerpda','roemkepda'] });
 
+$logger->info("### Generating joined searchindexes");
+
+system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");
+
 $logger->info("###### Updating done");
 
 sub autoconvert {

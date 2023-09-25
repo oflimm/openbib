@@ -502,20 +502,22 @@ Präsenzbestand
 [% ELSIF scan_dienst == "campus" %]
 [%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && username.match('^(B|S)') && NOT thiscirculation.location_mark.match('^ZBM/') %]
 [%    
+
+      domain    = "usb";
       subdomain = "";
+
       IF thiscirculation.availability.match('^(lent)$') ;
         subdomain = "avv";
       END;
 
-      IF standort.match('(EWA|HWA|Humanwiss)');
+      IF thiscirculation.department_id.match('38-HWA');
         domain = "hwa";
-      ELSE ;
-        IF standort.match('Ausweich') ;
-           domain = "awm";
-        ELSE ;
-           domain = "usb";
-        END ;
       END;
+
+      IF thiscirculation.storage_id.match('^(38-AWM|38-HWA-AWM)$') ;
+        domain = "awm";
+      END;
+
 %]
 [%    IF thiscirculation.availability.match('^(order)$') %]
 [%      IF config.get('active_ils') && (NOT user.ID || authenticator.type == 'ils') %]

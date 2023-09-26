@@ -1,18 +1,4 @@
 [% PROCESS common/subtemplate name="titles_record_abstract_fields" %]
-[%-
-
-  hide_pickup = "";
-  
-  IF title_location.match('/ (Fotobib|MAKK)') ;
-    hide_pickup = "LUDWIG";
-  ELSIF title_location.match('/ KMB$') ;
-    IF label.match('KMB/(K|YA|YG)') ;
-      hide_pickup = "KUNST";
-    END;
-  END;
-    
--%]
-[%# USE dumper;dumper.dump(fields) %]
 <div class="card mt-5 mb-5 me-5">
 <div class="card-header">[% msg.maketext("Bestellung in den Lesesaal der KMB") %]</div>
 <div class="card-body">
@@ -24,7 +10,7 @@ Bitte füllen Sie das Bestellformular vollständig aus. Ihr Bestellwunsch wird p
 Sie werden über den Eingang der Bestellung <b>nicht</b> gesondert benachrichtigt.
 </p>
 
- <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/mail/kmb">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/me/[% config.get('circulations_loc') %]/id/mail/kmb">
  
      <input type="hidden" name="realm"       value="[% realm %]" />
      <input type="hidden" name="location"    value="[% title_location %]" />
@@ -81,13 +67,11 @@ Sie werden über den Eingang der Bestellung <b>nicht</b> gesondert benachrichtig
        signatur = holdingid ;
      END;
 
-
-     
 %]
 
 <div class="form-floating mb-3">
       <span class="form-control">[% signatur %]</span>
-      <input type="hidden" name="label" value="[% uri_escape(signatur) %]" />
+      <input type="hidden" name="label" value="[% signatur %]" />
       <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
 </div>
 
@@ -112,42 +96,34 @@ Sie werden über den Eingang der Bestellung <b>nicht</b> gesondert benachrichtig
 
 %]
 
+<legend class="mt-2">[% msg.maketext("Bereitstellungsort") %]</legend>
+
+      <input type="hidden" name="pickup_location" value="Lesesaal im Museum Ludwig" />
+
+<p>
+<strong>Lesesaal im Museum Ludwig</strong>
+</p>
+
+<p/>
+
 <legend class="mt-2">[% msg.maketext("Weitere Angaben zur Bestellung") %]</legend>
 
 <p>Mit * gekennzeichnete Felder sind Pflichtfelder und müssen ausgefüllt werden.</p>
 
 <div class="form-floating mb-3">
-      <input class="form-control" type="text" name="loginname" value="" />
+      <input class="form-control" type="text" name="freeusername" />
      <label for="username">[% msg.maketext("Name, Vorname") %] (*):</label>
 </div>
 
 <p/>
 
-<legend class="mt-2">[% msg.maketext("Bereitstellungsort") %] (*)</legend>
-
-[% IF hide_pickup != "LUDWIG" %]
-<div class="form-check">
-      <input class="form-check-input" type="radio" name="pickup_location" value="Lesesaal im Museum Ludwig"/>
-      <label class="form-check-label" for="pickup_location">Lesesaal im Museum Ludwig</label>
-</div>
-[% END %]
-
-[% IF hide_pickup != "KUNST" %]
-<div class="form-check">
-      <input class="form-check-input" type="radio" name="pickup_location" value="Lesesaal im Museum für angewandte Kunst"/>
-      <label class="form-check-label" for="pickup_location">Lesesaal im Museum für angewandte Kunst</label>
-</div>
-[% END %]
-
-<p/>
-
 <div class="form-floating mb-3">
-      <textarea class="form-control" type="text" name="remark" placeholder="[% msg.maketext("Geben Sie hier bitte ggf. Bemerkungen zu Ihrer Bestellung ein") %]" value="" maxlength="120" size="37" ></textarea>
+      <input class="form-control" type="text" name="remark" />
       <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
 </div>
 
 <div class="form-floating mb-3">
-      <input class="form-control" type="text" name="email" value="" />
+      <input class="form-control" type="text" name="email" />
       <label for="email">[% msg.maketext("E-Mail") %] (*):</label>
 </div>
 

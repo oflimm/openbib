@@ -232,15 +232,13 @@ while (<DAT>){
 		next;
 	    }
 
-	    # Holdings in  separat sichern und weiter
+	    # Holdings separat fuer nachgelagertes processing sichern
 	    if ($field eq "HOL"){
 		push @$holdings_ref, {
 		    $field => $field_ref->{$field},
 		};
 
 		$has_holdings = 1;
-		
-		next;
 	    }
 	    
 	    # Leader bearbeiten

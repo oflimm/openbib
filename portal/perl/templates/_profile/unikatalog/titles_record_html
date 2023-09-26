@@ -21,8 +21,9 @@
   circulation     = record.load_circulation.get_circulation ; 
 
   # Interimsloesung: Fehlende Volltextlinks aus NZ-Publishing
+   nz_fulltext_links_from_fields = 0;
 
-   IF record.database == 'uni' && record.id.match('6441$') && normdata.defined('T1945') && NOT normdata.defined('T4120') ;
+   IF nz_fulltext_links_from_fields && record.database == 'uni' && record.id.match('6441$') && normdata.defined('T1945') && NOT normdata.defined('T4120') ;
 
    custom_normdata = record.to_custom_field_scheme_1;
    

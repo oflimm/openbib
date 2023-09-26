@@ -52,7 +52,9 @@
 
   # Interimsloesung: Fehlende Volltextlinks aus NZ-Publishing
 
-   IF record.id.match('6441$') && fields.defined('T1945') && NOT fields.defined('T4120') ;
+   nz_fulltext_links_from_fields = 0;
+   
+   IF nz_fulltext_links_from_fields && record.id.match('6441$') && fields.defined('T1945') && NOT fields.defined('T4120') ;
 
    pakete = [];
 

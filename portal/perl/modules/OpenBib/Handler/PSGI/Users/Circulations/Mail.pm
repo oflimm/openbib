@@ -415,7 +415,7 @@ sub show_kmb {
     my ($loginname,$password,$access_token) = $user->get_credentials();
     
     my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
-    $record->load_brief_record;
+    $record->load_full_record;
 
     my $userinfo_ref = $user->get_info($user->{ID});
     
@@ -700,7 +700,7 @@ sub mail_kmb {
     $current_date    =~ s!^\s!0!;
 
     my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
-    $record->load_brief_record;
+    $record->load_full_record;
 
     $logger->debug("User: $freeusername");
     # TT-Data erzeugen
@@ -1213,6 +1213,11 @@ sub get_input_definition {
             type     => 'scalar',
         },
         numbering => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        pickup_location => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',

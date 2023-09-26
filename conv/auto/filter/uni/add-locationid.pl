@@ -337,9 +337,52 @@ while (<>){
 
     my $element_ref = [];
 
+    # Items vorhanden? Dann analysieren
     if (defined $title_ref->{fields}{'1944'}){
 	foreach my $location_ref (@{$title_ref->{fields}{'1944'}}){
 	    next unless ($location_ref->{subfield} eq "k");
+	    
+	    if ($location_ref->{content} =~m/^38$/){
+		push @{$element_ref}, "DE-38";
+	    }
+	    elsif ($location_ref->{content} =~m/^(38-MAG|38-AWM)/){
+		push @{$element_ref}, "DE-38";
+	    }
+	    elsif ($location_ref->{content} =~m/^38-HLS/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-HLS";		
+	    }
+	    elsif ($location_ref->{content} =~m/^38-HWA/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-HWA";
+	    }
+	    elsif ($location_ref->{content} =~m/^38-LBS$/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-LBS";
+	    }
+	    elsif ($location_ref->{content} =~m/^38-LS$/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-LS";
+	    }
+	    elsif ($location_ref->{content} =~m/^38-SAB$/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-SAB";
+	    }
+	    elsif ($location_ref->{content} =~m/^(38-\d\d\d)/){
+		push @{$element_ref}, alma2isil($1);
+	    }
+	    elsif ($location_ref->{content} =~m/^KN3/){
+		push @{$element_ref}, alma2isil("Kn 3");	    
+	    }
+	    elsif ($location_ref->{content}){
+		push @{$element_ref}, "DE-".$location_ref->{content};
+	    }
+	}
+    }
+    # Nur Holdings?
+    elsif (defined $title_ref->{fields}{'1943'}){
+	foreach my $location_ref (@{$title_ref->{fields}{'1943'}}){
+	    next unless ($location_ref->{subfield} eq "b");
 	    
 	    if ($location_ref->{content} =~m/^38$/){
 		push @{$element_ref}, "DE-38";

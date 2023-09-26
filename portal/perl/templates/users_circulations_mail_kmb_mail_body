@@ -10,9 +10,9 @@
      E-Jahr: [% year %]
          In: [% source %]
     
-     Katkey: [% titleid %]
-        URL: https://www.kubi-koeln.de/portal?query=inst001:[% titleid %]
-	
+      MMSID: [% titleid %]
+        URL: https://katalog.ub.uni-koeln.de/portal/databases/id/[% database %]/titles/id/[% titleid %].html?l=de
+
 Bemerkungen: [% remark %]
 
        Name: [% freeusername %]

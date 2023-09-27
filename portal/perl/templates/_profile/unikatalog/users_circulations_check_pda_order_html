@@ -52,7 +52,8 @@
      <input type="hidden" name="unit"        value="[% unit %]" />
      <input type="hidden" name="titleid"     value="[% titleid %]" />
      <input type="hidden" name="database"    value="[% database %]" />
-     <input type="hidden" name="title"       value="[% title %]" />
+     <input type="hidden" name="title"       value="[% title |uri %]" />
+     <input type="hidden" name="classification" value="[% classification |uri %]" />
 
 <legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
 
@@ -66,7 +67,7 @@
 [% IF person %]
 <div class="form-floating mb-3">
       <span class="form-control">[% person %]</span>
-     <input type="hidden" name="author"     value="[% person %]" />
+      <input type="hidden" name="author"     value="[% person |uri %]" />
       <label for="person">[% msg.maketext("Autor") %]:</label>
 </div>
 [% END %]
@@ -74,7 +75,7 @@
 [% IF corporatebody %]
 <div class="form-floating mb-3">
       <span class="form-control">[% corporatebody %]</span>
-     <input type="hidden" name="corporation"     value="[% corporatebody %]" />
+     <input type="hidden" name="corporation"     value="[% corporatebody |uri %]" />
       <label for="corporation">[% msg.maketext("Körperschaft") %]:</label>
 </div>
 [% END %]
@@ -82,7 +83,7 @@
 [% IF publisher %]
 <div class="form-floating mb-3">
       <span class="form-control">[% publisher %]</span>
-     <input type="hidden" name="publisher"     value="[% publisher %]" />
+     <input type="hidden" name="publisher"     value="[% publisher |uri %]" />
       <label for="publisher">[% msg.maketext("Ort/Verlag") %]:</label>
 </div>
 [% END %]
@@ -115,7 +116,7 @@
 [% IF source %]
 <div class="form-floating mb-3">
       <span class="form-control">[% source %]</span>
-      <input type="hidden" name="source" value="[% source %]" />
+      <input type="hidden" name="source" value="[% source |uri %]" />
       <label for="source">[% msg.maketext("In") %]:</label>
 </div>
 [% END %]

@@ -37,12 +37,13 @@ use utf8;
 use DBI;
 use Digest::MD5;
 use Email::Valid;
+use HTML::Entities qw/decode_entities/;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use SOAP::Lite;
 use Socket;
 use Template;
-use URI::Escape;
+use URI::Escape qw(uri_unescape);
 
 use OpenBib::API::HTTP::JOP;
 use OpenBib::Common::Util;
@@ -184,9 +185,25 @@ sub create_record {
 	
 	# Wesentliche Informationen zur Identitaet des Bestellers werden nicht per Webformular entgegen genommen,
 	# sondern aus dem Bibliothekskonto des Nutzers via $userinfo_ref.
+
+	# Cleanup der URI und ggf. HTML-encodierten Inhalte
+	eval {
+	    $title       = decode_entities(uri_unescape($title)) if ($title);
+	    $author      = decode_entities(uri_unescape($author)) if ($author);
+	    $corporation = decode_entities(uri_unescape($corporation)) if ($corporation);
+	    $publisher   = decode_entities(uri_unescape($publisher)) if ($publisher);
+	};
+
+	if ($@){
+	    $logger->error($@);
+	}
+	
+	if ($logger->is_debug){
+	    $logger->debug("Title: $title - Author: $author - Corporation: $corporation - Publisher: $publisher - Classification: $classification");
+	}
 	
 	# Production
-	my $response_make_pda_order_ref = $ils->make_pda_order({ title => $title, titleid => $titleid, database => $database, author => $author, coporation => $corporation, publisher => $publisher, year => $year, isbn => $isbn, price => $price, classification => $classification, userid => $userinfo_ref->{username}, username => $userinfo_ref->{fullname}, reservation => $reservation, receipt => $receipt, email => $userinfo_ref->{email}});
+	my $response_make_pda_order_ref = $ils->make_pda_order({ title => $title, titleid => $titleid, database => $database, author => $author, corporation => $corporation, publisher => $publisher, year => $year, isbn => $isbn, price => $price, classification => $classification, userid => $userinfo_ref->{username}, username => $userinfo_ref->{fullname}, reservation => $reservation, receipt => $receipt, email => $userinfo_ref->{email}});
 
 	# Test
 	# my $response_make_pda_order_ref = {

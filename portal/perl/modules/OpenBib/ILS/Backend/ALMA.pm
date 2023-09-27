@@ -2423,10 +2423,10 @@ sub send_alma_api_call {
 	    $logger->debug("Status Code: ".$api_result_ref->{'http_status_code'});
 	}
 
-	# $api_result_ref->{'http_status_code'} = 419; # Testfall concurrent AP request limit reached 
+	# $api_result_ref->{'http_status_code'} = 429; # Testfall concurrent AP request limit reached see: https://developers.exlibrisgroup.com/alma/apis/
 	
 	# Concurrent API-Limit reached
-	if ($api_result_ref->{'http_status_code'} == 419){
+	if ($api_result_ref->{'http_status_code'} == 429){
 	    $logger->fatal("Alma concurrent API request limit reached");
 	    
 	    $api_result_ref->{'response'} = {

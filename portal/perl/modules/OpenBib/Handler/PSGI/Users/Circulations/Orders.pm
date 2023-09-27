@@ -522,7 +522,7 @@ sub confirm_delete_record {
     
     my $record = new OpenBib::Record::Title({ database => $database, id => $titleid });
     
-    $record->load_brief_record;
+    $record->load_full_record;
 
     my $userinfo_ref = $ils->get_userdata($username);
     

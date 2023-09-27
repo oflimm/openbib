@@ -267,6 +267,9 @@ sub create_record {
 	    }
 	    
 	    if ($jop_online){
+
+		$logger->debug("Found for issn $issn in JOP");
+		
 		# TT-Data erzeugen
 		my $ttdata={
 		    database      => $database,
@@ -282,9 +285,11 @@ sub create_record {
 	}
 	# Ueberpruefen auf elektronische Verfuegbarkeit an der UzK (KUG)	
 	elsif ($isbn){
-	    my $online_media = $self->check_online_media({ view => 'uni', isbn => $isbn});
+	    my $online_media = $self->check_online_media({ view => 'unikatalog', isbn => $isbn});
 
 	    if ($online_media->get_size() > 0){
+
+		$logger->debug("Got Online-Media for isbn $isbn");
 		
 		# TT-Data erzeugen
 		my $ttdata={

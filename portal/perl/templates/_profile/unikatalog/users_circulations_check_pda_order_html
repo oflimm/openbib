@@ -104,7 +104,7 @@
 [% END %]
 
 [%   IF price %]
-[% price = price.replace('(\d\d)$',',$1') %]
+[% price = price.replace('(\d\d)$','.$1') %]
 <div class="form-floating mb-3">
       <span class="form-control">[%  price %] EUR</span>
       <input type="hidden" name="price" value="[% price %]" />

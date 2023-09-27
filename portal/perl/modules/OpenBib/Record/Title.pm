@@ -3413,6 +3413,7 @@ sub to_abstract_fields_mab2 {
     # corp[]    : Koerperschaften 0200
     # creator[] : Urheber 0201
     # keywords[]: Schlagworte
+    # classifications[]: Klassifikationen
     # edition   : Auflage
     # publisher : Verlag
     # place     : Verlagsort
@@ -3487,7 +3488,18 @@ sub to_abstract_fields_mab2 {
     }
 
     $abstract_fields_ref->{keywords} = $keywords_ref;
+
+    # Klassifikationen
+    my $classifications_ref=[];
+    foreach my $category (qw/T0700/){
+        next if (!exists $self->{_fields}->{$category});
+        foreach my $part_ref (@{$self->{_fields}->{$category}}){
+            push @$classifications_ref, $part_ref->{content};
+        }
+    }
     
+    $abstract_fields_ref->{classifications} = $classifications_ref;
+
     # Auflage
     $abstract_fields_ref->{edition} = (exists $self->{_fields}->{T0403})?$self->{_fields}->{T0403}[0]{content}:'';
 
@@ -3715,6 +3727,7 @@ sub to_abstract_fields_marc21 {
     # corp[]    : Koerperschaften 0200
     # creator[] : Urheber 0201
     # keywords[]: Schlagworte
+    # classifications[]: Klassifikationen
     # edition   : Auflage
     # publisher : Verlag
     # place     : Verlagsort
@@ -3795,6 +3808,17 @@ sub to_abstract_fields_marc21 {
     }
 
     $abstract_fields_ref->{keywords} = $keywords_ref;
+
+    # Klassifikationen
+    my $classifications_ref=[];
+    foreach my $category (qw/T0050 T0082 T0084/){
+        next if (!defined $field_ref->{$category});
+        foreach my $part_ref (@{$field_ref->{$category}}){
+            push @$classifications_ref, $part_ref->{a} if (defined $part_ref->{a});
+        }
+    }
+
+    $abstract_fields_ref->{classifications} = $classifications_ref;
     
     # Auflage
     $abstract_fields_ref->{edition} = (defined $field_ref->{T0250}  && defined $field_ref->{T0250}[0]{a})?$field_ref->{T0250}[0]{a}:'';

@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-
+[%# USE dumper;dumper.dump(record.to_hash)%]
 <div class="card mt-5 mb-5 me-5">
 <div class="card-header">[% msg.maketext("Neuanschaffung") %]</div>
 <div class="card-body">
@@ -48,11 +48,11 @@
 
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/pdaorders">
  
-     <input type="hidden" name="unit_desc"   value="[% unit_desc |uri %]" />
+     <input type="hidden" name="unit_desc"   value="[% unit_desc %]" />
      <input type="hidden" name="unit"        value="[% unit %]" />
      <input type="hidden" name="titleid"     value="[% titleid %]" />
      <input type="hidden" name="database"    value="[% database %]" />
-     <input type="hidden" name="title"       value="[% title | uri %]" />
+     <input type="hidden" name="title"       value="[% title %]" />
 
 <legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
 
@@ -66,7 +66,7 @@
 [% IF person %]
 <div class="form-floating mb-3">
       <span class="form-control">[% person %]</span>
-     <input type="hidden" name="author"     value="[% person | uri %]" />
+     <input type="hidden" name="author"     value="[% person %]" />
       <label for="person">[% msg.maketext("Autor") %]:</label>
 </div>
 [% END %]
@@ -74,7 +74,7 @@
 [% IF corporatebody %]
 <div class="form-floating mb-3">
       <span class="form-control">[% corporatebody %]</span>
-     <input type="hidden" name="corporation"     value="[% corporatebody | uri %]" />
+     <input type="hidden" name="corporation"     value="[% corporatebody %]" />
       <label for="corporation">[% msg.maketext("Körperschaft") %]:</label>
 </div>
 [% END %]
@@ -82,7 +82,7 @@
 [% IF publisher %]
 <div class="form-floating mb-3">
       <span class="form-control">[% publisher %]</span>
-     <input type="hidden" name="publisher"     value="[% publisher | uri %]" />
+     <input type="hidden" name="publisher"     value="[% publisher %]" />
       <label for="publisher">[% msg.maketext("Ort/Verlag") %]:</label>
 </div>
 [% END %]
@@ -90,7 +90,7 @@
 [% IF isbn %]
 <div class="form-floating mb-3">
       <span class="form-control">[% isbn %]</span>
-      <input type="hidden" name="isbn" value="[% isbn | uri %]" />
+      <input type="hidden" name="isbn" value="[% isbn %]" />
       <label for="location_mark">[% msg.maketext("ISBN") %]:</label>
 </div>
 [% END %]
@@ -98,23 +98,24 @@
 [% IF issn %]
 <div class="form-floating mb-3">
       <span class="form-control">[% issn %]</span>
-      <input type="hidden" name="isbn" value="[% issn | uri %]" />
+      <input type="hidden" name="isbn" value="[% issn %]" />
       <label for="location_mark">[% msg.maketext("ISSN") %]:</label>
 </div>
 [% END %]
 
 [%   IF price %]
+[% price = price.replace('(\d\d)$',',$1') %]
 <div class="form-floating mb-3">
-      <span class="form-control">[%  price.replace('(\d\d)$',',$1') %] EUR</span>
-      <input type="hidden" name="year" value="[% price.replace('(\d\d)$',',$1') %]" />
-      <label for="year">[% msg.maketext("Preis") %]:</label>
+      <span class="form-control">[%  price %] EUR</span>
+      <input type="hidden" name="price" value="[% price %]" />
+      <label for="price">[% msg.maketext("Preis") %]:</label>
 </div>
 [%   END %]
 
 [% IF source %]
 <div class="form-floating mb-3">
       <span class="form-control">[% source %]</span>
-      <input type="hidden" name="source" value="[% source | uri %]" />
+      <input type="hidden" name="source" value="[% source %]" />
       <label for="source">[% msg.maketext("In") %]:</label>
 </div>
 [% END %]
@@ -123,7 +124,7 @@
 [%   IF year %]
 <div class="form-floating mb-3">
       <span class="form-control">[% year %]</span>
-      <input type="hidden" name="year" value="[% uri_escape(year) %]" />
+      <input type="hidden" name="year" value="[% year %]" />
       <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
 </div>
 [%   END %]

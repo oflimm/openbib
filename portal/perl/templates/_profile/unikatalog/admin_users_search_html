@@ -35,8 +35,10 @@
    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
 -%]
 
-<div class="row d-flex flex-md-row">
+[% IF userlist.size > 0 %]
+<div class="row d-flex flex-md-row pb-2 mb-2">
 [%# USE dumper;dumper.dump(userlist)%]
+
 <!-- Userlist begins here -->
 <div class="ob-resultlist">
   <div class="ob-resultheader">
@@ -91,4 +93,14 @@
 [% PROCESS common/subtemplate name="pagination" %]    
 
 </div>
+[% ELSE %]
+<h2>[% msg.maketext("Keine Nutzer gefunden")%]</h2>
+
+<p>
+[% msg.maketext("Zu Ihrer Suchanfrage wurden keine passenden Nutzerkennungen gefunden.") %]
+</p>
+
+<a href="[% path_prefix %]/[% config.get("admin_loc") %]/users.html?l=[% lang %]" class="btn btn-primary mb-3">[% msg.maketext("Zurück") %]</a>
+
+[% END %]
 [%# USE dumper;dumper.dump(userlist) %]

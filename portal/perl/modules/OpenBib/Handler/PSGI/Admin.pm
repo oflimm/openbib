@@ -100,8 +100,12 @@ sub authorization_successful {
     my $scope              = $self->param('scope')              || '';
     my $basic_auth_failure = $self->param('basic_auth_failure') || 0;
     my $user               = $self->param('user');
-    my $userid             = $self->param('userid')             || $user->{ID} || '';
+    my $userid             = $user->{ID} || ''; # Userid of requesting user
 
+    if ($logger->is_debug){
+	$logger->debug("Checking authorization of user $userid for right $required_right in scope $scope");
+    }
+    
     my $user_has_required_right = 0;
 
     # Wird ein zum Zugriff erforderliches Recht uebergeben, dann muessen die Berechtigungen in den Rollen des Nutzers ueberprueft
@@ -110,9 +114,16 @@ sub authorization_successful {
         if ($scope && $userid && $self->is_authenticated('user',$userid)){
             if ($user->allowed_for_view($view)){
                 $user_has_required_right = $user->has_right({ scope => $scope, right => $required_right });
+		if ($logger->is_debug){
+		    $logger->debug("Authorization result of user $userid for right $required_right in scope $scope: $user_has_required_right");
+		}
             }
+	    elsif ($logger->is_debug){
+		$logger->debug("User $userid not allowed for view $view");
+	    }
         }
     }
+    
     $logger->debug("Basic http auth failure: $basic_auth_failure");
 
     if ($self->is_authenticated('admin') || $user_has_required_right){

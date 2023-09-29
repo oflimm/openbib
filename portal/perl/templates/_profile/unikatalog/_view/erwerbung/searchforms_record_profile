@@ -9,6 +9,13 @@
 %]
 <select name="profile" class="form-control" id="profile">
 [% checked_profile = 0 %]
+[% searchprofileid_of_erwerbung = config.get_searchprofile_of_orgunit('unikatalog','erwerbung') %]
+<option value="[% searchprofileid_of_erwerbung %]"
+[%- IF prevprofile == searchprofileid_of_erwerbung && NOT checked_profile -%]
+ selected="selected"
+[%- checked_profile=1 ; END -%]
+>Erwerbungsrelevante Datenbanken</option>
+<optgroup label="[% msg.maketext("Profile") %]">
 <option value="[% searchprofileid_of_books %]"
 [%- IF prevprofile == searchprofileid_of_books && NOT checked_profile -%]
  selected="selected"
@@ -19,13 +26,6 @@
  selected="selected"
 [%- checked_profile=1 ; END -%]
 >[% msg.maketext("Aufsätze &amp; mehr") %]</option>
-<optgroup label="[% msg.maketext("Profile") %]">
-[% searchprofileid_of_erwerbung = config.get_searchprofile_of_orgunit('unikatalog','erwerbung') %]
-<option value="[% searchprofileid_of_erwerbung %]"
-[%- IF prevprofile == searchprofileid_of_erwerbung && NOT checked_profile -%]
- selected="selected"
-[%- checked_profile=1 ; END -%]
->Erwerbungsrelevante Datenbanken</option>
 [% searchprofileid_of_bestellungen = config.get_searchprofile_of_database('bestellungen') %]
 [% searchprofileid_of_ebookpda = config.get_searchprofile_of_database('ebookpda') %]
 [% searchprofileid_of_warenkorb_usb = config.get_searchprofile_of_view('warenkorb_usb') %]

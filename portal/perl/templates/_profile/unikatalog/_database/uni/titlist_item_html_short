@@ -326,7 +326,8 @@
      #     title = item.${'T0246'}.first.${'a'};
      # END;
 
-     band = item.${"T0245"}.first.${'n'};
+     band        = item.${"T0245"}.first.${'n'};
+     bandtitel   = item.${"T0245"}.first.${'p'};     
      gesamttitel = item.${"T0490"}.first.${'a'};
 
      is_schriftenreihe = 0;
@@ -347,6 +348,11 @@
 	  IF zaehlung == title ;
 	     title = "";
 	  END;
+	  IF bandtitel && title ;	  
+	    title = "${bandtitel} (${title})";
+	  ELSIF bandtitel ;
+	    title = "${bandtitel}";	  
+	  END ;
           title = "${zaehlung}. ${title}";
        END;     
      END;

@@ -431,6 +431,7 @@ FOREACH field IN normdata;
          main_title         = "";
 	 supplemental_title = "";
 	 published_by       = "";
+	 part_title         = "";
 	 
          IF thisfield.${'a'} ;
 	   main_title = thisfield.${'a'};
@@ -444,6 +445,10 @@ FOREACH field IN normdata;
 	   published_by = thisfield.${'c'};	 
 	 END;
 
+         IF thisfield.${'p'} ;
+	   part_title = thisfield.${'p'};	 
+	 END;
+
          IF supplemental_title ;
 	    main_title = "${main_title} : ${supplemental_title}";
 	 END;
@@ -454,7 +459,15 @@ FOREACH field IN normdata;
 	   volume = thisfield.${'n'};	 
 	 END;
 
-         IF main_title ;
+         IF part_title ;
+	   content = part_title;
+           content   = "<b>${highlightquery(searchquery,content)}</b>";
+
+           IF NOT content_map.${'Titel'} ;
+	     content_map.${'Titel'} = [];
+	   END;
+           content_map.${'Titel'}.push(content);	 
+         ELSIF main_title ;
 	   content = main_title;
            content   = "<b>${highlightquery(searchquery,content)}</b>";
 

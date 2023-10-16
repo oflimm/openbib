@@ -10415,26 +10415,31 @@ convtab:
       '0245':
         'a': # HST
           index:
-            'title': 1
-            'titlestring': 1
-            'freesearch': 1
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
         'b': # Zusatz zum HST, PST, ...
           index:
             'ft245b': 1
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
         'c':  # Vorl. Verfasser Koerperschaft
           index:
             'person': 40
             'corporatebody': 40
             'freesearch': 40
+        'p': # Band-Titel
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0246':
         'a': # AST, WST, TitelOrth
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
         'b':  # Verlag, Drucker
           index:
             'publisher': 1
@@ -11401,26 +11406,31 @@ convtab:
       '0245':
         'a': # HST
           index:
-            'title': 1
-            'titlestring': 1
-            'freesearch': 1
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
         'b': # Zusatz zum HST, PST, ...
           index:
             'ft245b': 1
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
         'c':  # Vorl. Verfasser Koerperschaft
           index:
             'person': 40
             'corporatebody': 40
             'freesearch': 40
+        'p': # Band-Titel
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0246':
         'a': # AST, WST, TitelOrth
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
         'b':  # Verlag, Drucker
           index:
             'publisher': 1
@@ -12499,26 +12509,31 @@ convtab:
       '0245':
         'a': # HST
           index:
-            'title': 1
-            'titlestring': 1
-            'freesearch': 1
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
         'b': # Zusatz zum HST, PST, ...
           index:
             'ft245b': 1
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
         'c':  # Vorl. Verfasser Koerperschaft
           index:
             'person': 40
             'corporatebody': 40
             'freesearch': 40
+        'p': # Band-Titel
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0246':
         'a': # AST, WST, TitelOrth
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
         'b':  # Verlag, Drucker
           index:
             'publisher': 1
@@ -12695,6 +12710,14 @@ convtab:
             'provenancestring': 20
           facet:
             'provenance': 1
+      '0982': # Lokales (Instiuts)Schlagwort
+        'a':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '1942': 
         'a': # GND Anreicherung: Verweisungsform Person
           index:
@@ -13590,26 +13613,31 @@ convtab:
       '0245':
         'a': # HST
           index:
-            'title': 1
-            'titlestring': 1
-            'freesearch': 1
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
         'b': # Zusatz zum HST, PST, ...
           index:
             'ft245b': 1
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
         'c':  # Vorl. Verfasser Koerperschaft
           index:
             'person': 40
             'corporatebody': 40
             'freesearch': 40
+        'p': # Band-Titel
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0246':
         'a': # AST, WST, TitelOrth
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
         'b':  # Verlag, Drucker
           index:
             'publisher': 1
@@ -13786,6 +13814,14 @@ convtab:
             'provenancestring': 20
           facet:
             'provenance': 1
+      '0982': # Lokales (Instiuts)Schlagwort
+        'a':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '1942': 
         'a': # GND Anreicherung: Verweisungsform Person
           index:
@@ -14685,26 +14721,31 @@ convtab:
       '0245':
         'a': # HST
           index:
-            'title': 1
-            'titlestring': 1
-            'freesearch': 1
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
         'b': # Zusatz zum HST, PST, ...
           index:
             'ft245b': 1
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
         'c':  # Vorl. Verfasser Koerperschaft
           index:
             'person': 40
             'corporatebody': 40
             'freesearch': 40
+        'p': # Band-Titel
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0246':
         'a': # AST, WST, TitelOrth
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
         'b':  # Verlag, Drucker
           index:
             'publisher': 1
@@ -14881,6 +14922,14 @@ convtab:
             'provenancestring': 20
           facet:
             'provenance': 1
+      '0982': # Lokales (Instiuts)Schlagwort
+        'a':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '1942': 
         'a': # GND Anreicherung: Verweisungsform Person
           index:
@@ -15780,26 +15829,31 @@ convtab:
       '0245':
         'a': # HST
           index:
-            'title': 1
-            'titlestring': 1
-            'freesearch': 1
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
         'b': # Zusatz zum HST, PST, ...
           index:
             'ft245b': 1
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
         'c':  # Vorl. Verfasser Koerperschaft
           index:
             'person': 40
             'corporatebody': 40
             'freesearch': 40
+        'p': # Band-Titel
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
       '0246':
         'a': # AST, WST, TitelOrth
           index:
             'title': 1
             'titlestring': 1
-            'freesearch': 1
+            'freesearch': 30
         'b':  # Verlag, Drucker
           index:
             'publisher': 1

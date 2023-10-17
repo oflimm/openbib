@@ -350,7 +350,7 @@ if ($test){
 }
 else {
     push @threads, threads->new(\&threadA,'Thread 1');
-    push @threads, threads->new(\&threadB,'Thread 2');
+#    push @threads, threads->new(\&threadB,'Thread 2');
     push @threads, threads->new(\&threadC,'Thread 3');
 }
 
@@ -365,9 +365,9 @@ autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['bestellun
 
 ##############################
 
-$logger->info("### EBOOKPDA");
+#$logger->info("### EBOOKPDA");
 
-autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['proquestpda'] });
+#autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['proquestpda'] });
 
 ##############################
 
@@ -387,6 +387,7 @@ if ($cluster){
 $logger->info("### Generating joined searchindexes");
 
 system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");
+system("/opt/openbib/autoconv/bin/autojoinindex_elasticsearch.pl");
 
 $logger->info("### Dumping isbns");
 
@@ -471,7 +472,7 @@ sub threadA {
 #    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['doab','elis','gallica','gdz','gresham_oer','hathitrust','gutenberg','intechopen','khanacademy','khanacademy_de','loc','loviscach_oer','mitocw_oer','nptelhrd_oer','stanford_oer','ucberkeley_oer','ucla_oer','yale_oer','zvdd'] });
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['doab','oapen'] });
 
-    autoconvert({ updatemaster => $updatemaster, databases => ['nationallizenzen','gbvnationallizenzen','gesiskoeln'] });
+#    autoconvert({ updatemaster => $updatemaster, databases => ['nationallizenzen','gbvnationallizenzen','gesiskoeln'] });
 
     $logger->info("### Sammlungen aus dem Universitaet");
     
@@ -627,7 +628,7 @@ sub threadC {
     
     $logger->info("### Gekaufte und lizensierte E-Medien");
     
-    autoconvert({ updatemaster => $updatemaster, databases => ['emedienkauf','tmpebooks'] });
+#    autoconvert({ updatemaster => $updatemaster, databases => ['emedienkauf','tmpebooks'] });
     
     return $thread_description;
 }

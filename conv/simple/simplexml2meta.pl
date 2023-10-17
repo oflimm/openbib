@@ -340,7 +340,8 @@ sub parse_record {
             next unless (defined $element->first_child());
             my $content = konv($element->first_child()->text());
 
-	    $logger->info("Field $kateg - $content");
+	    $logger->debug("Field $kateg - $content");
+	    
             if ($convconfig->{filter}{$kateg}{filter_junk}){
                 $content = filter_junk($content);
             }

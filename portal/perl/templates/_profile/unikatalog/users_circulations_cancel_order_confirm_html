@@ -118,6 +118,7 @@
       <label for="username">[% msg.maketext("Name") %]:</label>
 </div>
 
+[% IF 0 == 1 %]
 <div class="form-floating mb-3">
       <select name="remark" id="remark" class="form-control" size="1">
         <option value="">[ Bitte wählen Sie aus ]</option>
@@ -133,6 +134,7 @@
       <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Stornogrund") %]*:</label>
 </div>
 
+
 <p/>
 
 <legend class="mt-2">[% msg.maketext("Stornierungsquittung") %]</legend>
@@ -147,6 +149,7 @@
       <input type="hidden" name="email" value="[% userinfo.email %]" />
       <label for="email">[% msg.maketext("E-Mail") %]:</label>
 </div>
+[% END %]
 
 <p>[% msg.maketext("Eingabefelder mit * müssen ausgefüllt werden.") %]</p>
 

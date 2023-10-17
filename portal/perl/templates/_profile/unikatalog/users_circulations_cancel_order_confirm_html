@@ -149,9 +149,10 @@
       <input type="hidden" name="email" value="[% userinfo.email %]" />
       <label for="email">[% msg.maketext("E-Mail") %]:</label>
 </div>
-[% END %]
 
 <p>[% msg.maketext("Eingabefelder mit * müssen ausgefüllt werden.") %]</p>
+
+[% END %]
 
 <button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Stornieren") %]</button>
 

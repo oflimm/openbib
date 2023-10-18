@@ -248,10 +248,30 @@
 [%    END %]
 [%############### Temporaerer Standort ######## %]
 [% ELSIF thiscirculation.unavailability_info && thiscirculation.unavailability_info.first.expected && thiscirculation.unavailability_info.first.expected.match('temporarily unavailable') %]
+[%   IF thiscirculation.department_id.match('^(38|38-HWA)$') && thiscirculation.unavailability_info.first.content.match('Aktive Fernleihen') %]
+[% msg.maketext("Das Exemplar ist derzeit über die Fernleihe ausgeliehen.") %]
+
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/reservations">
+   <input type="hidden" name="l"             value="[% lang %]" />
+   <input type="hidden" name="validtarget"   value="[% database %]" />
+   <input type="hidden" name="titleid"       value="[% record.id %]" />
+   <input type="hidden" name="holdingid"     value="[% thiscirculation.holdingid  %]" />
+   <input type="hidden" name="unit"          value="[% thiscirculation.department_id %]" />
+   <input type="hidden" name="unit_desc"     value="[% standort %]" />
+   <input type="hidden" name="storage"       value="[% thiscirculation.storage_id %]" />
+   <input type="hidden" name="num_holdings_in_unit"  value="[% num_holdings_in_unit %]" />
+[% IF thiscirculation.availability_info.first.defined('limitation') %]
+   <input type="hidden" name="limitation"    value="[% thiscirculation.availability_info.first.limitation %]" />
+[% END %]
+   <!-- Kein Parameter pickup_location = Ausgabeort bestimmen -->
+   <input type="submit" value="Vormerken" class="btn btn-primary mb-1 mt-2" />
+</form>
+
+[%   ELSIF thiscirculation.unavailability_info.first.content.match('Ausstellung') %]
 [% msg.maketext("Exemplar steht nicht für die Benutzung zur Verfügung") %]
-[%   IF thiscirculation.unavailability_info.first.content.match('Ausstellung') %]
 <br/>(Ausstellung)
 [%   ELSE %]
+[% msg.maketext("Exemplar steht nicht für die Benutzung zur Verfügung") %]
 <br/>[% thiscirculation.unavailability_info.first.content %]
 [%   END %]
 [%############### HANDAPPARAT ################# %]
@@ -449,10 +469,10 @@ Präsenzbestand
            vormerkbutton = 0 ;
          END;
        END;
-     ELSIF thiscirculation.department_id == "4";
+     ELSIF thiscirculation.department_id == "38-HWA";
        # Kein Vormerkbutton in der HWA, wenn mindestens ein Exemplar bestellbar ist
        FOREACH checkcirculation IN circulation ;
-         IF checkcirculation.department_id == 4 && checkcirculation.availability.match('^(loan|order)$');
+         IF checkcirculation.department_id == "38-HWA" && checkcirculation.availability.match('^(loan|order)$');
            vormerkbutton = 0 ;
          END;
        END;

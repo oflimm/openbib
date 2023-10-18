@@ -51,6 +51,10 @@
     'order': 0
     'loan': 1
     'reservation': 1
+    'pickup_locations':
+      - type: 'LIBRARY'
+        id: 'Abholregal'
+        desc: 'USB Hauptabteilung: Abholregale'    
 '38-HLS':
   '38-HLS-MAG':
     'order': 1
@@ -125,5 +129,9 @@
     'order': 0
     'loan': 1
     'reservation': 1
+    'pickup_locations':
+      - type: 'LIBRARY'
+        id: 'Ausgabe'
+        desc: 'HF-Bibliothek / Heilpädagogik: Ausgabe'
 
 

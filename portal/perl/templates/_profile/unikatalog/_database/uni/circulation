@@ -248,7 +248,7 @@
 [%    END %]
 [%############### Temporaerer Standort ######## %]
 [% ELSIF thiscirculation.unavailability_info && thiscirculation.unavailability_info.first.expected && thiscirculation.unavailability_info.first.expected.match('temporarily unavailable') %]
-[% msg.maketext("Medium temporär nicht verfügbar") %]
+[% msg.maketext("Exemplar steht nicht für die Benutzung zur Verfügung") %]
 [%   IF thiscirculation.unavailability_info.first.content.match('Ausstellung') %]
 <br/>(Ausstellung)
 [%   ELSE %]

@@ -1749,14 +1749,14 @@ sub check_alma_request {
 	    $json_result_ref = $api_result_ref->{'data'};
 	}
 
-	# Empty response = blocked user
+	# Empty response, eg blocked user
 	if (! %{$json_result_ref}){
 	    $logger->fatal("Empty response (Status code: ".$api_result_ref->{'http_status_code'}." - Method: GET - URL: $url)");
 
 	    $response_ref = {
 		"code" => 403,
 		    "error" => "user blocked",
-		    "error_description" => $msg->maketext("Für Sie ist keine Bestellung möglich, weil Ihr Benutzerausweis gesperrt ist."),
+		    "error_description" => $msg->maketext("Eine Bestellmöglichkeit für dieses Medium wurde vom Cloud-Bibliothekssystem Alma ohne Nennung von Gründen abgelegt. Ursache könnte erfahrungsgemäß u.a. eine Sperrung Ihres Benutzerausweises sein."),
 	    };
 	    
 	    return $response_ref;

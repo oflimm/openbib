@@ -248,7 +248,7 @@
 [%    END %]
 [%############### Temporaerer Standort ######## %]
 [% ELSIF thiscirculation.unavailability_info && thiscirculation.unavailability_info.first.expected && thiscirculation.unavailability_info.first.expected.match('temporarily unavailable') %]
-[%   IF thiscirculation.department_id.match('^(38|38-HWA)$') && thiscirculation.unavailability_info.first.content.match('Aktive Fernleihen') %]
+[%   IF thiscirculation.department_id.match('^(38|38-HWA|38-101|38-132|38-307)$') && thiscirculation.unavailability_info.first.content.match('Aktive Fernleihen') %]
 [% msg.maketext("Das Exemplar ist derzeit über die Fernleihe ausgeliehen.") %]
 
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/reservations">

@@ -1756,7 +1756,7 @@ sub check_alma_request {
 	    $response_ref = {
 		"code" => 403,
 		    "error" => "user blocked",
-		    "error_description" => $msg->maketext("Eine Bestellmöglichkeit für dieses Medium wurde vom Cloud-Bibliothekssystem Alma ohne Nennung von Gründen abgelegt. Ursache könnte erfahrungsgemäß u.a. eine Sperrung Ihres Benutzerausweises sein."),
+		    "error_description" => $msg->maketext("Eine Bestellung bzw. Vormerkung dieses Mediums wurde vom Cloud-Bibliothekssystem Alma ohne Nennung von Gründen abgelehnt. Ursache könnte erfahrungsgemäß u.a. eine Sperrung Ihres Benutzerausweises sein."),
 	    };
 	    
 	    return $response_ref;

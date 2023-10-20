@@ -79,13 +79,13 @@ my $denylist_enrichmnt_ref = {
 my $denylist_ref = {
     'alekiddr' => 1,
     'doab' => 1,
-    'oapen' => 1,
+    'dreierpda' => 1,
     'ebookpda' => 1,
     'econbiz' => 1,
     'edz' => 1,
+    'emedienkauf' => 1,
     'gentzdigital' => 1,
     'inst001' => 1,
-    'uni' => 1,
     'inst005' => 1,
     'inst005master' => 1,
     'inst006' => 1,
@@ -120,6 +120,7 @@ my $denylist_ref = {
     'inst134master' => 1,
     'inst136' => 1,
     'inst136master' => 1,
+    'inst137' => 1,
     'inst146' => 1,
     'inst146master' => 1,
     'inst156' => 1,
@@ -128,17 +129,16 @@ my $denylist_ref = {
     'inst157master' => 1,
     'inst166' => 1,
     'inst166master' => 1,
-    'inst137' => 1,
     'inst201' => 1,
     'inst201master' => 1,
     'inst203' => 1,
     'inst203master' => 1,
     'inst204' => 1,
+    'inst204' => 1,    
     'inst204master' => 1,
+    'inst204master' => 1,    
     'inst205' => 1,    
     'inst205master' => 1,    
-    'inst204' => 1,    
-    'inst204master' => 1,    
     'inst206' => 1,
     'inst206master' => 1,    
     'inst207' => 1,    
@@ -297,23 +297,23 @@ my $denylist_ref = {
     'inst622master' => 1,
     'inst623' => 1,
     'inst623master' => 1,
+    'kups'     => 1,
     'lehrbuchsmlg' => 1,
     'lesesaal' => 1,
+    'oapen' => 1,
     'openlibrary' => 1,
+    'proquestpda' => 1,
     'rheinabt' => 1,
     'rheinabt' => 1,
-    'kups'     => 1,
-    'emedienkauf' => 1,
+    'roemkepda' => 1,
+    'schweitzerpda' => 1,
     'tmpebooks' => 1,
+    'uni' => 1,
     'usbebooks' => 1,
     'usbhwa' => 1,
-    'usbsab' => 1,
     'usblbs' => 1,
     'usbls' => 1,
-    'proquestpda' => 1,
-    'roemkepda' => 1,
-    'dreierpda' => 1,
-    'schweitzerpda' => 1,
+    'usbsab' => 1,
     'wiso' => 1,
 };
 
@@ -350,7 +350,7 @@ if ($test){
 }
 else {
     push @threads, threads->new(\&threadA,'Thread 1');
-#    push @threads, threads->new(\&threadB,'Thread 2');
+    push @threads, threads->new(\&threadB,'Thread 2');
     push @threads, threads->new(\&threadC,'Thread 3');
 }
 

@@ -115,10 +115,10 @@ my @authority_files = (
         type     => "title",
         filename => "$rootdir/pools/$database/meta.title.gz",
     },
-    {
-        type     => "holding",
-        filename => "$rootdir/pools/$database/meta.holding.gz",
-    }
+    # {
+    #     type     => "holding",
+    #     filename => "$rootdir/pools/$database/meta.holding.gz",
+    # }
 );
 
 my $conv_config = new OpenBib::Conv::Config({dbname => $database});

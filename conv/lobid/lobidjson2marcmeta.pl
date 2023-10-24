@@ -614,6 +614,22 @@ while (my $jsonline = <$input_io>){
 	}
     }
 
+    # Reihe/Serie/Gesamttitel isPartOf
+    if (defined $record_ref->{isPartOf}){
+	my $super_mult = 1;
+	foreach my $part_ref (@{$record_ref->{isPartOf}}){
+	    if (defined $part_ref->{hasSuperordinate}){
+		foreach my $supertitle (@{$part_ref->{hasSuperordinate}}){
+		    push @{$title_ref->{fields}{'0490'}}, {
+			mult     => $super_mult++,
+			subfield => 'a',
+			content => $supertitle,
+		    };
+		}
+	    }
+	}
+    }
+    
     # hasVersion -> 0662/856$u URL
     if (defined $record_ref->{hasVersion}){
 	my $url_mult = 1;

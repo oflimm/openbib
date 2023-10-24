@@ -49,6 +49,6 @@ my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 
-print "### $pool: Reduzierung der Holdings auf 38M\n";
+print "### $pool: Reduzierung der Holdings auf Kn41\n";
 
 system("cd $rootdir/data/$pool ; $rootdir/filter/$pool/fix_holding.pl < meta.holding > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");

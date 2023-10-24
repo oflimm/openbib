@@ -363,6 +363,9 @@ while (my $jsonline = <$input_io>){
     }
 
     if (defined $record_ref->{subject}){
+	my $subject_mult        = 1;
+	my $classification_mult = 1;
+
     	foreach my $item_ref (@{$record_ref->{subject}}){
 	    # Notationen
 	    if (defined $item_ref->{notation}){
@@ -378,8 +381,6 @@ while (my $jsonline = <$input_io>){
 		unless ($classification_id){
 		    $classification_id = OpenBib::Conv::Common::Util::normalize_id($item_ref->{notation});
 		}
-		
-		my $classification_mult = 1;
 		
 		if ($classification_id){
 		    if (!defined $classifications_done_ref->{$classification_id}){
@@ -423,7 +424,7 @@ while (my $jsonline = <$input_io>){
 		}
 
 	    }
-	    # Schlagworte
+	    # Schlagwortkette
 	    elsif (defined $item_ref->{componentList}){
 		foreach my $subject_ref (@{$item_ref->{componentList}}){
 		    my $subject_id;
@@ -440,8 +441,6 @@ while (my $jsonline = <$input_io>){
 			$subject_id = OpenBib::Conv::Common::Util::normalize_id($subject_ref->{label});
 		    }
 		    
-		    my $subject_mult = 1;
-		    
 		    if ($subject_id){
 			if (!defined $subjects_done_ref->{$subject_id}){
 			    
@@ -455,6 +454,17 @@ while (my $jsonline = <$input_io>){
 				subfield => '',
 				content  => $subject_ref->{label},
 			    };
+
+			    if (defined $subject_ref->{altLabel}){
+				my $alt_mult = 1;
+				foreach my $altlabel (@{$subject_ref->{altLabel}}){
+				    push @{$normrecord_ref->{fields}{'0820'}}, {
+					mult     => $alt_mult++,
+					subfield => '',
+					content  => $altlabel,
+				    };
+				}
+			    }
 			    
 			    print SUBJECT encode_json $normrecord_ref, "\n";
 			    
@@ -476,6 +486,66 @@ while (my $jsonline = <$input_io>){
 		    }
 		}
 	    }
+	    # Einzelnes Schlagwort
+	    elsif (defined $item_ref->{label}){
+		my $subject_id;
+		
+		my $gnd_id = $item_ref->{gndIdentifier};
+		
+		if ($gnd_id){
+		    $gnd_id = "(DE-588)".$gnd_id;
+		}
+		
+		$subject_id = $gnd_id;
+		
+		unless ($subject_id){
+		    $subject_id = OpenBib::Conv::Common::Util::normalize_id($item_ref->{label});
+		}
+		
+		if ($subject_id){
+		    if (!defined $subjects_done_ref->{$subject_id}){
+			
+			my $normrecord_ref = {
+			    'fields' => {},
+			};
+			
+			$normrecord_ref->{id} = $subject_id;
+			push @{$normrecord_ref->{fields}{'0800'}}, {
+			    mult     => 1,
+			    subfield => '',
+			    content  => $item_ref->{label},
+			};
+			
+			if (defined $item_ref->{altLabel}){
+			    my $alt_mult = 1;
+			    foreach my $altlabel (@{$item_ref->{altLabel}}){
+				push @{$normrecord_ref->{fields}{'0820'}}, {
+				    mult     => $alt_mult++,
+				    subfield => '',
+				    content  => $altlabel,
+				};
+			    }
+			}
+			
+			print SUBJECT encode_json $normrecord_ref, "\n";
+			
+			$subjects_done_ref->{$subject_id} = 1;	
+			
+		    }
+		    
+		    my $new_category = "0600";
+		    
+		    push @{$title_ref->{fields}{$new_category}}, {
+			content    => $item_ref->{label},
+			mult       => $subject_mult,
+			subfield   => 'a',
+			id         => $subject_id,
+			supplement => '',
+		    };
+		    
+		    $subject_mult++;
+		}
+	    }	    
     	}
     }
     
@@ -561,6 +631,19 @@ while (my $jsonline = <$input_io>){
 	    $url_mult++;
 	}
     }
+
+    # tableOfContents -> 4110 URL
+    if (defined $record_ref->{tableOfContents}){
+	foreach my $toc_ref (@{$record_ref->{tableOfContents}}){
+	    my $toc_mult = 1;
+	    push @{$title_ref->{fields}{'4110'}}, { # URL
+		mult     => $toc_mult,
+		subfield => '',
+		content => $toc_ref->{id},
+	    };
+	    $toc_mult++;
+	}
+    }
     
     # fulltextOnline -> 4120 Volltext-URL
     if (defined $record_ref->{fulltextOnline}){
@@ -641,7 +724,7 @@ while (my $jsonline = <$input_io>){
 	push @{$title_ref->{fields}{'0250'}}, {
 	    mult     => 1,
 	    subfield => 'a',
-	    content => $record_ref->{edition},
+	    content => $record_ref->{edition}[0],
 	}
     }
 
@@ -661,7 +744,7 @@ while (my $jsonline = <$input_io>){
 	    }
 
 	    if (!defined $holding_id){
-		$logger->error("No holding id for ".YAML::Dump($holding_ref));
+		$logger->error("No holding id in title ".$title_ref->{id}." for item ".YAML::Dump($holding_ref));
 		next;
 	    }
 	    

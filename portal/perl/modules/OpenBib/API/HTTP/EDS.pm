@@ -541,12 +541,6 @@ sub get_record {
 	# Hinweis pkostaedt: Der Link "Citing Articles" funktioniert nicht in jedem Fall, z.B. ID=edswss:000312205100002
 	if ($json_result_ref->{Record}{Header}{DbId} =~ /^(edswsc|edswss)$/ && $json_result_ref->{Record}{Header}{An}) {
 	    my $url = "http://gateway.isiknowledge.com/gateway/Gateway.cgi?&GWVersion=2&SrcAuth=EBSCO&SrcApp=EDS&DestLinkType=CitingArticles&KeyUT=" . $json_result_ref->{Record}{Header}{An} . "&DestApp=WOS";
-
-	    push @{$fields_ref->{'T4120'}}, {
-		subfield => 'y', # Eingeschraenkter Zugang / yellow
-		mult     => $link_mult, 
-		content  => $url
-	    };
 	    
 	    push @{$fields_ref->{'T0662'}}, {
 		subfield => '', 
@@ -559,7 +553,7 @@ sub get_record {
 		mult => $link_mult, 
 		content => "Citing Articles (via Web of Science)"
 	    };
-	    # Todo: Zugriffstatus 'yellow' hinzufuegen
+
 	    $link_mult++;
 	}
     }
@@ -1636,12 +1630,6 @@ sub process_matches {
 	    # Hinweis pkostaedt: Der Link "Citing Articles" funktioniert nicht in jedem Fall, z.B. ID=edswss:000312205100002
 	    if ($match->{Header}{DbId} =~ /^(edswsc|edswss)$/ && $match->{Header}{An}) {
 		my $url = "http://gateway.isiknowledge.com/gateway/Gateway.cgi?&GWVersion=2&SrcAuth=EBSCO&SrcApp=EDS&DestLinkType=CitingArticles&KeyUT=" . $match->{Header}{An} . "&DestApp=WOS";
-
-		push @{$fields_ref->{'T4120'}}, {
-		    subfield => 'y', # Eingeschraenkter Zugang / yellow
-		    mult     => $link_mult, 
-		    content  => $url
-		};
 		
 		push @{$fields_ref->{'T0662'}}, {
 		    subfield => '', 
@@ -1654,7 +1642,7 @@ sub process_matches {
 		    mult => $link_mult, 
 		    content => "Citing Articles (via Web of Science)"
 		};
-		# Todo: Zugriffstatus 'yellow' hinzufuegen
+
 		$link_mult++;
 	    }
 

@@ -154,6 +154,15 @@ while (my $jsonline = <$input_io>){
 	    subfield   => 'h',
 	};
     }
+
+    # Zdbid?
+    if (defined $record_ref->{zdbId}){
+	push @{$title_ref->{fields}{'1001'}}, {
+	    content    => $record_ref->{zdbId},
+	    mult       => 1,
+	    subfield   => 'z',
+	};
+    }
     
     # Personen und Koerperschaften
     if (defined $record_ref->{contribution}){

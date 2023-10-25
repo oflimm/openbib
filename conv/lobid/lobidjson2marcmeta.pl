@@ -632,6 +632,19 @@ while (my $jsonline = <$input_io>){
 			subfield => 'a',
 			content => $super_ref->{label},
 		    };
+
+		    my $super_titleid;
+		    ($super_titleid) = $super_ref->{id} =~m{http://lobid.org/resources/(.+?)#\!$};
+
+		    if ($super_titleid){
+			push @{$title_ref->{fields}{'0490'}}, {
+			    mult     => $super_mult,
+			    subfield => '6', # linkage
+			    content => $super_titleid,
+			};
+		    }
+
+		    last; # Nur erste Ueberordnung wg. Zuordnungsproblematik zur Volume-Angabe
 		}
 	    }
 	    if (defined $part_ref->{numbering}){

@@ -126,13 +126,12 @@ while (my $jsonline = <$input_io>){
 
     $title_ref->{id} = $record_ref->{almaMmsId};
     
-    ### Gesamter Exportsatz -> 0001
-    # push @{$title_ref->{fields}{'0001'}}, {
-    # 	mult     => 1,
-    # 	subfield => '',
-    # 	content => $record_ref,
-    # };
-
+    # Gesamter Exportsatz -> 9999
+    push @{$title_ref->{fields}{'9999'}}, {
+    	mult     => 1,
+    	subfield => 'a',
+    	content => $record_ref,
+    };
 
     ### type -> 0800 HST
     my $is_book = 0;
@@ -142,11 +141,10 @@ while (my $jsonline = <$input_io>){
 	foreach my $type (@{$record_ref->{type}}){
 	    $is_book       = 1 if ($type eq "Book");
 	    $is_periodical = 1 if ($type eq "Periodical");
-
 	}
     }
 
-    next unless ($is_book);
+    # next unless ($is_book);
 
     # Hbzid?
     if (defined $record_ref->{hbzId}){
@@ -619,14 +617,22 @@ while (my $jsonline = <$input_io>){
 	my $super_mult = 1;
 	foreach my $part_ref (@{$record_ref->{isPartOf}}){
 	    if (defined $part_ref->{hasSuperordinate}){
-		foreach my $supertitle (@{$part_ref->{hasSuperordinate}}){
+		foreach my $super_ref (@{$part_ref->{hasSuperordinate}}){
 		    push @{$title_ref->{fields}{'0490'}}, {
-			mult     => $super_mult++,
+			mult     => $super_mult,
 			subfield => 'a',
-			content => $supertitle,
+			content => $super_ref->{label},
 		    };
 		}
 	    }
+	    if (defined $part_ref->{numbering}){
+		    push @{$title_ref->{fields}{'0490'}}, {
+			mult     => $super_mult,
+			subfield => 'v',
+			content => $part_ref->{numbering},
+		    };
+	    }
+	    $super_mult++;	    
 	}
     }
     

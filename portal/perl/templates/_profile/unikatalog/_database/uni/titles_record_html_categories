@@ -571,13 +571,23 @@ FOREACH field IN normdata;
            content_map.${'Erscheinungsverlauf'}.push(content);
 	 END;
 
-    CASE "T0490"; # Gesamttitel
-         content = thisfield.${'a'} ;
-         volume  = thisfield.${'v'} ;	 
-
+    CASE "T0830"; # Gesamttitel
+         content       = thisfield.${'a'} ;
+         volume        = thisfield.${'v'} ;	 
+         super_titleid = thisfield.${'w'} ;
+	 
+         searchterm    = uri_escape("\"${content}\"");
+         searchprefix  = config.get('searchfield').title.prefix;
+         
          IF content ;
+           IF super_titleid ;
+             content = "<a href=\"${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${super_titleid}.html?l=${lang}\" class=\"inturl\">${content}</a>";
+	   ELSE ;
+             content = "<a href=\"${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}\" class=\"inturl\">${content}</a>";
+	   END ;
+	   
 	   IF volume ;
-	   content = "${content} ; ${volume}";
+	     content = "${content} ; ${volume}";
 	   END ;
 	   
            IF NOT content_map.${'Gesamttitel'} ;

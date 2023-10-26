@@ -625,6 +625,15 @@ if ($addsuperpers) {
 		    }
 		}
 	    }
+	    
+	    if (exists $record_ref->{fields}{'0830'}){
+		foreach my $item (@{$record_ref->{fields}{'0830'}}){
+		    if ($item->{subfield} eq "w"){
+			my $superid = $item->{content};
+			$storage_ref->{listitemdata_superid}{$superid}={};
+		    }
+		}
+	    }
 	}
 	else {
 	    if (exists $record_ref->{fields}{'0004'}){

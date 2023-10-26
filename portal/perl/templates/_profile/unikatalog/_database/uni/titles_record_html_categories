@@ -573,8 +573,13 @@ FOREACH field IN normdata;
 
     CASE "T0490"; # Gesamttitel
          content = thisfield.${'a'} ;
+         volume  = thisfield.${'v'} ;	 
 
          IF content ;
+	   IF volume ;
+	   content = "${content} ; ${volume}";
+	   END ;
+	   
            IF NOT content_map.${'Gesamttitel'} ;
 	     content_map.${'Gesamttitel'} = [];
 	   END;
@@ -688,7 +693,7 @@ FOREACH field IN normdata;
          thisinfo  = thisfield.${'p'};
          thistitle = thisfield.${'t'};
          thisid    = thisfield.${'w'};
-
+         thismark  = thisfield.${'g'};
          content   = "";
 	 
          # ggf. verlinken
@@ -696,6 +701,11 @@ FOREACH field IN normdata;
             localurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${thisid}.html?l=${lang}";
 
 	    content = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+            IF thismark ;
+	      thismark = thismark.replace('^no:','');
+	      content  = "${content} (Signatur: ${thismark})";
+	    END;
+
 	 END;
 
          IF content ;

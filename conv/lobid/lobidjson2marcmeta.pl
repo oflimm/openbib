@@ -126,12 +126,12 @@ while (my $jsonline = <$input_io>){
 
     $title_ref->{id} = $record_ref->{almaMmsId};
     
-    # Gesamter Exportsatz -> 9999
-    push @{$title_ref->{fields}{'9999'}}, {
-    	mult     => 1,
-    	subfield => 'a',
-    	content => $record_ref,
-    };
+    # # Gesamter Exportsatz -> 9999
+    # push @{$title_ref->{fields}{'9999'}}, {
+    # 	mult     => 1,
+    # 	subfield => 'a',
+    # 	content => $record_ref,
+    # };
 
     ### type -> 0800 HST
     my $is_book = 0;

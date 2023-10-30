@@ -4,6 +4,8 @@
      'page_title' = 'Anschaffungsvorschlag'
 
       'main_template' = 'users_circulations_suggestions_html'
+
+      'active_submenu' = 'suggestion'
       
       'breadcrumb' = [
           {
@@ -11,7 +13,7 @@
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Anschaffungsvorschlag')
+	     desc = msg.maketext('Anschaffungsvorschläge')
 	     url  = '#'
 	     current = 1
 	  }

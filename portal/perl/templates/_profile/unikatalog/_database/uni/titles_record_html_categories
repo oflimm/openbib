@@ -689,9 +689,8 @@ FOREACH field IN normdata;
             localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
 
 	    thistitle = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+            content = "${content} ${thistitle}";
 	 END;
-
-         content = "${content} ${thistitle}";
 	 
          IF content ;
            IF NOT content_map.${'Hinweis'} ;

@@ -10514,6 +10514,14 @@ convtab:
         'w':  # ID der Ueberordnung
           index:
             'subid': 1
+      '0830': # Gesamttitel
+        'a':
+          index:
+            'title': 1
+            'freesearch': 1
+        'w':  # ID der Ueberordnung
+          index:
+            'subid': 1
       '0082': # DDC
         'a':
           index:
@@ -11501,6 +11509,14 @@ convtab:
         'a':
           index:
             'source': 1
+            'freesearch': 1
+        'w':  # ID der Ueberordnung
+          index:
+            'subid': 1
+      '0830': # Gesamttitel
+        'a':
+          index:
+            'title': 1
             'freesearch': 1
         'w':  # ID der Ueberordnung
           index:
@@ -12604,6 +12620,14 @@ convtab:
         'a':
           index:
             'source': 1
+            'freesearch': 1
+        'w':  # ID der Ueberordnung
+          index:
+            'subid': 1
+      '0830': # Gesamttitel
+        'a':
+          index:
+            'title': 1
             'freesearch': 1
         'w':  # ID der Ueberordnung
           index:
@@ -13712,6 +13736,14 @@ convtab:
         'w':  # ID der Ueberordnung
           index:
             'subid': 1
+      '0830': # Gesamttitel
+        'a':
+          index:
+            'title': 1
+            'freesearch': 1
+        'w':  # ID der Ueberordnung
+          index:
+            'subid': 1
       '0082': # DDC
         'a':
           index:
@@ -14816,6 +14848,14 @@ convtab:
         'w':  # ID der Ueberordnung
           index:
             'subid': 1
+      '0830': # Gesamttitel
+        'a':
+          index:
+            'title': 1
+            'freesearch': 1
+        'w':  # ID der Ueberordnung
+          index:
+            'subid': 1
       '0082': # DDC
         'a':
           index:
@@ -15916,6 +15956,14 @@ convtab:
         'a':
           index:
             'source': 1
+            'freesearch': 1
+        'w':  # ID der Ueberordnung
+          index:
+            'subid': 1
+      '0830': # Gesamttitel
+        'a':
+          index:
+            'title': 1
             'freesearch': 1
         'w':  # ID der Ueberordnung
           index:
@@ -17028,6 +17076,14 @@ convtab:
         'w':  # ID der Ueberordnung
           index:
             'subid': 1
+      '0830': # Gesamttitel
+        'a':
+          index:
+            'title': 1
+            'freesearch': 1
+        'w':  # ID der Ueberordnung
+          index:
+            'subid': 1
       '0082': # DDC
         'a':
           index:
@@ -18132,6 +18188,14 @@ convtab:
         'a':
           index:
             'source': 1
+            'freesearch': 1
+        'w':  # ID der Ueberordnung
+          index:
+            'subid': 1
+      '0830': # Gesamttitel
+        'a':
+          index:
+            'title': 1
             'freesearch': 1
         'w':  # ID der Ueberordnung
           index:

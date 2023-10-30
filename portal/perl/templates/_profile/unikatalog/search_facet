@@ -468,10 +468,10 @@ $(document).on("click", ".ob-less_button", function () {
 
 <!-- Begin elocation facet -->
 [%         IF facets.defined('elocation') && facets.elocation.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.elocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-elocation[% idsuffix %][% facet_prefix %]" aria-expanded=[% IF facets.elocation.size > 0 %]"false"[% ELSE %]"true"[% END %]>
+        <h4 class="ob-facet-title [% IF facets.elocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-elocation[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("E-Medien Quelle") %] 
         </h4>
-        <ul id="group-elocation[% idsuffix %][% facet_prefix %]" class="list-group in collapse [% IF facets.elocation.size <= 0 %]show[% END %]">
+        <ul id="group-elocation[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.elocation ;
 
  %]
@@ -494,11 +494,11 @@ $(document).on("click", ".ob-less_button", function () {
 
 <!-- Begin printlocation facet -->
 [%         IF facets.defined('printlocation') && facets.printlocation.size > 0 %]
-        <h4 class="ob-facet-title [% IF facets.printlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-location[% idsuffix %][% facet_prefix %]" aria-expanded=[% IF facets.location.size > 0 %]"false"[% ELSE %]"true"[% END %]>
+        <h4 class="ob-facet-title [% IF facets.printlocation.size > 0 %]collapsed[% ELSE %]collapse[% END %]" data-bs-toggle="collapse" data-bs-target="#group-location[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Print-Medien Standort") %] 
         </h4>
 
-        <ul id="group-location[% idsuffix %][% facet_prefix %]" class="list-group in collapse [% IF facets.location.size <= 0 %]show[% END %]">
+        <ul id="group-location[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.printlocation ;
 #                  LAST IF loop.count > 25 ;
 

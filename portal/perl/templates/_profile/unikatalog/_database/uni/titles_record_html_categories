@@ -714,7 +714,7 @@ FOREACH field IN normdata;
 	    content = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
             IF thismark ;
 	      thismark = thismark.replace('^no:','');
-	      content  = "${content} (Signatur: ${thismark})";
+	      content  = "${content} (Signatur/Mediennummer: ${thismark})";
 	    END;
 
 	 END;

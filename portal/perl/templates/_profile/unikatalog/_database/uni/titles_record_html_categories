@@ -598,7 +598,7 @@ FOREACH field IN normdata;
            content_map.${'Gesamttitel'}.push(content);
 	 END;
 
-    CASE [ "T0500" "T0555" "T0504" ];    
+    CASE [ "T0500" "T0555" "T0504" "T0530" ];    
          content = thisfield.${'a'};
 
          IF content ;

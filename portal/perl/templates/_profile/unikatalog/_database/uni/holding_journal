@@ -40,6 +40,9 @@
         holding_fields_per_id.${holdingid}.${"h"} = signatur;
       END;
       IF standort ;
+        IF alma_location_desc.${standort};
+	  standort = alma_location_desc.${standort};
+	END ;
         holding_fields_per_id.${holdingid}.${"c"} = standort;
       END;
       IF bibliothek ;
@@ -197,7 +200,7 @@
 <li>
 <strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF luecken %] [% luecken %][% END %]</strong><br/>
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
-[% IF this_item.standort != '-' %]
+[% IF this_item.standort %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
 [% END %]
 [% IF this_item.bemerkung %]

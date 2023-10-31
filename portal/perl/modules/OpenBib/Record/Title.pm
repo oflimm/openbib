@@ -2913,7 +2913,7 @@ sub to_mla_citation {
     if ($fields_ref->{type} eq "book"){
 	if ($fields_ref->{title}){
 	    my $title = $fields_ref->{title};
-	    $title=~s/([\w']+)/\u\L$1/g;
+	    #$title=~s/([\w']+)/\u\L$1/g;
 	    if ($citation){
 		$citation.=" ";
 	    }
@@ -3097,7 +3097,7 @@ sub to_apa_citation {
 	}
 	if ($fields_ref->{title}){
 	    my $title = $fields_ref->{title};
-	    $title=~s/([\w']+)/\u\L$1/g;
+	    #$title=~s/([\w']+)/\u\L$1/g;
 	    if ($citation){
 		$citation.=" ";
 	    }
@@ -3240,7 +3240,7 @@ sub to_isbd {
     my $line1="";
     if ($fields_ref->{title}){
 	my $title = $fields_ref->{title};
-	$title=~s/([\w']+)/\u\L$1/g;
+	#$title=~s/([\w']+)/\u\L$1/g;
 	$line1 = $title;
     }
 

@@ -319,7 +319,7 @@
 
      IF item.${"T0245"}.first.${'b'};
        supplemental_title = item.${"T0245"}.first.${'b'};
-       title = "${title}: ${supplemental_title}";
+       title = "${title} : ${supplemental_title}";
      END;
      
      # IF item.${'T0246'}.first.${'a'}; # AST

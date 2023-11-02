@@ -452,7 +452,7 @@ FOREACH field IN normdata;
 	 END;
 
          IF supplemental_title ;
-	    main_title = "${main_title}: ${supplemental_title}";
+	    main_title = "${main_title} : ${supplemental_title}";
 	 END;
 
          volume = "";

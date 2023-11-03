@@ -671,23 +671,23 @@ while (<>){
 			};
 
 		    }
-		    elsif ($public_note =~m/(Lizenz|lizenzpflichtig)/i){
-			my $description = "E-Book im Volltext";
-			my $access      = "y"; # yellow
+		    # elsif ($public_note =~m/(Lizenz|lizenzpflichtig)/i){
+		    # 	my $description = "E-Book im Volltext";
+		    # 	my $access      = "y"; # yellow
 			
-			push @{$record_ref->{fields}{'4662'}}, {
-			    mult     => $mult,
-			    subfield => $access,
-			    content  => $url,
-			};
+		    # 	push @{$record_ref->{fields}{'4662'}}, {
+		    # 	    mult     => $mult,
+		    # 	    subfield => $access,
+		    # 	    content  => $url,
+		    # 	};
 			
-			push @{$record_ref->{fields}{'4663'}}, {
-			    mult     => $mult,
-			    subfield => '',
-			    content  => $description,
-			};
+		    # 	push @{$record_ref->{fields}{'4663'}}, {
+		    # 	    mult     => $mult,
+		    # 	    subfield => '',
+		    # 	    content  => $description,
+		    # 	};
 
-		    }
+		    # }
 		    # Uebertragen in Titelfeld fuer Inhaltsverzeichnisse T4110	    
 		    elsif ($public_note =~m/Inhaltsverzeichnis|Inh\.\-Verz\./){ # Inhaltsverzeichnisse
 			

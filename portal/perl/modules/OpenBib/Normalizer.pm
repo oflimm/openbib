@@ -1245,6 +1245,9 @@ sub normalize {
     else {
         if ($type eq 'string'){
             $logger->debug("Processing Type $type");
+	    # Punctuation am Feld-Ende entfernen (MARC21 Absonderlichkeit z.B Punkt in 245$a ('Der Staat.')
+	    
+	    $content=~s/\p{XPosixPunct}*$//;
             # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
             # * wird fuer die Indexierung auf _ normiert
             $content=~s/[^\p{Alphabetic}0-9]/_/g;

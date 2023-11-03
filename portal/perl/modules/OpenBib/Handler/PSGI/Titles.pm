@@ -39,6 +39,7 @@ use Log::Log4perl qw(get_logger :levels);
 use Date::Manip;
 use URI::Escape qw(uri_escape uri_escape_utf8);
 use Encode 'decode_utf8';
+use XML::LibXML;
 
 use OpenBib::Catalog;
 use OpenBib::Catalog::Factory;
@@ -590,15 +591,28 @@ sub show_availability {
     my $availability_status = 0;
     
     if ($titleid && $database){
-        # Wenn Datenbank an Ausleihsystem gekoppelt, dann Medienstatus hollen und auswerten
+        # Wenn Datenbank an Ausleihsystem gekoppelt, dann Medienstatus holen und auswerten
 	my $thisdbinfo = $config->get_databaseinfo->single({ dbname => $database });
         if ($thisdbinfo && $thisdbinfo->get_column('circ')){
-            my $record = OpenBib::Record::Title->new({id => $titleid, database => $database, config => $config })->load_circulation;
+	    my $record;
+	    my $sru_status_ref = [];
+
+	    # Alma und SRU?
+	    if ($thisdbinfo->get_column('circtype') eq "alma" && defined $config->get('alma')->{listitem_status} && $config->get('alma')->{listitem_status} eq "sru"){
+		$sru_status_ref = $self->get_status_via_alma_sru({ titleid => $titleid, database => $database });
+		$record = OpenBib::Record::Title->new({id => $titleid, database => $database, config => $config });
+
+	    }
+	    else {
+		$record = OpenBib::Record::Title->new({id => $titleid, database => $database, config => $config })->load_circulation;
+	    }
+	    
             # TT-Data erzeugen
             my $ttdata={
-                database    => $database, # Zwingend wegen common/subtemplate
-                record      => $record,
-                titleid     => $titleid,
+                database       => $database, # Zwingend wegen common/subtemplate
+                record         => $record,
+                titleid        => $titleid,
+		sru_status     => $sru_status_ref,
             };
 
             return $self->print_page($config->{tt_titles_record_availability_tname},$ttdata);
@@ -1088,6 +1102,106 @@ sub sort_circulation {
     @{$array_ref};
         
     return \@sorted;
+}
+
+sub get_status_via_alma_sru {
+    my ($self,$arg_ref)=@_;
+    
+    # Set defaults
+    my $titleid                = exists $arg_ref->{titleid}
+        ? $arg_ref->{titleid}        : 0;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $sru_status_ref = [];
+
+    unless ($titleid && $titleid =~m/^\d+$/){
+	return $sru_status_ref;
+    }
+
+    my $ua = LWP::UserAgent->new();
+    $ua->agent('USB Koeln/1.0');
+    $ua->timeout(30);
+
+    my $config         = $self->param('config');
+
+    my $circ_config    = $config->load_alma_circulation_config;
+    
+    my $url=$config->get('alma')->{'sru_baseurl'}."?version=1.2&operation=searchRetrieve&recordSchema=marcxml&query=alma.mms_id=$titleid&maximumRecords=1";
+
+    $logger->debug("Request: $url");
+
+    my $request = HTTP::Request->new('GET' => $url);
+    
+    my $response = $ua->request($request);
+    
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->content);
+    }
+    
+    if (!$response->is_success) {
+	$logger->info($response->code . ' - ' . $response->message);
+	return $sru_status_ref;
+    }
+
+    # recordData only
+    my ($content) = $response->content =~m{<recordData>(.+?)</recordData>}sg;
+
+    # delete namespace
+    
+    $content =~s{xmlns=".+?"}{}g;
+    
+    if ($logger->is_debug){
+	$logger->debug("XML record: ".$content);
+    }
+
+    if ($content){
+	my $parser = XML::LibXML->new();
+	my $tree   = $parser->parse_string($content);
+	my $root   = $tree->getDocumentElement;
+
+	my @ava_nodes = $root->findnodes('/record/datafield[@tag="AVA"]');
+
+	$logger->debug("# SRU AVA Nodes: ".$#ava_nodes);
+
+
+	foreach my $ava_node (@ava_nodes){
+	    my $library_code  = $ava_node->findvalue('subfield[@code="b"]');
+	    my $location_code = $ava_node->findvalue('subfield[@code="j"]');
+	    my $availability  = $ava_node->findvalue('subfield[@code="e"]');
+
+	    my $this_circ_conf = {};
+	    
+	    if (defined $circ_config->{$library_code} && defined $circ_config->{$library_code}{$location_code}){
+		$this_circ_conf = $circ_config->{$library_code}{$location_code};
+	    }
+
+	    my $availability_status = "unavailable";
+
+	    if ($availability eq "available" && ($this_circ_conf->{loan} || $this_circ_conf->{order})){
+		$availability_status = "loan";
+	    }
+	    elsif ($availability eq "available"){
+		$availability_status = "presence";
+	    }
+	    elsif ($availability eq "check_holdings"){
+		$availability_status = ""; # no status
+	    }
+	    
+	    push @{$sru_status_ref}, {
+		library_code        => $library_code,
+		location_code       => $location_code,
+		availability_status => $availability_status,
+	    };
+	}
+    }
+    
+    if ($logger->is_debug){
+	$logger->debug("SRU Status: ".YAML::Dump($sru_status_ref));
+    }
+    
+    return $sru_status_ref;    
 }
 
 1;

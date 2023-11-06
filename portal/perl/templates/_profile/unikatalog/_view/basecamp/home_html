@@ -11,8 +11,14 @@
 #
 #######################################################################
 -%]
+[%-
 
+   session_sort = "year_desc";
+   IF qopts.get_option('srt') && NOT qopts.get_option('srt').match('_') && qopts.get_option('srto') ;
+     session_sort = "${qopts.get_option('srt')}_${qopts.get_option('srto')}";
+   END;
 
+-%]
 <style>
 @media all
 {
@@ -65,8 +71,7 @@
 }
 
 #image-area {
-  position: relative;
-  height: 600px;
+  position: relative;	
 }
 
 .animated-image {
@@ -77,16 +82,16 @@
   animation-name: fadeInOut;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
-  animation-duration: 60s;
+  animation-duration: 70s;
   animation-direction: alternate;
 }
 
 .animated-image:nth-of-type(1) {
-  animation-delay: 30s;
+  animation-delay: 40s;
 }
 
 .animated-image:nth-of-type(2) {
-  animation-delay: 15s;
+  animation-delay: 20s;
 }
 
 .animated-image:nth-of-type(3) {
@@ -94,19 +99,20 @@
 }
 
 .image-1 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/Treppenhaus02_V2.jpg);
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magazinansicht01_V2.jpg);
   background-repeat: no-repeat;
   background-size: cover;
   }
 
 .image-2 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/Magazinansicht01_V2.jpg);
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/AnsichtUniversitaetsstrasseV2b.png);
   background-repeat: no-repeat;
   background-size: cover;
   }
 
 .image-3 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/AnsichtUniversitaetsstrasseV2b.png);
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magnus_Froschperspektive_50.jpg);
+  background-position: 10% 10%;
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -116,18 +122,17 @@
 @media only screen and (max-width: 800px) {
 
 .image-1 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/Treppenhaus02_V2_500px.jpg);
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magazinansicht01_V2_500px.jpg);
 
   }
 
 .image-2 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/Magazinansicht01_V2_500px.jpg);
-
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/AnsichtUniversitaetsstrasseV2_500px.jpg);
   }
 
 .image-3 {
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/kugproto/AnsichtUniversitaetsstrasseV2_500px.jpg);
-
+  background-position: 40% 10%;
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magnus_Froschperspektive_50_500px.jpg);
 }
 
 
@@ -136,9 +141,9 @@
 </style>
 
 <div id="image-area">
-  <div class="animated-image image-1"></div>
-  <div class="animated-image image-2"></div>
-  <div class="animated-image image-3"></div>
+  <div class="animated-image image-1" alt="[% msg.maketext("Hintergrundbild Haupteingang Universität") %]"></div>
+  <div class="animated-image image-2" alt="[% msg.maketext("Hintergrundbild Ansicht der Universitäts- und Stadtbibliothek") %]"></div>
+  <div class="animated-image image-3" alt="[% msg.maketext("Hintergrundbild Ansicht Magazintrakt der USB") %]"></div>
 
 <div class="ob-jumbotron ob-jumbotron-fluid mb-0 landing-page-img ps-2">
 
@@ -150,35 +155,40 @@
 <input type="hidden" name="page"       value="1" />
 <input type="hidden" name="l"          value="[% lang %]" />
 
-<input type="hidden" name="srt"        value="year_asc" />
+<input type="hidden" name="srt"        value="[% session_sort %]" />
 <input type="hidden" name="st"         value="1" />
 <input type="hidden" name="lt"         value="[% qopts.lt %]" />
-<input type="hidden" name="profile"    value="[% searchprofileid_of_view %]" />
+<input type="hidden" name="tab"        value="books" />
+<input type="hidden" name="profile"    value="[% searchprofileid_of_books %]" />
 
 <div class="container justify-content-center border shadow rounded ps-2 pe-2 pt-3 pb-2 mb-4">
     <div class="row">    
         <div class="col">
             <div class="input-group">
-                <input required="required" id="to_focus" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Geben Sie hier Ihre Suchbegriffe ein") %]" />
+                <input required="required" id="to_focus" class="form-control" type="search" name="fs" value="" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Bücher, E-Medien, Aufsätze &amp; mehr") %]"  hx-get="[% path_prefix%]/connector/livesearch" hx-trigger="keyup changed delay:800ms, q" hx-target="#livesearch"  />
                 <span class="input-group-btn ps-1">
-                    <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
+                    <button class="btn btn-primary" type="submit" aria-label="[% msg.maketext("Anfrage abschicken") %]"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
                     <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>
                 </span>
             </div>
        </div>
     </div>
+    <div id="livesearch"  style="position: absolute; top: 3.5em; z-index:1000;">
+    </div>
     <div class="row pt-1 pb-0">     
       <div class="col collapse d-md-block p-0" id="search_options">
-       
          <ul class="list-group flex-row flex-wrap justify-content-center">
 <!--            <li class="list-group-item pe-1" style="border: none" >
        	      [% PROCESS common/subtemplate name="searchforms_record_profile" %]
             </li> -->
             <li class="list-group-item pe-1 pt-3" style="border: none" >
-             <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-formattitle="[% msg.maketext("Erweiterte Suche") %]" data-formaturl="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
+	     <a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-indicator=".spinner-border" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
 	    </li>      	  
             <li class="list-group-item pe-1 pt-3" style="border: none" >
-	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" data-formattitle="[% msg.maketext("Suchhistorie") %]" data-formaturl="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	   </li>
+            <li class="list-group-item pe-1 pt-3" style="border: none" >
+	     <a href="[% path_prefix %]/[% config.get('info_loc') %]/tipps.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/tipps.include?l=[% lang %]" title="[% msg.maketext("Hilfe") %]"><i class="fas fa-question-circle"></i></a>
 	   </li>
          </ul>
     </div><!-- col -->
@@ -196,46 +206,6 @@
 
 </div>
 </div>
-
-[% IF 0 == 1 %]
-<div class="container pb-5">
-  <div class="row">
-    <div class="col-md-3 ps-3 pe-1 pb-2">
-      <div class="card mt-2 h-100 ob-shortlink">
-	<div class="card-header pt-3 text-center fs-4"><i class="fab fa-hubspot pe-2"></i> <a class="text-white" href="https://yewno.ub.uni-koeln.de/" target="_blank">[% msg.maketext("Yewno") %]</a></div>
-<!--	<div class="card-body pb-0">
-	  <p class="card-text">[% msg.maketext("Wissenslandkarten entdecken, erkunden, erforschen") %]</p>
-	  <a class="btn btn-primary" href="https://yewno.ub.uni-koeln.de/" target="_blank">[% msg.maketext("Mehr") %]</a></div>-->
-      </div>
-    </div>  
-    <div class="col-md-3 ps-3 pe-1 pb-2">
-      <div class="card mt-2 h-100 ob-shortlink">
-	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-book-open pe-2"></i> <a class="text-white" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/classifications.html?l=[% lang %]">[% msg.maketext("Zeitschriften") %]</a></div>
-<!--	<div class="card-body pb-0">
-	  <p class="card-text">[% msg.maketext("Online-Zugriff auf alle Elektronischen Zeitschriften an der Universität") %]</p> 
-	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/classifications.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>-->
-      </div>
-    </div>
-    <div class="col-md-3 ps-3 pe-1 pb-2">
-      <div class="card mt-2 h-100 ob-shortlink">
-	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-database pe-2"></i> <a class="text-white" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/classifications.html?l=[% lang %]">[% msg.maketext("Datenbanken") %]</a></div>
-<!--	<div class="card-body pb-0">
-	  <p class="card-text">[% msg.maketext("Online-Zugang zu allen Datenbanken an der Universität.") %]</p>
-	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/classifications.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>-->
-      </div>
-    </div>
-    <div class="col-md-3 ps-3 pe-1 pb-2">
-      <div class="card mt-2 h-100 ob-shortlink">
-	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-map-marker-alt pe-2"></i> <a class="text-white" href="[% path_prefix %]/[% config.get('locations_loc') %].html?l=[% lang %]">[% msg.maketext("Bibliotheken") %]</a></div>
-<!--	<div class="card-body pb-0">
-	  <p class="card-text">[% msg.maketext("Informationen zu allen Bibliotheken an der Universität.") %]</p>
-	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('locations_loc') %].html?l=[% lang %]">[% msg.maketext("Mehr") %]</a></div>
-      </div> -->
-    </div>
-  </div>
-</div>
-[% END %]
-
 
 </div> <!-- image_area -->
 [%# PROCESS common/subtemplate name="home_html_bottom" %]

@@ -152,7 +152,7 @@ foreach my $view (@views){
 	$logger->debug(YAML::Dump(\@locations));
     }
     
-    $statistics->cache_data({
+    $config->set_datacache({
 	type => 15,
 	id   => $view,
 	data => \@locations,

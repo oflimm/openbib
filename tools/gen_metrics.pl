@@ -175,7 +175,7 @@ if ($type == 17){
 	};
     }
     
-    $statistics->cache_data({
+    $config->set_datacache({
 	type => 17,
 	id   => 'cartitems',
 	data => $metrics_ref,
@@ -229,7 +229,7 @@ if ($type == 1){
             };
         }
 
-        $statistics->cache_data({
+        $config->set_datacache({
             type => 1,
             id   => $database,
             data => $metrics_ref,
@@ -287,7 +287,7 @@ if ($type == 2){
             };
         }
         
-        $statistics->cache_data({
+        $config->set_datacache({
             type => 2,
             id   => $view,
             data => $metrics_ref,
@@ -367,7 +367,7 @@ if ($type == 3){
                 map { [$_, $_->{item}] }
                     @{$metrics_ref};
         
-        $statistics->cache_data({
+        $config->set_datacache({
             type => 3,
             id   => $database,
             data => $sortedmetrics_ref,
@@ -444,7 +444,7 @@ if ($type == 4){
                 map { [$_, $_->{item}] }
                     @{$metrics_ref};
         
-        $statistics->cache_data({
+        $config->set_datacache({
             type => 4,
             id   => $database,
             data => $sortedmetrics_ref,
@@ -520,7 +520,7 @@ if ($type == 5){
                 map { [$_, $_->{item}] }
                     @{$metrics_ref};
         
-        $statistics->cache_data({
+        $config->set_datacache({
             type => 5,
             id   => $database,
             data => $sortedmetrics_ref,
@@ -598,7 +598,7 @@ if ($type == 6){
                 map { [$_, $_->{item}] }
                     @{$metrics_ref};
 
-        $statistics->cache_data({
+        $config->set_datacache({
             type => 6,
             id   => $database,
             data => $sortedmetrics_ref,
@@ -674,7 +674,7 @@ if ($type == 7){
                 map { [$_, $_->{item}] }
                     @{$metrics_ref};
         
-        $statistics->cache_data({
+        $config->set_datacache({
             type => 7,
             id   => $database,
             data => $sortedmetrics_ref,
@@ -771,7 +771,7 @@ if ($type == 8){
             $logger->debug(YAML::Dump($metrics_ref));
         }
         
-        $statistics->cache_data({
+        $config->set_datacache({
             type => 8,
             id   => $view,
             data => $metrics_ref,
@@ -847,7 +847,7 @@ if ($type == 9){
                 map { [$_, $_->{item}] }
                     @{$metrics_ref};
         
-        $statistics->cache_data({
+        $config->set_datacache({
             type => 9,
             id   => $database,
             data => $sortedmetrics_ref,
@@ -904,7 +904,7 @@ if ($type == 10){
             $logger->debug(YAML::Dump($bk_ref));
         }
         
-        $statistics->cache_data({
+        $config->set_datacache({
             type => 10,
             id   => $view,
             data => $bk_ref,
@@ -959,7 +959,7 @@ if ($type == 11){
         }
 
         foreach my $bk (keys %{$bk_ref}){
-            $statistics->cache_data({
+            $config->set_datacache({
                 type   => 11,
                 subkey => $bk,
                 id     => $view,
@@ -1029,7 +1029,7 @@ if ($type == 12){
             map { [$_, $_->{item}] }
                 @{$metrics_ref};
     
-    $statistics->cache_data({
+    $config->set_datacache({
         type => 12,
         id   => 'litlist_usage',
         data => $sortedmetrics_ref,
@@ -1087,7 +1087,7 @@ if ($type == 13){
             };
         }
 
-        $statistics->cache_data({
+        $config->set_datacache({
             type => 13,
             id   => $view,
             data => $metrics_ref,
@@ -1237,7 +1237,7 @@ if ($type == 14 && $field){
                 map { [$_, $_->{item}] }
                     @{$metrics_ref};
         
-        $statistics->cache_data({
+        $config->set_datacache({
             type => 14,
             id   => "$database-$field",
             data => $sortedmetrics_ref,
@@ -1293,7 +1293,7 @@ if ($type == 15){
             $counter_ref->{$content} = $count;
     }
         
-    $statistics->cache_data({
+    $config->set_datacache({
             type => 15,
             id   => $database,
             data => $counter_ref,
@@ -1349,7 +1349,7 @@ if ($type == 16){
             $counter_ref->{$content} = $count;
     }
         
-    $statistics->cache_data({
+    $config->set_datacache({
             type => 16,
             id   => $database,
             data => $counter_ref,

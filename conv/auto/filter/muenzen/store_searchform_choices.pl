@@ -158,9 +158,9 @@ while (my $material = $materials->next()){
     push @{$result_store->{material}}, $material_content;
 }       
 
-my $statistics = new OpenBib::Statistics;
+my $config = new OpenBib::Config;
 
-$statistics->cache_data(
+$config->set_datacache(
     {
         id => 'muenzen_searchform_choices',
         type => 1,

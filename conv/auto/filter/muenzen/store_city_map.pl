@@ -24,9 +24,9 @@ while (my $city = $cities->next()){
     }
 }       
 
-my $statistics = new OpenBib::Statistics;
+my $config = new OpenBib::Config;
 
-$statistics->cache_data(
+$config->set_datacache(
     {
         id => 'muenzen_city_map',
         type => 1,

@@ -37,7 +37,7 @@
 
 [%
       funcargs = { id => 'cartitems', type => 17 } ;
-      resultlist = statistics.get_result(funcargs);
+      resultlist = config.get_datacache(funcargs);
 
       cutoff = 20;
       lessequal_cutoff  = 0;

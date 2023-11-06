@@ -19,7 +19,7 @@
 
 [%
       mtyp_funcargs = { id => 'games-4410', type => 14 } ;
-      mtyp_resultlist = statistics.get_result(mtyp_funcargs);
+      mtyp_resultlist = config.get_datacache(mtyp_funcargs);
 
       mtypcount = {};
 

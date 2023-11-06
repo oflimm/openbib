@@ -22,7 +22,7 @@
 
 [%
       type_funcargs = { id => 'gentzdigital-0800', type => 14 } ;
-      type_resultlist = statistics.get_result(type_funcargs);
+      type_resultlist = config.get_datacache(type_funcargs);
 
       typecount = {};
       FOREACH type_thisitem IN type_resultlist;
@@ -104,7 +104,7 @@ var typeChart = new Chart(type_ctx, {
 
 [%
       valid_funcargs = { id => 'gentzdigital-0511', type => 14 } ;
-      valid_resultlist = statistics.get_result(valid_funcargs);
+      valid_resultlist = config.get_datacache(valid_funcargs);
 
       validcount = {};
       FOREACH valid_thisitem IN valid_resultlist;
@@ -186,7 +186,7 @@ var validChart = new Chart(valid_ctx, {
 
 [%
       language_funcargs = { id => 'gentzdigital-0015', type => 14 } ;
-      language_resultlist = statistics.get_result(language_funcargs);
+      language_resultlist = config.get_datacache(language_funcargs);
 
       languagecount = {};
       FOREACH language_thisitem IN language_resultlist;
@@ -273,7 +273,7 @@ var languageChart = new Chart(language_ctx, {
 
 [%
       year_funcargs = { id => 'gentzdigital-0425', type => 14 } ;
-      year_resultlist = statistics.get_result(year_funcargs);
+      year_resultlist = config.get_datacache(year_funcargs);
 
       yearcount = {};
       FOREACH year_thisitem IN year_resultlist;
@@ -331,7 +331,7 @@ var myChart = new Chart(ctx, {
 
 [%
       place_funcargs = { id => 'gentzdigital-0410', type => 14 } ;
-      place_resultlist = statistics.get_result(place_funcargs);
+      place_resultlist = config.get_datacache(place_funcargs);
 
       placecount = {};
       FOREACH place_thisitem IN place_resultlist;
@@ -393,7 +393,7 @@ var myChart = new Chart(ctx, {
 
 [%
       archive_funcargs = { id => 'gentzdigital-0200', type => 14 } ;
-      archive_resultlist = statistics.get_result(archive_funcargs);
+      archive_resultlist = config.get_datacache(archive_funcargs);
 
       archivecount = {};
       FOREACH archive_thisitem IN archive_resultlist;

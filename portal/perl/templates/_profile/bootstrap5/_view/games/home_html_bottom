@@ -40,7 +40,7 @@
 
 [%
       usk_funcargs = { id => 'games-0517', type => 14 } ;
-      usk_resultlist = statistics.get_result(usk_funcargs);
+      usk_resultlist = config.get_datacache(usk_funcargs);
 
       uskcount = {};
       FOREACH usk_thisitem IN usk_resultlist;

@@ -13,7 +13,7 @@
 -%]
 [%
       funcargs = { id => database, type => 7 } ;
-      resultlist = statistics.get_result(funcargs);
+      resultlist = config.get_datacache(funcargs);
 %]
 
 [%

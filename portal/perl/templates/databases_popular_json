@@ -1,7 +1,7 @@
 [%-
 
     funcargs = { id => view, type => 2 } ;
-    resultlist = statistics.get_result(funcargs);
+    resultlist = config.get_datacache(funcargs);
 
 all_databases = [] ;
 FOREACH thisitem IN resultlist ;

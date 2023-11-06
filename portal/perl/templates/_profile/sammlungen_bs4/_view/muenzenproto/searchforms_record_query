@@ -1,7 +1,7 @@
 
 <script type="text/javascript" src="/js/keyboard-greek.js"></script>
 <script type="text/javascript" src="/js/keyboard-muenzen.js"></script>
-[% searchform_choices = statistics.get_result({ id => 'muenzen_searchform_choices', type => 1}) %]
+[% searchform_choices = config.get_datacache({ id => 'muenzen_searchform_choices', type => 1}) %]
 
 <script type="text/javascript">
 [% regent_array = [];

@@ -86,19 +86,19 @@ database = viewdbs.first;
 [% END %]
 
     <ul class="mb-2">
-[% IF statistics.result_exists({ id => database, type => 9 }) %]
+[% IF config.datacache_exists({ id => database, type => 9 }) %]
    <li><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
 [% END %]
-[% IF statistics.result_exists({ id => database, type => 6 }) %]
+[% IF config.datacache_exists({ id => database, type => 6 }) %]
    <li><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/person.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
 [% END %]
-[% IF statistics.result_exists({ id => database, type => 5 }) %]
+[% IF config.datacache_exists({ id => database, type => 5 }) %]
    <li><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/corporatebody.html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
 [% END %]
-[% IF statistics.result_exists({ id => database, type => 3 }) %]
+[% IF config.datacache_exists({ id => database, type => 3 }) %]
    <li><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
 [% END %]
-[% IF statistics.result_exists({ id => database, type => 4 }) %]
+[% IF config.datacache_exists({ id => database, type => 4 }) %]
    <li><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/classification.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
 [% END %]
 </ul>

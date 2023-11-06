@@ -1,4 +1,4 @@
-[% IF statistics.result_exists({ id => 'litlists_usage', type => 12 })%]
+[% IF config.datacache_exists({ id => 'litlists_usage', type => 12 })%]
 [%   IF config.get('litlists') %]
 [%     IF active_submenu == "clouds_litlist" %]
   <li class="active"><strong>[% msg.maketext("Literaturlisten") %]</strong></li>

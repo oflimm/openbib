@@ -13,7 +13,7 @@
 -%]
 [%
       funcargs = { id => view, type => 2 } ;
-      resultlist = statistics.get_result(funcargs);
+      resultlist = config.get_datacache(funcargs);
 %]
 [%# USE dumper;dumper.dump(resultlist)%]
 <h3>[% msg.maketext("Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe") %]</h3>

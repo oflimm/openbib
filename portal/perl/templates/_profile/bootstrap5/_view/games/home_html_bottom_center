@@ -18,7 +18,7 @@
 
 [%
       type_funcargs = { id => 'games-0800', type => 14 } ;
-      type_resultlist = statistics.get_result(type_funcargs);
+      type_resultlist = config.get_datacache(type_funcargs);
 
       typecount = {};
       FOREACH type_thisitem IN type_resultlist;

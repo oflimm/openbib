@@ -59,7 +59,7 @@
 <h3>[% msg.maketext("Titel pro Katalog")%]</h3>
 [%
   bks        = config.load_bk;
-  thisbklist = statistics.get_result({id => view, type => 11, subkey => bkid }); 
+  thisbklist = config.get_datacache({id => view, type => 11, subkey => bkid }); 
 
 #  USE dumper;dumper.dump(thisbklist);
 %]

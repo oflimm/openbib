@@ -16,7 +16,7 @@
 <body>
 [%
       funcargs = { id => view, type => 8 } ;
-      resultlist = statistics.get_result(funcargs);
+      resultlist = config.get_datacache(funcargs);
 
 %]
 

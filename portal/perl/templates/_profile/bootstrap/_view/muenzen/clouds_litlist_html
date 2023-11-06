@@ -16,7 +16,7 @@
 <body>
 [%
       funcargs = { id => 'litlists_usage', type => 12 } ;
-      resultlist = statistics.get_result(funcargs);
+      resultlist = config.get_datacache(funcargs);
 
 %]
 

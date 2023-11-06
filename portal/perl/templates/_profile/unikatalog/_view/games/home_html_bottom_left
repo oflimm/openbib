@@ -18,7 +18,7 @@
 
 [%
       funcargs = { id => 'games', type => 4 } ;
-      resultlist = statistics.get_result(funcargs);
+      resultlist = config.get_datacache(funcargs);
 
       systemcount = {};
       FOREACH thisitem IN resultlist;

@@ -23,28 +23,28 @@
 [% IF database %]
 <li><span>[% dbinfo.get('dbnames').${database}.short %]</span>
     <ul>
-[% IF statistics.result_exists({ id => database, type => 9 }) %]
+[% IF config.datacache_exists({ id => database, type => 9 }) %]
 [%   IF active_submenu == "clouds_year" %]
   <li class="active"><strong>[% msg.maketext("Jahr") %]</strong></li>
 [%   ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
 [%   END %]
 [% END %]
-[% IF statistics.result_exists({ id => database, type => 5 }) %]
+[% IF config.datacache_exists({ id => database, type => 5 }) %]
 [%   IF active_submenu == "clouds_corporatebody" %]
   <li class="active"><strong>[% msg.maketext("T0200-gentzdigital") %]</strong></li>
 [%   ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/corporatebody.html?l=[% lang %]" title="[% msg.maketext("T0200-gentzdigital") %]">[% msg.maketext("T0200-gentzdigital") %]</a></li>
 [%   END %]
 [% END %]
-[% IF statistics.result_exists({ id => "gentzdigital-410", type => 14 }) %]
+[% IF config.datacache_exists({ id => "gentzdigital-410", type => 14 }) %]
 [%   IF active_submenu == "clouds_0410" %]
   <li class="active"><strong>[% msg.maketext("T0410-gentzdigital") %]</strong></li>
 [%   ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/0410.html?l=[% lang %]" title="[% msg.maketext("T0410-gentzdigital") %]">[% msg.maketext("T0410-gentzdigital") %]</a></li>
 [%   END %]
 [% END %]
-[% IF statistics.result_exists({ id => database, type => 7 })%]
+[% IF config.datacache_exists({ id => database, type => 7 })%]
 [%   IF config.get('social_tagging') %]   
 [%     IF active_submenu == "clouds_tag" %]
   <li class="active"><strong>[% msg.maketext("Nutzer-Tags") %]</strong></li>
@@ -56,7 +56,7 @@
 </ul>
 </li>
 [% END %]
-[% IF statistics.result_exists({ id => 'litlists_usage', type => 12 })%]
+[% IF config.datacache_exists({ id => 'litlists_usage', type => 12 })%]
 [%   IF config.get('litlists') %]
 [%     IF active_submenu == "clouds_litlist" %]
   <li class="active"><strong>[% msg.maketext("Literaturlisten") %]</strong></li>

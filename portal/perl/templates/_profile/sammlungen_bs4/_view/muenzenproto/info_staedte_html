@@ -14,7 +14,7 @@
 
 [%
       funcargs = { id => 'muenzen_city_map', type => 1 } ;
-      resultlist = statistics.get_result(funcargs);
+      resultlist = config.get_datacache(funcargs);
 %]
 
 <div id="cities_mapid" class="mb-5" style="height:500px;"></div>

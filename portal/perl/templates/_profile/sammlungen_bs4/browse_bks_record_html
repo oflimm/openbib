@@ -13,7 +13,7 @@
 -%]
 [%
   bks        = config.load_bk;
-  thisbklist = statistics.get_result({id => view, type => 10}); 
+  thisbklist = config.get_datacache({id => view, type => 10}); 
 %]
 [%
   viewdbs = [];

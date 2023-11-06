@@ -13,7 +13,7 @@
 -%]
 [%-
 
-  ls_counter = statistics.get_result({id => 'lesesaal', type => 15});
+  ls_counter = config.get_datacache({id => 'lesesaal', type => 15});
 
   ls_profileid = config.get_searchprofile_of_database('lesesaal');
 

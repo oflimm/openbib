@@ -13,7 +13,7 @@
 -%]
 [%-
 
-  lbs_counter = statistics.get_result({id => 'lehrbuchsmlg', type => 16});
+  lbs_counter = config.get_datacache({id => 'lehrbuchsmlg', type => 16});
 
   lbs_profileid = config.get_searchprofile_of_database('lehrbuchsmlg');
 

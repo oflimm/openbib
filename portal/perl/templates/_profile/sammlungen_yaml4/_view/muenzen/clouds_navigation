@@ -23,42 +23,42 @@
 [% IF database %]
 <li><span>[% dbinfo.get('dbnames').${database}.short %]</span>
     <ul>
-[% IF statistics.result_exists({ id => database, type => 6 }) %]
+[% IF config.datacache_exists({ id => database, type => 6 }) %]
 [%   IF active_submenu == "clouds_person" %]
   <li class="active"><strong>[% msg.maketext("Regenten") %]</strong></li>
 [%   ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/person.html?l=[% lang %]" title="[% msg.maketext("Regenten") %]">[% msg.maketext("Regenten") %]</a></li>
 [%   END %]
 [% END %]
-[% IF statistics.result_exists({ id => database, type => 5 }) %]
+[% IF config.datacache_exists({ id => database, type => 5 }) %]
 [%   IF active_submenu == "clouds_corporatebody" %]
   <li class="active"><strong>[% msg.maketext("Provenienzen") %]</strong></li>
 [%   ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/corporatebody.html?l=[% lang %]" title="[% msg.maketext("Provenienzen") %]">[% msg.maketext("Provenienzen") %]</a></li>
 [%   END %]
 [% END %]
-[% IF statistics.result_exists({ id => database, type => 3 }) %]
+[% IF config.datacache_exists({ id => database, type => 3 }) %]
 [%   IF active_submenu == "clouds_subject" %]
   <li class="active"><strong>[% msg.maketext("Regionen") %]</strong></li>
 [%   ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]" title="[% msg.maketext("Regionen") %]">[% msg.maketext("Regionen") %]</a></li>
 [%   END %]
 [% END %]
-[% IF statistics.result_exists({ id => database, type => 4 }) %]
+[% IF config.datacache_exists({ id => database, type => 4 }) %]
 [%   IF active_submenu == "clouds_classification" %]
   <li class="active"><strong>[% msg.maketext("Städte") %]</strong></li>
 [%   ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/classification.html?l=[% lang %]" title="[% msg.maketext("Städte") %]">[% msg.maketext("Städte") %]</a></li>
 [%   END %]
 [% END %]
-[% IF statistics.result_exists({ id => database, type => 9 }) %]
+[% IF config.datacache_exists({ id => database, type => 9 }) %]
 [%   IF active_submenu == "clouds_year" %]
   <li class="active"><strong>[% msg.maketext("Datierung") %]</strong></li>
 [%   ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="[% msg.maketext("Datierung") %]">[% msg.maketext("Datierung") %]</a></li>
 [%   END %]
 [% END %]
-[% IF statistics.result_exists({ id => database, type => 7 })%]
+[% IF config.datacache_exists({ id => database, type => 7 })%]
 [%   IF config.get('social_tagging') %]   
 [%     IF active_submenu == "clouds_tag" %]
   <li class="active"><strong>[% msg.maketext("Nutzer-Tags") %]</strong></li>
@@ -70,7 +70,7 @@
 </ul>
 </li>
 [% END %]
-[% IF statistics.result_exists({ id => 'litlists_usage', type => 12 })%]
+[% IF config.datacache_exists({ id => 'litlists_usage', type => 12 })%]
 [%   IF config.get('litlists') %]
 [%     IF active_submenu == "clouds_litlist" %]
   <li class="active"><strong>[% msg.maketext("Literaturlisten") %]</strong></li>

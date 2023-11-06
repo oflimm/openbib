@@ -23,28 +23,28 @@
 [% IF database %]
 <li><span>[% dbinfo.get('dbnames').${database}.short %]</span>
     <ul>
-[% IF statistics.result_exists({ id => database, type => 9 }) %]
+[% IF config.datacache_exists({ id => database, type => 9 }) %]
 [%   IF active_submenu == "clouds_year" %]
   <li class="active"><strong>Datierung</strong></li>
 [%   ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="Datierung">Datierung</a></li>
 [%   END %]
 [% END %]
-[% IF statistics.result_exists({ id => database, type => 5 }) %]
+[% IF config.datacache_exists({ id => database, type => 5 }) %]
 [%   IF active_submenu == "clouds_corporatebody" %]
   <li class="active"><strong>Ort der Inschrift</strong></li>
 [%   ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/corporatebody.html?l=[% lang %]" title="Ort der Inschrift">Ort der Inschrift</a></li>
 [%   END %]
 [% END %]
-[% IF statistics.result_exists({ id => database, type => 3 }) %]
+[% IF config.datacache_exists({ id => database, type => 3 }) %]
 [%   IF active_submenu == "clouds_subject" %]
   <li class="active"><strong>Kategorie</strong></li>
 [%   ELSE %]
    <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]" title="Kategorie">Kategorie</a></li>
 [%   END %]
 [% END %]
-[% IF statistics.result_exists({ id => database, type => 7 })%]
+[% IF config.datacache_exists({ id => database, type => 7 })%]
 [%   IF config.get('social_tagging') %]   
 [%     IF active_submenu == "clouds_tag" %]
   <li class="active"><strong>[% msg.maketext("Nutzer-Tags") %]</strong></li>
@@ -56,7 +56,7 @@
 </ul>
 </li>
 [% END %]
-[% IF statistics.result_exists({ id => 'litlists_usage', type => 12 })%]
+[% IF config.datacache_exists({ id => 'litlists_usage', type => 12 })%]
 [%   IF config.get('litlists') %]
 [%     IF active_submenu == "clouds_litlist" %]
   <li class="active"><strong>[% msg.maketext("Literaturlisten") %]</strong></li>

@@ -13,6 +13,6 @@
 -%]
 [%-
       funcargs = { id => 'jesuiten-4307', type => 14 } ;
-      resultlist = statistics.get_result(funcargs);
+      resultlist = config.get_datacache(funcargs);
 -%]
 [% to_json(resultlist) %]

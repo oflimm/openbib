@@ -53,7 +53,7 @@
 
 [%
       funcargs = { id => 'usbbibliographie', type => 4 } ;
-      resultlist = statistics.get_result(funcargs);
+      resultlist = config.get_datacache(funcargs);
 
       have_classification = {} ;
       FOREACH cls IN resultlist ;

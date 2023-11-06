@@ -34,6 +34,7 @@ use Benchmark ':hireswallclock';
 use DBIx::Class::ResultClass::HashRefInflator;
 use Cache::Memcached::Fast;
 use Compress::LZ4;
+use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS;
 use List::Compare;
 use Log::Log4perl qw(get_logger :levels);

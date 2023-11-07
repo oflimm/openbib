@@ -1120,21 +1120,32 @@ sub get_status_via_alma_sru {
 	return $sru_status_ref;
     }
 
+    my $config         = $self->param('config');
+    my $circ_config    = $config->load_alma_circulation_config;
+    
     my $ua = LWP::UserAgent->new();
     $ua->agent('USB Koeln/1.0');
-    $ua->timeout(30);
-
-    my $config         = $self->param('config');
-
-    my $circ_config    = $config->load_alma_circulation_config;
+    $ua->timeout($config->get('alma')->{sru_timeout});
     
     my $url=$config->get('alma')->{'sru_baseurl'}."?version=1.2&operation=searchRetrieve&recordSchema=marcxml&query=alma.mms_id=$titleid&maximumRecords=1";
 
     $logger->debug("Request: $url");
 
+    my $atime=new Benchmark;
+    
     my $request = HTTP::Request->new('GET' => $url);
     
     my $response = $ua->request($request);
+
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $resulttime = $resulttime * 1000.0; # to ms
+    
+    if ($resulttime > $config->get('alma')->{'sru_logging_threshold'}){
+	$logger->error("Alma SRU call took $resulttime ms");
+    }
     
     if ($logger->is_debug){
 	$logger->debug("Response: ".$response->content);

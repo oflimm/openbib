@@ -32,6 +32,7 @@ use utf8;
 
 use base qw(OpenBib::ILS);
 
+use Benchmark ':hireswallclock';
 use Cache::Memcached::Fast;
 use Encode qw(decode_utf8 encode_utf8);
 use HTTP::Cookies;
@@ -82,7 +83,7 @@ sub new {
 
     my $ua = LWP::UserAgent->new();
     $ua->agent('USB Koeln/1.0');
-    $ua->timeout(30);
+    $ua->timeout($config->get('alma')->{api_timeout});
 
     # Only valid and defined languages. Fallback 'de'
     $lang = "de" if (none { $_ eq $lang } @{$config->get('lang')});
@@ -2406,6 +2407,8 @@ sub send_alma_api_call {
 
 	}
 
+	my $atime=new Benchmark;
+	
 	my $request = HTTP::Request->new($method, $url, [ 'Accept' => 'application/json', 'Content-Type' => 'application/json' ]);
 	
 	if ($method eq "POST" && defined $post_data_ref){
@@ -2417,10 +2420,22 @@ sub send_alma_api_call {
 	$api_result_ref->{'http_status_code'}    = $response->code();
 	$api_result_ref->{'http_status_message'} = $response->message();	
 
+	my $btime      = new Benchmark;
+	my $timeall    = timediff($btime,$atime);
+	my $resulttime = timestr($timeall,"nop");
+	$resulttime    =~s/(\d+\.\d+) .*/$1/;
+	$resulttime = $resulttime * 1000.0; # to ms
+
+	if ($resulttime > $config->get('alma')->{'api_logging_threshold'}){
+	    $url =~s/\?.+$//; # Don't log args
+	    $logger->error("Alma API call $url took $resulttime ms");
+	}
+
 	if ($logger->is_debug){
 	    $logger->debug("Response Headers: ".$response->headers_as_string);
 	    $logger->debug("Response: ".$response->content);
 	    $logger->debug("Status Code: ".$api_result_ref->{'http_status_code'});
+
 	}
 
 	# $api_result_ref->{'http_status_code'} = 429; # Testfall concurrent AP request limit reached see: https://developers.exlibrisgroup.com/alma/apis/

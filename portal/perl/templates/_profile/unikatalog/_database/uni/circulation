@@ -23,7 +23,7 @@
 [%-
    # First pass
    FOREACH thiscirculation IN circulation ;
-     IF thiscirculation.location_mark.match('\#$') ; # LBS-Exemplare: Mediennummer statt Signatur anzeigen
+     IF thiscirculation.location_mark.match('#$') ; # LBS-Exemplare: Mediennummer statt Signatur anzeigen
        thiscirculation.location_mark = thiscirculation.barcode ;
      END;
 
@@ -193,6 +193,11 @@
 
      # Preprocessing location_mark
      thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','');
+
+     # Nur Default-Signatur im Erwerbungsvorgang, dann entfernen
+     IF thiscirculation.location_mark.match('DummyBarcodeOrders') ;
+        thiscirculation.location_mark = "noch nicht vergeben";
+     END;
 
 -%]
 <tr><td><i class="fas fa-map-marker-alt"></i> <strong>[% standort_with_url %][%# USE dumper;dumper.dump(thiscirculation) %]</strong> [% IF raumplan %]/ <i class="fas fa-map"></i> [% raumplan %][% END %]</td>

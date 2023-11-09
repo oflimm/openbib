@@ -1167,6 +1167,29 @@ sub get_status_via_alma_sru {
 	$logger->debug("XML record: ".$content);
     }
 
+    # Subfeld-Beschreibung des AVA-Feldes
+    #
+    # see: https://developers.exlibrisgroup.com/alma/apis/docs/bibs/R0VUIC9hbG1hd3MvdjEvYmlicy97bW1zX2lkfQ==/
+    #
+    # 0: Bib record ID
+    # 8: Holdings ID
+    # a: Institution Code
+    # b: Library Code (*)
+    # c: Location Name
+    # d: Call number
+    # e: Availability (available, unavailable, oder check_holdings) (*)
+    # f: Total items
+    # g: Non available items
+    # h: Campus
+    # j: Location code (*)
+    # k: Call number type
+    # p: Priority
+    # q: Library name
+    # t: Holdings Information
+    # v: Calculated summary information
+    #
+    # Verwendete Subfelder sind mit (*) gekennzeichnet
+    
     if ($content){
 	my $parser = XML::LibXML->new();
 	my $tree   = $parser->parse_string($content);

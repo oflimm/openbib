@@ -1583,6 +1583,17 @@ sub get_mediastatus {
 		    push @$unavailable_ref, $this_unavailable_ref;
 		    
 		}
+		# im Erwerbungsvorgang?
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0 && $process_type eq "ACQ"){
+		    my $this_unavailable_ref = {
+			service => 'loan',
+			content => "noch nicht verfügbar (im Erwerbungsvorgang)",
+			expected => 'acquisition',
+		    };
+		    
+		    push @$unavailable_ref, $this_unavailable_ref;
+		    
+		}
 		# Sonst, wenn nicht am Ort: entliehen
 		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0 ){
 		    my $this_unavailable_ref = {

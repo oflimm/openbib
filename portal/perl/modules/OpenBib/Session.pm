@@ -1325,17 +1325,18 @@ sub clear_data {
 
     my $config = $self->get_config;
     
-    # Wenn Statistik-DB deaktiviert ist, werden alle Sessiondaten in der System-DB gesammelt und nicht verworfen
+    # Wenn Statistik-DB aktiviert ist, werden alle Sessiondaten in der Statistik-DB anonymisiert archiviert, sonst effektiv verworfen
     if ($config->{active_statisticsdb}){
         $self->save_eventlog_to_statisticsdb;
+    }
 	
-	# dann Sessiondaten loeschen
-	my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} });
+    # Sessiondaten loeschen
+    my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->single({ 'sessionid' => $self->{ID} });
 	
-	if ($sessioninfo){
-	    $logger->debug("Trying to clear data for sessionID ".$sessioninfo->sessionid);
+    if ($sessioninfo){
+	$logger->debug("Trying to clear data for sessionID ".$sessioninfo->sessionid);
 	    
-	    eval {
+	eval {
 		$sessioninfo->eventlogs->delete;
 		$sessioninfo->eventlogjsons->delete;
 		$sessioninfo->queries->delete;
@@ -1346,15 +1347,13 @@ sub clear_data {
 		$sessioninfo->session_searchprofiles->delete;
 		$sessioninfo->user_sessions->delete;
 		$sessioninfo->delete;
-	    };
+	};
 	    
-	    if ($@){
+	if ($@){
 		$logger->fatal("Problem clearing session $self->{ID}: $@");
-	    }
 	}
-	
     }
-
+	
     return;
 }
 

@@ -281,7 +281,7 @@
 [%   END %]
 [%############### HANDAPPARAT ################# %]
 [% ELSIF thiscirculation.storage_id.match('-HAP$') %]
-[%   IF thiscirculation.department_id.match('^(38|38-101|38-132|38-418|38-106|38-406|38-307)$') ; # Handapp. der Hauptabteilung und FBs: Bestellformular einblenden, z.B. ID=6445402, ID=6781850 %]
+[%   IF thiscirculation.department_id.match('^(38|38-101|38-132|38-418|38-106|38-406)$') ; # Handapp. der Hauptabteilung und FBs: Bestellformular einblenden, z.B. ID=6445402, ID=6781850 %]
 <strong>entliehen</strong>
 [%    IF config.get('active_ils') %]
 [%      IF    thiscirculation.department_id.match('^38-101$') ;
@@ -294,8 +294,6 @@
           realm = "bwl";
 	ELSIF thiscirculation.department_id.match('^38-406$') ;
           realm = "nl";
-	ELSIF thiscirculation.department_id.match('^38-307$') ;
-          realm = "hp";
 	ELSE;
 	  realm = "usb";
 	END;

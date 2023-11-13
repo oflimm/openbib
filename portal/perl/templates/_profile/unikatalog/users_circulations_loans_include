@@ -48,6 +48,20 @@
 </thead>
 <tbody>
 [%- FOREACH loan = loans.items -%]
+[%-
+
+    IF loan.department.id == "38" ;
+       IF loan.policy == "Lesesaalausleihe";
+         loan.pickup_location = { about = "Lesesaalausgabe" };
+       ELSE ;
+         loan.pickup_location = { about = "Abholregale" };
+       END ;
+    END ;
+
+    IF loan.renewable_remark.match('Die Ausleihe kann nicht automatisch verlängert werden');
+      loan.renewable_remark = '';
+    END;
+-%]
 <tr>
 <td>
  <i>[% loan.about %]</i>

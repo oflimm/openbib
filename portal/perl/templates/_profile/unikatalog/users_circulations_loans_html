@@ -65,6 +65,9 @@
        END ;
     END ;
 
+    IF loan.renewable_remark.match('Die Ausleihe kann nicht automatisch verlängert werden');
+      loan.renewable_remark = '';
+    END;
 -%]
 <tr>
 <td>
@@ -75,10 +78,10 @@
 </td>
 <td>
 [%#- Die Signatur wird nur dann ausgeben, falls sie nicht Teil der Mediennummer ist -%]
-[% IF loan.label && loan.loanid && NOT loan.loanid.match(loan.label) %]
+[% IF loan.label && loan.item && NOT loan.item.match(loan.label) %]
 [% loan.label %]
 [% ELSIF loan.item %]
-[% loan.label %]
+[% loan.item %]
 [% END %]
 </td>
 <td>[% loan.department.about %][% IF loan.pickup_location.about %] / [% loan.pickup_location.about %][% END %]</td>

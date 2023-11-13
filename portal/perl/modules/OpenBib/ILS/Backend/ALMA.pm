@@ -1980,9 +1980,9 @@ sub make_alma_request {
 	
 	# Processing data	    
 	if (defined $json_result_ref->{'request_id'}) {
-	    my $success_message = $msg->maketext("Das Medium wurde bestellt.");
+	    my $success_message = $msg->maketext("Das Exemplar wurde bestellt.");
 	    if ($alma_request_type eq "reservation"){
-		$success_message = $msg->maketext("Das Medium wurde vorgemerkt.");
+		$success_message = $msg->maketext("Das Exemplar wurde vorgemerkt.");
 	    }
 	    
 	    $response_ref = {

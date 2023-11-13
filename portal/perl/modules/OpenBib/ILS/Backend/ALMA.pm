@@ -2117,8 +2117,16 @@ sub get_alma_request {
 		# }
 		
 		if (defined $item_ref->{'pickup_location'} && $item_ref->{'pickup_location'} && $item_ref->{'pickup_location_library'} ){
+		    my $pickup_location = $item_ref->{'pickup_location'};
+		    
+		    # Circulation Desk?
+		    if (defined $item_ref->{'managed_by_circulation_desk_code'} && $item_ref->{'managed_by_circulation_desk_code'} && $item_ref->{'managed_by_circulation_desk_code'} ne "DEFAULT_CIRC_DESK"){
+
+			$pickup_location.= " / ".$item_ref->{'managed_by_circulation_desk_code'};
+		    }
+		    
 		    $this_response_ref->{'pickup_location'} = {
-			about => $item_ref->{'pickup_location'},
+			about => $pickup_location,
 			id    => $item_ref->{'pickup_location_library'}
 		    }
 		}

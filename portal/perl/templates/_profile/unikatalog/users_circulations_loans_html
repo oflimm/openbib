@@ -61,7 +61,7 @@
        IF loan.policy == "Lesesaalausleihe";
          loan.pickup_location = { about = "Lesesaalausgabe" };
        ELSE ;
-         loan.pickup_location = { about = "Abholregale" };
+         loan.pickup_location = { };
        END ;
     END ;
 

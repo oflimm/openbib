@@ -202,13 +202,13 @@
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
       <div class="ob-thumbnail">
 [% 
-   cdm_json_url = "http://www.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fportrait&start=1&maxrecs=100&field0=identi&mode0=exact&string0=${record.id}";
+   cdm_json_url = "https://services.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fportrait&start=1&maxrecs=100&field0=identi&mode0=exact&string0=${record.id}";
 
    cdm = record.enrich_cdm(bezeichner,cdm_json_url) ;
 %]
 [% IF cdm.total > 0 ;
     cdmrecord = cdm.records.first;
-    cdm_imgurl = "http://www.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}";
+    cdm_imgurl = "https://services.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}";
 %]
 <img src="[% cdm_imgurl %]" style="max-height: 80px; max-width:65px" />
 [% END %]

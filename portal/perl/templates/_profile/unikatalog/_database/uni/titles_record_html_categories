@@ -894,6 +894,44 @@ FOREACH field IN normdata;
  END;
 END;
 
+# Sich nicht wiederholende Felder
+
+singular_normdata = record.get_fields;
+
+FOREACH field IN singular_normdata;
+
+  category = field.key ;
+
+  FOREACH item IN field.value;
+
+    SWITCH category;
+
+     CASE [ "T0982" ];
+       IF item.subfield == 'a';
+         content = item.content;
+	 
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').subjectstring.prefix;
+
+         NEXT IF rswkswt_done.${searchterm} == 1;
+	 
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         IF content ;
+             content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a>";
+             IF NOT content_map.${'Schlagwort'} ;
+	        content_map.${'Schlagwort'} = [];
+	     END;
+             content_map.${'Schlagwort'}.push(content);
+	 END;
+
+         rswkswt_done.${searchterm} = 1;
+       END;
+
+    END;
+  END;
+END;
+
 display_types = {
    'Link'           => 'list',
    'Schlagwort'     => 'list',
@@ -901,7 +939,7 @@ display_types = {
    'Hinweis'        => 'list',   
 };
 
-#USE dumper;dumper.dump(content_map);dumper.dump(categories);dumper.dump(record_type);
+# USE dumper;dumper.dump(content_map);dumper.dump(singular_normdata);dumper.dump(record_type);
 
 FOREACH category IN categories;
 

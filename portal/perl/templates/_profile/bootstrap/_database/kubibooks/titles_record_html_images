@@ -18,16 +18,16 @@
 
    IF katkey ;
    
-   cdm_json_url = "http://www.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fkubibooks&start=1&maxrecs=100&field0=katkey&mode0=exact&string0=${katkey}";
+   cdm_json_url = "https://services.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fkubibooks&start=1&maxrecs=100&field0=katkey&mode0=exact&string0=${katkey}";
 
    cdm = record.enrich_cdm(bezeichner,cdm_json_url) ;
 %]
 <!-- Katkey: [% katkey %] --> 
 [% IF cdm.total > 0 ;
    FOREACH cdmrecord IN cdm.records ;
-     cdm_url       = "http://www.ub.uni-koeln.de/cdm/singleitem/collection/kubibooks/id/${cdmrecord.pointer}/";
-     dfgviewer_url = "http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2Fwww.ub.uni-koeln.de%2Fcdm4%2Fmets_gateway.php%3FCISOROOT%3D%2Fkubibooks%26CISOPTR%3D${record.id}";
-     cdm_imgurl    = "https://www.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}";
+     cdm_url       = "https://services.ub.uni-koeln.de/cdm/singleitem/collection/kubibooks/id/${cdmrecord.pointer}/";
+     dfgviewer_url = "https://dfg-viewer.de/show/?set[mets]=https%3A%2F%2Fservices.ub.uni-koeln.de%2Fcdm4%2Fmets_gateway.php%3FCISOROOT%3D%2Fkubibooks%26CISOPTR%3D${record.id}";
+     cdm_imgurl    = "https://services.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}";
 %]
 <p><a  href="[% dfgviewer_url %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]"/></a></p>
 

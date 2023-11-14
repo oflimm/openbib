@@ -27,7 +27,7 @@
       END ;
    END;
 
-   cdmurl = "http://www.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fzas&start=1&maxrecs=100&field0=title&mode0=exact&string0=";
+   cdmurl = "https://services.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fzas&start=1&maxrecs=100&field0=title&mode0=exact&string0=";
 %]
 [% cdm = record.enrich_cdm(bezeichner,cdmurl)%]
 [% IF cdm.total > 0 ;
@@ -40,11 +40,11 @@
 
    FOREACH cdmrecord IN cdm.records ;
      NEXT IF zas_type == 1 && NOT cdmrecord.title.match("^${bezeichner}\$") ;
-     cdm_url       = "http://www.ub.uni-koeln.de/cdm/compoundobject/collection/zas/id/${cdmrecord.pointer}";
-     cdm_imgurl = "http://www.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&width=200";
+     cdm_url       = "https://services.ub.uni-koeln.de/cdm/compoundobject/collection/zas/id/${cdmrecord.pointer}";
+     cdm_imgurl = "https://services.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&width=200";
 
 %]
-<p><a id="cover_full_url" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=534;url=[% uri_escape(cdm_url) %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]" title="Zum Digitalisat des Titels in ContentDM" /></a><br/>[% cdmrecord.title %]</p>
+<p><a id="cover_full_url" href="[% cdm_url %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]" title="Zum Digitalisat des Titels in ContentDM" /></a><br/>[% cdmrecord.title %]</p>
   [% END %]
 
   <span style="font-face:bold;font-size:0.8em;">Klicken Sie auf das

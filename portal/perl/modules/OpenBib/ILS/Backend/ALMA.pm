@@ -703,7 +703,7 @@ sub get_fees {
 }
 
 sub get_loans {
-    my ($self,$username) = @_;
+    my ($self,$username,$page) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -714,6 +714,9 @@ sub get_loans {
     my $circ_config = $self->get_circulation_config;
     my $msg         = $self->get_msg;
     my $lang        = $self->get('lang');
+
+    my $num         = 10;    
+    my $offset      = $page*$num - $num;    
     
     my $response_ref = {};
 
@@ -742,7 +745,7 @@ sub get_loans {
 	
 	my $api_key = $config->get('alma')->{'api_key'};
 	
-	my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/loans?user_id_type=all_unique&expand=renewable&limit=100&offset=0&order_by=due_date&direction=ASC&loan_status=Active&lang=$lang&apikey=$api_key";
+	my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/loans?user_id_type=all_unique&expand=renewable&limit=$num&offset=$offset&order_by=due_date&direction=ASC&loan_status=Active&lang=$lang&apikey=$api_key";
 	
 	my $api_result_ref = $self->send_alma_api_call({ method => 'GET', url => $url });
 	
@@ -839,6 +842,10 @@ sub get_loans {
 	    }
 
 	    $response_ref->{num_renewables} = $num_renewables;
+	}
+
+	if (defined $json_result_ref->{'total_record_count'}){ 
+	    $response_ref->{num_total} = $json_result_ref->{'total_record_count'};
 	}
     }
     

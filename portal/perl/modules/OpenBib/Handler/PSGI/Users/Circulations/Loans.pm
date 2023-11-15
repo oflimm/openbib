@@ -100,7 +100,7 @@ sub show_collection {
 
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
     my $sessionuserid        = $user->get_userid_of_session($session->{ID});
-
+    
     if (!$self->authorization_successful || $userid ne $sessionuserid){
         if ($self->param('representation') eq "html"){
             return $self->tunnel_through_authenticator('GET');            
@@ -110,6 +110,8 @@ sub show_collection {
         }
     }
 
+    my $page = $queryoptions->get_option('page') || 1;
+    
     my $database = $sessionauthenticator ;
     
     my ($loginname,$password,$access_token) = $user->get_credentials();
@@ -120,20 +122,22 @@ sub show_collection {
 	$logger->debug("Trying to get loans for user $loginname in ils for $database");
     }
     
-    my $loans_ref = $ils->get_loans($loginname);
+    my $loans_ref = $ils->get_loans($loginname,$page);
 
     if ($logger->is_debug){
 	$logger->debug("Got loans: ".YAML::Dump($loans_ref));
     }
 
     # Sortierung der Ausleihen nach Rueckgabedatum aufsteigend
-
+    
     if (defined $loans_ref->{items} && @{$loans_ref->{items}}){
 	my $loans_items = $loans_ref->{items};
 
-	my @sorted_loans_items = sort _by_enddate_asc @$loans_items;
+	# my @sorted_loans_items = sort _by_enddate_asc @$loans_items;
 
-	$loans_ref->{items} = \@sorted_loans_items;
+	# $loans_ref->{items} = \@sorted_loans_items;
+
+	$loans_ref->{items} = $loans_items;
     }
     
     my $authenticator = $session->get_authenticator;
@@ -145,7 +149,8 @@ sub show_collection {
         password      => $password,
 	
         loans         => $loans_ref,
-        
+        page          => $page,
+	
         database      => $database,
     };
     

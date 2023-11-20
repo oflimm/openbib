@@ -19,17 +19,20 @@
 <div id="extended-info" class="d-flex justify-content-center footer-logo-box pb-3">
     <div>
             <ul class="list-group list-group-horizontal flex-column flex-md-row justify-content-center">
+                <a class="navbar-brand" href="https://www.museenkoeln.de/kunst-und-museumsbibliothek/default.aspx?s=1323" title="Kunst- und Museumsbibliothek der Stadt Köln" target="_blank">
+                    <img src="/images/openbib/views/kubikoeln/logo_kmb.jpg"  height="50" class="d-inline-block align-top" alt="KMB Logo">
+                </a>
                 <a class="navbar-brand" href="https://www.stadt-koeln.de" title="Stadt Köln" target="_blank">
-                    <img src="/images/openbib/views/kubikoeln/320px-Logo-stadt-koeln.svg.png"  height="50" class="d-inline-block align-top" alt="">
+                    <img src="/images/openbib/views/kubikoeln/320px-Logo-stadt-koeln.svg.png"  height="50" class="d-inline-block align-top" alt="Stadt Köln Logo">
                 </a>
                 <a class="navbar-brand" href="https://www.ub.uni-koeln.de/" title="Universitäts- und Stadtbibliothek Köln" target="_blank">
-                    <img src="/images/openbib/views/kubikoeln/USB_logo_1500_transparent.png"  height="50" class="d-inline-block align-top" alt="">
+                    <img src="/images/openbib/views/kubikoeln/USB_logo_1500_transparent.png"  height="50" class="d-inline-block align-top" alt="USB Logo">
                 </a>
                 <a class="navbar-brand" href="https://phil-fak.uni-koeln.de/" title="Philosophische Fakultät" target="_blank">
-                    <img src="/images/openbib/views/logophilfak.gif"  height="50" class="d-inline-block align-top" alt="">
+                    <img src="/images/openbib/views/logophilfak.gif"  height="50" class="d-inline-block align-top" alt="Philfak Logo">
                 </a>
                 <a class="navbar-brand" href="https://www.uni-koeln.de/" title="Universität zu Köln" target="_blank">
-                    <img src="/images/openbib/views/kubikoeln/013_Unisiegel_plus_Schriftzug_DE.jpg"  height="50" class="d-inline-block align-top" alt="">
+                    <img src="/images/openbib/views/kubikoeln/013_Unisiegel_plus_Schriftzug_DE.jpg"  height="50" class="d-inline-block align-top" alt="UzK Logo">
                 </a> 
            </ul>
     </div>

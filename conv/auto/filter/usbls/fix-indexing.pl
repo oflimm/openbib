@@ -33,7 +33,8 @@ while (<>){
 	    $index_ref->{'record'}{'X0014'} = [];
 	    foreach my $signatur (uniq @signaturen){
 		push @{$index_ref->{'record'}{'X0014'}}, {
-		    content => $signatur,
+		    content  => $signatur,
+		    subfield => 'a',
 		};
 	    }
 	}

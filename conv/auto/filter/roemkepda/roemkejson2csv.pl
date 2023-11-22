@@ -60,7 +60,7 @@ foreach my $item_ref (@$json_ref){
     $out_ref->[3] = $item_ref->{person};
     $out_ref->[4] = $item_ref->{publisher};
     $out_ref->[5] = $item_ref->{publishingyear};
-    $out_ref->[6] = $item_ref->{prive};
+    $out_ref->[6] = $item_ref->{price};
     $out_ref->[7] = $item_ref->{availability};
     $out_ref->[8] = $item_ref->{cover};
     $out_ref->[9] = $item_ref->{linked_isbn};

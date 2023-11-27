@@ -41,6 +41,7 @@
 <option value="Amiibo">Amiibo</option>
 <option value="Disney Infinity">Disney Infinity</option>
 <option value="LEGO Dimensions">LEGO Dimensions</option>
+<option value="Meta Quest">Meta Quest</option>
 <option value="Nintendo 3DS">Nintendo 3DS</option>
 <option value="Nintendo DS">Nintendo DS</option>
 <option value="Nintendo GameCube">Nintendo GameCube</option>
@@ -80,6 +81,7 @@
 <option value="GCD">GCD</option>
 <option value="GOG Download">GOG Download</option>
 <option value="Hardware">Hardware</option>
+<option value="Meta Download">Meta Download</option>
 <option value="NFC Figur">NFC Figur</option>
 <option value="Nintendo eShop">Nintendo eShop</option>
 <option value="Origin Download">Origin Download</option>

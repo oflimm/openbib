@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 <!-- begin: footer -->
-
+<footer class="uzk15__mainfooter" role="contentinfo">
 <hr/>
 
 [% IF NOT hide_foot_banner %]
@@ -46,5 +46,5 @@
 [% END %]
 
 <!-- end: footer -->
-
+</footer>
 

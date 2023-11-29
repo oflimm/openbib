@@ -766,10 +766,6 @@ FOREACH category IN categories;
         content = content_map.${category}.join(' ; ');
       END;
 
-      # Titel hervorheben
-      IF category == "Titel";
-        content = "<span class=\"ob-title\">${content}</span>";
-      END;
 -%]
 [% msg.maketext("${category}") | format("%- 24s") %]: [% content %]
 [%

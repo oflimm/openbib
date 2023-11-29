@@ -12,7 +12,6 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="visible_categories_title" %]
 [% IF NOT data_only %]
 <div class="row">
 <div class="col-md-12 ps-4 pe-4">
@@ -22,43 +21,7 @@
 <pre>
 [% END %]
 [%- FOREACH record IN recordlist.get_records -%]
-[%- normset    = record.get_fields -%]
-[%- mexnormset = record.get_holding -%]
-[%-
-
-FOREACH category IN categories;
-    FOREACH item IN normset.$category;
-    content = item.content;
-
-    SWITCH category;
-
-    CASE "T5005";
-         NEXT;
-
-    END;
-
-    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
-    # in Config.pm fuer die entsprechende Datenbank definiert
-    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
-    # kodiert.
-    thiscategory = category ;
-    IF config.get('categorymapping').$database.$category ;
-       thiscategory = "${category}-${normset.database}" ;
-    END;
-
--%]
-[% msg.maketext("${thiscategory}") | format("%- 24s") %]: [% content %]
-[% END -%]
-[%- END -%]
-[%- IF mexnormset.size > 0 -%]
-[%- FOREACH mex IN mexnormset -%]
-[% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% mex.${"X4000"}.content.full %]
-[% msg.maketext("Standort             ") %] [% loop.count %] : [% mex.${"X0016"}.content %]
-[% msg.maketext("Lokale Signatur      ") %] [% loop.count %] : [% mex.${"X0014"}.content %]
-[% msg.maketext("Inventarnummer       ") %] [% loop.count %] : [% mex.${"X0005"}.content %]
-[% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% mex.${"X1204"}.content %]
-[% END %]
-[%- END -%]
+[% PROCESS common/subtemplate name="titles_record_as_text" database=record.database %]
 
 [% END %]
 [% IF NOT data_only %]

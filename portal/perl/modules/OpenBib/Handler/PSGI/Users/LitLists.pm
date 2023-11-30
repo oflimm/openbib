@@ -36,6 +36,7 @@ use utf8;
 
 use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
+use Data::Pageset;
 use DBI;
 use JSON::XS;
 use List::MoreUtils qw(none any);
@@ -335,7 +336,7 @@ sub show_record_form {
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt'), view => $view}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, queryoptions => $queryoptions, view => $view}),
         properties => $litlist_properties_ref,
     };
         
@@ -344,9 +345,19 @@ sub show_record_form {
         
     my $litlist_topics_ref   = $user->get_topics_of_litlist({id => $litlistid});
     my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid, view => $view});
+
+    my $total_count = $user->get_number_of_litlistentries({ litlistid => $litlistid, view => $view });
+    
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $total_count,
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
     
     # TT-Data erzeugen
     my $ttdata={
+	nav          => $nav,
         user_owns_litlist => $user_owns_litlist,
         topics       => $topics_ref,
         thistopics   => $litlist_topics_ref,
@@ -358,6 +369,7 @@ sub show_record_form {
         other_litlists => $other_litlists_of_user,
         targettype     => $targettype,
         litlistid      => $litlistid,
+	total_count    => $total_count,
     };
     
     return $self->print_page($config->{tt_users_litlists_record_edit_tname},$ttdata);

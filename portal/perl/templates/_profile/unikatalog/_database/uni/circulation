@@ -35,9 +35,11 @@
    # Second pass
    FOREACH thiscirculation IN sort_circulation(circulation) ;
 
-     department = thiscirculation.department;
-     storage    = thiscirculation.storage;
-
+     department    = thiscirculation.department;
+     department_id = thiscirculation.department_id;
+     storage       = thiscirculation.storage;
+     storage_id    = thiscirculation.storage_id;
+     
      standort = department ;
 
      IF storage ;
@@ -106,20 +108,20 @@
 
      raumplan = "";
 
-     IF library_isil.match('^DE-38$');
-       IF standort.match('Lesesaal');
+     IF department_id.match('^38$');
+       IF storage_id.match('^38-LS$');
          raumplan = "<a class=\"exturl\" href=\"${cms_links.standort_ls}\" target=\"_blank\">Raumplan</a>";
-       ELSIF standort.match('Lehrbuchsammlung');
+       ELSIF standort.match('^38-LBS$');
          raumplan = "<a class=\"exturl\" href=\"${cms_links.standort_lbs}\" target=\"_blank\">Raumplan</a>";
-       ELSIF standort.match('Sofortausleihbereich');
+       ELSIF standort.match('^38-SAB$');
          raumplan = "<a class=\"exturl\" href=\"${cms_links.standort_sab}\" target=\"_blank\">Raumplan</a>";
        END;
-     ELSIF library_isil.match('^DE-38-307$');
-       IF standort.match('Heilpädagogik-LS');
+     ELSIF department_id.match('^38-307$');
+       IF standort.match('^38-307-LS');
          raumplan = "<a class=\"exturl\" href=\"${cms_links.standort_ls_hp}\" target=\"_blank\">Raumplan</a>";
        END;
-     ELSIF library_isil.match('^DE-38-HWA$');
-       IF standort.match('Lesesaal Humanwissenschaft') && NOT standort.match('Sonderstandort');
+     ELSIF department_id.match('^38-HWA$');
+       IF storage_id.match('38-HWA-LS$');
          raumplan = "<a class=\"exturl\" href=\"${cms_links.standort_ls_hf}\" target=\"_blank\">Raumplan</a>";
        END;
      END;

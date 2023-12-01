@@ -111,13 +111,13 @@
      IF department_id.match('^38$');
        IF storage_id.match('^38-LS$');
          raumplan = "<a class=\"exturl\" href=\"${cms_links.standort_ls}\" target=\"_blank\">Raumplan</a>";
-       ELSIF standort.match('^38-LBS$');
+       ELSIF storage_id.match('^38-LBS$');
          raumplan = "<a class=\"exturl\" href=\"${cms_links.standort_lbs}\" target=\"_blank\">Raumplan</a>";
-       ELSIF standort.match('^38-SAB$');
+       ELSIF storage_id.match('^38-SAB$');
          raumplan = "<a class=\"exturl\" href=\"${cms_links.standort_sab}\" target=\"_blank\">Raumplan</a>";
        END;
      ELSIF department_id.match('^38-307$');
-       IF standort.match('^38-307-LS');
+       IF storage_id.match('^38-307-LS');
          raumplan = "<a class=\"exturl\" href=\"${cms_links.standort_ls_hp}\" target=\"_blank\">Raumplan</a>";
        END;
      ELSIF department_id.match('^38-HWA$');

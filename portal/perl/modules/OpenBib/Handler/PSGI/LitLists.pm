@@ -372,7 +372,7 @@ sub show_collection_by_single_userxxx {
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype, view => $view}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, queryoptions => $queryoptions, view => $view}),
         properties => $litlist_properties_ref,
     };
         
@@ -486,7 +486,7 @@ sub show_collection_by_single_user {
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype, view => $view}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, queryoptions => $queryoptions, view => $view}),
         properties => $litlist_properties_ref,
     };
         
@@ -613,7 +613,7 @@ sub show_record {
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt'), view => $view}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, queryoptions => $queryoptions, view => $view}),
         properties => $litlist_properties_ref,
     };
         
@@ -689,7 +689,7 @@ sub print_record {
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt'), view => $view}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, queryoptions => $queryoptions, view => $view}),
         properties => $litlist_properties_ref,
     };
         
@@ -766,7 +766,7 @@ sub save_record {
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt'), view => $view}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, queryoptions => $queryoptions, view => $view}),
         properties => $litlist_properties_ref,
     };
         
@@ -862,7 +862,7 @@ sub mail_record {
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt'), view => $view}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, queryoptions => $queryoptions, view => $view}),
         properties => $litlist_properties_ref,
     };
 
@@ -947,7 +947,7 @@ sub mail_record_send {
         
     my $singlelitlist = {
         id         => $litlistid,
-        recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $queryoptions->get_option('srto'), sorttype => $queryoptions->get_option('srt'), view => $view}),
+        recordlist => $user->get_litlistentries({litlistid => $litlistid, queryoptions => $queryoptions, view => $view}),
         properties => $litlist_properties_ref,
     };
 

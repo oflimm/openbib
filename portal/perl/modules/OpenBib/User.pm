@@ -367,8 +367,8 @@ sub load_privileges {
     }
 
     if ($logger->is_debug){
-        $logger->debug("Restricted Views: ".YAML::Dump($views_ref));
-        $logger->debug("Rights: ".YAML::Dump($role_rights_ref));
+        $logger->debug("Userid $userid - Restricted Views: ".YAML::Dump($views_ref));
+        $logger->debug("Userid $userid - Rights: ".YAML::Dump($role_rights_ref));
     }
 
     $self->{restricted_views} = $views_ref;
@@ -4258,17 +4258,30 @@ sub get_litlistentries {
     my $view                = exists $arg_ref->{view}
         ? $arg_ref->{view}            : undef;
     
-    my $sorttype            = exists $arg_ref->{sorttype}
-        ? $arg_ref->{sorttype}            : undef;
-
-    my $sortorder           = exists $arg_ref->{sortorder}
-        ? $arg_ref->{sortorder}           : undef;
+    my $queryoptions        = exists $arg_ref->{queryoptions}
+        ? $arg_ref->{queryoptions}        : new OpenBib::QueryOptions;
 
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
 
     my $config = $self->get_config;
+
+    my $sorttype          = $queryoptions->get_option('srt');
+    my $sortorder         = $queryoptions->get_option('srto');
+
+    # Wenn srto in srt enthalten, dann aufteilen
+    if ($sorttype =~m/^([^_]+)_([^_]+)$/){
+        $sorttype=$1;
+        $sortorder=$2;
+        $logger->debug("srt Option split: srt = $1, srto = $2");
+    }
+
+    # Pagination parameters
+    my $page              = ($queryoptions->get_option('page'))?$queryoptions->get_option('page'):1;
+    my $num               = ($queryoptions->get_option('num'))?$queryoptions->get_option('num'):20;
+
+    my $offset = $page*$num-$num;
 
     my $litlistitems;
 
@@ -4298,7 +4311,13 @@ sub get_litlistentries {
             {
                 litlistid => $litlistid,
                 dbname    => { -in => $databases->as_query },
-            }
+            },
+	    {
+	        order_by => ["tstamp $sortorder"],
+	    
+	        offset => $offset,
+	        rows   => $num,
+	    }
         );
 
     }
@@ -4307,7 +4326,13 @@ sub get_litlistentries {
         $litlistitems = $self->get_schema->resultset('Litlistitem')->search_rs(
             {
                 litlistid => $litlistid,
-            }
+            },
+	    {
+	        order_by => ["tstamp $sortorder"],
+	    
+	        offset => $offset,
+	        rows   => $num,
+	    }
         );
     }
     
@@ -4324,37 +4349,49 @@ sub get_litlistentries {
         my $record;
 	my $record_exists = 0;
 
-	# Titel per DB/ID referenziert. Existiert der Titel noch?
-	if ($titleid && $database){
-	    $record = OpenBib::Record::Title->new({id =>$titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment, config => $config })->load_brief_record;
-            $record_exists = $record->record_exists;
+	# Record fuer die Anzeige aus Performance-Gruenden immer aus Titlecache
+        if ($titlecache){
+            eval {
+  	      $record = OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment, config => $config })->from_json($titlecache);
+              # $record->set_status('from_cache',1);
 
-	    $logger->debug("Trying DB: $database / ID: $titleid : Records Exists? $record_exists");
+              $record_exists = $record->record_exists;
+	      $logger->debug("Trying titlecache $titlecache : Records Exists? $record_exists");
+            };
+
+	    if ($@){
+		$logger->error($@);
+	    }
         }
 
-        # Anderenfalls Titel ist gecached?
-        if (!$record_exists && $titlecache ){
-           $record = OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment, config => $config })->set_record_from_json($titlecache);
-            $record->set_status('from_cache',1);
-            $record_exists = $record->record_exists;
-	    $logger->debug("Trying titlecache $titlecache : Records Exists? $record_exists");
+	# Titelcache nicht vorhanden oder Verarbeitung fehlgeschlagen, dann Titel per DB/ID referenziert. Laden aus der DB
+	
+        if (!$record_exists && $titleid && $database){
+            eval {
+		$record = OpenBib::Record::Title->new({id =>$titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment, config => $config })->load_full_record;
+		$record_exists = $record->record_exists;
+		
+		$logger->debug("Trying DB: $database / ID: $titleid : Records Exists? $record_exists");
+	    };
+
+	    if ($@){
+		$logger->error($@);
+	    }
         }
 
-        # Weder ind DB vorhanden, noch gecached? Dann leerer Record
+        # Weder in DB vorhanden, noch gecached? Dann leerer Record
         if (!$record_exists && $titleid && $database){
 	    $record = OpenBib::Record::Title->new({id => $titleid, database => $database, date => $tstamp, listid => $listid, comment => $comment, config => $config });
 	    $logger->debug("Record with DB: $database / ID: $titleid is empty");
         }
         elsif (!$record_exists) {
-           $record = OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment, config => $config });
-	   $logger->debug("Record without DB / ID is empty");
+	    $record = OpenBib::Record::Title->new({ date => $tstamp, listid => $listid, comment => $comment, config => $config });
+	    $logger->debug("Record without DB / ID is empty");
         }
 
         $recordlist->add($record);
     }
     
-    $recordlist->sort({order=>$sortorder,type=>$sorttype});
-        
     return $recordlist;
 }
 

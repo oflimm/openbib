@@ -44,6 +44,7 @@ use POSIX;
 use Template;
 use URI::Escape;
 use XML::RSS;
+use YAML::Syck;
 
 use OpenBib::Search::Util;
 use OpenBib::Config;
@@ -101,10 +102,12 @@ sub show_collection {
     my $useragent      = $self->param('useragent');
 
     # CGI Args
-    my $sorttype       = $query->param('srt')    || "person";
-    my $sortorder      = $query->param('srto')   || "asc";
+    my $sorttype       = $query->param('srt')    || "tstamp";
+    my $sortorder      = $query->param('srto')   || "desc";
 
-    my $items = $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype, view => $view});
+    $logger->debug("A Litlist QueryOptions-Object with options ".YAML::Syck::Dump($queryoptions->get_options));
+
+    my $items = $user->get_litlistentries({litlistid => $litlistid, queryoptions => $queryoptions, view => $view});
 
     # TT-Data erzeugen
     my $ttdata = {

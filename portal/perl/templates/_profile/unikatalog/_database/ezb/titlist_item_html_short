@@ -435,6 +435,9 @@
 [% ELSE %]
 [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
 [% END %]
+
+[% IF record.get_date %]<br /><i class="far fa-calendar-alt"></i> [% msg.maketext("hinzugefügt") %] [% record.get_date.replace('\.\d+$','') %][% END %]
+
         </div> <!-- end: titleinfo -->
         <div class="ob-titlemark ps-2 d-flex d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]
         </div>
@@ -482,12 +485,12 @@
 	
 [% IF user_owns_litlist %]
 	    <div class="pe-1">
-	      <a class="ob-delete btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
+	      <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Titel aus Liste löschen") %]" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><i class="fas fa-trash"></i> <span>[% msg.maketext("Löschen") %]</span></a>
 	    </div>
 [% END %]
 [% IF parameter.private_tags %]
 	    <div class="pe-1">
-	      <a class="ob-collection btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.get_encoded_id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
+	      <a class="ob-collection btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Tag aus Titel entfernen") %]" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.get_encoded_id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><i class="fas fa-trash"></i> <span>[% msg.maketext("Löschen") %]</span></a>
 	    </div>
 [% END %]
 [% IF with_cartitems_delete %]

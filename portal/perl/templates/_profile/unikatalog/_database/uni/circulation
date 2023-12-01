@@ -21,6 +21,9 @@
 <tbody>
 [%# USE dumper;dumper.dump(circulation) %]
 [%-
+
+   circ_config = config.load_alma_circulation_config;
+   
    # First pass
    FOREACH thiscirculation IN circulation ;
      IF thiscirculation.location_mark.match('#$') ; # LBS-Exemplare: Mediennummer statt Signatur anzeigen
@@ -68,7 +71,7 @@
      # IF standort.match('Handapp.');
      #   IF thiscirculation.department_id.match('^(38|38-101|38-132|38-418)$');
      #      standort = "Handapp." ; #.replace('^(.*Handapp\.).*','$1'); # Handapp. der Hauptabteilung und FBs: Namen verbergen, z.B. ID=6445402
-     #   ELSIF thiscirculation.department_id.match('^20$');
+     #   ELSIF thiscirculation.department_id.match('^KN3$');
      #      standort = "KMB / Handapp.";
      #    END;
      # END;
@@ -385,7 +388,7 @@ Präsenzbestand
 Präsenzbestand
 [%     ELSIF thiscirculation.location_mark.match('^ZBM/') %]
 Bestände zur Zeit nicht verfügbar
-[%     ELSIF thiscirculation.department_id.match('^(19|38-222)$') %]
+[%     ELSIF thiscirculation.department_id.match('^(38-201|38-222)$') %]
 Präsenzbestand
 [%     ELSIF thiscirculation.department_id.match('^(38-420)$') %]
 [%       IF standort.match('Magazin') %]
@@ -393,7 +396,7 @@ Bitte nutzen Sie das <a href="https://neuere-geschichte.phil-fak.uni-koeln.de/bi
 [%       ELSE %]
 Präsenzbestand
 [%       END %]
-[%     ELSIF thiscirculation.department_id.match('^(18)$') %]
+[%     ELSIF thiscirculation.department_id.match('^(38-106)$') %]
 [%       IF availability_info.match('nicht ausleihbar') # nicht ausleihbare Bestaende der BWL sollen als Präsensbestand angezeigt werden %]
 Präsenzbestand
 [%       ELSE %]
@@ -463,13 +466,17 @@ Präsenzbestand
 [%############### VORMERKBUTTON ######### %]
 [% ELSIF thiscirculation.availability.match('^(lent|ordered)$') && thiscirculation.unavailability_info.first.defined('queue') %]
 [%   
-     vormerkbutton = 1 ;
+     vormerkbutton = 0 ;
+
+     IF circ_config.${thiscirculation.department_id}.${thiscirculation.storage_id}.reservation ;
+        vormerkbutton = 1;
+     END;
 
      IF thiscirculation.department_id == "38" && (standort.match('Lehrbuchsammlung') || record.id == 8224428);
        # Kein Vormerkbutton bei ausgeliehenen LBS-Ex., falls andere LBS-Ex. in ZW 0 verfuegbar sind
        # Kein Vormerkbutton bei bei ipads, falls andere Geraete verfuegbar sind (katkey: 8224428)
        FOREACH checkcirculation IN circulation ;
-         NEXT IF checkcirculation.department_id > 0 ;
+         NEXT IF checkcirculation.department_id != '38' ;
          IF checkcirculation.availability.match('^(loan|order)$');
            vormerkbutton = 0 ;
          END;

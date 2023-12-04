@@ -391,15 +391,15 @@ system("/opt/openbib/autoconv/bin/autojoinindex_elasticsearch.pl");
 
 $logger->info("### Dumping isbns");
 
-# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_usb 2>&1 > /dev/null");
-# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_kmb 2>&1 > /dev/null");
-# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_uni 2>&1 > /dev/null");
-# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett 2>&1 > /dev/null");
+system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_usb 2>&1 > /dev/null");
+system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_kmb 2>&1 > /dev/null");
+system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_uni 2>&1 > /dev/null");
+system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett 2>&1 > /dev/null");
 # system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=abgleich_ebookpda 2>&1 > /dev/null");
-# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett_ohne_tmpebooks 2>&1 > /dev/null");
+ system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett_ohne_tmpebooks 2>&1 > /dev/null");
 # system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_komplett_ohne_proquestpda 2>&1 > /dev/null");
-# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=tmpebooks 2>&1 > /dev/null");
-# system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=emedienkauf 2>&1 > /dev/null");
+system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=tmpebooks 2>&1 > /dev/null");
+system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=emedienkauf 2>&1 > /dev/null");
 
 # $logger->info("### Finding corresponding ebooks in inst526/inst006");
 

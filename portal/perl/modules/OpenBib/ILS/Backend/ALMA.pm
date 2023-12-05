@@ -1559,13 +1559,20 @@ sub get_mediastatus {
 		    };
 		}
 		# Entliehen mit Vormerkmoeglichkeit
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0 && $process_type eq "LOAN" && $this_circ_conf->{'reservation'}){ 
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 0 && $process_type eq "LOAN" && $this_circ_conf->{'reservation'}){
+
 		    my $this_unavailable_ref = {
 			service => 'loan',
 			content => "entliehen",
 #			expected => $circ_ref->{'item_data'}{'expected_arrival_date'},
 			expected => $circ_ref->{'item_data'}{'due_date'},
 		    };
+
+		    if ($policy eq "L" ){ # $policy = L = Lesesaalausleihe
+			$this_unavailable_ref->{limitation} = "vormerkbar (Nutzung nur im Lesesaal)";
+			$this_unavailable_ref->{type}       = 'Stationary';
+
+		    }
 
 		    # Vormerk-Rang wird von Alma nicht geliefert
 		    if ($circ_ref->{VormerkAnzahl} >= 0){

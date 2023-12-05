@@ -14,6 +14,22 @@
 
 [%# USE dumper; dumper.dump(pickup_locations) %]
 
+[%
+
+  # date/time based activation of alerts
+  USE date ; # Seconds since epoch
+  current_date       = date.now ;
+  activate_from_date = date.format('2023/12/22 00:00:00', format => '%s'); # YYYY/MM/DD HH:MM:SS
+  activate_to_date   = date.format('2024/01/02 00:00:00', format => '%s');
+  
+%]
+
+[% IF current_date >= activate_from_date && current_date <= activate_to_date %]
+<div class="alert alert-info mt-5">
+[% msg.maketext("Ihre Bestellung wir ab dem 2. Januar bearbeitet.") %]
+</div>
+[% END %]
+
 <div class="card mt-5 mb-5 me-5">
 <div class="card-header">[% msg.maketext("Anzeige des Abholorts") %]</div>
 <div class="card-body">

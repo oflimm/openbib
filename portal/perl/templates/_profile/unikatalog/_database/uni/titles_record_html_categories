@@ -451,8 +451,12 @@ FOREACH field IN normdata;
 	   part_title = thisfield.${'p'};	 
 	 END;
 
-         IF supplemental_title ;
+         IF main_title && supplemental_title ;
 	    main_title = "${main_title} : ${supplemental_title}";
+	 END;
+
+         IF main_title && part_title ;
+	    main_title = "${main_title}. ${part_title}";
 	 END;
 
          volume = "";
@@ -461,15 +465,7 @@ FOREACH field IN normdata;
 	   volume = thisfield.${'n'};	 
 	 END;
 
-         IF part_title ;
-	   content = part_title;
-           content   = "<b>${highlightquery(searchquery,content)}</b>";
-
-           IF NOT content_map.${'Titel'} ;
-	     content_map.${'Titel'} = [];
-	   END;
-           content_map.${'Titel'}.push(content);	 
-         ELSIF main_title ;
+         IF main_title ;
 	   content = main_title;
            content   = "<b>${highlightquery(searchquery,content)}</b>";
 
@@ -477,6 +473,14 @@ FOREACH field IN normdata;
 	     content_map.${'Titel'} = [];
 	   END;
            content_map.${'Titel'}.push(content);
+         ELSIF part_title ;
+	   content = part_title;
+           content   = "<b>${highlightquery(searchquery,content)}</b>";
+
+           IF NOT content_map.${'Titel'} ;
+	     content_map.${'Titel'} = [];
+	   END;
+           content_map.${'Titel'}.push(content);	 
 	 END;
 
          IF volume ;
@@ -678,10 +682,11 @@ FOREACH field IN normdata;
     CASE [ "T0770" "T0776" ];    
          content = thisfield.${'i'};
          thistitle = thisfield.${'t'};
-         thisid    = thisfield.${'w'};
+         thisid    = 0 ; #thisfield.${'w'};
 
          # ggf. verlinken
-         IF 0 == 1 && thistitle && thisid ;
+         IF thistitle ;
+	  IF thisid ;
 	    thisid = thisid.replace('\(.+?\)','');
             searchterm    = thisid;
             searchprefix  = config.get('searchfield').zdbid.prefix;
@@ -689,7 +694,8 @@ FOREACH field IN normdata;
             localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
 
 	    thistitle = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
-            content = "${content} ${thistitle}";
+	  END;
+          content = "${content} ${thistitle}";
 	 END;
 	 
          IF content ;

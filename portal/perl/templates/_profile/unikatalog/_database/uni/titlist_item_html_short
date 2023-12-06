@@ -340,7 +340,7 @@
      END;
 
      zaehlung = "";
-     
+
      # Zaehlung Anfang Titel
      IF is_mehrbaendig;
        IF band ;
@@ -348,12 +348,20 @@
 	  IF zaehlung == title ;
 	     title = "";
 	  END;
+
 	  IF bandtitel && title ;	  
-	    title = "${bandtitel} (${title})";
+	    title = "${title} / $bandtitel";
 	  ELSIF bandtitel ;
 	    title = "${bandtitel}";	  
 	  END ;
-          title = "${zaehlung}. ${title}";
+
+          IF zaehlung == '[...]';
+            zaehlung = "";
+          END;
+
+          IF zaehlung ;
+            title = "${zaehlung}. ${title}";
+	  END;
        END;     
      END;
 

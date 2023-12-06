@@ -464,49 +464,77 @@ while (<DAT>){
 		# 'r': '0032' # Receiving date subfield
 		# 'x': '0033' # Retention reason subfield
 		# 'y': '0034' # Retention note subfield
+
+
+		my $is_issue       = 0;
+		my $is_acquisition = 0;
 		
-		$has_items = 1;
+		my $subfields_ref = [];
 		
-		$logger->debug("Processing field $field");
+		if (ref $field_ref->{$field} eq "HASH" && defined $field_ref->{$field}{subfields}){
+		    $subfields_ref = $field_ref->{$field}{subfields};
+		}
+
 		
-		my $holding_ref = {
-		    'id'     => $mexid++,
-			'fields' => {
-			    '0004' =>
-				[
-				 {
-				     mult     => 1,
-				     subfield => '',
-				     content  => $title_ref->{id},
-				     ind      => $ind,
-				 },
-				],
-		    },
-		};
-		
-		foreach my $subfield (keys %{$localfields_ref->{$field}}){
-		    $logger->debug("Processing subfield $subfield");
-		    my $destfield = $localfields_ref->{$field}{$subfield};
-		    my $content = $holding_data_ref->{$subfield};
-		    
-		    # Ggf. ID in Subfeld verwenden
-		    if ($destfield eq "id"){
-			$holding_ref->{id} = $content;
-		    }
-		    else {
-			push @{$holding_ref->{fields}{$destfield}}, {
-			    content  => $normalizer->cleanup($content),
-			    subfield => '',
-			    mult     => 1,
-			};
+		# Default: Alle Felder sind immer auch Titelfelder
+		foreach my $subfield_ref (@$subfields_ref){
+		    foreach my $subfield_code (keys %$subfield_ref){
+			if ($subfield_code eq "t" && $subfield_ref->{$subfield_code} eq "ACQ"){
+			    $is_acquisition = 1;
+			}
+			if ($subfield_code eq "g" && $subfield_ref->{$subfield_code} eq "ISSUE"){
+			    $is_issue = 1;
+			}
+			
 		    }
 		}
 
-		if ($logger->is_debug){
-		    $logger->debug(Dump($holding_ref));
-		}
+		# Zeitschriftenhefte im Erwerbungsstatus ausschliessen
+		unless ($is_acquisition && $is_issue){
 		
-		print HOLDING encode_json $holding_ref,"\n";
+		    $has_items = 1;
+		    
+		    $logger->debug("Processing field $field");
+		    
+		    my $holding_ref = {
+			'id'     => $mexid++,
+			    'fields' => {
+				'0004' =>
+				    [
+				     {
+					 mult     => 1,
+					 subfield => '',
+					 content  => $title_ref->{id},
+					 ind      => $ind,
+				     },
+				    ],
+			},
+		    };
+		    
+		    foreach my $subfield (keys %{$localfields_ref->{$field}}){
+			$logger->debug("Processing subfield $subfield");
+			my $destfield = $localfields_ref->{$field}{$subfield};
+			my $content = $holding_data_ref->{$subfield};
+			
+			# Ggf. ID in Subfeld verwenden
+			if ($destfield eq "id"){
+			    $holding_ref->{id} = $content;
+			}
+			else {
+			    push @{$holding_ref->{fields}{$destfield}}, {
+				content  => $normalizer->cleanup($content),
+				subfield => '',
+				mult     => 1,
+			    };
+			}
+		    }
+		    
+		    if ($logger->is_debug){
+			$logger->debug(Dump($holding_ref));
+		    }
+		    
+		    print HOLDING encode_json $holding_ref,"\n";
+		}
 	    }	    
 	    
 	    $field_mult_ref->{$field_nr}++;

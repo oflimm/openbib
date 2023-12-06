@@ -26,7 +26,7 @@
 
 [% IF current_date >= activate_from_date && current_date <= activate_to_date %]
 <div class="alert alert-info mt-5">
-[% msg.maketext("Ihre Bestellung wir ab dem 2. Januar bearbeitet.") %]
+[% msg.maketext("Ihre Bestellung wird ab dem 2. Januar bearbeitet.") %]
 </div>
 [% END %]
 

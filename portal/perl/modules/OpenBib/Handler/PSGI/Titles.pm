@@ -1216,6 +1216,10 @@ sub get_status_via_alma_sru {
 	    if ($availability eq "available" && ($this_circ_conf->{loan} || $this_circ_conf->{order})){
 		$availability_status = "loan";
 	    }
+	    # Unavailable bei Praesenzbibliotheken kann auch heissen, dass ein Buch in Erwerbung oder im Transfer ist.
+	    elsif ($availability eq "unavailable" && !$this_circ_conf->{loan} && !$this_circ_conf->{order}){
+		$availability_status = ""; # no status
+	    }
 	    elsif ($availability eq "available"){
 		$availability_status = "presence";
 	    }

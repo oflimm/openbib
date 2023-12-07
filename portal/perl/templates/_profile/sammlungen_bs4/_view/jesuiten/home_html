@@ -15,7 +15,7 @@
 <div class="jumbotron jumbotron-fluid mb-0 landing-page-img">
   <div class="container container-fluid" style="margin-top: 50px!important;">
 
-    <div class="card border-0 d-none d-md-block" style="min-width: 100%!important;">
+    <div class="card border-0" style="min-width: 100%!important;">
       <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 
 	<input type="hidden" name="num"        value="20" />

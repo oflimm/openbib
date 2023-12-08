@@ -41,7 +41,7 @@
                 'L0220', # msg.maketext("L0220") # Art des Systems
                 'L0230', # msg.maketext("L0230") # Online-Katalogisierung seit Erscheinungsjahr
                 'L0235', # msg.maketext("L0235") # Online-Katalogisierung seit Erwerbungsjahr
-                'L0240', # msg.maketext("L0240") # Mitarbeit am KUG
+                #'L0240', # msg.maketext("L0240") # Mitarbeit am KUG
                 'L0250', # msg.maketext("L0250") # Sigel in ZDB
                 'L0280', # msg.maketext("L0280") # Koordinaten
                 ]

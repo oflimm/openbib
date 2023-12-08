@@ -59,7 +59,7 @@
   '38-HLS-MAG':
     'order': 1
     'loan': 0
-    'reservation': 0
+    'reservation': 1
     'pickup_locations':
       - type: 'CIRCULATION_DESK' # Beispiel: bestellbar MSSID: 991011906269706476 
         id: 'DEFAULT_CIRC_DESK'

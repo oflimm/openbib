@@ -62,6 +62,10 @@
 <p>[% msg.maketext("Gebühren gesamt:") %] <span style="color:red;font-size: 1.2em;">[% fees.amount %]</span></p>
 [% END %]
 
+<div class="alert alert-info mt-2 mb-2">
+[% msg.maketext("So können Sie bei uns bezahlen") %]: <a class="exturl" href="[%cms_links.bezahlen %]" target="_blank">[% msg.maketext("Gebühren und Preise") %]</a>
+</div>
+
 <!-- Todo: epc QR-Code fuer automatische Uebernahme der Zahlungsinformationen in Ueberweisung -->
 
 <p/ >

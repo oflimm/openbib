@@ -198,16 +198,36 @@ while (<DAT>){
 	}
     }
 
+    if (!$titleid){
+    	$logger->error("Titelsatz hat keine ID in 001");
+    	next;
+    }
+
+    if (defined $have_title_ref->{$title_ref->{id}}){
+        $logger->info("Doppelte oder geloeschte ID ".$title_ref->{id});
+        next;
+    }
+
+    $have_title_ref->{$title_ref->{id}} = 1;
+    
     # Leader verarbeiten
     my $leader = $record_ref->{leader};
 
-    push @{$title_ref->{'fields'}{'1000'}}, {
-	subfield => '', 
-	content  => $leader,
-	mult     => 1,
-    } if ($leader);
-
-
+    if ($leader){
+	push @{$title_ref->{'fields'}{'1000'}}, {
+	    subfield => 'a', 
+	    content  => $leader,
+	    mult     => 1,
+	};
+	
+	my $record_status = substr($leader,5,1);
+	
+	if ($record_status eq "d"){
+	    $logger->debug("Ignoring deleted record $titleid");
+	    next;
+	}
+    }
+    
     my $has_items    = 0;
     my $has_holdings = 0;
     
@@ -671,18 +691,6 @@ while (<DAT>){
 	}	
     }
     
-    if (!$titleid){
-    	$logger->error("Titelsatz hat keine ID in 001");
-    	next;
-    }
-
-    if (defined $have_title_ref->{$title_ref->{id}}){
-        $logger->info("Doppelte ID ".$title_ref->{id});
-        next;
-    }
-
-    $have_title_ref->{$title_ref->{id}} = 1;
-
     # if ($configfile && $convconfig->{exclude}{by_availability}){
     #     my $key_field = $convconfig->{exclude}{by_availability}{field};
         
@@ -897,6 +905,21 @@ marcjson2marcmeta.pl - Aufrufsyntax
 Die Eingabedatei muss im MARC-IN-JSON Format vorliegen, wie es yaz-marcdump generiert:
 
 yaz-marcdump -o json source.mrc | jq -S -c . > source.json
+
+Wenn ausgehend von einem Komplettexport weitere Incrementelle Exporte 
+existieren, dann muessen diese vorher zu einer Gesamtdatei zusammengefuegt 
+werden. Dabei sind folgende Regeln einzuhalten:
+
+* Die einzelnen Dateien werden in der Reihenfolge ihrer Aktualitaet 
+  zusammengefuegt, von der aktuellsten am Anfang zur aeltesten am Ende
+* An den Anfang der Gesamtdatei kommen die nach Aktualitaet sortierten 
+  Exportdateien mit geloeschten Titeln
+* Danach kommen die nach Aktualitaet sortierten Exportdateien mit neuen
+  Titeln
+
+z.B.
+
+cat `ls -r1 ubkfull*_delete*.mrc` `ls -r1 ubkfull*_new*.mrc` > source.mrc
 
 HELP
 

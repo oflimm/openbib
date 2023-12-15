@@ -74,7 +74,7 @@
 [% IF NOT alma_disable_suggestions %]
             <li>[% msg.maketext("In Ihrem Benutzerkonto können Sie uns einen Anschaffungsvorschlag machen.") %] <a class="inturl" href="https://katalog.ub.uni-koeln.de/portal/login.html?l=de;authenticatorid=15">[% msg.maketext("Zum Login") %]</a></li>
 [% ELSE %]
-             <li>[% msg.maketext("Bis zum 8.1.24 sind keine Anschaffungsvorschläge möglich.") %]</li>
+             <li>[% alma_disable_suggestions %]</li>
 [% END %]	    
             <li><a class="exturl" href="[% cms_links.campuslieferung %]" target="_blank">[% msg.maketext("Campuslieferdienst der USB") %]</a></li>
             <li><a class="exturl" href="[% cms_links.nutzungsordnung %]" target="_blank">[% msg.maketext("Nutzungsordnungen") %]</a></li>           

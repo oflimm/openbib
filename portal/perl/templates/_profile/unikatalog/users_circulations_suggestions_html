@@ -101,7 +101,7 @@
 
 </form>
 [% ELSE %]
-<p>[% msg.maketext("Bis zum 8.1.24 sind keine Anschaffungsvorschläge möglich.") %]</p>
+<p>[% alma_disable_suggestions %]</p>
 [% END %]
 
 </div>

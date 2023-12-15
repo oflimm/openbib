@@ -101,7 +101,7 @@
 
 </form>
 [% ELSE %]
-<p>[% msg.maketext("Wegen des Umstiegs auf das neue Bibliothekssystem Alma sind bis ca. 6.9.2023 keine Anschaffungsvorschläge möglich.") %]</p>
+<p>[% msg.maketext("Bis zum 8.1.24 sind keine Anschaffungsvorschläge möglich.") %]</p>
 [% END %]
 
 </div>

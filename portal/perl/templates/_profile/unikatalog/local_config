@@ -460,7 +460,7 @@
    END;
 
 
-   alma_disable_suggestions     = 1; # Keine Anschaffungsvorschlaege
+   alma_disable_suggestions     = msg.maketext("Bis zum 8.1.24 sind keine Anschaffungsvorschläge möglich.") # Keine Anschaffungsvorschlaege
    alma_disable_ill_books       = 0; # Keine Buecherfernleihe
    alma_disable_librarycard     = 1; # Keine Online-Anmeldung
    alma_disable_uccard          = 1; # Keine UCCard Freischaltung

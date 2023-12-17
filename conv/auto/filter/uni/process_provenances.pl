@@ -53,9 +53,9 @@ while (<>){
 
 	my $new_fields_ref = [];
 	foreach my $item_ref (@{$field_scheme_ref->{'0984'}}){
-	    my $mult = $item_ref->{'8'};
-	    my $gnd  = $item_ref->{'0'};
-	    my $name = $item_ref->{'a'};	    
+	    my ($mult) = $item_ref->{'8'} =~m/(\d+)/;	    
+	    my $gnd    = $item_ref->{'0'};
+	    my $name   = $item_ref->{'a'};	    
 
 	    $gnd =~s/^\(DE-588\)//;
 	    
@@ -104,7 +104,7 @@ while (<>){
 	}
 	
 	foreach my $item_ref (@{$field_scheme_ref->{'0985'}}){
-	    my $mult             = $item_ref->{'8'};
+	    my ($mult)           = $item_ref->{'8'} =~m/(\d+)/;
 	    my $medianumber      = $item_ref->{'f'};
 	    my $tpro_description = $item_ref->{'o'};
 	    my $sigel            = $item_ref->{'g'};

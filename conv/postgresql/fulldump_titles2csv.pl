@@ -84,27 +84,7 @@ if (!$database || !$configfile ){
 # Ininitalisierung mit Config-Parametern
 my $convconfig = YAML::Syck::LoadFile($configfile);
 
-my @dest_fields_title = ();
-
-my %fields_done = ();
-foreach my $thisfield (keys %{$convconfig->{mapping_title}}){
-    next if (defined $fields_done{$convconfig->{mapping_title}{$thisfield}});
-    push @dest_fields_title, $convconfig->{mapping_title}{$thisfield};
-    $fields_done{$convconfig->{mapping_title}{$thisfield}}=1;
-}
-
-my @dest_fields_holding = ();
-
-foreach my $thisfield (keys %{$convconfig->{mapping_holding}}){
-    next if (defined $fields_done{$convconfig->{mapping_title}{$thisfield}});
-    push @dest_fields_holding, $convconfig->{mapping_holding}{$thisfield};
-    $fields_done{$convconfig->{mapping_holding}{$thisfield}}=1;
-}
-
-my @dest_fields = ('id');
-
-push @dest_fields, sort @dest_fields_title;
-push @dest_fields, sort @dest_fields_holding;
+my @dest_fields = @{$convconfig->{'output_columns'}};
 
 # Einlesen und Reorganisieren
 

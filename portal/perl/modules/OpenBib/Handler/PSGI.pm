@@ -487,6 +487,9 @@ sub negotiate_content {
                         $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
                         $self->param('lang',$self->cleanup_lang($session->{lang}));
                     }
+		    elsif ($r->cookies->{lang}){
+                        $self->param('lang',$r->cookies->{lang});
+		    }
                     else {
                         $self->negotiate_language;
                     }
@@ -1533,14 +1536,19 @@ sub to_cgi_params {
     
     # Set defaults
     my $exclude_array_ref    = exists $arg_ref->{exclude}
-        ? $arg_ref->{exclude}        : [];
+    ? $arg_ref->{exclude}        : [];
     
     my $change_ref           = exists $arg_ref->{change}
-        ? $arg_ref->{change}         : {};
-
+    ? $arg_ref->{change}         : {};
+    
+    # my $valid_param_ref     = exists $arg_ref->{valid}
+    # ? arg_ref->{valid}           : {};
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config       = $self->param('config');
+    
     $logger->debug("Modify Query");
     
     my $exclude_ref = {};
@@ -1553,13 +1561,30 @@ sub to_cgi_params {
     #    $logger->debug("Args".YAML::Dump($arg_ref));
     #}
 
+    # # Empty, than set default params
+    # unless (keys %$valid_params_ref){
+    # 	# Searchquery
+    # 	foreach my $field_ref ($config->get('searchfield')){
+    # 	    $valid_params_ref->{$field_ref->{prefix}} = 1;
+    # 	    $valid_params_ref->{"f\[".$field_ref->{prefix}."\]"} = 1;
+    # 	}
+    # 	# QueryO
+    # }
+    
     my @cgiparams = ();
 
     my $r            = $self->param('r');
 
     if ($r->parameters){
         foreach my $param (keys %{$r->parameters}){
-#            next unless ($r->param($param));
+	    unless ($param =~m/^[a-zA-Z[\]]+$/){
+	     	$logger->debug("Rejecting param $param - not valid");
+	     	next;
+	    }
+            # unless (defined $valid_params_ref->{$param} && $valid_params_ref->{$param}){
+	    # 	$logger->debug("Rejecting param $param - not valid");
+	    # 	next;
+	    # }
             $logger->debug("Processing $param");
             if (exists $arg_ref->{change}->{$param}){
 		my $value = $arg_ref->{change}->{$param};

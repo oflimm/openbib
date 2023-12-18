@@ -612,6 +612,16 @@ FOREACH field IN normdata;
            content_map.${'Hinweis'}.push(content);
 	 END;
 
+    CASE "T0502";    
+         content = thisfield.${'a'};
+
+         IF content ;
+           IF NOT content_map.${'Hochschulschrift'} ;
+	      content_map.${'Hochschulschrift'} = [];
+	   END;
+           content_map.${'Hochschulschrift'}.push(content);
+	 END;
+
     CASE "T0515";    
          content = thisfield.${'a'};
 

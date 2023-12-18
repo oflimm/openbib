@@ -46,7 +46,7 @@
                 'T0531', # msg.maketext("T0531") FruehAusgabe
                 'T0532', # msg.maketext("T0532") FruehTit
                 'T0533', # msg.maketext("T0533") SpaetAusgabe
-                'T0519', # msg.maketext("T0519") HSSVermerk
+                'Hochschulschrift', # msg.maketext("Hochschulschrift") T0519/HSSVermerk
                 'T0619', # msg.maketext("T0619") Jahr Vorlage
                 'T0580', # msg.maketext("T0580") Nachweise / Sonstige Nummern
                 'T0646', # msg.maketext("T0646") Filmbesitz

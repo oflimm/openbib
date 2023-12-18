@@ -59,6 +59,7 @@ my $config = new OpenBib::Config();
 
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
+my $filterdir     = $rootdir."/filter";
 my $konvdir       = $config->{'conv_dir'};
 my $confdir       = $config->{'base_dir'}."/conf";
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
@@ -71,7 +72,9 @@ my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->s
 
 my $filename      = $dbinfo->titlefile;
 
-my $use_api       = 0; # Use Alma API to get published data or just process existing pool.mrc
+my $use_api       = 0; # Use Alma API to get published data
+
+my $use_join      = 1; # Combine several MARC21 files to pool.mrc
 
 if ($use_api){
     my $ils = OpenBib::ILS::Factory->create_ils({ database => $pool });
@@ -193,6 +196,10 @@ if ($use_api){
 	
 	system("cp /alma/export/$newest_file $pooldir/$pool/$filename");    
     }
+}
+
+if ($use_join) {
+    system("cd $filerdir/$pool; ./join_ubk.sh");
 }
 
 system("cd $pooldir/$pool ; rm meta.* ");

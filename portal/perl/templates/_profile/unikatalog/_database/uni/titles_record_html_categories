@@ -662,8 +662,10 @@ FOREACH field IN normdata;
 	    gndid = thisid.replace('\(DE-588\)','');
 	 END;
 
+         supplement = "";
+	 
          IF content && work ;
-	    content = "${content}: ${work}";
+	    supplement = ": ${work}";
 	 END;
 
          searchterm    = uri_escape(content);

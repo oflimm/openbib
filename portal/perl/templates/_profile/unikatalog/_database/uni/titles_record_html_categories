@@ -654,6 +654,7 @@ FOREACH field IN normdata;
 
     CASE [ "T0600" "T0610" "T0648" "T0650" "T0651" "T0655" "T0688" "T0689" ];    
          content = thisfield.${'a'};
+	 work    = thisfield.${'t'};
          thisid  = thisfield.${'0'};
 
          gndid = "";
@@ -661,7 +662,9 @@ FOREACH field IN normdata;
 	    gndid = thisid.replace('\(DE-588\)','');
 	 END;
 
-         supplement = "";
+         IF content && work ;
+	    content = "${content} / ${work}";
+	 END;
 
          searchterm    = uri_escape(content);
          searchprefix  = config.get('searchfield').subjectstring.prefix;

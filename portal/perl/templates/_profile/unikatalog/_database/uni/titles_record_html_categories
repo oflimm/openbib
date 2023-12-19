@@ -663,7 +663,7 @@ FOREACH field IN normdata;
 	 END;
 
          IF content && work ;
-	    content = "${content} / ${work}";
+	    content = "${content}: ${work}";
 	 END;
 
          searchterm    = uri_escape(content);

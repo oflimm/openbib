@@ -685,7 +685,7 @@ FOREACH field IN normdata;
          icons     = "<span>${normdataicon}</span>";
 
          IF content ;
-           content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
+           content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a>${supplement} ${icons}";
            IF NOT content_map.${'Schlagwort'} ;
 	      content_map.${'Schlagwort'} = [];
 	   END;

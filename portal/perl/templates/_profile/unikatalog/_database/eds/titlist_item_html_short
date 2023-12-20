@@ -323,8 +323,6 @@
      # Quelle konstruieren
      titlesource = item.${'T0590'}.first.content;
 
-     availability = 'online';
-
      # Signaturen konstruieren
      signaturen = [];
      FOREACH part IN item.${'X0014'};
@@ -371,6 +369,7 @@
        fulltext = "${path_prefix}/databases/id/ezb/titles/id/zdb:${matchresult.first}";
     END;
 
+    availability = "";
     fulltext_availability  = "";
     fulltext_icon = config.get('ezb_unknown_img');
     fulltext_desc  = "Volltext";
@@ -540,7 +539,7 @@
           </div><!-- end ob-titleactions -->
 
 [% IF record_exists && record.id && record.database %]
-	   <div class="ms-auto ob-availability">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 me-1 pe-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="ps-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% ELSE %]<span id="availability_[% record.database %]_[% record.get_encoded_id %]" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/availability?l=[% lang %]" hx-trigger="revealed"><img class="pe-2" src="/images/openbib/loading.gif" alt="[% msg.maketext("Lade-Icon") %]"/></span>[% END %]
+	   <div class="ms-auto ob-availability">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 me-1 pe-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="ps-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% END %]
 	   </div>
 [% END # record_exists %]	   
 	</div><!-- end: flex -->

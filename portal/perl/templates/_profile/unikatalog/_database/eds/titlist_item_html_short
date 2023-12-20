@@ -323,7 +323,7 @@
      # Quelle konstruieren
      titlesource = item.${'T0590'}.first.content;
 
-     availability = item.${'T4400'}.first.content;
+     availability = 'online';
 
      # Signaturen konstruieren
      signaturen = [];

@@ -117,6 +117,16 @@ sub show_search {
     
     # Start der Ausgabe mit korrektem Header
     $self->header_add('Content-Type' => $content_type);
+
+    my $searchquery = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session, config => $config});
+
+    $self->param('searchquery',$searchquery);
+
+    # No Searchterms? Warning!
+
+    unless ($searchquery->have_searchterms){
+	return $self->print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."));
+    }
     
     return sub {
         my $respond = shift;
@@ -164,6 +174,7 @@ sub show_search_header {
     my $user           = $self->param('user');
     my $msg            = $self->param('msg');
     my $lang           = $self->param('lang');
+    my $searchquery    = $self->param('searchquery');    
     my $queryoptions   = $self->param('qopts');
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
@@ -187,14 +198,12 @@ sub show_search_header {
     
     my $spelling_suggestion_ref = ($user->is_authenticated)?$user->get_spelling_suggestion():{};
 
-    my $searchquery = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session, config => $config});
-
     # Wildcard-Suche wird effektiv ueber Search->browse und nicht Search->search
     # realisiert!
-    if (!$searchquery->have_searchterms){
-	$logger->debug("Suchanfrage ohne Suchbegriffe -> Wildcard-Suche");
-	$searchquery->set_searchfield('freesearch','*','AND');
-    }
+    # if (!$searchquery->have_searchterms){
+    # 	$logger->debug("Suchanfrage ohne Suchbegriffe -> Wildcard-Suche");
+    # 	$searchquery->set_searchfield('freesearch','*','AND');
+    # }
 
     # Wenn Wildcard-Suche, dann Einschraenkung der Facetten-Berechnung
     if ($searchquery->get_searchfield('freesearch')->{'val'} =~m/^\s*\*\s*$/){
@@ -214,8 +223,6 @@ sub show_search_header {
 	$self->param('qopts',$queryoptions);
     }
     
-    $self->param('searchquery',$searchquery);
-        
     if ($logger->is_debug){
         $logger->debug("_searchquery: ".YAML::Dump($searchquery->{_searchquery}));
     }

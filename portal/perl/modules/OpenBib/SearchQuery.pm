@@ -193,8 +193,8 @@ sub set_from_psgi_request {
 	    $thissearchfield_norm_content = decode_utf8(uri_unescape($self->_html_unescape($query->param("$prefix")))) || '';
             $thissearchfield_content      = escape_html($thissearchfield_norm_content);
 
-	    # Anpassung/Ausnahme fuer " Phrasensuche
-	    $thissearchfield_content =~s/&quot;/"/g;
+	    # Anpassung/Ausnahme fuer " Phrasensuche wieder entfernt wg. XSS
+	    # $thissearchfield_content =~s/&quot;/"/g;
 
 	    if ($logger->is_debug){
 		$logger->debug("Escaped content for searchfield $prefix: ".$thissearchfield_content);

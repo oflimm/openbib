@@ -468,4 +468,6 @@
 
    alma_disable_listitem_status = 0; # Keine Medienstatusanzeige in Alma wg. Concurrent API Request Limit
 
+   disable_dbis_recommendations = 1; # Keine Datenbankempfehlungen via ELIB 
+
 -%]

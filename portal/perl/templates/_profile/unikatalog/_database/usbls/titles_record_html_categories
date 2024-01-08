@@ -942,7 +942,7 @@ END;
 
 [% IF is_bindeeinheit %]
 <div class="alert alert-info">
-<p>[% msg.maketext("Dieser Titel ist Teil einer Bindeeinheit, d.h. er bildet mit anderen zusammen ein Exemplar.") %]</p>
+<p>[% msg.maketext("(Mindestens) 1 Exemplar dieses Titels ist Teil einer Bindeeinheit, d.h. es ist mit Exemplaren anderer Veröffentlichungen in einem gemeinsamen Bucheinband zusammengebunden.") %]</p>
 
 <p>[% msg.maketext("Zur Bindeeinheit") %]</p>
 

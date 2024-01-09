@@ -253,12 +253,6 @@
      users_loc: 'databases'
 - # users_loc/titles_loc: Record show
    module: 'OpenBib::Handler::PSGI::CartItems'
-   rule: '/portal/:view/databases/id/:database/titles/id/:titleid/mail[post]'
-   runmode: 'mail_collection_send'
-   args:
-     'restrict_db_to_view': 1
-- # users_loc/titles_loc: Record show
-   module: 'OpenBib::Handler::PSGI::CartItems'
    rule: '/portal/:view/databases/id/:database/titles/id/:titleid/print[get]'
    runmode: 'print_collection'
    representations:
@@ -2941,10 +2935,6 @@
    module: 'OpenBib::Handler::PSGI::Users::CartItems'
    rule: '/portal/:view/users/id/:userid/cartitems[post]'
    runmode: 'create_record'
-- # users_loc/cartitems_loc: Update Record
-   module: 'OpenBib::Handler::PSGI::CartItems'
-   rule: '/portal/:view/cartitems/mail[post]'
-   runmode: 'mail_collection_send'
 - # users_loc/cartitems_loc: Update Record
    module: 'OpenBib::Handler::PSGI::Users::CartItems'
    rule: '/portal/:view/users/id/:userid/cartitems/mail[post]'

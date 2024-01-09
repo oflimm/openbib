@@ -909,7 +909,7 @@
    args:
       users_loc: 'litlists'
 - # users/litlists_loc:
-   module: 'OpenBib::Handler::PSGI::LitLists'
+   module: 'OpenBib::Handler::PSGI::Users::LitLists'
    rule: '/portal/:view/litlists/id/:litlistid/mail[get]'
    runmode: 'mail_record'
    representations:
@@ -943,11 +943,11 @@
      - html
 
 - # users_loc/litlists_loc: Update Record
-   module: 'OpenBib::Handler::PSGI::LitLists'
+   module: 'OpenBib::Handler::PSGI::Users::LitLists'
    rule: '/portal/:view/litlists/id/:litlistid/mail[post]'
    runmode: 'mail_record_send'
 - # users_loc/litlists_loc: Update Record
-   module: 'OpenBib::Handler::PSGI::LitLists'
+   module: 'OpenBib::Handler::PSGI::Users::LitLists'
    rule: '/portal/:view/users/id/:userid/litlists/id/:litlistid/mail[post]'
    runmode: 'mail_record_send'
 

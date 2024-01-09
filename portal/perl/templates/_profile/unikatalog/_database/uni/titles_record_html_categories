@@ -201,6 +201,7 @@ rswkswt_done      = {};
         "tschech." => msg.maketext("Tschechisch"),
         "tur"      => msg.maketext("Türkisch"),
         "ungar."   => msg.maketext("Ungarisch"),
+	"zxx"      => msg.maketext("kein linguistischer Inhalt"),
     };
 
 

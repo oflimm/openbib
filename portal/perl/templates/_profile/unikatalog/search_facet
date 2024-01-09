@@ -1205,6 +1205,7 @@ yearslider_to[% facet_prefix %][% idsuffix %].addEventListener('change', functio
         "tschech." => msg.maketext("Tschechisch"),
         "tur"      => msg.maketext("Türkisch"),
         "ungar."   => msg.maketext("Ungarisch"),
+	"zxx"      => msg.maketext("kein linguistischer Inhalt"),
     };
 
     spr_tmp = termitem.0.split(';');

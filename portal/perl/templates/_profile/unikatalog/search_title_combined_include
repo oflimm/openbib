@@ -316,7 +316,7 @@ if ("[% current_tab %]" === "books" && !document.getElementById("ob-searchresult
        if (avail_data.length > 0) {
          let overall_mediastatus = {};
          for (let avail_item of avail_data) {
-          if (avail_item.availability_status == "lent"){
+          if (avail_item.availability_status == "unavailable"){
             overall_mediastatus["lent"] = true;
           }else if (avail_item.availability_status == "loan") {
             overall_mediastatus["lendable"] = true;

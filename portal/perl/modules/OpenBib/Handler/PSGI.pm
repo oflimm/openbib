@@ -1577,7 +1577,7 @@ sub to_cgi_params {
 
     if ($r->parameters){
         foreach my $param (keys %{$r->parameters}){
-	    unless ($param =~m/^[a-zA-Z_[\]]+$/){
+	    unless ($param =~m/^[a-z0-9A-Z_[\]]+$/){
 	     	$logger->debug("Rejecting param $param - not valid");
 	     	next;
 	    }

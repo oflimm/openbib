@@ -324,7 +324,7 @@ sub get_titles_record {
     my $appearence =  $root->findvalue('/dbis_page/details/appearence');
     my $isbn =  $root->findvalue('/dbis_page/details/isbn');
     my $year =  $root->findvalue('/dbis_page/details/year');
-
+    my $remarks = $root->findvalue('/dbis_page/details/remarks');
     my @subjects_nodes =  $root->findnodes('/dbis_page/details/subjects/subject');
 
     my $subjects_ref = [];
@@ -386,6 +386,8 @@ sub get_titles_record {
     $record->set_field({field => 'T0751', subfield => '', mult => 1, content => $content_eng}) if ($content_eng);
     
     $record->set_field({field => 'T0412', subfield => '', mult => 1, content => $publisher}) if ($publisher);
+
+    $record->set_field({field => 'T0600', subfield => '', mult => 1, content => $remarks}) if ($remarks);
 
     $record->set_field({field => 'T0523', subfield => '', mult => 1, content => $report_periods}) if ($report_periods);
 

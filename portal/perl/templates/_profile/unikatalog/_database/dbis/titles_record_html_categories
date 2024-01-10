@@ -504,6 +504,15 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'Hinweise'}.push(content);
 
+    CASE "T0600";
+    	 content    = item.content;
+	 content    = "<b>${content}</b>";
+
+         IF NOT content_map.${'Weitere Hinweise'} ;
+	    content_map.${'Weitere Hinweise'} = [];
+	 END;
+         content_map.${'Weitere Hinweise'}.push(content);
+
     CASE "T0750";
 
          content_map.${'Inhalt'} = [];	 

@@ -49,13 +49,14 @@ use OpenBib::Catalog;
 use OpenBib::Catalog::Factory;
 use OpenBib::Index::Factory;
 
-my ($database,$sync,$scheme,$help,$keepfiles,$sb,$logfile,$loglevel,$updatemaster,$incremental,$reducemem,$searchengineonly,$nosearchengine);
+my ($database,$sync,$scheme,$help,$keepfiles,$purgefirst,$sb,$logfile,$loglevel,$updatemaster,$incremental,$reducemem,$searchengineonly,$nosearchengine);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
             "loglevel=s"      => \$loglevel,
 	    "sync"            => \$sync,
             "keep-files"      => \$keepfiles,
+            "purge-first"     => \$purgefirst,
             "update-master"   => \$updatemaster,
             "incremental"     => \$incremental,
             "reduce-mem"      => \$reducemem,
@@ -347,11 +348,18 @@ unless ($searchengineonly){
     my $atime = new Benchmark;
     my $duration_stage_load_db_start = ParseDate("now");
 
-    $logger->info("### $database: Temporaere Datenbank erzeugen");
-
     # Temporaer Zugriffspassword setzen
     system("echo \"*:*:*:$config->{'dbuser'}:$config->{'dbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
-    
+
+    if ($purgefirst){
+	$logger->info("### $database: Bestehende Datenbank $database loeschen");
+	
+	$postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.$pg_pid_column) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'");
+	
+	system("/usr/bin/dropdb -U $config->{'dbuser'} $database");
+    }
+
+    $logger->info("### $database: Temporaere Datenbank erzeugen");
     
 #     if ($incremental){
 #         $postgresdbh->do("SELECT pg_terminate_backend(pg_stat_activity.$pg_pid_column) FROM pg_stat_activity WHERE pg_stat_activity.datname = '$database'"); 
@@ -467,11 +475,25 @@ if ($use_searchengine_ref->{"elasticsearch"}){
 
 	my $num_searchengines = keys %$use_searchengine_ref;
 
+	if ($purgefirst && $use_searchengine_ref->{"xapian"}){
+	    $logger->info("### $database: Purging Xapian index");
+	    system("rm $config->{xapian_index_base_path}/${database}/* ; rmdir $config->{xapian_index_base_path}/${database}");
+	    
+	}
+
+	if ($purgefirst && $use_searchengine_ref->{"elasticsearch"}){
+	    $logger->info("### $database: Purging ElasticSearch index");
+		$es_indexer->drop_alias($database,$es_indexname);
+		$es_indexer->drop_index($es_indexname);
+	}	
+	
 	if ($num_searchengines == 1){
 	    # Xapian
 	    if ($use_searchengine_ref->{"xapian"}){
+		
 		my $indexpath    = $config->{xapian_index_base_path}."/$database";
 		my $indexpathtmp = $config->{xapian_index_base_path}."/$databasetmp";
+		
 		$logger->info("### $database: Importing data into Xapian searchengine");
 		
 		my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2xapian.pl --loglevel=$loglevel -with-sorting -with-positions --database=$databasetmp --indexpath=$indexpathtmp";
@@ -486,7 +508,7 @@ if ($use_searchengine_ref->{"elasticsearch"}){
 	    }
 	    
 	    # Elasticsearch
-	    if ($use_searchengine_ref->{"elasticsearch"}){
+	    if ($use_searchengine_ref->{"elasticsearch"}){		
 		$logger->info("### $database: Importing data into ElasticSearch searchengine");
 		
 		my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2elasticsearch.pl --database=$database";
@@ -574,6 +596,17 @@ if ($use_searchengine_ref->{"elasticsearch"}){
     else {
 	my $num_searchengines = keys %$use_searchengine_ref;
 
+	if ($purgefirst && $use_searchengine_ref->{"xapian"}){
+	    $logger->info("### $database: Purging Xapian authority index");
+	    system("rm $config->{xapian_index_base_path}/${authority}/* ; rmdir $config->{xapian_index_base_path}/${authority}");
+	}
+
+	if ($purgefirst && $use_searchengine_ref->{"elasticsearch"}){
+	    $logger->info("### $database: Purging ElasticSearch authority index");
+	    $es_indexer->drop_alias("${database}_authority",$es_authority_indexname);
+	    $es_indexer->drop_index($es_authority_indexname);
+	}	
+	
 	if ($num_searchengines == 1){
 	
 	    if ($use_searchengine_ref->{"xapian"}){
@@ -756,7 +789,7 @@ unless ($incremental || $searchengineonly){
 
     unless ($nosearchengine){
 	$logger->info("### $database: Temporaeren Suchindex aktivieren");
-
+	
 	if ($database && -e "$config->{autoconv_dir}/filter/$database/alt_move_searchengine.pl"){
 	    $logger->info("### $database: Verwende Plugin alt_move_searchengine.pl");
 	    system("$config->{autoconv_dir}/filter/$database/alt_move_searchengine.pl $database");
@@ -779,9 +812,10 @@ unless ($incremental || $searchengineonly){
 	    }
 	    
 	    if ($use_searchengine_ref->{"elasticsearch"}){
-		$es_indexer->drop_alias($database,$es_indexname);
-		$es_indexer->create_alias($database,$es_new_indexname);
-		$es_indexer->drop_index($es_indexname);
+		
+		$es_indexer->drop_alias($database,$es_indexname) unless ($purgefirst);
+		$es_indexer->create_alias($database,$es_new_indexname);		
+		$es_indexer->drop_index($es_indexname) unless ($purgefirst);
 	    }
 	    
 	}
@@ -803,10 +837,10 @@ unless ($incremental || $searchengineonly){
 	    }
 	}
 	
-	if ($use_searchengine_ref->{"elasticsearch"}){
-	    $es_indexer->drop_alias("${database}_authority",$es_authority_indexname);
+	if ($use_searchengine_ref->{"elasticsearch"}){	    
+	    $es_indexer->drop_alias("${database}_authority",$es_authority_indexname) unless ($purgefirst);
 	    $es_indexer->create_alias("${database}_authority",$es_new_authority_indexname);
-	    $es_indexer->drop_index($es_authority_indexname);
+	    $es_indexer->drop_index($es_authority_indexname) unless ($purgefirst);
 	}
 
     }
@@ -967,6 +1001,7 @@ autoconv.pl - Automatisches Update eines Katalogs/Suchindex aus dem Metaformat
    --logfile=...         : Logdateinamen aendern
    -update-master        : Aktualisierung Titelzahl/ISBN-Vergabe in zentraler Datenbank
    -keep-files           : Temporaere Dateien in data-Verzeichnis nicht loeschen
+   -purge-first          : Bestehende Datenbank und Suchindizes zu Beginn loeschen
    -reduce-mem           : Reduzierung des Speicherverbrauchs bei der Umwandlung
    -incremental          : Inkrementelles Update in der aktiven Datenbank/Suchindex
 

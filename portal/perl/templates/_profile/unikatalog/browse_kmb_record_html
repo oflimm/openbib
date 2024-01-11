@@ -47,7 +47,6 @@
 
 <h4>KMB Systematik [% sysid %]: [% kmbas_current.desc %]</h4>
 
-[% IF kmbas_path.size %]
 <p>Überordnungen</p>
 
 <ul>
@@ -56,7 +55,6 @@
 <li><a class="" href="[% path_prefix %]/[% config.get('browse_loc') %]/kmb/id/[% thisitem.id %].html?l=[% lang %]">[% thisitem.id %]: [% kmbas_current.sub.${syssubid}.desc %][% thisitem.desc %]</a></li>
 [% END %]
 </ul>
-[% END %]
 
 [%# USE dumper;dumper.dump(kmbas_path)%]
 <p>Untergebiete</p>

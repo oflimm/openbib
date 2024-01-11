@@ -51,6 +51,7 @@
 <p>Überordnungen</p>
 
 <ul>
+<li><a class="" href="[% path_prefix %]/[% config.get('browse_loc') %]/kmb.html?l=[% lang %]">[% msg.maketext("Übersicht") %]</a></li>
 [% FOREACH thisitem IN kmbas_path %]
 <li><a class="" href="[% path_prefix %]/[% config.get('browse_loc') %]/kmb/id/[% thisitem.id %].html?l=[% lang %]">[% thisitem.id %]: [% kmbas_current.sub.${syssubid}.desc %][% thisitem.desc %]</a></li>
 [% END %]

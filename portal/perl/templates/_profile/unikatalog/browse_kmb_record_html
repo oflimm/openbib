@@ -57,6 +57,7 @@
 </ul>
 
 [%# USE dumper;dumper.dump(kmbas_path)%]
+[% IF kmbas_current.sub %]
 <p>Untergebiete</p>
 
 <div class="table-responsive mt-3">
@@ -87,3 +88,6 @@
 [% END %]
 </table>
 </div>
+[% ELSE %]
+<h5>Es sind aktuell keine Untergebiete definiert</h5>
+[% END %]

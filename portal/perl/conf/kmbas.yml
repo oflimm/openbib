@@ -14,6 +14,9 @@
           desc: 'Psychologie, Philosophie, Soziologie usw.'
         'Acm':
           desc: 'Geschichte und Rechtswissenschaft, allgemein'
+          sub:
+            'Acm 4':
+              desc: 'Politische Geschichte (Staat, Verwaltung, Wirtschaft, Kriegswesen)'
         'Aco':
           desc: 'Kulturgeschichte, Volks- u. Völkerkunde'
           sub:
@@ -35,8 +38,26 @@
           desc: 'Bibliothekswesen, Archivwesen, Dokumentation, Datenverarbeitung, Buchwesen'
     'Ae':
       desc: 'Personallexika und Lexika der Institutionen (Länderalphabet)'
+      sub:
+        'Aef':
+          desc: 'Internationale Personallexika'
+        'Aek':
+          desc: 'Nationale Personallexika'
+        'Aem':
+          desc: 'Internationale Institutionen-Lexika'
+        'Aep':
+          desc: 'Nationale Institutionen-Lexika'
     'Ag':
       desc: 'Geographische Nachschlagewerke'
+      sub:
+        'Age':
+          desc: 'Atlanten, Landkarten, Mond- u. Sternkarten'
+        'Agi':
+          desc: 'Lexika geographischer Namen'
+        'Ago':
+          desc: 'Adressbücher'
+        'Agt':
+          desc: 'Stadtpläne'
     'An':
       desc: 'Lexika über Phraseologie u. Sprichwörterbücher'
     'Ap':
@@ -45,10 +66,30 @@
       desc: 'Wörterbücher deutscher Mundarten und Sprachentwicklungsstufen'
     'As':
       desc: 'Wörterbücher der Fremdsprachen'
+      sub:
+        'Asd':
+          desc: 'Deutsch u. 1 Fremdsprache'
+        'Asp':
+          desc: 'Polyglotten'
     'At':
       desc: 'Lexika der Abkürzungen'
     'Aw':
       desc: 'Bibliographien'
+      sub:
+        'Awb':
+           desc: 'Bibliographien der Bibliographien'
+        'Awg':
+           desc: 'Bibliographien der bibliophilen Drucke, der vor 1800 erschienenen Werke und von Kinderbüchern'
+        'Awm':
+           desc: 'Bibliographien besonderer Publikationsformen (ausser Zeitschriften)'
+        'Awo':
+           desc: 'Zeitschriften, Zeitungen und Zeitschriftenaufsätze , Kongressschriften'
+        'Awr':
+           desc: 'Nationalbibliographien'
+        'Aws':
+           desc: 'Landeskundliche Bibliographien'
+        'Awu':
+           desc: 'Fachbibliographien'
 
 'B':
   desc: 'Kunstwissenschaftliche Handbibliothek'

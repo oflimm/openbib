@@ -1,0 +1,45 @@
+[%- PROCESS common/subtemplate name="local_config" -%]
+[%-  kmbas = config.load_yaml('/opt/openbib/conf/kmbas.yml'); -%]
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = "KMB-Systematik '${sysid}' anzeigen"
+
+      'main_template' = 'browse_kmb_record_html'
+
+      'active_menu' = 'register'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Browsen')
+	     url  = "${path_prefix}/${config.get('browse_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Aufstellungssystematik der KMB')
+	     url  = "${path_prefix}/${config.get('browse_loc')}/kmb.html?l=${lang}"
+	  },
+	  {
+	     desc = "Systematikgruppe ${sysid}"
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('browse_loc')}/kmb/id/${sysid}.json?l=${lang}"
+	  },
+       ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="browse_kmb_record_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="browse_kmb_record_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

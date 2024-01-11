@@ -494,6 +494,20 @@
    module: 'OpenBib::Handler::PSGI::Browse::BK'
    rule: '/portal/:view/browse/bks/id/:tlbkid/id/:bkid[get]'
    runmode: 'show_record_databases'
+- # Resource: browse_loc
+   module: 'OpenBib::Handler::PSGI::Browse::KMB'
+   rule: '/portal/:view/browse/kmb[get]'
+   representations:
+     - none
+     - html
+   runmode: 'show_collection'
+- # Resource: browse_loc
+   module: 'OpenBib::Handler::PSGI::Browse::KMB'
+   rule: '/portal/:view/browse/kmb/id/:sysid[get]'
+   representations:
+     - none
+     - html
+   runmode: 'show_record'
 
 #####################################################################
 # Informations-Resource/Repraesentation

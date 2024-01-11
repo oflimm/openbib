@@ -11,6 +11,11 @@
 #
 #######################################################################
 -%]
+[%
+
+  kmb_profileid = config.get_searchprofile_of_database('uni');
+
+%]
 
 <h3>[% msg.maketext("Systematischer Katalog der KMB") %]</h3>
 

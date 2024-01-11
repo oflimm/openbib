@@ -1,0 +1,102 @@
+'A':
+  desc: 'Allgemeine Handbibliothek'
+  sub:
+    'Aa':
+      desc: 'Allgemeine Enzyklopädien'
+    'Ac':
+      desc: 'Fachenzyklopädien'
+      sub:
+        'Acf':
+          desc: 'Theologie und Kirche'
+        'Ach':
+          desc: 'Nichtchristliche Religionsgemeinschaften'
+        'Ack':
+          desc: 'Psychologie, Philosophie, Soziologie usw.'
+        'Acm':
+          desc: 'Geschichte und Rechtswissenschaft, allgemein'
+        'Aco':
+          desc: 'Kulturgeschichte, Volks- u. Völkerkunde'
+          sub:
+            'Aco 2':
+              desc: 'Literatur-, Sprachgeschichte, Publizistik'
+            'Aco 4':
+              desc: 'Theater'
+            'Aco 6':
+              desc: 'Musik'
+            'Aco 8':
+              desc: 'Volks- und Völkerkunde'
+        'Acv':
+          desc: 'Maße, Münzen, Zählarten, Zeitgröße, historische Hilfswissenschaften'
+        'Acw':
+          desc: 'Geographie, Geologie, Astronomie'
+        'Acx':
+          desc: 'Naturwissenschaften, Technik'
+        'Acz':
+          desc: 'Bibliothekswesen, Archivwesen, Dokumentation, Datenverarbeitung, Buchwesen'
+    'Ae':
+      desc: 'Personallexika und Lexika der Institutionen (Länderalphabet)'
+    'Ag':
+      desc: 'Geographische Nachschlagewerke'
+    'An':
+      desc: 'Lexika über Phraseologie u. Sprichwörterbücher'
+    'Ap':
+      desc: 'Deutsche Rechtschreibung u. Etymologie'
+    'Ar':
+      desc: 'Wörterbücher deutscher Mundarten und Sprachentwicklungsstufen'
+    'As':
+      desc: 'Wörterbücher der Fremdsprachen'
+    'At':
+      desc: 'Lexika der Abkürzungen'
+    'Aw':
+      desc: 'Bibliographien'
+
+'B':
+  desc: 'Kunstwissenschaftliche Handbibliothek'
+'C':
+  desc: 'Allgemeine Kunstwissenschaft'
+'D':
+  desc: 'Kunstgeschichtliche Sammelschriften'
+'E':
+  desc: 'Ikonographie, Bildthemen'
+'F':
+  desc: 'Quellen u. Quellenkunde '
+'G':
+  desc: 'Inventare, Länderkunde'
+'H':
+  desc: 'Kunstpflege, Kunsthandel, Museumswesen etc.'
+'I':
+  desc: 'Realia'
+'J':
+  desc: 'Medienwissenschaft, Massenkommunikation, Fotografie, Film etc'
+'K':
+  desc: 'Künstlermonographien (Namensalphabet)'
+'L':
+  desc: 'Allgemeine Kunstgeschichte (Handbücher)'
+'M':
+  desc: 'Vor- und Frühgeschichte, Archäologie'
+'N':
+  desc: 'Kunstgeschichte'
+'O':
+  desc: 'Architektur'
+'P':
+  desc: 'Plastik'
+'Q':
+  desc: 'Buchmalerei, Glasmalerei'
+'R':
+  desc: 'Malerei'
+'S':
+  desc: 'Graphik'
+'T':
+  desc: 'Graphik, einzelne Techniken'
+'U':
+  desc: 'Kunstgewerbe, Produktdesign (allgemein)'
+'V':
+  desc: 'Kunstgewerbe, einzelne Materialien'
+'W':
+  desc: 'Kunstgeschichte: Völkerkundliche Sammelgebiete Ostasien, Indonesien, Ozeanien, Afrika, Amerika'
+'X':
+  desc: 'Nachbarwissenschaften'
+'Y':
+  desc: 'Kataloge'
+'Z':
+  desc: 'Zeitschriften'

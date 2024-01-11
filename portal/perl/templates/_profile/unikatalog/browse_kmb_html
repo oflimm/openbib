@@ -17,10 +17,10 @@
 
 %]
 
-<h3>[% msg.maketext("Systematischer Katalog der KMB") %]</h3>
+<h3>[% msg.maketext("Aufstellungssystematik der KMB") %]</h3>
 
 <div class="alert alert-info">
-[% msg.maketext("Im Systematischen Katalog finden Sie den kompletten Bestand der Kunst- und Museumsbibliothek Köln rein fachlich sortiert. Jedes Fachgebiet besitzt Untergebiete, deren Buchtitel in Kurzform aufgelistet sind. Genauere Angaben zum Titel und Bestand erhalten Sie im Vollformat.") %]
+[% msg.maketext("In der Aufstellungssystematik finden Sie den kompletten Bestand der Kunst- und Museumsbibliothek Köln rein fachlich sortiert. Jedes Fachgebiet besitzt Untergebiete, deren Buchtitel in Kurzform aufgelistet sind. Genauere Angaben zum Titel und Bestand erhalten Sie im Vollformat.") %]
 </div>
 
 <h4 class="mt-4">[% msg.maketext("Fachgebiete") %]</h4>

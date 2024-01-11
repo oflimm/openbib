@@ -26,12 +26,6 @@
 	     current = 1
 	  }
       ]
-      'representations' = [
-          {
-	     type = 'json'
-	     url  = "${path_prefix}/${config.get('browse_loc')}/lbs.json?l=${lang}"
-	  },
-       ]
     };
 -%]
 [%- PROCESS common/subtemplate name="layout_html" content="browse_lbs_html" -%]

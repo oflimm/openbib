@@ -472,7 +472,7 @@ sub threadA {
 #    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['doab','elis','gallica','gdz','gresham_oer','hathitrust','gutenberg','intechopen','khanacademy','khanacademy_de','loc','loviscach_oer','mitocw_oer','nptelhrd_oer','stanford_oer','ucberkeley_oer','ucla_oer','yale_oer','zvdd'] });
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['doab','oapen'] });
 
-#    autoconvert({ updatemaster => $updatemaster, databases => ['nationallizenzen','gbvnationallizenzen','gesiskoeln'] });
+#    autoconvert({ updatemaster => $updatemaster, databases => ['gbvnationallizenzen','gesiskoeln'] });
 
     $logger->info("### Sammlungen aus dem Universitaet");
     
@@ -489,7 +489,7 @@ sub threadB {
 
     $logger->info("### Master: Alma Uni Katalog");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['uni'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, purgefirst => 1, sync => 1, databases => ['uni'] });
 #    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, databases => ['inst001'] });
     
     ##############################
@@ -674,10 +674,12 @@ sub autoconvert {
 
     my $nosearchengine  = exists $arg_ref->{nosearchengine}
         ? $arg_ref->{nosearchengine}        : 0;
+
+    my $purgefirst      = exists $arg_ref->{purgefirst}
+        ? $arg_ref->{purgefirst}            : 0;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
 
     push @ac_cmd, "/opt/openbib/autoconv/bin/autoconv.pl";
     push @ac_cmd, "-sync"    if ($sync); 
@@ -685,6 +687,7 @@ sub autoconvert {
     push @ac_cmd, "-incremental" if ($incremental);
     push @ac_cmd, "-update-master" if ($updatemaster);
     push @ac_cmd, "-no-searchengine" if ($nosearchengine);
+    push @ac_cmd, "-purge-first" if ($purgefirst);
 
     my $ac_cmd_base = join(' ',@ac_cmd);
 

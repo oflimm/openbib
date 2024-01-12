@@ -80,8 +80,9 @@ while (<>){
 	    }
 	}
     }
-    # Nur Holdings?
-    elsif (defined $title_ref->{fields}{'1943'}){
+    
+    # Holdings
+    if (defined $title_ref->{fields}{'1943'}){
 	foreach my $location_ref (@{$title_ref->{fields}{'1943'}}){
 	    next unless ($location_ref->{subfield} eq "b");
 	    

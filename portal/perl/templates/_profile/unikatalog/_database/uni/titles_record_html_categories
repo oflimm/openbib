@@ -801,42 +801,6 @@ FOREACH field IN normdata;
 	 END;
 
 
-    CASE "T0983";    
-         content = thisfield.${'b'};
-
-         supplement = "";
-	 
-         searchterm    = uri_escape(content);
-         searchprefix  = config.get('searchfield').classificationstring.prefix;
-
-         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-         normdataicon = "";
-
-         IF thisid && catalog_has_authorities ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
-         END;
-
-         icons     = "<span>${normdataicon}</span>";
-
-         bkdesc = ""; 
-         IF content.match('\d\d\.\d\d');         
-           bkresult      = bklookup.${content};
-	   IF bkresult ;
-	      bkdesc = "(${bkresult})";
-	   END;
-         END;
-
-         IF content ;
-           content   = "<a class=\"inturl\" href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${bkdesc} ${supplement} ${icons}";
-	   
-           IF NOT content_map.${'Klassifikation'} ;
-	      content_map.${'Klassifikation'} = [];
-	   END;
-           content_map.${'Klassifikation'}.push(content);
-	 END;
-
     CASE "T4102";
          content = thisfield.${'e'};
 	 
@@ -965,6 +929,44 @@ FOREACH field IN singular_normdata;
 	 END;
 
          rswkswt_done.${searchterm} = 1;
+       END;
+
+    CASE "T0983";    
+       IF item.subfield == 'b';
+         content = item.content;
+
+         supplement = "";
+	 
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').classificationstring.prefix;
+
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         normdataicon = "";
+
+         IF thisid && catalog_has_authorities ;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         icons     = "<span>${normdataicon}</span>";
+
+         bkdesc = ""; 
+         IF content.match('\d\d\.\d\d');         
+           bkresult      = bklookup.${content};
+	   IF bkresult ;
+	      bkdesc = "(${bkresult})";
+	   END;
+         END;
+
+         IF content ;
+           content   = "<a class=\"inturl\" href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${bkdesc} ${supplement} ${icons}";
+	   
+           IF NOT content_map.${'Klassifikation'} ;
+	      content_map.${'Klassifikation'} = [];
+	   END;
+           content_map.${'Klassifikation'}.push(content);
+	 END;
        END;
 
     END;

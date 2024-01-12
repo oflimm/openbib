@@ -37,7 +37,7 @@
         'Acz':
           desc: 'Bibliothekswesen, Archivwesen, Dokumentation, Datenverarbeitung, Buchwesen'
     'Ae':
-      desc: 'Personallexika und Lexika der Institutionen (Länderalphabet)'
+      desc: 'Personallexika und Lexika der Institutionen'
       sub:
         'Aef':
           desc: 'Internationale Personallexika'
@@ -110,7 +110,7 @@
 'J':
   desc: 'Medienwissenschaft, Massenkommunikation, Fotografie, Film etc'
 'K':
-  desc: 'Künstlermonographien (Namensalphabet)'
+  desc: 'Künstlermonographien'
 'L':
   desc: 'Allgemeine Kunstgeschichte (Handbücher)'
 'M':

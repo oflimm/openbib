@@ -702,8 +702,22 @@ FOREACH field IN normdata;
 	 thisisbn  = thisfield.${'z'};
          thisid    = 0 ; #thisfield.${'w'};
 
-         # ggf. verlinken
+         fullcontent = [];
+	 IF thisinfo ;
+	    fullcontent.push(thisinfo);
+	 END;
+
          IF thistitle ;
+	    IF thisinfo ;
+	      thistitle = "(${thistitle})";
+	    END;
+	    fullcontent.push(thistitle);
+	 END ;
+
+         fullcontentstring = fullcontent.join(' ');
+
+         # ggf. verlinken
+         IF fullcontentstring ;
 	  IF thisisbn ;
 	    # thisid = thisid.replace('\(.+?\)','');
             searchterm    = thisisbn;
@@ -711,21 +725,11 @@ FOREACH field IN normdata;
 
             localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
 
-	    thistitle = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
 	  END;
-          content = "${content} ${thistitle}";
-	 ELSIF thisinfo;
-	  IF thisisbn ;
-            searchterm    = thisisbn;
-            searchprefix  = config.get('searchfield').freesearch.prefix;
 
-            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
-
-	    thisinfo = "<a href=\"${localurl}\" class=\"inturl\">${thisinfo}</a>";
-	  END;
-	  content = "${content} ${thisinfo}";
-	 END;
-
+          content = "${content} ${fullcontentstring}";
+         END; 
         
          IF content ;
            IF NOT content_map.${'Hinweis'} ;

@@ -4693,6 +4693,12 @@ sub enrich_cdm {
     my $logger = get_logger();
 
     my $config = $self->get_config;
+
+    my $enrich_data_ref = {};
+    
+    unless ($config->get('active_cdm')){
+	return $enrich_data_ref;
+    }
     
     # Wenn kein URI, dann Default-URI
     $url = $config->{cdm_base}.$config->{cdm_path} unless ($url);
@@ -4709,8 +4715,6 @@ sub enrich_cdm {
 
     my $content = $response->content;
 
-    my $enrich_data_ref = {};
-    
     if ($content){
         $content=~s/<!--.+?-->//g;
         $logger->debug("CDM: Result for ID $id: ".$content);

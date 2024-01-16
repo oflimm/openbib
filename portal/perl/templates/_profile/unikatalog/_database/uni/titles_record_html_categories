@@ -695,11 +695,12 @@ FOREACH field IN normdata;
 
          rswkswt_done.${searchterm} = 1;
 
-    CASE [ "T0770" "T0776" ];    
+    CASE [ "T0770" "T0776" "T0780" "T0785"];    
          content = thisfield.${'i'};
          thistitle = thisfield.${'t'};
          thisinfo  = thisfield.${'n'};
 	 thisisbn  = thisfield.${'z'};
+	 thisissn  = thisfield.${'x'};	 
          thisid    = 0 ; #thisfield.${'w'};
 
          fullcontent = [];
@@ -721,6 +722,14 @@ FOREACH field IN normdata;
 	  IF thisisbn ;
 	    # thisid = thisid.replace('\(.+?\)','');
             searchterm    = thisisbn;
+            searchprefix  = config.get('searchfield').freesearch.prefix;
+
+            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+
+	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
+	  ELSIF thisissn ;
+	    # thisid = thisid.replace('\(.+?\)','');
+            searchterm    = thisissn;
             searchprefix  = config.get('searchfield').freesearch.prefix;
 
             localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";

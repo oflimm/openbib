@@ -201,6 +201,7 @@ rswkswt_done      = {};
         "tschech." => msg.maketext("Tschechisch"),
         "tur"      => msg.maketext("Türkisch"),
         "ungar."   => msg.maketext("Ungarisch"),
+	"zxx"      => msg.maketext("kein linguistischer Inhalt"),
     };
 
 
@@ -230,15 +231,17 @@ END;
 
 # Lizensierter Volltext? (Ausgabe Zugriffshinweis)
 is_licensed = 0;
-
+is_oa = 0; 
 #USE dumper;dumper.dump(normdata.${"T5003"});
 
 FOREACH item IN normdata.${'T4120'} ;
-   IF item.subfield == "g";
+   IF item.${'g'} ;
       is_licensed = 0;
+      is_oa = 1 ;
       LAST ;
-   ELSIF item.subfield == "y";
+   ELSIF item.${'y'};
       is_licensed = 1;
+      LAST ;
    END;
 END;
 
@@ -431,6 +434,7 @@ FOREACH field IN normdata;
          main_title         = "";
 	 supplemental_title = "";
 	 published_by       = "";
+	 part_title         = "";
 	 
          IF thisfield.${'a'} ;
 	   main_title = thisfield.${'a'};
@@ -444,8 +448,16 @@ FOREACH field IN normdata;
 	   published_by = thisfield.${'c'};	 
 	 END;
 
-         IF supplemental_title ;
+         IF thisfield.${'p'} ;
+	   part_title = thisfield.${'p'};	 
+	 END;
+
+         IF main_title && supplemental_title ;
 	    main_title = "${main_title} : ${supplemental_title}";
+	 END;
+
+         IF main_title && part_title ;
+	    main_title = "${main_title}. ${part_title}";
 	 END;
 
          volume = "";
@@ -462,6 +474,14 @@ FOREACH field IN normdata;
 	     content_map.${'Titel'} = [];
 	   END;
            content_map.${'Titel'}.push(content);
+         ELSIF part_title ;
+	   content = part_title;
+           content   = "<b>${highlightquery(searchquery,content)}</b>";
+
+           IF NOT content_map.${'Titel'} ;
+	     content_map.${'Titel'} = [];
+	   END;
+           content_map.${'Titel'}.push(content);	 
 	 END;
 
          IF volume ;
@@ -558,17 +578,32 @@ FOREACH field IN normdata;
            content_map.${'Erscheinungsverlauf'}.push(content);
 	 END;
 
-    CASE "T0490"; # Gesamttitel
-         content = thisfield.${'a'} ;
-
+    CASE "T0830"; # Gesamttitel
+         content       = thisfield.${'a'} ;
+         volume        = thisfield.${'v'} ;	 
+         super_titleid = thisfield.${'w'} ;
+	 
+         searchterm    = uri_escape("\"${content}\"");
+         searchprefix  = config.get('searchfield').title.prefix;
+         
          IF content ;
+           IF super_titleid ;
+             content = "<a href=\"${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${super_titleid}.html?l=${lang}\" class=\"inturl\">${content}</a>";
+	   ELSE ;
+             content = "<a href=\"${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}\" class=\"inturl\">${content}</a>";
+	   END ;
+	   
+	   IF volume ;
+	     content = "${content} ; ${volume}";
+	   END ;
+	   
            IF NOT content_map.${'Gesamttitel'} ;
 	     content_map.${'Gesamttitel'} = [];
 	   END;
            content_map.${'Gesamttitel'}.push(content);
 	 END;
 
-    CASE [ "T0500" "T0504" ];    
+    CASE [ "T0500" "T0555" "T0504" "T0530" ];    
          content = thisfield.${'a'};
 
          IF content ;
@@ -576,6 +611,16 @@ FOREACH field IN normdata;
 	      content_map.${'Hinweis'} = [];
 	   END;
            content_map.${'Hinweis'}.push(content);
+	 END;
+
+    CASE "T0502";    
+         content = thisfield.${'a'};
+
+         IF content ;
+           IF NOT content_map.${'Hochschulschrift'} ;
+	      content_map.${'Hochschulschrift'} = [];
+	   END;
+           content_map.${'Hochschulschrift'}.push(content);
 	 END;
 
     CASE "T0515";    
@@ -588,7 +633,17 @@ FOREACH field IN normdata;
            content_map.${'Erscheinungsweise'}.push(content);
 	 END;
 
-    CASE "T0520";    
+    CASE [ "T0505" ];    
+         content = thisfield.${'t'};
+
+         IF content ;
+           IF NOT content_map.${'Zusammenfassung'} ;
+	      content_map.${'Zusammenfassung'} = [];
+	   END;
+           content_map.${'Zusammenfassung'}.push(content);
+	 END;
+
+    CASE [ "T0520" ];    
          content = thisfield.${'a'};
 
          IF content ;
@@ -600,6 +655,7 @@ FOREACH field IN normdata;
 
     CASE [ "T0600" "T0610" "T0648" "T0650" "T0651" "T0655" "T0688" "T0689" ];    
          content = thisfield.${'a'};
+	 work    = thisfield.${'t'};
          thisid  = thisfield.${'0'};
 
          gndid = "";
@@ -608,6 +664,10 @@ FOREACH field IN normdata;
 	 END;
 
          supplement = "";
+	 
+         IF content && work ;
+	    supplement = ": ${work}";
+	 END;
 
          searchterm    = uri_escape(content);
          searchprefix  = config.get('searchfield').subjectstring.prefix;
@@ -626,7 +686,7 @@ FOREACH field IN normdata;
          icons     = "<span>${normdataicon}</span>";
 
          IF content ;
-           content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
+           content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a>${supplement} ${icons}";
            IF NOT content_map.${'Schlagwort'} ;
 	      content_map.${'Schlagwort'} = [];
 	   END;
@@ -635,24 +695,51 @@ FOREACH field IN normdata;
 
          rswkswt_done.${searchterm} = 1;
 
-    CASE [ "T0770" "T0776" ];    
+    CASE [ "T0770" "T0776" "T0780" "T0785"];    
          content = thisfield.${'i'};
          thistitle = thisfield.${'t'};
-         thisid    = thisfield.${'w'};
+         thisinfo  = thisfield.${'n'};
+	 thisisbn  = thisfield.${'z'};
+	 thisissn  = thisfield.${'x'};	 
+         thisid    = 0 ; #thisfield.${'w'};
+
+         fullcontent = [];
+	 IF thisinfo ;
+	    fullcontent.push(thisinfo);
+	 END;
+
+         IF thistitle ;
+	    IF thisinfo ;
+	      thistitle = "(${thistitle})";
+	    END;
+	    fullcontent.push(thistitle);
+	 END ;
+
+         fullcontentstring = fullcontent.join(' ');
 
          # ggf. verlinken
-         IF 0 == 1 && thistitle && thisid ;
-	    thisid = thisid.replace('\(.+?\)','');
-            searchterm    = thisid;
-            searchprefix  = config.get('searchfield').zdbid.prefix;
+         IF fullcontentstring ;
+	  IF thisisbn ;
+	    # thisid = thisid.replace('\(.+?\)','');
+            searchterm    = thisisbn;
+            searchprefix  = config.get('searchfield').freesearch.prefix;
 
             localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
 
-	    thistitle = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
-	 END;
+	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
+	  ELSIF thisissn ;
+	    # thisid = thisid.replace('\(.+?\)','');
+            searchterm    = thisissn;
+            searchprefix  = config.get('searchfield').freesearch.prefix;
 
-         content = "${content} ${thistitle}";
-	 
+            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+
+	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
+	  END;
+
+          content = "${content} ${fullcontentstring}";
+         END; 
+        
          IF content ;
            IF NOT content_map.${'Hinweis'} ;
 	      content_map.${'Hinweis'} = [];
@@ -665,7 +752,7 @@ FOREACH field IN normdata;
          thisinfo  = thisfield.${'p'};
          thistitle = thisfield.${'t'};
          thisid    = thisfield.${'w'};
-
+         thismark  = thisfield.${'g'};
          content   = "";
 	 
          # ggf. verlinken
@@ -673,6 +760,11 @@ FOREACH field IN normdata;
             localurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${thisid}.html?l=${lang}";
 
 	    content = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+            IF thismark ;
+	      thismark = thismark.replace('^no:','');
+	      content  = "${content} (Signatur/Mediennummer: ${thismark})";
+	    END;
+
 	 END;
 
          IF content ;
@@ -717,42 +809,6 @@ FOREACH field IN normdata;
            content_map.${'Sammlungs-Portal'}.push(sammlungsvermerk);
 	 END;
 
-
-    CASE "T0983";    
-         content = thisfield.${'b'};
-
-         supplement = "";
-	 
-         searchterm    = uri_escape(content);
-         searchprefix  = config.get('searchfield').classificationstring.prefix;
-
-         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-
-         normdataicon = "";
-
-         IF thisid && catalog_has_authorities ;
-            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
-         END;
-
-         icons     = "<span>${normdataicon}</span>";
-
-         bkdesc = ""; 
-         IF content.match('\d\d\.\d\d');         
-           bkresult      = bklookup.${content};
-	   IF bkresult ;
-	      bkdesc = "(${bkresult})";
-	   END;
-         END;
-
-         IF content ;
-           content   = "<a class=\"inturl\" href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${bkdesc} ${supplement} ${icons}";
-	   
-           IF NOT content_map.${'Klassifikation'} ;
-	      content_map.${'Klassifikation'} = [];
-	   END;
-           content_map.${'Klassifikation'}.push(content);
-	 END;
 
     CASE "T4102";
          content = thisfield.${'e'};
@@ -834,20 +890,96 @@ FOREACH field IN normdata;
          END ;
 
          localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
-         content   = "<a href=\"${localurl}\">${super_title}</a>";
+         content   = "<a class=\"inturl\" href=\"${localurl}\">${super_title}</a>";
          IF NOT content_map.${'T5005'} ;
 	    content_map.${'T5005'} = [];
 	 END;
          content_map.${'T5005'}.push(content);
 
-    CASE ;
-         content   = highlightquery(searchquery,item.content);
-         IF NOT content_map.${category} ;
-	    content_map.${category} = [];
-	 END;
-         content_map.${category}.push(content);
+    # CASE ;
+    #      content   = highlightquery(searchquery,item.content);
+    #      IF NOT content_map.${category} ;
+    # 	    content_map.${category} = [];
+    # 	 END;
+    #      content_map.${category}.push(content);
     END;
  END;
+END;
+
+# Sich nicht wiederholende Felder
+
+singular_normdata = record.get_fields;
+
+FOREACH field IN singular_normdata;
+
+  category = field.key ;
+
+  FOREACH item IN field.value;
+
+    SWITCH category;
+
+     CASE [ "T0982" ];
+       IF item.subfield == 'a';
+         content = item.content;
+	 
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').subjectstring.prefix;
+
+         NEXT IF rswkswt_done.${searchterm} == 1;
+	 
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         IF content ;
+             content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a>";
+             IF NOT content_map.${'Schlagwort'} ;
+	        content_map.${'Schlagwort'} = [];
+	     END;
+             content_map.${'Schlagwort'}.push(content);
+	 END;
+
+         rswkswt_done.${searchterm} = 1;
+       END;
+
+    CASE "T0983";    
+       IF item.subfield == 'b';
+         content = item.content;
+
+         supplement = "";
+	 
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').classificationstring.prefix;
+
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         normdataicon = "";
+
+         IF thisid && catalog_has_authorities ;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         icons     = "<span>${normdataicon}</span>";
+
+         bkdesc = ""; 
+         IF content.match('\d\d\.\d\d');         
+           bkresult      = bklookup.${content};
+	   IF bkresult ;
+	      bkdesc = "(${bkresult})";
+	   END;
+         END;
+
+         IF content ;
+           content   = "<a class=\"inturl\" href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${bkdesc} ${supplement} ${icons}";
+	   
+           IF NOT content_map.${'Klassifikation'} ;
+	      content_map.${'Klassifikation'} = [];
+	   END;
+           content_map.${'Klassifikation'}.push(content);
+	 END;
+       END;
+
+    END;
+  END;
 END;
 
 display_types = {
@@ -857,7 +989,7 @@ display_types = {
    'Hinweis'        => 'list',   
 };
 
-#USE dumper;dumper.dump(content_map);dumper.dump(categories);dumper.dump(record_type);
+# USE dumper;dumper.dump(content_map);dumper.dump(singular_normdata);dumper.dump(record_type);
 
 FOREACH category IN categories;
 

@@ -50,6 +50,105 @@
        END;
      END;
 
+  # Interimsloesung: Fehlende Volltextlinks aus NZ-Publishing
+
+   nz_fulltext_links_from_fields = 0;
+   
+   IF nz_fulltext_links_from_fields && record.id.match('6441$') && fields.defined('T1945') && NOT fields.defined('T4120') ;
+
+   pakete = [];
+
+   IF item.defined('T0912') || item.defined('T0962');
+      FOREACH thisitem IN item.${'T0912'};
+         IF thisitem.defined('a');
+           pakete.push(thisitem.${'a'});
+	 END;
+      END;
+
+      FOREACH thisitem IN item.${'T0962'};
+         IF thisitem.defined('e');
+           pakete.push(thisitem.${'e'});
+        END;
+      END;
+   END;
+
+   paketstring = "xdfasdfasfd";
+
+   IF pakete ;
+     paketstring = pakete.join('; ');
+   END;
+
+   IF item.${'T1945'}.first.defined('e') ; # Static URL
+      static_url = item.${'T1945'}.first.${'e'};
+      online_access = 'f';
+      online_text = "Volltext";
+
+      IF paketstring.match('(ZDB-2-SWI|ZDB-2-SNA|ZDB-2-STI|ZDB-2-SGR|ZDB-2-SGRSpringer|ZDB-2-SEP|ZDB-2-SBE|ZDB-2-CMS|ZDB-2-PHA|ZDB-2-SMA|ZDB-2-MGE|ZDB-2-SZR|ZDB-2-BUM|ZDB-2-ECF|ZDB-2-SCS|ZDB-2-ESA|ZDB-5-WEB|ZDB-5-WMS|ZDB-5-WMW|ZDB-13-SOC|ZDB-14-DLO|ZDB-18-BEO|ZDB-18-BOH|ZDB-18-BST|ZDB-15-ACM|ZDB-16-Hanser-EBA|hbzebo_ebahanser|ZDB-18-Nomos-NRW|ZDB-18-Nomos-VDI-NRW|hbzebo_nrwnomos|ZDB-149-HCB|ZDB-162-Bloom-EBA|hbz_ebabloomsbury|ZDB-605-Preselect|hbzebo_preselect|ZDB-196-Meiner-EBA|hbzebo_ebameiner|ZDB-23-DGG|ZDB-98-IGB|ZDB-23-DGG-eba|ZDB-54-Duncker-EBA|hbzebo_ebaduncker|ZDB-2-BSP|ZDB-2-SBL|ZDB-2-BUM|ZDB-2-CMS|ZDB-2-SCS|ZDB-2-EES|ZDB-2-ECF|ZDB-2-EDA|ZDB-2-ENE|ZDB-2-ENG|ZDB-2-HTY|ZDB-2-INR|ZDB-2-LCR|ZDB-2-LCM|ZDB-2-SMA|ZDB-2-SME|ZDB-2-PHA|ZDB-2-POS|ZDB-2-CWD|ZDB-2-REP|ZDB-2-SLS|ZDB-41-UTB-EBA|ZDB-7-taylorfra-EBA|ZDB-71-Narr-EBA)');
+        online_access = 'y';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-2-SOB|ZDB-23-GOA)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-185-STD|ZDB-185-SDI)');
+        online_access = 'y';
+	online_text   = 'Dossier im Volltext';
+      ELSIF paketstring.match('(ZDB-101-VTB)');
+        online_access = 'y';
+	online_text   = 'Video';
+      END;
+      
+      fields.${'T4120'} = [{
+	  mult  = 1
+	  subfield = online_access
+	  content = static_url
+      }];
+
+      fields.${'T4400'} = [{
+	  mult  = 1
+	  subfield = ''
+	  content = 'online'
+      }];
+
+   ELSIF item.${'T1945'}.first.defined('2') ; # Dynamic URL
+      resolver_url = item.${'T1945'}.first.${'2'};
+      online_access = 'f';
+      online_text = "Volltext";
+
+      IF paketstring.match('(ZDB-2-SWI|ZDB-2-SNA|ZDB-2-STI|ZDB-2-SGR|ZDB-2-SGRSpringer|ZDB-2-SEP|ZDB-2-SBE|ZDB-2-CMS|ZDB-2-PHA|ZDB-2-SMA|ZDB-2-MGE|ZDB-2-SZR|ZDB-2-BUM|ZDB-2-ECF|ZDB-2-SCS|ZDB-2-ESA|ZDB-5-WEB|ZDB-5-WMS|ZDB-5-WMW|ZDB-13-SOC|ZDB-14-DLO|ZDB-18-BEO|ZDB-18-BOH|ZDB-18-BST|ZDB-15-ACM|ZDB-16-Hanser-EBA|hbzebo_ebahanser|ZDB-18-Nomos-NRW|ZDB-18-Nomos-VDI-NRW|hbzebo_nrwnomos|ZDB-149-HCB|ZDB-162-Bloom-EBA|hbz_ebabloomsbury|ZDB-605-Preselect|hbzebo_preselect|ZDB-196-Meiner-EBA|hbzebo_ebameiner|ZDB-23-DGG|ZDB-98-IGB|ZDB-23-DGG-eba|ZDB-54-Duncker-EBA|hbzebo_ebaduncker|ZDB-2-BSP|ZDB-2-SBL|ZDB-2-BUM|ZDB-2-CMS|ZDB-2-SCS|ZDB-2-EES|ZDB-2-ECF|ZDB-2-EDA|ZDB-2-ENE|ZDB-2-ENG|ZDB-2-HTY|ZDB-2-INR|ZDB-2-LCR|ZDB-2-LCM|ZDB-2-SMA|ZDB-2-SME|ZDB-2-PHA|ZDB-2-POS|ZDB-2-CWD|ZDB-2-REP|ZDB-2-SLS|ZDB-41-UTB-EBA|ZDB-7-taylorfra-EBA|ZDB-71-Narr-EBA)');
+        online_access = 'y';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-2-SOB|ZDB-23-GOA)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-185-STD|ZDB-185-SDI)');
+        online_access = 'y';
+	online_text   = 'Dossier im Volltext';
+      ELSIF paketstring.match('(ZDB-101-VTB)');
+        online_access = 'y';
+	online_text   = 'Video';
+      END;
+      
+      fields.${'T4120'} = [{
+	  mult  = 1
+	  subfield = online_access
+	  content = resolver_url
+      }];
+
+      fields.${'T4400'} = [{
+	  mult  = 1
+	  subfield = ''
+	  content = 'online'
+      }];
+
+    END;
+  END;
+
      # Keine Locations, dann Location aus Katalog
      # E-Medien gehen vor
      IF is_free ;
@@ -218,16 +317,17 @@
      # Titel konstruieren
      title = item.${"T0245"}.first.${'a'};
 
-     IF item.${"T0245"}.first.${'d'};
-       d = item.${"T0245"}.first.${'d'};
-       title = "${title} ${d}";
+     IF item.${"T0245"}.first.${'b'};
+       supplemental_title = item.${"T0245"}.first.${'b'};
+       title = "${title} : ${supplemental_title}";
      END;
      
-     IF item.${'T0246'}.first.${'a'}; # AST
-         title = item.${'T0246'}.first.${'a'};
-     END;
+     # IF item.${'T0246'}.first.${'a'}; # AST
+     #     title = item.${'T0246'}.first.${'a'};
+     # END;
 
-     band = item.${"T0245"}.first.${'n'};
+     band        = item.${"T0245"}.first.${'n'};
+     bandtitel   = item.${"T0245"}.first.${'p'};     
      gesamttitel = item.${"T0490"}.first.${'a'};
 
      is_schriftenreihe = 0;
@@ -240,7 +340,7 @@
      END;
 
      zaehlung = "";
-     
+
      # Zaehlung Anfang Titel
      IF is_mehrbaendig;
        IF band ;
@@ -248,7 +348,20 @@
 	  IF zaehlung == title ;
 	     title = "";
 	  END;
-          title = "${zaehlung}. ${title}";
+
+	  IF bandtitel && title ;	  
+	    title = "${title} / $bandtitel";
+	  ELSIF bandtitel ;
+	    title = "${bandtitel}";	  
+	  END ;
+
+          IF zaehlung == '[...]';
+            zaehlung = "";
+          END;
+
+          IF zaehlung ;
+            title = "${zaehlung}. ${title}";
+	  END;
        END;     
      END;
 
@@ -305,12 +418,6 @@
      signaturen = [];
      FOREACH part IN item.${'X0014'};
          sig = part.${'a'};
-
-         # Vornullung entfernen
-         IF sig.match('^[A-Z][A-Z]0+');
-	   sig = sig.replace('^([A-Z][A-Z])0+','$1'); 
-	 END;
- 
          signaturen.push("${sig}");
      END;
      signatur = signaturen.sort.unique.join(' ; ');
@@ -395,7 +502,7 @@
     titleinfo = titleinfos.join(" | ");
 -%]
     <div class="ob-item d-flex flex-row[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
-[%# USE dumper;dumper.dump(item)%]    
+[%# USE dumper;dumper.dump(fields)%]
 [% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]
 
       <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
@@ -438,6 +545,9 @@
 [% ELSE %]
 [%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
 [% END %]
+
+[% IF record.get_date %]<br /><i class="far fa-calendar-alt"></i> [% msg.maketext("hinzugefügt") %] [% record.get_date.replace('\.\d+$','') %][% END %]
+
         </div> <!-- end: titleinfo -->
         <div class="ob-titlemark ps-2 d-flex d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]
         </div>
@@ -477,18 +587,18 @@
 
 [% IF tagname %]
 	    <div class="pe-1">	    
-              <a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="ob-tags">[% tagname %]</a>
+              <a class="btn btn-primary text-nowrap" href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]"><i class="fas fa-search pe-1"></i>[% tagname %]</a>
 	    </div>
 [% END %]
 	
 [% IF user_owns_litlist %]
 	    <div class="pe-1">
-	      <a class="ob-delete btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
+	      <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Titel aus Liste löschen") %]" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><i class="fas fa-trash"></i> <span>[% msg.maketext("Löschen") %]</span></a>
 	    </div>
 [% END %]
 [% IF parameter.private_tags %]
 	    <div class="pe-1">
-	      <a class="ob-collection btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.get_encoded_id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
+	      <a class="ob-collection btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Tag aus Titel entfernen") %]" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.get_encoded_id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><i class="fas fa-trash"></i> <span>[% msg.maketext("Löschen") %]</span></a>
 	    </div>
 [% END %]
 [% IF with_cartitems_delete %]
@@ -496,10 +606,11 @@
 	    </div>
 [% END %]
           </div><!-- end ob-titleactions -->
-[% IF record_exists && record.id && record.database %]
-	   <div class="ms-auto ob-availability" data-catalog="[% record.database %]" data-id="[% record.get_encoded_id %]">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 me-1 pe-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="ps-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% ELSIF NOT alma_disable_listitem_status %]<span id="availability_[% record.database %]_[% record.get_encoded_id %]"></span>[% END %]
+[% IF record_exists && record.id && record.database %]	  
+ <div class="ms-auto ob-availability" data-catalog="[% record.database %]" data-id="[% record.get_encoded_id %]">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 me-1 pe-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="ps-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% ELSIF NOT alma_disable_listitem_status %]<span id="availability_[% record.database %]_[% record.get_encoded_id %]"></span>[% END %]
 	   </div>
 [% END # record_exists %]
+
 	</div><!-- end: flex -->
 	
     </div><!-- end: ob-brieftitle -->

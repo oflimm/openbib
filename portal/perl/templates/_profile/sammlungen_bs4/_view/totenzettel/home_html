@@ -64,6 +64,9 @@
 <div class="text-center ob-bg text-white"><h4>[% msg.maketext("DIE TOTENZETTEL-SAMMLUNG DER USB KÖLN ") %]</h4></div>
 
 <div class="container pb-5">
+
+[% PROCESS common/subtemplate name="home_alert" %]
+
   <div class="row">
     <div class="col-md-4 pl-5 pr-5 pb-5">
       <div class="card mt-5 h-100">

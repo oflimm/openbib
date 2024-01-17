@@ -1,0 +1,17 @@
+<div class="card mt-5 mb-5 me-5">
+  <div class="card-header">[% msg.maketext("Bestellung stornieren") %]</div>
+  <div class="card-body">
+    <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders">
+      
+      <input type="hidden" name="_method" value="DELETE" />
+      <input type="hidden" name="confirm" value="0" />     
+      <input type="hidden" name="unit" value="[% unit %]" />
+      <input type="hidden" name="requestid" value="[% requestid %]" />     
+      <input type="hidden" name="validtarget"   value="[% database %]" />
+      
+      <button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Stornieren") %]</button>
+      
+    </form>
+    
+  </div>
+</div>

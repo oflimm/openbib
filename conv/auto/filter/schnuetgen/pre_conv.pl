@@ -2,7 +2,7 @@
 
 #####################################################################
 #
-#  post_unpack.pl
+#  pre_conv.pl
 #
 #  Bearbeitung der Titeldaten
 #
@@ -43,18 +43,17 @@ my $baseurl       = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepat
 
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
-my $datadir       = $rootdir."/data";
 my $konvdir       = $config->{'conv_dir'};
 
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 
-print "### $pool: Korrigiere Schlagworte bzgl. GND\n";
+print "### $pool: Reduzierung der Holdings auf DE-2192\n";
 
-system("cd $datadir/$pool ; cat meta.subject | $rootdir/filter/$pool/fix-subjects.pl > meta.subject.tmp ; mv -f meta.subject.tmp meta.subject");
+system("cd $rootdir/data/$pool ; $rootdir/filter/$pool/fix_holding.pl < meta.holding > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");
 
 print "### $pool: Erweiterung um Standort DE-38-ZBKUNST\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/process_rda_subfields.pl | $rootdir/filter/$pool/map_rda_subfields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $rootdir/data/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 

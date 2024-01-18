@@ -762,6 +762,12 @@
 # Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
 # Die Rueckwaertskompatabilitaet wird durch URL-Rewriting und 301er
 # Redirects direkt im Apache gewaehrleistet
+- # connector_barcode_loc:
+   module: 'OpenBib::Handler::PSGI::Connector::Barcode'
+   rule: '/portal/:view/connector/barcode'
+   runmode: 'show'
+   args:
+      disable_content_negotiation: 1
 - # connector_qrcode_loc:
    module: 'OpenBib::Handler::PSGI::Connector::QRCode'
    rule: '/portal/:view/connector/qrcode'

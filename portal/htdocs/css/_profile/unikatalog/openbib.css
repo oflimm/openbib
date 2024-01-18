@@ -237,6 +237,10 @@
     #ob-occupancy_current {
 	margin-top: 180px;
     }
+
+    #ob-barcode {
+	height: 70px;
+    }
     
     #ob-maincontent {
 	margin-left: 10px;

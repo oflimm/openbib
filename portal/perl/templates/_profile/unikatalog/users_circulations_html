@@ -24,7 +24,7 @@
 <div class="card-body">
 
 <div class="text-center">
-<img class="img-fluid" src="[% path_prefix %]/connector/barcode?text=[% username |uri %]"/>
+<img id="ob-barcode" class="img-fluid" src="[% path_prefix %]/connector/barcode?text=[% username |uri %]"/>
 
 <p>[% username %]</p>
 </div>

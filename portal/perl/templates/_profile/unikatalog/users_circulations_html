@@ -20,6 +20,19 @@
 [% END %]
 
 <div class="card">
+<div class="card-header">[% msg.maketext("Bibliotheksausweis") %]</div>
+<div class="card-body">
+
+<div class="text-center">
+<img class="img-fluid" src="[% path_prefix %]/connector/barcode?text=[% username |uri %]"/>
+
+<p>[% username %]</p>
+</div>
+
+</div>
+</div>
+
+<div class="card">
 <div class="card-header">[% msg.maketext("Bücher: Ausleihen / Fernleihen") %]</div>
 <div class="card-body">
 

@@ -969,7 +969,7 @@ FOREACH field IN singular_normdata;
          END;
 
          IF content ;
-           #content   = "<a class=\"inturl\" href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${bkdesc} ${supplement} ${icons}";
+           content   = "<a class=\"inturl\" href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${bkdesc} ${supplement} ${icons}";
 	   
            IF NOT content_map.${'Klassifikation'} ;
 	      content_map.${'Klassifikation'} = [];

@@ -55,7 +55,7 @@ $(wikipedia_articles).prop("hidden", false)
 [%-
 
    request_base = config.get('search_defaultparams');
-   request_base = "l=${lang};profile=${current_profile};${request_base}";
+   request_base = "l=${lang};${request_base}";
 
    IF NOT viewdbs ;
        viewdbs = config.get_dbs_of_view(view);
@@ -969,7 +969,7 @@ FOREACH field IN singular_normdata;
          END;
 
          IF content ;
-           content   = "<a class=\"inturl\" href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${bkdesc} ${supplement} ${icons}";
+           #content   = "<a class=\"inturl\" href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${bkdesc} ${supplement} ${icons}";
 	   
            IF NOT content_map.${'Klassifikation'} ;
 	      content_map.${'Klassifikation'} = [];

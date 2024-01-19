@@ -174,10 +174,6 @@ while (my $jsonline = <$input_io>){
 	    my $name           = $contribution_ref->{agent}{label};
 	    my $role           = $contribution_ref->{role}{label};
 
-	    if ($gnd_id){
-		$gnd_id = "(DE-588)".$gnd_id;
-	    }
-	    
 	    my $contributor_id = $gnd_id;
 	    
 	    unless ($contributor_id){
@@ -217,12 +213,11 @@ while (my $jsonline = <$input_io>){
 		    
 		    $normrecord_ref->{id} = $contributor_id;
 
-		    if ($contributor_id=~m/DE-588/){
-			my ($gnd) = $contributor_id =~m/^.DE-588.(.+)*/;
+		    if ($gnd_id){
 			push @{$normrecord_ref->{fields}{'0010'}}, {
 			    mult     => 1,
 			    subfield => '',
-			    content  => $gnd,
+			    content  => $gnd_id,
 			};
 		    }
 		    
@@ -294,15 +289,15 @@ while (my $jsonline = <$input_io>){
 		    id         => $contributor_id,
 		} if ($supplement);
 		
-		if ($contributor_id=~m/DE-588/){
+		if ($gnd_id){
 		    push @{$title_ref->{fields}{$new_category}}, {
-			content    => $contributor_id,
+			content    => '(DE-588)'.$gnd_id,
 			mult       => $mult,
 			subfield   => '0',
 		    };
 		    
 		    push @{$title_ref->{fields}{$new_category}}, {
-			content    => $contributor_id,
+			content    => $gnd_id,
 			mult       => $mult,
 			subfield   => '6',
 		    };
@@ -326,12 +321,11 @@ while (my $jsonline = <$input_io>){
 		    };
 		    $normrecord_ref->{id} = $contributor_id;
 
-		    if ($contributor_id=~m/DE-588/){
-			my ($gnd) = $contributor_id =~m/^.DE-588.(.+)*/;
+		    if ($gnd_id){
 			push @{$normrecord_ref->{fields}{'0010'}}, {
 			    mult     => 1,
 			    subfield => '',
-			    content  => $gnd,
+			    content  => $gnd_id,
 			};
 		    }
 		    
@@ -371,16 +365,16 @@ while (my $jsonline = <$input_io>){
 		    id         => $contributor_id,
 		};
 
-		if ($contributor_id=~m/DE-588/){
+		if ($gnd_id){
 		    push @{$title_ref->{fields}{$new_category}}, {
 			mult     => $mult,
 			subfield => '6',
-			content  => $contributor_id,
+			content  => $gnd_id,
 		    };
 		    push @{$title_ref->{fields}{$new_category}}, {
 			mult     => $mult,
 			subfield => '0',
-			content  => $contributor_id,
+			content  => '(DE-588)'.$gnd_id,
 		    };
 		}
 		
@@ -391,15 +385,15 @@ while (my $jsonline = <$input_io>){
 		    id         => $contributor_id,
 		};
 
-		if ($contributor_id=~m/DE-588/){
+		if ($gnd_id){
 		    push @{$title_ref->{fields}{$new_category}}, {
-			content    => $contributor_id,
+			content    => '(DE-588)'.$gnd_id,
 			mult       => $mult,
 			subfield   => '0',
 		    };
 		    
 		    push @{$title_ref->{fields}{$new_category}}, {
-			content    => $contributor_id,
+			content    => $gnd_id,
 			mult       => $mult,
 			subfield   => '6',
 		    };
@@ -427,7 +421,7 @@ while (my $jsonline = <$input_io>){
 		my $gnd_id;
 		
 		if (defined $item_ref->{source} && defined $item_ref->{source}{id} && $item_ref->{source}{id} =~m{https://d-nb.info/gnd/(.+)$}){
-		    $gnd_id = "(DE-588)".$1;
+		    $gnd_id = $1;
 		}
 
 		$classification_id = $gnd_id;
@@ -485,10 +479,6 @@ while (my $jsonline = <$input_io>){
 		    
 		    my $gnd_id = $subject_ref->{gndIdentifier};
 
-		    if ($gnd_id){
-			$gnd_id = "(DE-588)".$gnd_id;
-		    }
-		    
 		    $subject_id = $gnd_id;
 		    
 		    unless ($subject_id){
@@ -504,12 +494,11 @@ while (my $jsonline = <$input_io>){
 			    
 			    $normrecord_ref->{id} = $subject_id;
 			    
-			    if ($subject_id=~m/DE-588/){
-				my ($gnd) = $subject_id =~m/^.DE-588.(.+)*/;
+			    if ($gnd_id){
 				push @{$normrecord_ref->{fields}{'0010'}}, {
 				    mult     => 1,
 				    subfield => '',
-				    content  => $gnd,
+				    content  => $gnd_id,
 				};
 			    }
 			    
@@ -546,16 +535,16 @@ while (my $jsonline = <$input_io>){
 			    supplement => '',
 			};
 			
-			if ($subject_id=~m/DE-588/){
+			if ($gnd_id){
 			    push @{$title_ref->{fields}{$new_category}}, {
 				mult     => $subject_mult,
 				subfield => '6',
-				content  => $subject_id,
+				content  => $gnd_id,
 			    };
 			    push @{$title_ref->{fields}{$new_category}}, {
 				mult     => $subject_mult,
 				subfield => '0',
-				content  => $subject_id,
+				content  => '(DE-588)'.$gnd_id,
 			    };
 			}
 			
@@ -568,10 +557,6 @@ while (my $jsonline = <$input_io>){
 		my $subject_id;
 		
 		my $gnd_id = $item_ref->{gndIdentifier};
-		
-		if ($gnd_id){
-		    $gnd_id = "(DE-588)".$gnd_id;
-		}
 		
 		$subject_id = $gnd_id;
 		
@@ -586,12 +571,11 @@ while (my $jsonline = <$input_io>){
 			    'fields' => {},
 			};
 
-			if ($subject_id=~m/DE-588/){
-			    my ($gnd) = $subject_id =~m/^.DE-588.(.+)*/;
+			if ($gnd_id){
 			    push @{$normrecord_ref->{fields}{'0010'}}, {
 				mult     => 1,
 				subfield => '',
-				content  => $gnd,
+				content  => $gnd_id,
 			    };
 			}
 			
@@ -629,16 +613,16 @@ while (my $jsonline = <$input_io>){
 			supplement => '',
 		    };
 
-		    if ($subject_id=~m/DE-588/){
+		    if ($gnd_id){
 			push @{$title_ref->{fields}{$new_category}}, {
 			    mult     => $subject_mult,
 			    subfield => '6',
-			    content  => $subject_id,
+			    content  => $gnd_id,
 			};
 			push @{$title_ref->{fields}{$new_category}}, {
 			    mult     => $subject_mult,
 			    subfield => '0',
-			    content  => $subject_id,
+			    content  => '(DE-588)'.$gnd_id,
 			};
 		    }
 		    

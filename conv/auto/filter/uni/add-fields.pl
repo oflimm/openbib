@@ -77,10 +77,12 @@ my $kunstmessekatalog_regexp_ref = [
 unlink "./ausstellungskatalog.db";
 unlink "./sammlungskatalog.db";
 unlink "./kunstmessekatalog.db";
+unlink "./kmbsystematik.db";
 
 my %ausstellungskatalog = ();
 my %sammlungskatalog = ();
 my %kunstmessekatalog = ();
+my %kmbsystematik = ();
 
 tie %ausstellungskatalog,             'MLDBM', "./ausstellungskatalog.db"
     or die "Could not tie ausstellungskatalog.\n";
@@ -90,6 +92,9 @@ tie %sammlungskatalog,                'MLDBM', "./sammlungskatalog.db"
 
 tie %kunstmessekatalog,               'MLDBM', "./kunstmessekatalog.db"
     or die "Could not tie kunstmessekatalog.\n";
+
+tie %kmbsystematik,                   'MLDBM', "./kmbsystematik.db"
+    or die "Could not tie kmbsystematik.\n";
 
 
 while (<HOLDING>){
@@ -141,6 +146,12 @@ while (<HOLDING>){
 		    #print "Matched ",$item->{content},"\n";
 		}
 	    }
+
+	    # KMB Systematik
+
+	    if ($item->{content} =~m{KMB/[=+!]*([A-Za-z]+)}){
+		$kmbsystematik{$titleid} = $1;
+	    }
         }	
     }
 
@@ -179,6 +190,15 @@ while (<>){
             }
 	    
         }	
+    }
+
+    # KMB Systematik
+    if (defined $kmbsystematik{$titleid}){
+	push @{$title_ref->{fields}{'1002'}}, {
+	    mult     => 1,
+	    subfield => 'k',
+	    content  => $kmbsystematik{$titleid},
+	};	
     }
     
     ### Auktionskatalog

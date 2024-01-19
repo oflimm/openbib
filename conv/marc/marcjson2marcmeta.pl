@@ -338,24 +338,29 @@ while (<DAT>){
 		my $content_0 = $person_data_ref->{'0'} || ""; # Authority number
 		
 		# Linkage = Verweis zur ID des Nordatensates
+
+		# GND vorhanden, dann Lingage = GND
+		if ($content_0 && $content_0 =~m/DE-588/){
+		    $linkage = $content_0;
+		}
 		
 		if (!$linkage){
-		    # Keine ID mitgegeben, dann ID aus Personennamen und Geburtsdatum generieren
+		    # Keine GND mitgegeben, dann ID aus Personennamen und Geburtsdatum generieren
 		    $linkage = $content_a;
 		    if ($content_d){
 			$linkage.=$content_d;
 		    }
 		    
 		    $linkage=~s/\W+//g;
-
-		    # Und als neues Linkage-Feld uebernehmen
-		    push @{$title_ref->{'fields'}{$field_nr}}, {
-			subfield => '6', # Linkage-Subfield
-			content  => $linkage,
-			ind      => $ind,
-			mult     => $field_mult_ref->{$field_nr},
-		    } if ($linkage);
 		}
+		
+		# Und als neues Linkage-Feld uebernehmen
+		push @{$title_ref->{'fields'}{$field_nr}}, {
+		    subfield => '6', # Linkage-Subfield
+		    content  => $linkage,
+		    ind      => $ind,
+		    mult     => $field_mult_ref->{$field_nr},
+		};
 		
 		# Beispiel 'Maximilian II'
 		if ($content_a && $content_b){
@@ -371,25 +376,30 @@ while (<DAT>){
 		my $linkage   = $corporatebody_data_ref->{'6'} || "";
 		
 		my $content_a = $corporatebody_data_ref->{'a'} || ""; # Name
+		my $content_0 = $corporatebody_data_ref->{'0'} || ""; # Authority number
 		
 		# Linkage = Verweis zur ID des Nordatensates
+
+		# GND vorhanden, dann Lingage = GND
+		if ($content_0 && $content_0 =~m/DE-588/){
+		    $linkage = $content_0;
+		}
 		
 		if (!$linkage){
 		    # Keine ID mitgegeben, dann ID aus Koerperschaftsnamen generieren
 		    $linkage = $content_a;
 		    
 		    $linkage=~s/\W+//g;
-
-		    # Und als neues Linkage-Feld uebernehmen		    
-		    push @{$title_ref->{'fields'}{$field_nr}}, {
-			subfield => '6', # Linkage-Subfield
-			content  => $linkage,
-			ind      => $ind,
-			mult     => $field_mult_ref->{$field_nr},
-		    } if ($linkage);
 		}
-		
-		
+
+		# Und als neues Linkage-Feld uebernehmen		    
+		push @{$title_ref->{'fields'}{$field_nr}}, {
+		    subfield => '6', # Linkage-Subfield
+		    content  => $linkage,
+		    ind      => $ind,
+		    mult     => $field_mult_ref->{$field_nr},
+		};
+				
 		if ($linkage && $content_a){
 		    add_corporatebody($linkage,$content_a);
 		}
@@ -428,6 +438,7 @@ while (<DAT>){
 		
 		my $content_a = $subject_data_ref->{'a'} || ""; # Name
 		my $content_x = $subject_data_ref->{'x'} || ""; # 
+		my $content_0 = $subject_data_ref->{'0'} || ""; # Authority number
 		
 		my $content = $content_a;
 		
@@ -436,22 +447,26 @@ while (<DAT>){
 		}
 		
 		# Linkage = Verweis zur ID des Nordatensates
+
+		# GND vorhanden, dann Lingage = GND
+		if ($content_0 && $content_0 =~m/DE-588/){
+		    $linkage = $content_0;
+		}
 		
 		if (!$linkage){
 		    # Keine ID mitgegeben, dann ID aus Koerperschaftsnamen generieren
 		    $linkage = $content;
 		    
 		    $linkage=~s/\W+//g;
-		    
-		    # Und als neues Linkage-Feld uebernehmen
-		    
-		    push @{$title_ref->{'fields'}{$field_nr}}, {
-			subfield => '6', # Linkage-Subfield
-			content  => $linkage,
-			ind      => $ind,
-			mult     => $field_mult_ref->{$field_nr},
-		    } if ($linkage);
 		}
+
+		# Und als neues Linkage-Feld uebernehmen		    
+		push @{$title_ref->{'fields'}{$field_nr}}, {
+		    subfield => '6', # Linkage-Subfield
+		    content  => $linkage,
+		    ind      => $ind,
+		    mult     => $field_mult_ref->{$field_nr},
+		} if ($linkage);
 		
 		if ($linkage && $content){
 		    add_subject($linkage,$content);
@@ -760,11 +775,6 @@ print STDERR "All $counter records converted\n";
 
 sub add_person {
     my ($person_id,$content_0,$content_a,$content_c,$content_d,$title_ref) = @_;
-    
-    # Verlinkt per GND
-    if (defined $content_0 && $content_0 =~m/DE-588/){
-	$person_id = $content_0;
-    }
     
     if (exists $person{$person_id}){
 	return;

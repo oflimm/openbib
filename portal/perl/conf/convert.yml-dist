@@ -10987,6 +10987,10 @@ convtab:
 # Katagorie gesammelt wird, der Hashwert des Recherchefeldes
 # kennzeichnet die Gewichtung der Kategorie im jeweiligen Recherchefeld
     inverted_authority_person:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -11010,6 +11014,10 @@ convtab:
             'personstring': 1
             'freesearch': 1
     inverted_person:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -11033,6 +11041,10 @@ convtab:
       #       'personstring': 1
       #       'freesearch': 1
     inverted_corporatebody:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -11089,6 +11101,10 @@ convtab:
       #       'corporatebodystring': 1
       #       'freesearch': 1
     inverted_authority_corporatebody:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -11197,6 +11213,10 @@ convtab:
       #       'classificationstring': 1
       #       'freesearch': 1
     inverted_subject:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -11253,6 +11273,10 @@ convtab:
       #       'subjectstring': 1
       #       'freesearch': 1
     inverted_authority_subject:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -12098,6 +12122,10 @@ convtab:
 # Katagorie gesammelt wird, der Hashwert des Recherchefeldes
 # kennzeichnet die Gewichtung der Kategorie im jeweiligen Recherchefeld
     inverted_authority_person:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -12121,6 +12149,10 @@ convtab:
             'personstring': 1
             'freesearch': 1
     inverted_person:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -12144,6 +12176,10 @@ convtab:
       #       'personstring': 1
       #       'freesearch': 1
     inverted_corporatebody:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -12200,6 +12236,10 @@ convtab:
       #       'corporatebodystring': 1
       #       'freesearch': 1
     inverted_authority_corporatebody:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -12308,6 +12348,10 @@ convtab:
       #       'classificationstring': 1
       #       'freesearch': 1
     inverted_subject:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -12364,6 +12408,10 @@ convtab:
       #       'subjectstring': 1
       #       'freesearch': 1
     inverted_authority_subject:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -15453,6 +15501,10 @@ convtab:
 # Katagorie gesammelt wird, der Hashwert des Recherchefeldes
 # kennzeichnet die Gewichtung der Kategorie im jeweiligen Recherchefeld
     inverted_authority_person:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -15476,6 +15528,10 @@ convtab:
             'personstring': 1
             'freesearch': 1
     inverted_person:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -15499,6 +15555,10 @@ convtab:
       #       'personstring': 1
       #       'freesearch': 1
     inverted_corporatebody:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -15555,6 +15615,10 @@ convtab:
       #       'corporatebodystring': 1
       #       'freesearch': 1
     inverted_authority_corporatebody:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -15663,6 +15727,10 @@ convtab:
       #       'classificationstring': 1
       #       'freesearch': 1
     inverted_subject:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -15719,6 +15787,10 @@ convtab:
       #       'subjectstring': 1
       #       'freesearch': 1
     inverted_authority_subject:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -16571,6 +16643,10 @@ convtab:
 # Katagorie gesammelt wird, der Hashwert des Recherchefeldes
 # kennzeichnet die Gewichtung der Kategorie im jeweiligen Recherchefeld
     inverted_authority_person:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -16594,6 +16670,10 @@ convtab:
             'personstring': 1
             'freesearch': 1
     inverted_person:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -16617,6 +16697,10 @@ convtab:
       #       'personstring': 1
       #       'freesearch': 1
     inverted_corporatebody:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -16673,6 +16757,10 @@ convtab:
       #       'corporatebodystring': 1
       #       'freesearch': 1
     inverted_authority_corporatebody:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -16781,6 +16869,10 @@ convtab:
       #       'classificationstring': 1
       #       'freesearch': 1
     inverted_subject:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -16837,6 +16929,10 @@ convtab:
       #       'subjectstring': 1
       #       'freesearch': 1
     inverted_authority_subject:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -17693,6 +17789,10 @@ convtab:
 # Katagorie gesammelt wird, der Hashwert des Recherchefeldes
 # kennzeichnet die Gewichtung der Kategorie im jeweiligen Recherchefeld
     inverted_authority_person:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -17716,6 +17816,10 @@ convtab:
             'personstring': 1
             'freesearch': 1
     inverted_person:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -17739,6 +17843,10 @@ convtab:
       #       'personstring': 1
       #       'freesearch': 1
     inverted_corporatebody:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -17795,6 +17903,10 @@ convtab:
       #       'corporatebodystring': 1
       #       'freesearch': 1
     inverted_authority_corporatebody:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -17903,6 +18015,10 @@ convtab:
       #       'classificationstring': 1
       #       'freesearch': 1
     inverted_subject:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -17959,6 +18075,10 @@ convtab:
       #       'subjectstring': 1
       #       'freesearch': 1
     inverted_authority_subject:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:

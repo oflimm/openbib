@@ -293,14 +293,21 @@ while (my $jsonline = <$input_io>){
 		    subfield   => 'e',
 		    id         => $contributor_id,
 		} if ($supplement);
-
-		push @{$title_ref->{fields}{$new_category}}, {
-		    content    => $contributor_id,
-		    mult       => $mult,
-		    subfield   => '0',
-		    id         => $contributor_id,
-		};
-
+		
+		if ($contributor_id=~m/DE-588/){
+		    push @{$title_ref->{fields}{$new_category}}, {
+			content    => $contributor_id,
+			mult       => $mult,
+			subfield   => '0',
+		    };
+		    
+		    push @{$title_ref->{fields}{$new_category}}, {
+			content    => $contributor_id,
+			mult       => $mult,
+			subfield   => '6',
+		    };
+		}
+		
 		if ($first_person){
 		    $first_person = 0;
 		    $mult = 1;
@@ -356,7 +363,7 @@ while (my $jsonline = <$input_io>){
 		}
 	    
 		my $new_category = ($first_corporatebody)?"0110":"0710";
-
+		
 		push @{$title_ref->{fields}{$new_category}}, {
 		    content    => $name,
 		    mult       => $mult,
@@ -364,6 +371,19 @@ while (my $jsonline = <$input_io>){
 		    id         => $contributor_id,
 		};
 
+		if ($contributor_id=~m/DE-588/){
+		    push @{$title_ref->{fields}{$new_category}}, {
+			mult     => $mult,
+			subfield => '6',
+			content  => $contributor_id,
+		    };
+		    push @{$title_ref->{fields}{$new_category}}, {
+			mult     => $mult,
+			subfield => '0',
+			content  => $contributor_id,
+		    };
+		}
+		
 		push @{$title_ref->{fields}{$new_category}}, {
 		    content    => $supplement,
 		    mult       => $mult,
@@ -371,12 +391,19 @@ while (my $jsonline = <$input_io>){
 		    id         => $contributor_id,
 		};
 
-		push @{$title_ref->{fields}{$new_category}}, {
-		    content    => $contributor_id,
-		    mult       => $mult,
-		    subfield   => '0',
-		    id         => $contributor_id,
-		};
+		if ($contributor_id=~m/DE-588/){
+		    push @{$title_ref->{fields}{$new_category}}, {
+			content    => $contributor_id,
+			mult       => $mult,
+			subfield   => '0',
+		    };
+		    
+		    push @{$title_ref->{fields}{$new_category}}, {
+			content    => $contributor_id,
+			mult       => $mult,
+			subfield   => '6',
+		    };
+		}
 
 		if ($first_corporatebody){
 		    $first_corporatebody = 0;
@@ -519,6 +546,19 @@ while (my $jsonline = <$input_io>){
 			    supplement => '',
 			};
 			
+			if ($subject_id=~m/DE-588/){
+			    push @{$title_ref->{fields}{$new_category}}, {
+				mult     => $subject_mult,
+				subfield => '6',
+				content  => $subject_id,
+			    };
+			    push @{$title_ref->{fields}{$new_category}}, {
+				mult     => $subject_mult,
+				subfield => '0',
+				content  => $subject_id,
+			    };
+			}
+			
 			$subject_mult++;
 		    }
 		}
@@ -545,6 +585,15 @@ while (my $jsonline = <$input_io>){
 			my $normrecord_ref = {
 			    'fields' => {},
 			};
+
+			if ($subject_id=~m/DE-588/){
+			    my ($gnd) = $subject_id =~m/^.DE-588.(.+)*/;
+			    push @{$normrecord_ref->{fields}{'0010'}}, {
+				mult     => 1,
+				subfield => '',
+				content  => $gnd,
+			    };
+			}
 			
 			$normrecord_ref->{id} = $subject_id;
 			push @{$normrecord_ref->{fields}{'0800'}}, {
@@ -579,6 +628,19 @@ while (my $jsonline = <$input_io>){
 			id         => $subject_id,
 			supplement => '',
 		    };
+
+		    if ($subject_id=~m/DE-588/){
+			push @{$title_ref->{fields}{$new_category}}, {
+			    mult     => $subject_mult,
+			    subfield => '6',
+			    content  => $subject_id,
+			};
+			push @{$title_ref->{fields}{$new_category}}, {
+			    mult     => $subject_mult,
+			    subfield => '0',
+			    content  => $subject_id,
+			};
+		    }
 		    
 		    $subject_mult++;
 		}

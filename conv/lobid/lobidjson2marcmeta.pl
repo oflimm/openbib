@@ -216,6 +216,16 @@ while (my $jsonline = <$input_io>){
 		    };
 		    
 		    $normrecord_ref->{id} = $contributor_id;
+
+		    if ($contributor_id=~m/DE-588/){
+			my ($gnd) = $contributor_id =~m/^.DE-588.(.+)*/;
+			push @{$normrecord_ref->{fields}{'0010'}}, {
+			    mult     => 1,
+			    subfield => '',
+			    content  => $gnd,
+			};
+		    }
+		    
 		    push @{$normrecord_ref->{fields}{'0800'}}, {
 			mult     => 1,
 			subfield => '',
@@ -308,6 +318,16 @@ while (my $jsonline = <$input_io>){
 			'fields' => {},
 		    };
 		    $normrecord_ref->{id} = $contributor_id;
+
+		    if ($contributor_id=~m/DE-588/){
+			my ($gnd) = $contributor_id =~m/^.DE-588.(.+)*/;
+			push @{$normrecord_ref->{fields}{'0010'}}, {
+			    mult     => 1,
+			    subfield => '',
+			    content  => $gnd,
+			};
+		    }
+		    
 		    push @{$normrecord_ref->{fields}{'0800'}}, {
 			mult     => 1,
 			subfield => '',
@@ -456,6 +476,16 @@ while (my $jsonline = <$input_io>){
 			    };
 			    
 			    $normrecord_ref->{id} = $subject_id;
+			    
+			    if ($subject_id=~m/DE-588/){
+				my ($gnd) = $subject_id =~m/^.DE-588.(.+)*/;
+				push @{$normrecord_ref->{fields}{'0010'}}, {
+				    mult     => 1,
+				    subfield => '',
+				    content  => $gnd,
+				};
+			    }
+			    
 			    push @{$normrecord_ref->{fields}{'0800'}}, {
 				mult     => 1,
 				subfield => '',

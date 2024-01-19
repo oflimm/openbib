@@ -779,6 +779,16 @@ sub add_person {
     $item_ref->{id} = $person_id;
 
     # Todo: Umstellung auf MARC-Feldnummern
+
+    if ($person_id=~m/DE-588/){
+	my ($gnd) = $person_id =~m/^.DE-588.(.+)*/;
+	push @{$item_ref->{fields}{'0010'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content  => $gnd,
+	};
+    }
+    
     push @{$item_ref->{fields}{'0800'}}, {
 	mult     => 1,
 	subfield => '',
@@ -825,6 +835,16 @@ sub add_corporatebody {
     $item_ref->{id} = $corporatebody_id;
 
     # Todo: Umstellung auf MARC-Feldnummern
+
+    if ($corporatebody_id=~m/DE-588/){
+	my ($gnd) = $corporatebody_id =~m/^.DE-588.(.+)*/;
+	push @{$item_ref->{fields}{'0010'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content  => $gnd,
+	};
+    }
+
     push @{$item_ref->{fields}{'0800'}}, {
 	mult     => 1,
 	subfield => '',
@@ -879,6 +899,16 @@ sub add_subject {
     $item_ref->{id} = $subject_id;
 
     # Todo: Umstellung auf MARC-Feldnummern
+
+    if ($subject_id=~m/DE-588/){
+	my ($gnd) = $subject_id =~m/^.DE-588.(.+)*/;
+	push @{$item_ref->{fields}{'0010'}}, {
+	    mult     => 1,
+	    subfield => '',
+	    content  => $gnd,
+	};
+    }
+
     push @{$item_ref->{fields}{'0800'}}, {
 	mult     => 1,
 	subfield => '',

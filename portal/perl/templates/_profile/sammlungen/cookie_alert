@@ -1,5 +1,5 @@
   <!-- START Bootstrap-Cookie-Alert -->
-  <div class="alert text-center cookiealert ob-bg-secondary" role="alert">
+  <div class="alert text-center cookiealert ob-bg-secondary text-white" role="alert">
 [% IF lang == 'en' %]
 <b>In order for this website to be used by you and to function properly, we need to use cookies. By continuing to use the website, you acknowledge this. For more information about cookies, please see our <a class="inturl" href="[% path_prefix %]/[% config.get('info_loc') %]/datenschutz.html?l=[% lang %]">privacy policy</a>. You can find our imprint <a class="inturl" href="[% path_prefix %]/[% config.get('info_loc') %]/impressum.html?l=[% lang %]">here<a/>.
 [% ELSE %]

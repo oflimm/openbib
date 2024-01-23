@@ -31,6 +31,7 @@ function copy_to_clipboard(formatid) {
                   <option value="BibTeX">[% msg.maketext("BibTeX") %]</option>
                   <option value="EndNote">[% msg.maketext("EndNote") %]</option>
                   <option value="Text">[% msg.maketext("Text") %]</option>
+                  <option value="ISBD">[% msg.maketext("ISBD") %]</option>
 		</optgroup>
                 <optgroup label="Zitierstile">
 		   <option value="apa">[% msg.maketext("Zitat: APA") %]</option>
@@ -134,7 +135,7 @@ function copy_to_clipboard(formatid) {
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="bibtexModalLabel">BibTeX Zitierformat</h5>
+        <h5 class="modal-title" id="bibtexModalLabel">BibTeX Format</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
         </button>
       </div>
@@ -165,6 +166,27 @@ function copy_to_clipboard(formatid) {
       </div>
       <div class="modal-footer">
         <button type="button" onclick="copy_to_clipboard('endnote_format')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="isbdModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="isbdModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="isbdModalLabel">ISBD Format</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+        </button>
+      </div>
+      <div class="modal-body" id="isbd_format">
+[%# USE dumper;dumper.dump(record.to_abstract_fields)%]      
+      <pre>
+[% record.to_isbd.replace('¬',''); %]
+      </pre>
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="copy_to_clipboard('isbd_format')" class="btn btn-primary">[% msg.maketext("Kopieren") %]</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
       </div>
     </div>

@@ -14,6 +14,16 @@
 
 [%# USE dumper;dumper.dump(fees)%]
 
+[% IF fees.error %]
+<div class="alert alert-info">
+<h4>[% msg.maketext("Probleme mit der Kopplung zum Bibliothekssystem") %]</h4>
+
+<p>
+[% fees.error_description %]
+</p>
+
+</div>
+[% ELSE %]
 [% IF fees.no_fees || fees.items.size == 0 %]
 <div class="ob-jumbotron">
 <h1 class="display-4">[% msg.maketext("Es sind keine Gebühren angefallen.") %]</h1>
@@ -23,13 +33,14 @@
 <div class="table-responsive">
 <table class="table table-striped ">
 <thead>
-<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Grund") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Gebühr") %]</th><th>[% msg.maketext("Entstehungsdatum") %]</th></tr>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Grund") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Gebühr") %]</th><th>[% msg.maketext("Entstehungsdatum") %]</th></tr>
 </thead>
 <tbody>
 [%- FOREACH fee = fees.items -%]
 
 <tr>
 <td><i>[% fee.about %]</i></td>
+<td>[% fee.label %]</td>
 <td><i>[% fee.reason %]</i>[% IF fee.reason && fee.item %], [% END %][% fee.item %]</td>
 <td><i>[% fee.department.about %]</i></td>
 <td><span style="color:red">[% fee.amount %]</span></td>
@@ -40,11 +51,21 @@
 </table>
 </div>
 
+[% IF fees.amount %]
+<p>[% msg.maketext("Gebühren gesamt:") %] <span style="color:red;font-size: 1.2em;">[% fees.amount %]</span></p>
+[% END %]
+
+<div class="alert alert-info mt-2 mb-2">
+[% msg.maketext("So können Sie bei uns bezahlen") %]: <a class="exturl" href="[%cms_links.bezahlen %]" target="_blank">[% msg.maketext("Gebühren und Preise") %]</a>
+</div>
+
 <!-- Todo: epc QR-Code fuer automatische Uebernahme der Zahlungsinformationen in Ueberweisung -->
 
 <p/ >
 [% ELSE %]
 [% msg.maketext("Es ist ein unerwarteter Fehler aufgetreten") %]
 [% END %]
+
+[% END # no error %]
 
 <div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Ihre offenen Gebühren") %]</div>

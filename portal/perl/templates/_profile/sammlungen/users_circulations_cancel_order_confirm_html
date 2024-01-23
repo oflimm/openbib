@@ -1,35 +1,11 @@
-[%-
+[% PROCESS common/subtemplate name="titles_record_abstract_fields" %]
 
-  fields = record.get_fields;
+[%
 
-  title     = fields.${"T0331"}.first.content;
+  unitname = decode_utf8(unitname);
 
-  persons   = [];
-  FOREACH thisfield IN ['P0100','P0101','P0102','P0103'];
-    IF fields.${thisfield}.defined;
-      persons.push(fields.${thisfield}.first.content);  
-    END;
-  END;
-  person = persons.join(' ; ');
+%]
 
-  corporatebodies   = [];
-  FOREACH thisfield IN ['C0200','C0201'];
-    IF fields.${thisfield}.defined;
-      corporatebodies.push(fields.${thisfield}.first.content);  
-    END;
-  END;
-  corporatebody = corporatebodies.join(' ; ');
-
-  publisher = fields.${"T0412"}.first.content;
-
-  year      = fields.${"T0425"}.first.content;
-  # IF fields.${"T0424"}.defined;
-  #   year      = fields.${"T0424"}.first.content;  
-  # END;
-
-  titleid   = record.id;
-  
--%]
 <div class="card mt-5 mb-5 me-5">
 <div class="card-header">[% msg.maketext("Bestellung stornieren") %]</div>
 <div class="card-body">
@@ -42,19 +18,19 @@
      <input type="hidden" name="_method" value="DELETE" />
      <input type="hidden" name="confirm" value="0" />     
      <input type="hidden" name="unit" value="[% unit %]" />
-     <input type="hidden" name="validtarget"   value="[% database %]" />
+     <input type="hidden" name="validtarget"  value="[% database %]" />
 
 <legend class="mt-2">[% msg.maketext("Angaben zur Bestellung") %]</legend>
 
 <div class="form-floating mb-3">
       <span class="form-control">[% date %]</span>
-      <input type="hidden" name="date" value="[% uri_encode(date) %]" />
+      <input type="hidden" name="date" value="[% date %]" />
       <label for="date">Bestelldatum</label>
 </div>
 
 <div class="form-floating mb-3">
       <span class="form-control">[% unitname %]</span>
-      <input type="hidden" name="unitname" value="[% uri_encode(unitname) %]" />
+      <input type="hidden" name="unitname" value="[% uri_escape(unitname) %]" />
       <label for="date">Zweigstelle</label>
 </div>
 
@@ -62,7 +38,7 @@
 
 <div class="form-floating mb-3">
       <span class="form-control">[% title %]</span>
-      <input type="hidden" name="title" value="[% uri_encode(title) %]" />
+      <input type="hidden" name="title" value="[% uri_escape(title) %]" />
       <input type="hidden" name="titleid" value="[% titleid %]" />
       <label for="title">Titel</label>
 </div>
@@ -70,7 +46,7 @@
 [% IF person %]
 <div class="form-floating mb-3">
       <span class="form-control">[% person %]</span>
-      <input type="hidden" name="author" value="[% uri_encode(person) %]" />
+      <input type="hidden" name="author" value="[% person %]" />
       <label for="author">[% msg.maketext("Verfasser") %]:</label>
 </div>
 [% END %]
@@ -78,7 +54,7 @@
 [% IF corporatebody %]
 <div class="form-floating mb-3">
       <span class="form-control">[% corporatebody %]</span>
-      <input type="hidden" name="corporation" value="[% uri_encode(corporatebody) %]" />
+      <input type="hidden" name="corporation" value="[% corporatebody %]" />
       <label for="corporatation">[% msg.maketext("Körperschaft") %]:</label>
 </div>
 [% END %]
@@ -86,7 +62,7 @@
 [% IF publisher %]
 <div class="form-floating mb-3">
       <span class="form-control">[% publisher %]</span>
-      <input type="hidden" name="publisher" value="[% uri_escape(publisher) %]" />
+      <input type="hidden" name="publisher" value="[% publisher %]" />
       <label for="publisher">[% msg.maketext("Verlag") %]:</label>
 </div>
 [% END %]
@@ -94,7 +70,7 @@
 [% IF year %]
 <div class="form-floating mb-3">
       <span class="form-control">[% year %]</span>
-      <input type="hidden" name="year" value="[% uri_escape(year) %]" />
+      <input type="hidden" name="year" value="[% year %]" />
       <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
 </div>
 [% END %]
@@ -142,9 +118,9 @@
       <label for="username">[% msg.maketext("Name") %]:</label>
 </div>
 
-<!--
+[% IF 0 == 1 %]
 <div class="form-floating mb-3">
-      <select name="remark" id="remark" class="form-control" size="1" style="width:15em;">
+      <select name="remark" id="remark" class="form-control" size="1">
         <option value="">[ Bitte wählen Sie aus ]</option>
         <option value="Buch eingesehen bzw. kopiert [1]">Habe das Buch am Abholregal eingesehen bzw. kopiert</option>
         <option value="Falsches Buch bestellt [2]">Falsches Buch bestellt</option>
@@ -155,9 +131,9 @@
         <option value="Buch in den Abholregalen nicht auffindbar [7]">Kann das Buch in den Abholregalen nicht finden</option>
         <option value="Anderer Grund [8]">Anderer Grund ...</option>
      </select>
-      <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Stornogrund") %]:</label>
+      <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Stornogrund") %]*:</label>
 </div>
--->
+
 
 <p/>
 
@@ -173,6 +149,10 @@
       <input type="hidden" name="email" value="[% userinfo.email %]" />
       <label for="email">[% msg.maketext("E-Mail") %]:</label>
 </div>
+
+<p>[% msg.maketext("Eingabefelder mit * müssen ausgefüllt werden.") %]</p>
+
+[% END %]
 
 <button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Stornieren") %]</button>
 

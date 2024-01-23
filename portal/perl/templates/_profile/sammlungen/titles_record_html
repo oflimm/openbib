@@ -20,6 +20,95 @@
   holding         = record.get_holding ;
   circulation     = record.load_circulation.get_circulation ; 
 
+  # Interimsloesung: Fehlende Volltextlinks aus NZ-Publishing
+   nz_fulltext_links_from_fields = 0;
+
+   IF nz_fulltext_links_from_fields && record.database == 'uni' && record.id.match('6441$') && normdata.defined('T1945') && NOT normdata.defined('T4120') ;
+
+   custom_normdata = record.to_custom_field_scheme_1;
+   
+   pakete = [];
+
+   IF custom_normdata.defined('T0912') || custom_normdata.defined('T0962');
+      FOREACH thisitem IN custom_normdata.${'T0912'};
+         IF thisitem.defined('a');
+           pakete.push(thisitem.${'a'});
+	 END;
+      END;
+
+      FOREACH thisitem IN custom_normdata.${'T0962'};
+         IF thisitem.defined('e');
+           pakete.push(thisitem.${'e'});
+        END;
+      END;
+   END;
+
+   paketstring = "";
+
+   IF pakete ;
+     paketstring = pakete.join('; ');
+   END;
+
+   IF custom_normdata.${'T1945'}.first.defined('e') ; # Static URL
+      static_url = custom_normdata.${'T1945'}.first.${'e'};
+      online_access = 'f';
+      online_text = "Volltext";
+
+      IF paketstring.match('(ZDB-2-SWI|ZDB-2-SNA|ZDB-2-STI|ZDB-2-SGR|ZDB-2-SGRSpringer|ZDB-2-SEP|ZDB-2-SBE|ZDB-2-CMS|ZDB-2-PHA|ZDB-2-SMA|ZDB-2-MGE|ZDB-2-SZR|ZDB-2-BUM|ZDB-2-ECF|ZDB-2-SCS|ZDB-2-ESA|ZDB-5-WEB|ZDB-5-WMS|ZDB-5-WMW|ZDB-13-SOC|ZDB-14-DLO|ZDB-18-BEO|ZDB-18-BOH|ZDB-18-BST|ZDB-15-ACM|ZDB-16-Hanser-EBA|hbzebo_ebahanser|ZDB-18-Nomos-NRW|ZDB-18-Nomos-VDI-NRW|hbzebo_nrwnomos|ZDB-149-HCB|ZDB-162-Bloom-EBA|hbz_ebabloomsbury|ZDB-605-Preselect|hbzebo_preselect|ZDB-196-Meiner-EBA|hbzebo_ebameiner|ZDB-23-DGG|ZDB-98-IGB|ZDB-23-DGG-eba|ZDB-54-Duncker-EBA|hbzebo_ebaduncker|ZDB-2-BSP|ZDB-2-SBL|ZDB-2-BUM|ZDB-2-CMS|ZDB-2-SCS|ZDB-2-EES|ZDB-2-ECF|ZDB-2-EDA|ZDB-2-ENE|ZDB-2-ENG|ZDB-2-HTY|ZDB-2-INR|ZDB-2-LCR|ZDB-2-LCM|ZDB-2-SMA|ZDB-2-SME|ZDB-2-PHA|ZDB-2-POS|ZDB-2-CWD|ZDB-2-REP|ZDB-2-SLS|ZDB-41-UTB-EBA|ZDB-7-taylorfra-EBA|ZDB-71-Narr-EBA)');
+        online_access = 'y';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-2-SOB|ZDB-23-GOA)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-185-STD|ZDB-185-SDI)');
+        online_access = 'y';
+	online_text   = 'Dossier im Volltext';
+      ELSIF paketstring.match('(ZDB-101-VTB)');
+        online_access = 'y';
+	online_text   = 'Video';
+      END;
+      
+      normdata.${'T4120'} = [{
+	  mult  = 1
+	  subfield = online_access
+	  content = static_url
+      }];
+
+   ELSIF custom_normdata.${'T1945'}.first.defined('2') ; # Dynamic URL
+      resolver_url = custom_normdata.${'T1945'}.first.${'2'};
+      online_access = 'f';
+      online_text = "Volltext";
+
+      IF paketstring.match('(ZDB-2-SWI|ZDB-2-SNA|ZDB-2-STI|ZDB-2-SGR|ZDB-2-SGRSpringer|ZDB-2-SEP|ZDB-2-SBE|ZDB-2-CMS|ZDB-2-PHA|ZDB-2-SMA|ZDB-2-MGE|ZDB-2-SZR|ZDB-2-BUM|ZDB-2-ECF|ZDB-2-SCS|ZDB-2-ESA|ZDB-5-WEB|ZDB-5-WMS|ZDB-5-WMW|ZDB-13-SOC|ZDB-14-DLO|ZDB-18-BEO|ZDB-18-BOH|ZDB-18-BST|ZDB-15-ACM|ZDB-16-Hanser-EBA|hbzebo_ebahanser|ZDB-18-Nomos-NRW|ZDB-18-Nomos-VDI-NRW|hbzebo_nrwnomos|ZDB-149-HCB|ZDB-162-Bloom-EBA|hbz_ebabloomsbury|ZDB-605-Preselect|hbzebo_preselect|ZDB-196-Meiner-EBA|hbzebo_ebameiner|ZDB-23-DGG|ZDB-98-IGB|ZDB-23-DGG-eba|ZDB-54-Duncker-EBA|hbzebo_ebaduncker|ZDB-2-BSP|ZDB-2-SBL|ZDB-2-BUM|ZDB-2-CMS|ZDB-2-SCS|ZDB-2-EES|ZDB-2-ECF|ZDB-2-EDA|ZDB-2-ENE|ZDB-2-ENG|ZDB-2-HTY|ZDB-2-INR|ZDB-2-LCR|ZDB-2-LCM|ZDB-2-SMA|ZDB-2-SME|ZDB-2-PHA|ZDB-2-POS|ZDB-2-CWD|ZDB-2-REP|ZDB-2-SLS|ZDB-41-UTB-EBA|ZDB-7-taylorfra-EBA|ZDB-71-Narr-EBA)');
+        online_access = 'y';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-2-SOB|ZDB-23-GOA)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-185-STD|ZDB-185-SDI)');
+        online_access = 'y';
+	online_text   = 'Dossier im Volltext';
+      ELSIF paketstring.match('(ZDB-101-VTB)');
+        online_access = 'y';
+	online_text   = 'Video';
+      END;
+      
+      normdata.${'T4120'} = [{
+	  mult  = 1
+	  subfield = online_access
+	  content = resolver_url
+      }];
+
+    END;
+  END;
+
+
   # Provenienzen vorhanden?
   have_provenance_for = {};
 
@@ -52,6 +141,11 @@
     END;
   END;
 
+   # Andere Locations aus Aufsatzkatalog entfernen
+   IF locations.grep('aufsaetze').size > 0;
+      locations = ['aufsaetze'];
+    END;
+   
    bibkey = record.to_bibkey ;
    isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
    IF NOT isbn ;
@@ -120,7 +214,9 @@
       q_issn   = normdata.${"T0543"}.first.content ;
     END;
 
-    IF normdata.${"T0540"} ;
+    IF normdata.${"T0586"} ;
+      q_isbn   = normdata.${"T0586"}.first.content ;
+    ELSIF normdata.${"T0540"} ;
       q_isbn   = normdata.${"T0540"}.first.content ;
     END;
 
@@ -302,9 +398,9 @@ $(document).ready(function(){
     <div class="card-header" id="headingMainInformation">
       <h5 class="mb-0">        
 [%-  IF is_freemedia -%]
-         [% locinfo.identifier.${"freemedia"}.description %]
+         [% locinfo.identifier.${"freemedia"}.description %] [% IF locations.first.match('^(emedien|freemedia)') && record.database != 'inst001' %]([% dbinfo.get('dbnames').${record.database}.short %])[% END %]
 [%-  ELSIF is_licensedmedia -%]
-         [% locinfo.identifier.${"emedien"}.description %]
+         [% locinfo.identifier.${"emedien"}.description %] [% IF locations.first.match('^(emedien|freemedia)') && record.database != 'inst001' %]([% dbinfo.get('dbnames').${record.database}.short %])[% END %]
 [%-  ELSIF locations.size >= 1 -%]
 [%      IF locations.size == 1 %]
          [% locinfo.identifier.${locations.first}.description %]
@@ -368,7 +464,7 @@ Open Access. Im Internet weltweit frei verfügbar [% IF thanks_to_unpaywall %](v
 </div>
 [% ELSIF is_licensed %]
 <div class="alert alert-info">
-Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/nutzungshinweise/">Netz der Universität Köln</a> bzw. für autorisierte Benutzer. Die <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/suchen/medienarten/besonderheiten/">Druck- und Downloadmöglichkeiten</a> variieren je nach Anbieter.
+Zugriff nur im <a class="inturl" href="[% cms_links.vpn %]">Netz der Universität Köln</a> bzw. für autorisierte Benutzer. Die <a class="inturl" href="[% cms_links.druck_download %]">Druck- und Downloadmöglichkeiten</a> variieren je nach Anbieter.
 </div>
 [% ELSIF is_national %]
 <div class="alert alert-info">
@@ -421,13 +517,22 @@ Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es au
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#bibtexModal">[% msg.maketext("BibTeX") %]</a></li>
     <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#endnoteModal">[% msg.maketext("EndNote") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#isbdModal">[% msg.maketext("ISBD") %]</a></li>
   </ul>
  </div>
              </div>
-[% IF record.database == 'eds' # Verfuegbarkeit ermitteln %]
-	    <div class="pe-1 pb-3">	    
+[% IF record.database == 'eds' || record.database == 'aufsaetze' # Verfuegbarkeit ermitteln %]
+[%
+    IF record.database == 'eds';
+     q_sid = "EBSCO:Academic%20Search%20Ultimate";
+    ELSIF record.database == 'aufsaetze';
+     q_sid = "UBK:Aufsaetze";
+    END;
+%]
+	    <div class="pe-1 pb-3">
 <!--              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="[% path_prefix %]/availability/search.html?issn=[% issn %];jrnl=[% journal %];vol=[% volume %];issue=[% issue %];tit=[% title %];per=[% person %]" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a> -->
-              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="https://usb-koeln.digibib.net/openurl?genre=[% q_openurltype %]&isbn=[% q_isbn %]&issn=[% q_issn %]&title=[% q_journal %]&volume=[% q_volume %]&issue=[% q_issue %]&date=[% q_year %]&atitle=[% q_title %]&aufirst=[% q_aufirst %]&aulast=[% q_aulast %]&spage=[% q_spage %]&pages=[% q_pages %]&sid=EBSCO:Academic%20Search%20Ultimate&pid=%3Clocation%3E038%3C%2Flocation%3E" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a>
+<!--              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?genre=[% q_openurltype %]&isbn=[% q_isbn %]&issn=[% q_issn %]&title=[% q_journal |uri %]&volume=[% q_volume %]&issue=[% q_issue %]&date=[% q_year %]&atitle=[% q_title |uri %]&aufirst=[% q_aufirst %]&aulast=[% q_aulast |uri %]&spage=[% q_spage %]&pages=[% q_pages %]&sid=[% q_sid %]&pid=%3Clocation%3E038%3C%2Flocation%3E" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span>[% msg.maketext("Verfügbarkeit") %]</span></a>-->
+              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="https://usb-koeln.digibib.net/openurl?genre=[% q_openurltype %]&isbn=[% q_isbn %]&issn=[% q_issn %]&title=[% q_journal |uri %]&volume=[% q_volume %]&issue=[% q_issue %]&date=[% q_year %]&atitle=[% q_title |uri %]&aufirst=[% q_aufirst %]&aulast=[% q_aulast |uri %]&spage=[% q_spage %]&pages=[% q_pages %]&sid=[% q_sid %]&pid=%3Clocation%3E038%3C%2Flocation%3E" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span>[% msg.maketext("Verfügbarkeit") %]</span></a>
 	    </div>
 [% END %]
 	     

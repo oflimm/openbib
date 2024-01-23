@@ -13,9 +13,9 @@
 -%]
 [%-
 
-  ls_counter = config.get_datacache({id => 'lesesaal', type => 15});
+  ls_counter = config.get_datacache({id => 'usbls', type => 15});
 
-  ls_profileid = config.get_searchprofile_of_database('lesesaal');
+  ls_profileid = config.get_searchprofile_of_database('usbls');
 
   sub_ordered_items = [];
 
@@ -46,7 +46,7 @@
 [%  ELSE %]
 <tr>
 <th style="font-weight:bold;font-size:1.2em;" width="5%">[% lssubid %]</th>
-<td><a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0351=[% lssubid %]*;srt=mark_asc;profile=[% ls_profileid %];l=[% lang%]">[% usbls.${lsid}.sub.${lssubid}.desc %]</a> ([% ls_counter.${lssubid} %])</td>
+<td><a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft1002=[% lssubid %]*;srt=mark_asc;profile=[% ls_profileid %];l=[% lang%]">[% usbls.${lsid}.sub.${lssubid}.desc %]</a> ([% ls_counter.${lssubid} %])</td>
 </tr>
 [%  END %]
 [% END %]

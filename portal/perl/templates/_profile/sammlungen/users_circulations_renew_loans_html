@@ -35,7 +35,7 @@
 <div class="table-responsive">
 <table class="table table-striped ">
 <thead>
-<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %] / [% msg.maketext("Bestellnr.") %]</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Leihfristende") %]</th></tr>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %] / [% msg.maketext("Bestellnr.") %]</th><th>[% msg.maketext("Status") %]</th></tr>
 </thead>
 <tbody>
 [%- FOREACH loan = renew_loans.items -%]
@@ -43,9 +43,6 @@
 <tr>
 <td>
 <i>[% loan.about %]</i>
-[% IF loan.renewal_message %] 
-<br/> ([% loan.renewal_message %])
-[% END %]
 </td>
 <td>
 [%#- Die Signatur wird nur dann ausgeben, falls sie nicht Teil der Mediennummer ist -%]
@@ -55,8 +52,11 @@
 [% loan.item %]
 [% END %]
 </td>
-<td>[% loan.department.about %][% IF loan.pickup_location.about %] / [% loan.pickup_location.about %][% END %]</td>
-<td>[% loan.endtime %]</td>
+<td>
+[% IF loan.renewal_message %] 
+[% loan.renewal_message %]
+[% END %]
+</td>
 </tr>
 [% END %]
 </tbody>

@@ -29,27 +29,27 @@
   <th>[% msg.maketext("Titelangaben") %]</th>
   <td>
     <i>
-[% loan.about %]
+[% renew_single_loan.about %]
     </i>
   </td>
 </tr>
 <tr>
   <th>[% msg.maketext("Signatur") %]</th>
-  <td>[% loan.label %]</td>
+  <td>[% renew_single_loan.label %]</td>
 </tr>
 <tr>
   <th>[% msg.maketext("Status") %]</th>
-  <td>[% loan.num_renewals %]. [% msg.maketext("Verlängerung") %]</td>
+  <td>[% renew_single_loan.num_renewals %]. [% msg.maketext("Verlängerung") %]</td>
 </tr>
 <tr>
   <th>[% msg.maketext("Leihfristende") %]</th>
-  <td>[% loan.endtime %]</td>
+  <td>[% renew_single_loan.endtime %]</td>
 </tr>
 </body>
 </table>
 </div>
 
-<p><a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userid %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]" role="button">[% msg.maketext('Weiter') %]</a></p>
+<p><a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userid %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]" role="button">[% msg.maketext('Weiter') %]</a></p>
 
 </div>
 </div>

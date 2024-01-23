@@ -1,35 +1,5 @@
-[%-
+[% PROCESS common/subtemplate name="titles_record_abstract_fields" %]
 
-  fields = record.get_fields;
-
-  title     = fields.${"T0331"}.first.content;
-
-  persons   = [];
-  FOREACH thisfield IN ['P0100','P0101','P0102','P0103'];
-    IF fields.${thisfield}.defined;
-      persons.push(fields.${thisfield}.first.content);  
-    END;
-  END;
-  person = persons.join(' ; ');
-
-  corporatebodies   = [];
-  FOREACH thisfield IN ['C0200','C0201'];
-    IF fields.${thisfield}.defined;
-      corporatebodies.push(fields.${thisfield}.first.content);  
-    END;
-  END;
-  corporatebody = corporatebodies.join(' ; ');
-
-  publisher = fields.${"T0412"}.first.content;
-
-  year      = fields.${"T0425"}.first.content;
-  # IF fields.${"T0424"}.defined;
-  #   year      = fields.${"T0424"}.first.content;  
-  # END;
-
-  titleid   = record.id;
-  
--%]
 <div class="card mt-5 mb-5 me-5">
 <div class="card-header">[% msg.maketext("Bestellung aus Handapparat") %]</div>
 <div class="card-body">

@@ -224,23 +224,23 @@ END;
 
 # Switching processed links
 
-# IF normdata.defined('T4662');
-#    normdata.${'T0662'} = normdata.${'T4662'};
-#    normdata.${'T0663'} = normdata.${'T4663'};
-#    normdata.${'T2662'} = [];
-#    normdata.${'T2662'}.delete;
-#    normdata.${'T2663'} = [];
-#    normdata.${'T2663'}.delete;   
-# ELSIF record.database != 'eds'; # EDS hat kein Preprocessing von Links
-#    normdata.${'T0662'} = [];
-#    normdata.${'T0663'} = [];
-#    normdata.${'T2662'} = [];
-#    normdata.${'T2663'} = [];
-#    normdata.${'T0662'}.delete;
-#    normdata.${'T0663'}.delete;
-#    normdata.${'T2662'}.delete;
-#    normdata.${'T2663'}.delete;
-# END;
+IF normdata.defined('T4662');
+   normdata.${'T0662'} = normdata.${'T4662'};
+   normdata.${'T0663'} = normdata.${'T4663'};
+   normdata.${'T2662'} = [];
+   normdata.${'T2662'}.delete;
+   normdata.${'T2663'} = [];
+   normdata.${'T2663'}.delete;   
+ELSIF record.database != 'eds'; # EDS hat kein Preprocessing von Links
+   normdata.${'T0662'} = [];
+   normdata.${'T0663'} = [];
+   normdata.${'T2662'} = [];
+   normdata.${'T2663'} = [];
+   normdata.${'T0662'}.delete;
+   normdata.${'T0663'}.delete;
+   normdata.${'T2662'}.delete;
+   normdata.${'T2663'}.delete;
+END;
 
 # Preprocessing lizensiert, OA oder Nationallizens
 
@@ -1003,12 +1003,12 @@ END;
 
       show_more = 1;
 -%]
-<tr class="ob-field_supplemental" hidden><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+<tr class="ob-field_supplemental" [% IF NOT show_record_with_supplemental_fields %]hidden[% END %]><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
 [%
    END;
 END;
 -%]
-[% IF show_more %]
+[% IF show_more && NOT show_record_with_supplemental_fields %]
 <tr class="ob-field ob-more_button"><th><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></th><td></td></tr>
 [% END %]
 </table>

@@ -7,7 +7,7 @@
     END ;
  END ;
 
- has_circulation_error = 0; # record.has_circulation_error ;
+ has_circulation_error = record.has_circulation_error ;
 
 %]
 

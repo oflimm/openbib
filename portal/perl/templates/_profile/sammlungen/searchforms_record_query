@@ -97,6 +97,14 @@
 </div>
 [% END %]
 
+[%- cgiparam = searchfield.personstring.prefix;
+    this_searchfield = 'personstring';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Exakte Person in Ansetzungsform") %]</label>
+</div>
+
 [% IF available_searchfields.toc.active %]
 [%- cgiparam = searchfield.toc.prefix;
     this_searchfield = 'toc';
@@ -231,6 +239,14 @@
 <div class="form-floating mb-3">
 <input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 <label for="[% cgiparam %]">GND</label>
+</div>
+
+[%- cgiparam = searchfield.zdbid.prefix;
+    this_searchfield = 'zdbid';
+ -%]
+<div class="form-floating mb-3 d-none">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">ZDB-ID</label>
 </div>
 
 [% IF available_searchfields.hss.active %]

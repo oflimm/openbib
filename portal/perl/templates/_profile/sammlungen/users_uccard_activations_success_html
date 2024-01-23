@@ -26,10 +26,11 @@
 
 <p>[% msg.maketext("Bitte merken Sie sich Ihr Passwort gut, da Sie es zusammen mit der Benutzernummer") %]</p>
 
-<p>[% msg.maketext("Falls diese Nummer nicht mit der Ausweisnummer übereinstimmt, die auf der Rückseite Ihrer UCCard in Klarschrift und als Barcode aufgedruckt ist, wenden Sie sich bitte an unsere ") %]<a href="[% cms_links.anmeldung %]">[% msg.maketext("Anmeldung") %]</a>
+<p>[% msg.maketext("Falls diese Nummer nicht mit der Ausweisnummer übereinstimmt, die auf der Rückseite Ihrer UCCard in Klarschrift und als Barcode aufgedruckt ist, wenden Sie sich bitte an unsere ") %]<a href="[% cms_links.anmeldung %]" target="_blank" class="exturl">[% msg.maketext("Mitarbeiter an der Anmeldung") %]</a>
+</p>
 
+<p>
 <a class="btn btn-primary mb-2" href="[% path_prefix%]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Weiter zur Anmeldung am Portal") %]</a>
-
 </p>
 
 </div>

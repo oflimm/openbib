@@ -21,7 +21,7 @@
 [%   PROCESS common/subtemplate name="litlists_html_modals" %]
 
 <div class="modal fade" id="genericModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="genericModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+  <div id="genericModalDialog" class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title"><div id="genericModalLabel"></div></h4>
@@ -39,7 +39,9 @@
 
 <script>
   // Flushing existing content with pure JS
-  if (!document.getElementById('genericModal').getAttribute('data-initialized')){
+  const genericModal = document.getElementById('genericModal')
+  
+  if (!genericModal.getAttribute('data-initialized')){
 
     const genericModal = document.getElementById('genericModal')
     genericModal.setAttribute('data-initialized', true);
@@ -48,10 +50,28 @@
     const modalTitle = genericModal.querySelector('#genericModalLabel')
     const modalBody  = genericModal.querySelector('#generic_message')
 
+    // Reset classes
+    document.getElementById('genericModalDialog').className = "modal-dialog modal-dialog-scrollable modal-lg"
+
     modalTitle.textContent = ''
     modalBody.innerHTML    = '<div class="spinner-border" role="status" data-initialized="true"><span class="sr-only">Loading...</span></div>'
     });
    }
+
+   // Setting additional content
+   genericModal.addEventListener('show.bs.modal', function (event) {
+     // Button that triggered the modal
+     const button = event.relatedTarget
+     // Extract info from data-bs-* attributes
+     const newclass = button.getAttribute('data-bs-class')
+     
+     // Update the modal's class.
+     const genericModalDialog = document.getElementById('genericModalDialog')
+     const genericModalDialogClassList = genericModalDialog.classList;
+     genericModalDialogClassList.add(newclass);
+   })
+
+
 </script>
 
 [% IF show_modal_template && NOT hide_detail && NOT hide_hit %]

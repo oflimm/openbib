@@ -16,6 +16,17 @@
 [%- popularity_i18n = msg.maketext("Popularität") -%]
 [% PROCESS common/subtemplate name="visible_categories_title" %]
 
+[%-
+    request_base    = "num=${qopts.get_option('num')};srt=tstamp_desc;page=1;" ;
+    start_range     = nav.current_page*qopts.get_option('num')-qopts.get_option('num') + 1;
+    end_range       = nav.current_page*qopts.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
+
 <div class="ob-page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- ELSE -%]&nbsp;<img src="[% config.get_icon('persons',view,sysprofile) %]" title="[% msg.maketext("Öffentliche Literaturliste von Nutzern") %]" alt="[% msg.maketext("Öffentliche Literaturliste von Nutzern") %]" style="vertical-align:bottom"/>[%- END -%]</div> <div class="ob-page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
 [%- IF litlist.properties.topics.size -%]
 [%- FOREACH topic IN litlist.properties.topics-%]
@@ -89,6 +100,45 @@
 </div>
 
 <!-- Titlelist ends here -->
+
+  <div class="d-flex ob-fulltitle_actions pb-3 pt-3 text-white">
+    <div class="ps-2">
+      <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#litlistsSaveModal"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Export") %]</span></a>
+    </div>
+    
+[% IF user.ID %]
+    <div class="ps-2">
+      <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#litlistsMailModal"><i class="far fa-envelope"></i><span class="d-none d-sm-inline ms-2">[% msg.maketext("E-Mail") %]</span></a>
+    </div>
+[% END %]
+
+    <div class="ps-2">
+      <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#litlistsPrintModal"><i class="fas fa-print"></i><span class="d-none d-sm-inline ms-2">[% msg.maketext("Drucken") %]</span></a>
+    </div>
+	  
+    <div class="ps-2">
+      <div class="dropdown">
+	<button class="btn btn-primary dropdown-toggle" type="button" id="citationMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	  <i class="fas fa-quote-right"></i><span class="d-none d-sm-inline ps-2">[% msg.maketext("Zitat") %]</span>
+	</button>
+	<ul class="dropdown-menu text-black" aria-labelledby="citationMenuButton">
+	  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=apa" title="[% msg.maketext("APA") %]">[% msg.maketext("APA") %]</a></li>
+	  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=harvard" title="[% msg.maketext("Harvard") %]">[% msg.maketext("Harvard") %]</a></li>
+	  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=mla" title="[% msg.maketext("MLA") %]">[% msg.maketext("MLA") %]</a></li>
+	  <li><hr class="dropdown-divider"></li>
+	  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=BibTeX" title="[% msg.maketext("BibTeX") %]">[% msg.maketext("BibTeX") %]</a></li>
+	  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=EndNote" title="[% msg.maketext("EndNote") %]">[% msg.maketext("EndNote") %]</a></li>
+	</ul>
+      </div>
+    </div>
+
+    <button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
+    
+    <div class="pt-1">
+      <button class="ob-sidebar_button sidebar-toggler d-none d-md-block mb-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
+    </div>
+  
+  </div>
 
 [% ELSE %]
 

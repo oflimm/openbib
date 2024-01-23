@@ -49,30 +49,47 @@
 <label for="authenticator">[% msg.maketext("Authentifizierung") %]</label>
 </div>
 [%# USE dumper;dumper.dump(views)%]
+
+<!--
 <div class="form-floating mb-3">
 <span class="form-control" id="view">[% IF userinfo.viewname %][% config.get_viewdesc_from_viewname(userinfo.viewname) %][% ELSE %][% msg.maketext("Zugriff auf alle Portale") %][% END %]</span>
 <label for="view">[% msg.maketext("Portal") %]</label>
 </div>
+-->
 
 <div class="form-floating mb-3">
+[% IF authenticator.id == 'selfreg' %]
 <input class="form-control" id="nachname" type="text" name="nachname" value="[% userinfo.nachname %]" size="30" maxlength="200" />
+[% ELSE %]
+<span class="form-control" id="nachname">[% userinfo.nachname %]</span>
+[% END %]
 <label for="nachname">[% msg.maketext("Nachname") %]</label>
 </div>
 
 <div class="form-floating mb-3">
+[% IF authenticator.id == 'selfreg' %]
 <input class="form-control" id="vorname" type="text" name="vorname" value="[% userinfo.vorname %]" size="30" maxlength="200" />
+[% ELSE %]
+<span class="form-control" id="vorname">[% userinfo.vorname %]</span>
+[% END %]
 <label for="vorname">[% msg.maketext("Vorname") %]</label>
 </div>
 
 <div class="form-floating mb-3">
+[% IF authenticator.id == 'selfreg' %]
 <input class="form-control" id="email" type="text" name="email" value="[% userinfo.email %]" size="30" maxlength="200" />
+[% ELSE %]
+<span class="form-control" id="eimail">[% userinfo.email %]</span>
+[% END %]
 <label for="email">[% msg.maketext("E-Mail") %]</label>
 </div>
 
+<!--
 <div class="form-floating mb-3">
 <span class="form-control" id="status">[% userinfo.status %]</span>
 <label for="status">[% msg.maketext("Status") %]</label>
 </div>
+-->
 
 <div class="form-floating mb-3">
 <span class="form-control" id="sperre">
@@ -85,7 +102,9 @@
 <label for="sperre">[% msg.maketext("Sperre") %]</label>
 </div>
 
+[% IF authenticator.id == 'selfreg' %]
 <button class="btn btn-primary mb-2 mt-4" type="submit">[% msg.maketext("&Auml;ndern") %]</button>
+[% END %]
 
 [%   IF userinfo.username != 'admin' %]
 <a class="btn btn-primary mb-2 mt-4" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Kennung l&ouml;schen") %]</a>

@@ -15,6 +15,11 @@
         <div class="ob-jumbotron">
          <h1 class="display-4">[% msg.maketext("Neuanmeldung für einen Bibliotheksausweis") %]</h1>
 
+[% IF alma_disable_librarycard %]
+<div class="alert alert-info">
+Wegen der Umstellung auf das neue Bibliothekssystem Alma ist bis voraussichtlich 6.9.2023 keine Online-Anmeldung möglich.
+</div>
+[% ELSE %]
 <p class="alert alert-warning">[% msg.maketext("Nur, wenn Sie keine UCCard der Uni Köln besitzen!") %]</p>
 
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('librarycard_registrations_loc') %]" enctype="application/x-www-form-urlencoded">
@@ -37,17 +42,17 @@
 </div>
 
 <div class="form-floating mt-3">
-<input class="form-control" type="text" name="forename" id="forename" value="" />
+<input class="form-control" type="text" name="forename" id="forename" />
 <label for="forename">[% msg.maketext("Vorname") %]*</label>
 </div>
 
 <div class="form-floating mt-3">
-<input class="form-control" type="text" name="surname" id="surname" value="" />
+<input class="form-control" type="text" name="surname" id="surname"  />
 <label for="surname">[% msg.maketext("Nachname") %]*</label>
 </div>
 
 <div class="form-floating mt-3 mb-4">
-<input class="form-control" type="text" name="birthdate" size="8" id="birthdate" value="" />
+<input class="form-control" type="text" name="birthdate" size="8" id="birthdate" />
 <label for="birthdate">[% msg.maketext("Geburtsdatum") %]*</label>
 Format: TT.MM.JJJJ
 </div>
@@ -55,24 +60,24 @@ Format: TT.MM.JJJJ
 <h4>[% msg.maketext("Anschrift") %]</h4>
 
 <div class="form-floating mt-3">
-<input class="form-control" type="text" name="street" id="street" value="" />
+<input class="form-control" type="text" name="street" id="street" />
 <label for="street">[% msg.maketext("Straße / Nr") %]*</label>
 </div>
 
 <div class="form-floating mb-3">
-<input class="form-control" type="text" name="zip" id="zip" value="" />
+<input class="form-control" type="text" name="zip" id="zip" />
 <label for="zip">[% msg.maketext("Postleitzahl") %]*</label>
 </div>
 
 <div class="form-floating mt-3 mb-4">
-<input class="form-control" type="text" name="city" id="city" value="" />
+<input class="form-control" type="text" name="city" id="city" />
 <label for="city">[% msg.maketext("Stadt") %]*</label>
 </div>
 
 <h4>[% msg.maketext("Adresse für die Benachrichtung per E-Mail") %]</h4>
 
 <div class="form-floating mt-3 mb-4">
-<input class="form-control" type="text" name="email" id="email_username" value="" />
+<input class="form-control" type="text" name="email" id="email_username" />
 <label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
 </div>
 
@@ -100,7 +105,7 @@ Format: TT.MM.JJJJ
 
 <div class="form-check mt-3 mb-4">
 <input class="form-check-input" type="checkbox" name="confirmation" id="confirmation" />
-<label for="confirmation">Hiermit erkenne ich die <a class="exturl" href="https://www.ub.uni-koeln.de/suchen_ausleihen/ausleihe/regelung/index_ger.html" target="_blank">Gebühren- und Nutzungsordnungen</a> an.</label>
+<label for="confirmation">Hiermit erkenne ich die <a class="exturl" href="[% cms_links.bno %]" target="_blank">Gebühren- und Nutzungsordnungen</a> an.</label>
 </div>
 
 [% IF use_captcha %]
@@ -122,4 +127,5 @@ Format: TT.MM.JJJJ
 
 </form>
 
+[% END %]
 </div><!-- End: ob-jumbotron -->

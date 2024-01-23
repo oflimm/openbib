@@ -29,6 +29,7 @@
 
 <div class="sticky-top">
 
+
   <form class="ob-mainsearchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
     
     <input type="hidden" name="num"        value="20" />
@@ -49,7 +50,7 @@
       <div class="row">    
         <div class="col">
           <div class="input-group">
-            <input required="required" class="form-control" type="search" name="fs" value="[% searchquery.get_searchfield('freesearch').val | html %]" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website") %]" />
+            <input required="required" class="form-control" type="search" name="fs" value="[% searchquery.get_searchfield('freesearch').val %]" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Unikatalog (Bücher, E-Medien, Aufsätze &amp; mehr) und USB Website") %]" />
             <span class="input-group-btn ps-1">
               <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
               <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options[% idsuffix %]" aria-expanded="false"></span>
@@ -70,6 +71,11 @@
             <li class="list-group-item pe-1 pt-3" style="border: none" >
 	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
 	   </li>
+[% IF NOT view.match('inst\d\d\d') %]          	   
+            <li class="list-group-item pe-1 pt-3" style="border: none" >
+	     <a href="[% path_prefix %]/[% config.get('info_loc') %]/tipps.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/tipps.include?l=[% lang %]" title="[% msg.maketext("Hilfe") %]"><i class="fas fa-question-circle"></i></a>
+	   </li>
+[% END %]	   
           </ul>
 	</div><!-- col -->
       </div><!-- row -->
@@ -225,20 +231,30 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
 [% END %]
 
   </div><!-- End: col -->
+</div><!-- End: row -->
 
 [% PROCESS common/subtemplate name="search_pagination" %]
 
-</div><!-- End: row -->
-
 [% ELSE %]
-  <div class="ob-no_hits">
+  <div class="ob-no_hits pt-5">
     <h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>
 
-    [% PROCESS common/subtemplate name="search_more_tips" %]
-   
-  </div>  
-[% END %]
+  </div>
 
+  <div class="ps-5 pe-5">
+    [% PROCESS common/subtemplate name="search_more_tips" %]
+  </div>
+
+[% END %]
+<template id="lendable-template">
+  <a href="" class="btn btn-primary avail-js ob-availability_lendable mb-1 me-1 pe-2"><img src="[% config.get_icon('lendable',view,sysprofile) %]" alt="[% msg.maketext("ausleihbar") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("ausleihbar") %]</span></a>
+</template>
+<template id="presence-template">
+  <a href="" class="btn btn-primary avail-js ob-availability_presence mb-1 me-1 pe-2"><img src="[% config.get_icon('presence',view,sysprofile) %]" alt="[% msg.maketext("einsehbar") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("einsehbar") %]</span></a>
+</template>
+<template id="lent-template">
+  <a href="" class="btn btn-primary avail-js ob-availability_borrowed mb-1 me-1 pe-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("entliehen") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("entliehen") %]</span></a>
+</template>
 
 <script>
 $(document).ready(function(){
@@ -250,4 +266,124 @@ $(document).ready(function(){
             $("#ob-searchresult_[% current_tab %]_count").html(" (0)");
         }
 });
+
+
+async function processAvailData(alma_sru_url, circ_table) {
+  try {
+    const response = await fetch(alma_sru_url);
+
+    if (!response.ok) {
+      throw new Error(`Error fetching data: ${response.status} - ${response.statusText}`);
+    }
+
+    const xml_str = await response.text();
+    const xml_doc = new DOMParser().parseFromString(xml_str, 'application/xml');
+    const avail_data = [];
+    const ava_infos = xml_doc.querySelectorAll('datafield[tag="AVA"]');
+    
+    ava_infos.forEach((ava_info) => {
+      try {
+        const library_code = ava_info.querySelector('subfield[code="b"]').textContent;
+        const location_code = ava_info.querySelector('subfield[code="j"]').textContent;
+        const availability = ava_info.querySelector('subfield[code="e"]').textContent;
+        const avail_single = get_avail_info(circ_table, library_code, location_code, availability)
+
+        avail_data.push(avail_single);
+      } catch (error) {
+        console.error('Error processing availability info:', error);
+      }
+    });
+    return avail_data;
+  } catch (error) {
+    console.error('Error fetching or processing data:', error);
+    return []; // Return an empty array in case of an error
+  }
+}
+
+if ("[% current_tab %]" === "books" && !document.getElementById("ob-searchresult_books")?.dataset?.avail_loaded) {
+   [%
+     alma_circ = config.load_alma_circulation_config;
+   %]
+   const circ_table = JSON.parse('[% to_json(alma_circ) %]');
+
+   let entry_elems_[% current_tab %] = document.querySelectorAll("[data-catalog]");
+   Array.from(entry_elems_[% current_tab %]).forEach((entry_elem, index) => {
+   let mms_id = entry_elem.dataset.id;
+   let catalog = entry_elem.dataset.catalog;
+   const alma_sru_url = `https://hbz-ubk.alma.exlibrisgroup.com/view/sru/49HBZ_UBK?version=1.2&operation=searchRetrieve&recordSchema=marcxml&query=alma.mms_id=${mms_id}`;
+   processAvailData(alma_sru_url, circ_table)
+     .then((avail_data) => {
+       if (avail_data.length > 0) {
+         let overall_mediastatus = {};
+         for (let avail_item of avail_data) {
+          if (avail_item.availability_status == "unavailable"){
+            overall_mediastatus["lent"] = true;
+          }else if (avail_item.availability_status == "loan") {
+            overall_mediastatus["lendable"] = true;
+          }else if (avail_item.availability_status == "presence") {
+            overall_mediastatus["presence"] = true;
+          }
+         }
+         let template_elem = "";
+         if (overall_mediastatus["lendable"] == true){
+           template_elem = document.getElementById('lendable-template');
+         }
+         else if (overall_mediastatus["presence"] == true) {
+           template_elem = document.getElementById('presence-template');
+         }
+         else if (overall_mediastatus["lent"] == true) {
+           template_elem = document.getElementById('lent-template');
+         }   
+   
+         if (template_elem !== "") {
+	   const clonedTemplate = document.importNode(template_elem.content, true);
+           clonedTemplate.querySelector('.avail-js').href = create_href(catalog,mms_id);
+           entry_elem.appendChild(clonedTemplate);
+         }
+       }
+      })
+      .catch((error) => {
+        console.error('Error processing entry element:', error);
+      });
+  });
+  const searchResultBooksElement = document.getElementById("ob-searchresult_books");
+  //Check if the element exists
+  if (searchResultBooksElement) {
+  // Set the data attribute
+  searchResultBooksElement.setAttribute("data-avail_loaded", "true");
+  }
+}
+
+function create_href(database, mms_id){
+  return `[% path_prefix %]/[% config.get('databases_loc') %]/id/${database}/[% config.get('titles_loc') %]/id/${mms_id}.html?l=de#ob-additional_title_info`;
+}
+
+
+function get_avail_info(circ_table, library_code, location_code, availability){
+   
+     let circ_config = {};
+     if (circ_table[library_code] !== undefined &&
+         circ_table[library_code][location_code] !== undefined){
+            circ_config = circ_table[library_code][location_code];
+     }
+     let availability_status = "unavailable";
+
+     if (availability === "available" && circ_config["loan"] !== undefined && circ_config["order"] !== undefined){
+        availability_status = "loan";
+     }
+     else if (availability === "unavailable" && circ_config["loan"] == undefined && circ_config["order"] == undefined){
+        availability_status = "";
+     } 
+
+     else if (availability === "available"){
+        availability_status = "presence";
+     }
+     
+     else if (availability === "check_holdings"){
+        availability_status = "";
+     }
+     
+     return {"library_code": library_code, "location_code": location_code, "availability_status": availability_status}
+
+}
 </script>

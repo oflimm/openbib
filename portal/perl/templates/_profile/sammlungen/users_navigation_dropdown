@@ -55,7 +55,7 @@
   <li class="[% IF layout_param.active_submenu == "migration" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/migration.html?l=[% lang %]">[% msg.maketext("Konto-Migration") %]</a></li>
 [% END %]
 
-[% IF NOT user.has_role('viewadmin',user.ID) %]
+[% IF user.has_role('viewadmin',user.ID) %]
   <li class="[% IF layout_param.active_submenu == "viewadmin_templates" %]active[% END %]"><a class="ob-dropdown_link"href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('templates_loc') %].html?l=[% lang %]">[% msg.maketext("Templates") %]</a></li>
 [% END %]
  </ul>
@@ -76,6 +76,7 @@
           <li class="[% IF layout_param.active_submenu == "fees" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/fees.html?l=[% lang %]">[% msg.maketext("Gebühren") %]</a></li>
 	</ul>
      </li>
+      <li><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/suggestions.html?l=[% lang %]">[% msg.maketext("Anschaffungsvorschläge") %]</a></li>
 </ul>
 
 </div> <!-- Ende: col -->

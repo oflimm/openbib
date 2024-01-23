@@ -23,10 +23,9 @@
 
 </style>
 
-<div class="ps-2 mt-2" id="ob-searchresult_tabs">
+<div class="ps-2 mt-2" id="ob-searchresult_tabs"><!-- Begin ob-searchresult_tabs -->
   
   <!-- AKTUELL [% current_profile %] - BOOKS [% searchprofileid_of_books %] - ARTICLES [% searchprofileid_of_articles %]  -->
-
 
     <div id="spinner" class="d-flex justify-content-center htmx-indicator spinner-large">
       <img src="/images/openbib/uni-siegel-spinner.png" class="uzk-spinner" alt="[% msg.maketext("Lade-Animation mit UzK Logo") %]"/>
@@ -115,8 +114,18 @@
 
     </style>
 
-    <div id="ob-searchresult_tab_books" class="flex-md-row">
+    <div id="ob-searchresult_tab_books" class="row flex-md-row">
 [% PROCESS common/subtemplate name="search_title_combined_include" %]
     </div>
 
-</div>
+<script>
+document.body.addEventListener('htmx:beforeHistorySave', function(evt) {
+   //evt.detail.path = 'abc';
+   let links = document.getElementById('ob-searchresult_tabs').getElementsByTagName('a');
+   let active_links = Array.from(links).filter(element => element.classList.contains('active'))
+   console.log(active_links);
+});
+
+</script>
+  
+</div><!-- End ob-searchresult_tabs -->

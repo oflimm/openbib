@@ -13,8 +13,9 @@
 -%]
 
 [% IF jop_online # Online Bestand, daher keine Bestellung, nur Hinweis %]
+<div class="alert alert-info mb-3">
 
-<p>[% msg.maketext("Der gewünschte Aufsatz bzw. Zeitschriftenjahrgang ist online verfügbar:") %]<p>
+<h2>[% msg.maketext("Der gewünschte Aufsatz bzw. Zeitschriftenjahrgang ist online verfügbar:") %]</h2>
 
 <ul class="list-group">
 [% FOREACH item IN jop %]
@@ -25,25 +26,35 @@
 
 <p>[% msg.maketext("Online-Ressourcen dürfen in aller Regel aus urheberrechtlichen Gründen nicht abgespeichert und in externe Systeme hochgeladen werden.") %]</p>
 
-<p>[% msg.maketext("") %]</p>
+<p>[% msg.maketext("Eine Bestellung über den Campuslieferdienst ist daher nicht möglich.") %]</p>
+
+</div>
+
 [% ELSIF uzk_online # Online Bestand, daher keine Bestellung, nur Hinweis %]
 
-<p>[% msg.maketext(Der gewünschte Titel ist online verfügbar) %]:</p>
+<div class="alert alert-info mb-3">
+<h2>[% msg.maketext("Der gewünschte Titel ist online verfügbar") %]:</h2>
 
+<ul>
 [%-
-
-  online_ids = online_media.to_ids;
-  online_titleid = online_ids.first.id;
-  online_db = online_ids.first.database
-
+  online_out = 0;
+  FOREACH online_record IN online_media.get_records;
+     IF online_record.id && online_record.database;
+%]
+<li><a class="exturl" href="[% path_prefix%]/[% config.get('databases_loc') %]/id/[% online_record.database %]/[% config.get('titles_loc') %]/id/[% online_record.id %].html?l=[% lang %]">[% msg.maketext("E-Book im Volltext") %] ([% dbinfo.get('dbnames').${online_record.database}.full %])</a></li>
+[%
+        online_out = 1;
+     END;
+  END;
 -%]
+</ul>
 
-[% IF online_titleid && online_db %]
-<a href="[% path_prefix%]/[% config.get('databases_loc') %]/id/[% online_db %]/[% config.get('titles_loc') %]/id/[% online_titleid %].html?l=[% lang %]"[% msg.maketext("E-Book im Volltext") %]
-[% ELSE %]
-[% msg.maketext("Es konnte kein Link zum Titel bestimmt werden.") %]
+[% IF NOT online_out  %]
+<p>[% msg.maketext("Es konnte kein Link zum Titel bestimmt werden.") %]</p>
 [% END %]
+</div>
 
+<p>[% msg.maketext("Eine Bestellung über den Campuslieferdienst ist daher nicht möglich.") %]</p>
 
 [% ELSE # Bestellung abgeschickt %]
 <div class="ob-jumbotron mt-3">

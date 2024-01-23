@@ -3,7 +3,7 @@
     suppress_unauthorized = 1;
     layout_param = {
 
-      'main_template' = 'users_uccard_activations_confirmation_4html'
+      'main_template' = 'users_uccard_activations_confirmation_html'
 
       'active_menu' = 'uccard_activations_confirmation'
       

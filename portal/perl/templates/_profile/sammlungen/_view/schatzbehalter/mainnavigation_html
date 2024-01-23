@@ -131,7 +131,7 @@
  
   <span class="navbar-brand">
    <a class="text-white" href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">
-     <img src="/images/openbib/views/schatzbehalter/logo-schatzbehalter_40px.png" class="img-fluid d-none d-sm-inline pe-3"  />[% msg.maketext("Schatzbehalter") %]
+     <img src="/images/openbib/views/schatzbehalter/logo-schatzbehalter_40px.png" class="img-fluid d-sm-inline pe-3"  />[% msg.maketext("Schatzbehalter") %]
    </a>
   </span>
 

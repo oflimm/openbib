@@ -1,0 +1,73 @@
+# Encoding der Daten
+#encoding: iso-8859-1
+encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': ','
+  'quote_char': '"'
+  'escape_char': '"'
+  'binary': 1
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'id'
+
+category_split_chars:
+  'verfasser_person': '\s+;\s+'
+  'urheber_koerperschaft': '\s+;\s+'
+  'schlagwort': '\s+;\s+'
+  'notation': '\s+;\s+'
+  'sprache': '\s+;\s+'
+  'url': '\s+;\s+'
+
+# Personen
+person:
+  'verfasser_person': '0100'        # Verfasser
+
+# Koerperschaften
+corporatebody:
+  'urheber_koerperschaft': '0200'
+
+# Systematik
+classification:
+  'notation': '0700'
+  
+# Schlagworte
+subject:
+  'schlagwort': '0710'
+
+# Titel
+title:
+  'id_ueberordnung': '0004'
+  'datum_neu': '0002'
+  'datum_aenderung': '0003'
+  'titel': '0331'
+  'zusatz_zum_titel': '0335'
+  'gesamttitel': '0451'
+  'zaehlung_band': '0089'
+  'sprache': '0015'
+  'auflage': '0403'
+  'isbn': '0540'
+  'issn': '0543'
+  'verlagsort': '0410'
+  'seitenangabe': '0433'
+  'erscheinungsjahr': '0425'
+  'verlag': '0412'
+  'abstract': '0750'
+  'title_quelle': '0590'
+  'sprache': '0015'
+  'url': '0662'
+  'volltext_url': '4120'
+  'bemerkung': '0600'
+
+  
+holding:
+  'signatur': '0014'
+  'standort': '0016'
+  'inventarnr': '0005'
+  'bestandsverlauf': '1204'
+  

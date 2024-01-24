@@ -58,6 +58,18 @@ __PACKAGE__->add_columns(
   { data_type => "bigint", is_foreign_key => 1, is_nullable => 0 },
 );
 
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
+__PACKAGE__->set_primary_key("id");
+
 =head1 RELATIONS
 
 =head2 cartitemid
@@ -91,8 +103,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2023-07-27 13:41:13
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:JMRsQH+oagQioHgGry/55A
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2024-01-24 12:52:08
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:uDphc+CBM6xGJhczM3pOng
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

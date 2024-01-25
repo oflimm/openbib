@@ -3359,9 +3359,25 @@ sub to_isbd {
     elsif ($fields_ref->{issn}){
 	$line5.=$fields_ref->{issn};
     }
-
+    
     $isbd.="$line5\n" if ($line5); # Ende fuenfte Zeile
 
+    # Sechste Zeile
+    
+    my $line6 = "";
+
+    if (@{$fields_ref->{urls}}){
+	my @urls = ();
+	foreach my $url_ref (@{$fields_ref->{urls}}){
+	    my $url = $url_ref->{url};
+	    $url.=" (".$url_ref->{desc}.")" if ($url_ref->{desc});
+	    push @urls, $url;
+	}
+	$line6.="URL: ".join(' ; ',@urls);
+    }
+    
+    $isbd.="$line6\n" if ($line6); # Ende sechste Zeile
+    
     if ($no_html){
 	my $hs = HTML::Strip->new();
 	

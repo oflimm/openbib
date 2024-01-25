@@ -18,7 +18,7 @@
 <div id="extended-info" class="d-flex justify-content-center footer-logo-box pb-3 bg-white text-black">
     <div>
             <ul class="list-group list-group-horizontal flex-column flex-md-row justify-content-center">
-                <a class="navbar-brand" href="https://www.aleiki.uni-koeln.de/" title="ALEKI" target="_blank">
+                <a class="navbar-brand" href="https://www.aleki.uni-koeln.de/" title="ALEKI" target="_blank">
                     <img src="/images/openbib/views/schatzbehalter/ALEKI_Bildzeichen_schwarz.jpg"  height="50" class="d-inline-block align-top" alt="KMB Logo">
                 </a>
                 <a class="navbar-brand" href="https://www.ub.uni-koeln.de/" title="Universitäts- und Stadtbibliothek Köln" target="_blank">

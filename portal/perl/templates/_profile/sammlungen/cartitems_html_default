@@ -1,0 +1,37 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecartitems_tit_as_html
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *eines* Merklisten-Items im HTML-Format *mit* Funktions-
+# elementen
+#
+#######################################################################
+-%]
+[%- ebook_i18n      = msg.maketext("E-Book") -%]
+[%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
+[%- popularity_i18n = msg.maketext("Popularität") -%]
+
+<!-- Titlelist begins here -->
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <h3>[% IF title %][% title %][% ELSE %][% msg.maketext("Merkliste") %][% END %]</h3>
+  </div>
+
+  <div class="ob-resultitems">
+[%- FOREACH record IN recordlist.get_records -%]
+[% record_exists = record.record_exists %]
+    <div class="ob-item">
+
+[% PROCESS common/subtemplate name="titles_record_as_default" database=database %]
+
+   </div><!-- End Item -->
+
+[%- END -%]
+</div>
+
+<!-- Titlelist ends here -->

@@ -287,7 +287,12 @@
     .bg-color {
 	color: #fff;
     }
-    
+
+    /* kein caret */
+    #ob-titlist_options .dropdown-toggle::after, #ob-titlist_options_books .dropdown-toggle::after, #ob-titlist_options_articles .dropdown-toggle::after, #ob-titlist_options_cartitems .dropdown-toggle::after, #ob-titlist_options_litlists .dropdown-toggle::after{
+	display: none;
+    }
+
     #ob-startpage {
 	margin-right: 0px;
 	padding-right: 0px;

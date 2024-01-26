@@ -1537,6 +1537,8 @@
 	bottom: 0;
 
 	z-index: 1030;
+
+        width: 100% !important;
     }
     
     .ob-pagination {	
@@ -2183,6 +2185,8 @@ table.ob-title_fields td a.btn {
 	border-radius:40px; 
 	padding-top: 5px;
 	text-align:center;
+        z-index: 1040;
+
 	/* box-shadow: 2px 2px 3px #999; */
     }
 

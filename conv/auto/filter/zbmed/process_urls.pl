@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 
+use HTML::Entities qw/decode_entities/;
 use JSON::XS;
 use YAML;
 use utf8;
@@ -22,6 +23,8 @@ while (<>){
     #
     # Eintraege von 4662 und 4663 bilden eine Multgruppe (Zuordnung via mult)   
     #
+    # Link zum Volltext in 4120 mit Zugriffsstatus in subfield
+    #
     # Ausnahme Links zu Inhaltsvereichnissen
     # Link zum Inhaltsverzeichnis in content von 4110 analog
     # zu angereicherten Links zu Inhaltsverzeichnissen in E4110
@@ -32,506 +35,85 @@ while (<>){
     # ' ': Unbestimmt g oder y oder r
     # 'f': Unbestimmt, aber Volltext Zugriff g oder y (fulltext)
     # 'g': Freier Zugriff (green)
-    # 'y': Eingeschraenkter Zugriff (yellow)
+    # 'y': Lizensierter Zugriff (yellow)
+    # 'l': Unbestimmt Eingeschraenkter Zugriff y oder r (limited)
     # 'r': Kein Zugriff (red)
 
     my $mult_ref = {};
 
     $mult_ref->{'4662'} = 1;
 
+    my $field1209_ref = {};
+    
     my $have_ezb  = 0;
     my $have_dbis = 0;
     my $have_toc  = 0;
+
+    my $url_done_ref = {};
     
-    # Kategorieinhalte zusammenfuehren zum vereinfachten Matchen 0662/2662
-    my $all_0662 = "";
-    
-    if (defined $fields_ref->{'0662'}) {
-	my @content_0662 = ();
-	foreach my $item_ref (@{$fields_ref->{'0662'}}){
-	    push @content_0662, $item_ref->{content};
-	}
+    # Zuerst Analyse der Portfolie-Informationen in 1945
 
-	$all_0662 = join(' ; ',@content_0662);
-    }
-
-    # Ab jetzt Analyse der Kategoriebesetzung
-
-    # Zuerst Analyse der Links in 2662
-    if (defined $fields_ref->{'2662'}) {
-
-	my $linktext_ref = {};
-
-	foreach my $item_ref (@{$fields_ref->{'2663'}}){
-	    $linktext_ref->{$item_ref->{mult}} = $item_ref->{content};
-	}
-
-	# Andere Felder aus der Multgruppe zu 2662/2663
-	# als Entscheidungskriterium
+    if (defined $fields_ref->{'1945'}){
+	# Umorganisieren nach Mult-Gruppe
+	my $portfolio_ref = {};
 	
-	my $field1209_ref = {};
-
-	foreach my $item_ref (@{$fields_ref->{'1209'}}){
-	    $field1209_ref->{$item_ref->{mult}} = $item_ref->{content};
+	foreach my $item_ref (@{$fields_ref->{'1945'}}){
+	    $portfolio_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content}; 
 	}
-	
-	foreach my $item_ref (@{$fields_ref->{'2662'}}){
-	    my $content = $item_ref->{content};
-	    my $mult    = $mult_ref->{'4662'}++;
 
-	    # Hochschulschriften
-	    if ($content =~m/^https?:\/\/kups\.ub\.uni\-koeln\.de/){
-		push @{$record_ref->{fields}{'4662'}}, {
+	foreach my $pmult (sort keys %$portfolio_ref){
+	    if (defined $portfolio_ref->{$pmult}{'e'}){ # Static URL available
+		my $url = $portfolio_ref->{$pmult}{'e'};
+		my $mult    = $mult_ref->{'4662'}++;
+
+		# Hochschulschriften
+		if ($url =~m/^https?:\/\/kups\.ub\.uni\-koeln\.de/){
+		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => 'g', # green
-			content  => $content,
-		};
-		
-		push @{$record_ref->{fields}{'4663'}}, {
+			content  => $url,
+		    };
+		    
+		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => "Elektronische Hochschulschrift im Volltext",
-		};
-	    }
-	    # Lokale Digitalisate
-	    elsif ($content =~m/^https?:\/\/www\.ub\.uni\-koeln\.de\/permalink/){
-		push @{$record_ref->{fields}{'4662'}}, {
+		    };
+		    
+		    $url_done_ref->{$url} = 1;
+		}
+		# Lokale Digitalisate
+		elsif ($url =~m/^https?:\/\/www\.ub\.uni\-koeln\.de\/permalink/){
+		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => 'f', # fulltext = green or yellow. Es gibt auch gelbe Objekte ID=6612903
-			content  => $content,
-		};
-		
-		push @{$record_ref->{fields}{'4663'}}, {
+			content  => $url,
+		    };
+		    
+		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
 			content  => "Volltext",
-		};
-	    }
-	    # EZB Zeitschriften
-	    elsif ($content =~m/^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/ezeit\//){ # Bsp.: ISSN=1572-8358
-
-		$have_ezb = 1;
-		
-		my $url         = $content;
-		my $description = "Elektronische Zeitschrift im Volltext";
-		my $access      = " "; # Default: unknown
-
-		if ($all_0662 =~m/https?:\/\/www\.ub\.uni-koeln\.de\/permalink\//){
-		    $access     = "g"; # green
-		}
-		else {
-		    $access     = "y"; # yellow
-		}
-
-		# Lokal vorhanden Bsp.: ID=Rendite (Hallische Jahrbuecher / Intelligenzblatt)
-		# Dann: EZB-Frontdoor umgehen, falls Permalink der USB existiert
-		if ($all_0662 =~m/(https?:\/\/www\.ub\.uni-koeln\.de\/permalink\/.+?katkey:\d+)/){
-		    $url        = $1;
-		}
-
-		# Nicht implementiert: EZB-Frontdoor-Link durch Permalink zum ejinfo-Service der USB ersetzen
-		# Gff. spaeter EZB-Frontdoor-Link auf EZB-Integration in OpenBib umbiegen
-		
-		push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $url,
-		};
-		
-		push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		};
-	    }
-	    # Datenbanken
-	    elsif ($content =~m/^^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/dbinfo\/|cdroms\.digibib\.net|\.ica$/
-		   or $content =~m/https?:\/\/www\.ub\.uni\-koeln\.de\/usbportal\?service=dbinfo/){ # Bsp.: TI=wiso-net
-		$have_dbis = 1;
-
-		my $url         = $content;
-		my $description = "Datenbankrecherche starten";
-		my $access      = "y"; # yellow
-
-		if ($titleid == 5255340 && $content =~m/id=1061/){
-		    $description = "MLA directory of periodicals";
-		}
-		elsif ($titleid == 5255340 && $content =~m/id=76/){
-		    $description = "MLA international bibliography";
-		}
-		
-		push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $content,
-		};
-		
-		push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		};
-	    }
-	    # E-Books mit lokaler URL, z.B.: ID=5902307
-	    elsif (defined $linktext_ref->{$item_ref->{mult}} && $linktext_ref->{$item_ref->{mult}} =~m/Zugriff nur im Hochschulnetz/){
-		my $url         = $content;
-		my $description = "E-Book im Volltext";
-		my $access      = "y"; # yellow
-		
-		push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $content,
-		};
-		
-		push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		};
-	    }
-	    # KMB
-	    elsif (defined $linktext_ref->{$item_ref->{mult}} && $linktext_ref->{$item_ref->{mult}} =~m/Zugriff im Netz der Kunst- und Museumsbibliothek möglich/ ){
-		my $url         = $content;
-		my $description = "E-Book im Volltext (KMB)";
-		my $access      = "y"; # yellow
-		
-		push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $content,
-		};
-		
-		push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		};
-	    }
-	    # OA
-	    elsif (defined $linktext_ref->{$item_ref->{mult}} && ( $linktext_ref->{$item_ref->{mult}} =~m/^Open access. Im Internet weltweit frei verfügbar/ || $linktext_ref->{$item_ref->{mult}} =~m/^Frei zugänglich/ )){
-		my $url         = $content;
-		my $description = "E-Book im Volltext";
-		my $access      = "g"; # green
-		
-		push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $content,
-		};
-		
-		push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		};
-	    }
-	    
-	    elsif (defined $field1209_ref->{$item_ref->{mult}} && $field1209_ref->{$item_ref->{mult}} =~m/^fzo$/){
-		my $url         = $content;
-		my $description = "Volltext";
-		my $access      = "g"; # green
-		
-		push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $content,
-		};
-		
-		push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		};
-		
-	    }
-	    else { # Bsp.: ID=277940
-		push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => ' ', # Unbestimmt
-			content  => $content,
-		};
-		
-		push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $content,
-		};
-	    }
-	    
-	}
-    }
-    
-    # Dann Analyse der Links in 0662
-    if (defined $fields_ref->{'0662'}) {
-
-	# Zuerst Linkbeschreibung zu einfacheren Matchen aus 0663 und 0655 merken
-	my $linktext_ref = {};
-
-	if (defined $fields_ref->{'0663'}){
-	    foreach my $item_ref (@{$fields_ref->{'0663'}}){
-		$linktext_ref->{$item_ref->{mult}} = $item_ref->{content};
-	    }
-	}
-
-	if (defined $fields_ref->{'0655'}){	
-	    foreach my $item_ref (@{$fields_ref->{'0655'}}){
-		if (defined $linktext_ref->{$item_ref->{mult}}){
-		    $linktext_ref->{$item_ref->{mult}} .= " ; ".$item_ref->{content};
-		}
-		else {
-		    $linktext_ref->{$item_ref->{mult}} = $item_ref->{content};		
-		}
-	    }
-	}
-
-	# Dann alle Links nacheinander durchgehen
-	foreach my $item_ref (@{$fields_ref->{'0662'}}){
-	    my $content = $item_ref->{content};
-	    my $mult    = $mult_ref->{'4662'}++;
-
-	    # Hochschulschriften
-	    if ($content =~m/^https?:\/\/kups\.ub\.uni\-koeln\.de/){
-		push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => 'g', # green
-			content  => $content,
-		};
-		
-		push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => "Elektronische Hochschulschrift im Volltext",
-		};
-	    }
-	    # Lokale Digitalisate
-	    elsif ($content =~m/https?:\/\/www\.ub\.uni\-koeln\.de\/permalink/){
-		push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => 'f', # fulltext = green or yellow. Es gibt auch gelbe Objekte ID=6612903
-			content  => $content,
-		};
-		
-		push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => "Volltext",
-		};
-	    }
-	    # EZB Zeitschriften
-	    elsif ($content =~m/^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/ezeit\// && !$have_ezb){ # Bsp.: ISSN=1572-8358
-
-		$have_ezb = 1;
-		
-		my $url         = $content;
-		my $description = "Elektronische Zeitschrift im Volltext";
-		my $access      = " "; # Default: unknown
-
-		if ($all_0662 =~m/https?:\/\/www\.ub\.uni-koeln\.de\/permalink\//){
-		    $access     = "g"; # green
-		}
-		else {
-		    $access     = "y"; # yellow
-		}
-
-		# Lokal vorhanden Bsp.: ID=Rendite (Hallische Jahrbuecher / Intelligenzblatt)
-		# Dann: EZB-Frontdoor umgehen, falls Permalink der USB existiert
-		if ($all_0662 =~m/(https?:\/\/www\.ub\.uni-koeln\.de\/permalink\/.+?katkey:\d+)/){
-		    $url        = $1;
-		}
-
-		# Nicht implementiert: EZB-Frontdoor-Link durch Permalink zum ejinfo-Service der USB ersetzen
-		# Gff. spaeter EZB-Frontdoor-Link auf EZB-Integration in OpenBib umbiegen
-		
-		push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $url,
-		};
-		
-		push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		};
-	    }
-	    # Datenbanken
-	    elsif ($content =~m/^^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/dbinfo\/|cdroms\.digibib\.net|\.ica$/
-		   or $content =~m/https?:\/\/www\.ub\.uni\-koeln\.de\/usbportal\?service=dbinfo/){ # Bsp.: TI=wiso-net
-		$have_dbis = 1;
-
-		my $url         = $content;
-		my $description = "Datenbankrecherche starten";
-		my $access      = "y"; # yellow
-
-		if ($titleid == 5255340 && $content =~m/id=1061/){
-		    $description = "MLA directory of periodicals";
-		}
-		elsif ($titleid == 5255340 && $content =~m/id=76/){
-		    $description = "MLA international bibliography";
-		}
-		
-		push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $content,
-		};
-		
-		push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		};
-	    }
-	    # E-Books mit lokaler URL, z.B.: ID=5902307
-	    elsif (defined $linktext_ref->{$item_ref->{mult}} && $linktext_ref->{$item_ref->{mult}} =~m/Zugriff nur im Hochschulnetz/){
-		my $url         = $content;
-		my $description = "E-Book im Volltext";
-		my $access      = "y"; # yellow
-		
-		push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $content,
-		};
-		
-		push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		};
-	    }
-	    
-	    # Uebertragen in Titelfeld fuer Inhaltsverzeichnisse T4110	    
-	    elsif (defined $linktext_ref->{$item_ref->{mult}} && $linktext_ref->{$item_ref->{mult}} =~m/Inhaltsverzeichnis|Inh\.\-Verz\./){ # Inhaltsverzeichnisse
-
-		# Falls bereits ein Link "Inhaltsverzeichnis" existiert, nur insgesamt einen Link berücksichtigen
-		if ($content =~m/hbz\-nrw\.de/){ # hbz-Inhaltsverzeichnis hat Vorrang, z.B. ID=7741043
-		    $record_ref->{fields}{'4110'} = [{
-			mult     => 1,
-			subfield => '',
-			content  => $item_ref->{content},
-						     }];
-		}
-		elsif (!$have_toc){
-		    $record_ref->{fields}{'4110'} = [{
-			mult     => 1,
-			subfield => '',
-			content  => $item_ref->{content},
-						     }];
-		}		
-		$have_toc = 1;
-	    }
-
-	    # Wenn Linktext zum aktuellen Link vorhanden ist
-	    # (Zuordnung ueber mult) kann dieser zur Analyse
-	    # herangezogen werden
-	    elsif (defined $linktext_ref->{$item_ref->{mult}}){
-		my $linktext = $linktext_ref->{$item_ref->{mult}};
-
-		$linktext =~ s!.*Interna: (.+)!$1!; 
-		$linktext =~ s!(.+); Bez.: \d[^;]*!$1!; # ID=6685427 
-		
-		if ($linktext =~m/(Digitalisierung|Langzeitarchivierung|Volltext)\; Info: kostenfrei/i # ID=6521146 ; Projekt Digitalis, Bsp.: Achenbach Berggesetzgebung
-                    or $linktext =~m/Info: kostenfrei; Bezugswerk: Volltext/i # ID=6625319
-                    or $linktext =~m/Open Access/) { # ID=6693843  
-		    
-		    my $description = "Volltext";
-		    my $url         = $content;
-		    my $access      = "g"; # green
-
-		    push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $url,
 		    };
 		    
-		    push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		    };		    
+		    $url_done_ref->{$url} = 1;
 		}
-		elsif ($linktext =~m/(Verlag.*); Info: kostenfrei/i){
-		    my $description = $1;
-		    my $url         = $content;
-		    my $access      = "g"; # green
-
-		    if ($content =~m/^https?:\/\/dx\.doi\.org\//) {  # Bsp.: ID=6683669
-			$description = "Volltext";
-		    }
-		    else {
-			$description = "Webseite ($description)";			
-		    }
-
-		    push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $url,
-		    };
+		# EZB Zeitschriften
+		elsif ($url =~m/^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/ezeit\//){ # Bsp.: ISSN=1572-8358
 		    
-		    push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		    };		    		    
-		}
-		elsif ($linktext =~m/(Resolving-System|URN)/) { # Bsp.: TI=Bayerische Bauordnung 2008 ; ID=6685427 
-		    my $description = "Volltext";
-		    my $url         = $content;
-		    my $access      = ""; # Keine Ampel
-
-		    push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $url,
-		    };
+		    $have_ezb = 1;
 		    
-		    push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		    };		    		    
+		    my $description = "Elektronische Zeitschrift im Volltext";
+		    my $access      = " "; # Default: unknown
 		    
-		}
-		elsif ($linktext =~m/^Zus.*tzliche Angaben$/i) { # Bsp.: HBZID=HT013697253, HBZID=HT016192826 (falsch kodierter Umlaut)
-                    next; # Link auf Objektbaum ueberspringen
-                }
-		elsif ($linktext =~m/Link-Text: C\;/) { # Bsp.: ID=6713163
-                    next; # Link auf Coverscans ueberspringen
-		}
-		elsif ($linktext =~m/ebooks.ciando.com/) { # Bsp.: ID=6713163
-                    next; # PKN: Link auf E-Books von Ciando ueberspringen
-		}
-		elsif ($linktext =~m/Bez.: 2/) { # Bsp.: ID=inst001:81361
-                    # Linktext "Bez.: 2" durch URL ersetzen
-
-		    my $description = $content;
-		    my $url         = $content;
-		    my $access      = ""; # Keine Ampel
-
-		    push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $url,
-		    };
+		    # Wie kann man hier green und yellow unterscheiden?
 		    
-		    push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		    };		    		    
-
-		}
-		elsif ($linktext =~m/EZB/) { # Bsp.: ID=6348154 (Hallische Jahrbuecher) -> gruen ; ID=6111996 (Bibliotheksdienst) -> rot
-		    # Nicht implementiert: EZB-Link fuer E-Journals der KMB ueberspringen
+		    # Lokal vorhanden Bsp.: ID=Rendite (Hallische Jahrbuecher / Intelligenzblatt)
+		    # Dann: EZB-Frontdoor umgehen, falls Permalink der USB existiert
+		    
 		    # Nicht implementiert: EZB-Frontdoor-Link durch Permalink zum ejinfo-Service der USB ersetzen
 		    # Gff. spaeter EZB-Frontdoor-Link auf EZB-Integration in OpenBib umbiegen
-
-		    my $description = "Elektronische Zeitschrift im Volltext";
-		    my $url         = $content;
-		    my $access      = ""; # Keine Ampel
-
+		    
 		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
@@ -542,52 +124,400 @@ while (<>){
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
-		    };		    		    
+		    };
+
+		    $url_done_ref->{$url} = 1;
+		}
+		# Datenbanken
+		elsif ($url =~m/^^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/dbinfo\/|cdroms\.digibib\.net|\.ica$/
+		       or $url =~m/https?:\/\/www\.ub\.uni\-koeln\.de\/usbportal\?service=dbinfo/){ # Bsp.: TI=wiso-net
+		    $have_dbis = 1;
 		    
+		    my $description = "Datenbankrecherche starten";
+		    my $access      = "y"; # yellow
+		    
+		    # if ($titleid == 5255340 && $url =~m/id=1061/){
+		    # 	$description = "MLA directory of periodicals";
+		    # }
+		    # elsif ($titleid == 5255340 && $url =~m/id=76/){
+		    # 	$description = "MLA international bibliography";
+		    # }
+		    
+		    push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => $access,
+			content  => $url,
+		    };
+		    
+		    push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $description,
+		    };
+
+		    $url_done_ref->{$url} = 1;
 		}
-		elsif ($linktext =~m/DBIS/ && $mult > 1) { # Bsp.: TI=Bayerische Bauordnung 2008
-                     # 2. DBIS-Link loeschen, da Titel evtl. nicht in die DBIS-Sicht der USB aufgenommen wurde
-                    next;
-		}
-		elsif ($linktext =~m/^Kontakt/ && $content =~m/scans\.hebis\.de.*toc\.pdf/) { # ID=6938417
+		elsif ($url =~m/www\.gbv\.de\/dms\/|www\.ulb\.tu-darmstadt\.de\/tocs\//) { # Bsp.: IB=978-3-7723-7449-4, ID=6262313
 		    if (!$have_toc){
 			$record_ref->{fields}{'4110'} = [{
 			    mult     => 1,
 			    subfield => '',
-			    content  => $content,
+			    content  => $url,
 							 }];
 		    }
 		    $have_toc = 1;
+
+		    $url_done_ref->{$url} = 1;
 		}
-		elsif ($linktext =~m/^Inhaltsverzeichnis/ && $content =~m/scans\.hebis\.de.*toc\.pdf/) { # ID=6938417
-		    if (!$have_toc){
-			$record_ref->{fields}{'4110'} = [{
-			    mult     => 1,
+		# public_note aus Portfolio zum URL verfuegbar
+		elsif (defined $portfolio_ref->{$pmult}{'l'}){
+		    my $public_note = $portfolio_ref->{$pmult}{'l'};
+		    
+		    # E-Books mit lokaler URL, z.B.: ID=5902307
+		    if ($public_note =~m/(Zugriff nur im Hochschulnetz|lizenzpflichtig|Access restricted to subscribers)/i){
+			my $description = "E-Book im Volltext";
+			my $access      = "y"; # yellow
+			
+			push @{$record_ref->{fields}{'4662'}}, {
+			    mult     => $mult,
+			    subfield => $access,
+			    content  => $url,
+			};
+			
+			push @{$record_ref->{fields}{'4663'}}, {
+			    mult     => $mult,
 			    subfield => '',
-			    content  => $content,
-							 }];
+			    content  => $description,
+			};
+
+			$url_done_ref->{$url} = 1;
 		    }
-		    $have_toc = 1;
-		}		
+		    # KMB
+		    elsif ($public_note =~m/Zugriff im Netz der Kunst- und Museumsbibliothek möglich/){
+			my $description = "E-Book im Volltext (KMB)";
+			my $access      = "y"; # yellow
+			
+			push @{$record_ref->{fields}{'4662'}}, {
+			    mult     => $mult,
+			    subfield => $access,
+			    content  => $url,
+			};
+			
+			push @{$record_ref->{fields}{'4663'}}, {
+			    mult     => $mult,
+			    subfield => '',
+			    content  => $description,
+			};
+
+			$url_done_ref->{$url} = 1;
+		    }
+		    # OA
+		    elsif ($public_note =~m/(kostenfrei|lizenzfrei|Frei zugänglich|Full text online|Open *Access|DOAB)/i ){
+			my $description = "E-Book im Volltext";
+			my $access      = "g"; # green
+			
+			push @{$record_ref->{fields}{'4662'}}, {
+			    mult     => $mult,
+			    subfield => $access,
+			    content  => $url,
+			};
+			
+			push @{$record_ref->{fields}{'4663'}}, {
+			    mult     => $mult,
+			    subfield => '',
+			    content  => $description,
+			};
+			
+			$url_done_ref->{$url} = 1;
+		    }
+		    # Uebertragen in Titelfeld fuer Inhaltsverzeichnisse T4110	    
+		    elsif ($public_note =~m/Inhaltsverzeichnis|Inh\.\-Verz\./){ # Inhaltsverzeichnisse
+			
+			# Falls bereits ein Link "Inhaltsverzeichnis" existiert, nur insgesamt einen Link berücksichtigen
+			if ($url =~m/hbz\-nrw\.de/){ # hbz-Inhaltsverzeichnis hat Vorrang, z.B. ID=7741043
+			    $record_ref->{fields}{'4110'} = [{
+				mult     => 1,
+				subfield => '',
+				content  => $url,
+							     }];
+			}
+			elsif (!$have_toc){
+			    $record_ref->{fields}{'4110'} = [{
+				mult     => 1,
+				subfield => '',
+				content  => $url,
+							     }];
+			}		
+			$have_toc = 1;
+
+			$url_done_ref->{$url} = 1;			
+		    }
+		    else {
+			$public_note =~ s!.*Interna: (.+)!$1!; 
+			$public_note =~ s!(.+); Bez.: \d[^;]*!$1!; # ID=6685427 
+			
+			if ($public_note =~m/(Digitalisierung|Langzeitarchivierung|Volltext)\; Info: kostenfrei/i # ID=6521146 ; Projekt Digitalis, Bsp.: Achenbach Berggesetzgebung
+			    or $public_note =~m/Info: kostenfrei; Bezugswerk: Volltext/i # ID=6625319
+			    or $public_note =~m/Open Access/) { # ID=6693843  
+			    
+			    my $description = "Volltext";
+			    my $url         = $url;
+			    my $access      = "g"; # green
+			    
+			    push @{$record_ref->{fields}{'4662'}}, {
+				mult     => $mult,
+				subfield => $access,
+				content  => $url,
+			    };
+			    
+			    push @{$record_ref->{fields}{'4663'}}, {
+				mult     => $mult,
+				subfield => '',
+				content  => $description,
+			    };
+
+			    $url_done_ref->{$url} = 1;						    
+			}
+			elsif ($public_note =~m/(Verlag.*); Info: kostenfrei/i){
+			    my $description = $1;
+			    my $url         = $url;
+			    my $access      = "g"; # green
+			    
+			    if ($url =~m/^https?:\/\/dx\.doi\.org\//) {  # Bsp.: ID=6683669
+				$description = "Volltext";
+			    }
+			    else {
+				$description = "Webseite ($description)";			
+			    }
+			    
+			    push @{$record_ref->{fields}{'4662'}}, {
+				mult     => $mult,
+				subfield => $access,
+				content  => $url,
+			    };
+			    
+			    push @{$record_ref->{fields}{'4663'}}, {
+				mult     => $mult,
+				subfield => '',
+				content  => $description,
+			    };
+			    
+			    $url_done_ref->{$url} = 1;			
+			}
+			elsif ($public_note =~m/(Resolving-System|URN)/) { # Bsp.: TI=Bayerische Bauordnung 2008 ; ID=6685427 
+			    my $description = "Volltext";
+			    my $url         = $url;
+			    my $access      = ""; # Keine Ampel
+			    
+			    push @{$record_ref->{fields}{'4662'}}, {
+				mult     => $mult,
+				subfield => $access,
+				content  => $url,
+			    };
+			    
+			    push @{$record_ref->{fields}{'4663'}}, {
+				mult     => $mult,
+				subfield => '',
+				content  => $description,
+			    };
+			    
+			    $url_done_ref->{$url} = 1;			
+			}
+			elsif ($public_note =~m/^Zus.*tzliche Angaben$/i) { # Bsp.: HBZID=HT013697253, HBZID=HT016192826 (falsch kodierter Umlaut)
+
+			    $url_done_ref->{$url} = 1;			
+
+			    next; # Link auf Objektbaum ueberspringen
+			}
+			elsif ($public_note =~m/Link-Text: C\;/) { # Bsp.: ID=6713163
+			    $url_done_ref->{$url} = 1;			    
+			    next; # Link auf Coverscans ueberspringen
+			}
+			elsif ($public_note =~m/ebooks.ciando.com/) { # Bsp.: ID=6713163
+			    $url_done_ref->{$url} = 1;			
+			    next; # PKN: Link auf E-Books von Ciando ueberspringen
+			}
+			elsif ($public_note =~m/Bez.: 2/) { # Bsp.: ID=inst001:81361
+			    # Linktext "Bez.: 2" durch URL ersetzen
+			    
+			    my $description = $url;
+			    my $url         = $url;
+			    my $access      = ""; # Keine Ampel
+			    
+			    push @{$record_ref->{fields}{'4662'}}, {
+				mult     => $mult,
+				subfield => $access,
+				content  => $url,
+			    };
+			    
+			    push @{$record_ref->{fields}{'4663'}}, {
+				mult     => $mult,
+				subfield => '',
+				content  => $description,
+			    };		    		    
+			    
+			    $url_done_ref->{$url} = 1;						    
+			}
+			elsif ($public_note =~m/EZB/) { # Bsp.: ID=6348154 (Hallische Jahrbuecher) -> gruen ; ID=6111996 (Bibliotheksdienst) -> rot
+			    # Nicht implementiert: EZB-Link fuer E-Journals der KMB ueberspringen
+			    # Nicht implementiert: EZB-Frontdoor-Link durch Permalink zum ejinfo-Service der USB ersetzen
+			    # Gff. spaeter EZB-Frontdoor-Link auf EZB-Integration in OpenBib umbiegen
+			    
+			    my $description = "Elektronische Zeitschrift im Volltext";
+			    my $url         = $url;
+			    my $access      = ""; # Keine Ampel
+			    
+			    push @{$record_ref->{fields}{'4662'}}, {
+				mult     => $mult,
+				subfield => $access,
+				content  => $url,
+			    };
+			    
+			    push @{$record_ref->{fields}{'4663'}}, {
+				mult     => $mult,
+				subfield => '',
+				content  => $description,
+			    };		    		    
+
+			    $url_done_ref->{$url} = 1;						    
+			}
+			elsif ($public_note =~m/DBIS/ && $pmult > 1) { # Bsp.: TI=Bayerische Bauordnung 2008
+			    # 2. DBIS-Link loeschen, da Titel evtl. nicht in die DBIS-Sicht der USB aufgenommen wurde
+			    $url_done_ref->{$url} = 1;			
+			    next;
+			}
+			elsif ($public_note =~m/^Kontakt/ && $url =~m/scans\.hebis\.de.*toc\.pdf/) { # ID=6938417
+			    if (!$have_toc){
+				$record_ref->{fields}{'4110'} = [{
+				    mult     => 1,
+				    subfield => '',
+				    content  => $url,
+								 }];
+			    }
+			    $have_toc = 1;
+			    
+			    $url_done_ref->{$url} = 1;			
+			}
+			elsif ($public_note =~m/^Inhaltsverzeichnis/ && $url =~m/scans\.hebis\.de.*toc\.pdf/) { # ID=6938417
+			    if (!$have_toc){
+				$record_ref->{fields}{'4110'} = [{
+				    mult     => 1,
+				    subfield => '',
+				    content  => $url,
+								 }];
+			    }
+			    $have_toc = 1;
+
+			    $url_done_ref->{$url} = 1;			
+			}		
+			else {
+			    my $description = $public_note;
+			    my $url         = $url;
+			    my $access      = ''; # Default: keine Ampel. Ggf. Anpassung (s.u.)
+			    $description =~ s!.*Bezugswerk: ([^\;]+).*!$1!; # Bsp.: ID=7733592 (ADAM-Links)
+			    $description =~ s!.*Link-Text: ([^;]+).*!$1!; # Bsp.: ISBN=978-3-86009-086-2
+			    $description =~ s!^Metadaten$!Dokumentbeschreibung!; # Bsp.: ISBN=978-3-86009-086-2
+			    $description =~ s!Media!Inhaltsverzeichis / Abstract / Zusätze!;
+			    $description =~ s!.*(Bezugswerk|Info): Inhaltstext.*!Inhaltsbeschreibung!; # Bsp.: ISBN=3-8348-9961-5
+			    $description =~ s!.*(Bezugswerk|Info): Inhaltsverzeichnis.*!Inhaltsverzeichnis!; # Bsp.: ISBN=3-540-89993-6 ; ISBN=978-3-8300-6282-0
+			    $description =~ s!.*Bezugswerk: \d+!Verlagsinformationen!; # Bsp.: ISBN=978-3-8300-6282-0
+			    $description =~ s!.*Bezugswerk: .*Beschreibung.*!Verlagsinformationen!; # Bsp.: ISBN=978-3-8300-5801-4
+			    $description =~ s!.*Bezugswerk: .*Cover.*!Cover!; # Bsp.: ISBN=978-3-527-71296-0
+			    $description =~ s!Verlagsdaten!Verlagsinformationen!; # Bsp.: ISBN=3-540-41515-7
+			    $description =~ s!Kapitel!Kapitelvorschau!; # Bsp.: ID=7733592 (ADAM-Links)
+			    $description =~ s!Inh\.\-Verz\.!Inhaltsverzeichnis!; # Bsp.: ID=6595544 (DNB-Inhaltsverzeichnis)
+			    $description =~ s!^Info: !!; # Bsp.: ID=6779590
+			    $description = $url if $description =~ /^Verlag;/; # Bsp.: ID=6111996 (Bibliotheksdienst)
+			    
+			    push @{$record_ref->{fields}{'4662'}}, {
+				mult     => $mult,
+				subfield => $access,
+				content  => $url,
+			    };
+			    
+			    push @{$record_ref->{fields}{'4663'}}, {
+				mult     => $mult,
+				subfield => '',
+				content  => $description,
+
+			    };
+			    
+			    $url_done_ref->{$url} = 1;			
+			}
+		    }
+		}
+		# Keine Public note
 		else {
-		    my $description = $linktext;
-		    my $url         = $content;
-		    my $access      = ''; # Default: keine Ampel. Ggf. Anpassung (s.u.)
-		    $description =~ s!.*Bezugswerk: ([^\;]+).*!$1!; # Bsp.: ID=7733592 (ADAM-Links)
-                    $description =~ s!.*Link-Text: ([^;]+).*!$1!; # Bsp.: ISBN=978-3-86009-086-2
-                    $description =~ s!^Metadaten$!Dokumentbeschreibung!; # Bsp.: ISBN=978-3-86009-086-2
-                    $description =~ s!Media!Inhaltsverzeichis / Abstract / Zusätze!;
-                    $description =~ s!.*(Bezugswerk|Info): Inhaltstext.*!Inhaltsbeschreibung!; # Bsp.: ISBN=3-8348-9961-5
-                    $description =~ s!.*(Bezugswerk|Info): Inhaltsverzeichnis.*!Inhaltsverzeichnis!; # Bsp.: ISBN=3-540-89993-6 ; ISBN=978-3-8300-6282-0
-                    $description =~ s!.*Bezugswerk: \d+!Verlagsinformationen!; # Bsp.: ISBN=978-3-8300-6282-0
-                    $description =~ s!.*Bezugswerk: .*Beschreibung.*!Verlagsinformationen!; # Bsp.: ISBN=978-3-8300-5801-4
-                    $description =~ s!.*Bezugswerk: .*Cover.*!Cover!; # Bsp.: ISBN=978-3-527-71296-0
-                    $description =~ s!Verlagsdaten!Verlagsinformationen!; # Bsp.: ISBN=3-540-41515-7
-                    $description =~ s!Kapitel!Kapitelvorschau!; # Bsp.: ID=7733592 (ADAM-Links)
-                    $description =~ s!Inh\.\-Verz\.!Inhaltsverzeichnis!; # Bsp.: ID=6595544 (DNB-Inhaltsverzeichnis)
-                    $description =~ s!^Info: !!; # Bsp.: ID=6779590
-                    $description = $url if $description =~ /^Verlag;/; # Bsp.: ID=6111996 (Bibliotheksdienst)
+		    my $access = "f"; # zunaechst unbestimmt zugreifbar. Spaeter ggf. postprocessing bei Zugehoerigkeit zu einem Paket
+		    push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => $access,
+			content  => $url,
+		    };
+		    
+		    push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => "Volltext",
+			
+		    };
+		    
+		    $url_done_ref->{$url} = 1;			
+		}
+		# elsif (defined $field1209_ref->{$item_ref->{mult}} && $field1209_ref->{$item_ref->{mult}} =~m/^fzo$/){
+		#     my $description = "Volltext";
+		#     my $access      = "g"; # green
+		    
+		#     push @{$record_ref->{fields}{'4662'}}, {
+		# 	mult     => $mult,
+		# 	subfield => $access,
+		# 	content  => $url,
+		#     };
+		    
+		#     push @{$record_ref->{fields}{'4663'}}, {
+		# 	mult     => $mult,
+		# 	subfield => '',
+		# 	content  => $description,
+		#     };
+		    
+		#     $url_done_ref->{$url} = 1;
+		# }
+	    }
+	    elsif (defined $portfolio_ref->{$pmult}{'2'}){ # Dynamic URL (OpenURL Resolver) available
+		my $url = $portfolio_ref->{$pmult}{'2'};
+		$url = decode_entities($url);
+		
+		my $mult        = $mult_ref->{'4662'}++;
+		my $description = "Zum Volltext";
+		my $access      = "f";
+		
+		push @{$record_ref->{fields}{'4662'}}, {
+		    mult     => $mult,
+		    subfield => $access,
+		    content  => $url,
+		};
+		
+		push @{$record_ref->{fields}{'4663'}}, {
+		    mult     => $mult,
+		    subfield => '',
+		    content  => $description,
+		    
+		};
+		
+		$url_done_ref->{$url} = 1;
+		
+	    }
+	    # Else build URL-Resolver URL with portfolio_id
+	    else {
+		my $portfolio_id = $portfolio_ref->{$pmult}{'a'};
 
+		if ($portfolio_id){
+		    my $url="https://eu04.alma.exlibrisgroup.com/view/uresolver/49HBZ_UBK/openurl?u.ignore_date_coverage=true&portfolio_pid=$portfolio_id&Force_direct=true";
+		    
+		    my $mult        = $mult_ref->{'4662'}++;
+		    my $description = "Zum Volltext";
+		    my $access      = "f";
+		    
 		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
@@ -598,16 +528,78 @@ while (<>){
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
-		    };		    		    
+			
+		    };
+		    
+		    $url_done_ref->{$url} = 1;
 		}
 	    }
-	    else { # Keine Linkbeschreibung in 663 oder 655 vorhanden
+	}
+    }
+    
+    # Jetzt Analyse der URLs in 856
+    
+    if (defined $fields_ref->{'0856'}){
 
-		if ($content =~m/^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/ezeit\//) {
-		    my $description = "Elektronische Zeitschrift im Volltext"; # Bsp.: TI=Unix review.com
-		    my $url = $content;
-		    my $access = "g"; # green
+	# Umorganisieren nach Mult-Gruppe
+	my $url_info_ref = {};
+	
+	foreach my $item_ref (@{$fields_ref->{'0856'}}){
+	    $url_info_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content}; 
+	}
 
+	foreach my $umult (sort keys %$url_info_ref){
+	    if (defined $url_info_ref->{$umult}{'u'}){
+		my $url  = $url_info_ref->{$umult}{'u'};
+		my $mult = $mult_ref->{'4662'}++;
+
+		# URL schon ueber Portfolios verarbeitet? Dann ignorieren
+		next if (defined $url_done_ref->{$url} && $url_done_ref->{$url});
+		
+		# Hochschulschriften
+		if ($url =~m/^https?:\/\/kups\.ub\.uni\-koeln\.de/){
+		    push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => 'g', # green
+			content  => $url,
+		    };
+		    
+		    push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => "Elektronische Hochschulschrift im Volltext",
+		    };
+		}
+		# Lokale Digitalisate
+		elsif ($url =~m/^https?:\/\/www\.ub\.uni\-koeln\.de\/permalink/){
+		    push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => 'f', # fulltext = green or yellow. Es gibt auch gelbe Objekte ID=6612903
+			content  => $url,
+		    };
+		    
+		    push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => "Volltext",
+		    };
+		}
+		# EZB Zeitschriften
+		elsif ($url =~m/^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/ezeit\//){ # Bsp.: ISSN=1572-8358
+		    
+		    $have_ezb = 1;
+		    
+		    my $description = "Elektronische Zeitschrift im Volltext";
+		    my $access      = " "; # Default: unknown
+
+		    # Wie kann man hier green und yellow unterscheiden?
+
+		    # Lokal vorhanden Bsp.: ID=Rendite (Hallische Jahrbuecher / Intelligenzblatt)
+		    # Dann: EZB-Frontdoor umgehen, falls Permalink der USB existiert
+
+		    # Nicht implementiert: EZB-Frontdoor-Link durch Permalink zum ejinfo-Service der USB ersetzen
+		    # Gff. spaeter EZB-Frontdoor-Link auf EZB-Integration in OpenBib umbiegen
+		    
 		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
@@ -618,14 +610,23 @@ while (<>){
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
-		    };		    		    		    
+		    };
 		}
-		# DBIS
-		elsif ($content =~ /^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/dbinfo\//) {
+		# Datenbanken
+		elsif ($url =~m/^^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/dbinfo\/|cdroms\.digibib\.net|\.ica$/
+		       or $url =~m/https?:\/\/www\.ub\.uni\-koeln\.de\/usbportal\?service=dbinfo/){ # Bsp.: TI=wiso-net
+		    $have_dbis = 1;
+		    
 		    my $description = "Datenbankrecherche starten";
-		    my $url = $content;
-		    my $access = "g"; # green
-
+		    my $access      = "y"; # yellow
+		    
+		    # if ($titleid == 5255340 && $url =~m/id=1061/){
+		    # 	$description = "MLA directory of periodicals";
+		    # }
+		    # elsif ($titleid == 5255340 && $url =~m/id=76/){
+		    # 	$description = "MLA international bibliography";
+		    # }
+		    
 		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
@@ -636,79 +637,293 @@ while (<>){
 			mult     => $mult,
 			subfield => '',
 			content  => $description,
-		    };		    		    		    
-		}
-		elsif ($content =~ /^https?:\/\/kups\.ub\.uni\-koeln\.de/) { # Bsp.: AU=Joecker, Anita
-		    my $description = "Elektronische Hochschulschrift im Volltext";
-		    my $url = $content;
-		    my $access = "g"; # green
-
-		    push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $url,
 		    };
-		    
-		    push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		    };		    		    		    
 		}
-		elsif ($content =~m/www\.gbv\.de\/dms\/|www\.ulb\.tu-darmstadt\.de\/tocs\//) { # Bsp.: IB=978-3-7723-7449-4, ID=6262313
+		elsif ($url =~m/www\.gbv\.de\/dms\/|www\.ulb\.tu-darmstadt\.de\/tocs\//) { # Bsp.: IB=978-3-7723-7449-4, ID=6262313
 		    if (!$have_toc){
 			$record_ref->{fields}{'4110'} = [{
 			    mult     => 1,
 			    subfield => '',
-			    content  => $content,
+			    content  => $url,
 							 }];
 		    }
 		    $have_toc = 1;		    
 		}
-		elsif ($content =~m/deposit\.d\-nb\.de\/cgi\-bin\/dokserv/) { # Bsp.: ID=6262313
-		    my $description = "Verlagsinformationen";
-		    my $url = $content;
-		    my $access = ""; # keine Ampel;
 
-		    push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $url,
-		    };
-		    
-		    push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		    };		    		    		    
-		}
-		elsif ($content) {
-		    my $description = $content;
-		    my $url = $content;
-		    my $access = ""; # keine Ampel;
+		# Hinweise aus 856$z
+		elsif (defined $url_info_ref->{$umult}{'z'}){
+		    my $public_note = $url_info_ref->{$umult}{'z'};
 
-		    push @{$record_ref->{fields}{'4662'}}, {
-			mult     => $mult,
-			subfield => $access,
-			content  => $url,
-		    };
-		    
-		    push @{$record_ref->{fields}{'4663'}}, {
-			mult     => $mult,
-			subfield => '',
-			content  => $description,
-		    };		    		    		    
+		    if ($public_note =~m/(digitalisiert von|kostenfrei|DOAB|Frei zugänglich|Full text online|kostenloser Download|lizenzfrei|Volltext)/i){
+			my $description = "E-Book im Volltext";
+			my $access      = "g"; # green
+			
+			push @{$record_ref->{fields}{'4662'}}, {
+			    mult     => $mult,
+			    subfield => $access,
+			    content  => $url,
+			};
+			
+			push @{$record_ref->{fields}{'4663'}}, {
+			    mult     => $mult,
+			    subfield => '',
+			    content  => $description,
+			};
+
+		    }
+		    # elsif ($public_note =~m/(Lizenz|lizenzpflichtig)/i){
+		    # 	my $description = "E-Book im Volltext";
+		    # 	my $access      = "y"; # yellow
+			
+		    # 	push @{$record_ref->{fields}{'4662'}}, {
+		    # 	    mult     => $mult,
+		    # 	    subfield => $access,
+		    # 	    content  => $url,
+		    # 	};
+			
+		    # 	push @{$record_ref->{fields}{'4663'}}, {
+		    # 	    mult     => $mult,
+		    # 	    subfield => '',
+		    # 	    content  => $description,
+		    # 	};
+
+		    # }
+		    # Uebertragen in Titelfeld fuer Inhaltsverzeichnisse T4110	    
+		    elsif ($public_note =~m/Inhaltsverzeichnis|Inh\.\-Verz\./){ # Inhaltsverzeichnisse
+			
+			# Falls bereits ein Link "Inhaltsverzeichnis" existiert, nur insgesamt einen Link berücksichtigen
+			if ($url =~m/hbz\-nrw\.de/){ # hbz-Inhaltsverzeichnis hat Vorrang, z.B. ID=7741043
+			    $record_ref->{fields}{'4110'} = [{
+				mult     => 1,
+				subfield => '',
+				content  => $url,
+							     }];
+			}
+			elsif (!$have_toc){
+			    $record_ref->{fields}{'4110'} = [{
+				mult     => 1,
+				subfield => '',
+				content  => $url,
+							     }];
+			}		
+			$have_toc = 1;
+		    }
+		    else {
+			$public_note =~ s!.*Interna: (.+)!$1!; 
+			$public_note =~ s!(.+); Bez.: \d[^;]*!$1!; # ID=6685427 
+			
+			if ($public_note =~m/(Digitalisierung|Langzeitarchivierung|Volltext)\; Info: kostenfrei/i # ID=6521146 ; Projekt Digitalis, Bsp.: Achenbach Berggesetzgebung
+			    or $public_note =~m/Info: kostenfrei; Bezugswerk: Volltext/i # ID=6625319
+			    or $public_note =~m/Open Access/) { # ID=6693843  
+			    
+			    my $description = "Volltext";
+			    my $url         = $url;
+			    my $access      = "g"; # green
+			    
+			    push @{$record_ref->{fields}{'4662'}}, {
+				mult     => $mult,
+				subfield => $access,
+				content  => $url,
+			    };
+			    
+			    push @{$record_ref->{fields}{'4663'}}, {
+				mult     => $mult,
+				subfield => '',
+				content  => $description,
+			    };
+
+			    $url_done_ref->{$url} = 1;						    
+			}
+			elsif ($public_note =~m/(Verlag.*); Info: kostenfrei/i){
+			    my $description = $1;
+			    my $url         = $url;
+			    my $access      = "g"; # green
+			    
+			    if ($url =~m/^https?:\/\/dx\.doi\.org\//) {  # Bsp.: ID=6683669
+				$description = "Volltext";
+			    }
+			    else {
+				$description = "Webseite ($description)";			
+			    }
+			    
+			    push @{$record_ref->{fields}{'4662'}}, {
+				mult     => $mult,
+				subfield => $access,
+				content  => $url,
+			    };
+			    
+			    push @{$record_ref->{fields}{'4663'}}, {
+				mult     => $mult,
+				subfield => '',
+				content  => $description,
+			    };
+			    
+			    $url_done_ref->{$url} = 1;			
+			}
+			elsif ($public_note =~m/(Resolving-System|URN)/) { # Bsp.: TI=Bayerische Bauordnung 2008 ; ID=6685427 
+			    my $description = "Volltext";
+			    my $url         = $url;
+			    my $access      = ""; # Keine Ampel
+			    
+			    push @{$record_ref->{fields}{'4662'}}, {
+				mult     => $mult,
+				subfield => $access,
+				content  => $url,
+			    };
+			    
+			    push @{$record_ref->{fields}{'4663'}}, {
+				mult     => $mult,
+				subfield => '',
+				content  => $description,
+			    };
+			    
+			    $url_done_ref->{$url} = 1;			
+			}
+			elsif ($public_note =~m/^Zus.*tzliche Angaben$/i) { # Bsp.: HBZID=HT013697253, HBZID=HT016192826 (falsch kodierter Umlaut)
+
+			    $url_done_ref->{$url} = 1;			
+
+			    next; # Link auf Objektbaum ueberspringen
+			}
+			elsif ($public_note =~m/Link-Text: C\;/) { # Bsp.: ID=6713163
+			    $url_done_ref->{$url} = 1;			    
+			    next; # Link auf Coverscans ueberspringen
+			}
+			elsif ($public_note =~m/ebooks.ciando.com/) { # Bsp.: ID=6713163
+			    $url_done_ref->{$url} = 1;			
+			    next; # PKN: Link auf E-Books von Ciando ueberspringen
+			}
+			elsif ($public_note =~m/Bez.: 2/) { # Bsp.: ID=inst001:81361
+			    # Linktext "Bez.: 2" durch URL ersetzen
+			    
+			    my $description = $url;
+			    my $url         = $url;
+			    my $access      = ""; # Keine Ampel
+			    
+			    push @{$record_ref->{fields}{'4662'}}, {
+				mult     => $mult,
+				subfield => $access,
+				content  => $url,
+			    };
+			    
+			    push @{$record_ref->{fields}{'4663'}}, {
+				mult     => $mult,
+				subfield => '',
+				content  => $description,
+			    };		    		    
+			    
+			    $url_done_ref->{$url} = 1;						    
+			}
+			elsif ($public_note =~m/EZB/) { # Bsp.: ID=6348154 (Hallische Jahrbuecher) -> gruen ; ID=6111996 (Bibliotheksdienst) -> rot
+			    # Nicht implementiert: EZB-Link fuer E-Journals der KMB ueberspringen
+			    # Nicht implementiert: EZB-Frontdoor-Link durch Permalink zum ejinfo-Service der USB ersetzen
+			    # Gff. spaeter EZB-Frontdoor-Link auf EZB-Integration in OpenBib umbiegen
+			    
+			    my $description = "Elektronische Zeitschrift im Volltext";
+			    my $url         = $url;
+			    my $access      = ""; # Keine Ampel
+			    
+			    push @{$record_ref->{fields}{'4662'}}, {
+				mult     => $mult,
+				subfield => $access,
+				content  => $url,
+			    };
+			    
+			    push @{$record_ref->{fields}{'4663'}}, {
+				mult     => $mult,
+				subfield => '',
+				content  => $description,
+			    };		    		    
+
+			    $url_done_ref->{$url} = 1;						    
+			}
+			elsif ($public_note =~m/DBIS/ && $umult > 1) { # Bsp.: TI=Bayerische Bauordnung 2008
+			    # 2. DBIS-Link loeschen, da Titel evtl. nicht in die DBIS-Sicht der USB aufgenommen wurde
+			    $url_done_ref->{$url} = 1;			
+			    next;
+			}
+			elsif ($public_note =~m/^Kontakt/ && $url =~m/scans\.hebis\.de.*toc\.pdf/) { # ID=6938417
+			    if (!$have_toc){
+				$record_ref->{fields}{'4110'} = [{
+				    mult     => 1,
+				    subfield => '',
+				    content  => $url,
+								 }];
+			    }
+			    $have_toc = 1;
+			    
+			    $url_done_ref->{$url} = 1;			
+			}
+			elsif ($public_note =~m/^Inhaltsverzeichnis/ && $url =~m/scans\.hebis\.de.*toc\.pdf/) { # ID=6938417
+			    if (!$have_toc){
+				$record_ref->{fields}{'4110'} = [{
+				    mult     => 1,
+				    subfield => '',
+				    content  => $url,
+								 }];
+			    }
+			    $have_toc = 1;
+
+			    $url_done_ref->{$url} = 1;			
+			}		
+			else {
+			    my $description = $public_note;
+			    my $url         = $url;
+			    my $access      = ''; # Default: keine Ampel. Ggf. Anpassung (s.u.)
+			    $description =~ s!.*Bezugswerk: ([^\;]+).*!$1!; # Bsp.: ID=7733592 (ADAM-Links)
+			    $description =~ s!.*Link-Text: ([^;]+).*!$1!; # Bsp.: ISBN=978-3-86009-086-2
+			    $description =~ s!^Metadaten$!Dokumentbeschreibung!; # Bsp.: ISBN=978-3-86009-086-2
+			    $description =~ s!Media!Inhaltsverzeichis / Abstract / Zusätze!;
+			    $description =~ s!.*(Bezugswerk|Info): Inhaltstext.*!Inhaltsbeschreibung!; # Bsp.: ISBN=3-8348-9961-5
+			    $description =~ s!.*(Bezugswerk|Info): Inhaltsverzeichnis.*!Inhaltsverzeichnis!; # Bsp.: ISBN=3-540-89993-6 ; ISBN=978-3-8300-6282-0
+			    $description =~ s!.*Bezugswerk: \d+!Verlagsinformationen!; # Bsp.: ISBN=978-3-8300-6282-0
+			    $description =~ s!.*Bezugswerk: .*Beschreibung.*!Verlagsinformationen!; # Bsp.: ISBN=978-3-8300-5801-4
+			    $description =~ s!.*Bezugswerk: .*Cover.*!Cover!; # Bsp.: ISBN=978-3-527-71296-0
+			    $description =~ s!Verlagsdaten!Verlagsinformationen!; # Bsp.: ISBN=3-540-41515-7
+			    $description =~ s!Kapitel!Kapitelvorschau!; # Bsp.: ID=7733592 (ADAM-Links)
+			    $description =~ s!Inh\.\-Verz\.!Inhaltsverzeichnis!; # Bsp.: ID=6595544 (DNB-Inhaltsverzeichnis)
+			    $description =~ s!^Info: !!; # Bsp.: ID=6779590
+			    $description = $url if $description =~ /^Verlag;/; # Bsp.: ID=6111996 (Bibliotheksdienst)
+			    
+			    push @{$record_ref->{fields}{'4662'}}, {
+				mult     => $mult,
+				subfield => $access,
+				content  => $url,
+			    };
+			    
+			    push @{$record_ref->{fields}{'4663'}}, {
+				mult     => $mult,
+				subfield => '',
+				content  => $description,
+
+			    };
+			    
+			    $url_done_ref->{$url} = 1;			
+			}
+		    }
 		}
 	    }
 	}
     }
+    
+    my @pakete = ();
 
-    my $pakete = "";
+    my $paketstring = "";
+    
+    if (defined $fields_ref->{'0912'} || defined $fields_ref->{'0962'}){
+	foreach my $item_ref (@{$fields_ref->{'0912'}}){
+	    if ($item_ref->{'subfield'} eq "a"){
+		push @pakete, $item_ref->{'content'};
+	    }
+	}
+	foreach my $item_ref (@{$fields_ref->{'0962'}}){
+	    if ($item_ref->{'subfield'} eq "e"){
+		push @pakete, $item_ref->{'content'};
+	    }
+	}
 
-    if (defined $fields_ref->{'0078'} || defined $fields_ref->{'1209'}){
-	$pakete = (defined $fields_ref->{'0078'})?$fields_ref->{'0078'}[0]{content}:"";
-	if (defined $fields_ref->{'1209'}){
-	    $pakete.="; ".$fields_ref->{'1209'}[0]{content};
+	if (@pakete){
+	    $paketstring = join('; ',@pakete);
 	}
     }
 
@@ -726,36 +941,20 @@ while (<>){
 
     my $has_isbn = 0;
 
-    if (defined $fields_ref->{'0540'} || defined $fields_ref->{'0541'}){
+    if (defined $fields_ref->{'0020'}){
 	$has_isbn = 1;
     }
 
     my $restricted_access = 0;
 
-    if (defined $fields_ref->{'1203'}){
-	foreach my $item_ref (@{$fields_ref->{'1203'}}){
-	    if ($item_ref->{content} =~m/Zugriff nur im Hochschulnetz/){
+    if (defined $fields_ref->{'0998'}){
+	foreach my $item_ref (@{$fields_ref->{'0998'}}){
+	    if ($item_ref->{'subfield'} eq "z" && $item_ref->{content} =~m/Zugriff nur im Hochschulnetz/){
 		$restricted_access = 1;
 	    }
 	}
     }
-
-    if (defined $fields_ref->{'1212'}){
-	foreach my $item_ref (@{$fields_ref->{'1212'}}){
-	    if ($item_ref->{content} =~m/Zugriff nur im Hochschulnetz/){
-		$restricted_access = 1;
-	    }
-	}
-    }
-
-    if (defined $fields_ref->{'2663'}){
-	foreach my $item_ref (@{$fields_ref->{'2663'}}){
-	    if ($item_ref->{content} =~m/Zugriff nur im Hochschulnetz/){
-		$restricted_access = 1;
-	    }
-	}
-    }
-        
+            
     # Zweiter Durchang durch alle Links und Analyse weiterer Kategorien
     if (defined $fields_ref->{'4662'}){
 	my $i = 0;
@@ -764,7 +963,7 @@ while (<>){
 	    my $description = (defined $fields_ref->{'4663'} && defined $fields_ref->{'4663'}[$i])?$fields_ref->{'4663'}[$i]{content}:"";
 	    
 	    if ($is_digital && $url !~ /dbinfo/ && $description !~ /^(Inhalt|Verlag)/ &&
-		($has_isbn or $pakete=~m/(oecd|ZDB-14-DLO|ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)$/)){ # ggf. Bedingung ergaenzen: Hat ISBN der Paralellausgabe in '1586', '1587', '1588', '1590', '1591', '1592', '1594', '1595', '1596'
+		($has_isbn or $paketstring=~m/(oecd|ZDB-14-DLO|ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)$/)){ # ggf. Bedingung ergaenzen: Hat ISBN der Paralellausgabe in '1586', '1587', '1588', '1590', '1591', '1592', '1594', '1595', '1596'
 		$description = "E-Book im Volltext";
 		$fields_ref->{'4663'}[$i]{content} = $description;
 	    }
@@ -775,23 +974,23 @@ while (<>){
 	    # Auswertung Paketinformatione entsprechend:
 	    # https://intern.ub.uni-koeln.de/usbwiki/index.php/Anreicherung_von_IMX-Importdateien
 	    # OA via ZDB-2-SOB, ZDB-23-GOA ueberschreiben alle anderen Paketinfos
-	    elsif ($pakete =~m/(ZDB-2-SOB|ZDB-23-GOA)/) { # z.B. ID=7807222, ID=6813324
+	    elsif ($paketstring =~m/(ZDB-2-SOB|ZDB-23-GOA)/) { # z.B. ID=7807222, ID=6813324
 		$fields_ref->{'4662'}[$i]{subfield} = "g"; # green
 		$fields_ref->{'4663'}[$i]{content}  = "E-Book im Volltext";
 	    }
-	    elsif ($pakete =~m/(ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)/){ # Freie E-Books aus dem Projekt Digi20
+	    elsif ($paketstring =~m/(ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)/){ # Freie E-Books aus dem Projekt Digi20
 		$fields_ref->{'4662'}[$i]{subfield} = "g"; # green Bsp.: ID=6822919		
 	    }
-	    elsif ($pakete =~m/(ZDB-2-SWI|ZDB-2-SNA|ZDB-2-STI|ZDB-2-SGR|ZDB-2-SGRSpringer|ZDB-2-SEP|ZDB-2-SBE|ZDB-2-CMS|ZDB-2-PHA|ZDB-2-SMA|ZDB-2-MGE|ZDB-2-SZR|ZDB-2-BUM|ZDB-2-ECF|ZDB-2-SCS|ZDB-2-ESA|ZDB-5-WEB|ZDB-5-WMS|ZDB-5-WMW|ZDB-13-SOC|ZDB-14-DLO|ZDB-18-BEO|ZDB-18-BOH|ZDB-18-BST|ZDB-15-ACM|ZDB-16-Hanser-EBA|hbzebo_ebahanser|ZDB-18-Nomos-NRW|ZDB-18-Nomos-VDI-NRW|hbzebo_nrwnomos|ZDB-149-HCB|ZDB-162-Bloom-EBA|hbz_ebabloomsbury|ZDB-605-Preselect|hbzebo_preselect|ZDB-196-Meiner-EBA|hbzebo_ebameiner|ZDB-23-DGG|ZDB-98-IGB|ZDB-23-DGG-eba)/){
+	    elsif ($paketstring =~m/(ZDB-2-SWI|ZDB-2-SNA|ZDB-2-STI|ZDB-2-SGR|ZDB-2-SGRSpringer|ZDB-2-SEP|ZDB-2-SBE|ZDB-2-CMS|ZDB-2-PHA|ZDB-2-SMA|ZDB-2-MGE|ZDB-2-SZR|ZDB-2-BUM|ZDB-2-ECF|ZDB-2-SCS|ZDB-2-ESA|ZDB-5-WEB|ZDB-5-WMS|ZDB-5-WMW|ZDB-13-SOC|ZDB-14-DLO|ZDB-18-BEO|ZDB-18-BOH|ZDB-18-BST|ZDB-15-ACM|ZDB-16-Hanser-EBA|hbzebo_ebahanser|ZDB-18-Nomos-NRW|ZDB-18-Nomos-VDI-NRW|hbzebo_nrwnomos|ZDB-149-HCB|ZDB-162-Bloom-EBA|hbz_ebabloomsbury|ZDB-605-Preselect|hbzebo_preselect|ZDB-196-Meiner-EBA|hbzebo_ebameiner|ZDB-23-DGG|ZDB-98-IGB|ZDB-23-DGG-eba|ZDB-54-Duncker-EBA|hbzebo_ebaduncker|ZDB-2-BSP|ZDB-2-SBL|ZDB-2-BUM|ZDB-2-CMS|ZDB-2-SCS|ZDB-2-EES|ZDB-2-ECF|ZDB-2-EDA|ZDB-2-ENE|ZDB-2-ENG|ZDB-2-HTY|ZDB-2-INR|ZDB-2-LCR|ZDB-2-LCM|ZDB-2-SMA|ZDB-2-SME|ZDB-2-PHA|ZDB-2-POS|ZDB-2-CWD|ZDB-2-REP|ZDB-2-SLS|ZDB-41-UTB-EBA|ZDB-7-taylorfra-EBA|ZDB-71-Narr-EBA)/){
 		$fields_ref->{'4662'}[$i]{subfield} = "y"; # yellow
 		$fields_ref->{'4663'}[$i]{content}  = "E-Book im Volltext" if ($description !~m/Verlag/);
 		
 	    }
-	    elsif ($pakete =~m/(ZDB-185-STD|ZDB-185-SDI)/){ # Statista-Dossiers
+	    elsif ($paketstring =~m/(ZDB-185-STD|ZDB-185-SDI)/){ # Statista-Dossiers
 		$fields_ref->{'4662'}[$i]{subfield} = "y"; # yellow
 		$fields_ref->{'4663'}[$i]{content}  = "Dossier im Volltext";
 	    }
-	    elsif ($pakete =~m/ZDB-101-VTB/){ # video2brain
+	    elsif ($paketstring =~m/ZDB-101-VTB/){ # video2brain
 		$fields_ref->{'4663'}[$i]{content}  = "Video";
 	    }
 	    

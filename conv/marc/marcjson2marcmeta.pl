@@ -55,13 +55,14 @@ use OpenBib::Conv::Common::Util;
 
 our (%person,%corporatebody,%subject,%classification);
 
-my ($inputfile,$configfile,$database,$loglevel,$help,$reducemem);
+my ($inputfile,$configfile,$database,$usebch,$loglevel,$help,$reducemem);
 
 &GetOptions(
     "database=s"      => \$database,
     "inputfile=s"     => \$inputfile,
     "configfile=s"    => \$configfile,
     "reduce-mem"      => \$reducemem,
+    "use-bch"         => \$usebch,
     "loglevel=s"      => \$loglevel,
     "help"            => \$help,    
     );
@@ -525,7 +526,7 @@ while (<DAT>){
 		}
 
 		# Zeitschriftenhefte im Erwerbungsstatus ausschliessen
-		unless ($is_acquisition && $is_issue){
+		unless ($is_acquisition && $is_issue && $usebch){
 		
 		    $has_items = 1;
 		    

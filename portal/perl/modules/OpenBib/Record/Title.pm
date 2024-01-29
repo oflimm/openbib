@@ -2684,7 +2684,7 @@ sub to_harvard_citation {
 	    $citation.="Anonymus.";
     }
 
-    if ($fields_ref->{type} eq "book"){
+    if ($fields_ref->{type} =~m/(book|periodical)/ ){
 	if ($fields_ref->{availability} eq "online"){
 	    if ($fields_ref->{year}){
 		if ($citation){
@@ -2910,7 +2910,7 @@ sub to_mla_citation {
 
     $citation.="." if ($citation);
     
-    if ($fields_ref->{type} eq "book"){
+    if ($fields_ref->{type} =~m/(book|periodical)/ ){
 	if ($fields_ref->{title}){
 	    my $title = $fields_ref->{title};
 	    #$title=~s/([\w']+)/\u\L$1/g;
@@ -3088,7 +3088,7 @@ sub to_apa_citation {
 
     $citation.="." if ($citation);
     
-    if ($fields_ref->{type} eq "book"){
+    if ($fields_ref->{type} =~m/(book|periodical)/ ){
 	if ($fields_ref->{year}){
 	    if ($citation){
 		$citation.=" ";

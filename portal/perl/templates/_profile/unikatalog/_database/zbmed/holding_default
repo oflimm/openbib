@@ -22,6 +22,17 @@
         have_standort = 1;
      END;
   END;
+
+  custom_normdata = record.to_custom_field_scheme_1;
+
+  nz_mmsid = "";
+  
+  FOREACH thisitem IN custom_normdata.${'T1001'};
+     IF thisitem.${'h'}.match('6441$');
+       nz_mmsid = thisitem.${'h'};
+     END;
+  END;
+ 
 %]
 
 <div class="table-responsive">
@@ -124,7 +135,7 @@ END;
    END;
 
 -%]
-<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong></td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]     
+<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong>[% IF nz_mmsid %]<br/><a class="btn btn-primary mb-1 mt-2" target="_blank" href="https://www.livivo.de/doc/[% nz_mmsid %]">[% msg.maketext("Ausleihsystem (LIVIVO)") %]</a>[% END %]</td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]     
 [% IF NOT normdata.${"T5002"}.first.content && thisholding.${"X0014"}.content.match('^ZTG') %]
 <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
 [% END %]

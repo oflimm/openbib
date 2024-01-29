@@ -48,7 +48,7 @@ while (<>){
     if (defined $fields_ref->{'0981'}){
 	foreach my $item_ref (@{$fields_ref->{'0981'}}){
 	    if ($item_ref->{subfield} eq "a"){		
-		if ($item_ref->{content} =~m/^\(DE-38\)(.+?)$/){
+		if ($item_ref->{content} =~m/^\(DE-38M\)(.+?)$/){
 		    my $usboldid = $1;
 		    
 		    my $mult    = $mult_ref->{'1001'}++;

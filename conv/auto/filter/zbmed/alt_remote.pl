@@ -208,6 +208,6 @@ print "### $pool: Umwandlung von $filename in MARC-in-JSON via yaz-marcdump\n";
 system("cd $pooldir/$pool; yaz-marcdump -o json $filename  | jq -S -c . > ${filename}.processed");
 
 print "### $pool: Konvertierung von $filename\n";
-system("cd $pooldir/$pool; $marcjson2marcmetaexe --database=$pool -reduce-mem --inputfile=${filename}.processed --configfile=/opt/openbib/conf/uni.yml; gzip meta.*");
+system("cd $pooldir/$pool; $marcjson2marcmetaexe --database=$pool -use-bch -reduce-mem --inputfile=${filename}.processed ; gzip meta.*");
 
 system("cd $pooldir/$pool ; rm pool.mrc.processed");

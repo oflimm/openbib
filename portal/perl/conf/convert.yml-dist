@@ -13098,7 +13098,7 @@ convtab:
       '5050': 1
       '5055': 1
 
-  lobidzbmed:
+  zbmed:
     store_full_record: 1
     local_enrichmnt:
       '4100': 1        # BK
@@ -13277,6 +13277,10 @@ convtab:
 # Katagorie gesammelt wird, der Hashwert des Recherchefeldes
 # kennzeichnet die Gewichtung der Kategorie im jeweiligen Recherchefeld
     inverted_authority_person:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -13300,6 +13304,10 @@ convtab:
             'personstring': 1
             'freesearch': 1
     inverted_person:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -13323,6 +13331,10 @@ convtab:
       #       'personstring': 1
       #       'freesearch': 1
     inverted_corporatebody:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -13379,6 +13391,10 @@ convtab:
       #       'corporatebodystring': 1
       #       'freesearch': 1
     inverted_authority_corporatebody:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -13487,6 +13503,10 @@ convtab:
       #       'classificationstring': 1
       #       'freesearch': 1
     inverted_subject:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       # '0800':         # Ansetzung
       #   '':
       #     index:
@@ -13543,6 +13563,10 @@ convtab:
       #       'subjectstring': 1
       #       'freesearch': 1
     inverted_authority_subject:
+      '0010':         # GND
+        '':
+          index:
+            'gnd': 1
       '0800':         # Ansetzung
         '':
           index:
@@ -13913,6 +13937,15 @@ convtab:
             'provenancestring': 20
           facet:
             'provenance': 1
+        'f': # KMB Einordnung Abrufzeichen, Erwerbungsgruppe
+          index:
+            'ft4800': 1
+        'g': # KMB Einordnung Abrufzeichen, Publikationsarten
+          index:
+            'ft4801': 1
+        'h': # KMB Einordnung Abrufzeichen, Schenkungen/Leihgaben
+          index:
+            'ft4802': 1
       '0982': # Lokales (Instiuts)Schlagwort
         'a':
           index:
@@ -13921,6 +13954,12 @@ convtab:
             'subjectstring': 1
           facet:
             'subject': 1
+      '0983': # Notation
+        'b':
+          index:
+            'classificationstring': 1
+          facet:
+            'classification': 1
       '1942': 
         'a': # GND Anreicherung: Verweisungsform Person
           index:
@@ -13930,7 +13969,7 @@ convtab:
           index:
             'corporatebody': 1
             'freesearch': 1
-      '1001':
+      '1001': # Alternative IDs
         'z':         # zdbid
           index:
             'zdbid': 1
@@ -13940,6 +13979,10 @@ convtab:
         'h':         # hbzid (alte ID, NZ-ID, CZ-ID)
           index:
             'hbzid': 1	    
+      '1002': # Alternative Systematiken
+        'k':         # kmbsystematik
+          index:
+            'ft1002': 1
       '4100':         # BK
         '':
           index:
@@ -14209,6 +14252,7 @@ convtab:
       '5005': 1
       '5050': 1
       '5055': 1
+
 
   lobidspoho:
     store_full_record: 1

@@ -1,0 +1,984 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_categories
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe von bibliographischen Daten fuer einen
+# einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%-
+
+   bklookup    = config.load_bk;
+
+   topic_map = {};
+   FOREACH topic IN user.get_topics;
+      topic_map.${topic.id} = topic.name;
+   END;
+
+   normdata = record.to_custom_field_scheme_1;
+
+   #USE dumper;dumper.dump(normdata);
+
+
+   catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
+-%]
+[% IF format == "full" %]
+
+
+[%   PROCESS common/subtemplate name="titles_record_html_sammlungslinks" %]
+
+[%# USE dumper;dumper.dump(record.get_fields)%]
+
+<script>
+$(document).on("click", ".ob-more_button", function () {
+const supplemental_collection = document.getElementsByClassName("ob-field_supplemental");
+Array.prototype.forEach.call(supplemental_collection, function(element) {
+  $(element.tagName).prop("hidden", false);
+});
+$(this).prop("hidden", true)
+
+const wikipedia_articles = document.getElementById("ob-title_wikipedia_articles");
+$(wikipedia_articles).prop("hidden", false)
+
+});
+</script>
+
+<div class="table-responsive">
+<table class="table table-striped table-hover ob-title_fields">
+
+[%-
+
+   request_base = config.get('search_defaultparams');
+   request_base = "l=${lang};profile=${current_profile};${request_base}";
+
+   IF NOT viewdbs ;
+       viewdbs = config.get_dbs_of_view(view);
+   END ;
+
+   IF NOT searchprofileid_of_database ;
+      searchprofileid_of_database = config.get_searchprofile_of_database(record.database) ;
+   END ;
+
+   IF normdata.${'T4400'}.first.content == 'online' && NOT normdata.${"T0662"}.first.content && NOT normdata.${"T2662"}.first.content;
+     currently_unavailable = 1;
+   END;
+
+globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
+rswkswt_done      = {};
+
+#USE dumper;dumper.dump(normdata);
+
+
+   laender_map = {
+     'EG' = 'Ägypten',
+     'AD' = 'Andorra',
+     'AR' = 'Argentinien',
+     'AM' = 'Armenien',
+     'AU' = 'Australien',
+     'BE' = 'Belgien',
+     'BO' = 'Bolivien',
+     'BR' = 'Brasilien',
+     'BG' = 'Bulgarien',
+     'CL' = 'Chile',
+     'CN' = 'China',
+     'DK' = 'Dänemark',
+     'DE' = 'Deutschland',
+     'DXDE' = 'Deutschland',
+     'EE' = 'Estland',
+     'FI' = 'Finnland',
+     'FR' = 'Frankreich',
+     'GE' = 'Georgien',
+     'GI' = 'Gibraltar',
+     'GD' = 'Grenada',
+     'GR' = 'Griechenland',
+     'GB' = 'Großbritannien',
+     'HK' = 'Hongkong',
+     'IN' = 'Indien',
+     'IQ' = 'Irak',
+     'IR' = 'Iran',
+     'IE' = 'Irland',
+     'IS' = 'Island',
+     'IL' = 'Israel',
+     'IT' = 'Italien',
+     'YUCS' = 'Jugoslawien',
+     'CA' = 'Kanada',
+     'CO' = 'Kolumbien',
+     'QV' = 'Kosovo',
+     'HR' = 'Kroatien',
+     'LV' = 'Lettland',
+     'LI' = 'Liechtenstein',
+     'LT' = 'Litauen',
+     'LU' = 'Luxemburg',
+     'MT' = 'Malta',
+     'MX' = 'Mexiko',
+     'MC' = 'Monaco',
+     'MD' = 'Moldawien',
+     'MC' = 'Monaco',
+     'ME' = 'Montenegro',
+     'NL' = 'Niederlande',
+     'NO' = 'Norwegen',
+     'AT' = 'Österreich',
+     'AAAT' = 'Österreich',
+     'PK' = 'Pakistan',
+     'PO' = 'Polen',
+     'PT' = 'Portugal',
+     'RO' = 'Rumänien',
+     'RU' = 'Russland',
+     'SM' = 'San Marino',
+     'SH' = 'Sankt Helena',
+     'SE' = 'Schweden',
+     'CH' = 'Schweiz',
+     'RS' = 'Serbien',
+     'SK' = 'Slowakei',
+     'SI' = 'Slowenien',
+     'SUHH' = 'Sowjetunion',
+     'ES' = 'Spanien',
+     'SY' = 'Syrien',
+     'CSHH' = 'Tschechoslowakei',
+     'TR' = 'Türkei',
+     'UA' = 'Ukraine',
+     'HU' = 'Ungarn',
+     'US' = 'USA',
+     'VA' = 'Vatikanstadt',
+     'BY' = 'Weißrussland',
+     'CY' = 'Zypern',
+     'ZZ' = 'Land unbekannt',
+   };
+
+   lang_map = {
+        "ara"      => msg.maketext("Arabisch"),
+        "arm"      => msg.maketext("Armenisch"),
+        "arab."    => msg.maketext("Arabisch"),
+        "ces"      => msg.maketext("Tschechisch"),
+        "chi"      => msg.maketext("Chinesisch"),
+        "cop"      => msg.maketext(""),
+        "cze"      => msg.maketext("Tschechisch"),
+        "de"       => msg.maketext("Deutsch"),
+        "dt."      => msg.maketext("Deutsch"),
+        "dut"      => msg.maketext("Niederländisch"),
+        "dut."     => msg.maketext("Niederländisch"),
+        "ell"      => msg.maketext("Neu-Griechisch"),
+        "en"       => msg.maketext("Englisch"),
+        "eng"      => msg.maketext("Englisch"),
+        "engl."    => msg.maketext("Englisch"),
+        "fin"      => msg.maketext("Finnisch"),
+        "finn."    => msg.maketext("Finnisch"),
+        "fr"       => msg.maketext("Französisch"),
+        "franz."       => msg.maketext("Französisch"),
+        "fre"      => msg.maketext("Französisch"),
+        "ger"      => msg.maketext("Deutsch"),
+        "gre"      => msg.maketext("Neu-Griechisch"),
+        "grc"      => msg.maketext("Alt-Griechisch"),
+        "griech."  => msg.maketext("Griechisch"),
+        "grk"      => msg.maketext("Griechisch"),
+        "he"       => msg.maketext("Hebräisch"),
+        "heb"      => msg.maketext("Hebräisch"),
+        "hun"      => msg.maketext("Ungarisch"),
+        "ice"      => msg.maketext("Isländisch"),
+        "islaend." => msg.maketext("Isländisch"),
+        "ita"      => msg.maketext("Italienisch"),
+        "ital."    => msg.maketext("Italienisch"),
+        "jpn"      => msg.maketext("Japanisch"),
+        "lat"      => msg.maketext("Latein"),
+        "lat."     => msg.maketext("Latein"),
+        "lats"     => msg.maketext("Latein"),
+        "nds"      => msg.maketext("Niederdeutsch"),
+        "neugriech."   => msg.maketext("Neu-Griechisch"),
+        "niederlaend." => msg.maketext("Niederländisch"),
+        "pol"      => msg.maketext("Polnisch"),
+        "rus"      => msg.maketext("Russisch"),
+        "russ."    => msg.maketext("Russisch"),
+        "spa"      => msg.maketext("Spanisch"),
+        "span."    => msg.maketext("Spanisch"),
+        "swe"      => msg.maketext("Schwedisch"),
+        "syc"      => msg.maketext("Alt-Syrisch"),
+        "tschech." => msg.maketext("Tschechisch"),
+        "tur"      => msg.maketext("Türkisch"),
+        "ungar."   => msg.maketext("Ungarisch"),
+    };
+
+
+# Preprocessing
+
+rswkswt_done = {};
+
+# Switching processed links
+
+IF normdata.${'T4662'}.defined ;
+   normdata.${'T0662'} = normdata.${'T4662'};
+   normdata.${'T0663'} = normdata.${'T4663'};
+   normdata.${'T2662'} = [];
+   normdata.${'T2662'}.delete;
+   normdata.${'T2663'} = [];
+   normdata.${'T2663'}.delete;   
+ELSE;
+   normdata.${'T0662'} = [];
+   normdata.${'T0663'} = [];
+   normdata.${'T2662'} = [];
+   normdata.${'T2663'} = [];
+   normdata.${'T0662'}.delete;
+   normdata.${'T0663'}.delete;
+   normdata.${'T2662'}.delete;
+   normdata.${'T2663'}.delete;
+END;
+
+# Lizensierter Volltext? (Ausgabe Zugriffshinweis)
+is_licensed = 0;
+
+#USE dumper;dumper.dump(normdata.${"T5003"});
+
+FOREACH item IN normdata.${'T4120'} ;
+   IF item.subfield == "g";
+      is_licensed = 0;
+      LAST ;
+   ELSIF item.subfield == "y";
+      is_licensed = 1;
+   END;
+END;
+
+content_map = {};
+
+FOREACH field IN normdata;
+
+  category = field.key ;
+
+  FOREACH thisfield IN field.value;
+    
+    SWITCH category;
+
+    CASE "T0035";
+         laenderdesc   = laender_map.${content};
+         IF laenderdesc ;
+            content   = laenderdesc ;
+         END ;
+         IF NOT content_map.${'T0035'} ;
+	    content_map.${'T0035'} = [];
+	 END;
+         content_map.${'T0035'}.push(content);
+
+    CASE "T0020";
+    
+         content = thisfield.${'9'};
+
+         IF thisfield.${'a'} && NOT content;
+	   content = thisfield.${'a'};
+         END;
+	 
+         IF content ;
+           IF NOT content_map.${'ISBN'} ;
+	      content_map.${'ISBN'} = [];
+	   END;
+           content_map.${'ISBN'}.push(content);
+	 END;
+
+    CASE "T0022";
+    
+         content = thisfield.${'9'};
+
+         IF thisfield.${'a'} && NOT content;
+	   content = thisfield.${'a'};
+         END;
+	 
+         IF content ;
+           IF NOT content_map.${'ISSN'} ;
+	      content_map.${'ISSN'} = [];
+	   END;
+           content_map.${'ISSN'}.push(content);
+	 END;
+
+    CASE "T0041"; # Sprache
+         content = thisfield.${'a'} ;
+
+         langdesc   = lang_map.${content};
+         IF langdesc ;
+            content   = langdesc ;
+         END;
+
+         IF content ;
+           IF NOT content_map.${"Sprache"} ;
+	      content_map.${"Sprache"} = [];
+	   END;
+           content_map.${"Sprache"}.push(content);
+	 END;
+
+    CASE "T0082";    
+         content = thisfield.${'a'};
+         thisid  = thisfield.${'6'};
+         supplement = "";
+	 
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').classificationstring.prefix;
+
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         normdataicon = "";
+
+         IF thisid && catalog_has_authorities ;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         icons     = "<span>${normdataicon}</span>";
+
+         IF content ;
+           content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
+           IF NOT content_map.${'Klassifikation'} ;
+	      content_map.${'Klassifikation'} = [];
+	   END;
+           content_map.${'Klassifikation'}.push(content);
+	 END;
+
+    CASE [ "T0100" "T0700" ];
+         content = thisfield.${'a'} ;
+	 supplement = thisfield.${'e'} ;
+         thisid  = thisfield.${'0'};
+
+         gndid = "";
+	 IF thisid.match('(DE-588)');
+	    gndid = thisid.replace('\(DE-588\)','');
+	 END;
+	 
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').person.prefix;
+
+         resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/lobidgnd/${config.get('titles_loc')}/id/${gndid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         normdataicon = "";
+
+         IF gndid ;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"GND-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         icons     = "<span>${normdataicon}</span>";
+	 
+         IF content ;
+           content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
+           IF NOT content_map.${'Person'} ;
+	     content_map.${'Person'} = [];
+	   END;
+           content_map.${'Person'}.push(content);
+	 END;
+
+    CASE [ "T0110" "T0710" ];
+         content = thisfield.${'a'} ;
+	 supplement = thisfield.${'e'} ;
+         thisid  = thisfield.${'0'};
+
+         gndid = "";
+	 IF thisid.match('(DE-588)');
+	    gndid = thisid.replace('\(DE-588\)','');
+	 END;
+
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').corporatebodystring.prefix;
+
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/lobidgnd/${config.get('titles_loc')}/id/${gndid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         normdataicon = "";
+
+         IF gndid ;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"K&ouml;rperschafts-Information\"  data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         icons     = "<span>${normdataicon}</span>";
+	 
+         IF content ;
+           content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
+	 
+           IF NOT content_map.${'Institution'} ;
+	     content_map.${'Institution'} = [];
+	   END;
+           content_map.${'Institution'}.push(content);
+	 END;
+
+    CASE "T0240"; # Originaltitel
+         original_title     = "";
+	 supplemental_title = "";
+	 
+         IF thisfield.${'a'} ;
+	   original_title = thisfield.${'a'};
+	 END;
+	 
+         IF thisfield.${'g'} ;
+	   supplemental_title = thisfield.${'g'};	 
+	 END;
+
+         IF supplemental_title ;
+	    original_title = "${original_title} &lt;${supplemental_title}&gt;";
+	 END;
+
+         IF original_title ;
+	   content = original_title;
+           content   = "<b>${highlightquery(searchquery,content)}</b>";
+
+           IF NOT content_map.${'Originaltitel'} ;
+	     content_map.${'Originaltitel'} = [];
+	   END;
+           content_map.${'Originaltitel'}.push(content);
+	 END;
+
+    CASE "T0245"; # HST
+         main_title         = "";
+	 supplemental_title = "";
+	 published_by       = "";
+	 
+         IF thisfield.${'a'} ;
+	   main_title = thisfield.${'a'};
+	 END;
+	 
+         IF thisfield.${'b'} ;
+	   supplemental_title = thisfield.${'b'};	 
+	 END;
+
+         IF thisfield.${'c'} ;
+	   published_by = thisfield.${'c'};	 
+	 END;
+
+         IF supplemental_title ;
+	    main_title = "${main_title} : ${supplemental_title}";
+	 END;
+
+         volume = "";
+	 
+         IF thisfield.${'n'} ;
+	   volume = thisfield.${'n'};	 
+	 END;
+
+         IF main_title ;
+	   content = main_title;
+           content   = "<b>${highlightquery(searchquery,content)}</b>";
+
+           IF NOT content_map.${'Titel'} ;
+	     content_map.${'Titel'} = [];
+	   END;
+           content_map.${'Titel'}.push(content);
+	 END;
+
+         IF volume ;
+           IF NOT content_map.${'Band'} ;
+	     content_map.${'Band'} = [];
+	   END;
+           content_map.${'Band'}.push(volume);
+	 END;
+
+         IF published_by ;
+           IF NOT content_map.${'Verfasserangabe'} ;
+	     content_map.${'Verfasserangabe'} = [];
+	   END;
+           content_map.${'Verfasserangabe'}.push(published_by);
+	 END;
+
+    CASE "T0246"; # Weitere Titel
+         content = thisfield.${'a'} ;
+
+         IF content ;
+           IF NOT content_map.${'Weitere Titel'} ;
+	     content_map.${'Weitere Titel'} = [];
+	   END;
+           content_map.${'Weitere Titel'}.push(content);
+	 END;
+
+    CASE "T0250"; # Auflage
+         content = thisfield.${'a'} ;
+
+         IF content ;
+           IF NOT content_map.${'Ausgabe'} ;
+	     content_map.${'Ausgabe'} = [];
+	   END;
+           content_map.${'Ausgabe'}.push(content);
+	 END;
+
+    CASE [ "T0260" "T0264" ]; # 
+         ortverlagjahr = [];
+
+         IF thisfield.${'a'} ; # Ort
+	   ort = thisfield.${'a'};
+	   ortverlagjahr.push("${ort}: ");
+	 END;
+
+         IF thisfield.${'b'} ; # Verlag
+           ortverlagjahr.push(thisfield.${'b'});
+         END;
+
+	 IF thisfield.${'c'} ; # Jahr
+	   jahr = thisfield.${'c'};
+           ortverlagjahr.push("(${jahr})");	 
+	 END;
+
+         ortverlagjahrcontent = ortverlagjahr.join(' ');
+
+         IF ortverlagjahrcontent ;
+           IF NOT content_map.${'Ort/Verlag/Jahr'} ;
+            content_map.${'Ort/Verlag/Jahr'} = [];
+	   END;
+           content_map.${'Ort/Verlag/Jahr'}.push(ortverlagjahrcontent);
+         END;
+
+    CASE "T0300"; # 
+         umfang = [];
+
+         IF thisfield.${'a'} ; # Kollation
+	   umfang.push(thisfield.${'a'});
+	 END;
+
+         IF thisfield.${'b'} ; # Illustr.
+           umfang.push(thisfield.${'b'});
+         END;
+
+         IF thisfield.${'c'} ; # Format
+           umfang.push(thisfield.${'c'});
+         END;
+
+         umfangcontent = umfang.join(' ');
+
+         IF umfangcontent ;
+           IF NOT content_map.${'Umfang'} ;
+            content_map.${'Umfang'} = [];
+	   END;
+           content_map.${'Umfang'}.push(umfangcontent);
+         END;
+
+    CASE "T0362"; # Erscheinungsverlauf
+         content = thisfield.${'a'} ;
+
+         IF content ;
+           IF NOT content_map.${'Erscheinungsverlauf'} ;
+	     content_map.${'Erscheinungsverlauf'} = [];
+	   END;
+           content_map.${'Erscheinungsverlauf'}.push(content);
+	 END;
+
+    CASE "T0490"; # Gesamttitel
+         content = thisfield.${'a'} ;
+
+         IF content ;
+           IF NOT content_map.${'Gesamttitel'} ;
+	     content_map.${'Gesamttitel'} = [];
+	   END;
+           content_map.${'Gesamttitel'}.push(content);
+	 END;
+
+    CASE [ "T0500" "T0504" ];    
+         content = thisfield.${'a'};
+
+         IF content ;
+           IF NOT content_map.${'Hinweis'} ;
+	      content_map.${'Hinweis'} = [];
+	   END;
+           content_map.${'Hinweis'}.push(content);
+	 END;
+
+    CASE "T0515";    
+         content = thisfield.${'a'};
+
+         IF content ;
+           IF NOT content_map.${'Erscheinungsweise'} ;
+	      content_map.${'Erscheinungsweise'} = [];
+	   END;
+           content_map.${'Erscheinungsweise'}.push(content);
+	 END;
+
+    CASE "T0520";    
+         content = thisfield.${'a'};
+
+         IF content ;
+           IF NOT content_map.${'Zusammenfassung'} ;
+	      content_map.${'Zusammenfassung'} = [];
+	   END;
+           content_map.${'Zusammenfassung'}.push(content);
+	 END;
+
+    CASE [ "T0600" "T0610" "T0648" "T0650" "T0651" "T0655" "T0688" "T0689" ];    
+         content = thisfield.${'a'};
+         thisid  = thisfield.${'0'};
+
+         gndid = "";
+	 IF thisid.match('(DE-588)');
+	    gndid = thisid.replace('\(DE-588\)','');
+	 END;
+
+         supplement = "";
+
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').subjectstring.prefix;
+
+         NEXT IF rswkswt_done.${searchterm} == 1;
+	 
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/lobidgnd/${config.get('titles_loc')}/id/${gndid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         normdataicon = "";
+
+         IF gndid ;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Schlagwort-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         icons     = "<span>${normdataicon}</span>";
+
+         IF content ;
+           content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
+           IF NOT content_map.${'Schlagwort'} ;
+	      content_map.${'Schlagwort'} = [];
+	   END;
+           content_map.${'Schlagwort'}.push(content);
+	 END;
+
+         rswkswt_done.${searchterm} = 1;
+
+    CASE [ "T0770" "T0776" ];    
+         content = thisfield.${'i'};
+         thistitle = thisfield.${'t'};
+         thisid    = thisfield.${'w'};
+
+         # ggf. verlinken
+         IF 0 == 1 && thistitle && thisid ;
+	    thisid = thisid.replace('\(.+?\)','');
+            searchterm    = thisid;
+            searchprefix  = config.get('searchfield').zdbid.prefix;
+
+            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+
+	    thistitle = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+	 END;
+
+         content = "${content} ${thistitle}";
+	 
+         IF content ;
+           IF NOT content_map.${'Hinweis'} ;
+	      content_map.${'Hinweis'} = [];
+	   END;
+           content_map.${'Hinweis'}.push(content);
+	 END;
+
+    CASE "T0856";
+         content = thisfield.${'3'};
+	 url     = thisfield.${'u'};
+
+         IF NOT content ;
+	   content = url;
+	 END;
+	 
+	 content   = "<a href=\"${url}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";         
+
+         IF NOT content_map.${'URL'} ;
+	    content_map.${'URL'} = [];
+	 END;
+         content_map.${'URL'}.push(content);
+
+    CASE "T0983";    
+         content = thisfield.${'b'};
+
+         supplement = "";
+	 
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').classificationstring.prefix;
+
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         normdataicon = "";
+
+         IF thisid && catalog_has_authorities ;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Systematik-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         icons     = "<span>${normdataicon}</span>";
+
+         bkdesc = ""; 
+         IF content.match('\d\d\.\d\d');         
+           bkresult      = bklookup.${content};
+	   IF bkresult ;
+	      bkdesc = "(${bkresult})";
+	   END;
+         END;
+
+         IF content ;
+           content   = "<a class=\"inturl\" href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${bkdesc} ${supplement} ${icons}";
+	   
+           IF NOT content_map.${'Klassifikation'} ;
+	      content_map.${'Klassifikation'} = [];
+	   END;
+           content_map.${'Klassifikation'}.push(content);
+	 END;
+
+    CASE "T4102";
+         content = thisfield.${'e'};
+	 
+         topicdesc   = topic_map.${content};
+         IF topicdesc ;
+            content   = topicdesc ;
+         END ;
+         IF NOT content_map.${'E4102'} ;
+	    content_map.${'E4102'} = [];
+	 END;
+         content_map.${'E4102'}.push(content);
+
+    CASE "T4300";
+         content = thisfield.${'e'};
+
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').ft4300.prefix;
+
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         NEXT IF extsubj_done.${content} == 1;
+         extsubj_done.${content} = 1;
+	 
+	 content       = "<a class=\"inturl\" href=\"${localurl}\">${content}</a>";
+
+         IF NOT content_map.${'E4300'} ;
+	    content_map.${'E4300'} = [];
+	 END;
+         content_map.${'E4300'}.push(content);
+
+    CASE "T5001";
+         searchterms = [];
+         FOREACH superfield IN normdata.${"T5003"};
+	    IF superfield.defined('a');
+	       superfieldcontent = superfield.${'a'};
+               searchterms.push("id:${superfieldcontent}");
+	    END;
+         END;
+
+         zeigeueberordnung        = msg.maketext('Zeige Überordnung');
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};dop=or;fs=${searchterms.join(' ')}";
+         content   = "<a class=\"btn btn-primary\" href=\"${localurl}\">${zeigeueberordnung}</a>";
+         IF NOT content_map.${'T5001'} ;
+	    content_map.${'T5001'} = [];
+	 END;
+         content_map.${'T5001'}.push(content);
+
+    CASE "T5002";
+         searchterm    = item.content;
+         searchprefix  = config.get('searchfield').subid.prefix;
+
+         baendeanzeigen = msg.maketext('Bände/Stücktitel anzeigen');
+	 
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1;num=20;srt=order_desc;profile=${searchprofileid_of_database};${searchprefix}=${record.id}";
+         content   = "<a class=\"btn btn-primary\" href=\"${localurl}\">${content} ${baendeanzeigen}</a>";
+         IF NOT content_map.${'T5002'} ;
+	    content_map.${'T5002'} = [];
+	 END;
+         content_map.${'T5002'}.push(content);
+	 
+    CASE "T5005";
+         content = thisfield.${'e'};
+         super         = from_json(content);
+         # USE dumper;dumper.dump(super);
+         searchterm    = super.id;
+         searchprefix  = config.get('searchfield').id.prefix;
+
+         super_title   = "";
+
+         FOREACH superfields IN super.fields.${'0245'} ;
+	   IF superfields.subfield == 'a';
+	      super_title = superfields.content;
+	   END;
+	 END;
+
+         IF NOT super_title ;
+            super_title = "Zur &Uuml;berordnung";
+         END ;
+
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         content   = "<a href=\"${localurl}\">${super_title}</a>";
+         IF NOT content_map.${'T5005'} ;
+	    content_map.${'T5005'} = [];
+	 END;
+         content_map.${'T5005'}.push(content);
+
+    CASE ;
+         content   = highlightquery(searchquery,item.content);
+         IF NOT content_map.${category} ;
+	    content_map.${category} = [];
+	 END;
+         content_map.${category}.push(content);
+    END;
+ END;
+END;
+
+# Processing von Feldern mit multiple vorhandenen gleichen Subfeldern
+
+fields_with_multiple_subfields = [
+   'T0980',
+];
+
+plain_fields = record.get_fields;
+
+USE dumper;dumper.dump(plain_fields);
+
+FOREACH plain_field IN fields_with_multiple_subfields;
+
+  SWITCH plain_field;
+
+    CASE "T0980";
+
+      FOREACH item IN plain_fields.${plain_field};
+         this_subfield = item.subfield ;
+	 this_content  = item.content ;
+
+         IF this_subfield == "s";
+           sammlung = this_content;
+
+           sammlungsvermerk = "";
+	 
+           IF sammlungen.${sammlung}.defined ;
+             sammlungsurl = sammlungen.${sammlung};
+             sammlungsvermerk = "<i class=\"me-2 fas fa-archway\"></i><a href=\"${sammlungsurl}\" target=\"_blank\"><b>${sammlung}</b></a>" ;
+           ELSIF sammlung ;
+             sammlungsvermerk = "${sammlung} (Portal im Aufbau)" ;
+           END ;
+
+           IF sammlungsvermerk ;
+             IF NOT content_map.${'Sammlungs-Portal'} ;
+	        content_map.${'Sammlungs-Portal'} = [];
+	     END;
+             content_map.${'Sammlungs-Portal'}.push(sammlungsvermerk);
+	   END;
+	 END; # End subfield
+      END; # End foreach
+    END; # End case
+    
+   END; # End Switch
+END; # End foreach plain_field
+
+display_types = {
+   'Link'           => 'list',
+   'Schlagwort'     => 'list',
+   'Klassifikation' => 'list',   
+   'Hinweis'        => 'list',   
+};
+
+#USE dumper;dumper.dump(content_map);dumper.dump(categories);dumper.dump(record_type);
+
+FOREACH category IN categories;
+
+   IF content_map.${category}.first;
+      IF display_types.${category} == 'list' ;
+        IF content_map.${category}.size > 1 ;
+          content = "<ul>";
+          FOREACH thiscontent IN content_map.${category};
+	    content="${content}<li>${thiscontent}</li>";
+	  END;
+	  content = "${content}</ul>";
+	ELSE ;
+	  content = content_map.${category}.first;
+	END;
+      ELSE ;
+        content = content_map.${category}.join(' ; ');
+      END;
+
+      # Titel hervorheben
+      IF category == "Titel";
+        content = "<span class=\"ob-title\">${content}</span>";
+      END;
+-%]
+<tr><th class="ob-field">[% msg.maketext("${category}") %]</th><td>[% content %]</td></tr>
+[%
+   END;
+END;
+-%]
+[%- IF currently_unavailable -%]
+<tr><th class="ob-field">[% msg.maketext("Volltext")%]</th><td>derzeit nicht verf&uuml;gbar (z.B. noch im Erwerbungsvorgang)</td></tr>
+[%- END -%]
+[%-
+
+  show_more = 0;
+
+  IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} ;
+    show_more = 1;
+  END;
+  
+  FOREACH category IN supplemental_categories;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+   IF content_map.${category}.first;
+      IF display_types.${category} == 'list' ;
+        IF content_map.${category}.size > 1 ;
+          content = "<ul>";
+          FOREACH thiscontent IN content_map.${category};
+	    content="${content}<li>${thiscontent}</li>";
+	  END;
+	  content = "${content}</ul>";
+	ELSE ;
+	  content = content_map.${category}.first;
+	END;
+      ELSE ;
+        content = content_map.${category}.join(' ; ');
+      END;
+
+      # Titel hervorheben
+      IF category == "T0331";
+        content = "<span class=\"ob-title\">${content}</span>";
+      END;
+
+      show_more = 1;
+-%]
+<tr class="ob-field_supplemental" hidden><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+[%
+   END;
+END;
+-%]
+[% IF show_more %]
+<tr class="ob-field ob-more_button"><th><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></th><td></td></tr>
+[% END %]
+</table>
+</div>
+[%# USE dumper;dumper.dump(content_map) %]
+[% ELSIF format == "BibTeX" %]
+<div>
+<pre>
+[% record.to_bibtex %]
+</pre>
+</div>
+[% ELSIF format == "Text" %]
+<pre>
+[% FOREACH category IN categories;
+    FOREACH item IN normdata.$category;
+    content = item.content;
+
+    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+    # in Config.pm fuer die entsprechende Datenbank definiert
+    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+    # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+-%]
+[% msg.maketext("${thiscategory}") | format("%- 24s") %]: [% content %]
+[% END -%]
+[%- END -%]
+[%- IF holding.size > 0 -%]
+[%- FOREACH thisholding IN holding -%]
+[% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% thisholding.${"X4000"}.content.full %]
+[% msg.maketext("Standort             ") %] [% loop.count %] : [% thisholding.${"X0016"}.content %]
+[% msg.maketext("Lokale Signatur      ") %] [% loop.count %] : [% thisholding.${"X0014"}.content %]
+[% msg.maketext("Inventarnummer       ") %] [% loop.count %] : [% thisholding.${"X0005"}.content %]
+[% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% thisholding.${"X1204"}.content %]
+[% END %]
+
+[% END %]
+</pre>
+[% ELSIF format == "EndNote" %]
+<pre>
+[% record.to_endnote %]
+</pre>
+[% END %]

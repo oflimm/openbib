@@ -203,34 +203,33 @@
 [% PROCESS common/subtemplate name="searchforms_suggestions" %]
 
 [% IF NOT suppress_unauthorized && NOT layout_param.without_navigation_search %]
-  <div class="d-sm-block d-md-none mb-3">
-    <div class="card border-0 sticky-top" style="min-width: 100%!important;">
-      
-      <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
-	
-	<input type="hidden" name="num"        value="20" />
-	<input type="hidden" name="page"       value="1" />
-	<input type="hidden" name="l"          value="[% lang %]" />
-	
-	<input type="hidden" name="srt"        value="[% session_sort %]" />
-	<input type="hidden" name="st"         value="1" />
-	<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+<div id="ob-mainnavigation_searchbar" class="mb-3">
+<div class="card border-0 sticky-top" style="min-width: 100%!important;">
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+
+<input type="hidden" name="num"        value="20" />
+<input type="hidden" name="page"       value="1" />
+<input type="hidden" name="l"          value="[% lang %]" />
+
+<input type="hidden" name="srt"        value="[% session_sort %]" />
+<input type="hidden" name="st"         value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
         <div class="card-header p-0 border-0">
 	  
           <div id="search_wrapper_top" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
             <div class="input-group">
               <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
-              <span class="input-group-btn ps-1">
-                <button class="btn btn-primary" type="submit"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
-                <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>
-              </span>
+                <span class="input-group-btn ps-1">
+                    <button class="btn btn-primary fas fa-search" style="height: 36px;" type="submit"></button>
+                    <span class="btn btn-primary fas fa-cog" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>
+                </span>
             </div>
-	    
+
           </div>
-        </div>
-	
+
 	<div class="row pb-0">     
-	  <div class="col collapse d-md-block p-0" id="search_options">
+	  <div class="col collapse p-0 bg-white" id="search_options">
             <ul class="list-group flex-row flex-wrap justify-content-center">
               <li class="list-group-item pe-1 pt-3" style="border: none" >
 		<a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-indicator=".spinner-border" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
@@ -242,8 +241,11 @@
 	  </div><!-- col -->
 	</div><!-- row -->
 
-      </form>
-    </div><!-- End: sticky-top -->
-  </div><!-- End: d-md-none -->
+        </div>
+
+</form>
+<!-- </nav> -->
+</div><!-- End: sticky-top -->
+</div><!-- End: d-md-none -->
 [% END # End: suppress_unauthorized %]
     <!-- end: main navigation -->

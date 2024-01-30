@@ -790,26 +790,6 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'URL'}.push(content);
 
-    CASE "T0980";    
-         sammlung = thisfield.${'s'};
-
-         sammlungsvermerk = "";
-	 
-         IF sammlungen.${sammlung}.defined ;
-           sammlungsurl = sammlungen.${sammlung};
-           sammlungsvermerk = "<i class=\"me-2 fas fa-archway\"></i><a href=\"${sammlungsurl}\" target=\"_blank\"><b>${sammlung}</b></a>" ;
-         ELSIF sammlung ;
-           sammlungsvermerk = "${sammlung} (Portal im Aufbau)" ;
-         END ;
-
-         IF sammlungsvermerk ;
-           IF NOT content_map.${'Sammlungs-Portal'} ;
-	      content_map.${'Sammlungs-Portal'} = [];
-	   END;
-           content_map.${'Sammlungs-Portal'}.push(sammlungsvermerk);
-	 END;
-
-
     CASE "T4102";
          content = thisfield.${'e'};
 	 
@@ -918,6 +898,27 @@ FOREACH field IN singular_normdata;
 
     SWITCH category;
 
+    CASE "T0980";
+       IF item.subfield == 's';    
+         sammlung = item.content;
+
+         sammlungsvermerk = "";
+	 
+         IF sammlungen.${sammlung}.defined ;
+           sammlungsurl = sammlungen.${sammlung};
+           sammlungsvermerk = "<i class=\"me-2 fas fa-archway\"></i><a href=\"${sammlungsurl}\" target=\"_blank\"><b>${sammlung}</b></a>" ;
+         ELSIF sammlung ;
+           sammlungsvermerk = "${sammlung} (Portal im Aufbau)" ;
+         END ;
+
+         IF sammlungsvermerk ;
+           IF NOT content_map.${'Sammlungs-Portal'} ;
+	      content_map.${'Sammlungs-Portal'} = [];
+	   END;
+           content_map.${'Sammlungs-Portal'}.push(sammlungsvermerk);
+	 END;
+       END;
+
      CASE [ "T0982" ];
        IF item.subfield == 'a';
          content = item.content;
@@ -983,10 +984,11 @@ FOREACH field IN singular_normdata;
 END;
 
 display_types = {
-   'Link'           => 'list',
-   'Schlagwort'     => 'list',
-   'Klassifikation' => 'list',   
-   'Hinweis'        => 'list',   
+   'Link'             => 'list',
+   'Schlagwort'       => 'list',
+   'Klassifikation'   => 'list',   
+   'Hinweis'          => 'list',
+   'Sammlungs-Portal' => 'list',      
 };
 
 # USE dumper;dumper.dump(content_map);dumper.dump(singular_normdata);dumper.dump(record_type);

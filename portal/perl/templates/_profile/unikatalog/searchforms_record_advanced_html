@@ -24,9 +24,11 @@
   <li class="nav-item" role="presentation">
     <a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-advancedsearch_title">[% msg.maketext("Titel") %]</a>
   </li>
+[% IF layout_param.active_authoritysearch %]  
   <li class="nav-item" role="presentation">
     <a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-advancedsearch_authority">[% msg.maketext("Normdaten") %]</a>
   </li>
+[% END %]  
 </ul>
 
 <div class="tab-content pt-3 ps-2 pe-2 pb-3 mb-2">
@@ -49,8 +51,10 @@
 
   </div>
 
+[% IF layout_param.active_authoritysearch %]  
   <div role="tabpanel" class="tab-pane fade-in" id="ob-advancedsearch_authority">
 [% PROCESS common/subtemplate name="searchforms_record_authority_include" %]
   </div>
+[% END %]  
 </div>
 

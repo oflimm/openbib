@@ -311,6 +311,10 @@
 	
     }
 
+
+    .ob-home_body #ob-mainnavigation_searchbar {
+	display:none;
+    }
     
     #ob-std_footer {
 	border-radius: 0;
@@ -1926,6 +1930,11 @@ a.ext {
 }
 
 @media only screen and (max-width: 768px) {
+
+    .ob-home_body #ob-mainnavigation_searchbar {
+	display:block;
+    }
+        
     .col-md-3 {
 	margin-right: 0px;
     }

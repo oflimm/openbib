@@ -1,0 +1,47 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+     'page_title' = 'Wortwolken'
+
+      'main_template' = 'clouds_classification_html'
+      'sidebar_template' = 'clouds_navigation'
+      'sidebar_button_in_main_template' = 1 # Sidebar im Desktop anzeige, Mobil via Button
+
+      'active_menu' = 'cloud'
+      'active_submenu' = 'clouds_classification'      
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Wolken')
+	     url  = "${path_prefix}/${config.get('clouds_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = dbinfo.get('dbnames').${database}.short
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${databases}/${config.get('clouds_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Systematik')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('clouds_loc')}/id/classification.json?l=${lang}"
+	  },
+       ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="clouds_classification_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="clouds_classification_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

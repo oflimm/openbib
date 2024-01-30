@@ -44,9 +44,7 @@ while (<>){
 	    if ($mark){
 		my ($base,$count) = $mark =~m/^(\d+A)(\d+)/;
 		
-		print STDERR "$base - $count \n";
-		# Bestimme navid und reichere in "0050" an
-		
+		# Bestimme navid und reichere in "0050" an		
 		my $navid = "";
 		
 		if (defined $navid_ranges_ref->{$base}{start}){

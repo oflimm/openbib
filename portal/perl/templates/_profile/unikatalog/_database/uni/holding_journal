@@ -63,7 +63,7 @@
     processed_holding_by_sigel = {};
 
     # USE dumper;dumper.dump(holding_fields_per_id);
-    FOREACH holdingid IN holding_fields_per_id.keys ;
+    FOREACH holdingid IN holding_fields_per_id.keys.sort ;
       bestandsverlauf  = holding_fields_per_id.${holdingid}.${"a"};
       luecken          = holding_fields_per_id.${holdingid}.${"z"};
       signatur         = holding_fields_per_id.${holdingid}.${"h"};

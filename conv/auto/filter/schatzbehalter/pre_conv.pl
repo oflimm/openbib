@@ -39,7 +39,7 @@ my $konvdir       = $config->{'conv_dir'};
 
 my $pool          = $ARGV[0];
 
-print "### $pool: AST und HST vereinen wegen Titel-Register\n";
+print "### $pool: AST und HST vereinen wegen Titel-Register und URL-Processing\n";
 
 system("mv -f $rootdir/data/$pool/meta.title $rootdir/data/$pool/meta.title.tmp");
-system("$rootdir/filter/$pool/change_ast_hst.pl < $rootdir/data/$pool/meta.title.tmp | $rootdir/filter/$pool/correct_urls.pl > $rootdir/data/$pool/meta.title");
+system("$rootdir/filter/$pool/change_ast_hst.pl < $rootdir/data/$pool/meta.title.tmp | $rootdir/filter/$pool/correct_urls.pl | $rootdir/filter/$pool/process_urls.pl > $rootdir/data/$pool/meta.title");

@@ -19,9 +19,13 @@ while (<NAVIDS>){
     my ($start_base, $start_count)=split('\s+',$start);
     my ($end_base, $end_count)=split('\s+',$end);
 
+    next unless ($start_count && $end_count && $start_count =~m/^\d+$/ && $end_count =~m/^\d+$/);
+    
     $navid_ranges_ref->{$start_base}{'start'}{$start_count} = $navid;
     $navid_ranges_ref->{$start_base}{'end'}{$start_count} = $navid;
 }
+
+close(NAVIDS);
 
 while (<>){
     my $holding_ref = decode_json $_;
@@ -43,26 +47,29 @@ while (<>){
 	    
 	    if ($mark){
 		my ($base,$count) = $mark =~m/^(\d+A)(\d+)/;
-		
-		# Bestimme navid und reichere in "0050" an		
-		my $navid = "";
-		
-		if (defined $navid_ranges_ref->{$base}{start}){
-		    foreach my $this_start (sort keys %{$navid_ranges_ref->{$base}{start}}){
-			if ($count >= $this_start){
-			    $navid = $navid_ranges_ref->{$base}{start}{$this_start}
+
+		if ($base && $count){
+		    # Bestimme navid und reichere in "0050" an		
+		    my $navid = "";
+		    
+		    if (defined $navid_ranges_ref->{$base}{start}){
+			foreach my $this_start (sort keys %{$navid_ranges_ref->{$base}{start}}){
+#			    print STDERR "$base - $count - $this_start";
+			    if ($count >= $this_start){
+				$navid = $navid_ranges_ref->{$base}{start}{$this_start}
+			    }
 			}
 		    }
-		}
-		
-		if ($navid){
-		    $fields_ref->{'0050'} = [
-			{
-			    content => $navid,
-			    mult => 1,
-			    subfield => "",
-			}
-			];
+		    
+		    if ($navid){
+			$fields_ref->{'0050'} = [
+			    {
+				content => $navid,
+				mult => 1,
+				subfield => "",
+			    }
+			    ];
+		    }
 		}
 	    }
 	}

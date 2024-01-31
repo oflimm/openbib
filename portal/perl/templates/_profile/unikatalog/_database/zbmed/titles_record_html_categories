@@ -964,7 +964,7 @@ FOREACH field IN singular_normdata;
          IF thisnlm;      
            nlmresult      = nlmlookup.${thisnlm};
 	   IF nlmresult ;
-	      nlmdesc = "(${thisnlm}: ${nlmresult})";
+	      nlmdesc = "(${nlmresult})";
 	      nlmdesc = "<a href=\"https://classification.nlm.nih.gov/schedules/${thisnlm.lower}\" target=\"_blank\">${nlmdesc}</a>";
 	   END;
          END;

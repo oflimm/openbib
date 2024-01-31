@@ -86,7 +86,17 @@
      ELSIF thiscirculation.department_id.match('^KN3$') && thiscirculation.storage_id.match('^KN3-SCHLAD$') ;
        library_isil = "DE-Kn3-SL";     
      ELSIF thiscirculation.department_id.match('^KN3$') ;
-       library_isil = "DE-Kn3";     
+       library_isil = "DE-Kn3";
+     ELSIF thiscirculation.department_id.match('^38-208$') ;        
+        IF thiscirculation.storage_id.match('^38-208-ILC$');
+          library_isil = "DE-38-208-ILC";
+        ELSIF thiscirculation.storage_id.match('^38-208-HRV$');
+          library_isil = "DE-38-208-HRV";
+        ELSIF thiscirculation.storage_id.match('^38-208-USR$');
+          library_isil = "DE-38-208-USR";
+	ELSE ;
+          library_isil = "DE-38-208";
+	END;
      ELSIF thiscirculation.department_id.match('^38-[0-9][0-9][0-9]');
        kuerzel = thiscirculation.department_id.match("^38-([0-9][0-9][0-9])").first ;
        IF kuerzel ;

@@ -14,8 +14,6 @@
 -%]
 [%-
 
-   bklookup    = config.load_bk;
-
    topic_map = {};
    FOREACH topic IN user.get_topics;
       topic_map.${topic.id} = topic.name;
@@ -25,7 +23,8 @@
 
    #USE dumper;dumper.dump(normdata);
 
-
+   nlmlookup = config.load_yaml('/opt/openbib/conf/nlm.yml');
+   
    catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
 -%]
 [% IF format == "full" %]
@@ -960,16 +959,17 @@ FOREACH field IN singular_normdata;
 
          icons     = "<span>${normdataicon}</span>";
 
-         bkdesc = ""; 
-         IF content.match('\d\d\.\d\d');         
-           bkresult      = bklookup.${content};
-	   IF bkresult ;
-	      bkdesc = "(${bkresult})";
+         nlmdesc = "";
+	 thisnlm = content.match('^([A-Z]+)').first;
+         IF thisnlm;      
+           nlmresult      = nlmlookup.${thisnlm};
+	   IF nlmresult ;
+	      nlmdesc = "(${thisnlm}: ${nlmresult})";
 	   END;
          END;
 
          IF content ;
-           content   = "<a class=\"inturl\" href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${bkdesc} ${supplement} ${icons}";
+           content   = "<a class=\"inturl\" href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${nlmdesc} ${supplement} ${icons}";
 	   
            IF NOT content_map.${'Klassifikation'} ;
 	      content_map.${'Klassifikation'} = [];

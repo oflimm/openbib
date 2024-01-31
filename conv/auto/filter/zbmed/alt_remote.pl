@@ -70,6 +70,8 @@ my $do_publish    = 0; # Soll dieses Skript auch das Publishing anstossen
     
 my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
+my $baseurl       = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath;
+
 my $filename      = $dbinfo->titlefile;
 
 my $use_api       = 0; # Use Alma API to get published data
@@ -202,7 +204,12 @@ if ($use_join) {
     system("cd $filterdir/$pool; ./join_ubk.sh");
 }
 
-system("cd $pooldir/$pool ; rm meta.* ");
+system("cd $pooldir/$pool ; rm meta.* *.mrc ");
+
+system("$wgetexe -P $pooldir/$pool/ $baseurl/zbmed_usb_1.mrc   > /dev/null 2>&1 ");
+system("$wgetexe -P $pooldir/$pool/ $baseurl/zbmed_usb_2.mrc   > /dev/null 2>&1 ");
+
+system("cd $pooldir/$pool ; cat zbmed_*.mrc > $filename ");
 
 print "### $pool: Umwandlung von $filename in MARC-in-JSON via yaz-marcdump\n";
 system("cd $pooldir/$pool; yaz-marcdump -o json $filename  | jq -S -c . > ${filename}.processed");

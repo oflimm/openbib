@@ -21,6 +21,31 @@
 </div>
 [% END %]
 
+[%-
+
+   link_remarks = [];
+
+   IF normdata.${"T1945"};
+     FOREACH thisitem IN normdata.${"T1945"};
+        IF thisitem.${'l'};
+	   link_remarks.push(thisitem.${'l'});
+	END;
+     END;
+   END;
+
+-%]
+
+[% IF link_remarks %]
+<div class="alert alert-info">
+<h4>[% msg.maketext("Hinweise") %]</h4>
+<ul>
+[% FOREACH thisremark IN link_remarks %]
+<li>[% thisremark %]</li>
+[% END %]
+</ul>
+</div>
+[% END %]
+
 [%- reviews = user.get_reviews_of_tit({ titleid => record.id, dbname => record.database }); %]
 [%-
 

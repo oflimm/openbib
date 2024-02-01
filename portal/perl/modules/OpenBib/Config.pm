@@ -2577,10 +2577,24 @@ sub load_yaml {
     $YAML::Syck::ImplicitTyping  = 1;
     $YAML::Syck::ImplicitUnicode = 1;
 
+    my $memc_key = "config:$filename";
+
     my $yaml_ref = {};
+
+    if ($self->{memc}){
+        my $yaml_ref = $self->{memc}->get($memc_key);
+
+	if ($yaml_ref){
+	    return $yaml_ref;
+	}
+    }
 
     eval {
         $yaml_ref = YAML::Syck::LoadFile($filename);
+
+       if ($self->{memc}){
+ 	  $self->{memc}->set($memc_key,$yaml_ref,3600);
+       }
     };
     
     return $yaml_ref 

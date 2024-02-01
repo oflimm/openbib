@@ -508,6 +508,20 @@
      - none
      - html
    runmode: 'show_record'
+- # Resource: browse_loc
+   module: 'OpenBib::Handler::PSGI::Browse::RVK'
+   rule: '/portal/:view/browse/rvk[get]'
+   representations:
+     - none
+     - html
+   runmode: 'show_collection'
+- # Resource: browse_loc
+   module: 'OpenBib::Handler::PSGI::Browse::RVK'
+   rule: '/portal/:view/browse/rvk/id/:sysid[get]'
+   representations:
+     - none
+     - html
+   runmode: 'show_record'
 
 #####################################################################
 # Informations-Resource/Repraesentation

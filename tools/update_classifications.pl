@@ -100,8 +100,9 @@ foreach my $classification (keys %{$yaml_ref->{description}}){
     };
 
     if ($idx % 10000 == 0){
-	$config->get_schema->resultset('Classification')->populate($descriptions_ref)
-;	$logger->info("Processed $idx descriptions");
+	$config->get_schema->resultset('Classification')->populate($descriptions_ref);
+	$logger->info("Processed $idx descriptions");
+	$descriptions_ref = [];
     }
     
     $idx ++;
@@ -128,6 +129,7 @@ foreach my $classification (keys %{$yaml_ref->{hierarchy}}){
     if ($idx % 10000 == 0){
 	$config->get_schema->resultset('Classificationshierarchy')->populate($hierarchies_ref);
 	$logger->info("Processed hierarchies for $idx classifications");
+	$hierarchies_ref = [];
     }
 
     $idx++;

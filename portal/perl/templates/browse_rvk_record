@@ -1,0 +1,39 @@
+[%- PROCESS common/subtemplate name="local_config" -%]
+[%-  rvk = config.load_yaml('/opt/openbib/conf/rvk_complete.yml'); -%]
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = "RVK-Systematik '${sysid}' anzeigen"
+
+      'main_template' = 'browse_rvk_record_html'
+
+      'active_menu' = 'register'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Browsen')
+	     url  = "${path_prefix}/${config.get('browse_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Regensburger Verbundklassifikation RVK')
+	     url  = "${path_prefix}/${config.get('browse_loc')}/rvk.html?l=${lang}"
+	  },
+	  {
+	     desc = "Systematikgruppe ${sysid}"
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="browse_rvk_record_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="browse_rvk_record_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

@@ -348,3 +348,14 @@ CREATE INDEX paia_token ON paia (token);
 CREATE INDEX paia_tstamp ON paia (tstamp);
 
 ALTER TABLE paia ALTER COLUMN tstamp SET DEFAULT now();
+
+ALTER TABLE classifications ADD PRIMARY KEY (id);
+CREATE INDEX classifications_type ON classifications (type);
+CREATE INDEX classifications_name ON classifications (name);
+
+ALTER TABLE classificationshierarchy ADD PRIMARY KEY (id);
+CREATE INDEX classificationshierarchy_type ON classificationshierarchy (type);
+CREATE INDEX classificationshierarchy_name ON classificationshierarchy (name);
+CREATE INDEX classificationshierarchy_number ON classificationshierarchy (number);
+CREATE INDEX classificationshierarchy_subname ON classificationshierarchy (subname);	
+

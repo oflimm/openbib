@@ -706,3 +706,24 @@ CREATE TABLE paia (
   token               TEXT
 
 );
+
+DROP TABLE IF EXISTS classifications;
+CREATE TABLE classifications (
+  id                  BIGSERIAL,
+  tstamp              TIMESTAMP,
+
+  type                TEXT,
+  name                TEXT,
+  description         TEXT
+);
+
+DROP TABLE IF EXISTS classificationshierarchy;
+CREATE TABLE classificationshierarchy (
+  id                  BIGSERIAL,
+  tstamp              TIMESTAMP,
+
+  type                TEXT,
+  name                TEXT,
+  number              INT,
+  subname             TEXT
+);

@@ -35,7 +35,11 @@ use File::Slurper 'read_binary';
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 
-use YAML;
+use YAML::Syck;
+
+$YAML::Syck::SingleQuote = 1;
+$YAML::Syck::ImplicitTyping  = 1;
+$YAML::Syck::ImplicitUnicode = 1;
 
 # XML-Inputfile from
 # https://rvk.uni-regensburg.de/regensburger-verbundklassifikation-online/rvk-download
@@ -60,7 +64,7 @@ foreach my $node ($root->findnodes('/classification_scheme/node')) {
 }
     
 open(OUT,">:utf8","./rvk_complete.yml");
-print OUT YAML::Dump($rvk_ref);
+print OUT YAML::Syck::Dump($rvk_ref);
 close(OUT);
 
 sub process_children {

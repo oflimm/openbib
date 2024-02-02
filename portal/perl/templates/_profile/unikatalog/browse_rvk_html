@@ -51,6 +51,10 @@
     'ZG - ZS',
     'ZX - ZY',
   ];
+
+  rvk = config.get_description_of_classification(type => 'rvk', names => rvk_base );
+
+  # USE dumper;dumper.dump(rvk);
 %]
 
 <h3>[% msg.maketext("Regensburger Verbundklassifikation RVK") %]</h3>
@@ -63,7 +67,7 @@
 <tr>
 <th style="font-weight:bold;font-size:1.2em;" width="15%">[% sysid %]</th>
 <td>
-<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('browse_loc') %]/rvk/id/[% sysid %].html?l=[% lang %]">[% rvk.description.${sysid} %]</a> <i class="fas fa-sort-down"></i>
+<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('browse_loc') %]/rvk/id/[% sysid %].html?l=[% lang %]">[% rvk.${sysid} %]</a> <i class="fas fa-sort-down"></i>
 </td>
 </tr>
 [% END %]

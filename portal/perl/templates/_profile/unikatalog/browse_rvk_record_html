@@ -15,9 +15,20 @@
 
   profileid = config.get_searchprofile_of_database('uni');
 
+  rvk = config.get_tree_of_classification(type => 'rvk', name => sysid );
+
+  rvk_has_sub = {};
+  FOREACH thisrvk IN rvk;
+     rvksub = config.get_tree_of_classification(type => 'rvk', name => thisrvk );
+     IF NOT rvksub.empty;
+       rvk_has_sub.${thisrvk} = 1;
+     END;
+  END;
+  
+  rvk_desc = config.get_description_of_classification(type => 'rvk', names => rvk );
 -%]
 
-<h4>RVK Systematikgruppe [% sysid %]: [% rvk.description.${sysid} %]</h4>
+<h4>RVK Systematikgruppe [% sysid %]: [% config.get_description_of_classification(type => 'rvk', names => [sysid] ).${sysid} %]</h4>
 
 <p>Überordnungen</p>
 
@@ -25,19 +36,19 @@
 <li><a class="" href="[% path_prefix %]/[% config.get('browse_loc') %]/rvk.html?l=[% lang %]">[% msg.maketext("Übersicht") %]</a></li>
 </ul>
 
-[% IF rvk.hierarchy.${sysid} %]
+[% IF rvk %]
 <p>Untergebiete</p>
 
 <div class="table-responsive mt-3">
 <table class="table table-striped ">
-[%- FOREACH syssubid IN rvk.hierarchy.${sysid} -%]
+[%- FOREACH syssubid IN rvk -%]
 <tr>
 <th style="font-weight:bold;font-size:1.2em;" width="15%">[% syssubid %]</th>
 <td>
-[% IF rvk.hierarchy.${syssubid} %]
-<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('browse_loc') %]/rvk/id/[% syssubid %].html?l=[% lang %]">[% rvk.description.${syssubid} %]</a> <i class="fas fa-sort-down"></i>
+[% IF rvk_has_sub.${syssubid} %]
+<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('browse_loc') %]/rvk/id/[% syssubid %].html?l=[% lang %]">[% rvk_desc.${syssubid} %]</a> <i class="fas fa-sort-down"></i>
 [% ELSE %]
-<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?rvk=[% syssubid %]*;srt=mark_asc;profile=[% profileid %];l=[% lang%]">[% rvk.description.${syssubid} %]</a>
+<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?rvk=[% syssubid %]*;srt=mark_asc;profile=[% profileid %];l=[% lang%]">[% rvk_desc.${syssubid} %]</a>
 [% END%]
 </td>
 </tr>

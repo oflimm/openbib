@@ -1,8 +1,6 @@
 [%- PROCESS common/subtemplate name="local_config" -%] 
 [%-
 
-    rvk = config.load_yaml('/opt/openbib/conf/rvk_complete.yml');
-    
     IF representation == '' || representation == 'html' ;
     layout_param = {
 #     'page_title' = 'Themengebiete anzeigen'

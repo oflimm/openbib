@@ -17,23 +17,32 @@
 
   rvk = config.get_tree_of_classification(type => 'rvk', name => sysid );
 
+  #USE dumper;dumper.dump(rvk);
   rvk_has_sub = {};
-  FOREACH thisrvk IN rvk;
-     rvksub = config.get_tree_of_classification(type => 'rvk', name => thisrvk );
+  FOREACH thisrvk IN rvk.subordinate;
+     rvksub = config.get_tree_of_classification(type => 'rvk', name => thisrvk ).subordinate;
      IF NOT rvksub.empty;
        rvk_has_sub.${thisrvk} = 1;
      END;
   END;
+
+  all_rvk = [];
+  all_rvk.push(rvk.super);
+  all_rvk.push(rvk.subordinate);
+  all_rvk.push(rvk.current);
   
-  rvk_desc = config.get_description_of_classification(type => 'rvk', names => rvk );
+  rvk_desc = config.get_description_of_classification(type => 'rvk', names => all_rvk );
 -%]
 
-<h4>RVK Systematikgruppe [% sysid %]: [% config.get_description_of_classification(type => 'rvk', names => [sysid] ).${sysid} %]</h4>
+<h4>RVK Systematikgruppe [% sysid %]: [% rvk_desc.${sysid} %]</h4>
 
 <p>Überordnungen</p>
 
-<ul>
-<li><a class="" href="[% path_prefix %]/[% config.get('browse_loc') %]/rvk.html?l=[% lang %]">[% msg.maketext("Übersicht") %]</a></li>
+<ul class="list-group pb-3">
+<li class="list-group-item"><a class="fas fa-list pe-2"></i> <a class="" href="[% path_prefix %]/[% config.get('browse_loc') %]/rvk.html?l=[% lang %]">[% msg.maketext("Übersicht") %]</a></li>
+[% IF NOT rvk.super.empty %]
+<li class="list-group-item"><a class="fas fa-arrow-up pe-2"></i> <a class="" href="[% path_prefix %]/[% config.get('browse_loc') %]/rvk/id/[% rvk.super.first %].html?l=[% lang %]">[% rvk.super.first %]: [% rvk_desc.${ rvk.super.first} %]</a></li>
+[% END %]
 </ul>
 
 [% IF rvk %]
@@ -41,7 +50,7 @@
 
 <div class="table-responsive mt-3">
 <table class="table table-striped ">
-[%- FOREACH syssubid IN rvk -%]
+[%- FOREACH syssubid IN rvk.subordinate -%]
 <tr>
 <th style="font-weight:bold;font-size:1.2em;" width="15%">[% syssubid %]</th>
 <td>

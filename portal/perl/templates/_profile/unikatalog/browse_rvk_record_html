@@ -13,7 +13,7 @@
 -%]
 [%-
 
-  profileid = config.get_searchprofile_of_database('uni');
+  profileid = config.get_searchprofile_of_orgunit('unikatalog','books');
 
   rvk = config.get_tree_of_classification(type => 'rvk', name => sysid );
 

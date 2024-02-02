@@ -729,6 +729,98 @@ sub get_dbs_of_view {
     return $self->get_viewdbs($view);
 }
 
+sub get_description_of_classification {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $type               = exists $arg_ref->{type}
+        ? $arg_ref->{type}            : '';
+    my $names_ref          = exists $arg_ref->{names}
+        ? $arg_ref->{names}           : [];
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $classifications_ref = {};
+
+    return $classifications_ref unless ($type && @$names_ref);
+
+    my $or_clause_ref = [];
+    
+    foreach my $name (@$names_ref){
+	push @$or_clause_ref, {
+	    name => $name,
+	};
+    }
+    
+    my $where_ref = {
+	type => $type,
+	-or  => $or_clause_ref,
+	    
+    };
+    
+    my $classifications = $self->get_schema->resultset('Classification')->search(
+        $where_ref
+	,
+        {
+            select => [ 'me.name', 'me.description'],
+            as     => [ 'name', 'description'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+	);
+    
+    while (my $classification = $classifications->next()){
+	my $name = $classification->{name};
+	my $description = $classification->{description};
+
+	$classifications_ref->{$name} = $description;
+    }
+
+    return $classifications_ref;
+}
+
+sub get_tree_of_classification {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $type               = exists $arg_ref->{type}
+        ? $arg_ref->{type}            : '';
+    my $name               = exists $arg_ref->{name}
+        ? $arg_ref->{name}           : '';
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $classifications_ref = [];
+
+    return $classifications_ref unless ($type && $name);
+
+    my $where_ref = {
+	type => $type,
+	name => $name,
+	    
+    };
+    
+    my $classifications = $self->get_schema->resultset('Classificationshierarchy')->search(
+        $where_ref
+	,
+        {
+            select => [ 'me.subname'],
+            as     => [ 'subname'],
+	    order_by => ['number ASC'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+        }
+	);
+    
+    while (my $classification = $classifications->next()){
+	my $subname = $classification->{subname};
+
+	push @$classifications_ref, $subname;
+    }
+
+    return $classifications_ref;
+}
+
 sub get_rssfeeds_of_view {
     my ($self,$viewname) = @_;
     

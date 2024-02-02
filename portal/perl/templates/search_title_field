@@ -15,6 +15,7 @@
           "isbn"      = msg.maketext("ISBN")
           "issn"      = msg.maketext("ISSN")
 	  "gnd"      = "GND"	
+	  "rvk"      = "RVK"	
           "database"   = msg.maketext("Katalog")
           "journal"   = msg.maketext("Zeitschrift")
           "volume"   = msg.maketext("Band")

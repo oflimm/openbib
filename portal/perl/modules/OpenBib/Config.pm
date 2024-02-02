@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config
 #
-#  Dieses File ist (C) 2004-2022 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2024 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -791,16 +791,19 @@ sub get_tree_of_classification {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $classifications_ref = [];
+    my $classifications_ref = {
+	'current' => $name,
+	'subordinate'     => [],
+	'super'   => [],
+    };
 
     return $classifications_ref unless ($type && $name);
 
     my $where_ref = {
 	type => $type,
-	name => $name,
-	    
+	name => $name,	    
     };
-    
+
     my $classifications = $self->get_schema->resultset('Classificationshierarchy')->search(
         $where_ref
 	,
@@ -815,9 +818,35 @@ sub get_tree_of_classification {
     while (my $classification = $classifications->next()){
 	my $subname = $classification->{subname};
 
-	push @$classifications_ref, $subname;
+	$logger->debug("Found subordinate classification $subname for $name");
+	
+	push @{$classifications_ref->{subordinate}}, $subname;
     }
 
+    my $have_super = 1;
+    
+    my $basename = $name;
+    
+    my $supers = $self->get_schema->resultset('Classificationshierarchy')->search(
+	{
+	    type => $type,
+	    subname => $basename,	    
+	},
+	{
+	    select => [ 'me.name'],
+	    as     => [ 'name'],
+	    order_by => ['number ASC'],
+	    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+	}
+	);
+    
+    while (my $super = $supers->next()){
+	$basename = $super->{name};
+	
+	$logger->debug("Found super classification $basename for $name");		
+	push @{$classifications_ref->{super}}, $basename;
+    }
+    
     return $classifications_ref;
 }
 

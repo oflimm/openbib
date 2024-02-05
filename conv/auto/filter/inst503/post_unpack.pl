@@ -50,7 +50,7 @@ my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 
-print "### $pool: Erweiterung um Standort DE-38-USBFB \n";
+print "### $pool: Erweiterung um Standort DE-38-USBFB und RVK-Verarbeitung\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/add-fields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 

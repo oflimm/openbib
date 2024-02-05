@@ -6,6 +6,7 @@ use utf8;
 use MLDBM qw(DB_File Storable);
 use Storable ();
 use DB_File;
+use YAML;
 
 #open(CHANGED,">./changed.json");
 
@@ -351,6 +352,29 @@ while (<>){
     # 	print CHANGED encode_json $title_ref, "\n";
 
     # }
+
+    # RVK aus 084$a in 4101 vereinheitlichen
+
+    # Auswertung von 084$
+    if (defined $title_ref->{fields}{'0084'}){
+	my $cln_ref = {};
+        foreach my $item (@{$title_ref->{fields}{'0084'}}){
+	    $cln_ref->{$item->{mult}}{$item->{subfield}} = $item->{content};
+	}
+
+	my $cln_mult = 1;
+	foreach my $mult (keys %{$cln_ref}){
+	    next unless (defined $cln_ref->{$mult}{'2'} && defined $cln_ref->{$mult}{'a'});
+	    if ($cln_ref->{$mult}{'2'} eq "rvk"){
+		push @{$title_ref->{fields}{'4101'}}, {
+		    mult     => $cln_mult++,
+		    subfield => '',
+		    content  => $cln_ref->{$mult}{'a'},
+		};
+	    }
+	}
+    }
+    
     ### Medientyp Digital/online zusaetzlich vergeben
     my $is_digital = 0;
 

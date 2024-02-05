@@ -6,7 +6,7 @@ use utf8;
 use MLDBM qw(DB_File Storable);
 use Storable ();
 use DB_File;
-use YAML;
+use List::MoreUtils qw/ uniq /;
 
 #open(CHANGED,">./changed.json");
 
@@ -353,25 +353,44 @@ while (<>){
 
     # }
 
+    my @rvks = ();
+    
     # RVK aus 084$a in 4101 vereinheitlichen
-
+    
     # Auswertung von 084$
     if (defined $title_ref->{fields}{'0084'}){
 	my $cln_ref = {};
         foreach my $item (@{$title_ref->{fields}{'0084'}}){
 	    $cln_ref->{$item->{mult}}{$item->{subfield}} = $item->{content};
 	}
-
-	my $cln_mult = 1;
+	
 	foreach my $mult (keys %{$cln_ref}){
 	    next unless (defined $cln_ref->{$mult}{'2'} && defined $cln_ref->{$mult}{'a'});
 	    if ($cln_ref->{$mult}{'2'} eq "rvk"){
-		push @{$title_ref->{fields}{'4101'}}, {
-		    mult     => $cln_mult++,
-		    subfield => '',
-		    content  => $cln_ref->{$mult}{'a'},
-		};
+		push @rvks, $cln_ref->{$mult}{'a'};
 	    }
+	}
+    }
+    
+    # Alte RVKs von 38-503 aus 983$a in 4101 vereinheitlichen
+    if (defined $title_ref->{fields}{'0983'}){
+        foreach my $item (@{$title_ref->{fields}{'0983'}}){
+	    next unless ($item->{subfield} eq "a" && $item->{content} =~m{^38/503});
+	    if ($item->{content} =~m{^38/503: ([A-Z][A-Z] \d+)}){
+		push @rvks, $1;
+	    }
+	}
+    }
+    
+    if (@rvks){
+	my $rvk_mult = 1;
+
+	foreach my $rvk (uniq @rvks){
+	    push @{$title_ref->{fields}{'4101'}}, {
+		mult     => $rvk_mult++,
+		subfield => '',
+		content  => $rvk,
+	    };
 	}
     }
     

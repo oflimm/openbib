@@ -38,13 +38,14 @@ use List::MoreUtils qw/ uniq /;
 use Log::Log4perl qw(get_logger :levels);
 use Text::CSV_XS;
 
-my ($database,$help,$logfile,$loglevel,$outputfile,$configfile);
+my ($database,$help,$logfile,$loglevel,$outputfile,$retro,$configfile);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
-	    "loglevel=s"       => \$loglevel,
+	    "loglevel=s"      => \$loglevel,
             "outputfile=s"    => \$outputfile,
 	    "configfile=s"    => \$configfile,
+	    "retro"           => \$retro,
 	    "help"            => \$help
 	    );
 
@@ -123,6 +124,19 @@ while (my $title=$titles->next){
     my $id = $title->id;
 
     my $record_ref = OpenBib::Record::Title->new({database => $database, id => $id})->load_full_record->to_hash;
+
+    # Nur Retro-Titel ausgeben
+    if ($retro	&& defined $record_ref->{fields}{'T0960'}){
+	my $has_retro = 0;
+
+	foreach my $field_ref (@{$record_ref->{fields}{'T0960'}}){
+	    if ($field_ref->{content} =~m/retro/i){
+		$has_retro = 1;
+	    }
+	}
+
+	next unless ($has_retro);
+    }
     
     $out_ref = [];    
 
@@ -160,16 +174,21 @@ while (my $title=$titles->next){
     
     my @output = ();
     foreach my $destfield  (@dest_fields){
-	my @thisfield_content = @{$output_fields_ref->{$destfield}};
+	my @thisfield_content = uniq @{$output_fields_ref->{$destfield}};
+	s/&lt;/</g for @thisfield_content;
+	s/&gt;/>/g for @thisfield_content;
+	s/&amp;/&/g for @thisfield_content;
+	s/\$\$.*$//g for @thisfield_content;	
+
 	$logger->debug("Field: $destfield - ".join(';',@thisfield_content)." - ".$#thisfield_content);
 
-	# Keins
-	if ($#thisfield_content < 0 ) {
-	    push @output, "";
-	}
 	# Mehr
-	elsif ($#thisfield_content >= 0){
-	    push @output, join(' ; ',@{$output_fields_ref->{$destfield}});
+	if (@thisfield_content){
+	    push @output, join(' ; ',@thisfield_content);
+	}
+	# Keins
+	else {
+	    push @output, "";
 	}
     }
 
@@ -194,15 +213,6 @@ my $resulttime = timestr($timeall,"nop");
 $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
 $logger->info("Gesamtzeit: $resulttime Sekunden");
-
-sub cleanup_content {
-    my $content = shift;
-
-    $content=~s/&lt;/</g;
-    $content=~s/&gt;/>/g;
-    $content=~s/&amp;/&/g;
-    return $content;
-}
 
 sub print_help {
     print << "ENDHELP";

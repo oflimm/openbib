@@ -128,7 +128,7 @@ if ($initlang){
     $enrichment->init_enriched_content({ field => '4301', origin => $origin });
 }
 
-our $count=0;
+our $count=1;
 
 our $tuple_count = 0;
 

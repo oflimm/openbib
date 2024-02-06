@@ -1,9 +1,10 @@
 #!/usr/bin/perl
 #####################################################################
 #
-#  bvb_tocurls2enrich.pl
+#  rvk2topics.pl
 #
-#  Extrahierung der URLS zu Inhaltsverzeichnissen aus den BVB Open Data Dumps
+#  Erzeugung von Anreicherungsdaten mit Themengebieten anhand von
+#  bestehenden Anreicherungdaten mit RVKs aus den BVB Open Data Dumps
 #  fuer eine Anreicherung per ISBN
 #
 #  Dieses File ist (C) 2013 Oliver Flimm <flimm@openbib.org>
@@ -45,11 +46,13 @@ foreach my $topic_ref (@{$user->get_topics}){
     }
 }
 
+my $count = 1;
+
 while (<>){
     my $enrich_ref = decode_json $_;
 
     $enrich_ref->{field} = 4102;
-    $enrich_ref->{subfield} = '';
+    $enrich_ref->{subfield} = 'a';
     my ($rvkbase) = $enrich_ref->{content} =~m/^([A-Z][A-Z])/;
 
     next unless (defined $rvkbase && defined $rvk_topic_mapping_ref->{$rvkbase});
@@ -57,4 +60,12 @@ while (<>){
     $enrich_ref->{content} = $rvk_topic_mapping_ref->{$rvkbase};
 
     print encode_json $enrich_ref, "\n";
+
+    if ($count % 10000 == 0){
+	print STDERR "$count records processed";
+    }
+    
+    $count++
 }
+
+print STDERR "$count records processed";

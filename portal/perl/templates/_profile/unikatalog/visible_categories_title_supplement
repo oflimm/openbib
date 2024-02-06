@@ -72,6 +72,7 @@
                 'E4300', # msg.maketext("E4300") Schlagwort Extern
                 'T0700', # msg.maketext("T0700") Notation
                 #'E4100', # msg.maketext("E4100") Basisklassifikation
+                'T4101', # msg.maketext("T4101") RVK
                 'E4102', # msg.maketext("E4102") KUG Themengebiet
                 'T4220', # msg.maketext("T4220") Nutzer
                 'E4110', # msg.maketext("E4110") Inhaltsverzeichnis

@@ -681,7 +681,7 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'T0662'}.push(content);
 
-    CASE [ "E4100" "T4100" ];
+    CASE [ "T4100" ];
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').ft4100.prefix;
 
@@ -695,7 +695,26 @@ FOREACH field IN normdata;
 	    content_map.${'E4100'} = [];
 	 END;
          content_map.${'E4100'}.push(content);
-	 
+
+    CASE [ "T4101" ];
+         searchterm    = uri_escape(item.content);
+         searchprefix  = config.get('searchfield').rvk.prefix;
+
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+         rvkdesc     = config.get_description_of_classification(type => 'rvk', names => [ item.content ]).${item.content};
+	 rvk_tree   = config.get_tree_of_classification(type => 'rvk', name => item.content);
+         content     = "<a href=\"${localurl}\">${content}</a>";
+         IF rvkdesc ;
+	    IF NOT rvk_tree.super.empty ;
+	       rvkdesc = "<a href=\"${path_prefix}/${config.get('browse_loc')}/rvk/id/${rvk_tree.super.first}.html?l=${lang}\">${rvkdesc}</a>";
+	    END;
+            content   = "${content} (${rvkdesc})" ;
+         END ; 
+         IF NOT content_map.${'T4101'} ;
+	    content_map.${'T4101'} = [];
+	 END;
+         content_map.${'T4101'}.push(content);
+
     CASE "E4102";
          topicdesc   = topic_map.${content};
          IF topicdesc ;
@@ -918,6 +937,7 @@ display_types = {
    'T0662' => 'list',
    'T0710' => 'list',
    'T0700' => 'list',
+   'T4101' => 'list',
    'Hinweise' => 'list',
    'Druckausgabe' => 'list',   
 };

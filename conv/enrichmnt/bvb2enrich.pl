@@ -59,6 +59,7 @@ my ($help,$initrvk,$initddc,$initsubjects,$inittocurls,$initlang,$jsonimportfile
             "init-subjects"     => \$initsubjects,
             "init-tocurls"      => \$inittocurls,
             "init-lang"         => \$initlang,
+            "init-topics"       => \$inittopics,
 	    
             "inputfile=s"       => \$inputfile,
             "json-importfile=s" => \$jsonimportfile,
@@ -107,7 +108,12 @@ if ($initrvk){
     $logger->info("Loeschen RVKs");
     $enrichment->init_enriched_content({ field => '4101', origin => $origin });
 }
-    
+
+if ($initddc){
+    $logger->info("Loeschen Topics");
+    $enrichment->init_enriched_content({ field => '4102', origin => $origin });
+}
+
 if ($initddc){
     $logger->info("Loeschen DDCs");
     $enrichment->init_enriched_content({ field => '4103', origin => $origin });

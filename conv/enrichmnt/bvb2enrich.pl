@@ -150,7 +150,7 @@ if ($jsonimportfile){
 
         $tuple_count++;
         
-        if ($count % 1000 == 0){
+        if ($count % 10000 == 0){
 	    $logger->info("$count records done");
             $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
             $enrich_data_by_isbn_ref   = [];

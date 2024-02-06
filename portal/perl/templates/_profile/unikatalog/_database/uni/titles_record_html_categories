@@ -790,6 +790,27 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'URL'}.push(content);
 
+    CASE "T4101";
+         content = thisfield.${'e'} || thisfield.${''};
+
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').rvk.prefix;
+
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+         rvkdesc     = config.get_description_of_classification(type => 'rvk', names => [ content ]).${content};
+	 rvk_tree   = config.get_tree_of_classification(type => 'rvk', name => content);
+         content     = "<a href=\"${localurl}\">${content}</a>";
+         IF rvkdesc ;
+	    IF NOT rvk_tree.super.empty ;
+	       rvkdesc = "<a href=\"${path_prefix}/${config.get('browse_loc')}/rvk/id/${rvk_tree.super.first}.html?l=${lang}\">${rvkdesc}</a>";
+	    END;
+            content   = "${content} (${rvkdesc})" ;
+         END ; 
+         IF NOT content_map.${'T4101'} ;
+	    content_map.${'T4101'} = [];
+	 END;
+         content_map.${'T4101'}.push(content);
+
     CASE "T4102";
          content = thisfield.${'e'};
 	 
@@ -989,6 +1010,7 @@ display_types = {
    'Klassifikation'   => 'list',   
    'Hinweis'          => 'list',
    'Sammlungs-Portal' => 'list',      
+   'T4101'            => 'list',      
 };
 
 # USE dumper;dumper.dump(content_map);dumper.dump(singular_normdata);dumper.dump(record_type);

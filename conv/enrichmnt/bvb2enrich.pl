@@ -7,7 +7,7 @@
 #  Extrahierung von Informationen aus den BVB Open Data Dumps
 #  fuer eine Anreicherung per ISBN
 #
-#  Dieses File ist (C) 2013-2018 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2013-2024 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -151,6 +151,7 @@ if ($jsonimportfile){
         $tuple_count++;
         
         if ($count % 1000 == 0){
+	    $logger->info("$count records done");
             $enrichment->add_enriched_content({ matchkey => 'isbn',   content => $enrich_data_by_isbn_ref }) if (@$enrich_data_by_isbn_ref);
             $enrich_data_by_isbn_ref   = [];
         }

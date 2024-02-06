@@ -57,7 +57,11 @@
   # USE dumper;dumper.dump(rvk);
 %]
 
-<h3>[% msg.maketext("Regensburger Verbundklassifikation RVK") %]</h3>
+<h3>[% msg.maketext("Regensburger Verbundklassifikation") %] RVK</h3>
+
+<div class="alert alert-info pb-0 mt-3">
+<p>[% msg.maketext("Die Regensburger Verbundklassifikation ist das umfangreichste deutschsprachige Klassifikationssytem mit mehr als 600.000 Systemstellen.") %] <a class="exturl" href="https://rvk.uni-regensburg.de/home" target="_blank">[% msg.maketext("Mehr") %]</a></p>
+</div>
 
 <h4 class="mt-4">[% msg.maketext("Hauptgruppen") %]</h4>
 

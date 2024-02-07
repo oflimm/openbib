@@ -595,6 +595,22 @@ while (my $record = safe_next($batch)){
                 };
             }
         }
+
+        # RVKs
+        foreach my $field ($record->field('084')){                
+            my $content_a = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('a')):$field->as_string('a');
+            my $content_2 = ($encoding eq "MARC-8")?marc8_to_utf8($field->as_string('2')):$field->as_string('2');
+
+            if ($content_2 eq "rvk" && $content_a){
+                my $multcount=++$multcount_ref->{'4101'};
+                
+                push @{$title_ref->{fields}{'4101'}}, {
+                    content  => $content_a,
+                    subfield => '',
+                    mult     => $multcount,
+                };
+            }
+        }
         
         # Uebers. HST (Translation)
         foreach my $field ($record->field('242')){

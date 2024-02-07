@@ -49,7 +49,7 @@ my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->s
 
 my $filename      = $dbinfo->titlefile;
 #print "### $pool: Heilen der Daten mit yaz-marcdump $filename\n";
-#system("cd $pooldir/$pool ; /usr/bin/yaz-marcdump -o marc $filename > ${filename}.tmp ; mv -f ${filename}.tmp $filename");
+#system("cd $pooldir/$pool ; /usr/bin/yaz-marcdump -o marc $filename |sed -e 's/<\!-- .* -->//g' > ${filename}.tmp ; mv -f ${filename}.tmp $filename");
 print "### $pool: Konvertierung von $filename\n";
 system("cd $pooldir/$pool ; rm meta.* ");
 system("cd $pooldir/$pool; $marc2metaexe --database=$pool --inputfile=$filename ; gzip meta.*");

@@ -18,6 +18,13 @@
   rvk = config.get_tree_of_classification(type => 'rvk', name => sysid );
 
   # USE dumper;dumper.dump(rvk);
+  rvk_has_sub = {};
+  FOREACH thisrvk IN rvk.subordinate;
+     rvksub = config.get_tree_of_classification(type => 'rvk', name => thisrvk ).subordinate;
+     IF NOT rvksub.empty;
+       rvk_has_sub.${thisrvk} = 1;
+     END;
+  END;
 
   all_rvk = [];
   all_rvk.push(rvk.super);

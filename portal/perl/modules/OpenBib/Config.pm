@@ -792,9 +792,9 @@ sub get_tree_of_classification {
     my $logger = get_logger();
 
     my $classifications_ref = {
-	'current' => $name,
-	'subordinate'     => [],
-	'super'   => [],
+	'current'     => $name,
+	'subordinate' => [],
+	'super'       => [],
     };
 
     return $classifications_ref unless ($type && $name);
@@ -823,28 +823,34 @@ sub get_tree_of_classification {
 	push @{$classifications_ref->{subordinate}}, $subname;
     }
 
-    my $have_super = 1;
+    my $have_super = 1; # Mindestens auf eine uebergeordnete Stufe testen
     
     my $basename = $name;
-    
-    my $supers = $self->get_schema->resultset('Classificationshierarchy')->search(
-	{
-	    type => $type,
-	    subname => $basename,	    
-	},
-	{
-	    select => [ 'me.name'],
-	    as     => [ 'name'],
-	    order_by => ['number ASC'],
-	    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-	}
-	);
-    
-    while (my $super = $supers->next()){
-	$basename = $super->{name};
+
+    while ($have_super){
+	my $supers = $self->get_schema->resultset('Classificationshierarchy')->search(
+	    {
+		type => $type,
+		subname => $basename,	    
+	    },
+	    {
+		select => [ 'me.name'],
+		as     => [ 'name'],
+		order_by => ['number ASC'],
+		result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+	    }
+	    );
+
+	$have_super = 0;
 	
-	$logger->debug("Found super classification $basename for $name");		
-	push @{$classifications_ref->{super}}, $basename;
+	while (my $super = $supers->next()){
+	    $basename = $super->{name};
+	    
+	    $have_super = 1; # Auf naechste Stufe testen
+	    
+	    $logger->debug("Found super classification $basename for $name");		
+	    push @{$classifications_ref->{super}}, $basename;
+	}
     }
     
     return $classifications_ref;

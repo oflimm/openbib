@@ -17,14 +17,7 @@
 
   rvk = config.get_tree_of_classification(type => 'rvk', name => sysid );
 
-  #USE dumper;dumper.dump(rvk);
-  rvk_has_sub = {};
-  FOREACH thisrvk IN rvk.subordinate;
-     rvksub = config.get_tree_of_classification(type => 'rvk', name => thisrvk ).subordinate;
-     IF NOT rvksub.empty;
-       rvk_has_sub.${thisrvk} = 1;
-     END;
-  END;
+  # USE dumper;dumper.dump(rvk);
 
   all_rvk = [];
   all_rvk.push(rvk.super);
@@ -40,8 +33,8 @@
 
 <ul class="list-group pb-3">
 <li class="list-group-item"><a class="fas fa-list pe-2"></i> <a class="" href="[% path_prefix %]/[% config.get('browse_loc') %]/rvk.html?l=[% lang %]">[% msg.maketext("Übersicht") %]</a></li>
-[% IF NOT rvk.super.empty %]
-<li class="list-group-item"><a class="fas fa-arrow-up pe-2"></i> <a class="" href="[% path_prefix %]/[% config.get('browse_loc') %]/rvk/id/[% rvk.super.first %].html?l=[% lang %]">[% rvk.super.first %]: [% rvk_desc.${ rvk.super.first} %]</a></li>
+[% FOREACH thisrvk IN rvk.super.reverse %]
+<li class="list-group-item"><a class="fas fa-arrow-up pe-2"></i> <a class="" href="[% path_prefix %]/[% config.get('browse_loc') %]/rvk/id/[% thisrvk %].html?l=[% lang %]">[% thisrvk %]: [% rvk_desc.${thisrvk} %]</a></li>
 [% END %]
 </ul>
 

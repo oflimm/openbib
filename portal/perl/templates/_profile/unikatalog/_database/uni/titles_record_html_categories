@@ -797,15 +797,22 @@ FOREACH field IN normdata;
          searchprefix  = config.get('searchfield').rvk.prefix;
 
          localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
-         rvkdesc     = config.get_description_of_classification(type => 'rvk', names => [ content ]).${content};
-	 rvk_tree   = config.get_tree_of_classification(type => 'rvk', name => content);
-         content     = "<a href=\"${localurl}\">${content}</a>";
-         IF rvkdesc ;
-	    IF NOT rvk_tree.super.empty ;
-	       rvkdesc = "<a href=\"${path_prefix}/${config.get('browse_loc')}/rvk/id/${rvk_tree.super.first}.html?l=${lang}\">${rvkdesc}</a>";
-	    END;
-            content   = "${content} (${rvkdesc})" ;
-         END ; 
+
+         rvk_tree   = config.get_tree_of_classification(type => 'rvk', name => content);
+	 all_rvk = [];
+	 all_rvk.push(rvk_tree.current);
+ 	 all_rvk.push(rvk_tree.super);	
+         rvkdesc     = config.get_description_of_classification(type => 'rvk', names => all_rvk);
+	 currentdesc = rvkdesc.${rvk_tree.current};
+         content     = "<a href=\"${localurl}\">${content}</a> (${currentdesc})";
+
+         rvk_path = [];
+         FOREACH thisrvk IN rvk_tree.super;
+	   thisdesc = rvkdesc.${thisrvk};
+           rvk_path.push("<a href=\"${path_prefix}/${config.get('browse_loc')}/rvk/id/${thisrvk}.html?l=${lang}\">${thisrvk}</a> (${thisdesc})");
+         END;
+         content   = "${content}<br/>RVK-Gruppen: ${rvk_path.join('<i class=\"ps-2 pe-2 fas fa-long-arrow-alt-right\"></i>')}" ;
+
          IF NOT content_map.${'T4101'} ;
 	    content_map.${'T4101'} = [];
 	 END;

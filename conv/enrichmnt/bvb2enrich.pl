@@ -50,7 +50,7 @@ use OpenBib::Catalog::Factory;
 # Autoflush
 $|=1;
 
-my ($help,$initrvk,$initddc,$initsubjects,$inittocurls,$initlang,$jsonimportfile,$jsonsuffix,$inputfile,$logfile,$loglevel);
+my ($help,$initrvk,$initddc,$initsubjects,$inittopics,$inittocurls,$initlang,$jsonimportfile,$jsonsuffix,$inputfile,$logfile,$loglevel);
 
 &GetOptions("help"              => \$help,
 
@@ -109,7 +109,7 @@ if ($initrvk){
     $enrichment->init_enriched_content({ field => '4101', origin => $origin });
 }
 
-if ($initddc){
+if ($inittopics){
     $logger->info("Loeschen Topics");
     $enrichment->init_enriched_content({ field => '4102', origin => $origin });
 }

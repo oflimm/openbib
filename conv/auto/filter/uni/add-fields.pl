@@ -354,8 +354,9 @@ while (<>){
     # }
 
     my @rvks = ();
+    my @bks  = ();
     
-    # RVK aus 084$a in 4101 vereinheitlichen
+    # RVK und BKs aus 084$a in 4101 und 4100 vereinheitlichen
     
     # Auswertung von 084$
     if (defined $title_ref->{fields}{'0084'}){
@@ -369,15 +370,23 @@ while (<>){
 	    if ($cln_ref->{$mult}{'2'} eq "rvk"){
 		push @rvks, $cln_ref->{$mult}{'a'};
 	    }
+	    elsif ($cln_ref->{$mult}{'2'} eq "bkl"){
+		push @bks, $cln_ref->{$mult}{'a'};
+	    }
 	}
     }
     
     # Alte RVKs von 38-503 aus 983$a in 4101 vereinheitlichen
+    # Alte BKs aus 983$a in 4100 vereinheitlichen    
     if (defined $title_ref->{fields}{'0983'}){
         foreach my $item (@{$title_ref->{fields}{'0983'}}){
-	    next unless ($item->{subfield} eq "a" && $item->{content} =~m{^38/503});
-	    if ($item->{content} =~m{^38/503: ([A-Z][A-Z] \d+)}){
-		push @rvks, $1;
+	    if ($item->{subfield} eq "a" && $item->{content} =~m{^38/503}){
+		if ($item->{content} =~m{^38/503: ([A-Z][A-Z] \d+)}){
+		    push @rvks, $1;
+		}
+	    }
+	    if ($item->{subfield} eq "b" && $item->{content} =~m{^\d\d\.\d\d$}){
+		push @bks, $item->{content};
 	    }
 	}
     }
@@ -390,6 +399,18 @@ while (<>){
 		mult     => $rvk_mult++,
 		subfield => '',
 		content  => $rvk,
+	    };
+	}
+    }
+
+    if (@bks){
+	my $bk_mult = 1;
+
+	foreach my $bk (uniq @bks){
+	    push @{$title_ref->{fields}{'4100'}}, {
+		mult     => $bk_mult++,
+		subfield => '',
+		content  => $bk,
 	    };
 	}
     }

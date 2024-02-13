@@ -34,6 +34,8 @@ use base qw(Class::Singleton);
 
 use YAML::Syck;
 
+use OpenBib::Config::DatabaseInfoTable;
+
 sub new {
     my ($class,$arg_ref) = @_;
 
@@ -49,8 +51,19 @@ sub new {
     # Ininitalisierung mit Config-Parametern
     my $config = YAML::Syck::LoadFile("/opt/openbib/conf/convert.yml");
 
-    my $self = $config->{convtab}{default};
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
 
+    my $schema = $dbinfotable->{dbinfo}{schema}{$dbname} || '';
+    
+    my $self = {};
+    
+    if ($schema eq "marc21"){
+	$self = $config->{convtab}{default_marc};	
+    }
+    else {
+	$self = $config->{convtab}{default};
+    }
+    
     if (defined $dbname && exists $config->{convtab}{$dbname}){
         foreach my $type (keys %$self){
             $self->{$type} = $config->{convtab}{$dbname}{$type} if (exists $config->{convtab}{$dbname}{$type});
@@ -77,7 +90,18 @@ sub _new_instance {
     # Initalisierung mit Config-Parametern
     my $config = YAML::Syck::LoadFile("/opt/openbib/conf/convert.yml");
 
-    my $self = $config->{convtab}{default};
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
+
+    my $schema = $dbinfotable->{dbinfo}{schema}{$dbname} || '';
+    
+    my $self = {};
+
+    if ($schema eq "marc21"){
+	$self = $config->{convtab}{default_marc};	
+    }
+    else {
+	$self = $config->{convtab}{default};
+    }
 
     if (defined $dbname && exists $config->{convtab}{$dbname}){
         foreach my $type (keys %$self){

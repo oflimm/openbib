@@ -1564,7 +1564,7 @@ convtab:
         'a': # Andere IDs
           index:
             'id': 1
-            'freesearch': 1	    
+            'freesearch': 1
       '0100':
         'a':
           index:
@@ -1727,7 +1727,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
-            'subjectstring': 1	    
+            'subjectstring': 1
           facet:
             'subject': 1
       '0610': # Schlagwort
@@ -1735,7 +1735,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
-            'subjectstring': 1	    
+            'subjectstring': 1
           facet:
             'subject': 1
       '0648': # Schlagwort
@@ -1743,7 +1743,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
-            'subjectstring': 1	    
+            'subjectstring': 1
           facet:
             'subject': 1
       '0650': # Schlagwort
@@ -1751,7 +1751,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
-            'subjectstring': 1	    
+            'subjectstring': 1
           facet:
             'subject': 1
       '0651': # Schlagwort
@@ -1759,7 +1759,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
-            'subjectstring': 1	    
+            'subjectstring': 1
           facet:
             'subject': 1
       '0655': # Schlagwort
@@ -1767,7 +1767,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
-            'subjectstring': 1	    
+            'subjectstring': 1
           facet:
             'subject': 1
       '0688': # Schlagwort
@@ -1775,7 +1775,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
-            'subjectstring': 1	    
+            'subjectstring': 1
           facet:
             'subject': 1
       '0689': # RSWK-Schlagwort (Kettenbestandteil)
@@ -1783,7 +1783,7 @@ convtab:
           index:
             'freesearch': 1
             'subject': 1
-            'subjectstring': 1	    
+            'subjectstring': 1
           facet:
             'subject': 1
       '0520':         # Abstract
@@ -1851,7 +1851,7 @@ convtab:
             'id': 1
         'h':         # hbzid (alte ID, NZ-ID, CZ-ID)
           index:
-            'hbzid': 1	    
+            'hbzid': 1
       '1002': # Alternative Systematiken
         'k':         # kmbsystematik
           index:
@@ -2805,7 +2805,7 @@ convtab:
       '0543': 1
       '0553': 1
       '0662': 1
-      '0750': 1	
+      '0750': 1
       '2662': 1
       '1203': 1
       '1800': 1
@@ -7745,7 +7745,7 @@ convtab:
           index:
             'bkey': 1
             'freesearch': 1
-	    
+    
   pruessen:
     inverted_title:
       'tag':
@@ -8606,7 +8606,7 @@ convtab:
           index:
             'bkey': 1
             'freesearch': 1
-	    
+
   totenzettel:
     inverted_classification:
       '0800':         # Ansetzung
@@ -9359,7 +9359,7 @@ convtab:
         '':
           index:
             'freesearch': 1
-	    
+
   gentzdigital_legacy:
     inverted_title:
       'tag':
@@ -9658,7 +9658,7 @@ convtab:
           index:
             'bkey': 1
             'freesearch': 1
-	    
+
   muenzen:
     sorting_order:
       - 'P0100' # Herrscher/Regent
@@ -10530,7 +10530,7 @@ convtab:
           index:
             'bkey': 1
             'freesearch': 1
-	    
+
   games:
     listitemcat:
       'tag': 1
@@ -10687,7 +10687,7 @@ convtab:
             'freesearch': 1
           facet:
             'mediatype': 1
-	    
+
   portrait:
     inverted_title:
       'tag':

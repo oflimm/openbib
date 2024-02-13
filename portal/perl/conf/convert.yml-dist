@@ -10704,12 +10704,6 @@ convtab:
             'classificationstring': 1
           facet:
             'classification': 1
-      '0084': # Notation
-        'a':
-          index:
-            'classificationstring': 1
-          facet:
-            'classification': 1
       '0600': # Schlagwort
         'a':
           index:
@@ -11733,12 +11727,6 @@ convtab:
           index:
             'subid': 1
       '0082': # DDC
-        'a':
-          index:
-            'classificationstring': 1
-          facet:
-            'classification': 1
-      '0084': # Notation
         'a':
           index:
             'classificationstring': 1
@@ -12879,12 +12867,6 @@ convtab:
           index:
             'subid': 1
       '0082': # DDC
-        'a':
-          index:
-            'classificationstring': 1
-          facet:
-            'classification': 1
-      '0084': # Notation
         'a':
           index:
             'classificationstring': 1
@@ -14050,12 +14032,6 @@ convtab:
             'classificationstring': 1
           facet:
             'classification': 1
-      '0084': # Notation
-        'a':
-          index:
-            'classificationstring': 1
-          facet:
-            'classification': 1
       '0600': # Schlagwort
         'a':
           index:
@@ -15188,12 +15164,6 @@ convtab:
           index:
             'subid': 1
       '0082': # DDC
-        'a':
-          index:
-            'classificationstring': 1
-          facet:
-            'classification': 1
-      '0084': # Notation
         'a':
           index:
             'classificationstring': 1
@@ -16335,12 +16305,6 @@ convtab:
           index:
             'subid': 1
       '0082': # DDC
-        'a':
-          index:
-            'classificationstring': 1
-          facet:
-            'classification': 1
-      '0084': # Notation
         'a':
           index:
             'classificationstring': 1
@@ -17488,12 +17452,6 @@ convtab:
           index:
             'subid': 1
       '0082': # DDC
-        'a':
-          index:
-            'classificationstring': 1
-          facet:
-            'classification': 1
-      '0084': # Notation
         'a':
           index:
             'classificationstring': 1
@@ -18650,12 +18608,6 @@ convtab:
             'classificationstring': 1
           facet:
             'classification': 1
-      '0084': # Notation
-        'a':
-          index:
-            'classificationstring': 1
-          facet:
-            'classification': 1
       '0600': # Schlagwort
         'a':
           index:
@@ -19778,12 +19730,6 @@ convtab:
           index:
             'subid': 1
       '0082': # DDC
-        'a':
-          index:
-            'classificationstring': 1
-          facet:
-            'classification': 1
-      '0084': # Notation
         'a':
           index:
             'classificationstring': 1

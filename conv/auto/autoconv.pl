@@ -103,6 +103,7 @@ my $tooldir       = $config->{'tool_dir'};
 
 my $wgetexe       = "/usr/bin/wget --auth-no-challenge -nH --cut-dirs=3";
 my $meta2sqlexe   = "$config->{'conv_dir'}/meta2sql.pl";
+my $enrichmetaexe = "$config->{'conv_dir'}/enrich_meta.pl";
 my $meta2mexexe   = "$config->{'conv_dir'}/meta2mex.pl";
 my $pgsqlexe      = "/usr/bin/psql -U $config->{'dbuser'} ";
 
@@ -264,6 +265,52 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
     
 }
 
+# Anreichern mit Daten aus der Anreicherungs-Datenbank
+
+{
+    my $atime = new Benchmark;
+    my $duration_stage_enrich_start = ParseDate("now");
+
+    # Anreicherung pre-Skript
+    if ($database && -e "$config->{autoconv_dir}/filter/$database/pre_enrich.pl"){
+        $logger->info("### $database: Verwende Plugin pre_enrich.pl");
+        system("$config->{autoconv_dir}/filter/$database/pre_enrich.pl $database");
+    }
+
+    # Alternative Anreicherung
+    if ($database && -e "$config->{autoconv_dir}/filter/$database/alt_enrich.pl"){
+        $logger->info("### $database: Verwende Plugin alt_enrich.pl");
+        system("$config->{autoconv_dir}/filter/$database/alt_enrich.pl $database");
+    }
+    else {
+
+        my $cmd = "$enrichmetaexe --loglevel=$loglevel --database=$database --filename=meta.title";
+
+        if ($keepfiles){
+            $cmd.=" -keep-files";
+        }
+	
+        if ($scheme){
+            $cmd.=" --scheme=$scheme";
+        }
+	else {
+	    my $dbschema = $config->get_databaseinfo->single({ dbname => $database })->schema ;
+	    if ($dbschema eq "marc21"){
+		$cmd.=" --scheme=marc";
+	    }
+	}
+	
+        $logger->info("Executing in $rootdir/data/$database : $cmd");
+        
+        system("cd $rootdir/data/$database ; $cmd");
+    }    
+    
+    # Anreicherung post-Skript
+    if ($database && -e "$config->{autoconv_dir}/filter/$database/post_enrich.pl"){
+        $logger->info("### $database: Verwende Plugin post_enrich.pl");
+        system("$config->{autoconv_dir}/filter/$database/post_enrich.pl $database");
+    }
+}
 
 # Konvertierung aus dem Meta- in das SQL-Einladeformat
 

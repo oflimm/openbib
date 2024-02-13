@@ -822,8 +822,6 @@ convtab:
         '':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '0710':
         '':
           facet:
@@ -1069,17 +1067,23 @@ convtab:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:
@@ -1769,17 +1773,25 @@ convtab:
         '':
           index:
             'ft4100': 1
+            'classification': 1
+            'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:
@@ -2838,8 +2850,6 @@ convtab:
         '':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '0710':
         '':
           index:
@@ -3087,17 +3097,25 @@ convtab:
         '':
           index:
             'ft4100': 1
+            'classification': 1
+            'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:
@@ -3919,17 +3937,25 @@ convtab:
         '':
           index:
             'ft4100': 1
+            'classification': 1
+            'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:
@@ -4577,11 +4603,15 @@ convtab:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4200':         # Wikipedia
         '':
           index:
@@ -4926,8 +4956,6 @@ convtab:
         '':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '0710':
         '':
           index:
@@ -5135,17 +5163,25 @@ convtab:
         '':
           index:
             'ft4100': 1
+            'classification': 1
+            'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:
@@ -5486,17 +5522,25 @@ convtab:
         '':
           index:
             'ft4100': 1
+            'classification': 1
+            'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4200':         # Wikipedia
         '':
           index:
@@ -5797,17 +5841,25 @@ convtab:
         '':
           index:
             'ft4100': 1
+            'classification': 1
+            'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4200':         # Wikipedia
         '':
           index:
@@ -6101,17 +6153,25 @@ convtab:
         '':
           index:
             'ft4100': 1
+            'classification': 1
+            'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4200':         # Wikipedia
         '':
           index:
@@ -6414,17 +6474,25 @@ convtab:
         '':
           index:
             'ft4100': 1
+            'classification': 1
+            'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4200':         # Wikipedia
         '':
           index:
@@ -6708,10 +6776,6 @@ convtab:
           index:
             'source': 1
             'freesearch': 1
-      '0700':
-        '':
-          facet:
-            'classification': 1
       '0710':
         '':
           index:
@@ -6771,17 +6835,25 @@ convtab:
         '':
           index:
             'ft4100': 1
+            'classification': 1
+            'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4200':         # Wikipedia
         '':
           index:
@@ -7261,17 +7333,23 @@ convtab:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:
@@ -7617,17 +7695,25 @@ convtab:
         '':
           index:
             'ft4100': 1
+            'classification': 1
+            'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4200':         # Wikipedia
         '':
           index:
@@ -8351,6 +8437,7 @@ convtab:
           index:
             'ft4100': 1
             'classification': 1
+            'classificationstring': 1
           facet:
             'classification': 1
       '4101':         # RVK
@@ -8359,11 +8446,15 @@ convtab:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4200':         # Wikipedia
         '':
           index:
@@ -8646,6 +8737,7 @@ convtab:
           index:
             'ft4100': 1
             'classification': 1
+            'classificationstring': 1
           facet:
             'classification': 1
       '4101':         # RVK
@@ -8654,11 +8746,15 @@ convtab:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4200':         # Wikipedia
         '':
           index:
@@ -9508,17 +9604,23 @@ convtab:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:
@@ -10702,8 +10804,6 @@ convtab:
         'a':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '0600': # Schlagwort
         'a':
           index:
@@ -10793,17 +10893,23 @@ convtab:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:
@@ -11730,8 +11836,6 @@ convtab:
         'a':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '0600': # Schlagwort
         'a':
           index:
@@ -11847,22 +11951,30 @@ convtab:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:
@@ -12870,8 +12982,6 @@ convtab:
         'a':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '0600': # Schlagwort
         'a':
           index:
@@ -13012,22 +13122,30 @@ convtab:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:
@@ -14028,8 +14146,6 @@ convtab:
         'a':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '0600': # Schlagwort
         'a':
           index:
@@ -14170,22 +14286,30 @@ convtab:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:
@@ -15163,8 +15287,6 @@ convtab:
         'a':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '0600': # Schlagwort
         'a':
           index:
@@ -15288,22 +15410,30 @@ convtab:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:
@@ -16304,8 +16434,6 @@ convtab:
         'a':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '0600': # Schlagwort
         'a':
           index:
@@ -16433,22 +16561,30 @@ convtab:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:
@@ -17449,8 +17585,6 @@ convtab:
         'a':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '0600': # Schlagwort
         'a':
           index:
@@ -17582,22 +17716,30 @@ convtab:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:
@@ -18598,8 +18740,6 @@ convtab:
         'a':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '0600': # Schlagwort
         'a':
           index:
@@ -18731,22 +18871,30 @@ convtab:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:
@@ -19723,8 +19871,6 @@ convtab:
         'a':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '0600': # Schlagwort
         'a':
           index:
@@ -19840,22 +19986,30 @@ convtab:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
+          facet:
+            'classification': 1
       '4102':         # Topic
         '':
           index:

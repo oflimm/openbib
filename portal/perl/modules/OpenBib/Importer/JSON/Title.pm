@@ -33,6 +33,7 @@ no warnings 'redefine';
 use utf8;
 
 use Benchmark ':hireswallclock';
+use Date::Calc qw/check_date/;
 use Digest::MD5 qw(md5_hex);
 use Encode qw/decode_utf8/;
 use JSON::XS;
@@ -40,7 +41,7 @@ use Lingua::Identify::CLD;
 use Log::Log4perl qw(get_logger :levels);
 use YAML ();
 use Business::ISBN;
-
+use List::MoreUtils qw{uniq};
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Conv::Config;
@@ -143,6 +144,17 @@ sub process {
     }
     else {
 	return $self->process_mab($arg_ref);
+    }    
+}
+
+sub enrich {
+    my ($self,$arg_ref) = @_;
+
+    if (defined $self->{scheme} && $self->{scheme} eq "marc"){
+	return $self->enrich_marc($arg_ref);
+    }
+    else {
+	return $self->enrich_mab($arg_ref);
     }    
 }
 
@@ -906,143 +918,7 @@ sub process_mab {
         }
     }
 
-
-    # Bibkey-Kategorie 5050 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
-
-    my $bibkey = "";
-
-    if ((defined $fields_ref->{'0100'} || defined $fields_ref->{'0101'}) && defined $fields_ref->{'0331'} && (defined $fields_ref->{'0424'} || defined $fields_ref->{'0425'})){
-
-        my $bibkey_record_ref = {
-            'T0100' => $fields_ref->{'0100'},
-            'T0101' => $fields_ref->{'0101'},
-            'T0331' => $fields_ref->{'0331'},
-            'T0425' => $fields_ref->{'0425'},
-        };
-
-        if ($fields_ref->{'0424'} && !$fields_ref->{'0425'}){
-            $bibkey_record_ref->{'T0425'} = $fields_ref->{'0424'};
-        }
-
-        my $bibkey_base = $normalizer->gen_bibkey_base({ fields => $bibkey_record_ref});
-
-        $bibkey      = ($bibkey_base)?$normalizer->gen_bibkey({ bibkey_base => $bibkey_base }):"";
-        
-        if ($bibkey) {
-            push @{$fields_ref->{'5050'}}, {
-                mult      => 1,
-                content   => $bibkey,
-                subfield  => '',
-            };
-                
-            push @{$fields_ref->{'5051'}}, {
-                mult      => 1,
-                content   => $bibkey_base,
-                subfield   => '',
-            };
-
-            # Bibkey merken fuer Recherche ueber Suchmaschine
-#            $index_doc->add_index('bkey',1, ['T5050',$bibkey]);
-#            $index_doc->add_index('bkey',1, ['T5051',$bibkey_base]);
-        }
-    }
-
-    # Workkey-Kategorie 5055 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
-    if ((defined $fields_ref->{'0100'} || defined $fields_ref->{'0101'}) && defined $fields_ref->{'0331'} && (defined $fields_ref->{'0424'} || defined $fields_ref->{'0425'}) && defined $fields_ref->{'0412'}){
-        # Erscheinungsjahr muss existieren, damit nur 'ordentliche' Titel untersucht werden
-        
-        my $workkey_record_ref = {
-            'T0100' => $fields_ref->{'0100'}, # Verfasser
-            'T0101' => $fields_ref->{'0101'}, # Person
-            'T0331' => $fields_ref->{'0331'}, # HST
-            'T0412' => $fields_ref->{'0412'}, # Verlag
-            'T0424' => $fields_ref->{'0424'}, # Jahr
-            'T0425' => $fields_ref->{'0425'}, # Jahr
-            'T0304' => $fields_ref->{'0304'}, # EST
-            'T0403' => $fields_ref->{'0403'}, # Auflage als Suffix
-            'T4301' => $fields_ref->{'4301'}, # Angereicherte Sprache
-            'T4400' => $fields_ref->{'4400'}, # Zugriff: online
-        };
-
-        my @workkeys = $normalizer->gen_workkeys({ fields => $workkey_record_ref});
-
-        my $mult = 1;
-        foreach my $workkey (@workkeys) {
-            push @{$fields_ref->{'5055'}}, {
-                mult      => $mult++,
-                content   => $workkey,
-                subfield  => '',
-            };
-        }
-    }
-
-    my $title_matchkey = "$database:$id";
-    
-    # Zentrale Anreicherungsdaten lokal einspielen
-    if ($self->{local_enrichmnt} && (@{$enrichmnt_isbns_ref} || @{$enrichmnt_issns_ref} || $bibkey || $title_matchkey)) {
-        @{$enrichmnt_isbns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_isbns_ref} }}; # Only unique
-        @{$enrichmnt_issns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_issns_ref} }}; # Only unique
-        
-        foreach my $field (keys %{$self->{conv_config}{local_enrichmnt}}) {
-            my $enrichmnt_data_ref = [];
-            
-            if (@{$enrichmnt_isbns_ref}) {
-                foreach my $isbn13 (@{$enrichmnt_isbns_ref}) {
-                    my $lookup_ref = $self->{storage}{enrichmntdata}{$isbn13};
-                    $logger->debug("Testing ISBN $isbn13 for field $field");
-                    foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
-                        $logger->debug("Enrich field $field for ISBN $isbn13 with $enrich_content");
-                        push @$enrichmnt_data_ref, $enrich_content;
-                    }
-                }
-            }
-            elsif (@{$enrichmnt_issns_ref}) {
-                foreach my $issn (@{$enrichmnt_issns_ref}) {
-                    my $lookup_ref = $self->{storage}{enrichmntdata}{$issn};
-                    
-                    foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
-                        $logger->debug("Enrich field $field for ISSN $issn with $enrich_content");
-                        push @$enrichmnt_data_ref, $enrich_content;
-                    }
-                }
-            }
-            elsif ($bibkey){
-                my $lookup_ref = $self->{storage}{enrichmntdata}{$bibkey};
-                    
-                foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
-                    $logger->debug("Enrich field $field for Bibkey $bibkey with $enrich_content for id $id");
-                    push @$enrichmnt_data_ref, $enrich_content;
-                }
-            }
-
-	    # Anreicherung mit spezifischer Titel-ID und Datenbank
-
-	    {
-		my $lookup_ref = $self->{storage}{enrichmntdata}{$title_matchkey};
-		
-                foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
-                    $logger->debug("Enrich field $field for title matchkey $title_matchkey with $enrich_content for id $id");
-                    push @$enrichmnt_data_ref, $enrich_content;
-                }
-	    }
-            
-            if (@{$enrichmnt_data_ref}) {
-                my $mult = 1;
-                
-                foreach my $content (keys %{{ map { $_ => 1 } @${enrichmnt_data_ref} }}) { # unique
-                    $logger->debug("Id: $id - Adding $field -> $content");
-
-                    push @{$fields_ref->{$field}}, {
-                        mult      => $mult,
-                        content   => $content,
-                        subfield  => '',
-                    };
-                    
-                    $mult++;
-                }
-            }
-        }
-    }
+    # Anreicherungen in $self->enrich ausgelagert
     
     # Suchmaschineneintraege mit den Tags, Literaturlisten und Standard-Titelkategorien fuellen
     {
@@ -2282,149 +2158,8 @@ sub process_marc {
         }
     }
 
-    # Bibkey-Generierung mit MARC-Records
-	    
-    # Bibkey-Kategorie 5050 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
-
-    my $bibkey = "";
-
-    if ((defined $fields_ref->{'0100'} || defined $fields_ref->{'0700'}) && defined $fields_ref->{'0245'} && (defined $fields_ref->{'0264'})){
-
-	my $bibkey_record_ref = {
-	    'T0100' => $fields_ref->{'0100'},
-		'T0700' => $fields_ref->{'0700'},
-		'T0245' => $fields_ref->{'0245'},
-		'T0264' => $fields_ref->{'0264'},
-	};
-	
-        my $bibkey_base = $normalizer->gen_bibkey_base({ fields => $bibkey_record_ref, scheme => 'marc'});
-	
-        $bibkey      = ($bibkey_base)?$normalizer->gen_bibkey({ bibkey_base => $bibkey_base }):"";
-
-	if ($logger->is_debug){
-	    $logger->debug("Generating bibkey for ".YAML::Dump($bibkey_record_ref)." Got base $bibkey_base and bibkey $bibkey");
-	}
+    # Anreicherungen in $self->enrich ausgelagert
         
-        if ($bibkey) {
-            push @{$fields_ref->{'5050'}}, {
-                mult      => 1,
-                content   => $bibkey,
-                subfield  => '',
-            };
-                
-            push @{$fields_ref->{'5051'}}, {
-                mult      => 1,
-                content   => $bibkey_base,
-                subfield   => '',
-            };
-
-            # Bibkey merken fuer Recherche ueber Suchmaschine
-#            $index_doc->add_index('bkey',1, ['T5050',$bibkey]);
-#            $index_doc->add_index('bkey',1, ['T5051',$bibkey_base]);
-        }
-    }
-
-    # Workkey-Kategorie 5055 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
-    if ((defined $fields_ref->{'0100'} || defined $fields_ref->{'0700'}) && defined $fields_ref->{'0245'} && defined $fields_ref->{'0264'}){
-        # Erscheinungsjahr muss existieren, damit nur 'ordentliche' Titel untersucht werden
-        
-        my $workkey_record_ref = {
-            'T0100' => $fields_ref->{'0100'}, # Verfasser
-            'T0700' => $fields_ref->{'0101'}, # Weitere Personen
-            'T0245' => $fields_ref->{'0245'}, # HST
-            'T0264' => $fields_ref->{'0264'}, # Jahr, Verlag
-            'T0130' => $fields_ref->{'0130'}, # EST
-            'T0240' => $fields_ref->{'0240'}, # EST
-            'T0250' => $fields_ref->{'0250'}, # Auflage als Suffix
-            'T4301' => $fields_ref->{'4301'}, # Angereicherte Sprache
-            'T4400' => $fields_ref->{'4400'}, # Zugriff: online
-        };
-
-        my @workkeys = $normalizer->gen_workkeys({ fields => $workkey_record_ref, scheme => 'marc'});
-
-	if ($logger->is_debug){
-	    $logger->debug("Got workkeys: ".YAML::Dump(\@workkeys));
-	}
-
-        my $mult = 1;
-        foreach my $workkey (@workkeys) {
-            push @{$fields_ref->{'5055'}}, {
-                mult      => $mult++,
-                content   => $workkey,
-                subfield  => '',
-            };
-        }
-    }
-
-    my $title_matchkey = "$database:$id";
-    
-    # Zentrale Anreicherungsdaten lokal einspielen
-#    if ($self->{local_enrichmnt} && (@{$enrichmnt_isbns_ref} || @{$enrichmnt_issns_ref} || $bibkey || $title_matchkey)) {
-    if ($self->{local_enrichmnt} && (@{$enrichmnt_isbns_ref} || @{$enrichmnt_issns_ref} || $title_matchkey )) {
-        @{$enrichmnt_isbns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_isbns_ref} }}; # Only unique
-        @{$enrichmnt_issns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_issns_ref} }}; # Only unique
-        
-        foreach my $field (keys %{$self->{conv_config}{local_enrichmnt}}) {
-            my $enrichmnt_data_ref = [];
-            
-            if (@{$enrichmnt_isbns_ref}) {
-                foreach my $isbn13 (@{$enrichmnt_isbns_ref}) {
-                    my $lookup_ref = $self->{storage}{enrichmntdata}{$isbn13};
-                    $logger->debug("Testing ISBN $isbn13 for field $field");
-                    foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
-                        $logger->debug("Enrich field $field for ISBN $isbn13 with $enrich_content");
-                        push @$enrichmnt_data_ref, $enrich_content;
-                    }
-                }
-            }
-            elsif (@{$enrichmnt_issns_ref}) {
-                foreach my $issn (@{$enrichmnt_issns_ref}) {
-                    my $lookup_ref = $self->{storage}{enrichmntdata}{$issn};
-                    
-                    foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
-                        $logger->debug("Enrich field $field for ISSN $issn with $enrich_content");
-                        push @$enrichmnt_data_ref, $enrich_content;
-                    }
-                }
-            }
-            # elsif ($bibkey){
-            #     my $lookup_ref = $self->{storage}{enrichmntdata}{$bibkey};
-                    
-            #     foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
-            #         $logger->debug("Enrich field $field for Bibkey $bibkey with $enrich_content for id $id");
-            #         push @$enrichmnt_data_ref, $enrich_content;
-            #     }
-            # }
-
-	    # Anreicherung mit spezifischer Titel-ID und Datenbank
-
-	    {
-		my $lookup_ref = $self->{storage}{enrichmntdata}{$title_matchkey};
-		
-                foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
-                    $logger->debug("Enrich field $field for title matchkey $title_matchkey with $enrich_content for id $id");
-                    push @$enrichmnt_data_ref, $enrich_content;
-                }
-	    }
-            
-            if (@{$enrichmnt_data_ref}) {
-                my $mult = 1;
-                
-                foreach my $content (keys %{{ map { $_ => 1 } @${enrichmnt_data_ref} }}) { # unique
-                    $logger->debug("Id: $id - Adding $field -> $content");
-
-                    push @{$fields_ref->{$field}}, {
-                        mult      => $mult,
-                        content   => $content,
-                        subfield  => 'e', # enriched
-                    };
-                    
-                    $mult++;
-                }
-            }
-        }
-    }
-    
     # Suchmaschineneintraege mit den Tags, Literaturlisten und Standard-Titelkategorien fuellen
     {
         if ($logger->is_debug){
@@ -2821,8 +2556,8 @@ sub process_marc {
 	    $year = ($year < 70)?$year + 2000:$year + 1900;
 	    $month  = "01"   if ($month < 1 || $month > 12);
 	    $day    = "01"   if ($day < 1 || $day > 32);
-
-	    $create_tstamp = "$year-$month-$day 12:00:00";
+	    
+	    $create_tstamp = "$year-$month-$day 12:00:00" if (check_date($year,$month,$day));
 	}
     }
 
@@ -2842,7 +2577,7 @@ sub process_marc {
 	    $month  = "01"   if ($month < 1 || $month > 12);
 	    $day    = "01"   if ($day < 1 || $day > 32);
 	    
-	    $update_tstamp = "$year-$month-$day $hour:$minute:$second";
+	    $update_tstamp = "$year-$month-$day $hour:$minute:$second" if (check_date($year,$month,$day));
 	}
     }
     
@@ -2882,6 +2617,439 @@ sub process_marc {
     $self->set_index_document($index_doc);
 
     return $self;
+}
+
+sub enrich_mab {
+    my ($self,$arg_ref) = @_;
+
+    my $json      = exists $arg_ref->{json}
+        ? $arg_ref->{json}           : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self unless (defined $json);
+    my $database    = $self->{database};
+    my $normalizer  = $self->{_normalizer};
+
+    $logger->debug("Processing JSON: $json");
+
+    my $record_ref = {};
+    
+    eval {
+	$record_ref = decode_json $json;
+    };
+    
+    if ($@){
+	$logger->error("Skipping record: $@");
+	return;
+    }
+
+    $logger->debug("JSON decoded");
+    
+    my $id            = $record_ref->{id};
+    my $fields_ref    = $record_ref->{fields};
+    
+    my $enrichmnt_isbns_ref = [];
+    my $enrichmnt_issns_ref = [];
+
+    my @isbn                   = ();
+    my @issn                   = ();
+
+    # Anreicherungs-IDs bestimmen
+
+    # ISBN
+    foreach my $field ('0540','0553') {
+        if (defined $fields_ref->{$field}) {
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
+
+                # Alternative ISBN zur Rechercheanreicherung erzeugen
+                my $isbn = Business::ISBN->new($item_ref->{content});
+                
+                if (defined $isbn && $isbn->is_valid) {
+                    
+                    # ISBN13 fuer Anreicherung merken
+                    
+                    push @{$enrichmnt_isbns_ref}, $normalizer->normalize({
+                        field    => "T0540",
+                        content  => $isbn->as_isbn13->as_string,
+                    });
+                }
+            }
+        }
+    }
+
+    # ISSN
+    foreach my $field ('0543') {
+        if (defined $fields_ref->{$field}) {
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
+                push @{$enrichmnt_issns_ref}, $normalizer->normalize({
+                    field    => "T0543",
+                    content  => $item_ref->{content},
+                });
+            }
+        }
+    }
+
+    # Bibkey-Kategorie 5050 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
+
+    my $bibkey = "";
+
+    if ((defined $fields_ref->{'0100'} || defined $fields_ref->{'0101'}) && defined $fields_ref->{'0331'} && (defined $fields_ref->{'0424'} || defined $fields_ref->{'0425'})){
+
+        my $bibkey_record_ref = {
+            'T0100' => $fields_ref->{'0100'},
+            'T0101' => $fields_ref->{'0101'},
+            'T0331' => $fields_ref->{'0331'},
+            'T0425' => $fields_ref->{'0425'},
+        };
+
+        if ($fields_ref->{'0424'} && !$fields_ref->{'0425'}){
+            $bibkey_record_ref->{'T0425'} = $fields_ref->{'0424'};
+        }
+
+        my $bibkey_base = $normalizer->gen_bibkey_base({ fields => $bibkey_record_ref});
+
+        $bibkey      = ($bibkey_base)?$normalizer->gen_bibkey({ bibkey_base => $bibkey_base }):"";
+        
+        if ($bibkey) {
+            push @{$fields_ref->{'5050'}}, {
+                mult      => 1,
+                content   => $bibkey,
+                subfield  => '',
+            };
+                
+            push @{$fields_ref->{'5051'}}, {
+                mult      => 1,
+                content   => $bibkey_base,
+                subfield   => '',
+            };
+        }
+    }
+
+    # Workkey-Kategorie 5055 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
+    if ((defined $fields_ref->{'0100'} || defined $fields_ref->{'0101'}) && defined $fields_ref->{'0331'} && (defined $fields_ref->{'0424'} || defined $fields_ref->{'0425'}) && defined $fields_ref->{'0412'}){
+        # Erscheinungsjahr muss existieren, damit nur 'ordentliche' Titel untersucht werden
+        
+        my $workkey_record_ref = {
+            'T0100' => $fields_ref->{'0100'}, # Verfasser
+            'T0101' => $fields_ref->{'0101'}, # Person
+            'T0331' => $fields_ref->{'0331'}, # HST
+            'T0412' => $fields_ref->{'0412'}, # Verlag
+            'T0424' => $fields_ref->{'0424'}, # Jahr
+            'T0425' => $fields_ref->{'0425'}, # Jahr
+            'T0304' => $fields_ref->{'0304'}, # EST
+            'T0403' => $fields_ref->{'0403'}, # Auflage als Suffix
+            'T4301' => $fields_ref->{'4301'}, # Angereicherte Sprache
+            'T4400' => $fields_ref->{'4400'}, # Zugriff: online
+        };
+
+        my @workkeys = $normalizer->gen_workkeys({ fields => $workkey_record_ref});
+
+        my $mult = 1;
+        foreach my $workkey (@workkeys) {
+            push @{$fields_ref->{'5055'}}, {
+                mult      => $mult++,
+                content   => $workkey,
+                subfield  => '',
+            };
+        }
+    }
+
+    my $title_matchkey = "$database:$id";
+    
+    # Zentrale Anreicherungsdaten lokal einspielen
+    if ($self->{local_enrichmnt} && (@{$enrichmnt_isbns_ref} || @{$enrichmnt_issns_ref} || $bibkey || $title_matchkey)) {
+        @{$enrichmnt_isbns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_isbns_ref} }}; # Only unique
+        @{$enrichmnt_issns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_issns_ref} }}; # Only unique
+        
+        foreach my $field (keys %{$self->{conv_config}{local_enrichmnt}}) {
+            my $enrichmnt_data_ref = [];
+            
+            if (@{$enrichmnt_isbns_ref}) {
+                foreach my $isbn13 (@{$enrichmnt_isbns_ref}) {
+                    my $lookup_ref = $self->{storage}{enrichmntdata}{$isbn13};
+                    $logger->debug("Testing ISBN $isbn13 for field $field");
+                    foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
+                        $logger->debug("Enrich field $field for ISBN $isbn13 with $enrich_content");
+                        push @$enrichmnt_data_ref, $enrich_content;
+                    }
+                }
+            }
+            elsif (@{$enrichmnt_issns_ref}) {
+                foreach my $issn (@{$enrichmnt_issns_ref}) {
+                    my $lookup_ref = $self->{storage}{enrichmntdata}{$issn};
+                    
+                    foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
+                        $logger->debug("Enrich field $field for ISSN $issn with $enrich_content");
+                        push @$enrichmnt_data_ref, $enrich_content;
+                    }
+                }
+            }
+            elsif ($bibkey){
+                my $lookup_ref = $self->{storage}{enrichmntdata}{$bibkey};
+                    
+                foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
+                    $logger->debug("Enrich field $field for Bibkey $bibkey with $enrich_content for id $id");
+                    push @$enrichmnt_data_ref, $enrich_content;
+                }
+            }
+
+	    # Anreicherung mit spezifischer Titel-ID und Datenbank
+
+	    {
+		my $lookup_ref = $self->{storage}{enrichmntdata}{$title_matchkey};
+		
+                foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
+                    $logger->debug("Enrich field $field for title matchkey $title_matchkey with $enrich_content for id $id");
+                    push @$enrichmnt_data_ref, $enrich_content;
+                }
+	    }
+            
+            if (@{$enrichmnt_data_ref}) {
+                my $mult = 1;
+                
+                foreach my $content (uniq @{$enrichmnt_data_ref}) { # unique
+                    $logger->debug("Id: $id - Adding $field -> $content");
+
+                    push @{$fields_ref->{$field}}, {
+                        mult      => $mult,
+                        content   => $content,
+                        subfield  => 'e',
+                    };
+                    
+                    $mult++;
+                }
+            }
+        }
+    }
+
+    my $enriched_jsonline = encode_json $record_ref;
+
+    return $enriched_jsonline;
+}
+
+sub enrich_marc {
+    my ($self,$arg_ref) = @_;
+
+    my $json      = exists $arg_ref->{json}
+        ? $arg_ref->{json}           : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self unless (defined $json);
+    my $database    = $self->{database};
+    my $normalizer  = $self->{_normalizer};
+
+    $logger->debug("Processing JSON: $json");
+
+    my $record_ref = {};
+
+    eval {
+	$record_ref = decode_json $json;
+    };
+    
+    if ($@){
+	$logger->error("Skipping record: $@");
+	return;
+    }
+
+    $logger->debug("JSON decoded");
+    
+    my $id            = $record_ref->{id};
+    my $fields_ref    = $record_ref->{fields};
+
+    my $enrichmnt_isbns_ref = [];
+    my $enrichmnt_issns_ref = [];
+
+    my @isbn                   = ();
+    my @issn                   = ();
+
+    # Anreicherungs-IDs bestimmen
+
+    # ISBN
+    foreach my $field ('0020') {
+        if (defined $fields_ref->{$field}) {
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
+
+		if ($item_ref->{subfield} eq "a"){
+		    # Alternative ISBN zur Rechercheanreicherung erzeugen
+		    my $isbn = Business::ISBN->new($item_ref->{content});
+		    
+		    if (defined $isbn && $isbn->is_valid) {
+			
+			# ISBN13 fuer Anreicherung merken
+			
+			push @{$enrichmnt_isbns_ref}, $normalizer->normalize({
+			    field    => "T0540",
+			    content  => $isbn->as_isbn13->as_string,
+										       });
+		    }
+		}
+            }
+        }
+    }
+
+    # ISSN
+    foreach my $field ('0022') {
+        if (defined $fields_ref->{$field}) {
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
+		if ($item_ref->{subfield} eq "a"){
+		    push @{$enrichmnt_issns_ref}, $normalizer->normalize({
+			field    => "T0543",
+			content  => $item_ref->{content},
+										   });
+		}
+            }
+        }
+    }
+
+    # Bibkey-Generierung mit MARC-Records
+	    
+    # Bibkey-Kategorie 5050 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
+
+    my $bibkey = "";
+
+    if ((defined $fields_ref->{'0100'} || defined $fields_ref->{'0700'}) && defined $fields_ref->{'0245'} && (defined $fields_ref->{'0264'})){
+
+	my $bibkey_record_ref = {
+	    'T0100' => $fields_ref->{'0100'},
+		'T0700' => $fields_ref->{'0700'},
+		'T0245' => $fields_ref->{'0245'},
+		'T0264' => $fields_ref->{'0264'},
+	};
+	
+        my $bibkey_base = $normalizer->gen_bibkey_base({ fields => $bibkey_record_ref, scheme => 'marc'});
+	
+        $bibkey      = ($bibkey_base)?$normalizer->gen_bibkey({ bibkey_base => $bibkey_base }):"";
+
+	if ($logger->is_debug){
+	    $logger->debug("Generating bibkey for ".YAML::Dump($bibkey_record_ref)." Got base $bibkey_base and bibkey $bibkey");
+	}
+        
+        if ($bibkey) {
+            push @{$fields_ref->{'5050'}}, {
+                mult      => 1,
+                content   => $bibkey,
+                subfield  => '',
+            };
+                
+            push @{$fields_ref->{'5051'}}, {
+                mult      => 1,
+                content   => $bibkey_base,
+                subfield   => '',
+            };
+
+            # Bibkey merken fuer Recherche ueber Suchmaschine
+#            $index_doc->add_index('bkey',1, ['T5050',$bibkey]);
+#            $index_doc->add_index('bkey',1, ['T5051',$bibkey_base]);
+        }
+    }
+
+    # Workkey-Kategorie 5055 wird *immer* angereichert, wenn alle relevanten Kategorien enthalten sind. Die Invertierung ist konfigurabel
+    if ((defined $fields_ref->{'0100'} || defined $fields_ref->{'0700'}) && defined $fields_ref->{'0245'} && defined $fields_ref->{'0264'}){
+        # Erscheinungsjahr muss existieren, damit nur 'ordentliche' Titel untersucht werden
+        
+        my $workkey_record_ref = {
+            'T0100' => $fields_ref->{'0100'}, # Verfasser
+            'T0700' => $fields_ref->{'0101'}, # Weitere Personen
+            'T0245' => $fields_ref->{'0245'}, # HST
+            'T0264' => $fields_ref->{'0264'}, # Jahr, Verlag
+            'T0130' => $fields_ref->{'0130'}, # EST
+            'T0240' => $fields_ref->{'0240'}, # EST
+            'T0250' => $fields_ref->{'0250'}, # Auflage als Suffix
+            'T4301' => $fields_ref->{'4301'}, # Angereicherte Sprache
+            'T4400' => $fields_ref->{'4400'}, # Zugriff: online
+        };
+
+        my @workkeys = $normalizer->gen_workkeys({ fields => $workkey_record_ref, scheme => 'marc'});
+
+	if ($logger->is_debug){
+	    $logger->debug("Got workkeys: ".YAML::Dump(\@workkeys));
+	}
+
+        my $mult = 1;
+        foreach my $workkey (@workkeys) {
+            push @{$fields_ref->{'5055'}}, {
+                mult      => $mult++,
+                content   => $workkey,
+                subfield  => '',
+            };
+        }
+    }
+
+    my $title_matchkey = "$database:$id";
+    
+    # Zentrale Anreicherungsdaten lokal einspielen
+    if ($self->{local_enrichmnt} && (@{$enrichmnt_isbns_ref} || @{$enrichmnt_issns_ref} || $bibkey || $title_matchkey )) {
+        @{$enrichmnt_isbns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_isbns_ref} }}; # Only unique
+        @{$enrichmnt_issns_ref} =  keys %{{ map { $_ => 1 } @${enrichmnt_issns_ref} }}; # Only unique
+        
+        foreach my $field (keys %{$self->{conv_config}{local_enrichmnt}}) {
+            my $enrichmnt_data_ref = [];
+            
+            if (@{$enrichmnt_isbns_ref}) {
+                foreach my $isbn13 (@{$enrichmnt_isbns_ref}) {
+                    my $lookup_ref = $self->{storage}{enrichmntdata}{$isbn13};
+                    $logger->debug("Testing ISBN $isbn13 for field $field");
+                    foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
+                        $logger->debug("Enrich field $field for ISBN $isbn13 with $enrich_content");
+                        push @$enrichmnt_data_ref, $enrich_content;
+                    }
+                }
+            }
+            elsif (@{$enrichmnt_issns_ref}) {
+                foreach my $issn (@{$enrichmnt_issns_ref}) {
+                    my $lookup_ref = $self->{storage}{enrichmntdata}{$issn};
+                    
+                    foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
+                        $logger->debug("Enrich field $field for ISSN $issn with $enrich_content");
+                        push @$enrichmnt_data_ref, $enrich_content;
+                    }
+                }
+            }
+            # elsif ($bibkey){
+            #     my $lookup_ref = $self->{storage}{enrichmntdata}{$bibkey};
+                    
+            #     foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
+            #         $logger->debug("Enrich field $field for Bibkey $bibkey with $enrich_content for id $id");
+            #         push @$enrichmnt_data_ref, $enrich_content;
+            #     }
+            # }
+
+	    # Anreicherung mit spezifischer Titel-ID und Datenbank
+
+	    {
+		my $lookup_ref = $self->{storage}{enrichmntdata}{$title_matchkey};
+		
+                foreach my $enrich_content  (@{$lookup_ref->{"$field"}}) {
+                    $logger->debug("Enrich field $field for title matchkey $title_matchkey with $enrich_content for id $id");
+                    push @$enrichmnt_data_ref, $enrich_content;
+                }
+	    }
+            
+            if (@{$enrichmnt_data_ref}) {
+                my $mult = 1;
+                
+                foreach my $content (keys %{{ map { $_ => 1 } @${enrichmnt_data_ref} }}) { # unique
+                    $logger->debug("Id: $id - Adding $field -> $content");
+
+                    push @{$fields_ref->{$field}}, {
+                        mult      => $mult,
+                        content   => $content,
+                        subfield  => 'e', # enriched
+                    };
+                    
+                    $mult++;
+                }
+            }
+        }
+    }
+
+    my $enriched_jsonline = encode_json $record_ref;
+
+    return $enriched_jsonline;
 }
 
 sub get_columns_title_title {

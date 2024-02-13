@@ -1782,6 +1782,7 @@ sub gen_workkeys_mab {
     foreach my $field (qw/T0100 T0101/){
         next if (!exists $fields_ref->{$field});
         foreach my $part_ref (@{$fields_ref->{$field}}){
+	    next unless (defined $part_ref->{content});
             my $single_person = lc($part_ref->{content});
             $single_person    =~ s/[^0-9\p{L}\. ]+//g;
             my ($lastname,$firstname) = split(/\s+/,$single_person);
@@ -1814,7 +1815,9 @@ sub gen_workkeys_mab {
         foreach my $field (qw/T0304 T0331/){
             next if (!exists $fields_ref->{$field});
             foreach my $part_ref (@{$fields_ref->{$field}}){
-                my $title = lc($part_ref->{content});
+		next unless (defined $part_ref->{content});
+		
+		my $title = lc($part_ref->{content});
 
                 if ($field eq "T0304"){
                     $title =~s/\s+\&lt;.+\&gt;\s*$//;

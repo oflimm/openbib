@@ -12983,8 +12983,6 @@ convtab:
         'b':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '1942': 
         'a': # GND Anreicherung: Verweisungsform Person
           index:
@@ -14143,8 +14141,6 @@ convtab:
         'b':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '1942': 
         'a': # GND Anreicherung: Verweisungsform Person
           index:
@@ -16412,8 +16408,6 @@ convtab:
         'b':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '1942': 
         'a': # GND Anreicherung: Verweisungsform Person
           index:
@@ -17559,8 +17553,6 @@ convtab:
         'b':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '1942': 
         'a': # GND Anreicherung: Verweisungsform Person
           index:
@@ -18710,8 +18702,6 @@ convtab:
         'b':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
       '1942': 
         'a': # GND Anreicherung: Verweisungsform Person
           index:

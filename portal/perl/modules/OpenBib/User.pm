@@ -6117,6 +6117,26 @@ sub has_template {
     return $has_template ;
 }
 
+sub has_templates {
+    my ($self,$userid)=@_;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    $logger->debug("Getting templates");
+
+    my $thisuserid = ($userid)?$userid:$self->{ID};
+    
+    my $has_templates = $self->get_schema->resultset('UserTemplate')->search_rs(
+        {
+            'userid'     => $thisuserid,
+        },
+    )->count;
+
+    return $has_templates ;
+}
+
 sub searchfields_exist {
     my ($self,$userid)=@_;
 

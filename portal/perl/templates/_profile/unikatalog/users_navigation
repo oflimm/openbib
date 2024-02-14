@@ -107,7 +107,7 @@
 [% END %]
 [% END %]
 
-[% IF user.has_role('viewadmin',user.ID) %]
+[% IF user.has_templates(user.ID) %]
 [% IF active_submenu == "viewadmin_templates" %]
   <li class="active"><strong>[% msg.maketext("Templates") %]</strong></li>
 [% ELSE %]

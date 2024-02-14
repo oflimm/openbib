@@ -23,7 +23,9 @@
 [%-
 
    circ_config = config.load_alma_circulation_config;
-   
+
+   abstract_fields = record.to_abstract_fields;
+     
    # First pass
    FOREACH thiscirculation IN circulation ;
      IF thiscirculation.location_mark.match('#$') ; # LBS-Exemplare: Mediennummer statt Signatur anzeigen
@@ -68,14 +70,6 @@
         availability_info = availability_info.replace('\(Fachbibl. Chemie, Greinstr. 4\)','');
      END;
 
-     # IF standort.match('Handapp.');
-     #   IF thiscirculation.department_id.match('^(38|38-101|38-132|38-418)$');
-     #      standort = "Handapp." ; #.replace('^(.*Handapp\.).*','$1'); # Handapp. der Hauptabteilung und FBs: Namen verbergen, z.B. ID=6445402
-     #   ELSIF thiscirculation.department_id.match('^KN3$');
-     #      standort = "KMB / Handapp.";
-     #    END;
-     # END;
-
      # Bestimmung department_url
      library_isil = "";
 
@@ -104,13 +98,6 @@
        END ;
      END ;
 
-     # IF database.match('inst[0-9][0-9][0-9]') && NOT database.match('uni');
-     #   library_isil = database.replace('inst','');
-     #   library_isil = "DE-38-${library_isil}";
-     #   thiscirculation.department.id = 0;
-     # END;
-
-     
      IF library_isil ;
         department_url  = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${library_isil}";
      END ;
@@ -144,66 +131,24 @@
      END;
 
      # Titel konstruieren
-     title = normdata.${'T0331'}.first.content;
-     IF normdata.${'T0310'}.first.content;
-         title = normdata.${'T0310'}.first.content;
-     END;
-
-     # Mit Unterreihe
-     IF normdata.${'T0360'}.first.content ;
-         unterreihe = normdata.${'T0360'}.first.content;
-	 IF NOT title.match(" / ${unterreihe}");
-            title = "${title} / ${unterreihe}";
-	 END;
-     END;
-
-     is_schriftenreihe = 0;
-     is_mehrbaendig    = 0;
-
-     IF normdata.${'T0089'}.first.content;
-       is_mehrbaendig = 1;
-     ELSIF normdata.${'T0451'}.first.content;
-       is_schriftenreihe = 1;
-     END;
+     title = abstract_fields.title;
 
      zaehlung = "";
      
      # Zaehlung Anfang Titel
-     IF is_mehrbaendig;
-       IF normdata.${'T0090'}.first.content;
-          zaehlung = normdata.${'T0090'}.first.content;
+     IF abstract_fields.series_volume;
+          zaehlung = abstract_fields.series_volume;
 	  IF zaehlung == title ;
 	     title = "";
 	  END;
           title = "${zaehlung}. ${title}";
-       ELSIF normdata.${'T0089'}.first.content;
-          zaehlung = normdata.${'T0089'}.first.content;
-	  IF zaehlung == title ;
-	     title = "";
-	  END;
-          title = "${zaehlung}. ${title}";
-       END;     
      END;
      
      super_title = "";
 
      # Uebergeordneter Titel in Klammern (super_title)
-     IF is_schriftenreihe;
-       IF normdata.${'T0451'}.first.content;
-          super_title = normdata.${'T0451'}.first.content;
-       ELSIF super;
-         IF super.fields.${'0331'} ;
-            super_title   = super.fields.${'0331'}.first.content;
-         ELSIF super.fields.${'0451'} ;
-            super_title   = super.fields.${'0451'}.first.content;
-         END;
-       END;
-     ELSIF is_mehrbaendig;
-       IF super;
-         IF super.fields.${'0331'} ;
-            super_title   = super.fields.${'0331'}.first.content;
-	 END;
-       END;
+     IF abstract_fields.series;
+          super_title = abstract_fields.series;
      END;
 
      IF title && super_title ;

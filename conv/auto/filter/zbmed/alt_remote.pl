@@ -217,4 +217,4 @@ system("cd $pooldir/$pool; yaz-marcdump -o json $filename  | jq -S -c . > ${file
 print "### $pool: Konvertierung von $filename\n";
 system("cd $pooldir/$pool; $marcjson2marcmetaexe --database=$pool -use-bch -reduce-mem --inputfile=${filename}.processed ; gzip meta.*");
 
-system("cd $pooldir/$pool ; rm pool.mrc.processed");
+system("cd $pooldir/$pool ; rm pool.mrc.processed zbmed_*.mrc");

@@ -61,6 +61,6 @@ system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/remove_ill.pl
 #system("cd $datadir/$pool ; cat meta.subject | $rootdir/filter/$pool/flag_discriminatory_subjects.pl | $rootdir/filter/$pool/fix-gnd.pl > meta.subject.tmp ; mv -f meta.subject.tmp meta.subject");
 #system("cd $datadir/$pool ; cat meta.classification | $rootdir/filter/$pool/fix-gnd.pl > meta.classification.tmp ; mv -f meta.classification.tmp meta.classification");
 
-#print "### $pool: Korrektur der Exemplarinformationen\n";
+print "### $pool: Korrektur der Exemplarinformationen\n";
 
-#system("cd $datadir/$pool ; cat meta.holding| $rootdir/filter/$pool/fix-holding.pl > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");
+system("cd $datadir/$pool ; cat meta.holding| $rootdir/filter/$pool/fix-holding.pl > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");

@@ -18,7 +18,8 @@
           rel = 'self'
           href = location
      }
-     orders = orders
+     items = orders.items
+     num_total = orders.items.size
  };
 
   to_json(this_json_output);

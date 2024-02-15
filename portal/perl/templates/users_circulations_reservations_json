@@ -18,7 +18,8 @@
           rel = 'self'
           href = location
      }
-     reservations = reservations
+     items = reservations.items
+     num_total = reservations.items.size
  };
 
   to_json(this_json_output);

@@ -18,8 +18,15 @@
           rel = 'self'
           href = location
      }
-     fees = fees
  };
+
+  IF fees.no_fees ;
+    this_json_output.num_total = 0;
+    this_json_output.amount_total = "0 Euro";    
+  ELSIF fees.items ;
+    this_json_output.amount_total = fees.amount;  
+    this_json_output.items = fees.items;  
+  END;
 
   to_json(this_json_output);
 

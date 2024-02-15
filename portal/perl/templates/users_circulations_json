@@ -1,0 +1,60 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_circulations_json
+#
+# Typ         : JSON-Repraesentation
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste der Informationen im Bibliothekskonto
+#
+#######################################################################
+-%]
+[%-
+
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+
+     loginname    = loginname
+     id           = user.ID
+     startdate    = userdata.startdate
+     enddate      = userdata.enddate
+     block_reason = userdata.block_reason
+ };
+
+   this_userdata = {
+      salutation = userdata.salutation
+      fullname   = userdata.fullname
+      birthdata  = userdata.birthdate
+      address    = [
+      {
+         street    = userdata.street
+         zip       = userdata.zip
+         city      = userdata.city
+      }
+      {
+         street   = userdata.street2
+         zip      = userdata.zip2
+         city     = userdata.city2      
+      }
+      ]
+      phone      = userdata.phone
+      email      = userdata.email
+   };
+
+  user_roles = [];
+
+  FOREACH role IN user.get_roles_of_user;
+    user_roles.push({ name = role.key, description = role.value });
+  END;
+  
+  this_json_output.info  = this_userdata;
+  this_json_output.roles = user_roles;
+  
+  to_json(this_json_output);
+
+-%]

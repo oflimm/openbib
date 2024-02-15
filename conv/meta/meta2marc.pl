@@ -49,19 +49,20 @@ use YAML;
 
 use OpenBib::Config;
 
-my ($outputfile,$logfile,$loglevel,$count,$help);
+my ($outputfile,$mappingfile,$logfile,$loglevel,$count,$help);
 
 &GetOptions(
     "outputfile=s"   => \$outputfile,
+    "mappingfile=s"  => \$mappingfile,    
     "logfile=s"      => \$logfile,
     "loglevel=s"     => \$loglevel,
     "help"           => \$help,
-);
+    );
 
-if ($help) {
+if ($help || (!$mappingfile && !$outputfile)) {
     print_help();
 }
-
+    
 my $config      = OpenBib::Config->new;
 
 $logfile=($logfile)?$logfile:"./meta2marc.log";
@@ -128,8 +129,6 @@ my $stammdateien_ref = {
     },
 };
 
-goto TITLES;
-
 my $atime;
 
 foreach my $type (keys %{$stammdateien_ref}) {
@@ -188,7 +187,6 @@ foreach my $type (keys %{$stammdateien_ref}) {
 
 #######################
 
-TITLES:
 $logger->info("### Bearbeite meta.title");
 
 $stammdateien_ref = {
@@ -207,138 +205,10 @@ $count = 1;
 
 $atime = new Benchmark;
 
-my $mab2marc_ref = {
-    '245_ _ ' => [
-	{
-	    from_field    => '0331',		
-	    subfield => 'a',
-	},
-	{
-	    from_field    => '0335',		
-	    subfield => 'b',
-	},
-	{
-	    from_field    => '0359',		
-	    subfield => 'c',
-	},
-	{
-	    from_field    => '0089',		
-	    subfield => 'n',
-	},
-	{
-	    from_field    => '0455',		
-	    subfield => 'n',
-	},
-	{
-	    from_field    => '0451',		
-	    subfield => 'p',
-	},
-	
-	],
-    '250_ _ ' => [
-	{
-	    from_field    => '0403',		
-	    subfield => 'a',
-	},
-	],
-    '255_ _ ' => [
-	{
-	    from_field    => '0407',		
-	    subfield => 'a',
-	},
-	],
-    '260_ _ ' => [
-	{
-	    from_field    => '0410',		
-	    subfield => 'a',
-	},
-	{
-	    from_field    => '0412',		
-	    subfield => 'b',
-	},
-	{
-	    from_field    => '0425',		
-	    subfield => 'c',
-	},
-	{
-	    from_field    => '0440',		
-	    subfield => 'e',
-	},
-	{
-	    from_field    => '0413',		
-	    subfield => 'f',
-	},
-	],
-    '300_ _ ' => [
-	{
-	    from_field    => '0433',		
-	    subfield => 'a',
-	},
-	{
-	    from_field    => '0434',		
-	    subfield => 'b',
-	},
-	{
-	    from_field    => '0437',		
-	    subfield => 'e',
-	},	
-	],
-    '440_ _ ' => [
-	{
-	    from_field    => '0451',		
-	    subfield => 'a',
-	},
-	{
-	    from_field    => '0455',		
-	    subfield => 'v',
-	},
-	],
-    '500_ _ ' => [
-	{
-	    from_field    => '0501',		
-	    subfield => 'a',
-	},
-	],
-    '502_ _ ' => [
-	{
-	    from_field    => '0519',		
-	    subfield => 'a',
-	},
-	],
-    '505_ _ ' => [
-	{
-	    from_field    => '0517',		
-	    subfield => 'a',
-	},
-	],
-    '516_ _ ' => [
-	{
-	    from_field    => '0435',		
-	    subfield => 'a',
-	},
-	],
-    '520_ _ ' => [
-	{
-	    from_field    => '0517',		
-	    subfield => 'a',
-	},
-	],
-    '720_ _ ' => [
-	{
-	    from_field    => '0370',		
-	    subfield => 'a',
-	},
-	],
-    '751_ _ ' => [
-	{
-	    from_field    => '0673',		
-	    subfield => 'a',
-	},
-	],
-	
-	
-};
+my $mapping_ref = YAML::Syck::LoadFile($mappingfile);
 
+my $title_mapping_ref = $mapping_ref->{convtab}{title};
+    
 while (my $json=<IN>){
     
     my $record_ref = decode_json $json;
@@ -351,17 +221,22 @@ while (my $json=<IN>){
     
     $logger->debug(YAML::Dump($fields_ref));
     
-    foreach my $marcfield (keys %{$mab2marc_ref}){
-	my ($ind1)    = $marcfield =~m/^..._(.)_./;
-	my ($ind2)    = $marcfield =~m/^..._._(.)/;
+    foreach my $marcfield (keys %{$title_mapping_ref}){
+	my ($ind1)    = $marcfield =~m/^..._(.)_.$/;
+	my ($ind2)    = $marcfield =~m/^..._._(.)$/;
 
+	$logger->debug("$marcfield -> Ind1: x${ind1}x - Ind2: x${ind2}x");
+	
 	$ind1 = "\'$ind1\'";
 	$ind2 = "\'$ind2\'";
-	
+
 	my ($fieldno) = $marcfield =~m/^(\d\d\d)/;
-	
+
+	# Daten mit mapping-Datein in interne MARC21-Struktur ueberfuehren
 	my $marcfields_ref = {};
-	foreach my $marcdef_ref (@{$mab2marc_ref->{$marcfield}}){
+
+	# Titeldaten
+	foreach my $marcdef_ref (@{$title_mapping_ref->{$marcfield}}){
 	    $logger->debug(YAML::Dump($marcdef_ref));
 	    my $mab2_field = $marcdef_ref->{from_field};
 	    if (defined $fields_ref->{$mab2_field}){
@@ -374,15 +249,15 @@ while (my $json=<IN>){
 			ind1 => $ind1,
 			ind2 => $ind2,
 			subfield => $marcdef_ref->{subfield},
-			content => $thisfield_ref->{content},
+			content => cleanup($thisfield_ref->{content}),
 		    }
 		}
 	    }
 	}
 
-
 	$logger->debug(YAML::Dump($marcfields_ref));
-	
+
+	# Aus interner MARC21-Struktur valide MARC21-Ausgabedaten erzeugen
 	foreach my $mult (sort keys %{$marcfields_ref}){
 	    my $first = 1;
 	    my $new_field;
@@ -401,6 +276,136 @@ while (my $json=<IN>){
     }
 
     # Normdaten processen
+
+    # Personendaten
+    my @personids = ();
+    foreach my $thisfield_ref (@{$fields_ref->{'0100'}}){
+	push @personids, $thisfield_ref->{id};
+    }
+    
+    foreach my $thisfield_ref (@{$fields_ref->{'0101'}}){
+	push @personids, $thisfield_ref->{id};
+    }
+    
+    foreach my $thisfield_ref (@{$fields_ref->{'0102'}}){
+	push @personids, $thisfield_ref->{id};
+    }
+    
+    foreach my $thisfield_ref (@{$fields_ref->{'0103'}}){
+	push @personids, $thisfield_ref->{id};
+    }
+    
+    if (@personids){
+	
+	# Erste in 100 11
+	my $personid = shift @personids;
+	
+	my $person_fields_ref = $data_person{$personid};
+
+	$logger->debug("Persondata: ".YAML::Syck::Dump($person_fields_ref));
+	my @subfields = ();
+
+	# Ansetzungsform
+	if ($person_fields_ref->{'0800'}){
+	    push (@subfields,'a', cleanup($person_fields_ref->{'0800'}[0]{content}));
+	}
+
+	# GND
+	if ($person_fields_ref->{'0010'}){
+	    push (@subfields,'0', "(DE-588)".$person_fields_ref->{'0010'}[0]{content});
+	}
+
+	# Relationship
+	push (@subfields,'4', "aut");
+	
+	my $new_field = MARC::Field->new('100', '1',  ' ', @subfields);
+
+	$marc_record->append_fields($new_field) if ($new_field);	    	
+
+	foreach my $personid (@personids){
+	    my $person_fields_ref = $data_person{$personid};
+
+	    my @subfields = ();
+	    
+	    # Ansetzungsform
+	    if ($person_fields_ref->{'0800'}){
+		push (@subfields,'a', cleanup($person_fields_ref->{'0800'}[0]{content}));
+	    }
+	    
+	    # GND
+	    if ($person_fields_ref->{'0010'}){
+		push (@subfields,'0', "(DE-588)".$person_fields_ref->{'0010'}[0]{content});
+	    }
+	    
+	    # Relationship
+	    push (@subfields,'4', "aut");
+	    	    
+	    my $new_field = MARC::Field->new('700', '1',  ' ', @subfields);
+	    
+	    $marc_record->append_fields($new_field) if ($new_field);	    	
+	}	
+    }
+	
+    # Koerperschaften
+    my @corporatebodyids = ();
+    foreach my $thisfield_ref (@{$fields_ref->{'0200'}}){
+	push @corporatebodyids, $thisfield_ref->{id};
+    }
+    
+    foreach my $thisfield_ref (@{$fields_ref->{'0201'}}){
+	push @corporatebodyids, $thisfield_ref->{id};
+    }
+        
+    if (@corporatebodyids){
+	
+	# Erste in 100 11
+	my $corporatebodyid = shift @corporatebodyids;
+	
+	my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
+
+	$logger->debug("Corporatebodydata: ".YAML::Syck::Dump($corporatebody_fields_ref));
+	my @subfields = ();
+
+	# Ansetzungsform
+	if ($corporatebody_fields_ref->{'0800'}){
+	    push (@subfields,'a', cleanup($corporatebody_fields_ref->{'0800'}[0]{content}));
+	}
+
+	# GND
+	if ($corporatebody_fields_ref->{'0010'}){
+	    push (@subfields,'0', "(DE-588)".$corporatebody_fields_ref->{'0010'}[0]{content});
+	}
+
+	# Relationship
+	push (@subfields,'4', "prt");
+	
+	my $new_field = MARC::Field->new('110', '1',  ' ', @subfields);
+
+	$marc_record->append_fields($new_field) if ($new_field);	    	
+
+	foreach my $corporatebodyid (@corporatebodyids){
+	    my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
+
+	    my @subfields = ();
+	    
+	    # Ansetzungsform
+	    if ($corporatebody_fields_ref->{'0800'}){
+		push (@subfields,'a', cleanup($corporatebody_fields_ref->{'0800'}[0]{content}));
+	    }
+	    
+	    # GND
+	    if ($corporatebody_fields_ref->{'0010'}){
+		push (@subfields,'0', "(DE-588)".$corporatebody_fields_ref->{'0010'}[0]{content});
+	    }
+	    
+	    # Relationship
+	    push (@subfields,'4', "prt");
+	    	    
+	    my $new_field = MARC::Field->new('710', '1',  ' ', @subfields);
+	    
+	    $marc_record->append_fields($new_field) if ($new_field);	    	
+	}	
+    }
     
     # URLs processen
 
@@ -441,4 +446,12 @@ ENDHELP
     exit;
 }
 
-1;
+sub cleanup {
+    my $content = shift;
+
+    $content=~s/&lt;/</g;
+    $content=~s/&gt;/>/g;
+    $content=~s/&amp;/&/g;
+
+    return $content;
+}

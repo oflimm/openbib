@@ -1,0 +1,103 @@
+convtab:
+  title:
+    '245_ _ ':
+      -
+        from_field: '0331'		
+        subfield: 'a'
+      -
+        from_field: '0335'		
+        subfield: 'b'
+      -
+        from_field: '0359'		
+        subfield: 'c'
+      -
+        from_field: '0089'		
+        subfield: 'n'
+      -
+        from_field: '0455'		
+        subfield: 'n'
+      -
+        from_field: '0451'		
+        subfield: 'p'
+        
+    '250_ _ ':
+      -
+        from_field: '0403'		
+        subfield: 'a'
+
+    '255_ _ ':
+      -
+        from_field: '0407'		
+        subfield: 'a'
+
+    '260_ _ ':
+      -
+        from_field: '0410'		
+        subfield: 'a'
+      -
+        from_field: '0412'		
+        subfield: 'b'
+      -
+        from_field: '0425'		
+        subfield: 'c'
+      -
+        from_field: '0440'		
+        subfield: 'e'
+      -
+        from_field: '0413'		
+        subfield: 'f'
+
+    '300_ _ ':
+      -
+        from_field: '0433'		
+        subfield: 'a'
+      -
+        from_field: '0434'		
+        subfield: 'b'
+      -
+        from_field: '0437'		
+        subfield: 'e'
+
+    '440_ _ ':
+      -
+        from_field: '0451'		
+        subfield: 'a'
+      -
+        from_field: '0455'		
+        subfield: 'v'
+       
+    '500_ _ ':
+      -
+        from_field: '0501'		
+        subfield: 'a'
+
+    '502_ _ ':
+      -
+        from_field: '0519'		
+        subfield: 'a'
+
+    '505_ _ ':
+      -
+        from_field: '0517'		
+        subfield: 'a'
+
+    '516_ _ ':
+      -
+        from_field: '0435'		
+        subfield: 'a'
+        
+    '520_ _ ':
+      -
+        from_field: '0517'		
+        subfield: 'a'
+        
+    '720_ _ ':
+      -
+        from_field: '0370'		
+        subfield: 'a'
+        
+    '751_ _ ':
+      -
+        from_field: '0673'		
+        subfield: 'a'
+

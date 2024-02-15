@@ -28,6 +28,8 @@
 [%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'include' -%]
 [%- PROCESS common/subtemplate name="users_circulations_fees_include" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="users_circulations_fees_json" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

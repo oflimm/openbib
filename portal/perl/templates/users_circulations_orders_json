@@ -1,0 +1,26 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_authenticators
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste der Anmeldeziele.
+#
+#######################################################################
+-%]
+[%-
+
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+     orders = orders
+ };
+
+  to_json(this_json_output);
+
+-%]

@@ -209,26 +209,6 @@ rswkswt_done      = {};
 
 rswkswt_done = {};
 
-# Switching processed links
-
-IF normdata.${'T4662'}.defined ;
-   normdata.${'T0662'} = normdata.${'T4662'};
-   normdata.${'T0663'} = normdata.${'T4663'};
-   normdata.${'T2662'} = [];
-   normdata.${'T2662'}.delete;
-   normdata.${'T2663'} = [];
-   normdata.${'T2663'}.delete;   
-ELSE;
-   normdata.${'T0662'} = [];
-   normdata.${'T0663'} = [];
-   normdata.${'T2662'} = [];
-   normdata.${'T2663'} = [];
-   normdata.${'T0662'}.delete;
-   normdata.${'T0663'}.delete;
-   normdata.${'T2662'}.delete;
-   normdata.${'T2663'}.delete;
-END;
-
 # Lizensierter Volltext? (Ausgabe Zugriffshinweis)
 is_licensed = 0;
 is_oa = 0; 
@@ -775,20 +755,20 @@ FOREACH field IN normdata;
            content_map.${'Zur Bindeeinheit'}.push(content);
 	 END;
 
-    CASE "T0856";
-         content = thisfield.${'3'};
-	 url     = thisfield.${'u'};
+    # CASE "T0856";
+    #      content = thisfield.${'3'};
+    # 	 url     = thisfield.${'u'};
 
-         IF NOT content ;
-	   content = url;
-	 END;
+    #      IF NOT content ;
+    # 	   content = url;
+    # 	 END;
 	 
-	 content   = "<a href=\"${url}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";         
+    # 	 content   = "<a href=\"${url}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";         
 
-         IF NOT content_map.${'URL'} ;
-	    content_map.${'URL'} = [];
-	 END;
-         content_map.${'URL'}.push(content);
+    #      IF NOT content_map.${'URL'} ;
+    # 	    content_map.${'URL'} = [];
+    # 	 END;
+    #      content_map.${'URL'}.push(content);
 
     CASE "T4101";
          content = thisfield.${'e'} || thisfield.${''};
@@ -918,6 +898,26 @@ END;
 
 singular_normdata = record.get_fields;
 
+# Switching processed links
+
+IF singular_normdata.${'T4662'}.defined ;
+   singular_normdata.${'T0662'} = singular_normdata.${'T4662'};
+   singular_normdata.${'T0663'} = singular_normdata.${'T4663'};
+   singular_normdata.${'T2662'} = [];
+   singular_normdata.${'T2662'}.delete;
+   singular_normdata.${'T2663'} = [];
+   singular_normdata.${'T2663'}.delete;   
+ELSE;
+   singular_normdata.${'T0662'} = [];
+   singular_normdata.${'T0663'} = [];
+   singular_normdata.${'T2662'} = [];
+   singular_normdata.${'T2663'} = [];
+   singular_normdata.${'T0662'}.delete;
+   singular_normdata.${'T0663'}.delete;
+   singular_normdata.${'T2662'}.delete;
+   singular_normdata.${'T2663'}.delete;
+END;
+
 FOREACH field IN singular_normdata;
 
   category = field.key ;
@@ -1013,12 +1013,90 @@ FOREACH field IN singular_normdata;
 	 END;
        END; # End subfield 'b'
 
+
+    CASE [ "T0662" ];
+         content       = item.content;
+         thismult      = item.mult ;
+         thiscontent   = "" ;
+	 ampel         = "";
+
+         FOREACH thisitem IN singular_normdata.${"T0663"} ;
+           IF thisitem.mult == thismult ;
+              thiscontent = thisitem.content ;
+           END ;
+         END ;
+
+         IF NOT thiscontent ;
+           thiscontent = content;
+         END ;
+
+         supplement = "";
+
+         # Anreichern mit Informationen aus T1945
+         FOREACH thisfield IN normdata.${"T1945"};
+	    pid = thisfield.${"a"};
+	    IF content.match(pid);
+	      source = thisfield.${"q"};
+	      range  = thisfield.${"n"};
+	      IF range ;
+	        supplement = range;
+	      END;
+	      IF source;
+	        supplement = "${supplement} (${source})";
+	      END;
+	      IF supplement ;
+                thiscontent = "${thiscontent} - ${supplement}";
+              END;
+	    END;
+         END;
+
+         fulltext_availability  = "";
+         fulltext_icon = config.get('ezb_unknown_img');
+         fulltext_desc  = "Volltext";
+
+         IF item.subfield == "g";
+           fulltext_availability = "lawngreen";
+           fulltext_icon = config.get('ezb_green_img');
+           fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
+         ELSIF item.subfield == "y";
+           fulltext_availability = "yellow";
+           fulltext_icon = config.get('ezb_yellow_img');
+           fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+         ELSIF item.subfield == "l";
+           fulltext_availability = "yellowred";	 
+           fulltext_icon = config.get('ezb_yellow_red_img');
+           fulltext_desc = msg.maketext("Volltext mit eingeschränkten Zugang");;
+         ELSIF item.subfield == "f";
+           fulltext_availability = "greenyellow";	 
+           fulltext_icon = config.get('ezb_green_yellow_img');
+           fulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
+         ELSIF item.subfield == "n";
+           fulltext_availability = "de";	 
+           fulltext_icon = config.get('dbis_de_img');
+           fulltext_desc = msg.maketext("Volltext über Nationallizenz");;
+         END;
+
+	 ampel =  "<img src=\"${fulltext_icon}\" alt=\"${fulltext_desc}\" />" ;
+
+         IF content ;	 
+            content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${thiscontent}</a>";
+         END ;
+
+         IF fulltext_availability ;
+            content = "${content} ${ampel}";
+	 END;
+	 
+         IF NOT content_map.${'URL'} ;
+	    content_map.${'URL'} = [];
+	 END;
+         content_map.${'URL'}.push(content);
+
     END;
   END;
 END;
 
 display_types = {
-   'Link'             => 'list',
+   'URL'             => 'list',
    'Schlagwort'       => 'list',
    'Hinweis'          => 'list',
    'Sammlungs-Portal' => 'list',      

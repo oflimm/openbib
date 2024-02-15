@@ -1,11 +1,20 @@
 convtab:
   title:
-    '245_ _ ':
+    '245_1_0':
       -
         from_field: '0331'		
         subfield: 'a'
       -
         from_field: '0335'		
+        subfield: 'b'
+      -
+        from_field: '0341'		
+        subfield: 'b'
+      -
+        from_field: '0342'		
+        subfield: 'b'
+      -
+        from_field: '0343'		
         subfield: 'b'
       -
         from_field: '0359'		
@@ -19,6 +28,11 @@ convtab:
       -
         from_field: '0451'		
         subfield: 'p'
+        
+    '246_1_1':
+      -
+        from_field: '0340'		
+        subfield: 'a'
         
     '250_ _ ':
       -

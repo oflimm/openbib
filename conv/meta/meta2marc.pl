@@ -401,7 +401,7 @@ while (my $json=<IN>){
 	    # Relationship
 	    push (@subfields,'4', "prt");
 	    	    
-	    my $new_field = MARC::Field->new('710', '1',  ' ', @subfields);
+	    my $new_field = MARC::Field->new('710', '2',  ' ', @subfields);
 	    
 	    $marc_record->append_fields($new_field) if ($new_field);	    	
 	}	

@@ -759,15 +759,22 @@ sub get_loans {
 	    $json_result_ref = $api_result_ref->{'data'};
 	}
 
+	# Empty response
+	$response_ref = {
+	    items => $items_ref,
+	    num_renewables => 0,
+	    num_total => 0,
+	};
+	
 	# Processing data
 	if (defined $json_result_ref->{'item_loan'}) {
+
+	    my $num_renewables = 0;
 	    
 	    if ($logger->is_debug){
 		$response_ref->{debug} = $json_result_ref;
 	    }
 
-	    my $num_renewables = 0;
-	    
 	    foreach my $item_ref (@{$json_result_ref->{'item_loan'}}){
 		
 		$logger->debug(YAML::Dump($item_ref));

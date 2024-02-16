@@ -63,7 +63,7 @@
     processed_holding_by_sigel = {};
 
     # USE dumper;dumper.dump(holding_fields_per_id);
-    FOREACH holdingid IN holding_fields_per_id.keys ;
+    FOREACH holdingid IN holding_fields_per_id.keys.sort ;
       bestandsverlauf  = holding_fields_per_id.${holdingid}.${"a"};
       luecken          = holding_fields_per_id.${holdingid}.${"z"};
       signatur         = holding_fields_per_id.${holdingid}.${"h"};
@@ -121,54 +121,54 @@
           standort = "ausgelagerter Bestand. Lieferzeit ca. 14. Tage (ausleihbar nach Bestellung)";
         ELSIF signatur.match('^ZTG') ;
           standort = "Zeitungsbestand. USB-Magazin<br/>Bitte füllen Sie einen konventionellen Bestellschein aus (erhältlich an der Auskunft und der Lesesaal-Theke im 1. OG)";
-       ELSIF NOT signatur.match('\s') ;
+        ELSIF NOT signatur.match('\s') ;
           standort = "USB-Magazin";
-       END; # End: Standort nach Signaturanfang
-    END; # End: Spezialbehandlung USB
+        END; # End: Standort nach Signaturanfang
+      END; # End: Spezialbehandlung USB
 
-    IF isil;
-      isil_desc = locinfo.identifier.${isil}.description;
-    END;
+      IF isil;
+        isil_desc = locinfo.identifier.${isil}.description;
+      END;
 
-    provenances = record.get_provenances_of_media(signatur);
+      provenances = record.get_provenances_of_media(signatur);
     
-    # ZBM-Meldung kurzern
-    # IF bemerkung.match('vormals 38M; Bestände zur Zeit nicht einsehbar oder bestellbar') ;
-    #  bemerkung = "Bestände zur Zeit nicht verfügbar";
-    # END;
+      # ZBM-Meldung kurzern
+      # IF bemerkung.match('vormals 38M; Bestände zur Zeit nicht einsehbar oder bestellbar') ;
+      #  bemerkung = "Bestände zur Zeit nicht verfügbar";
+      # END;
 
-    IF NOT processed_holding_by_sigel.defined(sigel);
-      processed_holding_by_sigel.${sigel} = {
+      IF NOT processed_holding_by_sigel.defined(sigel);
+        processed_holding_by_sigel.${sigel} = {
+          isil             = isil
+          isil_desc        = isil_desc
+          bibliothek       = bibliothek
+          bibliothek_url   = bibliothek_url       
+          title            = title
+        };
+      END;
+    
+      this_iteminfo = {
+        bestandsverlauf  = bestandsverlauf
+        luecken          = luecken
+        signatur         = signatur
+        standort         = standort
+        sigel            = sigel
+        inventarnr       = inventarnr
+        bemerkung        = bemerkung
+        bemerkung2       = bemerkung2
         isil             = isil
         isil_desc        = isil_desc
-        bibliothek       = bibliothek
-        bibliothek_url   = bibliothek_url       
-        title            = title
+        issues           = issues
       };
-    END;
-    
-    this_iteminfo = {
-      bestandsverlauf  = bestandsverlauf
-      luecken          = luecken
-      signatur         = signatur
-      standort         = standort
-      sigel            = sigel
-      inventarnr       = inventarnr
-      bemerkung        = bemerkung
-      bemerkung2       = bemerkung2
-      isil             = isil
-      isil_desc        = isil_desc
-      issues           = issues
-    };
 
-    IF NOT processed_holding_by_sigel.${sigel}.defined('items');
-      processed_holding_by_sigel.${sigel}.${'items'} = [];
-    END;
+      IF NOT processed_holding_by_sigel.${sigel}.defined('items');
+        processed_holding_by_sigel.${sigel}.${'items'} = [];
+      END;
 
-    processed_holding_by_sigel.${sigel}.${'items'}.push(this_iteminfo);
+      processed_holding_by_sigel.${sigel}.${'items'}.push(this_iteminfo);
 
-  END; # End: holding-Schleife
-  # USE dumper;dumper.dump(processed_holding_by_sigel);
+    END; # End: holding-Schleife
+   #USE dumper;dumper.dump(processed_holding_by_sigel);
 -%]
 [% IF processed_holding_by_sigel.keys > 0 %]
 <div class="table-responsive">
@@ -180,25 +180,25 @@
 [%  IF processed_holding_by_sigel.defined('38'); # USB zuerst %]
 [%    this_cluster = processed_holding_by_sigel.${'38'} %]
 <tr><td><strong>
-[%-  IF this_cluster.isil_desc -%]
+[%-   IF this_cluster.isil_desc -%]
 <a class="inturl" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% this_cluster.isil %].include?l=[% lang %]" href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% this_cluster.isil %].html?l=[% lang %]">[% this_cluster.isil_desc %]</a>
-[%-  ELSIF thiscluster.bibliothek && thiscluster.bibliothek_url -%]
-[%-    IF dbinfo.get('locationid').${record.database} %]
+[%-   ELSIF thiscluster.bibliothek && thiscluster.bibliothek_url -%]
+[%-     IF dbinfo.get('locationid').${record.database} %]
 <a class="inturl" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].include?l=[% lang %]" href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">
-[%-    ELSE -%]
+[%-     ELSE -%]
 <a href="[% this_cluster.bibliothek_url %]" target="_blank">
-[%-    END -%]
-[%     this_cluster.bibliothek.full %]</a>
-[%-  ELSE -%]
+[%-     END -%]
+[%      this_cluster.bibliothek.full %]</a>
+[%-   ELSE -%]
 [% this_cluster.bibliothek.full %]
-[%-  END -%]
+[%-   END -%]
 </strong>
 </td>
 <td>
 <ul>
-[% FOREACH this_item IN this_cluster.items %]
+[%    FOREACH this_item IN this_cluster.items %]
 <li>
-<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF luecken %] [% luecken %][% END %]</strong><br/>
+<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
 [% IF this_item.standort %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
@@ -241,10 +241,13 @@
 <ul>
 [% FOREACH this_item IN this_cluster.items %]
 <li>
-<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.bemerkung %] ([% this_item.bemerkung %])[% END %]</strong><br/>
+<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
-[% IF this_item.standort != '-' %]
+[% IF this_item.standort %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
+[% END %]
+[% IF this_item.bemerkung %]
+<emph>[% msg.maketext("Hinweis") %]:</emph> [% this_item.bemerkung %]<br/>
 [% END %]
 [% IF this_item.issues %]
 <emph>[% msg.maketext("Hefte") %]:</emph><br/>
@@ -293,10 +296,13 @@
 <ul>
 [% FOREACH this_item IN this_cluster.items %]
 <li>
-<strong>[% this_item.bestandsverlauf %][% IF this_item.bemerkung %] ([% this_item.bemerkung %])[% END %]</strong><br/>
+<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
-[% IF this_item.standort != '-' %]
+[% IF this_item.standort %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
+[% END %]
+[% IF this_item.bemerkung %]
+<emph>[% msg.maketext("Hinweis") %]:</emph> [% this_item.bemerkung %]<br/>
 [% END %]
 </li>
 [% END %]

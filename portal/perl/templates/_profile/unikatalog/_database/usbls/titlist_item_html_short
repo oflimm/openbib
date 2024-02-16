@@ -112,8 +112,9 @@
 	  content = 'online'
       }];
 
-   ELSIF item.${'T1945'}.first.defined('2') ; # Dynamic URL
-      resolver_url = item.${'T1945'}.first.${'2'};
+   ELSIF item.${'T1945'}.first.defined('a') ; # Dynamic URL rekonstruiert aus a
+      portfolio_id = item.${'T1945'}.first.${'a'};
+      resolver_url = "https://eu04.alma.exlibrisgroup.com/view/uresolver/49HBZ_UBK/openurl?u.ignore_date_coverage=true&portfolio_pid=${portfolio_id}&Force_direct=true";
       online_access = 'f';
       online_text = "Volltext";
 

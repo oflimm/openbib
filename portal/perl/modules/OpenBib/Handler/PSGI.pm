@@ -330,18 +330,18 @@ sub cgiapp_init {
     # Neue Session und alle relevanten Informationen bestimmt (z.B. representation), dann loggen
     $session->log_new_session_once({ r => $r, representation => $self->param('representation') });
 
-    # Katalogeingrenzung auf view pruefen
-    if ($self->param('restrict_db_to_view')){
-	my $database = $self->param('database');
+    # # Katalogeingrenzung auf view pruefen
+    # if ($self->param('restrict_db_to_view')){
+    # 	my $database = $self->param('database');
 	
-	unless ($config->database_defined_in_view({ database => $database, view => $view })){
-	    if (!$user->is_admin){
-		$logger->debug("Zugriff auf Katalog $database in view $view verweigert.");
-		$self->param('default_runmode','show_warning');
-		$self->param('warning_message',$msg->maketext("Zugriff auf Katalog $database verweigert."));
-	    }
-	}
-    }
+    # 	unless ($config->database_defined_in_view({ database => $database, view => $view })){
+    # 	    if (!$user->is_admin){
+    # 		$logger->debug("Zugriff auf Katalog $database in view $view verweigert.");
+    # 		$self->param('default_runmode','show_warning');
+    # 		$self->param('warning_message',$msg->maketext("Zugriff auf Katalog $database verweigert."));
+    # 	    }
+    # 	}
+    # }
     
     return;
 }

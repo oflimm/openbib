@@ -950,7 +950,7 @@ yearslider_to[% facet_prefix %][% idsuffix %].addEventListener('change', functio
                FOREACH termitem IN facets.classification;
                   searchterm = termitem.0;
                   LAST IF loop.count > 25 ;
-                  IF searchterm.match('^[A-Z][A-Z] \d\d\d');
+                  IF searchterm.match('^[A-Z][A-Z] \d\d\d+$');
                     all_rvk.push(searchterm);
                   END;
                END;
@@ -971,9 +971,9 @@ yearslider_to[% facet_prefix %][% idsuffix %].addEventListener('change', functio
 
     # Beschreibungen hinzufuegen
     clndesc = "";
-    IF searchterm.match('^\d\d\.\d\d') && bklookup.${searchterm};
+    IF searchterm.match('^\d\d\.\d\d$') && bklookup.${searchterm};
       clndesc = bklookup.${searchterm};
-    ELSIF searchterm.match('^[A-Z][A-Z] \d\d\d\d') && rvklookup.${searchterm};
+    ELSIF searchterm.match('^[A-Z][A-Z] \d\d\d+$') && rvklookup.${searchterm};
       clndesc = rvklookup.${searchterm};
     END;
 

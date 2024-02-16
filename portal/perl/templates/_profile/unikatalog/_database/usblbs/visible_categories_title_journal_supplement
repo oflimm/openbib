@@ -60,6 +60,7 @@
                 'E4300', # msg.maketext("E4300") Schlagwort Extern
                 'Klassifikation', # msg.maketext("Klassifikation") Notation
                 #'E4100', # msg.maketext("E4100") Basisklassifikation
+                'T4101', # msg.maketext("T4101") RVK
                 'E4102', # msg.maketext("E4102") KUG Themengebiet
                 'ISBN', # msg.maketext("ISBN") T020/9
                 'T0553', # msg.maketext("T0553") ArtikelNr. als 13-stellige ISBN

@@ -209,26 +209,6 @@ rswkswt_done      = {};
 
 rswkswt_done = {};
 
-# Switching processed links
-
-IF normdata.${'T4662'}.defined ;
-   normdata.${'T0662'} = normdata.${'T4662'};
-   normdata.${'T0663'} = normdata.${'T4663'};
-   normdata.${'T2662'} = [];
-   normdata.${'T2662'}.delete;
-   normdata.${'T2663'} = [];
-   normdata.${'T2663'}.delete;   
-ELSE;
-   normdata.${'T0662'} = [];
-   normdata.${'T0663'} = [];
-   normdata.${'T2662'} = [];
-   normdata.${'T2663'} = [];
-   normdata.${'T0662'}.delete;
-   normdata.${'T0663'}.delete;
-   normdata.${'T2662'}.delete;
-   normdata.${'T2663'}.delete;
-END;
-
 # Lizensierter Volltext? (Ausgabe Zugriffshinweis)
 is_licensed = 0;
 is_oa = 0; 
@@ -333,10 +313,10 @@ FOREACH field IN normdata;
 
          IF content ;
            content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
-           IF NOT content_map.${'Klassifikation'} ;
-	      content_map.${'Klassifikation'} = [];
+           IF NOT content_map.${'DDC'} ;
+	      content_map.${'DDC'} = [];
 	   END;
-           content_map.${'Klassifikation'}.push(content);
+           content_map.${'DDC'}.push(content);
 	 END;
 
     CASE [ "T0100" "T0700" ];
@@ -775,40 +755,48 @@ FOREACH field IN normdata;
            content_map.${'Zur Bindeeinheit'}.push(content);
 	 END;
 
-    CASE "T0856";
-         content = thisfield.${'3'};
-	 url     = thisfield.${'u'};
+    # CASE "T0856";
+    #      content = thisfield.${'3'};
+    # 	 url     = thisfield.${'u'};
 
-         IF NOT content ;
-	   content = url;
-	 END;
+    #      IF NOT content ;
+    # 	   content = url;
+    # 	 END;
 	 
-	 content   = "<a href=\"${url}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";         
+    # 	 content   = "<a href=\"${url}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";         
 
-         IF NOT content_map.${'URL'} ;
-	    content_map.${'URL'} = [];
+    #      IF NOT content_map.${'URL'} ;
+    # 	    content_map.${'URL'} = [];
+    # 	 END;
+    #      content_map.${'URL'}.push(content);
+
+    CASE "T4101";
+         content = thisfield.${'e'} || thisfield.${''};
+
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').rvk.prefix;
+
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         rvk_tree   = config.get_tree_of_classification(type => 'rvk', name => content);
+	 all_rvk = [];
+	 all_rvk.push(rvk_tree.current);
+ 	 all_rvk.push(rvk_tree.super);	
+         rvkdesc     = config.get_description_of_classification(type => 'rvk', names => all_rvk);
+	 currentdesc = rvkdesc.${rvk_tree.current};
+         content     = "<a href=\"${localurl}\">${content}</a> (${currentdesc})";
+
+         rvk_path = [];
+         FOREACH thisrvk IN rvk_tree.super;
+	   thisdesc = rvkdesc.${thisrvk};
+           rvk_path.push("<a href=\"${path_prefix}/${config.get('browse_loc')}/rvk/id/${thisrvk}.html?l=${lang}\">${thisrvk}</a> (${thisdesc})");
+         END;
+         content   = "${content}<br/>RVK-Gruppen: ${rvk_path.join('<i class=\"ps-2 pe-2 fas fa-long-arrow-alt-right\"></i>')}" ;
+
+         IF NOT content_map.${'RVK'} ;
+	    content_map.${'RVK'} = [];
 	 END;
-         content_map.${'URL'}.push(content);
-
-    CASE "T0980";    
-         sammlung = thisfield.${'s'};
-
-         sammlungsvermerk = "";
-	 
-         IF sammlungen.${sammlung}.defined ;
-           sammlungsurl = sammlungen.${sammlung};
-           sammlungsvermerk = "<i class=\"me-2 fas fa-archway\"></i><a href=\"${sammlungsurl}\" target=\"_blank\"><b>${sammlung}</b></a>" ;
-         ELSIF sammlung ;
-           sammlungsvermerk = "${sammlung} (Portal im Aufbau)" ;
-         END ;
-
-         IF sammlungsvermerk ;
-           IF NOT content_map.${'Sammlungs-Portal'} ;
-	      content_map.${'Sammlungs-Portal'} = [];
-	   END;
-           content_map.${'Sammlungs-Portal'}.push(sammlungsvermerk);
-	 END;
-
+         content_map.${'RVK'}.push(content);
 
     CASE "T4102";
          content = thisfield.${'e'};
@@ -910,6 +898,26 @@ END;
 
 singular_normdata = record.get_fields;
 
+# Switching processed links
+
+IF singular_normdata.${'T4662'}.defined ;
+   singular_normdata.${'T0662'} = singular_normdata.${'T4662'};
+   singular_normdata.${'T0663'} = singular_normdata.${'T4663'};
+   singular_normdata.${'T2662'} = [];
+   singular_normdata.${'T2662'}.delete;
+   singular_normdata.${'T2663'} = [];
+   singular_normdata.${'T2663'}.delete;   
+ELSE;
+   singular_normdata.${'T0662'} = [];
+   singular_normdata.${'T0663'} = [];
+   singular_normdata.${'T2662'} = [];
+   singular_normdata.${'T2663'} = [];
+   singular_normdata.${'T0662'}.delete;
+   singular_normdata.${'T0663'}.delete;
+   singular_normdata.${'T2662'}.delete;
+   singular_normdata.${'T2663'}.delete;
+END;
+
 FOREACH field IN singular_normdata;
 
   category = field.key ;
@@ -917,6 +925,27 @@ FOREACH field IN singular_normdata;
   FOREACH item IN field.value;
 
     SWITCH category;
+
+    CASE "T0980";
+       IF item.subfield == 's';    
+         sammlung = item.content;
+
+         sammlungsvermerk = "";
+	 
+         IF sammlungen.${sammlung}.defined ;
+           sammlungsurl = sammlungen.${sammlung};
+           sammlungsvermerk = "<i class=\"me-2 fas fa-archway\"></i><a href=\"${sammlungsurl}\" target=\"_blank\"><b>${sammlung}</b></a>" ;
+         ELSIF sammlung ;
+           sammlungsvermerk = "${sammlung} (Portal im Aufbau)" ;
+         END ;
+
+         IF sammlungsvermerk ;
+           IF NOT content_map.${'Sammlungs-Portal'} ;
+	      content_map.${'Sammlungs-Portal'} = [];
+	   END;
+           content_map.${'Sammlungs-Portal'}.push(sammlungsvermerk);
+	 END;
+       END;
 
      CASE [ "T0982" ];
        IF item.subfield == 'a';
@@ -971,29 +1000,158 @@ FOREACH field IN singular_normdata;
          IF content ;
            content   = "<a class=\"inturl\" href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${bkdesc} ${supplement} ${icons}";
 	   
-           IF NOT content_map.${'Klassifikation'} ;
-	      content_map.${'Klassifikation'} = [];
+           IF bkdesc && NOT content_map.${'BK'} ;
+	      content_map.${'BK'} = [];
+           ELSIF NOT content_map.${'Notation'} ;
+	      content_map.${'Notation'} = [];	     
 	   END;
-           content_map.${'Klassifikation'}.push(content);
+	   IF bkdesc ;	   
+             content_map.${'BK'}.push(content);
+	   ELSE ;
+             content_map.${'Notation'}.push(content);
+	   END;
 	 END;
-       END;
+       END; # End subfield 'b'
+
+
+    CASE [ "T0662" ];
+         content       = item.content;
+         thismult      = item.mult ;
+         thiscontent   = "" ;
+	 ampel         = "";
+
+         FOREACH thisitem IN singular_normdata.${"T0663"} ;
+           IF thisitem.mult == thismult ;
+              thiscontent = thisitem.content ;
+           END ;
+         END ;
+
+         IF NOT thiscontent ;
+           thiscontent = content;
+         END ;
+
+         supplement = "";
+
+         # Anreichern mit Informationen aus T1945
+         FOREACH thisfield IN normdata.${"T1945"};
+	    pid = thisfield.${"a"};
+	    IF content.match(pid);
+	      source = thisfield.${"q"};
+	      range  = thisfield.${"n"};
+	      IF range ;
+	        supplement = range;
+	      END;
+	      IF source;
+	        supplement = "${supplement} (${source})";
+	      END;
+	      IF supplement ;
+                thiscontent = "${thiscontent} - ${supplement}";
+              END;
+	    END;
+         END;
+
+         fulltext_availability  = "";
+         fulltext_icon = config.get('ezb_unknown_img');
+         fulltext_desc  = "Volltext";
+
+         IF item.subfield == "g";
+           fulltext_availability = "lawngreen";
+           fulltext_icon = config.get('ezb_green_img');
+           fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
+         ELSIF item.subfield == "y";
+           fulltext_availability = "yellow";
+           fulltext_icon = config.get('ezb_yellow_img');
+           fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+         ELSIF item.subfield == "l";
+           fulltext_availability = "yellowred";	 
+           fulltext_icon = config.get('ezb_yellow_red_img');
+           fulltext_desc = msg.maketext("Volltext mit eingeschränkten Zugang");;
+         ELSIF item.subfield == "f";
+           fulltext_availability = "greenyellow";	 
+           fulltext_icon = config.get('ezb_green_yellow_img');
+           fulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
+         ELSIF item.subfield == "n";
+           fulltext_availability = "de";	 
+           fulltext_icon = config.get('dbis_de_img');
+           fulltext_desc = msg.maketext("Volltext über Nationallizenz");;
+         END;
+
+	 ampel =  "<img src=\"${fulltext_icon}\" alt=\"${fulltext_desc}\" />" ;
+
+         IF content ;	 
+            content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${thiscontent}</a>";
+         END ;
+
+         IF fulltext_availability ;
+            content = "${content} ${ampel}";
+	 END;
+	 
+         IF NOT content_map.${'URL'} ;
+	    content_map.${'URL'} = [];
+	 END;
+         content_map.${'URL'}.push(content);
 
     END;
   END;
 END;
 
 display_types = {
-   'Link'           => 'list',
-   'Schlagwort'     => 'list',
-   'Klassifikation' => 'list',   
-   'Hinweis'        => 'list',   
+   'URL'             => 'list',
+   'Schlagwort'       => 'list',
+   'Hinweis'          => 'list',
+   'Sammlungs-Portal' => 'list',      
 };
 
 # USE dumper;dumper.dump(content_map);dumper.dump(singular_normdata);dumper.dump(record_type);
 
+# Klassifikationen zusammenfuehren
+content_map.${'Klassifikation'} = [];
+
+IF content_map.${'RVK'} || content_map.${'BK'} || content_map.${'DDC'} || conten_map.${'Notation'};
+   content = "";
+   IF content_map.${"RVK"};
+     rvk_url = "<a href=\"${path_prefix}/browse/rvk.html?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+     heading = msg.maketext("Regensburger Verbundklassifikation");
+     content = "${content}<h5>${heading} ${rvk_url}</h5>"; 
+     content = "${content}<ul>";
+     FOREACH thiscontent IN content_map.${"RVK"};
+       content="${content}<li>${thiscontent}</li>";
+     END;
+     content = "${content}</ul>";
+   END;
+   IF content_map.${"BK"};
+     bk_url = "<a href=\"${path_prefix}/browse/bks.html?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+     heading = msg.maketext("Basisklassifikation");
+     content = "${content}<h5>${heading} ${bk_url}</h5>"; 
+     content = "${content}<ul>";
+     FOREACH thiscontent IN content_map.${"BK"};
+       content="${content}<li>${thiscontent}</li>";
+     END;
+     content = "${content}</ul>";
+   END;
+   IF content_map.${"DDC"};
+     content = "${content}<h5>Dewey Decimal Classification</h5>"; 
+     content = "${content}<ul>";
+     FOREACH thiscontent IN content_map.${"DDC"};
+       content="${content}<li>${thiscontent}</li>";
+     END;
+     content = "${content}</ul>";
+   END;
+   IF content_map.${"Notation"};
+     heading = msg.maketext("Sonstige lokale thematische Einordung");
+     content = "${content}<h5>${heading}</h5>"; 
+     content = "${content}<ul>";
+     FOREACH thiscontent IN content_map.${"Notation"};
+       content="${content}<li>${thiscontent}</li>";
+     END;
+     content = "${content}</ul>";
+   END;
+   content_map.${"Klassifikation"}.push(content);
+END;
+
 FOREACH category IN categories;
 
-   IF content_map.${category}.first;
+   IF content_map.${category}.first ;
       IF display_types.${category} == 'list' ;
         IF content_map.${category}.size > 1 ;
           content = "<ul>";
@@ -1008,10 +1166,11 @@ FOREACH category IN categories;
         content = content_map.${category}.join(' ; ');
       END;
 
+      # Spezialanpassung verschiedene Felder
       # Titel hervorheben
       IF category == "Titel";
         content = "<span class=\"ob-title\">${content}</span>";
-      END;
+      END; # Ende Spezialbehandlung
 -%]
 <tr><th class="ob-field">[% msg.maketext("${category}") %]</th><td>[% content %]</td></tr>
 [%

@@ -131,6 +131,7 @@ create table title_fields (
  field         SMALLINT  NOT NULL,
  mult          SMALLINT,
  subfield      VARCHAR(2),
+ ind           VARCHAR(2) DEFAULT '',
  content       TEXT NOT NULL
 );
 

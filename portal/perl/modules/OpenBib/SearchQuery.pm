@@ -740,10 +740,20 @@ sub get_dbis_recommendations {
 
     $logger->debug("Terms: $alltermsstring");
     my $url="https://suche.suub.uni-bremen.de/cgi-bin/CiXbase/brewis/CiXbase_search?act=search&LAN=DE&CLUSTER=3&index=L&n_dtyp=1L&n_rtyp=ceEdX&PRECISION=220&RELEVANCE=45&dtyp=DE&term=$alltermsstring";
-    
-    my $response = LWP::UserAgent->new->get($url)->decoded_content(charset => 'utf8');
 
-    $logger->debug("Response: $response");
+    my $ua = LWP::UserAgent->new();
+    $ua->agent('USB Koeln/1.0');
+    $ua->timeout(5);
+    
+    my $response = $ua->get($url);
+
+    if (!$response->is_success){
+	return [];
+    }
+
+    my $content = $response->decoded_content(charset => 'utf8');
+    
+    $logger->debug("Response: $content");
 
     if ($config->{benchmark}){
        my $btime      = new Benchmark;
@@ -758,7 +768,7 @@ sub get_dbis_recommendations {
     
 
     my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response);
+    my $tree   = $parser->parse_string($content);
     my $root   = $tree->getDocumentElement;
 
     my $have_topic_ref = {};

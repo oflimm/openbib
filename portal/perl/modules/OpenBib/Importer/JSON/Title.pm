@@ -2604,7 +2604,7 @@ sub process_marc {
 
 #                $logger->error("mult fehlt") if (!defined $item_ref->{mult});
 #                $logger->error("subfield fehlt") if (!defined $item_ref->{subfield});
-                
+                $item_ref->{ind} = $item_ref->{ind} || ''; # Indikator immer defined
                 push @{$self->{_columns_title_fields}}, [$self->{serialid},$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{ind},$item_ref->{content}];
                 #push @{$self->{_columns_title_fields}}, ['',$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{content}];
                 $self->{serialid}++;

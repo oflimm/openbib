@@ -1329,8 +1329,13 @@ sub process_mab {
 
 #                $logger->error("mult fehlt") if (!defined $item_ref->{mult});
 #                $logger->error("subfield fehlt") if (!defined $item_ref->{subfield});
+
+		# Mult, Subfield und Indikator immer defined		
+		$item_ref->{mult}     = $item_ref->{mult}     || 1; 
+                $item_ref->{subfield} = $item_ref->{subfield} || '';
+                $item_ref->{ind}      = $item_ref->{ind}      || '';
                 
-                push @{$self->{_columns_title_fields}}, [$self->{serialid},$id,$field,$item_ref->{mult},$item_ref->{subfield},'',$item_ref->{content}];
+                push @{$self->{_columns_title_fields}}, [$self->{serialid},$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{ind},$item_ref->{content}];
                 #push @{$self->{_columns_title_fields}}, ['',$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{content}];
                 $self->{serialid}++;
             }
@@ -2603,8 +2608,13 @@ sub process_marc {
                 $item_ref->{content} = $self->cleanup_content($item_ref->{content});
 
 #                $logger->error("mult fehlt") if (!defined $item_ref->{mult});
-#                $logger->error("subfield fehlt") if (!defined $item_ref->{subfield});
-                $item_ref->{ind} = $item_ref->{ind} || ''; # Indikator immer defined
+		#                $logger->error("subfield fehlt") if (!defined $item_ref->{subfield});
+
+		# Mult, Subfield und Indikator immer defined		
+		$item_ref->{mult}     = $item_ref->{mult}     || 1; 
+                $item_ref->{subfield} = $item_ref->{subfield} || '';
+                $item_ref->{ind}      = $item_ref->{ind}      || '';
+		
                 push @{$self->{_columns_title_fields}}, [$self->{serialid},$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{ind},$item_ref->{content}];
                 #push @{$self->{_columns_title_fields}}, ['',$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{content}];
                 $self->{serialid}++;

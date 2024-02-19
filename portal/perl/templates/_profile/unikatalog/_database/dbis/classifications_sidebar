@@ -21,7 +21,38 @@
 <label for="dbis_name[% sidebar_suffix %]">[% msg.maketext("Name der Datenbank") %]</label>
 </div>
 
-<div class="form-check">
+<span data-bs-toggle="collapse" data-bs-target="#more_fields" aria-expanded="false" onclick="this.style.display = 'none';">[% msg.maketext("Mehr Suchfelder") %] &gt;&gt;</span>
+
+<div class="collapse p-0" id="more_fields">
+
+<div class="form-floating mb-3 mt-2">
+<input class="form-control" id="dbis_name_fs_[% sidebar_suffix %]" class="fs_field" type="text" name="fs" title="[% msg.maketext("Freie Suche") %]" value="" size="13" maxlength="200" />
+<label for="dbis_name_fs_[% sidebar_suffix %]">[% msg.maketext("Freie Suche") %]</label>
+</div>
+
+<div class="form-floating mb-3 mt-2">
+<input class="form-control" id="dbis_name_ftit_[% sidebar_suffix %]" class="fs_field" type="text" name="ftit" title="[% msg.maketext("Titelanfang") %]" value="" size="13" maxlength="200" />
+<label for="dbis_name_ftit_[% sidebar_suffix %]">[% msg.maketext("Titelanfang") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="dbis_name_publ_[% sidebar_suffix %]" class="fs_field" type="text" name="publ" title="[% msg.maketext("Verlag") %]" value="" size="13" maxlength="200" />
+<label for="dbis_name_publ_[% sidebar_suffix %]">[% msg.maketext("Verlag") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="dbis_name_issn_[% sidebar_suffix %]" class="fs_field" type="text" name="subj" title="[% msg.maketext("Schlagwort") %]" value="" size="13" maxlength="200" />
+<label for="dbis_name_subj_[% sidebar_suffix %]">[% msg.maketext("Schlagwort") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="dbis_name_content_[% sidebar_suffix %]" class="fs_field" type="text" name="cnt" title="[% msg.maketext("Inhalt") %]" value="" size="13" maxlength="200" />
+<label for="dbis_name_content_[% sidebar_suffix %]">[% msg.maketext("Inhalt") %]</label>
+</div>
+
+</div>
+
+<div class="form-check mt-2">
   <input class="form-check-input" id="access_green[% sidebar_suffix %]" type="checkbox" title="[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]" name="access_green" value="1" checked="checked" />
   <label class="form-check-label" for="access_green[% sidebar_suffix %]"><img src="[% config.get('dbis_green_img') %]" alt="green"/>&nbsp;[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</label>
 </div>

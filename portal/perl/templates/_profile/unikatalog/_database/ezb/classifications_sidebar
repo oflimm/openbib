@@ -18,11 +18,42 @@
 [% classification_name = searchquery.get_searchfield('classification').val %]
 
 <div class="form-floating mb-3">
-<input class="form-control" id="ezb_name[% sidebar_suffix %]" class="fs_field" type="text" name="tit" title="[% msg.maketext("Name der Zeitschrift") %]" value="" size="13" maxlength="200" />
-<label for="ezb_name[% sidebar_suffix %]">[% msg.maketext("Name der Zeitschrift") %]</label>
+<input class="form-control" id="ezb_name_tit_[% sidebar_suffix %]" class="fs_field" type="text" name="tit" title="[% msg.maketext("Name der Zeitschrift") %]" value="" size="13" maxlength="200" />
+<label for="ezb_name_tit[% sidebar_suffix %]">[% msg.maketext("Name der Zeitschrift") %]</label>
 </div>
 
-<div class="form-check">
+<span data-bs-toggle="collapse" data-bs-target="#more_fields" aria-expanded="false" onclick="this.style.display = 'none';">[% msg.maketext("Mehr Suchfelder") %] &gt;&gt;</span>
+
+<div class="collapse p-0" id="more_fields">
+
+<div class="form-floating mb-3 mt-2">
+<input class="form-control" id="ezb_name_ftit_[% sidebar_suffix %]" class="fs_field" type="text" name="ftit" title="[% msg.maketext("Titelanfang") %]" value="" size="13" maxlength="200" />
+<label for="ezb_name_ftit_[% sidebar_suffix %]">[% msg.maketext("Titelanfang") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="ezb_name_issn_[% sidebar_suffix %]" class="fs_field" type="text" name="issn" title="[% msg.maketext("ISSN") %]" value="" size="13" maxlength="200" />
+<label for="ezb_name_issn_[% sidebar_suffix %]">[% msg.maketext("ISSN") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="ezb_name_publ_[% sidebar_suffix %]" class="fs_field" type="text" name="publ" title="[% msg.maketext("Verlag") %]" value="" size="13" maxlength="200" />
+<label for="ezb_name_publ_[% sidebar_suffix %]">[% msg.maketext("Verlag") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="ezb_name_issn_[% sidebar_suffix %]" class="fs_field" type="text" name="subj" title="[% msg.maketext("Schlagwort") %]" value="" size="13" maxlength="200" />
+<label for="ezb_name_subj_[% sidebar_suffix %]">[% msg.maketext("Schlagwort") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="ezb_name_zdbid_[% sidebar_suffix %]" class="fs_field" type="text" name="zdbid" title="[% msg.maketext("ZDB-ID") %]" value="" size="13" maxlength="200" />
+<label for="ezb_name_zdbid_[% sidebar_suffix %]">[% msg.maketext("ZDB-ID") %]</label>
+</div>
+
+</div>
+
+<div class="form-check mt-2">
   <input class="form-check-input" id="access_green[% sidebar_suffix %]" type="checkbox" title="[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]" name="access_green" value="1" checked="checked" />
   <label class="form-check-label" for="access_green[% sidebar_suffix %]"><img src="[% config.get('ezb_green_img') %]" alt="green"/>&nbsp;[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</label>
 </div>

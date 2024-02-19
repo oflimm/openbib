@@ -628,7 +628,7 @@ sub threadC {
     
     $logger->info("### Gekaufte und lizensierte E-Medien");
     
-#    autoconvert({ updatemaster => $updatemaster, databases => ['emedienkauf','tmpebooks'] });
+    autoconvert({ updatemaster => $updatemaster, databases => ['emedienkauf','tmpebooks'] });
     
     return $thread_description;
 }

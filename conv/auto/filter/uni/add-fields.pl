@@ -353,10 +353,20 @@ while (<>){
 
     # }
 
-    my @rvks = ();
-    my @bks  = ();
+    my @bks  = (); # Fuer 4100    
+    my @rvks = (); # Fuer 4101
+    my @ddcs = (); # Fuer 4102
     
-    # RVK und BKs aus 084$a in 4101 und 4100 vereinheitlichen
+    # Auswertung von 082$ fuer DDC
+    if (defined $title_ref->{fields}{'0082'}){
+        foreach my $item (@{$title_ref->{fields}{'0082'}}){
+	    if ($item->{subfield} eq "a"){
+		push @ddcs, $item->{content};
+	    }
+	}
+    }
+
+    # BK, RVK und DDC aus 084$a in 4100ff vereinheitlichen
     
     # Auswertung von 084$
     if (defined $title_ref->{fields}{'0084'}){
@@ -372,6 +382,9 @@ while (<>){
 	    }
 	    elsif ($cln_ref->{$mult}{'2'} eq "bkl"){
 		push @bks, $cln_ref->{$mult}{'a'};
+	    }
+	    elsif ($cln_ref->{$mult}{'2'} eq "ddc"){
+		push @ddcs, $cln_ref->{$mult}{'a'};
 	    }
 	}
     }
@@ -390,6 +403,18 @@ while (<>){
 	    }
 	}
     }
+
+    if (@bks){
+	my $bk_mult = 1;
+
+	foreach my $bk (uniq @bks){
+	    push @{$title_ref->{fields}{'4100'}}, {
+		mult     => $bk_mult++,
+		subfield => '',
+		content  => $bk,
+	    };
+	}
+    }
     
     if (@rvks){
 	my $rvk_mult = 1;
@@ -403,14 +428,14 @@ while (<>){
 	}
     }
 
-    if (@bks){
-	my $bk_mult = 1;
+    if (@ddcs){
+	my $ddc_mult = 1;
 
-	foreach my $bk (uniq @bks){
-	    push @{$title_ref->{fields}{'4100'}}, {
-		mult     => $bk_mult++,
+	foreach my $ddc (uniq @ddcs){
+	    push @{$title_ref->{fields}{'4102'}}, {
+		mult     => $ddc_mult++,
 		subfield => '',
-		content  => $bk,
+		content  => $ddc,
 	    };
 	}
     }

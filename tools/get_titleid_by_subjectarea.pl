@@ -159,7 +159,7 @@ get_titleid_by_subjectarea.pl - Erzeugen von Listen von Titel-IDs zu einem Theme
 
    Beispiel:
 
-   ./get_titleid_by_subjectarea.pl --area=sowi
+   ./get_titleid_by_subjectarea.pl --area=sowi --excludelabel=so
 
 ENDHELP
     exit;

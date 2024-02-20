@@ -594,8 +594,27 @@ FOREACH field IN normdata;
 	 END;
 
     CASE "T0502";    
-         content = thisfield.${'a'};
+         hssfull = thisfield.${'a'};
 
+         hss = [];
+	 IF thisfield.${'c'}; # place
+	   hss.push(thisfield.${'c'});
+	 END;
+	 IF thisfield.${'b'}; # type
+	   hss.push(thisfield.${'b'});
+	 END;
+	 IF thisfield.${'d'}; # year
+	   hss.push(thisfield.${'d'});
+	 END;
+
+         content = "";
+	 
+         IF hssfull ;
+	   content = hssfull;
+	 ELSIF hss;
+	   content = "Zugl.: ${hss.join(', ')}";
+	 END;
+	 
          IF content ;
            IF NOT content_map.${'Hochschulschrift'} ;
 	      content_map.${'Hochschulschrift'} = [];

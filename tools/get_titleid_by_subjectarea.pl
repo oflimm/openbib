@@ -42,13 +42,14 @@ use YAML;
 
 use OpenBib::Catalog::Subset;
 
-my ($type,$database,$outputfile,$area,$help,$num,$logfile,$loglevel);
+my ($type,$database,$outputfile,$area,$excludelabel,$help,$num,$logfile,$loglevel);
 
 &GetOptions("type=s"          => \$type,
 	    "area=s"          => \$area,
             "database=s"      => \$database,
             "outputfile=s"    => \$outputfile,
             "loglevel=s"      => \$loglevel,
+	    "excludelabel=s"  => \$excludelabel,
             "logfile=s"       => \$logfile,	    
 	    "help"            => \$help
 	    );
@@ -115,6 +116,13 @@ sub process_sowi {
     $subset->identify_by_field_content('title',([ { field => '4101', content => '^M[NOPQRS] ' } ]));
     # DDC
     $subset->identify_by_field_content('title',([ { field => '0082', subfield => 'a', content => '^(300|360)' } ]));
+
+    # ggf Ausschluss von Titeln mit bestimmter Markierung
+    if ($excludelabel){
+	$logger->info("Ausschluss von Titel-IDs mit Markierung $excludelabel");
+
+	$subset->exclude_by_field_content('title',([ { field => '0980', subfield => 'a', content => '^'.$excludelabel.'$' } ]));
+    }
 }
 
 sub process_wiwi {
@@ -122,6 +130,13 @@ sub process_wiwi {
     $subset->identify_by_field_content('title',([ { field => '4101', content => '^Q[ABEHKLPQRSTVX] ' } ]));
     # DDC
     $subset->identify_by_field_content('title',([ { field => '0082', subfield => 'a', content => '^(330|380|650)' } ]));
+
+    # ggf Ausschluss von Titeln mit bestimmter Markierung
+    if ($excludelabel){
+	$logger->info("Ausschluss von Titel-IDs mit Markierung $excludelabel");
+
+	$subset->exclude_by_field_content('title',([ { field => '0980', subfield => 'a', content => '^'.$excludelabel.'$' } ]));
+    }
 }
 
 sub print_help {
@@ -140,6 +155,11 @@ get_titleid_by_subjectarea.pl - Erzeugen von Listen von Titel-IDs zu einem Theme
 
    sowi => Sozialwissenschaften
    wiwi => Wirtschaftswissenschaften
+
+   Beispiel:
+
+   ./get_titleid_by_subjectarea.pl --area=sowi
+
 ENDHELP
     exit;
 }

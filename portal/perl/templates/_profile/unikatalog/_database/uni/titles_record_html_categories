@@ -612,7 +612,7 @@ FOREACH field IN normdata;
          IF hssfull ;
 	   content = hssfull;
 	 ELSIF hss;
-	   content = "Zugl.: ${hss.join(', ')}";
+	   content = hss.join(', ');
 	 END;
 	 
          IF content ;

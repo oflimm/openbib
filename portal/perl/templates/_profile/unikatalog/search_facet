@@ -1355,5 +1355,10 @@ languages: ["deu"], // available languages eng,zho,deu
 </div>
 <!-- Ende Elib DBIS-Empfehlungen -->
 
+<div class="alert alert-info">
+<small>[% msg.maketext("Die Datenbank-Empfehlungen werden Ihnen bereitgestellt durch einen Dienst der")%] <a class="exturl" target="_blank" href="https://www.suub.uni-bremen.de/">E-LIB Bremen</a> (<a class="exturl" target="_blank" href="https://de.wikipedia.org/wiki/E-LIB_Bremen">Wikipedia</a>)
+</small>
+</div>
+
 </div>
 [% END # End Elib %]

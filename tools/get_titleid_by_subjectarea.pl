@@ -101,6 +101,7 @@ if (exists &{$process}) {
     # Ausgabe
     $logger->info("Ausgabe der Titel-IDs in Datei $outputfile");    
     foreach my $titleid (keys %{$subset->{titleid}}){
+	next if (defined $subset->{exclude_titleid}{$titleid});
 	print OUT "$titleid\n";
     }
 }

@@ -309,6 +309,10 @@
     
     /* other settings */
 
+    .table-responsive {
+	scrollbar-gutter: stable;
+    }
+    
     .browseralert {
 	position: absolute;
 	top: 400px;

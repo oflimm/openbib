@@ -17,8 +17,8 @@
 [% classification_name = searchquery.get_searchfield('classification').val %]
 
 <div class="form-floating mb-3">
-<input class="form-control" id="dbis_name[% sidebar_suffix %]" class="fs_field" type="text" name="tit" title="[% msg.maketext("Name der Datenbank") %]" value="" size="13" maxlength="200" />
-<label for="dbis_name[% sidebar_suffix %]">[% msg.maketext("Name der Datenbank") %]</label>
+<input class="form-control" id="dbis_name_fs_[% sidebar_suffix %]" class="fs_field" type="text" name="fs" title="[% msg.maketext("Freie Suche") %]" value="" size="13" maxlength="200" />
+<label for="dbis_name_fs_[% sidebar_suffix %]">[% msg.maketext("Freie Suche") %]</label>
 </div>
 
 <span data-bs-toggle="collapse" data-bs-target="#more_fields" aria-expanded="false" onclick="this.style.display = 'none';">[% msg.maketext("Mehr Suchfelder") %] &gt;&gt;</span>
@@ -26,8 +26,8 @@
 <div class="collapse p-0" id="more_fields">
 
 <div class="form-floating mb-3 mt-2">
-<input class="form-control" id="dbis_name_fs_[% sidebar_suffix %]" class="fs_field" type="text" name="fs" title="[% msg.maketext("Freie Suche") %]" value="" size="13" maxlength="200" />
-<label for="dbis_name_fs_[% sidebar_suffix %]">[% msg.maketext("Freie Suche") %]</label>
+<input class="form-control" id="dbis_name[% sidebar_suffix %]" class="fs_field" type="text" name="tit" title="[% msg.maketext("Name der Datenbank") %]" value="" size="13" maxlength="200" />
+<label for="dbis_name[% sidebar_suffix %]">[% msg.maketext("Name der Datenbank") %]</label>
 </div>
 
 <div class="form-floating mb-3 mt-2">

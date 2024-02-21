@@ -613,7 +613,8 @@ while (<>){
 		    };
 		}
 		# Datenbanken
-		elsif ($url =~m/^^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/dbinfo\/|cdroms\.digibib\.net|\.ica$/
+		elsif ($url =~m/^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/dbinfo\/|cdroms\.digibib\.net|\.ica$/
+		       or $url =~m/^https?:\/\/dbis\.ur\.de\/$/
 		       or $url =~m/https?:\/\/www\.ub\.uni\-koeln\.de\/usbportal\?service=dbinfo/){ # Bsp.: TI=wiso-net
 		    $have_dbis = 1;
 		    
@@ -902,6 +903,42 @@ while (<>){
 			}
 		    }
 		}
+		# Beschreibung aus 856$x wg. falsch erfasster valider Inhalte als Non-Public-Note in $x
+		elsif (defined $url_info_ref->{$umult}{'x'}){
+		    my $description = $url_info_ref->{$umult}{'x'};
+
+		    push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $url,
+		    };
+		    
+		    push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $description,
+			
+		    };
+		    
+		    $url_done_ref->{$url} = 1;			
+		}		
+		# Sonst UrL als Beschreibung
+		else {
+		    push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $url,
+		    };
+		    
+		    push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $url,
+			
+		    };
+		    
+		    $url_done_ref->{$url} = 1;			
+		}		
 	    }
 	}
     }

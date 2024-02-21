@@ -1796,6 +1796,11 @@ convtab:
           index:
             'markstring': 1
             'mark': 1
+      '0776':
+        'z': # ISBN Sekundaerform
+          'index':
+            'isbn': 1
+            'freesearch': 1
       '0852': 
         'h': # Grundsignatur
           index:

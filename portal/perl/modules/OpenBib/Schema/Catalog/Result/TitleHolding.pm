@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::Catalog::Result::TitleHolding;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::Catalog::Result::TitleHolding
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::Catalog::Result::TitleHolding
+=head1 TABLE: C<title_holding>
 
 =cut
 
@@ -67,24 +71,20 @@ __PACKAGE__->add_columns(
   "supplement",
   { data_type => "text", is_nullable => 1 },
 );
-__PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
+=head1 PRIMARY KEY
 
-=head2 titleid
+=over 4
 
-Type: belongs_to
+=item * L</id>
 
-Related object: L<OpenBib::Schema::Catalog::Result::Title>
+=back
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "titleid",
-  "OpenBib::Schema::Catalog::Result::Title",
-  { id => "titleid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
+__PACKAGE__->set_primary_key("id");
+
+=head1 RELATIONS
 
 =head2 holdingid
 
@@ -98,12 +98,27 @@ __PACKAGE__->belongs_to(
   "holdingid",
   "OpenBib::Schema::Catalog::Result::Holding",
   { id => "holdingid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
+);
+
+=head2 titleid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::Catalog::Result::Title>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "titleid",
+  "OpenBib::Schema::Catalog::Result::Title",
+  { id => "titleid" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-10-06 12:14:31
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ZCJtbsC+FgqGVWZ5jNQtTA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2024-02-16 11:26:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Wsx+w/egzFfpKGGS3b9rlA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

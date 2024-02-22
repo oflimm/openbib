@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::Catalog::Result::Person;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::Catalog::Result::Person
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::Catalog::Result::Person
+=head1 TABLE: C<person>
 
 =cut
 
@@ -58,6 +62,17 @@ __PACKAGE__->add_columns(
   "import_hash",
   { data_type => "text", is_nullable => 1 },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</id>
+
+=back
+
+=cut
+
 __PACKAGE__->set_primary_key("id");
 
 =head1 RELATIONS
@@ -93,8 +108,8 @@ __PACKAGE__->has_many(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-10-06 12:14:31
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2CJu6K34tS6jqtnQtS94sQ
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2024-02-16 11:26:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ifajKw9Bb6E1rRWaM2xYNA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -313,8 +313,8 @@ sub load_full_title_record {
                     'me.id' => $id,
                 },
                 {
-                    select   => ['title_fields.field','title_fields.mult','title_fields.subfield','title_fields.content'],
-                    as       => ['thisfield','thismult','thissubfield','thiscontent'],
+                    select   => ['title_fields.field','title_fields.mult','title_fields.subfield','title_fields.ind','title_fields.content'],
+                    as       => ['thisfield','thismult','thissubfield','thisind','thiscontent'],
                     join     => ['title_fields'],
                     order_by => ['title_fields.mult ASC'],
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
@@ -325,12 +325,14 @@ sub load_full_title_record {
                 my $field    = "T".sprintf "%04d",$item->{thisfield};
                 my $subfield =                    $item->{thissubfield};
                 my $mult     =                    $item->{thismult};
+                my $ind      =                    $item->{thisind};
                 my $content  =                    $item->{thiscontent};
                 
                 $title_record->set_field({
                     field     => $field,
                     mult      => $mult,
                     subfield  => $subfield,
+                    ind       => $ind,
                     content   => $content,
                 });
             }

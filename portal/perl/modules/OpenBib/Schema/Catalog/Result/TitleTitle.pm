@@ -1,17 +1,21 @@
+use utf8;
 package OpenBib::Schema::Catalog::Result::TitleTitle;
 
 # Created by DBIx::Class::Schema::Loader
 # DO NOT MODIFY THE FIRST PART OF THIS FILE
+
+=head1 NAME
+
+OpenBib::Schema::Catalog::Result::TitleTitle
+
+=cut
 
 use strict;
 use warnings;
 
 use base 'DBIx::Class::Core';
 
-
-=head1 NAME
-
-OpenBib::Schema::Catalog::Result::TitleTitle
+=head1 TABLE: C<title_title>
 
 =cut
 
@@ -74,24 +78,20 @@ __PACKAGE__->add_columns(
   "supplement",
   { data_type => "text", is_nullable => 1 },
 );
-__PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
+=head1 PRIMARY KEY
 
-=head2 target_titleid
+=over 4
 
-Type: belongs_to
+=item * L</id>
 
-Related object: L<OpenBib::Schema::Catalog::Result::Title>
+=back
 
 =cut
 
-__PACKAGE__->belongs_to(
-  "target_titleid",
-  "OpenBib::Schema::Catalog::Result::Title",
-  { id => "target_titleid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
-);
+__PACKAGE__->set_primary_key("id");
+
+=head1 RELATIONS
 
 =head2 source_titleid
 
@@ -105,12 +105,27 @@ __PACKAGE__->belongs_to(
   "source_titleid",
   "OpenBib::Schema::Catalog::Result::Title",
   { id => "source_titleid" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
+);
+
+=head2 target_titleid
+
+Type: belongs_to
+
+Related object: L<OpenBib::Schema::Catalog::Result::Title>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "target_titleid",
+  "OpenBib::Schema::Catalog::Result::Title",
+  { id => "target_titleid" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07010 @ 2015-10-06 12:14:31
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:PXAwnM4/yKOYX45mFmDanA
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2024-02-16 11:26:22
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:NUX50KGAAe7tz70UZP29Iw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

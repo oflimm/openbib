@@ -1328,7 +1328,7 @@ sub process_mab {
 
 		# Mult, Subfield und Indikator immer defined		
 		$item_ref->{mult}     = $item_ref->{mult}     || 1; 
-                $item_ref->{subfield} = $item_ref->{subfield} || '';
+                $item_ref->{subfield} = ($item_ref->{subfield} || $item_ref->{subfield} eq "0")?$item_ref->{subfield}:'';
                 $item_ref->{ind}      = $item_ref->{ind}      || '';
 		$item_ref->{ind}      =~ s/\\/\\\\/g;		
                 $item_ref->{content} = $self->cleanup_content($item_ref->{content});
@@ -2637,7 +2637,7 @@ sub process_marc {
 
 		# Mult, Subfield und Indikator immer defined		
 		$item_ref->{mult}     = $item_ref->{mult}     || 1; 
-                $item_ref->{subfield} = $item_ref->{subfield} || '';
+                $item_ref->{subfield} = ($item_ref->{subfield} || $item_ref->{subfield} eq "0")?$item_ref->{subfield}:'';
                 $item_ref->{ind}      = $item_ref->{ind}      || '';
 		$item_ref->{ind}      =~ s/\\/\\\\/g;
                 $item_ref->{content}  = $self->cleanup_content($item_ref->{content});

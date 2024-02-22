@@ -600,7 +600,7 @@ sub create_document {
 
 		if ($subfield){
 		    foreach my $item_ref (@{$record_ref->{$basefield}}){
-			if ($item_ref->{subfield} eq $subfield){
+			if (defined $item_ref->{subfield} && $item_ref->{subfield} eq $subfield){
 			    $content = $item_ref->{content};
 			    last;
 			}

@@ -4092,6 +4092,108 @@ sub to_custom_field_scheme_1 {
     return $field_scheme_ref;
 }
 
+sub to_custom_field_scheme_2 {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Umwandlung des ggf. z.B. bereits mit MARC21 (Sub)Feldern gefuellten Internformats
+    # in ein besser in den Templates auswertbares Daten-Schema
+    #
+    # Beispiel:
+
+    # my $example_ref = {
+    # 	# Key: T=Title + (MARC)Fieldno (4 stellig vorgenullt)
+    # 	'T1943' => [	    
+    # 	      {
+    # 		# Mult-Feld
+    # 		'mult' => 1, # Erstes Holding
+    # 	        # Subfelder
+    # 	        'z' => [
+    #                    {
+    #                       content => '[N=1]', # Luecken im Bestandsverlauf
+    #                       ind     => ' 0',
+    #                    },
+    #                    {
+    #                       content => 'vormals xyz', # Bemerkung
+    #                       ind     => '30',
+    #                    }
+    #                  ],
+    # 		 h' => [
+    #                    {
+    #                       content => 'AB123', # Signatur
+    #                       ind     => '',
+    #                    },
+    #                  ],
+    #         },
+    # 	    ],
+    # };
+    
+    my $field_scheme_ref = {};
+
+    if (defined $self->{_fields}){
+	if ($logger->is_debug){
+	    $logger->debug("Source-Fields ". YAML::Dump($self->{_fields}));
+	}
+
+	my $field_mult_ref = {};
+	
+	foreach my $fieldname (keys %{$self->{_fields}}){
+	    if ($fieldname !~ m/^[TPCNSX]C?\d+/){
+		$field_scheme_ref->{$fieldname} = $self->{_fields}{$fieldname};
+		next;
+	    }
+	    
+	    my $tmp_scheme_ref = {};
+
+	    if (defined $self->{_fields}{$fieldname}){
+		foreach my $item_ref (@{$self->{_fields}{$fieldname}}){
+		    $item_ref->{subfield} = "" unless (defined $item_ref->{subfield});
+		    unless ($item_ref->{mult}){
+			$item_ref->{mult} = (defined $field_mult_ref->{$fieldname})?$field_mult_ref->{$fieldname}++:1;
+		    }
+
+		    if (defined $item_ref->{mult} && defined $item_ref->{subfield} && $item_ref->{content}){
+			$item_ref->{content} =~s{\s*[,:./]\s*$}{} if ($fieldname=~m/(T0245|T0250|T0264|T0300)/); # Cleanup MARC21 junk
+			
+			push @{$tmp_scheme_ref->{$item_ref->{mult}}{$item_ref->{subfield}}}, {
+			    content => $item_ref->{content},
+			    ind     => $item_ref->{ind},
+			};
+		    }
+		}
+	    }
+
+	    if ($logger->is_debug){
+		$logger->debug("Interim-Fields 1". YAML::Dump($tmp_scheme_ref));
+	    }
+	    
+	    foreach my $mult (sort keys %$tmp_scheme_ref){
+		my $tmp2_scheme_ref = {
+		    mult => $mult,
+		};
+		foreach my $subfield (keys %{$tmp_scheme_ref->{$mult}}){	    
+		    $tmp2_scheme_ref->{$subfield} = $tmp_scheme_ref->{$mult}{$subfield};
+		}
+
+		if ($logger->is_debug){
+		    $logger->debug("Interim-Fields 2". YAML::Dump($tmp2_scheme_ref));
+		}
+
+		push @{$field_scheme_ref->{$fieldname}}, $tmp2_scheme_ref;
+	    }
+	    
+	}
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Destination-Fields ". YAML::Dump($field_scheme_ref));
+    }
+
+    return $field_scheme_ref;
+}
+
 sub to_tags {
     my ($self) = @_;
 

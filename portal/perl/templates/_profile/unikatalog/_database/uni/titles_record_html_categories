@@ -322,7 +322,7 @@ FOREACH field IN normdata;
     CASE [ "T0100" "T0700" ];
          content = thisfield.${'a'} ;
 	 supplement = thisfield.${'e'} ;
-         thisid  = thisfield.${'0'};
+         thisid  = thisfield.${'0'} || thisfield.${'6'};
 
          gndid = "";
 	 IF thisid.match('(DE-588)');
@@ -354,7 +354,7 @@ FOREACH field IN normdata;
     CASE [ "T0110" "T0710" ];
          content = thisfield.${'a'} ;
 	 supplement = thisfield.${'e'} ;
-         thisid  = thisfield.${'0'};
+         thisid  = thisfield.${'0'} || thisfield.${'6'};
 
          gndid = "";
 	 IF thisid.match('(DE-588)');

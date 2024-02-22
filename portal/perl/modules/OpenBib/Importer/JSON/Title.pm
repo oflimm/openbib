@@ -1519,6 +1519,33 @@ sub process_marc {
         }
     }
 
+    foreach my $field ('0776') {
+        if (defined $fields_ref->{$field}) {
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
+
+		if ($item_ref->{subfield} eq "z"){
+
+		    my $this_isbn = $normalizer->normalize({
+			    field    => "isbn",
+			    content  =>	$item_ref->{content},
+							   });
+		    # Alternative ISBN zur Rechercheanreicherung erzeugen
+		    my $isbn = Business::ISBN->new($this_isbn);
+		    
+		    if (defined $isbn && $isbn->is_valid) {
+			
+			# ISBN13 fuer Anreicherung merken
+			
+			push @{$enrichmnt_isbns_ref}, $normalizer->normalize({
+			    field    => "isbn",
+			    content  => $isbn->as_isbn13->as_string,
+									     });
+		    }
+		}
+            }
+        }
+    }
+    
     # ISSN
     foreach my $field ('0022') {
         if (defined $fields_ref->{$field}) {
@@ -2888,15 +2915,20 @@ sub enrich_marc {
             foreach my $item_ref (@{$fields_ref->{$field}}) {
 
 		if ($item_ref->{subfield} eq "a"){
+
+		    my $this_isbn = $normalizer->normalize({
+			    field    => "isbn",
+			    content  =>	$item_ref->{content},
+						      });
 		    # Alternative ISBN zur Rechercheanreicherung erzeugen
-		    my $isbn = Business::ISBN->new($item_ref->{content});
+		    my $isbn = Business::ISBN->new($this_isbn);
 		    
 		    if (defined $isbn && $isbn->is_valid) {
 			
 			# ISBN13 fuer Anreicherung merken
 			
 			push @{$enrichmnt_isbns_ref}, $normalizer->normalize({
-			    field    => "T0540",
+			    field    => "isbn",
 			    content  => $isbn->as_isbn13->as_string,
 										       });
 		    }
@@ -2905,6 +2937,33 @@ sub enrich_marc {
         }
     }
 
+    foreach my $field ('0776') {
+        if (defined $fields_ref->{$field}) {
+            foreach my $item_ref (@{$fields_ref->{$field}}) {
+
+		if ($item_ref->{subfield} eq "z"){
+
+		    my $this_isbn = $normalizer->normalize({
+			    field    => "isbn",
+			    content  =>	$item_ref->{content},
+							   });
+		    # Alternative ISBN zur Rechercheanreicherung erzeugen
+		    my $isbn = Business::ISBN->new($this_isbn);
+		    
+		    if (defined $isbn && $isbn->is_valid) {
+			
+			# ISBN13 fuer Anreicherung merken
+			
+			push @{$enrichmnt_isbns_ref}, $normalizer->normalize({
+			    field    => "isbn",
+			    content  => $isbn->as_isbn13->as_string,
+									     });
+		    }
+		}
+            }
+        }
+    }
+    
     # ISSN
     foreach my $field ('0022') {
         if (defined $fields_ref->{$field}) {

@@ -337,6 +337,9 @@ sub set_field {
     my $subfield       = exists $arg_ref->{subfield}
         ? $arg_ref->{subfield}         : undef;
 
+    my $ind            = exists $arg_ref->{ind}
+        ? $arg_ref->{ind}              : undef;
+    
     my $content        = exists $arg_ref->{content}
         ? $arg_ref->{content}          : undef;
 
@@ -359,6 +362,7 @@ sub set_field {
         push @{$self->{_fields}{$field}}, {
             mult      => $mult,
             subfield  => $subfield,
+	    ind       => $ind,
             content   => $content,
         };
 	$logger->debug("Set field $field with content $content");

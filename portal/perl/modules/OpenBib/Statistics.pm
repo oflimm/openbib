@@ -492,7 +492,7 @@ sub get_number_of_event {
 
     delete $arg_ref->{refresh} if (defined $arg_ref->{refresh});
     
-    my $cache_subkey = encode_json $arg_ref;
+    my $cache_subkey = JSON::XS->new->utf8->canonical->encode($arg_ref);
     
     unless ($refresh){
         my $count_ref = $self->get_result({id => $cache_id, type => 14, subkey => $cache_subkey});
@@ -666,7 +666,7 @@ sub get_number_of_queries_by_category {
 
     delete $arg_ref->{refresh} if (defined $arg_ref->{refresh});
     
-    my $cache_subkey = encode_json $arg_ref;
+    my $cache_subkey = JSON::XS->new->utf8->canonical->encode($arg_ref);
     
     unless ($refresh){
         my $count_ref = $self->get_result({id => $cache_id, type => 14, subkey => $cache_subkey});
@@ -769,7 +769,7 @@ sub get_ranking_of_event {
 
     delete $arg_ref->{refresh} if (defined $arg_ref->{refresh});
     
-    my $cache_subkey = encode_json $arg_ref;
+    my $cache_subkey = JSON::XS->new->utf8->canonical->encode($arg_ref);
     
     unless ($refresh){
         my $ranking_ref = $self->get_result({id => $cache_id, type => 14, subkey => $cache_subkey});
@@ -1078,7 +1078,7 @@ sub get_sequencestat_of_event {
 
     delete $arg_ref->{refresh} if (defined $arg_ref->{refresh});
     
-    my $cache_subkey = encode_json $arg_ref;
+    my $cache_subkey = JSON::XS->new->utf8->canonical->encode($arg_ref);
     
     unless ($refresh){
         my $values_ref = $self->get_result({id => $cache_id, type => 14, subkey => $cache_subkey});

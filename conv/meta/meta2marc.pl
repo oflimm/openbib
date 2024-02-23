@@ -127,6 +127,11 @@ my $stammdateien_ref = {
     classification => {
         infile             => "meta.classification.gz",
     },
+
+    holding => {
+        infile             => "meta.holding.gz",
+    },
+    
 };
 
 my $atime;
@@ -161,8 +166,13 @@ foreach my $type (keys %{$stammdateien_ref}) {
 		$data_classification{$id} = $record_ref->{fields};
 	    }
 	    elsif ($type eq "holding"){
-		$id = $record_ref->{'X0004'};		
-		push @{$data_holding{$id}}, $record_ref->{fields};
+		$id = $record_ref->{fields}{'0004'}[0]{content};
+		my $holding_ref = [];
+		if (defined $data_holding{$id}){
+		    $holding_ref = $data_holding{$id};
+		}
+		push @{$holding_ref}, $record_ref->{fields};		
+		$data_holding{$id} = $holding_ref;
 	    }
 		
             if ($count % 1000 == 0) {
@@ -437,7 +447,7 @@ while (my $json=<IN>){
     foreach my $thisfield_ref (@{$fields_ref->{'0662'}}){
 	my $thismult = $thisfield_ref->{mult};
 	my $url      = $thisfield_ref->{content};
-	my $desc     = $url;
+	my $desc     = "";
 
 	foreach my $thisfield_0663_ref (@{$fields_ref->{'0663'}}){
 	    next unless $thisfield_0663_ref->{mult} == $thismult;
@@ -455,16 +465,17 @@ while (my $json=<IN>){
     }
     
     # Exemplardaten processen (Koha holding scheme)
+    # https://wiki.koha-community.org/wiki/Holdings_data_fields_(9xx)
     if (defined $data_holding{$titleid}){
-	# Iteration ueber Exemplare
-	foreach my $thisholding_ref (@{$data_holding{$titleid}}){
+	my $holdings_ref = $data_holding{$titleid};
 
-	    $logger->debug("Holding: ".YAML::Dump($thisholding_ref));
-	    
+	# Iteration ueber Exemplare
+	foreach my $thisholding_ref (@{$holdings_ref}){
 	    my @subfields = ();
 	    
 	    push (@subfields,'k', $thisholding_ref->{'0014'}[0]{content}) if (defined $thisholding_ref->{'0014'}[0]{content}) ;
 	    push (@subfields,'e', $thisholding_ref->{'0016'}[0]{content}) if (defined $thisholding_ref->{'0016'}[0]{content}) ;
+	    push (@subfields,'i', $thisholding_ref->{'0005'}[0]{content}) if (defined $thisholding_ref->{'0005'}[0]{content}) ;
 
 	    my $new_field = MARC::Field->new('995', ' ',  ' ', @subfields);
 	    
@@ -488,6 +499,8 @@ while (my $json=<IN>){
     $count++;
 }
 
+$logger->debug("Holding: ".YAML::Dump(\%data_holding));
+
 $logger->info("### $count Titelsaetze bearbeitet");
 
 close(IN);
@@ -501,6 +514,7 @@ meta2marc.pl - Erzeugung einer MARC21 Datei aus den Import-Dateien im MAB2 Metaf
    -help                 : Diese Informationsseite
        
    --outputfile=...      : Name der MARC21 Ausgabedatei
+   --mappingfile=...     : Name der Datei mit Kategorie-Mappings
    --logfile=...         : Logfile inkl Pfad.
    --loglevel=...        : Loglevel
 

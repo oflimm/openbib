@@ -40,7 +40,7 @@ my $user = OpenBib::User->new;
 
 my $rvk_topic_mapping_ref = {};
 my $bk_topic_mapping_ref  = {};
-my $ddc_topic_mapping_ref  = {};
+my $ddc_topic_mapping_ref = {};
 
 foreach my $topic_ref (@{$user->get_topics}){
     foreach my $classification (@{$user->get_classifications_of_topic({ topicid => $topic_ref->{id}, type => 'rvk'})}){
@@ -54,111 +54,74 @@ foreach my $topic_ref (@{$user->get_topics}){
     }
 }
 
-my %classificationid2topicid = ();
-
-open(CLASSIFICATION,"meta.classification");
-
-while (<CLASSIFICATION>){
-    my $classification_ref = decode_json $_;
-    
-    my $classification = $classification_ref->{'fields'}{'0800'}[0]{content};
-
-    if ($classification =~/^(\d\d)\.\d\d$/){ # BK
-        if (defined $bk_topic_mapping_ref->{$1}){
-            $classificationid2topicid{$classification_ref->{id}} = $bk_topic_mapping_ref->{$1};
-        }
-    }
-    else { # Alt-Notationen
-        my $topicid = altnot2topicid($classification);
-
-        if ($topicid){
-            $classificationid2topicid{$classification_ref->{id}} = $topicid;
-        }
-    }    
-}
-
-close(CLASSIFICATION);
-
-my %subjectid2topicid = ();
-
-open(SUBJECT,"meta.subject");
-
-while (<SUBJECT>){
-    my $subject_ref = decode_json $_;
-    
-    foreach my $thissubject (@{$subject_ref->{'fields'}{'0042'}}){
-        if ($thissubject->{content} =~/^(\d\d\d)/){ # DDC
-            if (defined $ddc_topic_mapping_ref->{$1}){
-                $subjectid2topicid{$subject_ref->{id}} = $ddc_topic_mapping_ref->{$1};
-            }
-        }
-    }
-}
-
-close(SUBJECT);
-
 while (<>){
     my $title_ref = decode_json $_;
 
     my @topicids = ();
-    
-    if (defined $title_ref->{'fields'}{'0700'}){
-        foreach my $classification_ref (@{$title_ref->{'fields'}{'0700'}}){
-            my $classificationid = $classification_ref->{id};
 
-            if ($classificationid2topicid{$classificationid}){
-                push @topicids, $classificationid2topicid{$classificationid};
-            }
-        }
+    # DDC in 082$a
+    if (defined $title_ref->{'fields'}{'0082'}){
+	foreach my $item_ref (@{$title_ref->{'fields'}{'0082'}}){
+	    if (defined $item_ref->{'subfield'} && $item_ref->{'subfield'} eq "a"){
+		my $ddc = $item_ref->{'content'};
+		
+		push @topicids, $ddc_topic_mapping_ref->{$ddc};
+	    }
+	}
     }
 
-    if (defined $title_ref->{'fields'}{'0702'}){
-        foreach my $item_ref (@{$title_ref->{'fields'}{'0702'}}){
-            my $classification = $item_ref->{content};
+    # RVK in 084$a mit 084$2 = 'rvk'
+    if (defined $title_ref->{'fields'}{'0084'}){
+	# Umorganisieren nach Mult-Gruppe
+	my $field_084_ref = {};
+	
+	foreach my $item_ref (@{$title_ref->{'fields'}{'0084'}}){
+	    $field_084_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content}; 
+	}
 
-            if ($classification =~/^(\d\d\d)/){ # DDC
-                my $ddc = $1;
-                if (defined $ddc_topic_mapping_ref->{$ddc}){
-                    push @topicids, $ddc_topic_mapping_ref->{$ddc};
-                }
-            }
-        }
+	foreach my $mult (sort keys %{$field_084_ref}){
+	    if (defined $field_084_ref->{$mult}{'2'} && $field_084_ref->{$mult}{'2'} =~m/^rvk$/ && defined $field_084_ref->{$mult}{'a'}){
+		if ($field_084_ref->{$mult}{'a'} =~m/^([A-Z][A-Z]) \d+/){
+		    my $rvk = $1;
+
+		    push @topicids, $rvk_topic_mapping_ref->{$rvk};
+		}
+	    }
+	}
     }
 
-    foreach my $field ('0902','0907','0912','0917','0922','0927','0932','0937','0942','0947'){
-        if (defined $title_ref->{'fields'}{$field}){
-            foreach my $subject_ref (@{$title_ref->{'fields'}{$field}}){
-                my $subjectid = $subject_ref->{id};
-                
-                if ($subjectid2topicid{$subjectid}){
-                    push @topicids, $subjectid2topicid{$subjectid};
-                }
-            }
-        }
+    # Lokale Notationen in 983$b
+    if (defined $title_ref->{'fields'}{'0983'}){
+	foreach my $item_ref (@{$title_ref->{'fields'}{'0983'}}){
+	    if (defined $item_ref->{'subfield'} && $item_ref->{'subfield'} eq "b"){
+		my $classification = $item_ref->{'content'};
+		
+		if ($classification =~m/^(\d\d)\.\d\d$/){ # BK
+		    my $bk = $1;
+		    if (defined $bk_topic_mapping_ref->{$bk}){
+			push @topicids, $bk_topic_mapping_ref->{$bk};
+		    }
+		}
+		else { # Alt-Notationen
+		    my $topicid = altnot2topicid($classification);
+		    
+		    push @topicids, $topicid if (defined $topicid);
+		}
+	    }    
+	}
     }
-    
-    if (defined $title_ref->{'fields'}{'1701'}){
-        foreach my $item_ref (@{$title_ref->{'fields'}{'1701'}}){
-            my $classification = $item_ref->{content};
-            
-            if ($classification =~/^([A-Z][A-Z]) \d+/){ # RVK
-                my $rvk = $1;
-                if (defined $rvk_topic_mapping_ref->{$rvk}){
-                    push @topicids, $rvk_topic_mapping_ref->{$rvk};
-                }
-            }
-        }
-    }
-    
+
     my $mult = 1;
     my $topics_seen_ref = {};
-    foreach my $topicid (@topicids){        
-        push @{$title_ref->{'fields'}{'4102'}}, {
-            subfield => '',
-            content  => $topicid,
-            mult     => $mult++,
-        } unless (defined $topics_seen_ref->{$topicid});
-        $topics_seen_ref->{$topicid} = 1;
+    foreach my $topicid (@topicids){
+	if (defined $topicid && !defined $topics_seen_ref->{$topicid}){
+	    push @{$title_ref->{'fields'}{'4102'}}, {
+		subfield => '',
+		content  => $topicid,
+		mult     => $mult++,
+	    };
+	    $topics_seen_ref->{$topicid} = 1;
+	}
     }
 
     print encode_json $title_ref, "\n";

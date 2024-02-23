@@ -4,10 +4,10 @@
 #
 #  gen-subset.pl
 #
-#  Extrahieren einer Titeluntermenge eines Katalogs anhand der
-#  mex-Daten fuer die Erzeugung eines separaten neuen Katalogs
+#  Extrahieren einer Titeluntermenge eines Katalogs
+#  fuer die Erzeugung eines separaten neuen Katalogs
 #
-#  Dieses File ist (C) 2005-2012 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,6 +34,7 @@
 
 use strict;
 use warnings;
+use utf8;
 
 use Getopt::Long;
 use OpenBib::Catalog::Subset;
@@ -75,12 +76,12 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
-$subset->identify_by_field_content('title',([ { field => '4700', content => 'Sammlung Johannes Fastenrath' } ]));
+my $subset = new OpenBib::Catalog::Subset("uni",$pool);
+$subset->identify_by_field_content('title',([ { field => '0980', subfield => 's', content => '^Sammlung Johannes Fastenrath' } ]));
 $subset->write_set;
 
 sub print_help {
-    print "gen-subset.pl - Erzeugen von Teilkatalogen\n\n";
+    print "gen-subset.pl - Erzeugen von Kataloguntermengen\n\n";
     print "Optionen: \n";
     print "  -help                   : Diese Informationsseite\n\n";
 

@@ -232,31 +232,40 @@ sub identify_by_field_content {
     
     my %table_type = (
         'person'         => {
-            resultset => 'TitlePerson',
-            field => 'person_fields.field',
-            join => ['personid', { 'personid' => 'person_fields' }]
+            resultset    => 'TitlePerson',
+            field        => 'person_fields.field',
+            subfield     => 'person_fields.subfield',
+            content      => 'person_fields.content',
+            join         => ['personid', { 'personid' => 'person_fields' }]
         },
         'corporatebody'  => {
-            resultset => 'TitleCorporatebody',
-            field => 'corporatebody_fields.field',
-            join => ['corporatebodyid', { 'corporatebodyid' => 'corporatebody_fields' }]
+            resultset    => 'TitleCorporatebody',
+            field        => 'corporatebody_fields.field',
+            subfield     => 'corporatebody_fields.subfield',
+            content      => 'corporatebody_fields.content',
+            join         => ['corporatebodyid', { 'corporatebodyid' => 'corporatebody_fields' }]
         },
         'subject'        => {
-            resultset => 'TitleSubject',
-            field => 'subject_fields.field',
-            join => ['subjectid', { 'subjectid' => 'subject_fields' }]
+            resultset    => 'TitleSubject',
+            field        => 'subject_fields.field',
+            subfield     => 'subject_fields.subfield',
+            content      => 'subject_fields.content',
+            join         => ['subjectid', { 'subjectid' => 'subject_fields' }]
         },
         'classification' => {
-            resultset => 'TitleClassification',
-            field => 'classification_fields.field',
-            join => ['classificationid', { 'classificationid' => 'classification_fields' }]
+            resultset    => 'TitleClassification',
+            field        => 'classification_fields.field',
+            subfield     => 'classification_fields.subfield',
+            content      => 'classification_fields.content',
+            join         => ['classificationid', { 'classificationid' => 'classification_fields' }]
         },
         'holding' => {
-            resultset => 'TitleHolding',
-            field => 'holding_fields.field',
-            join => ['holdingid', { 'holdingid' => 'holding_fields' }]
+            resultset    => 'TitleHolding',
+            field        => 'holding_fields.field',
+            subfield     => 'holding_fields.subfield',
+            content      => 'holding_fields.content',
+            join         => ['holdingid', { 'holdingid' => 'holding_fields' }]
         },
-
     );
 
     my $first_criteria = 1;
@@ -265,11 +274,17 @@ sub identify_by_field_content {
     
     foreach my $criteria_ref (@$arg_ref){        
         # DBI: "select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
-        my $titles = $self->get_schema->resultset('TitleField')->search_rs(
-            {
-                'field'   => $criteria_ref->{field},
+	my $where_ref = {
+	    'field'   => $criteria_ref->{field},
                 'content' => { '~*' => $criteria_ref->{content} },
-            },
+	};
+
+	if (defined $criteria_ref->{subfield}){
+	    $where_ref->{'subfield'} = $criteria_ref->{subfield};
+	}
+	
+        my $titles = $self->get_schema->resultset('TitleField')->search_rs(
+            $where_ref ,
             {
                 select   => ['titleid'],
                 as       => ['thisid'],
@@ -279,11 +294,17 @@ sub identify_by_field_content {
         
         if ($table ne "title"){
             # DBI: "select distinct conn.sourceid as titleid from conn,$table where $table.category = ? and $table.content rlike ? and conn.targetid=$table.id and conn.sourcetype=1 and conn.targettype=$table_type{$table}");
+	    my $where_normdata_ref = {
+		$table_type{$table}{field} => $criteria_ref->{field},
+                    $table_type{$table}{'content'} => { '~*' => $criteria_ref->{content} },
+	    };
+	    
+	    if (defined $criteria_ref->{subfield}){
+		$where_normdata_ref->{$table_type{$table}{'subfield'}} = $criteria_ref->{subfield};
+	    }
+
             $titles = $self->get_schema->resultset($table_type{$table}{resultset})->search_rs(
-                {
-                    $table_type{$table}{field} => $criteria_ref->{field},
-                    'content' => { '~*' => $criteria_ref->{content} },
-                },
+		$where_normdata_ref,
                 {
                     select   => ['me.titleid'],
                     as       => ['thisid'],
@@ -392,32 +413,42 @@ sub exclude_by_field_content {
     my $logger = get_logger();
 
     my $config = new OpenBib::Config;
-    
+
     my %table_type = (
         'person'         => {
-            resultset => 'TitlePerson',
-            field => 'person_fields.field',
-            join => ['personid', { 'personid' => 'person_fields' }]
+            resultset    => 'TitlePerson',
+            field        => 'person_fields.field',
+            subfield     => 'person_fields.subfield',
+            content      => 'person_fields.content',
+            join         => ['personid', { 'personid' => 'person_fields' }]
         },
         'corporatebody'  => {
-            resultset => 'TitleCorporatebody',
-            field => 'corporatebody_fields.field',
-            join => ['corporatebodyid', { 'corporatebodyid' => 'corporatebody_fields' }]
+            resultset    => 'TitleCorporatebody',
+            field        => 'corporatebody_fields.field',
+            subfield     => 'corporatebody_fields.subfield',
+            content      => 'corporatebody_fields.content',
+            join         => ['corporatebodyid', { 'corporatebodyid' => 'corporatebody_fields' }]
         },
         'subject'        => {
-            resultset => 'TitleSubject',
-            field => 'subject_fields.field',
-            join => ['subjectid', { 'subjectid' => 'subject_fields' }]
+            resultset    => 'TitleSubject',
+            field        => 'subject_fields.field',
+            subfield     => 'subject_fields.subfield',
+            content      => 'subject_fields.content',
+            join         => ['subjectid', { 'subjectid' => 'subject_fields' }]
         },
         'classification' => {
-            resultset => 'TitleClassification',
-            field => 'classification_fields.field',
-            join => ['classificationid', { 'classificationid' => 'classification_fields' }]
+            resultset    => 'TitleClassification',
+            field        => 'classification_fields.field',
+            subfield     => 'classification_fields.subfield',
+            content      => 'classification_fields.content',
+            join         => ['classificationid', { 'classificationid' => 'classification_fields' }]
         },
         'holding' => {
-            resultset => 'TitleHolding',
-            field => 'holding_fields.field',
-            join => ['holdingid', { 'holdingid' => 'holding_fields' }]
+            resultset    => 'TitleHolding',
+            field        => 'holding_fields.field',
+            subfield     => 'holding_fields.subfield',
+            content      => 'holding_fields.content',
+            join         => ['holdingid', { 'holdingid' => 'holding_fields' }]
         },
 
     );
@@ -428,11 +459,18 @@ sub exclude_by_field_content {
     
     foreach my $criteria_ref (@$arg_ref){        
         # DBI: "select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
-        my $titles = $self->get_schema->resultset('TitleField')->search_rs(
-            {
-                'field'   => $criteria_ref->{field},
+
+	my $where_ref = {
+	    'field'   => $criteria_ref->{field},
                 'content' => { '~*' => $criteria_ref->{content} },
-            },
+	};
+	
+	if (defined $criteria_ref->{subfield}){
+	    $where_ref->{'subfield'} = $criteria_ref->{subfield};
+	}
+	
+        my $titles = $self->get_schema->resultset('TitleField')->search_rs(
+            $where_ref,
             {
                 select   => ['titleid'],
                 as       => ['thisid'],
@@ -442,11 +480,18 @@ sub exclude_by_field_content {
         
         if ($table ne "title"){
             # DBI: "select distinct conn.sourceid as titleid from conn,$table where $table.category = ? and $table.content rlike ? and conn.targetid=$table.id and conn.sourcetype=1 and conn.targettype=$table_type{$table}");
-            $titles = $self->get_schema->resultset($table_type{$table}{resultset})->search_rs(
-                {
-                    $table_type{$table}{field} => $criteria_ref->{field},
-                    'content' => { '~*' => $criteria_ref->{content} },
-                },
+
+	    my $where_normdata_ref = {
+		$table_type{$table}{field} => $criteria_ref->{field},
+                    $table_type{$table}{'content'} => { '~*' => $criteria_ref->{content} },
+	    };
+	    
+	    if (defined $criteria_ref->{subfield}){
+		$where_normdata_ref->{$table_type{$table}{'subfield'}} = $criteria_ref->{subfield};
+	    }
+
+	    $titles = $self->get_schema->resultset($table_type{$table}{resultset})->search_rs(
+                $where_ref,
                 {
                     select   => ['me.titleid'],
                     as       => ['thisid'],
@@ -860,32 +905,42 @@ sub titleid_by_field_content {
     my $logger = get_logger();
 
     my $config = new OpenBib::Config;
-    
+
     my %table_type = (
         'person'         => {
-            resultset => 'TitlePerson',
-            field => 'person_fields.field',
-            join => ['personid', { 'personid' => 'person_fields' }]
+            resultset    => 'TitlePerson',
+            field        => 'person_fields.field',
+            subfield     => 'person_fields.subfield',
+            content      => 'person_fields.content',
+            join         => ['personid', { 'personid' => 'person_fields' }]
         },
         'corporatebody'  => {
-            resultset => 'TitleCorporatebody',
-            field => 'corporatebody_fields.field',
-            join => ['corporatebodyid', { 'corporatebodyid' => 'corporatebody_fields' }]
+            resultset    => 'TitleCorporatebody',
+            field        => 'corporatebody_fields.field',
+            subfield     => 'corporatebody_fields.subfield',
+            content      => 'corporatebody_fields.content',
+            join         => ['corporatebodyid', { 'corporatebodyid' => 'corporatebody_fields' }]
         },
         'subject'        => {
-            resultset => 'TitleSubject',
-            field => 'subject_fields.field',
-            join => ['subjectid', { 'subjectid' => 'subject_fields' }]
+            resultset    => 'TitleSubject',
+            field        => 'subject_fields.field',
+            subfield     => 'subject_fields.subfield',
+            content      => 'subject_fields.content',
+            join         => ['subjectid', { 'subjectid' => 'subject_fields' }]
         },
         'classification' => {
-            resultset => 'TitleClassification',
-            field => 'classification_fields.field',
-            join => ['classificationid', { 'classificationid' => 'classification_fields' }]
+            resultset    => 'TitleClassification',
+            field        => 'classification_fields.field',
+            subfield     => 'classification_fields.subfield',
+            content      => 'classification_fields.content',
+            join         => ['classificationid', { 'classificationid' => 'classification_fields' }]
         },
         'holding' => {
-            resultset => 'TitleHolding',
-            field => 'holding_fields.field',
-            join => ['holdingid', { 'holdingid' => 'holding_fields' }]
+            resultset    => 'TitleHolding',
+            field        => 'holding_fields.field',
+            subfield     => 'holding_fields.subfield',
+            content      => 'holding_fields.content',
+            join         => ['holdingid', { 'holdingid' => 'holding_fields' }]
         },
 
     );
@@ -898,11 +953,18 @@ sub titleid_by_field_content {
         my $operator = ($criteria_ref->{operator})?$criteria_ref->{operator}:'~*';
         
         # DBI: "select distinct id as titleid from $table where category = ? and content rlike ?") or $logger->error($DBI::errstr);
+
+	my $where_ref = {
+	    'field'   => $criteria_ref->{field},
+                'content' => { $operator => $criteria_ref->{content} },
+	};
+	
+	if (defined $criteria_ref->{subfield}){
+	    $where_ref->{'subfield'} = $criteria_ref->{subfield};
+	}
+	
         my $titles = $self->get_schema->resultset('TitleField')->search_rs(
-            {
-                'field'   => $criteria_ref->{field},
-                'content' => { $operator => $criteria_ref->{'content'} },
-            },
+            $where_ref,,
             {
                 select   => ['titleid'],
                 as       => ['thisid'],
@@ -912,11 +974,18 @@ sub titleid_by_field_content {
         
         if ($table ne "title"){
             # DBI: "select distinct conn.sourceid as titleid from conn,$table where $table.category = ? and $table.content rlike ? and conn.targetid=$table.id and conn.sourcetype=1 and conn.targettype=$table_type{$table}");
-            $titles = $self->get_schema->resultset($table_type{$table}{resultset})->search_rs(
-                {
-                    $table_type{$table}{field} => $criteria_ref->{field},
-                    'content' => { $operator => $criteria_ref->{'content'} },
-                },
+
+	    my $where_normdata_ref = {
+		$table_type{$table}{field} => $criteria_ref->{field},
+                    $table_type{$table}{'content'} => { $operator => $criteria_ref->{content} },
+	    };
+	    
+	    if (defined $criteria_ref->{subfield}){
+		$where_normdata_ref->{$table_type{$table}{'subfield'}} = $criteria_ref->{subfield};
+	    }
+
+	    $titles = $self->get_schema->resultset($table_type{$table}{resultset})->search_rs(
+                $where_normdata_ref,
                 {
                     select   => ['me.titleid'],
                     as       => ['thisid'],

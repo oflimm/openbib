@@ -681,7 +681,7 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'T0662'}.push(content);
 
-    CASE [ "E4100" "T4100" ];
+    CASE [ "T4100" ];
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').ft4100.prefix;
 
@@ -691,11 +691,37 @@ FOREACH field IN normdata;
          IF bkdesc ;
             content   = "${content} (${bkdesc})" ;
          END ; 
-         IF NOT content_map.${'E4100'} ;
-	    content_map.${'E4100'} = [];
+         IF NOT content_map.${'BK'} ;
+	    content_map.${'BK'} = [];
 	 END;
-         content_map.${'E4100'}.push(content);
-	 
+         content_map.${'BK'}.push(content);
+
+    CASE [ "T4101" ];
+         searchterm    = uri_escape(item.content);
+         searchprefix  = config.get('searchfield').rvk.prefix;
+
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         rvk_tree   = config.get_tree_of_classification(type => 'rvk', name => content);
+	 all_rvk = [];
+	 all_rvk.push(rvk_tree.current);
+ 	 all_rvk.push(rvk_tree.super);	
+         rvkdesc     = config.get_description_of_classification(type => 'rvk', names => all_rvk);
+	 currentdesc = rvkdesc.${rvk_tree.current};
+         content     = "<a href=\"${localurl}\">${content}</a> (${currentdesc})";
+
+         rvk_path = [];
+         FOREACH thisrvk IN rvk_tree.super;
+	   thisdesc = rvkdesc.${thisrvk};
+           rvk_path.push("<a href=\"${path_prefix}/${config.get('browse_loc')}/rvk/id/${thisrvk}.html?l=${lang}\">${thisrvk}</a> (${thisdesc})");
+         END;
+         content   = "${content}<br/>RVK-Gruppen: ${rvk_path.join('<i class=\"ps-2 pe-2 fas fa-long-arrow-alt-right\"></i>')}" ;
+
+         IF NOT content_map.${'RVK'} ;
+	    content_map.${'RVK'} = [];
+	 END;
+         content_map.${'RVK'}.push(content);
+
     CASE "E4102";
          topicdesc   = topic_map.${content};
          IF topicdesc ;
@@ -794,11 +820,17 @@ FOREACH field IN normdata;
          END;
 
          content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${bkdesc} ${item.supplement} ${icons}";
-	 
-         IF NOT content_map.${'T0700'} ;
-	    content_map.${'T0700'} = [];
+
+         IF bkdesc && NOT content_map.${'BK'} ;
+           content_map.${'BK'} = [];
+         ELSIF NOT content_map.${'Notation'} ;
+           content_map.${'Notation'} = [];	     
+         END;
+         IF bkdesc ;	   
+           content_map.${'BK'}.push(content);
+	 ELSE ;
+           content_map.${'Notation'}.push(content);
 	 END;
-         content_map.${'T0700'}.push(content);
 	 
     CASE "T1600";
          IF content.match('Sie einen Bestellschein aus');
@@ -917,10 +949,54 @@ display_types = {
    'T0501' => 'list',
    'T0662' => 'list',
    'T0710' => 'list',
-   'T0700' => 'list',
    'Hinweise' => 'list',
    'Druckausgabe' => 'list',   
 };
+
+# Klassifikationen zusammenfuehren
+content_map.${'T0700'} = [];
+
+IF content_map.${'RVK'} || content_map.${'BK'} || content_map.${'DDC'} || conten_map.${'Notation'};
+   content = "";
+   IF content_map.${"RVK"};
+     rvk_url = "<a href=\"${path_prefix}/browse/rvk.html?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+     heading = msg.maketext("Regensburger Verbundklassifikation");
+     content = "${content}<h5>${heading} ${rvk_url}</h5>"; 
+     content = "${content}<ul>";
+     FOREACH thiscontent IN content_map.${"RVK"};
+       content="${content}<li>${thiscontent}</li>";
+     END;
+     content = "${content}</ul>";
+   END;
+   IF content_map.${"BK"};
+     bk_url = "<a href=\"${path_prefix}/browse/bks.html?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+     heading = msg.maketext("Basisklassifikation");
+     content = "${content}<h5>${heading} ${bk_url}</h5>"; 
+     content = "${content}<ul>";
+     FOREACH thiscontent IN content_map.${"BK"};
+       content="${content}<li>${thiscontent}</li>";
+     END;
+     content = "${content}</ul>";
+   END;
+   IF content_map.${"DDC"};
+     content = "${content}<h5>Dewey Decimal Classification</h5>"; 
+     content = "${content}<ul>";
+     FOREACH thiscontent IN content_map.${"DDC"};
+       content="${content}<li>${thiscontent}</li>";
+     END;
+     content = "${content}</ul>";
+   END;
+   IF content_map.${"Notation"};
+     heading = msg.maketext("Sonstige lokale thematische Einordung");
+     content = "${content}<h5>${heading}</h5>"; 
+     content = "${content}<ul>";
+     FOREACH thiscontent IN content_map.${"Notation"};
+       content="${content}<li>${thiscontent}</li>";
+     END;
+     content = "${content}</ul>";
+   END;
+   content_map.${"T0700"}.push(content);
+END;
 
 FOREACH category IN categories;
 

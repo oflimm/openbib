@@ -179,13 +179,11 @@
 
 [% IF user.has_right({scope = 'admin_users', right = 'right_read'}) || user.has_right({scope = 'admin_users', right = 'right_update'}) %]
   <li class="[% IF layout_param.active_submenu == "admin_users" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %].html?l=[% lang %]">[% msg.maketext("Nutzerverwaltung") %]</a></li>
-[%   IF layout_param.active_submenu == "admin_users" %]  
     <ul>
       <li class="[% IF layout_param.active_subsubmenu == "overview" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
       <li class="[% IF layout_param.active_subsubmenu == "admin_users_migration" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/migration.html?l=[% lang %]">[% msg.maketext("Konto-Migration") %]</a></li>
     </ul>
 </li>
-[%   END %]
 [% END %]
 
 [% IF user.has_right({scope = 'admin_authenticators', right = 'right_read'}) || user.has_right({scope = 'admin_authenticators', right = 'right_update'}) %]

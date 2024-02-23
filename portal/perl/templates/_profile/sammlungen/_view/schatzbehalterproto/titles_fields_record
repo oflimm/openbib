@@ -24,6 +24,7 @@
 
       'main_template' = 'titles_fields_record_html'
       'sidebar_template' = 'subnavigation'
+      'sidebar_button_in_main_template' = 1
       
       'active_menu' = 'register'
 

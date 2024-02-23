@@ -72,7 +72,7 @@
   
   <h5>[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]</h5>
   <input type="hidden" name="redirect_to"       value="[% uri_escape(location) %]" />
-  <input type="hidden" name="titleid"           value="[% record.get_encoded_id %]" />
+  <input type="hidden" name="titleid"           value="[% record.id %]" />
   <input type="hidden" name="dbname"            value="[% record.database %]" />
   <div class="form-floating mb-3">
     <select class="form-select" name="litlistid" id="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>
@@ -90,7 +90,7 @@
   
   <h5>[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %]</h5>
   <input type="hidden" name="redirect_to"      value="[% uri_escape(location) %]" />
-  <input type="hidden" name="titleid"          value="[% record.get_encoded_id %]" />
+  <input type="hidden" name="titleid"          value="[% record.id %]" />
   <input type="hidden" name="dbname"           value="[% record.database %]" />
   
   <div class="form-floating mb-3">

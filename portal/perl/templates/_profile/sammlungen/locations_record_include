@@ -47,7 +47,7 @@ var marker_single = L.marker([[% coordinates_single %]]).addTo(librariesmap_sing
    END ;
 %]
 
-[% IF current_occupancy %]
+[% IF NOT disable_occupancy && current_occupancy %]
 [%# USE dumper;dumper.dump(current_occupancy)%]
 
 <div class="row mt-5 mb-5">

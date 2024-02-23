@@ -180,7 +180,6 @@ function copy_to_clipboard(formatid) {
         </button>
       </div>
       <div class="modal-body" id="isbd_format">
-[%# USE dumper;dumper.dump(record.to_abstract_fields)%]      
       <pre>
 [% record.to_isbd.replace('¬',''); %]
       </pre>

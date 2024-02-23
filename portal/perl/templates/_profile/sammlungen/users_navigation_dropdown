@@ -55,7 +55,7 @@
   <li class="[% IF layout_param.active_submenu == "migration" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/migration.html?l=[% lang %]">[% msg.maketext("Konto-Migration") %]</a></li>
 [% END %]
 
-[% IF user.has_role('viewadmin',user.ID) %]
+[% IF user.has_templates(user.ID) %]
   <li class="[% IF layout_param.active_submenu == "viewadmin_templates" %]active[% END %]"><a class="ob-dropdown_link"href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('templates_loc') %].html?l=[% lang %]">[% msg.maketext("Templates") %]</a></li>
 [% END %]
  </ul>

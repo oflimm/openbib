@@ -2199,14 +2199,31 @@ sub get_alma_request {
 		    $this_response_ref->{info} = $item_ref->{'description'};
 		}
 
+		# Fernleihbestellung?
+
+		if (defined $item_ref->{'resource_sharing'}){
+		    if (defined $item_ref->{'resource_sharing'}{'status'}){
+			$this_response_ref->{ill_status} = $item_ref->{'resource_sharing'}{'status'};
+		    }
+		    if (defined $item_ref->{'resource_sharing'}{'status'}){
+			$this_response_ref->{ill_status} = {
+			    id    => $item_ref->{'resource_sharing'}{'status'}{'value'},
+			    about => $item_ref->{'resource_sharing'}{'status'}{'desc'},
+			};
+		    }
+		}
+		
 		my $is_reservation = 0;
 		
 		# Platz in der Queue
 		if (defined $item_ref->{'place_in_queue'} && $item_ref->{'place_in_queue'} > 0){
-		    $is_reservation = 1;
 		    $this_response_ref->{queue} = $item_ref->{'place_in_queue'};
 		}
 
+		if (defined $this_response_ref->{queue} && $this_response_ref->{queue} && !defined $this_response_ref->{'ill_status'}){
+		    $is_reservation = 1 
+		}
+		
 		if ($request_type eq "reservation" && $is_reservation){
 		    push @{$response_ref->{items}}, $this_response_ref;
 		}

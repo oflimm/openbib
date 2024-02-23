@@ -41,7 +41,7 @@
 <tbody>
 [%- FOREACH order = orders.items ;
       is_ill = 0;
-      IF order.item.match('^@[0-9]{9}$');
+      IF order.ill_status;
          is_ill = 1;
       END;
 -%]
@@ -49,8 +49,8 @@
 <td>
 [%# USE dumper;dumper.dump(order); %]
   <i>[% order.about %]</i>
-[% IF order.info %] 
-<br/> ([% IF is_ill %][% msg.maketext("Fernleihe") %].&nbsp;[% END %][% msg.maketext("Status") %]: [% order.info %] [% IF order.status.match('abholbar') %]. [% msg.maketext("Leihfristende") %]: [% order.endtime %][% END %] <!-- Info Link zum Fernleihkonto zu dieser Bestellung -->)
+[% IF order.info || is_ill %] 
+<br/> ([% msg.maketext("Status") %]: [% IF is_ill %] [% order.ill_status.about %] <a class="exturl" target="_blank" href="https://usb-koeln.digibib.net/account/ill/books/orderlist"><i class="fas fa-arrow-right pe-2"></i>[% msg.maketext("Zum Fernleihkonto") %]</a>[% ELSIF order.info %] [% order.info %] [% IF order.status.match('abholbar') %]. [% msg.maketext("Leihfristende") %]: [% order.endtime %][% END %][% END %])
 [% END %]  
 </td>
 <td>

@@ -161,7 +161,8 @@ foreach my $type (keys %{$stammdateien_ref}) {
 		$data_classification{$id} = $record_ref->{fields};
 	    }
 	    elsif ($type eq "holding"){
-		$data_holding{$id} = $record_ref->{fields};
+		$id = $record_ref->{'X0004'};		
+		push @{$data_holding{$id}}, $record_ref->{fields};
 	    }
 		
             if ($count % 1000 == 0) {
@@ -217,7 +218,9 @@ while (my $json=<IN>){
 
     my $marc_record = new MARC::Record;
 
-    $marc_record->add_fields('001',$record_ref->{id});
+    my $titleid = $record_ref->{id};
+    
+    $marc_record->add_fields('001',$titleid);
     
     $logger->debug(YAML::Dump($fields_ref));
     
@@ -279,20 +282,11 @@ while (my $json=<IN>){
 
     # Personendaten
     my @personids = ();
-    foreach my $thisfield_ref (@{$fields_ref->{'0100'}}){
-	push @personids, $thisfield_ref->{id};
-    }
-    
-    foreach my $thisfield_ref (@{$fields_ref->{'0101'}}){
-	push @personids, $thisfield_ref->{id};
-    }
-    
-    foreach my $thisfield_ref (@{$fields_ref->{'0102'}}){
-	push @personids, $thisfield_ref->{id};
-    }
-    
-    foreach my $thisfield_ref (@{$fields_ref->{'0103'}}){
-	push @personids, $thisfield_ref->{id};
+
+    foreach my $field ('0100','0101','0102','0103'){	    
+	foreach my $thisfield_ref (@{$fields_ref->{$field}}){
+	    push @personids, $thisfield_ref->{id};
+	}
     }
     
     if (@personids){
@@ -348,14 +342,13 @@ while (my $json=<IN>){
 	
     # Koerperschaften
     my @corporatebodyids = ();
-    foreach my $thisfield_ref (@{$fields_ref->{'0200'}}){
-	push @corporatebodyids, $thisfield_ref->{id};
+
+    foreach my $field ('0200','0201'){	
+	foreach my $thisfield_ref (@{$fields_ref->{$field}}){
+	    push @corporatebodyids, $thisfield_ref->{id};
+	}
     }
     
-    foreach my $thisfield_ref (@{$fields_ref->{'0201'}}){
-	push @corporatebodyids, $thisfield_ref->{id};
-    }
-        
     if (@corporatebodyids){
 	
 	# Erste in 100 11
@@ -406,10 +399,79 @@ while (my $json=<IN>){
 	    $marc_record->append_fields($new_field) if ($new_field);	    	
 	}	
     }
+
+    # Schlagworte
+    my @subjectids = ();
+    foreach my $field ('0710','0902','0907','0912','0917','0922','0927','0932','0937','0942','0947'){
+	foreach my $thisfield_ref (@{$fields_ref->{$field}}){
+	    push @subjectids, $thisfield_ref->{id};
+	}
+    }
+        
+    if (@subjectids){
+	
+	foreach my $subjectid (@subjectids){	
+	    my $subject_fields_ref = $data_subject{$subjectid};
+	    
+	    $logger->debug("Subjectdata: ".YAML::Syck::Dump($subject_fields_ref));
+	    my @subfields = ();
+	    
+	    # Ansetzungsform
+	    if ($subject_fields_ref->{'0800'}){
+		push (@subfields,'a', cleanup($subject_fields_ref->{'0800'}[0]{content}));
+	    }
+	    
+	    # GND
+	    if ($subject_fields_ref->{'0010'}){
+		push (@subfields,'0', "(DE-588)".$subject_fields_ref->{'0010'}[0]{content});
+		push (@subfields,'2', "gnd-content");
+	    }
+	    
+	    my $new_field = MARC::Field->new('655', ' ',  '7', @subfields);
+	    
+	    $marc_record->append_fields($new_field) if ($new_field);	    	
+	}	
+    }
     
     # URLs processen
+    foreach my $thisfield_ref (@{$fields_ref->{'0662'}}){
+	my $thismult = $thisfield_ref->{mult};
+	my $url      = $thisfield_ref->{content};
+	my $desc     = $url;
 
-    # Exemplardaten processen
+	foreach my $thisfield_0663_ref (@{$fields_ref->{'0663'}}){
+	    next unless $thisfield_0663_ref->{mult} == $thismult;
+	    $desc = $thisfield_0663_ref->{content};
+	}
+
+	my @subfields = ();
+
+	push (@subfields,'u', $url);
+	push (@subfields,'y', $desc) if ($desc);	
+
+	my $new_field = MARC::Field->new('856', '4',  ' ', @subfields);
+	
+	$marc_record->append_fields($new_field) if ($new_field);	    	
+    }
+    
+    # Exemplardaten processen (Koha holding scheme)
+    if (defined $data_holding{$titleid}){
+	# Iteration ueber Exemplare
+	foreach my $thisholding_ref (@{$data_holding{$titleid}}){
+
+	    $logger->debug("Holding: ".YAML::Dump($thisholding_ref));
+	    
+	    my @subfields = ();
+	    
+	    push (@subfields,'k', $thisholding_ref->{'0014'}[0]{content}) if (defined $thisholding_ref->{'0014'}[0]{content}) ;
+	    push (@subfields,'e', $thisholding_ref->{'0016'}[0]{content}) if (defined $thisholding_ref->{'0016'}[0]{content}) ;
+
+	    my $new_field = MARC::Field->new('995', ' ',  ' ', @subfields);
+	    
+	    $marc_record->append_fields($new_field) if ($new_field);	    	
+	    
+	}
+    }
     
     if ($count % 1000 == 0) {
         my $btime      = new Benchmark;

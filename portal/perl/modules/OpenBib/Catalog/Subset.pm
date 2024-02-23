@@ -770,7 +770,7 @@ sub write_set {
     }
     
     if (! keys %{$self->{titleid}}){
-        $logger->info("### $self->{source} -> $self->{destination}: Keine Titel vorhanden - Abbruch!");
+        $logger->error("### $self->{source} -> $self->{destination}: Keine Titel vorhanden - Abbruch!");
         return;
     }
     

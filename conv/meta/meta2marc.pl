@@ -522,14 +522,19 @@ while (my $json=<IN>){
 	# Iteration ueber Exemplare
 	foreach my $thisholding_ref (@{$holdings_ref}){
 	    my @subfields = ();
+
+	    # Nur exemplare mit Signatur beruecksichtigen
+	    next unless (defined $thisholding_ref->{'0014'}[0]{content});
 	    
-	    push (@subfields,'k', $thisholding_ref->{'0014'}[0]{content}) if (defined $thisholding_ref->{'0014'}[0]{content}) ;
-	    push (@subfields,'e', $thisholding_ref->{'0016'}[0]{content}) if (defined $thisholding_ref->{'0016'}[0]{content}) ;
+	    push (@subfields,'o', $thisholding_ref->{'0014'}[0]{content}) if (defined $thisholding_ref->{'0014'}[0]{content}) ;
+#	    push (@subfields,'e', $thisholding_ref->{'0016'}[0]{content}) if (defined $thisholding_ref->{'0016'}[0]{content}) ;
+	    push (@subfields,'p', $thisholding_ref->{'0010'}[0]{content}) if (defined $thisholding_ref->{'0010'}[0]{content}) ; # barcode
 	    push (@subfields,'i', $thisholding_ref->{'0005'}[0]{content}) if (defined $thisholding_ref->{'0005'}[0]{content}) ;
+	    push (@subfields,'a', $thisholding_ref->{'3330'}[0]{content}) if (defined $thisholding_ref->{'3330'}[0]{content}) ;
 
-	    my $new_field = MARC::Field->new('995', ' ',  ' ', @subfields);
+	    my $new_field = MARC::Field->new('952', ' ',  ' ', @subfields);
 
-	    push @{$output_fields_ref->{'995'}}, $new_field if ($new_field);    
+	    push @{$output_fields_ref->{'952'}}, $new_field if ($new_field);    
 #	    $marc_record->append_fields($new_field) if ($new_field);	    	
 	    
 	}

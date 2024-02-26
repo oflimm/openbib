@@ -49,17 +49,18 @@ use YAML;
 
 use OpenBib::Config;
 
-my ($outputfile,$mappingfile,$logfile,$loglevel,$count,$help);
+my ($outputfile,$mappingfile,$database,$logfile,$loglevel,$count,$help);
 
 &GetOptions(
     "outputfile=s"   => \$outputfile,
-    "mappingfile=s"  => \$mappingfile,    
+    "mappingfile=s"  => \$mappingfile,
+    "database=s"     => \$database,
     "logfile=s"      => \$logfile,
     "loglevel=s"     => \$loglevel,
     "help"           => \$help,
     );
 
-if ($help || (!$mappingfile && !$outputfile)) {
+if ($help || (!$mappingfile && !$database)) {
     print_help();
 }
     
@@ -68,6 +69,8 @@ my $config      = OpenBib::Config->new;
 $logfile=($logfile)?$logfile:"./meta2marc.log";
 $loglevel=($loglevel)?$loglevel:"INFO";
 $outputfile=($outputfile)?$outputfile:"./output.mrc";
+
+my $basepath = "/opt/openbib/autoconv/pools/$database";
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=$loglevel, LOGFILE, Screen
@@ -113,23 +116,23 @@ tie %data_holding,        'MLDBM', "./data_holding.db"
 
 my $stammdateien_ref = {
     person => {
-        infile             => "meta.person.gz",
+        infile             => "$basepath/meta.person.gz",
     },
 
     corporatebody => {
-        infile             => "meta.corporatebody.gz",
+        infile             => "$basepath/meta.corporatebody.gz",
     },
     
     subject => {
-        infile             => "meta.subject.gz",
+        infile             => "$basepath/meta.subject.gz",
     },
     
     classification => {
-        infile             => "meta.classification.gz",
+        infile             => "$basepath/meta.classification.gz",
     },
 
     holding => {
-        infile             => "meta.holding.gz",
+        infile             => "$basepath/meta.holding.gz",
     },
     
 };
@@ -202,7 +205,7 @@ $logger->info("### Bearbeite meta.title");
 
 $stammdateien_ref = {
     title => {
-        infile             => "meta.title.gz",
+        infile             => "$basepath/meta.title.gz",
     },    
 };
 
@@ -229,8 +232,41 @@ while (my $json=<IN>){
     my $marc_record = new MARC::Record;
 
     my $titleid = $record_ref->{id};
-    
+
     $marc_record->add_fields('001',$titleid);
+
+    my $output_fields_ref = {};
+        
+    # Sonstige IDs
+
+    # ZDB-ID
+    foreach my $thisfield_ref (@{$fields_ref->{'0572'}}){
+	my $content  = "(DE-599)ZDB".$thisfield_ref->{content};
+	
+	my @subfields = ();
+
+	push (@subfields,'a', $content);
+
+	my $new_field = MARC::Field->new('035', ' ',  ' ', @subfields);
+
+	push @{$output_fields_ref->{'035'}}, $new_field if ($new_field);
+#	$marc_record->append_fields($new_field) if ($new_field);	    	
+    }
+
+    # HBZ-ID
+    foreach my $thisfield_ref (@{$fields_ref->{'4599'}}){
+	my $content  = "(DE-605)".$thisfield_ref->{content};
+	
+	my @subfields = ();
+
+	push (@subfields,'a', $content);
+
+	my $new_field = MARC::Field->new('035', ' ',  ' ', @subfields);
+
+	push @{$output_fields_ref->{'035'}}, $new_field if ($new_field);	
+#	$marc_record->append_fields($new_field) if ($new_field);	    	
+    }
+    
     
     $logger->debug(YAML::Dump($fields_ref));
     
@@ -284,7 +320,8 @@ while (my $json=<IN>){
 		}
 		$first = 0;
 	    }
-	    $marc_record->append_fields($new_field) if ($new_field);	    
+	    push @{$output_fields_ref->{$fieldno}}, $new_field if ($new_field);	    
+#	    $marc_record->append_fields($new_field) if ($new_field);	    
 	}
     }
 
@@ -324,7 +361,8 @@ while (my $json=<IN>){
 	
 	my $new_field = MARC::Field->new('100', '1',  ' ', @subfields);
 
-	$marc_record->append_fields($new_field) if ($new_field);	    	
+	push @{$output_fields_ref->{'100'}}, $new_field if ($new_field);	
+#	$marc_record->append_fields($new_field) if ($new_field);	    	
 
 	foreach my $personid (@personids){
 	    my $person_fields_ref = $data_person{$personid};
@@ -345,8 +383,9 @@ while (my $json=<IN>){
 	    push (@subfields,'4', "aut");
 	    	    
 	    my $new_field = MARC::Field->new('700', '1',  ' ', @subfields);
-	    
-	    $marc_record->append_fields($new_field) if ($new_field);	    	
+
+	    push @{$output_fields_ref->{'700'}}, $new_field if ($new_field);	    
+#	    $marc_record->append_fields($new_field) if ($new_field);	    	
 	}	
     }
 	
@@ -384,7 +423,8 @@ while (my $json=<IN>){
 	
 	my $new_field = MARC::Field->new('110', '1',  ' ', @subfields);
 
-	$marc_record->append_fields($new_field) if ($new_field);	    	
+	push @{$output_fields_ref->{'110'}}, $new_field if ($new_field);	
+#	$marc_record->append_fields($new_field) if ($new_field);	    	
 
 	foreach my $corporatebodyid (@corporatebodyids){
 	    my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
@@ -405,8 +445,10 @@ while (my $json=<IN>){
 	    push (@subfields,'4', "prt");
 	    	    
 	    my $new_field = MARC::Field->new('710', '2',  ' ', @subfields);
+
+	    push @{$output_fields_ref->{'710'}}, $new_field if ($new_field);
 	    
-	    $marc_record->append_fields($new_field) if ($new_field);	    	
+#	    $marc_record->append_fields($new_field) if ($new_field);	    	
 	}	
     }
 
@@ -438,8 +480,9 @@ while (my $json=<IN>){
 	    }
 	    
 	    my $new_field = MARC::Field->new('655', ' ',  '7', @subfields);
-	    
-	    $marc_record->append_fields($new_field) if ($new_field);	    	
+
+	    push @{$output_fields_ref->{'655'}}, $new_field if ($new_field);	    
+#	    $marc_record->append_fields($new_field) if ($new_field);	    	
 	}	
     }
     
@@ -460,8 +503,9 @@ while (my $json=<IN>){
 	push (@subfields,'y', $desc) if ($desc);	
 
 	my $new_field = MARC::Field->new('856', '4',  ' ', @subfields);
-	
-	$marc_record->append_fields($new_field) if ($new_field);	    	
+
+	push @{$output_fields_ref->{'856'}}, $new_field if ($new_field);	
+#	$marc_record->append_fields($new_field) if ($new_field);	    	
     }
     
     # Exemplardaten processen (Koha holding scheme)
@@ -478,9 +522,18 @@ while (my $json=<IN>){
 	    push (@subfields,'i', $thisholding_ref->{'0005'}[0]{content}) if (defined $thisholding_ref->{'0005'}[0]{content}) ;
 
 	    my $new_field = MARC::Field->new('995', ' ',  ' ', @subfields);
+
+	    push @{$output_fields_ref->{'995'}}, $new_field if ($new_field);    
+#	    $marc_record->append_fields($new_field) if ($new_field);	    	
 	    
-	    $marc_record->append_fields($new_field) if ($new_field);	    	
-	    
+	}
+    }
+
+    # Felder aus output_fields_ref in MARC-Record setzen
+
+    foreach my $fieldno (sort keys %{$output_fields_ref}){
+	foreach my $field (@{$output_fields_ref->{$fieldno}}){
+	    $marc_record->append_fields($field);
 	}
     }
     

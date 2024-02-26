@@ -19,6 +19,11 @@ convtab:
         from_field: '0585' # ISSN der Quelle (Aufsaetze)		
         subfield: 'a'
 
+    '041_#_#':
+      -
+        from_field: '0015' # Sprache
+        subfield: 'a'
+
     '245_1_0':
       -
         from_field: '0331'		
@@ -153,3 +158,7 @@ convtab:
         from_field: '0597' # Gesamttitelangabe der Quelle		
         subfield: 'k'
 
+    '852_#_#':
+      -
+        from_field: '3330'		
+        subfield: 'a'

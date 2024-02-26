@@ -99,6 +99,12 @@ my %data_subject        = ();
 my %data_holding        = ();
 my %titleid_exists      = ();
 
+unlink "./data_person.db";
+unlink "./data_corporatebody.db";
+unlink "./data_classification.db";
+unlink "./data_subject.db";
+unlink "./data_holding.db";
+
 tie %data_person,        'MLDBM', "./data_person.db"
         or die "Could not tie data_person.\n";
 

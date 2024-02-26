@@ -74,6 +74,17 @@ sub new {
 
     $self->{database} = $database;
     $self->{id}       = $id;
+
+    my $dbinfotable  = OpenBib::Config::DatabaseInfoTable->new;
+
+    my $dataschema = $dbinfotable->{'schema'}{$database};
+    
+    if ($dataschema eq "marc21"){
+	$self->{'data_schema'} = $dataschema;
+    }
+    else {
+	$self->{'data_schema'} = "mab2";
+    }
     
     return $self;
 }
@@ -343,173 +354,175 @@ sub load_full_title_record {
                 $logger->info("Zeit fuer Bestimmung der Titeldaten ist ".timestr($timeall));
             }
         }
-        
-        # Verknuepfte Normdaten
-        {
-            my ($atime,$btime,$timeall)=(0,0,0);
-            
-            if ($config->{benchmark}) {
-                $atime=new Benchmark;
-            }
-            
-            
-            # Personen
-            # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
-            my $title_persons = $self->get_schema->resultset('Title')->search(
-                {
-                    'me.id' => $id,
-                },
-                {
-                    select   => ['title_people.field','title_people.mult','title_people.personid','title_people.supplement'],
-                    as       => ['thisfield','thismult','thispersonid','thissupplement'],
-                    join     => ['title_people'],
-                    order_by => ['title_people.mult ASC'],
-                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                }
-            );
 
-            if ($title_persons){
-                while (my $item = $title_persons->next){
-                    next unless (defined $item->{thisfield});
-                    
-                    my $field      = "T".sprintf "%04d",$item->{thisfield};
-                    my $mult       =                    $item->{thismult};
-                    my $personid   =                    $item->{thispersonid};
-                    my $supplement =                    $item->{thissupplement};
+        unless ($self->{'data_schema'} eq "marc21"){
+	    # Verknuepfte Normdaten
+	    {
+		my ($atime,$btime,$timeall)=(0,0,0);
+		
+		if ($config->{benchmark}) {
+		    $atime=new Benchmark;
+		}
+		
+		
+		# Personen
+		# DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+		my $title_persons = $self->get_schema->resultset('Title')->search(
+		    {
+			'me.id' => $id,
+		    },
+		    {
+			select   => ['title_people.field','title_people.mult','title_people.personid','title_people.supplement'],
+			as       => ['thisfield','thismult','thispersonid','thissupplement'],
+			join     => ['title_people'],
+			order_by => ['title_people.mult ASC'],
+			result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+		    }
+		    );
 
-                    my $record = OpenBib::Record::Person->new({database => $self->{database}, schema => $self->get_schema});
-                    $record->load_name({id => $personid});
-                    my $content = $record->name_as_string;
-                    
-                    $title_record->set_field({                
-                        field      => $field,
-                        id         => $personid,
-                        content    => $content,
-                        supplement => $supplement,
-                        mult       => $mult,
-                    });
-                }
-            }
-            
-            # Koerperschaften
-            # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
-            my $title_corporatebodies = $self->get_schema->resultset('Title')->search(
-                {
-                    'me.id' => $id,
-                },
-                {
-                    select => ['title_corporatebodies.field','title_corporatebodies.mult','title_corporatebodies.corporatebodyid','title_corporatebodies.supplement'],
-                    as     => ['thisfield','thismult','thiscorporatebodyid','thissupplement'],
-                    join   => ['title_corporatebodies'],
-                    order_by => ['title_corporatebodies.mult ASC'],
-                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                }
-            );
+		if ($title_persons){
+		    while (my $item = $title_persons->next){
+			next unless (defined $item->{thisfield});
+			
+			my $field      = "T".sprintf "%04d",$item->{thisfield};
+			my $mult       =                    $item->{thismult};
+			my $personid   =                    $item->{thispersonid};
+			my $supplement =                    $item->{thissupplement};
 
-            if ($title_corporatebodies){
-                while (my $item = $title_corporatebodies->next){
-                    next unless (defined $item->{thisfield});
-                    my $field             = "T".sprintf "%04d",$item->{thisfield};
-                    my $mult              =                    $item->{thismult};
-                    my $corporatebodyid   =                    $item->{thiscorporatebodyid};
-                    my $supplement        =                    $item->{thissupplement};
-                    
-                    my $record = OpenBib::Record::CorporateBody->new({database=>$self->{database}, schema => $self->get_schema});
-                    $record->load_name({id=>$corporatebodyid});
-                    my $content = $record->name_as_string;
-                    
-                    $title_record->set_field({                
-                        field      => $field,
-                        id         => $corporatebodyid,
-                        content    => $content,
-                        supplement => $supplement,
-                        mult       => $mult,
-                    });
-                }
-            }
-            
-            # Schlagworte
-            # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
-            my $title_subjects = $self->get_schema->resultset('Title')->search(
-                {
-                    'me.id' => $id,
-                },
-                {
-                    select => ['title_subjects.field','title_subjects.mult','title_subjects.subjectid','title_subjects.supplement'],
-                    as     => ['thisfield','thismult','thissubjectid','thissupplement'],
-                    join   => ['title_subjects'],
-                    order_by => ['title_subjects.mult ASC'],
-                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                }
-            );
+			my $record = OpenBib::Record::Person->new({database => $self->{database}, schema => $self->get_schema});
+			$record->load_name({id => $personid});
+			my $content = $record->name_as_string;
+			
+			$title_record->set_field({                
+			    field      => $field,
+			    id         => $personid,
+			    content    => $content,
+			    supplement => $supplement,
+			    mult       => $mult,
+						 });
+		    }
+		}
+		
+		# Koerperschaften
+		# DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+		my $title_corporatebodies = $self->get_schema->resultset('Title')->search(
+		    {
+			'me.id' => $id,
+		    },
+		    {
+			select => ['title_corporatebodies.field','title_corporatebodies.mult','title_corporatebodies.corporatebodyid','title_corporatebodies.supplement'],
+			as     => ['thisfield','thismult','thiscorporatebodyid','thissupplement'],
+			join   => ['title_corporatebodies'],
+			order_by => ['title_corporatebodies.mult ASC'],
+			result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+		    }
+		    );
 
-            if ($title_subjects){
-                my $mult = 1;
-                while (my $item = $title_subjects->next){
-                    next unless (defined $item->{thisfield});
-                    my $field             = "T".sprintf "%04d",$item->{thisfield};
-                    my $mult              =                    $item->{thismult};
-                    my $subjectid         =                    $item->{thissubjectid};
-                    my $supplement        =                    $item->{thissupplement};
-                    
-                    my $record = OpenBib::Record::Subject->new({database=>$self->{database}, schema => $self->get_schema});
-                    $record->load_name({id=>$subjectid});
-                    my $content = $record->name_as_string;
-                    
-                    $title_record->set_field({                
-                        field      => $field,
-                        id         => $subjectid,
-                        content    => $content,
-                        supplement => $supplement,
-                        mult       => $mult,
-                    });
-                }
-            }
-            
-            # Klassifikationen
-            # DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
-            my $title_classifications = $self->get_schema->resultset('Title')->search(
-                {
-                    'me.id' => $id,
-                },
-                {
-                    select => ['title_classifications.field','title_classifications.mult','title_classifications.classificationid','title_classifications.supplement'],
-                    as     => ['thisfield','thismult','thisclassificationid','thissupplement'],
-                    join   => ['title_classifications'],
-                    order_by => ['title_classifications.mult ASC'],
-                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-                }
-            );
+		if ($title_corporatebodies){
+		    while (my $item = $title_corporatebodies->next){
+			next unless (defined $item->{thisfield});
+			my $field             = "T".sprintf "%04d",$item->{thisfield};
+			my $mult              =                    $item->{thismult};
+			my $corporatebodyid   =                    $item->{thiscorporatebodyid};
+			my $supplement        =                    $item->{thissupplement};
+			
+			my $record = OpenBib::Record::CorporateBody->new({database=>$self->{database}, schema => $self->get_schema});
+			$record->load_name({id=>$corporatebodyid});
+			my $content = $record->name_as_string;
+			
+			$title_record->set_field({                
+			    field      => $field,
+			    id         => $corporatebodyid,
+			    content    => $content,
+			    supplement => $supplement,
+			    mult       => $mult,
+						 });
+		    }
+		}
+		
+		# Schlagworte
+		# DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+		my $title_subjects = $self->get_schema->resultset('Title')->search(
+		    {
+			'me.id' => $id,
+		    },
+		    {
+			select => ['title_subjects.field','title_subjects.mult','title_subjects.subjectid','title_subjects.supplement'],
+			as     => ['thisfield','thismult','thissubjectid','thissupplement'],
+			join   => ['title_subjects'],
+			order_by => ['title_subjects.mult ASC'],
+			result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+		    }
+		    );
 
-            if ($title_classifications){
-                while (my $item = $title_classifications->next){
-                    next unless (defined $item->{thisfield});
-                    my $field             = "T".sprintf "%04d",$item->{thisfield};
-                    my $mult              =                    $item->{thismult};
-                    my $classificationid  =                    $item->{thisclassificationid};
-                    my $supplement        =                    $item->{thissupplement};
-                    
-                    my $record = OpenBib::Record::Classification->new({database=>$self->{database}, schema => $self->get_schema});
-                    $record->load_name({id=>$classificationid});
-                    my $content = $record->name_as_string;
-                    
-                    $title_record->set_field({                
-                        field      => $field,
-                        id         => $classificationid,
-                        content    => $content,
-                        supplement => $supplement,
-                        mult       => $mult,
-                    });
-                }
-                
-                if ($config->{benchmark}) {
-                    $btime=new Benchmark;
-                    $timeall=timediff($btime,$atime);
-                    $logger->info("Zeit fuer Bestimmung der verknuepften Normdaten : ist ".timestr($timeall));
-                }
-            }
-        }
-        
+		if ($title_subjects){
+		    my $mult = 1;
+		    while (my $item = $title_subjects->next){
+			next unless (defined $item->{thisfield});
+			my $field             = "T".sprintf "%04d",$item->{thisfield};
+			my $mult              =                    $item->{thismult};
+			my $subjectid         =                    $item->{thissubjectid};
+			my $supplement        =                    $item->{thissupplement};
+			
+			my $record = OpenBib::Record::Subject->new({database=>$self->{database}, schema => $self->get_schema});
+			$record->load_name({id=>$subjectid});
+			my $content = $record->name_as_string;
+			
+			$title_record->set_field({                
+			    field      => $field,
+			    id         => $subjectid,
+			    content    => $content,
+			    supplement => $supplement,
+			    mult       => $mult,
+						 });
+		    }
+		}
+		
+		# Klassifikationen
+		# DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+		my $title_classifications = $self->get_schema->resultset('Title')->search(
+		    {
+			'me.id' => $id,
+		    },
+		    {
+			select => ['title_classifications.field','title_classifications.mult','title_classifications.classificationid','title_classifications.supplement'],
+			as     => ['thisfield','thismult','thisclassificationid','thissupplement'],
+			join   => ['title_classifications'],
+			order_by => ['title_classifications.mult ASC'],
+			result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+		    }
+		    );
+
+		if ($title_classifications){
+		    while (my $item = $title_classifications->next){
+			next unless (defined $item->{thisfield});
+			my $field             = "T".sprintf "%04d",$item->{thisfield};
+			my $mult              =                    $item->{thismult};
+			my $classificationid  =                    $item->{thisclassificationid};
+			my $supplement        =                    $item->{thissupplement};
+			
+			my $record = OpenBib::Record::Classification->new({database=>$self->{database}, schema => $self->get_schema});
+			$record->load_name({id=>$classificationid});
+			my $content = $record->name_as_string;
+			
+			$title_record->set_field({                
+			    field      => $field,
+			    id         => $classificationid,
+			    content    => $content,
+			    supplement => $supplement,
+			    mult       => $mult,
+						 });
+		    }
+		    
+		    if ($config->{benchmark}) {
+			$btime=new Benchmark;
+			$timeall=timediff($btime,$atime);
+			$logger->info("Zeit fuer Bestimmung der verknuepften Normdaten : ist ".timestr($timeall));
+		    }
+		}
+	    }
+        } # Ende Normdatenbestimmung wenn nicht marc21
+	
         # Verknuepfte Titel
         {
             my ($atime,$btime,$timeall)=(0,0,0);
@@ -534,7 +547,7 @@ sub load_full_title_record {
                     content    => scalar(@sub),
                     subfield   => 'a',
                     mult       => 1,
-                });
+					 });
                 
                 foreach my $tt_ref (@sub){
                     $title_record->set_field({
@@ -542,7 +555,7 @@ sub load_full_title_record {
                         content    => $tt_ref->{id},
                         subfield   => 'a',
                         mult       => $tt_ref->{mult},
-                    });
+					     });
                 }
             }
             

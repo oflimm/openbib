@@ -227,6 +227,8 @@ END;
 
 is_bindeeinheit = 0;
 
+binding_units = [];
+
 content_map = {};
 
 FOREACH field IN normdata;
@@ -759,9 +761,11 @@ FOREACH field IN normdata;
             localurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${thisid}.html?l=${lang}";
 
 	    content = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
-            IF thismark ;
-	      thismark = thismark.replace('^no:','');
-	      content  = "${content} (Signatur/Mediennummer: ${thismark})";
+
+            # Zur Auswertung merken
+	    IF thistitle && thisid && thismark ;
+	      thismark = thismark.replace('^no:','');	    
+	      binding_units.push({ titlelink = content, titleid = thisid, mediaid = thismark });
 	    END;
 
 	 END;
@@ -1259,8 +1263,9 @@ END;
 
 [% IF is_bindeeinheit %]
 <div class="alert alert-info">
-<p>[% msg.maketext("(Mindestens) 1 Exemplar dieses Titels ist Teil einer Bindeeinheit, d.h. es ist mit Exemplaren anderer Veröffentlichungen in einem gemeinsamen Bucheinband zusammengebunden.") %]</p>
+[% msg.maketext("(Mindestens) 1 Exemplar dieses Titels ist Teil einer Bindeeinheit, d.h. es ist mit Exemplaren anderer Veröffentlichungen in einem gemeinsamen Bucheinband zusammengebunden.") %]
 
+<!--
 <p>[% msg.maketext("Zur Bindeeinheit") %]</p>
 
 <ul>
@@ -1268,12 +1273,29 @@ END;
 <li>[% bindeeinheit %]</li>
 [% END %]
 </ul>
-
+-->
 </div>
 [% END %]
 
 </div>
-[%# USE dumper;dumper.dump(content_map) %]
+[%-
+    # Anreicherung mit Exemplarinformationen der Bindeeinheit
+    FOREACH item IN binding_units ;
+       be_circulation = create_title_record({ database = 'uni', id = item.titleid}).load_circulation.get_circulation ;
+       FOREACH thiscirc IN be_circulation;
+         IF thiscirc.barcode == item.mediaid ;
+	   new_remark = "Exemplar der Bindeeinheit: ${item.titlelink}";
+	   IF thiscirc.remark ;
+	     thiscirc.remark = "${thiscirc.remark}<br/>${new_remark}";
+	   ELSE ;
+	     thiscirc.remark = new_remark;
+	   END;
+	   circulation.push(thiscirc);
+	 END;
+       END;
+    END;
+-%]
+[%# USE dumper;dumper.dump(binding_units) %]
 [% ELSIF format == "BibTeX" %]
 <div>
 <pre>

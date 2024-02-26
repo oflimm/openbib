@@ -1,5 +1,24 @@
 convtab:
   title:
+    '020_#_#':
+      -
+        from_field: '0540'		
+        subfield: 'a'
+      -
+        from_field: '0553'		
+        subfield: 'a'
+      -
+        from_field: '0586' # ISBN der Quelle (Aufsaetze)		
+        subfield: 'a'
+
+    '022_#_#':
+      -
+        from_field: '0543'		
+        subfield: 'a'
+      -
+        from_field: '0585' # ISSN der Quelle (Aufsaetze)		
+        subfield: 'a'
+
     '245_1_0':
       -
         from_field: '0331'		
@@ -114,4 +133,23 @@ convtab:
       -
         from_field: '0673'		
         subfield: 'a'
+    '773_ _ ':
+      -
+        from_field: '0590' # HST der Quelle
+        subfield: 't'
+      -
+        from_field: '0591' # Verfasser der Quelle
+        subfield: 't'
+      -
+        from_field: '0593' # Ausgabe der Quelle
+        subfield: 'b'
+      -
+        from_field: '0594' # Erscheinungsort der Quelle		
+        subfield: 'd'
+      -
+        from_field: '0596' # Kollation der Quelle
+        subfield: 'g'
+      -
+        from_field: '0597' # Gesamttitelangabe der Quelle		
+        subfield: 'k'
 

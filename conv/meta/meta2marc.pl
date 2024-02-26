@@ -571,11 +571,16 @@ meta2marc.pl - Erzeugung einer MARC21 Datei aus den Import-Dateien im MAB2 Metaf
 
    Optionen:
    -help                 : Diese Informationsseite
-       
-   --outputfile=...      : Name der MARC21 Ausgabedatei
+
+   --database=...        : Name des Katalogs (wg. Basis-Pfad zu den meta.* Dateien)       
+   --outputfile=...      : Name der MARC21 Ausgabedatei (default: output.mrc)
    --mappingfile=...     : Name der Datei mit Kategorie-Mappings
    --logfile=...         : Logfile inkl Pfad.
    --loglevel=...        : Loglevel
+
+Beispiel:
+
+./meta2marc.pl --database=aufsaetze --mappingfile=mab2marc_mapping.yml
 
 ENDHELP
     exit;

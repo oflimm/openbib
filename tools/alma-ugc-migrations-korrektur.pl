@@ -36,6 +36,7 @@ use warnings;
 use OpenBib::Config;
 use OpenBib::Catalog::Factory;
 use OpenBib::Record::Title;
+use OpenBib::User;
 
 use Business::ISBN;
 use DBIx::Class::ResultClass::HashRefInflator;
@@ -52,23 +53,27 @@ use Getopt::Long;
 use YAML::Syck;
 
 my $config      = OpenBib::Config->new;
+my $user        = new OpenBib::User;
 
-my ($sourcedatabase,$targetdatabase,$titlefile,$migratelitlists,$migratecartitems,$migratetags,$dryrun,$help,$logfile,$loglevel);
+my ($usemappingcache,$sourcedatabase,$targetdatabase,$titlefile,$username,$migratelitlists,$migratecartitems,$migratetags,$dryrun,$help,$logfile,$loglevel);
 
 &GetOptions(
     "migrate-litlists"      => \$migratelitlists,
     "migrate-cartitems"     => \$migratecartitems,
     "migrate-tags"          => \$migratetags,
-    "target-titlefile=s"    => \$titlefile,
-    
+    "mapping-titlefile=s"   => \$titlefile,
+    "username=s"            => \$username,
+    "source-database=s"     => \$sourcedatabase,
+    "target-database=s"     => \$targetdatabase,
+    "use-mapping-cache"     => \$usemappingcache,    
     "dry-run"               => \$dryrun,
     "logfile=s"             => \$logfile,
     "loglevel=s"            => \$loglevel,
     "help"                  => \$help
     );
 
-$sourcedatabase="inst001";
-$targetdatabase="uni";
+$sourcedatabase=($sourcedatabase)?$sourcedatabase:"inst001"; # oder lehrbuchsmlg, lesesaal
+$targetdatabase=($targetdatabase)?$targetdatabase:"uni";
 
 if ($help){
     print_help();
@@ -98,148 +103,113 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-$logger->info("Gezieltes Sammeln von Informationen fuer $sourcedatabase");
+my $userid = 0;
+my $viewname = "";
 
-$logger->info("Titleids von Literaturlisten, Merklisten und Tags bestimmen");
-
-my $litlist_titles = $config->get_schema->resultset('Litlistitem')->search(
-    {
-        dbname => $sourcedatabase,
-    },
-    {
-        column       => [ qw/titleid/ ],
-        result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+if ($username){
+    if (!$user->user_exists($username)){
+	$logger->error("NO_USER: $username");
+	exit;
     }
-);
+    
+    $userid = $user->get_userid_for_username($username,$viewname);
 
-my $cartitem_titles = $config->get_schema->resultset('Cartitem')->search(
-    {
-        dbname => $sourcedatabase,
-    },
-    {
-        column       => [ qw/titleid/ ],
-        result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-    }
-);
+    $logger->info("userid is $userid for username $username");
+}
 
-my $tag_titles = $config->get_schema->resultset('TitTag')->search(
-    {
-        dbname => $sourcedatabase,
-    },
-    {
-        column       => [ qw/titleid/ ],
-        result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-    }
-);
-
-$logger->info("Bestimmung der Mappings von MMSIDs zu den Katkeys");
+$logger->info("Bestimmung der Mappings von MMSIDs zu den Katkeys aus Exportdatei");
 
 my %katkey2mmsid = ();
 
-my $target_catalog = OpenBib::Catalog::Factory->create_catalog({ database => $targetdatabase});
+unlink "./alma-ugc-katkey2mmsid.db" unless ($usemappingcache);
+        
+eval {
+    tie %katkey2mmsid,        'MLDBM', "./alma-ugc-katkey2mmsid.db";
+};
 
-
-my $input_io;
-
-if ($titlefile){
-    if ($titlefile =~/\.gz$/){
-        $input_io = IO::Uncompress::Gunzip->new($titlefile);
-    }
-    else {
-        $input_io = IO::File->new($titlefile);
-    }
+if ($@){
+    $logger->error_die("$@: Could not tie alma-ugc-katkey2mmsid.db");
 }
 
-my $idx     = 1;
-my $idx_all = 0;
-while (my $jsonline = <$input_io>){
-    my $record_ref = decode_json($jsonline);
 
-    my $mmsid = $record_ref->{id};
-    
-    my $fields_ref = $record_ref->{fields};
+my $target_catalog = OpenBib::Catalog::Factory->create_catalog({ database => $targetdatabase});
 
-    if (defined $fields_ref->{'0981'}){
-	foreach my $item_ref (@{$fields_ref->{'0981'}}){
-	    if ($item_ref->{subfield} eq "a"){
-		my $katkey = $item_ref->{content};
-		
-		$logger->debug("$katkey -> $mmsid");
+open(LITLISTPROT,  ">./alma-ugc-prot-litlist.json");
+open(CARTITEMPROT, ">./alma-ugc-prot-cartitems.json");
+open(TAGPROT,      ">./alma-ugc-prot-tags.json");
 
-		next unless ($katkey =~m/\(DE-38\)/);
-		$katkey=~s/\(DE-38\)//;
-		
-		$logger->debug("Post $katkey -> $mmsid");
-		
-		$katkey2mmsid{$katkey} = $mmsid;
-    
-		if ($idx % 10000 == 0){
-		    $logger->info("$idx mappings processed");
-		}
-		
-		$idx++;
-	    }
+unless ($usemappingcache) {
+    my $input_io;
+
+    if ($titlefile){
+	if ($titlefile =~/\.gz$/){
+	    $input_io = IO::Uncompress::Gunzip->new($titlefile);
+	}
+	else {
+	    $input_io = IO::File->new($titlefile);
 	}
     }
 
-    $idx_all++;
+    my $idx     = 1;
+    my $idx_all = 0;
+    while (my $jsonline = <$input_io>){
+	my $record_ref = decode_json($jsonline);
+
+	my $mmsid = $record_ref->{id};
+	
+	my $fields_ref = $record_ref->{fields};
+
+	if (defined $fields_ref->{'0981'}){
+	    foreach my $item_ref (@{$fields_ref->{'0981'}}){
+		if ($item_ref->{subfield} eq "a"){
+		    my $katkey = $item_ref->{content};
+		    
+		    $logger->debug("$katkey -> $mmsid");
+
+		    next unless ($katkey =~m/\(DE-38\)/);
+		    $katkey=~s/\(DE-38\)//;
+		    
+		    $logger->debug("Post $katkey -> $mmsid");
+		    
+		    $katkey2mmsid{$katkey} = $mmsid;
+		    
+		    if ($idx % 10000 == 0){
+			$logger->info("$idx mappings processed");
+		    }
+		    
+		    $idx++;
+		}
+	    }
+	}
+
+	$idx_all++;
+    }
+
+    close $input_io;
+
+    $logger->info("$idx_all records processed");
+    $logger->info(($idx - 1)." mappings found");
+
 }
-
-close $input_io;
-
-$logger->info("$idx_all records processed");
-$logger->info(($idx - 1)." mappings found");
-
-# unlink "./katkey2mmsid.db";
-        
-# eval {
-#     tie %katkey2mmsid,        'MLDBM', "./katkey2mmsid.db";
-# };
-
-# if ($@){
-#     $logger->error_die("$@: Could not tie ./katkey2mmsid.db.db");
-# }
-
-# my $titlemmsids = $target_catalog->get_schema->resultset('TitleField')->search(
-#     {
-# 	field => 981,
-# 	subfield => 'a',
-#     },
-#     {
-# 	select => [ 'titleid', 'content' ],
-# 	as     => [ 'mmsid', 'katkey' ],
-# 	result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-#     }
-#     );
-
-# my $idx = 1;
-# while (my $thistitle = $titlemmsids->next()){
-#     my $katkey = $thistitle->{katkey};
-#     my $mmsid  = $thistitle->{mmsid};
-
-#     $logger->info("$katkey -> $mmsid");
-    
-#     if ($idx % 10000 == 0){
-# 	$logger->info("$idx processed");
-#     }
-    
-#     next unless ($katkey =~m/\(DE-38\)/);
-#     $katkey=~s/\(DE-38\)//;
-
-#     $logger->info("Post $katkey -> $mmsid");
-    
-#     $katkey2mmsid{$katkey} = $mmsid;
-#     $idx++;
-# }
-
 
 if ($migratelitlists){
     $logger->info("Literaturlisten-Eintraege korrigieren");
+
+    my $where_ref = {
+	dbname => $sourcedatabase,
+    };
+
+    my $options_ref = {
+    };
+
+    if ($userid){
+	$where_ref->{'litlistid.userid'} = $userid;
+	$options_ref->{'join'} = ['litlistid'];
+    }
     
-    $litlist_titles = $config->get_schema->resultset('Litlistitem')->search(
-	{
-	    dbname => $sourcedatabase,
-	},
+    my $litlist_titles = $config->get_schema->resultset('Litlistitem')->search(
+	$where_ref,
+	$options_ref
 	);
     
     while (my $litlist_title = $litlist_titles->next()){
@@ -258,19 +228,49 @@ if ($migratelitlists){
 		
 		my $record_json = $record->to_json;
 		
-		$litlist_title->update({ dbname => $targetdatabase, titleid => $target_titleid }) unless ($dryrun);
+		$litlist_title->update({ dbname => $targetdatabase, titleid => $target_titleid, titlecache => $record_json, comment => "Migrated from $sourcedatabase:$source_titleid" }) unless ($dryrun);
+
+		my $prot_ref = {
+		    id     => $litlist_titleid,
+		    userid => $userid,
+		    source => {
+			titleid => $source_titleid,
+			dbname  => $sourcedatabase,
+		    },
+		    target => {
+			titleid => $target_titleid,
+			dbname  => $targetdatabase,
+		    },
+		};
+
+		print LITLISTPROT encode_json $prot_ref,"\n";
+
 	    }
+	}
+	else {
+	    $logger->error("No title found in $targetdatabase for $sourcedatabase:$source_titleid");
 	}
     }
 }
 
 if ($migratecartitems){
     $logger->info("Merklisten-Eintraege korrigieren");
+
+    my $where_ref = {
+	dbname => $sourcedatabase,
+    };
+
+    my $options_ref = {
+    };
     
-    $cartitem_titles = $config->get_schema->resultset('Cartitem')->search(
-	{
-	    dbname => $sourcedatabase,
-	},
+    if ($userid){
+	$where_ref->{'user_cartitems.userid'} = $userid;
+	$options_ref->{'join'} = ['user_cartitems'];
+    }
+    
+    my $cartitem_titles = $config->get_schema->resultset('Cartitem')->search(
+	$where_ref,
+	$options_ref
 	);
     
     while (my $cartitem_title = $cartitem_titles->next()){
@@ -289,19 +289,48 @@ if ($migratecartitems){
 		
 		my $record_json = $record->to_json;
 		
-		$cartitem_title->update({ dbname => $targetdatabase, titleid =>  $target_titleid, titlecache => $record_json }) unless ($dryrun);
+		$cartitem_title->update({ dbname => $targetdatabase, titleid =>  $target_titleid, titlecache => $record_json, comment => "Migrated from $sourcedatabase:$source_titleid" }) unless ($dryrun);
+
+		my $prot_ref = {
+		    id     => $cartitem_titleid,
+		    userid => $userid,
+		    source => {
+			titleid => $source_titleid,
+			dbname  => $sourcedatabase,
+		    },
+		    target => {
+			titleid => $target_titleid,
+			dbname  => $targetdatabase,
+		    },
+		};
+
+		print CARTITEMPROT encode_json $prot_ref,"\n";
+
 	    }
+	}
+	else {
+	    $logger->error("No title found in $targetdatabase for $sourcedatabase:$source_titleid");
 	}
     }
 }
 
 if ($migratetags){
     $logger->info("Tag-Eintraege korrigieren");
-	
+
+    my $where_ref = {
+	dbname => $sourcedatabase,
+    };
+    
+    my $options_ref = {
+    };
+
+    if ($userid){
+	$where_ref->{'userid'} = $userid;
+    }
+
     my $tag_titles = $config->get_schema->resultset('TitTag')->search(
-	{
-	    dbname => $sourcedatabase,
-	},
+	$where_ref,
+	$options_ref
 	);
     
     while (my $tag_title = $tag_titles->next()){
@@ -321,28 +350,54 @@ if ($migratetags){
 		my $record_json = $record->to_json;
 		
 		$tag_title->update({ dbname => $targetdatabase, titleid => $target_titleid, titlecache => $record_json }) unless ($dryrun);
+
+		my $prot_ref = {
+		    id     => $tag_titleid,
+		    userid => $userid,
+		    source => {
+			titleid => $source_titleid,
+			dbname  => $sourcedatabase,
+		    },
+		    target => {
+			titleid => $target_titleid,
+			dbname  => $targetdatabase,
+		    },
+		};
+
+		print TAGPROT encode_json $prot_ref,"\n";
+		
 	    }
+	}
+	else {
+	    $logger->error("No title found in $targetdatabase for $sourcedatabase:$source_titleid");
 	}
     }
 }
+
+close(LITLISTPROT);
+close(CARTITEMSPROT);
+close(TAGSPROT);
 
 sub print_help {
     print << "ENDHELP";
 alma-ugc-migrations-korrektur.pl - Korrektur des User Generated Contents (Literaturlisten, Merklisten, Tags) von Titeln, die aus USB- in den Alma-Katalog migriert wurden
 
    Optionen:
-   -help                 : Diese Informationsseite
-   -dry-run              : Testlauf ohne Aenderungen
-   -target-titlefile     : meta.title.gz Datei des Alma-Systems
-   -migrate-litlists     : Literaturlisten migrieren
-   -migrate-cartitems    : Merklisten migrieren
-   -migrate-tags         : Tags migrieren
-   --logfile=...         : Alternatives Logfile
-   --type=...            : Metrik-Typ
+   -help                   : Diese Informationsseite
+   -dry-run                : Testlauf ohne Aenderungen
+   --source-database=...   : Ursprungs-Katalog der UGC-Eintraege (default: inst001)
+   --target-database=...   : Ziel-Katalog der UGC-Eintraege (default: uni)
+   --mapping-titlefile=... : meta.title.gz Datei des Alma-Systems mit Alt-IDs
+   -migrate-litlists       : Literaturlisten migrieren
+   -migrate-cartitems      : Merklisten migrieren
+   -migrate-tags           : Tags migrieren
+   --logfile=...           : Alternatives Logfile
 
 Bsp:
 
-./alma-ugc-migrations-korrektur.pl -dry-run -migrate-litlists --target-titlefile=/opt/openbib/autoconv/pools/uni/meta.title.gz
+./alma-ugc-migrations-korrektur.pl -dry-run -migrate-litlists --mapping-titlefile=/opt/openbib/autoconv/pools/uni/meta.title.gz
+
+./alma-ugc-migrations-korrektur.pl --username=admin --mapping-titlefile=/store/uni/meta.title.gz -migrate-cartitems -use-mapping-cache
 
 ENDHELP
     exit;

@@ -375,8 +375,8 @@ if ($migratetags){
 }
 
 close(LITLISTPROT);
-close(CARTITEMSPROT);
-close(TAGSPROT);
+close(CARTITEMPROT);
+close(TAGPROT);
 
 sub print_help {
     print << "ENDHELP";

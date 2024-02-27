@@ -247,13 +247,13 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
 
 [% END %]
 <template id="lendable-template">
-  <a href="" class="btn btn-primary avail-js ob-availability_lendable mb-1 me-1 pe-2"><img src="[% config.get_icon('lendable',view,sysprofile) %]" alt="[% msg.maketext("ausleihbar") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("ausleihbar") %]</span></a>
+  <a href="" class="btn btn-primary avail-js ob-availability_lendable mb-1 me-1 ps-2 pe-2"><img src="[% config.get_icon('lendable',view,sysprofile) %]" alt="[% msg.maketext("ausleihbar") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("ausleihbar") %]</span></a>
 </template>
 <template id="presence-template">
-  <a href="" class="btn btn-primary avail-js ob-availability_presence mb-1 me-1 pe-2"><img src="[% config.get_icon('presence',view,sysprofile) %]" alt="[% msg.maketext("einsehbar") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("einsehbar") %]</span></a>
+  <a href="" class="btn btn-primary avail-js ob-availability_presence mb-1 me-1 ps-2 pe-2"><img src="[% config.get_icon('presence',view,sysprofile) %]" alt="[% msg.maketext("einsehbar") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("einsehbar") %]</span></a>
 </template>
 <template id="lent-template">
-  <a href="" class="btn btn-primary avail-js ob-availability_borrowed mb-1 me-1 pe-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("entliehen") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("entliehen") %]</span></a>
+  <a href="" class="btn btn-primary avail-js ob-availability_borrowed mb-1 me-1 ps-2 pe-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("entliehen") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("entliehen") %]</span></a>
 </template>
 
 <script>

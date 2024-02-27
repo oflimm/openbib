@@ -531,7 +531,7 @@
           </div><!-- end ob-titleactions -->
 
 [% IF record_exists && record.id && record.database %]
-	   <div class="ms-auto ob-availability" data-catalog="[% record.database %]" data-id="[% record.get_encoded_id %]">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 me-1 pe-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="ps-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% END %]
+	   <div class="ms-auto ob-availability" data-catalog="[% record.database %]" data-id="[% record.get_encoded_id %]">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 me-1 ps-2 pe-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="ps-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% END %]
 	   </div>
 [% END # record_exists %]	   
 	</div><!-- end: flex -->

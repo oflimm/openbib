@@ -254,6 +254,19 @@ if ($migratelitlists){
 	}
 	else {
 	    $logger->error("No title found in $targetdatabase for $sourcedatabase:$source_titleid");
+	    my $prot_ref = {
+		id     => $litlist_titleid,
+		userid => $userid,
+		source => {
+		    titleid => $source_titleid,
+		    dbname  => $sourcedatabase,
+		},
+
+		no_target_found => 1,
+	    };
+	    
+	    print LITLISTPROT encode_json $prot_ref,"\n";
+
 	}
     }
 }
@@ -319,6 +332,19 @@ if ($migratecartitems){
 	}
 	else {
 	    $logger->error("No title found in $targetdatabase for $sourcedatabase:$source_titleid");
+	    
+	    my $prot_ref = {
+		id     => $cartitem_titleid,
+		userid => $userid,
+		source => {
+		    titleid => $source_titleid,
+		    dbname  => $sourcedatabase,
+		},
+		
+		no_target_found => 1,
+	    };
+	    
+	    print CARTITEMPROT encode_json $prot_ref,"\n";
 	}
     }
 }
@@ -383,6 +409,19 @@ if ($migratetags){
 	}
 	else {
 	    $logger->error("No title found in $targetdatabase for $sourcedatabase:$source_titleid");
+
+	    my $prot_ref = {
+		id     => $tag_titleid,
+		userid => $userid,
+		source => {
+		    titleid => $source_titleid,
+		    dbname  => $sourcedatabase,
+		},
+		
+		no_target_found => 1,
+	    };
+	    
+	    print TAGPROT encode_json $prot_ref,"\n";
 	}
     }
 }

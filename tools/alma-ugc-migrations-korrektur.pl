@@ -55,7 +55,7 @@ use YAML::Syck;
 my $config      = OpenBib::Config->new;
 my $user        = new OpenBib::User;
 
-my ($usemappingcache,$sourcedatabase,$targetdatabase,$titlefile,$username,$migratelitlists,$migratecartitems,$migratetags,$dryrun,$help,$logfile,$loglevel);
+my ($usemappingcache,$sourcedatabase,$targetdatabase,$titlefile,$username,$migratelitlists,$migratecartitems,$migratetags,$maxtitles,$dryrun,$help,$logfile,$loglevel);
 
 &GetOptions(
     "migrate-litlists"      => \$migratelitlists,
@@ -65,6 +65,7 @@ my ($usemappingcache,$sourcedatabase,$targetdatabase,$titlefile,$username,$migra
     "username=s"            => \$username,
     "source-database=s"     => \$sourcedatabase,
     "target-database=s"     => \$targetdatabase,
+    "max-titles=s"          => \$maxtitles,
     "use-mapping-cache"     => \$usemappingcache,    
     "dry-run"               => \$dryrun,
     "logfile=s"             => \$logfile,
@@ -206,6 +207,10 @@ if ($migratelitlists){
 	$where_ref->{'litlistid.userid'} = $userid;
 	$options_ref->{'join'} = ['litlistid'];
     }
+
+    if ($maxtitles){
+	$options_ref->{'rows'} = $maxtitles;
+    }
     
     my $litlist_titles = $config->get_schema->resultset('Litlistitem')->search(
 	$where_ref,
@@ -266,6 +271,10 @@ if ($migratecartitems){
     if ($userid){
 	$where_ref->{'user_cartitems.userid'} = $userid;
 	$options_ref->{'join'} = ['user_cartitems'];
+    }
+
+    if ($maxtitles){
+	$options_ref->{'rows'} = $maxtitles;
     }
     
     my $cartitem_titles = $config->get_schema->resultset('Cartitem')->search(
@@ -328,6 +337,10 @@ if ($migratetags){
 	$where_ref->{'userid'} = $userid;
     }
 
+    if ($maxtitles){
+	$options_ref->{'rows'} = $maxtitles;
+    }
+    
     my $tag_titles = $config->get_schema->resultset('TitTag')->search(
 	$where_ref,
 	$options_ref
@@ -388,6 +401,7 @@ alma-ugc-migrations-korrektur.pl - Korrektur des User Generated Contents (Litera
    --source-database=...   : Ursprungs-Katalog der UGC-Eintraege (default: inst001)
    --target-database=...   : Ziel-Katalog der UGC-Eintraege (default: uni)
    --mapping-titlefile=... : meta.title.gz Datei des Alma-Systems mit Alt-IDs
+   --max-titles=...        : Maximal zu konvertierende Titelzahl
    -migrate-litlists       : Literaturlisten migrieren
    -migrate-cartitems      : Merklisten migrieren
    -migrate-tags           : Tags migrieren

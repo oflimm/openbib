@@ -6,6 +6,7 @@ use utf8;
 use MLDBM qw(DB_File Storable);
 use Storable ();
 use DB_File;
+use List::MoreUtils qw/ uniq /;
 
 #open(CHANGED,">./changed.json");
 
@@ -77,10 +78,12 @@ my $kunstmessekatalog_regexp_ref = [
 unlink "./ausstellungskatalog.db";
 unlink "./sammlungskatalog.db";
 unlink "./kunstmessekatalog.db";
+unlink "./kmbsystematik.db";
 
 my %ausstellungskatalog = ();
 my %sammlungskatalog = ();
 my %kunstmessekatalog = ();
+my %kmbsystematik = ();
 
 tie %ausstellungskatalog,             'MLDBM', "./ausstellungskatalog.db"
     or die "Could not tie ausstellungskatalog.\n";
@@ -90,6 +93,9 @@ tie %sammlungskatalog,                'MLDBM', "./sammlungskatalog.db"
 
 tie %kunstmessekatalog,               'MLDBM', "./kunstmessekatalog.db"
     or die "Could not tie kunstmessekatalog.\n";
+
+tie %kmbsystematik,                   'MLDBM', "./kmbsystematik.db"
+    or die "Could not tie kmbsystematik.\n";
 
 
 while (<HOLDING>){
@@ -141,6 +147,12 @@ while (<HOLDING>){
 		    #print "Matched ",$item->{content},"\n";
 		}
 	    }
+
+	    # KMB Systematik
+
+	    if ($item->{content} =~m{KMB/[=+!]*([A-Za-z]+)}){
+		$kmbsystematik{$titleid} = $1;
+	    }
         }	
     }
 
@@ -161,35 +173,41 @@ while (<>){
     my $is_bild = 0;
     my $is_auktionskatalog = 0;
 
-    if (defined $title_ref->{fields}{'2083'}){
-        foreach my $item (@{$title_ref->{fields}{'2083'}}){
-            if ($item->{content} =~m/^Kn 3: Digitales Foto von Werk/){
-                $is_bild = 1;
-            }        
-        }
-    }
-    
-    if (defined $title_ref->{fields}{'4800'}){	
-        foreach my $item (@{$title_ref->{fields}{'4800'}}){
-            if ($item->{content} eq "yy"){
+    # Auswertung von 0980$f
+    if (defined $title_ref->{fields}{'0980'}){	
+        foreach my $item (@{$title_ref->{fields}{'0980'}}){
+	    next unless ($item->{subfield} eq 'f');
+	    
+            if ($item->{content} eq "KMBABR_yy"){
                 $is_kuenstlerbuch = 1;
             }
 	    
-            if ($item->{content} =~m/^D[IKOPTX]$/ || $item->{content} eq "DKG"){
+            if ($item->{content} =~m/^KMBABR_D[IKOPTXYZ]$/ || $item->{content} eq "KMBABR_DKG"){
                 $is_dossier = 1;
             }        
 
-            if ($item->{content} eq "BILD"){
+            if ($item->{content} eq "KMBABR_BILD"){
                 $is_bild = 1;
             }
 	    
         }	
     }
+
+    # KMB Systematik
+    if (defined $kmbsystematik{$titleid}){
+	push @{$title_ref->{fields}{'1002'}}, {
+	    mult     => 1,
+	    subfield => 'k',
+	    content  => $kmbsystematik{$titleid},
+	};	
+    }
     
     ### Auktionskatalog
-    if (defined $title_ref->{fields}{'4801'}){
-        foreach my $item (@{$title_ref->{fields}{'4801'}}){
-            if ($item->{content} eq "91;00"){
+    # Auswertung von 0980$g
+    if (defined $title_ref->{fields}{'0980'}){
+        foreach my $item (@{$title_ref->{fields}{'0980'}}){
+	    next unless ($item->{subfield} eq 'g');
+            if ($item->{content} eq "KMBART_91;00"){
                 $is_auktionskatalog = 1;
             }        
         }
@@ -334,32 +352,118 @@ while (<>){
     # 	print CHANGED encode_json $title_ref, "\n";
 
     # }
+
+    my @bks  = (); # Fuer 4100    
+    my @rvks = (); # Fuer 4101
+    my @ddcs = (); # Fuer 4102
+    
+    # Auswertung von 082$ fuer DDC
+    if (defined $title_ref->{fields}{'0082'}){
+        foreach my $item (@{$title_ref->{fields}{'0082'}}){
+	    if ($item->{subfield} eq "a"){
+		push @ddcs, $item->{content};
+	    }
+	}
+    }
+
+    # BK, RVK und DDC aus 084$a in 4100ff vereinheitlichen
+    
+    # Auswertung von 084$
+    if (defined $title_ref->{fields}{'0084'}){
+	my $cln_ref = {};
+        foreach my $item (@{$title_ref->{fields}{'0084'}}){
+	    $cln_ref->{$item->{mult}}{$item->{subfield}} = $item->{content};
+	}
+	
+	foreach my $mult (keys %{$cln_ref}){
+	    next unless (defined $cln_ref->{$mult}{'2'} && defined $cln_ref->{$mult}{'a'});
+	    if ($cln_ref->{$mult}{'2'} eq "rvk"){
+		push @rvks, $cln_ref->{$mult}{'a'};
+	    }
+	    elsif ($cln_ref->{$mult}{'2'} eq "bkl"){
+		push @bks, $cln_ref->{$mult}{'a'};
+	    }
+	    elsif ($cln_ref->{$mult}{'2'} eq "ddc"){
+		push @ddcs, $cln_ref->{$mult}{'a'};
+	    }
+	}
+    }
+    
+    # Alte RVKs von 38-503 aus 983$a in 4101 vereinheitlichen
+    # Alte BKs aus 983$a in 4100 vereinheitlichen    
+    if (defined $title_ref->{fields}{'0983'}){
+        foreach my $item (@{$title_ref->{fields}{'0983'}}){
+	    if ($item->{subfield} eq "a" && $item->{content} =~m{^38/503}){
+		if ($item->{content} =~m{^38/503: ([A-Z][A-Z] \d+)}){
+		    push @rvks, $1;
+		}
+	    }
+	    if ($item->{subfield} eq "b" && $item->{content} =~m{^\d\d\.\d\d$}){
+		push @bks, $item->{content};
+	    }
+	}
+    }
+
+    if (@bks){
+	my $bk_mult = 1;
+
+	foreach my $bk (uniq @bks){
+	    push @{$title_ref->{fields}{'4100'}}, {
+		mult     => $bk_mult++,
+		subfield => '',
+		content  => $bk,
+	    };
+	}
+    }
+    
+    if (@rvks){
+	my $rvk_mult = 1;
+
+	foreach my $rvk (uniq @rvks){
+	    push @{$title_ref->{fields}{'4101'}}, {
+		mult     => $rvk_mult++,
+		subfield => '',
+		content  => $rvk,
+	    };
+	}
+    }
+
+    if (@ddcs){
+	my $ddc_mult = 1;
+
+	foreach my $ddc (uniq @ddcs){
+	    push @{$title_ref->{fields}{'4102'}}, {
+		mult     => $ddc_mult++,
+		subfield => '',
+		content  => $ddc,
+	    };
+	}
+    }
+    
     ### Medientyp Digital/online zusaetzlich vergeben
     my $is_digital = 0;
 
-    # 1) T0807 hat Inhalt 'g'
-    if (defined $title_ref->{fields}{'0807'}){
-        foreach my $item (@{$title_ref->{fields}{'0807'}}){
-            if ($item->{content} eq "g"){
+    # 1) 0338$a = 'online resource' oder 0338$b = 'cr'
+    if (defined $title_ref->{fields}{'0338'}){
+        foreach my $item (@{$title_ref->{fields}{'0338'}}){
+            if ($item->{subfield} eq "a" && $item->{content} eq "online resource"){
+                $is_digital = 1;
+            }        
+            if ($item->{subfield} eq "b" && $item->{content} eq "cr"){
+                $is_digital = 1;
+            }        
+        }
+    }
+
+    # 2) 0962$e hat Inhalt 'ldd' oder 'fzo'
+    if (defined $title_ref->{fields}{'0962'}){
+        foreach my $item (@{$title_ref->{fields}{'0962'}}){
+            if ($item->{subfield} eq "e" && ($item->{content} eq "ldd" || $item->{content} eq "fzo")){
                 $is_digital = 1;
             }        
         }
     }
     
-    # 2) T2662  ist besetzt oflimm: In der Kategorie landen auch andere Inhalte (Inhaltsverzeichnisse),
-    # daher kein sinnvolles Kriterium mehr
-    # if (defined $title_ref->{fields}{'2662'}){
-    #     $is_digital = 1;
-    # } 
-    
-    # 3) T0078 hat Inhalt 'ldd' oder 'fzo'
-    if (defined $title_ref->{fields}{'0078'}){
-        foreach my $item (@{$title_ref->{fields}{'0078'}}){
-            if ($item->{content} eq "ldd" || $item->{content} eq "fzo"){
-                $is_digital = 1;
-            }        
-        }
-    }
 
     if ($is_digital){
 	if (@{$title_ref->{fields}{'4400'}}){

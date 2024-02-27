@@ -77,7 +77,7 @@ sub new {
 
     my $dbinfotable  = OpenBib::Config::DatabaseInfoTable->new;
 
-    my $dataschema = $dbinfotable->{'schema'}{$database};
+    my $dataschema = $dbinfotable->{'dbinfo'}{'schema'}{$database};
     
     if ($dataschema eq "marc21"){
 	$self->{'data_schema'} = $dataschema;

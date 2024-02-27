@@ -1901,6 +1901,13 @@ sub process_marc {
 
     # Bandverlinkungen durch 0773$w    
     if (defined $fields_ref->{'0773'}){
+	my $exclude_mult_ref = {}; # Ignoriere Verlinkungen von Bindeeinheiten
+	foreach my $item_ref (@{$fields_ref->{'0773'}}){
+	    if ($item_ref->{subfield} eq "p" && $item_ref->{content} eq "AngebundenAn"){ 
+		$exclude_mult_ref->{$item_ref->{mult}} = 1;
+	    }
+	}
+
 	foreach my $item_ref (@{$fields_ref->{'0773'}}){
 	    if ($item_ref->{subfield} eq "w"){
 		my $target_titleid   = $item_ref->{content};
@@ -1909,6 +1916,8 @@ sub process_marc {
 		my $source_titleid   = $id;
 		my $supplement       = "";
 		my $field            = "0773";
+
+		next if (defined $exclude_mult_ref->{$mult} && $exclude_mult_ref->{$mult});
 		
 		# Keine Verlinkungen zu nicht existierenden Titelids
 		next if (!defined $self->{storage}{titleid_exists}{$target_titleid} || ! $self->{storage}{titleid_exists}{$target_titleid});

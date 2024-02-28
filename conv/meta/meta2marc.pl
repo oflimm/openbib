@@ -527,11 +527,15 @@ while (my $json=<IN>){
 	    next unless (defined $thisholding_ref->{'0014'}[0]{content});
 	    
 	    push (@subfields,'o', $thisholding_ref->{'0014'}[0]{content}) if (defined $thisholding_ref->{'0014'}[0]{content}) ;
-#	    push (@subfields,'e', $thisholding_ref->{'0016'}[0]{content}) if (defined $thisholding_ref->{'0016'}[0]{content}) ;
+	    #push (@subfields,'e', $thisholding_ref->{'0016'}[0]{content}) if (defined $thisholding_ref->{'0016'}[0]{content}) ;
 	    push (@subfields,'p', $thisholding_ref->{'0010'}[0]{content}) if (defined $thisholding_ref->{'0010'}[0]{content}) ; # barcode
 	    push (@subfields,'i', $thisholding_ref->{'0005'}[0]{content}) if (defined $thisholding_ref->{'0005'}[0]{content}) ;
-	    push (@subfields,'a', $thisholding_ref->{'3330'}[0]{content}) if (defined $thisholding_ref->{'3330'}[0]{content}) ;
+	    #	    push (@subfields,'a', $thisholding_ref->{'3330'}[0]{content}) if (defined $thisholding_ref->{'3330'}[0]{content}) ;
+	    push (@subfields,'a', 'AWTEST');	    
+	    push (@subfields,'b', 'AWTEST');	    
+	    push (@subfields,'y', 'BK');
 
+	    
 	    my $new_field = MARC::Field->new('952', ' ',  ' ', @subfields);
 
 	    push @{$output_fields_ref->{'952'}}, $new_field if ($new_field);    

@@ -135,10 +135,6 @@ if ($@){
 
 my $target_catalog = OpenBib::Catalog::Factory->create_catalog({ database => $targetdatabase});
 
-open(LITLISTPROT,  ">./alma-ugc-prot-litlist.json");
-open(CARTITEMPROT, ">./alma-ugc-prot-cartitems.json");
-open(TAGPROT,      ">./alma-ugc-prot-tags.json");
-
 unless ($usemappingcache) {
     my $input_io;
 
@@ -196,6 +192,8 @@ unless ($usemappingcache) {
 if ($migratelitlists){
     $logger->info("Literaturlisten-Eintraege korrigieren");
 
+    open(LITLISTPROT,  ">./alma-ugc-prot-litlist.json");
+    
     my $where_ref = {
 	dbname => $sourcedatabase,
     };
@@ -269,11 +267,15 @@ if ($migratelitlists){
 
 	}
     }
+
+    close(LITLISTPROT);
 }
 
 if ($migratecartitems){
     $logger->info("Merklisten-Eintraege korrigieren");
 
+    open(CARTITEMPROT, ">./alma-ugc-prot-cartitems.json");
+    
     my $where_ref = {
 	dbname => $sourcedatabase,
     };
@@ -347,11 +349,15 @@ if ($migratecartitems){
 	    print CARTITEMPROT encode_json $prot_ref,"\n";
 	}
     }
+
+    close(CARTITEMPROT);
 }
 
 if ($migratetags){
     $logger->info("Tag-Eintraege korrigieren");
 
+    open(TAGPROT,      ">./alma-ugc-prot-tags.json");
+    
     my $where_ref = {
 	dbname => $sourcedatabase,
     };
@@ -424,11 +430,10 @@ if ($migratetags){
 	    print TAGPROT encode_json $prot_ref,"\n";
 	}
     }
+
+    close(TAGPROT);
 }
 
-close(LITLISTPROT);
-close(CARTITEMPROT);
-close(TAGPROT);
 
 sub print_help {
     print << "ENDHELP";

@@ -1858,7 +1858,7 @@ convtab:
           index:
             'hbzid': 1
       '1002': # Alternative Systematiken
-        'k':         # kmbsystematik
+        'a':         # USB LBS und LS
           index:
             'ft1002': 1
       '4100':         # BK

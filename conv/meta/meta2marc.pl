@@ -491,6 +491,35 @@ while (my $json=<IN>){
 #	    $marc_record->append_fields($new_field) if ($new_field);	    	
 	}	
     }
+
+    # Notationen
+    my @classificationids = ();
+    foreach my $field ('0700'){
+	foreach my $thisfield_ref (@{$fields_ref->{$field}}){
+	    push @classificationids, $thisfield_ref->{id};
+	}
+    }
+        
+    if (@classificationids){
+	
+	foreach my $classificationid (@classificationids){	
+	    my $classification_fields_ref = $data_classification{$classificationid};
+	    
+	    $logger->debug("Classificationdata: ".YAML::Syck::Dump($classification_fields_ref));
+	    my @subfields = ();
+	    
+	    # Ansetzungsform
+	    if ($classification_fields_ref->{'0800'}){
+		push (@subfields,'a', cleanup($classification_fields_ref->{'0800'}[0]{content}));
+		push (@subfields,'2', 'z'); # z = Other see: https://www.loc.gov/standards/sourcelist/classification.html
+	    }
+	    	    
+	    my $new_field = MARC::Field->new('084', ' ',  ' ', @subfields);
+
+	    push @{$output_fields_ref->{'084'}}, $new_field if ($new_field);	    
+#	    $marc_record->append_fields($new_field) if ($new_field);	    	
+	}	
+    }
     
     # URLs processen
     foreach my $thisfield_ref (@{$fields_ref->{'0662'}}){

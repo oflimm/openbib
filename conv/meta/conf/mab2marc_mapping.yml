@@ -1,6 +1,6 @@
 convtab:
   title:
-    '020_#_#':
+    '020_ _ ':
       -
         from_field: '0540'		
         subfield: 'a'
@@ -11,7 +11,7 @@ convtab:
         from_field: '0586' # ISBN der Quelle (Aufsaetze)		
         subfield: 'a'
 
-    '022_#_#':
+    '022_ _ ':
       -
         from_field: '0543'		
         subfield: 'a'
@@ -19,7 +19,7 @@ convtab:
         from_field: '0585' # ISSN der Quelle (Aufsaetze)		
         subfield: 'a'
 
-    '041_#_#':
+    '041_ _ ':
       -
         from_field: '0015' # Sprache
         subfield: 'a'
@@ -53,7 +53,7 @@ convtab:
         from_field: '0451'		
         subfield: 'p'
         
-    '246_1_1':
+    '246_1_ ':
       -
         from_field: '0340'		
         subfield: 'a'
@@ -70,21 +70,23 @@ convtab:
 
     '260_ _ ':
       -
-        from_field: '0410'		
-        subfield: 'a'
-      -
-        from_field: '0412'		
-        subfield: 'b'
-      -
-        from_field: '0425'		
-        subfield: 'c'
-      -
-        from_field: '0440'		
-        subfield: 'e'
+        from_field: '0440'
+        subfield: 'e' # place of manufacture
       -
         from_field: '0413'		
-        subfield: 'f'
+        subfield: 'f' # manufacturer
 
+    '264_ _ ':
+      -
+        from_field: '0410' 
+        subfield: 'a' # place of production, publication, distribution, manufacture
+      -
+        from_field: '0412' 
+        subfield: 'b' # name of producer, publisher, distributor, manufacturer
+      -
+        from_field: '0425'
+        subfield: 'c' # date of publication
+        
     '300_ _ ':
       -
         from_field: '0433'		

@@ -242,7 +242,16 @@ while (my $json=<IN>){
     $marc_record->add_fields('001',$titleid);
 
     my $output_fields_ref = {};
-        
+            
+    my @subfields = ();
+    
+    push (@subfields,'c', $titleid);
+    push (@subfields,'d', $titleid);
+    
+    my $new_field = MARC::Field->new('999', ' ',  ' ', @subfields);
+    
+    push @{$output_fields_ref->{'999'}}, $new_field;
+    
     # Sonstige IDs
 
     # ZDB-ID

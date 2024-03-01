@@ -72,7 +72,7 @@ if ($help){
 
 $from            = ($from)?$from:"1970-01-01 00:00:00";
 $to              = ($to)?$to:"2100-01-01 00:00:00";
-$authenticatorid = ($authenticatorid)?$authenticatorid:1; # Default 1 = USB Ausweis
+#$authenticatorid = ($authenticatorid)?$authenticatorid:1; # Default 1 = USB Ausweis
 $logfile         = ($logfile)?$logfile:'/var/log/openbib/usercartitems2fullrecord.log';
 $loglevel        = ($loglevel)?$loglevel:'INFO';
 $viewname        = ($viewname)?$viewname:'';
@@ -126,14 +126,11 @@ if ($type eq "litlist"){
     # Persistente Cartitems von Nutzern bestimmen
 
     my $where_ref = {
-    };
-
-    if ($from && $to){
-	$where_ref->{'-and'} = [
+	-and => [
 	     'litlistitems.tstamp' => { '>=' => $from },
 	     'litlistitems.tstamp' => { '<=' => $to },
-	    ];
-    }
+	    ]
+    };
 
     if ($authenticatorid){
 	$where_ref->{'userid.authenticatorid'} = $authenticatorid;
@@ -278,17 +275,23 @@ elsif ($type eq "cart"){
 	     'cartitemid.tstamp' => { '>=' => $from },
 	     'cartitemid.tstamp' => { '<=' => $to },
 	    ],
-	    
-	    'userid.authenticatorid' => $authenticatorid,
     };
 
+    if ($authenticatorid){
+	$where_ref->{'userid.authenticatorid'} = $authenticatorid;
+    };
+
+    if ($database){
+	$where_ref->{'cartitemid.dbname'} = $database;
+    }
+    
     if ($userid){
 	$where_ref->{'userid.username'} = $username;
     }
-
+    
     # Obsolete Titlecaches im Kurzformat besitzen das Feld PC0001
     if ($selectobsolete){
-	$where_ref->{'cartitems.titlecache'} = {'~' => 'PC0001'};
+	$where_ref->{'cartitemid.titlecache'} = {'~' => 'PC0001'};
     }
     
     if ($viewname){
@@ -401,13 +404,34 @@ refresh_titlecache.pl - Refresh des Titelcaches von Merk- und Literaturlisten mi
    -help                 : Diese Informationsseite
    --type=...            : Welchen Titelcache? (cart|litlist)
    -dry-run              : Testlauf ohne Aenderungen
-   -list-users           : Anzeige der Nutzeraccounts mit Merklisten
+   -list-users           : Anzeige der Nutzeraccounts mit Merklisten/Literaturlisten
+   -dump-items           : Keine Aenderung, aber Ausgabe bestehender Inhalte in JSON-Datei
    -select-obsolete      : Eingrenzung auf obsolete Kurztitel mit PC0001
    --from=...            : Von Erstellungsdatum (z.B. 2013-01-01 00:00:00)
    --to=...              : Bis Erstellungsdatum (z.B. 2013-01-02 00:00:00)
-   --username=...        : Einzelner Nutzer
+   --username=...        : Einschraenkung auf einzelnen Nutzer
+   --authenticatorid=... : Einschraenkung auf Authentifizierungart des Kontos
+   --database=...        : Einschraenkung auf Datenbankname der Eintraege
    --logfile=...         : Alternatives Logfile
    --loglevel=...        : Alternatives Loglevel
+
+Beispiele:
+
+1) Refresh des Titel-Caches fuer alle Literarurlisteneintraege aus der Datenbank emedien
+
+./refresh_titlecache.pl --type=litlist --database=emedien
+
+2) Refresh des Titel-Caches fuer alle Merklisteneintraege aus der Datenbank emedien
+
+./refresh_titlecache.pl --type=cart --database=emedien
+
+3) Refresh des Titel-Caches fuer alle Merklisteneintraege aus der Datenbank emedien beim Nutzer mit der Kennung 'ABC123#4'
+
+./refresh_titlecache.pl --type=cart --database=emedien --username='ABC123#4'
+
+4) Anzeige aller Nutzernamen, die Literaturlisteneintraege aus der Datenbank emedien haben
+
+./refresh_titlecache.pl --type=litlist --database=emedien -list-users
 
 ENDHELP
     exit;

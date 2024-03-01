@@ -288,7 +288,7 @@ while (<DAT>){
 		$ind = $field_ref->{$field}{ind1}.$field_ref->{$field}{ind2};
 	    }
 
-	    unless ($ind =~m/^..$/){
+	    unless ($ind =~m/^.?.?$/){
 		$logger->fatal("Ungueltige Indikatoren in Titelsatz $titleid");
 		next;
 	    }

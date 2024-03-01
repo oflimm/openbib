@@ -1337,6 +1337,7 @@ sub process_mab {
 		}
 		
 		$item_ref->{ind}      =~ s/\\/\\\\/g;		
+		$item_ref->{subfield} =~ s/\\/\\\\/g;		
                 $item_ref->{content} = $self->cleanup_content($item_ref->{content});
 
 #                $logger->error("mult fehlt") if (!defined $item_ref->{mult});
@@ -2663,6 +2664,7 @@ sub process_marc {
 		}
 		
 		$item_ref->{ind}      =~ s/\\/\\\\/g;
+		$item_ref->{subfield} =~ s/\\/\\\\/g;		
                 $item_ref->{content}  = $self->cleanup_content($item_ref->{content});
 
 #                $logger->error("mult fehlt") if (!defined $item_ref->{mult});

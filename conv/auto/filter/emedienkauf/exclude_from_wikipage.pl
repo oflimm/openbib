@@ -34,15 +34,7 @@ while (<>){
     }
 
     my $exclude_title = 0;
-    foreach my $isbn_ref (@{$title_ref->{fields}{'0540'}}){
-	if (defined $excluded_isbns{$isbn_ref->{content}}){
-	    $exclude_title = $isbn_ref->{content}; 
-	    last;
-	} 
-    }
-
-
-    foreach my $isbn_ref (@{$title_ref->{fields}{'0553'}}){
+    foreach my $isbn_ref (@{$title_ref->{fields}{'0020'}}){
 	if (defined $excluded_isbns{$isbn_ref->{content}}){
 	    $exclude_title = $isbn_ref->{content}; 
 	    last;

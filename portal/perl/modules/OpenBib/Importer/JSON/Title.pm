@@ -1331,7 +1331,7 @@ sub process_mab {
                 $item_ref->{subfield} = ($item_ref->{subfield} || $item_ref->{subfield} eq "0")?$item_ref->{subfield}:'';
                 $item_ref->{ind}      = $item_ref->{ind}      || '';
 
-		unless ($item_ref->{subfield} =~m/^.$/ && $item_ref->{ind} =~m/^..$/){
+		unless ($item_ref->{subfield} =~m/^.?$/ && $item_ref->{ind} =~m/^.?.?$/){
 		    $logger->fatal("Subfield or indicators too long for titleid $id");
 		    next;
 		}

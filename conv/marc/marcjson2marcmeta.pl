@@ -287,7 +287,12 @@ while (<DAT>){
 	    if (defined $field_ref->{$field}{ind1} && defined $field_ref->{$field}{ind2}){
 		$ind = $field_ref->{$field}{ind1}.$field_ref->{$field}{ind2};
 	    }
-	    	    
+
+	    unless ($ind =~m/^..$/){
+		$logger->fatal("Ungueltige Indikatoren in Titelsatz $titleid");
+		next;
+	    }
+	    
 	    my $subfields_ref = [];
 
 	    if (ref $field_ref->{$field} eq "HASH" && defined $field_ref->{$field}{subfields}){

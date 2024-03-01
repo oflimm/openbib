@@ -1,0 +1,197 @@
+[%#-
+#######################################################################
+#
+# Templatename: holdings
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Exemplar-Informationen aus den bibliograph. Daten
+#
+# Besonderheit USB-Katalog: holdings werden nur bei Medien ohne Buchdatensaetze ausgegeben, also bei Zeitschriften
+#                           oder digitalen Medien
+#
+#######################################################################
+-%]
+[%- holding_categories = [
+                'X0004', # msg.maketext("X0004") # Titel-ID
+                'X0005', # msg.maketext("X0005") # Inventarnummer
+                'X0010', # msg.maketext("X0010") # Mediennummer
+                'X0014', # msg.maketext("X0014") # Signatur
+                'X0016', # msg.maketext("X0016") # Standort
+                'X1204', # msg.maketext("X1204") # Bestandsverlauf
+                'X3330', # msg.maketext("X3330") # Sigel
+                'X4000', # msg.maketext("X4000") # Bibliothek
+                'X4001', # msg.maketext("X4001") # Bibliotheks-Infoseite
+    ];
+-%]
+
+[% IF circulation.size <= 0 %]
+[%
+  have_bestandsverlauf = 0;
+  have_standort = 0;
+  FOREACH thisholding IN holding ;
+     bestandsverlauf  = thisholding.${"X1204"}.content;
+     standort         = thisholding.${"X0016"}.content;
+     IF standort && standort != '-' ;
+        have_standort = 1;
+     END;
+     IF bestandsverlauf && bestandsverlauf != '-' ;
+        have_bestandsverlauf = 1;
+     END;
+  END;
+%]
+
+[% IF holding.size > 0 %]
+
+[% IF have_bestandsverlauf %]
+
+[% ELSE %]
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<thead>
+<tr align="center"><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th>[% IF have_standort %]<th>[% msg.maketext("Standort") %]</th>[% END %]<th>[% msg.maketext("Signatur") %]</th>[% IF have_bestandsverlauf %]<th>[% msg.maketext("Bestand") %]</th>[% END %]</tr>
+</thead>
+<tbody>
+[%  FOREACH thisholding IN holding %]
+<tr align="center"><td><strong>
+[%-
+
+isil      = "";
+isil_desc = "";
+sigel     = thisholding.${"X3330"}.content;
+	
+IF sigel.match('^38/[0-9][0-9][0-9]$');	  
+  isil = "DE-38-${sigel.replace('38/','')}";
+ELSIF sigel.match('^Kn 3$');	  
+  isil = "DE-Kn3";
+ELSE ;
+  isil = "DE-${sigel}";
+END ;
+
+
+
+title    = normset.${"T0331"}.first.content ;
+IF  normset.${"T0310"}.first.content ;
+   title = normset.${"T0310"}.first.content ;
+END ;
+
+standort = thisholding.${"X0016"}.content;
+
+IF thisholding.${"X3330"}.content.match('^38$');
+  IF thisholding.${"X0014"}.content.match('^FHM ') ;
+    standort = "USB-Freihandmagazin (1. OG)";
+  ELSIF thisholding.${"X0014"}.content.match('^EWA Z') ;
+    standort = "HWA-Magazin, Gronewaldstr. 2<br/>(Kopierausleihe über die LS-Theke möglich)";
+    isil = "DE-38-HWA";
+  ELSIF thisholding.${"X0014"}.content.match('^EWA-LS-Theke') ;
+    standort = "Humanwissenschaftliche Abteilung, Lesesaaltheke, Gronewaldstr. 2 (sofort einsehbar)";
+    isil = "DE-38-HWA";    
+  ELSIF thisholding.${"X0014"}.content.match('^(EWA-LS|EWALS) ') ;
+    standort = "Lesesaal Humanwissenschaft, Gronewaldstr. 2";
+    isil = "DE-38-HWA";    
+  ELSIF thisholding.${"X0014"}.content.match('^(HP|HP-LS) ') || thisholding.${"X0014"}.content.match('^HP-LS ') ;
+    standort = "Lesesaal Heilpädagogik, Frangenheimstr. 4";
+  ELSIF thisholding.${"X0014"}.content.match('^USB-Zeitschr.-Stelle ') ;
+    standort = "USB-Lesesaal (1. OG): Hefte des aktuellen Jahrgangs unter der angegebenen P-Nummer (z.B. P1234, sofort einsehbar)";
+  ELSIF thisholding.${"X0014"}.content.match('^USB-Zeitschr.-Lesesaal ') ;
+    standort = "USB-Lesesaal (1. OG): Hefte des aktuellen Jahrgangs unter der angegebenen Fachgruppe (sofort einsehbar)";
+  ELSIF thisholding.${"X0014"}.content.match('^LS ') ;
+    standort = "USB-Lesesaal (1. OG, sofort einsehbar)";
+  ELSIF thisholding.${"X0014"}.content.match('^KS V') ;
+    standort = "USB-Magazin (Ausleihe nur in den Lesesaal), Bitte füllen Sie einen konventionellen Bestellschein aus (erhältlich an der Auskunft und der Lesesaal-Theke im 1. OG)";
+  ELSIF thisholding.${"X0014"}.content.match('^KS ') ;
+    standort = "USB-Katalogsaal (2. OG, sofort einsehbar)";
+  ELSIF thisholding.${"X0014"}.content.match('^EDZ ') ;
+    standort = "USB-Lesesaal (1. OG): Europäisches Dokumentationszentrum (sofort einsehbar)";
+  ELSIF thisholding.${"X0014"}.content.match('^FC ') ;
+    standort = "Fachbibliothek Chemie, Greinstr. 4 (sofort einsehbar)";
+  ELSIF thisholding.${"X0014"}.content.match('^FBV ') ;
+    standort = "Fachbibliothek Versicherungswissenschaft, Kerpener Str. 30 (sofort einsehbar)";
+  ELSIF thisholding.${"X0014"}.content.match('^B ') ;
+    standort = "ausgelagerter Bestand. Lieferzeit ca. 14. Tage (ausleihbar nach Bestellung)";
+  ELSIF thisholding.${"X0014"}.content.match('^ZTG') ;
+    standort = "Zeitungsbestand. USB-Magazin (ausleihbar nach Online-Bestellung)";
+  ELSIF thisholding.${"X0014"}.content.match('^P ') ;
+    standort = "Zeitschriftenlesesaal (1.OG) (sofort einsehbar)";
+  END;
+END;
+
+IF isil;
+  isil_desc = locinfo.identifier.${isil}.description;
+END;
+
+-%]
+
+[%-  IF isil_desc -%]
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% isil %].html?l=[% lang %]">[% isil_desc %]</a>
+[%-  ELSIF thisholding.${"X4000"}.content && thisholding.${"X4001"}.content -%]
+[%-    IF dbinfo.get('locationid').${record.database} %]
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">
+[%-    ELSE -%]
+<a href="[% thisholding.${"X4001"}.content %]" target="_blank">
+[%-    END -%]
+[%     thisholding.${"X4000"}.content.full %]</a>
+[%-  ELSE -%]
+[% thisholding.${"X4000"}.content.full %]
+[%-  END -%]
+</strong>
+</td>
+<td><a href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% isil_desc | uri %] :: [% standort | uri %] :: [% thisholding.${"X0014"}.content | uri %]" title="Titel :: Bibliothek :: Standort :: Signatur" data-bs-toggle="modal" data-bs-target="#qrcodeModal" data-bs-modaltitle="QR-Code" data-bs-modalurl="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% isil_desc| uri %] :: [% standort | uri %] :: [% thisholding.${"X0014"}.content | uri %]"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
+[% IF have_standort %]
+<td>[% standort %]
+[% provenances = record.get_provenances_of_media(thisholding.${"X0014"}.content) %]
+[% IF provenances.size > 0 %]
+<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% thisholding.${"X0014"}.content |uri %]">Provenienzen</a>
+[% END %]
+</td>
+[% END %]
+[%-
+   # ZBM-Meldung kurzern
+   IF thisholding.${"X1203"}.content.match('vormals 38M; Bestände zur Zeit nicht einsehbar oder bestellbar') ;
+     thisholding.${"X1203"}.content = "Bestände zur Zeit nicht verfügbar";
+   END;
+
+-%]
+<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong></td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]     
+[% IF NOT normdata.${"T5002"}.first.content && thisholding.${"X0014"}.content.match('^ZTG') %]
+<img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
+[% END %]
+</td>[% END %]</tr>
+[% END %]
+</tbody>
+</table>
+</div>
+[% ELSIF record_exists %]
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<thead>
+<tr align="center"><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th></tr>
+</thead>
+<tbody>
+<tr align="center"><td><strong>
+[%-    IF dbinfo.get('locationid').${record.database} %]
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">[% dbinfo.get('dbnames').${database}.short %]</a>
+[%-    ELSE -%]
+[% dbinfo.get('dbnames').${database}.short %]
+[%-    END -%]
+</strong>
+</td>
+[%-
+
+  title    = normdata.${"T0331"}.first.content ;
+  IF  normdata.${"T0310"}.first.content ;
+     title = normdata.${"T0310"}.first.content ;
+  END ;
+
+-%]
+<td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% dbinfo.get('dbnames').${database}.short | uri %]" title="Titel :: Bibliothek"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+[% END %]
+[% END %]
+
+[% END # else have_bestandsverlauf %]

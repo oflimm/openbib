@@ -1330,14 +1330,22 @@ sub process_mab {
 		$item_ref->{mult}     = $item_ref->{mult}     || 1; 
                 $item_ref->{subfield} = ($item_ref->{subfield} || $item_ref->{subfield} eq "0")?$item_ref->{subfield}:'';
                 $item_ref->{ind}      = $item_ref->{ind}      || '';
+
+		unless ($item_ref->{subfield} =~m/^.$/ && $item_ref->{ind} =~m/^..$/){
+		    $logger->fatal("Subfield or indicators too long for titleid $id");
+		    next;
+		}
+		
 		$item_ref->{ind}      =~ s/\\/\\\\/g;		
                 $item_ref->{content} = $self->cleanup_content($item_ref->{content});
 
 #                $logger->error("mult fehlt") if (!defined $item_ref->{mult});
 #                $logger->error("subfield fehlt") if (!defined $item_ref->{subfield});
 
-                
-                push @{$self->{_columns_title_fields}}, [$self->{serialid},$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{ind},$item_ref->{content}];
+
+
+		push @{$self->{_columns_title_fields}}, [$self->{serialid},$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{ind},$item_ref->{content}];
+
                 #push @{$self->{_columns_title_fields}}, ['',$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{content}];
                 $self->{serialid}++;
             }

@@ -5,7 +5,7 @@ use strict;
 
 use JSON::XS;
 
-print STDERR "### tmpebooks Erweitere Titeldaten\n";
+print STDERR "### emedienkauf Erweitere Titeldaten\n";
 
 while (<>){
     my $title_ref = decode_json $_;

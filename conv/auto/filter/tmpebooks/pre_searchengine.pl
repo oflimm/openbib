@@ -4,9 +4,9 @@
 #
 #  post_unpack.pl
 #
-#  Bearbeitung der Titeldaten
+#  Bearbeitung der Suchmaschinendaten
 #
-#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2023 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie k"onnen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -37,20 +37,10 @@ my $pool          = $ARGV[0];
 
 my $config        = new OpenBib::Config;
 
-my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
-
-my $baseurl       = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath;
-
 my $rootdir       = $config->{'autoconv_dir'};
-my $pooldir       = $rootdir."/pools";
 my $datadir       = $rootdir."/data";
-my $konvdir       = $config->{'conv_dir'};
 
-my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
+print "### $pool: Boosting von Suchbegriffen fuer Relevance-Ranking \n";
 
-
-print "### $pool: Erweiterung um Standort DE-38-USBFB \n";
-
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/process_urls.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat searchengine.json | $rootdir/filter/_common/boost_relevance.pl > searchengine.json.tmp ; mv -f searchengine.json.tmp searchengine.json");
 

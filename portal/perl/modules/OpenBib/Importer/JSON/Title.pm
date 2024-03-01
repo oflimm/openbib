@@ -2656,6 +2656,12 @@ sub process_marc {
 		$item_ref->{mult}     = $item_ref->{mult}     || 1; 
                 $item_ref->{subfield} = ($item_ref->{subfield} || $item_ref->{subfield} eq "0")?$item_ref->{subfield}:'';
                 $item_ref->{ind}      = $item_ref->{ind}      || '';
+
+		unless ($item_ref->{subfield} =~m/^.?$/ && $item_ref->{ind} =~m/^.?.?$/){
+		    $logger->fatal("Subfield or indicators too long for titleid $id");
+		    next;
+		}
+		
 		$item_ref->{ind}      =~ s/\\/\\\\/g;
                 $item_ref->{content}  = $self->cleanup_content($item_ref->{content});
 

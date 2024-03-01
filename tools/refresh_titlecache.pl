@@ -46,7 +46,7 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::User;
 
-my ($type,$username,$from,$to,$listusers,$selectobsolete,$authenticatorid,$viewname,$dryrun,$help,$logfile,$loglevel);
+my ($type,$username,$from,$to,$database,$listusers,$outputfile,$dumpitems,$selectobsolete,$authenticatorid,$viewname,$dryrun,$help,$logfile,$loglevel);
 
 &GetOptions(
     "type=s"          => \$type,
@@ -56,8 +56,11 @@ my ($type,$username,$from,$to,$listusers,$selectobsolete,$authenticatorid,$viewn
     "to=s"            => \$to,
     "authenticatorid=s" => \$authenticatorid,
     "viewname=s"      => \$viewname,
+    "database=s"      => \$database,
     "dry-run"         => \$dryrun,
     "list-users"      => \$listusers,
+    "outputfile=s"    => \$outputfile,
+    "dump-items"      => \$dumpitems,
     "loglevel=s"      => \$loglevel,
     "logfile=s"       => \$logfile,	    
     "help"            => \$help
@@ -73,6 +76,7 @@ $authenticatorid = ($authenticatorid)?$authenticatorid:1; # Default 1 = USB Ausw
 $logfile         = ($logfile)?$logfile:'/var/log/openbib/usercartitems2fullrecord.log';
 $loglevel        = ($loglevel)?$loglevel:'INFO';
 $viewname        = ($viewname)?$viewname:'';
+$outputfile      = ($outputfile)?$outputfile:'./litlistitems.json';
 $type            = ($type)?$type:'';
 
 my $log4Perl_config = << "L4PCONF";
@@ -116,19 +120,29 @@ if ($username){
     $logger->info("userid is $userid for username $username");
 }
 
+open(JSONOUT,">:utf8",$outputfile) if ($dumpitems);
 
 if ($type eq "litlist"){
     # Persistente Cartitems von Nutzern bestimmen
 
     my $where_ref = {
-	-and => [
-	     'litlistitems.tstamp' => { '>=' => $from },
-	     'litlistitems.tstamp' => { '<=' => $to },
-	    ],
-	    
-	    'userid.authenticatorid' => $authenticatorid,
     };
 
+    if ($from && $to){
+	$where_ref->{'-and'} = [
+	     'litlistitems.tstamp' => { '>=' => $from },
+	     'litlistitems.tstamp' => { '<=' => $to },
+	    ];
+    }
+
+    if ($authenticatorid){
+	$where_ref->{'userid.authenticatorid'} = $authenticatorid;
+    };
+
+    if ($database){
+	$where_ref->{'litlistitems.dbname'} = $database;
+    }
+    
     if ($userid){
 	$where_ref->{'userid.username'} = $username;
     }
@@ -161,6 +175,7 @@ if ($type eq "litlist"){
 
     $logger->debug("Where: ".YAML::Dump($where_ref));
 
+    # Nur Anzeige der Nutzernamen mit Literaturlisten
     if ($listusers){
 	my $litlistitems = $user->get_schema->resultset('Litlist')->search_rs(
 	    $where_ref,
@@ -200,9 +215,14 @@ if ($type eq "litlist"){
     $logger->info("$litlistitems_count litlistitems found");
 
     while (my $thislitlistitem = $litlistitems->next()){
-	my $id      = $thislitlistitem->get_column('id');    
-	my $titleid = $thislitlistitem->get_column('titleid');
-	my $dbname  = $thislitlistitem->get_column('dbname');
+	my $id         = $thislitlistitem->get_column('id');    
+	my $titleid    = $thislitlistitem->get_column('titleid');
+	my $titleisbn  = $thislitlistitem->get_column('titleisbn');	
+	my $dbname     = $thislitlistitem->get_column('dbname');
+	my $litlistid  = $thislitlistitem->get_column('litlistid');
+	my $tstamp     = $thislitlistitem->get_column('tstamp');	
+	my $comment    = $thislitlistitem->get_column('comment');	
+	my $titlecache = $thislitlistitem->get_column('titlecache');	
 
 	if ($dbname=~m/^(eds|dbis|ezb)$/){
 	    $logger->info("ID $titleid in DB $dbname ignored");
@@ -213,24 +233,40 @@ if ($type eq "litlist"){
 	    $logger->error("NO_DB: $dbname");
 	    next;
 	}
-	
-	my $record = new OpenBib::Record::Title({ database => $dbname , id => $titleid, config => $config })->load_full_record;
 
-	if ($record->record_exists){
-	    
-	    my $record_json = $record->to_json;
+	if ($dumpitems){
+	    my $jsonout_ref = {
+		id         => $id,
+		litlistid  => $litlistid,
+		titleid    => $titleid,
+		titleisbn  => $titleisbn,
+		dbname     => $dbname,
+		tstamp     => $tstamp,
+		comment    => $comment,
+		titlecache => $titlecache,
+	    };
 
-	    if ($dryrun){
-		$logger->info("Would try to update id $id ($dbname/$titleid) with content $record_json");
-	    }
-	    else {
-		$thislitlistitem->update({
-		    titlecache => $record_json	    
-				      });
-	    }
+	    print JSONOUT encode_json $jsonout_ref,"\n";
 	}
 	else {
-	    $logger->error("Litlistitemid $id: DB: $dbname - TITLEID: $titleid existiert nicht!");
+	    my $record = new OpenBib::Record::Title({ database => $dbname , id => $titleid, config => $config })->load_full_record;
+	    
+	    if ($record->record_exists){
+		
+		my $record_json = $record->to_json;
+		
+		if ($dryrun){
+		    $logger->info("Would try to update id $id ($dbname/$titleid) with content $record_json");
+		}
+		else {
+		    $thislitlistitem->update({
+			titlecache => $record_json	    
+					     });
+		}
+	    }
+	    else {
+		$logger->error("Litlistitemid $id: DB: $dbname - TITLEID: $titleid existiert nicht!");
+	    }
 	}
     }
 }
@@ -354,6 +390,8 @@ elsif ($type eq "cart"){
 else {
     $logger->error("Der Typ $type wird nicht unterstuetzt");
 }
+
+close(JSONOUT) if ($dumpitems);
 
 sub print_help {
     print << "ENDHELP";

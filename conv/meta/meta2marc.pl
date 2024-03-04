@@ -60,7 +60,7 @@ my ($outputfile,$mappingfile,$database,$logfile,$loglevel,$count,$help);
     "help"           => \$help,
     );
 
-if ($help || (!$mappingfile && !$database)) {
+if ($help || (!$mappingfile && ! -f $mappingfile && !$database)) {
     print_help();
 }
     
@@ -243,17 +243,6 @@ while (my $json=<IN>){
 
     my $output_fields_ref = {};
             
-    my @subfields = ();
-    
-    push (@subfields,'c', $titleid);
-    push (@subfields,'d', $titleid);
-    
-    my $new_field = MARC::Field->new('999', ' ',  ' ', @subfields);
-    
-    push @{$output_fields_ref->{'999'}}, $new_field;
-    
-    # Sonstige IDs
-
     # ZDB-ID
     foreach my $thisfield_ref (@{$fields_ref->{'0572'}}){
 	my $content  = "(DE-599)ZDB".$thisfield_ref->{content};

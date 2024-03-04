@@ -49,12 +49,13 @@ use YAML;
 
 use OpenBib::Config;
 
-my ($outputfile,$mappingfile,$database,$logfile,$loglevel,$count,$help);
+my ($outputfile,$mappingfile,$database,$libraryid,$logfile,$loglevel,$count,$help);
 
 &GetOptions(
     "outputfile=s"   => \$outputfile,
     "mappingfile=s"  => \$mappingfile,
     "database=s"     => \$database,
+    "library-id=s"   => \$libraryid,
     "logfile=s"      => \$logfile,
     "loglevel=s"     => \$loglevel,
     "help"           => \$help,
@@ -558,8 +559,8 @@ while (my $json=<IN>){
 	    push (@subfields,'p', $thisholding_ref->{'0010'}[0]{content}) if (defined $thisholding_ref->{'0010'}[0]{content}) ; # barcode
 	    push (@subfields,'i', $thisholding_ref->{'0005'}[0]{content}) if (defined $thisholding_ref->{'0005'}[0]{content}) ;
 	    #	    push (@subfields,'a', $thisholding_ref->{'3330'}[0]{content}) if (defined $thisholding_ref->{'3330'}[0]{content}) ;
-	    push (@subfields,'a', 'AWTEST');	    
-	    push (@subfields,'b', 'AWTEST');	    
+	    push (@subfields,'a', $libraryid) if ($libraryid);	    
+	    push (@subfields,'b', $libraryid) if ($libraryid);	    
 	    push (@subfields,'y', 'BK');
 
 	    

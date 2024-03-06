@@ -1,3 +1,18 @@
+# Mapping eines MAB2-Feldes'from_field' auf ein MARC21 'subfield' und MARC21-Feld (key)
+# Die MARC21-Feldangabe besteht aus der der Feldnummer (erste 3 Ziffern) gefolgt von den beiden
+# MARC21 Feld-Indikatoren jeweils beginnend mit _
+#
+# Beispiel:
+#  
+#  title:
+#    '020_ _ ':
+#      -
+#        from_field: '0540'		
+#        subfield: 'a'
+#
+# Das MAB2-Feld 0540 im Titelbereich (title) mappt im Feld 020 mit den Indikatoren
+# ' ' und ' ' auf das Subfield 'a'
+#
 convtab:
   title:
     '020_ _ ':

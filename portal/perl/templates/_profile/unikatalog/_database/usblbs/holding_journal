@@ -14,27 +14,42 @@
 #######################################################################
 -%]
 [%-
-    holding_fields = record.to_custom_field_scheme_1.${'T1943'};
+    holding_fields = record.to_custom_field_scheme_2.${'T1943'};
     
     #USE dumper;dumper.dump(circulation);
+    # USE dumper;dumper.dump(holding_fields);
     # Preprocessing
     
     # Zusammenfassung von Feldern ueber Holdingid in $8
     holding_fields_per_id = {};
     
     FOREACH thisholding IN holding_fields ;
-      holdingid        = thisholding.${"8"};
-      bestandsverlauf  = thisholding.${"a"};
-      luecken          = thisholding.${"z"};
-      signatur         = thisholding.${"h"};
-      standort         = thisholding.${"c"};
-      bibliothek       = thisholding.${"b"};
+      holdingid        = thisholding.${"8"}.first.content;
+      bestandsverlauf  = thisholding.${"a"}.first.content;
+      luecken          = "";
+      bemerkung        = "";
+
+      FOREACH thissubfield IN thisholding.${"z"};
+         IF thissubfield.ind == ' 0';
+            bemerkung  = thissubfield.content ;
+         END;
+         IF thissubfield.ind == '30';
+            luecken    = thissubfield.content ;
+         END;
+      END;
+
+      signatur         = thisholding.${"h"}.first.content;
+      standort         = thisholding.${"c"}.first.content;
+      bibliothek       = thisholding.${"b"}.first.content;
 
       IF bestandsverlauf ;
         holding_fields_per_id.${holdingid}.${"a"} = bestandsverlauf;
       END ;
       IF luecken ;
         holding_fields_per_id.${holdingid}.${"z"} = luecken;
+      END;
+      IF bemerkung ;
+        holding_fields_per_id.${holdingid}.${"remark"} = bemerkung;
       END;
       IF signatur ;
         holding_fields_per_id.${holdingid}.${"h"} = signatur;
@@ -69,11 +84,12 @@
       signatur         = holding_fields_per_id.${holdingid}.${"h"};
       standort         = holding_fields_per_id.${holdingid}.${"c"};
       sigel            = holding_fields_per_id.${holdingid}.${"b"};
+      bemerkung        = holding_fields_per_id.${holdingid}.${"remark"};
       issues           = holding_fields_per_id.${holdingid}.${"issues"};
       inventarnr       = ""; # thisholding.${"X0005"}.content;
       bibliothek       = ""; # thisholding.${"X4000"}.content;
       bibliothek_url   = ""; # thisholding.${"X4001"}.content;
-      bemerkung        = ""; # thisholding.${"X1203"}.content;
+      # bemerkung        = ""; # thisholding.${"X1203"}.content;
       bemerkung2       = ""; #thisholding.${"X1200"}.content;
 
       isil      = "";

@@ -49,7 +49,7 @@ use YAML;
 
 use OpenBib::Config;
 
-my ($outputfile,$mappingfile,$locationfile,$database,$libraryid,$logfile,$loglevel,$count,$help);
+my ($outputfile,$mappingfile,$locationfile,$database,$libraryid,$logfile,$loglevel,$count,$update,$help);
 
 &GetOptions(
     "outputfile=s"   => \$outputfile,
@@ -59,6 +59,7 @@ my ($outputfile,$mappingfile,$locationfile,$database,$libraryid,$logfile,$loglev
     "library-id=s"   => \$libraryid,
     "logfile=s"      => \$logfile,
     "loglevel=s"     => \$loglevel,
+    "update"         => \$update,
     "help"           => \$help,
     );
 
@@ -153,7 +154,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
 
         $count = 1;
         
-        $logger->info("### Bearbeite $stammdateien_ref->{$type}{infile} / $stammdateien_ref->{$type}{outfile}");
+        $logger->info("### Bearbeite $stammdateien_ref->{$type}{infile}");
         
         open(IN , "zcat ".$stammdateien_ref->{$type}{infile}." | " )        || die "IN konnte nicht geoeffnet werden";
 
@@ -244,7 +245,7 @@ while (my $json=<IN>){
     my $fields_ref = $record_ref->{fields};
 
     my $marc_record = new MARC::Record;
-
+    
     my $titleid = $record_ref->{id};
 
     $marc_record->add_fields('001',$titleid);
@@ -625,6 +626,18 @@ while (my $json=<IN>){
         $logger->info("### 1000 ($count) Titelsaetze in $resulttime bearbeitet");
     } 
 
+    # Process Leader
+    my $leader = $marc_record->leader();
+
+    if ($update){
+	substr($leader,5,1) = "c"; # changed
+    }
+    else {
+	substr($leader,5,1) = "n"; # new	
+    }
+    
+    $marc_record->leader($leader);
+    
     print OUT $marc_record->as_usmarc;
 
     $count++;

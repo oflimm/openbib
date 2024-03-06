@@ -49,11 +49,12 @@ use YAML;
 
 use OpenBib::Config;
 
-my ($outputfile,$mappingfile,$database,$libraryid,$logfile,$loglevel,$count,$help);
+my ($outputfile,$mappingfile,$locationfile,$database,$libraryid,$logfile,$loglevel,$count,$help);
 
 &GetOptions(
     "outputfile=s"   => \$outputfile,
     "mappingfile=s"  => \$mappingfile,
+    "locationfile=s" => \$locationfile,
     "database=s"     => \$database,
     "library-id=s"   => \$libraryid,
     "logfile=s"      => \$logfile,
@@ -227,6 +228,12 @@ $count = 1;
 $atime = new Benchmark;
 
 my $mapping_ref = YAML::Syck::LoadFile($mappingfile);
+
+my $location_ref = {};
+
+if ($locationfile){
+   $location_ref = YAML::Syck::LoadFile($locationfile);
+}
 
 my $title_mapping_ref = $mapping_ref->{convtab}{title};
     
@@ -547,23 +554,51 @@ while (my $json=<IN>){
     if (defined $data_holding{$titleid}){
 	my $holdings_ref = $data_holding{$titleid};
 
+	if ($logger->is_debug){
+	    $logger->debug("Holdings for $titleid: ".YAML::Dump($holdings_ref));
+	}
+	
 	# Iteration ueber Exemplare
 	foreach my $thisholding_ref (@{$holdings_ref}){
 	    my @subfields = ();
 
-	    # Nur exemplare mit Signatur beruecksichtigen
-	    next unless (defined $thisholding_ref->{'0014'}[0]{content});
+	    my $this_libraryid = "";
+
+	    $this_libraryid = $libraryid if ($libraryid);
 	    
-	    push (@subfields,'o', $thisholding_ref->{'0014'}[0]{content}) if (defined $thisholding_ref->{'0014'}[0]{content}) ;
+	    push (@subfields,'o', $thisholding_ref->{'0014'}[0]{content}) if (defined $thisholding_ref->{'0014'}[0]{content});
 	    #push (@subfields,'e', $thisholding_ref->{'0016'}[0]{content}) if (defined $thisholding_ref->{'0016'}[0]{content}) ;
 	    push (@subfields,'p', $thisholding_ref->{'0010'}[0]{content}) if (defined $thisholding_ref->{'0010'}[0]{content}) ; # barcode
 	    push (@subfields,'i', $thisholding_ref->{'0005'}[0]{content}) if (defined $thisholding_ref->{'0005'}[0]{content}) ;
 	    #	    push (@subfields,'a', $thisholding_ref->{'3330'}[0]{content}) if (defined $thisholding_ref->{'3330'}[0]{content}) ;
-	    push (@subfields,'a', $libraryid) if ($libraryid);	    
-	    push (@subfields,'b', $libraryid) if ($libraryid);	    
+	    
+	    if (!$this_libraryid && defined $thisholding_ref->{'3330'}){
+		$this_libraryid = $thisholding_ref->{'3330'}[0]{content};
+	    }
+
+	    if ($this_libraryid && $locationfile){
+		# Falsche Location (in 3330), dann Aenderungsversuch
+		$logger->debug("Libraryid ist '$this_libraryid'");
+		if ($location_ref->{change}{$this_libraryid}){
+		    $logger->info("Korrektur Libraryid $this_libraryid -> ".$location_ref->{change}{$this_libraryid});
+		    $this_libraryid = $location_ref->{change}{$this_libraryid};
+		}
+
+		unless ($location_ref->{valid}{$this_libraryid}){
+#		    $logger->error(YAML::Dump($location_ref));
+		    $logger->error("Libraryid $this_libraryid ist nicht gueltig");
+		    next;
+		}
+	    }
+	    
+	    # Libraryid als Parameter (Prioritaet 1) oder aus 3330 (Prioritaet 2)
+	    if ($this_libraryid){
+		push (@subfields,'a', $this_libraryid) ;
+		push (@subfields,'b', $this_libraryid) ;
+	    }
+
 	    push (@subfields,'y', 'BK');
 
-	    
 	    my $new_field = MARC::Field->new('952', ' ',  ' ', @subfields);
 
 	    push @{$output_fields_ref->{'952'}}, $new_field if ($new_field);    

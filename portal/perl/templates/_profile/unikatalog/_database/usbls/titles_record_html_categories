@@ -227,6 +227,8 @@ END;
 
 is_bindeeinheit = 0;
 
+binding_units = [];
+
 content_map = {};
 
 FOREACH field IN normdata;
@@ -322,7 +324,7 @@ FOREACH field IN normdata;
     CASE [ "T0100" "T0700" ];
          content = thisfield.${'a'} ;
 	 supplement = thisfield.${'e'} ;
-         thisid  = thisfield.${'0'};
+         thisid  = thisfield.${'0'} || thisfield.${'6'};
 
          gndid = "";
 	 IF thisid.match('(DE-588)');
@@ -354,7 +356,7 @@ FOREACH field IN normdata;
     CASE [ "T0110" "T0710" ];
          content = thisfield.${'a'} ;
 	 supplement = thisfield.${'e'} ;
-         thisid  = thisfield.${'0'};
+         thisid  = thisfield.${'0'} || thisfield.${'6'};
 
          gndid = "";
 	 IF thisid.match('(DE-588)');
@@ -594,8 +596,27 @@ FOREACH field IN normdata;
 	 END;
 
     CASE "T0502";    
-         content = thisfield.${'a'};
+         hssfull = thisfield.${'a'};
 
+         hss = [];
+	 IF thisfield.${'c'}; # place
+	   hss.push(thisfield.${'c'});
+	 END;
+	 IF thisfield.${'b'}; # type
+	   hss.push(thisfield.${'b'});
+	 END;
+	 IF thisfield.${'d'}; # year
+	   hss.push(thisfield.${'d'});
+	 END;
+
+         content = "";
+	 
+         IF hssfull ;
+	   content = hssfull;
+	 ELSIF hss;
+	   content = hss.join(', ');
+	 END;
+	 
          IF content ;
            IF NOT content_map.${'Hochschulschrift'} ;
 	      content_map.${'Hochschulschrift'} = [];
@@ -740,9 +761,11 @@ FOREACH field IN normdata;
             localurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${thisid}.html?l=${lang}";
 
 	    content = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
-            IF thismark ;
-	      thismark = thismark.replace('^no:','');
-	      content  = "${content} (Signatur/Mediennummer: ${thismark})";
+
+            # Zur Auswertung merken
+	    IF thistitle && thisid && thismark ;
+	      thismark = thismark.replace('^no:','');	    
+	      binding_units.push({ titlelink = content, titleid = thisid, mediaid = thismark });
 	    END;
 
 	 END;
@@ -755,20 +778,27 @@ FOREACH field IN normdata;
            content_map.${'Zur Bindeeinheit'}.push(content);
 	 END;
 
-    # CASE "T0856";
-    #      content = thisfield.${'3'};
-    # 	 url     = thisfield.${'u'};
-
-    #      IF NOT content ;
-    # 	   content = url;
-    # 	 END;
+    CASE "T0856";
+         IF NOT normdata.defined('T4662');
+      	   url           = thisfield.${'u'};
+	   
+	   IF thisfield.${'y'}; # Linktext
+	     content = thisfield.${'y'};
+	   ELSIF thisfield.${'z'}; # Public Note
+	     content = thisfield.${'z'};
+	   ELSIF thisfield.${'x'}; # Non-public Note
+      	     content = thisfield.${'x'};
+	   ELSE;
+      	     content = url;
+    	   END;
 	 
-    # 	 content   = "<a href=\"${url}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";         
+    	   content   = "<a href=\"${url}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";         
 
-    #      IF NOT content_map.${'URL'} ;
-    # 	    content_map.${'URL'} = [];
-    # 	 END;
-    #      content_map.${'URL'}.push(content);
+           IF NOT content_map.${'URL'} ;
+    	     content_map.${'URL'} = [];
+    	   END;
+           content_map.${'URL'}.push(content);
+	 END;
 
     CASE "T4101";
          content = thisfield.${'e'} || thisfield.${''};
@@ -1233,8 +1263,9 @@ END;
 
 [% IF is_bindeeinheit %]
 <div class="alert alert-info">
-<p>[% msg.maketext("(Mindestens) 1 Exemplar dieses Titels ist Teil einer Bindeeinheit, d.h. es ist mit Exemplaren anderer Veröffentlichungen in einem gemeinsamen Bucheinband zusammengebunden.") %]</p>
+[% msg.maketext("(Mindestens) 1 Exemplar dieses Titels ist Teil einer Bindeeinheit, d.h. es ist mit Exemplaren anderer Veröffentlichungen in einem gemeinsamen Bucheinband zusammengebunden.") %]
 
+<!--
 <p>[% msg.maketext("Zur Bindeeinheit") %]</p>
 
 <ul>
@@ -1242,12 +1273,29 @@ END;
 <li>[% bindeeinheit %]</li>
 [% END %]
 </ul>
-
+-->
 </div>
 [% END %]
 
 </div>
-[%# USE dumper;dumper.dump(content_map) %]
+[%-
+    # Anreicherung mit Exemplarinformationen der Bindeeinheit
+    FOREACH item IN binding_units ;
+       be_circulation = create_title_record({ database = 'uni', id = item.titleid}).load_circulation.get_circulation ;
+       FOREACH thiscirc IN be_circulation;
+         IF thiscirc.barcode == item.mediaid ;
+	   new_remark = "Exemplar der Bindeeinheit: ${item.titlelink}";
+	   IF thiscirc.remark ;
+	     thiscirc.remark = "${thiscirc.remark}<br/>${new_remark}";
+	   ELSE ;
+	     thiscirc.remark = new_remark;
+	   END;
+	   circulation.push(thiscirc);
+	 END;
+       END;
+    END;
+-%]
+[%# USE dumper;dumper.dump(binding_units) %]
 [% ELSIF format == "BibTeX" %]
 <div>
 <pre>

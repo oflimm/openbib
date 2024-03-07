@@ -57,9 +57,9 @@
 </style>
 
 
-<p class="d-sm-none" style="font-size: 0.8em;">
+<div class="d-sm-none pt-4" style="font-size: 0.8em;">
 [% msg.maketext("Bitte erhöhen Sie die Helligkeit Ihres Smartphones zum besseren Einlesen des Barcodes an unseren Geräten.") %]
-</p>
+</div>
 
 </div>
 </div>

@@ -24,6 +24,8 @@
        end_range       = hits;
     END;
 
+    no_htmx = 1;
+    
     query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
 -%]
 
@@ -33,12 +35,7 @@
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
         </div>
         <div class="col-md-6 d-flex justify-content-end">
-           <form method="get" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% layout_param.database %]/titles.html">
-<input type="hidden" name="page" value="1" />
-[% cgiapp.to_cgi_hidden_input({ exclude = ['srt','srto','page'] }) %]
-
-[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') %]
-           </form>
+[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}" %]
 
         </div>
       </div>

@@ -234,6 +234,10 @@ sub show_collection {
     # CGI Args
     my $sb        = $query->param('sb')        || $config->{default_local_search_backend};
 
+    # Katalog aktiv bzw. in View?
+    unless ($config->database_defined_in_view({ database => $database, view => $view }) && $config->db_is_active($database)){
+	return $self->print_warning("Der Katalog existiert nicht.");
+    }
 
     my $search_args_ref = {};
     $search_args_ref->{options}      = OpenBib::Common::Util::query2hashref($query);

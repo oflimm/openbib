@@ -7,6 +7,7 @@ use utf8;
 use LWP::UserAgent;
 use LWP::Simple;
 use OpenBib::Config;
+use POSIX qw(strftime);
 
 use YAML;
 
@@ -16,42 +17,64 @@ my %excluded_ids = ();
 
 my $config = new OpenBib::Config;
 
+my $dbname = $ARGV[0];
+
 my $ua = new LWP::UserAgent;
 
-my $page_url = $config->get('retro_url')->{'inst219'}."/download";
+my $retro_ref = $config->load_yaml("/opt/openbib/conf/retro.yml");
 
-if ($page_url){
-    my $result = $ua->get($page_url);
+exit if (!defined $retro_ref->{$dbname});
 
-    my $page_content = "";
+my $page_url = $retro_ref->{$dbname}."/download";
+
+my $result = $ua->get($page_url);
+
+my $page_content = "";
+
+eval {
+    $page_content = $result->decoded_content;
+};
+
+if ($page_content){
+
+    my $date = strftime "%Y-%m-%d", localtime;
     
-    eval {
-	$page_content = $result->decoded_content;
-    };
-	
+    open(BACKUP,">/opt/openbib/autoconv/pools/$dbname/title_exclude_${date}.txt");
+    print BACKUP $page_content;
+    close(BACKUP);
+    
     foreach my $line (split /\n/, $page_content){
 	$line=~s/^\s*//g;
 	$line=~s/\s*$//g;
 	$excluded_ids{$line} = 1;
     }
-}
 
-while (<>){
-    my $title_ref;
 
-    eval {
-       $title_ref = decode_json $_;
-    };
+    open(TITLE,"cat meta.title|");
+    open(TITLEOUT,"> meta.title.tmp");
 
-    if ($@){
-        print STDERR $@,"\n";
-        next;
+    while (<TITLE>){
+	my $title_ref;
+
+	eval {
+	    $title_ref = decode_json $_;
+	};
+
+	if ($@){
+	    print STDERR $@,"\n";
+	    next;
+	}
+
+	if (defined $excluded_ids{$title_ref->{id}}){
+	    print STDERR "Titel-ID $title_ref->{id} excluded\n";
+	    next;
+	}
+
+	print TITLEOUT;
     }
 
-    if (defined $excluded_ids{$title_ref->{id}}){
-        print STDERR "Titel-ID $title_ref->{id} excluded\n";
-        next;
-    }
+    close(TITLE);
+    close(TITLEOUT);
 
-    print;
+    system("mv -f meta.title.tmp meta.title");
 }

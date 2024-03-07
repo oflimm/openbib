@@ -57,14 +57,14 @@
 </style>
 
 
-</div>
-
 <p class="d-sm-none" style="font-size: 0.8em;">
 [% msg.maketext("Bitte erhöhen Sie die Helligkeit Ihres Smartphones zum besseren Einlesen des Barcodes an unseren Geräten.") %]
 </p>
 
 </div>
 </div>
+
+<p/>
 
 <div class="card">
 <div class="card-header">[% msg.maketext("Bücher: Ausleihen / Fernleihen") %]</div>

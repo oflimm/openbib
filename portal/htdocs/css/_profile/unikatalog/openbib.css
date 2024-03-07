@@ -239,7 +239,7 @@
     }
 
     #ob-barcode {
-	height: 70px;
+	height: 100px;
     }
     
     #ob-maincontent {
@@ -2069,6 +2069,12 @@ table.ob-title_fields td a.btn {
 }
 
 @media only screen and (max-width: 768px) {
+
+    #ob-barcode {
+	height: 90px;
+    }
+
+    
     .col-md-3 {
 	margin-right: 0px;
     }
@@ -2515,6 +2521,10 @@ a.card-link, a.card-link:hover {
 	font-size: 0.8em;
     }
 
+    #ob-barcode {
+	height: 80px;
+    }
+    
     .uzk15_header_separator {
 	border-bottom: solid 5px #90c4eb;
     }

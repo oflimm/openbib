@@ -517,6 +517,19 @@ sub db_exists {
     return $count;
 }
 
+sub db_is_active {
+    my $self   = shift;
+    my $dbname = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # DBI: "select count(viewname) as rowcount from viewinfo where viewname = ?"
+    my $count = $self->get_schema->resultset('Databaseinfo')->search({ dbname => $dbname, active => 1})->count;
+    
+    return $count;
+}
+
 sub view_exists {
     my $self     = shift;
     my $viewname = shift;

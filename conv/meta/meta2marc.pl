@@ -549,6 +549,32 @@ while (my $json=<IN>){
 	push @{$output_fields_ref->{'856'}}, $new_field if ($new_field);	
 #	$marc_record->append_fields($new_field) if ($new_field);	    	
     }
+
+    # Medientyp setzen
+
+    # Koha Medientyp
+    my $mediatype = "BK"; # default: Book
+
+    # HSTQuelle usw. -> Artikel/Aufsatz
+    if ($fields_ref->{'0590'} || $fields_ref->{'0591'} | $fields_ref->{'0597'}) {
+	$mediatype = "AR"; # Artikel
+    }   
+    elsif ($fields_ref->{'0519'}) {
+	$mediatype = "HS"; # Hochsculschrift
+    }   
+    elsif (defined $fields_ref->{'0572'} || defined $fields_ref->{'0543'}) {
+	$mediatype = "CR"; # Zeitschrift/Serie
+    }
+
+    {
+	my @subfields = ();
+    
+	push (@subfields,'c', $mediatype);
+	
+	my $new_field = MARC::Field->new('942', ' ',  ' ', @subfields);
+	
+	push @{$output_fields_ref->{'942'}}, $new_field if ($new_field);
+    }
     
     # Exemplardaten processen (Koha holding scheme)
     # https://wiki.koha-community.org/wiki/Holdings_data_fields_(9xx)
@@ -560,6 +586,7 @@ while (my $json=<IN>){
 	}
 	
 	# Iteration ueber Exemplare
+
 	foreach my $thisholding_ref (@{$holdings_ref}){
 	    my @subfields = ();
 
@@ -602,7 +629,21 @@ while (my $json=<IN>){
 
 	    my $new_field = MARC::Field->new('952', ' ',  ' ', @subfields);
 
-	    push @{$output_fields_ref->{'952'}}, $new_field if ($new_field);    
+	    push @{$output_fields_ref->{'952'}}, $new_field if ($new_field);
+
+	    if ($this_libraryid && !defined $output_fields_ref->{'040'}){
+		@subfields = ();
+
+		push (@subfields,'a', $this_libraryid) ;		
+		push (@subfields,'c', $this_libraryid) ;
+		
+		$new_field = MARC::Field->new('040', ' ',  ' ', @subfields);
+		
+		push @{$output_fields_ref->{'040'}}, $new_field if ($new_field);
+		
+	    }
+
+	    
 #	    $marc_record->append_fields($new_field) if ($new_field);	    	
 	    
 	}

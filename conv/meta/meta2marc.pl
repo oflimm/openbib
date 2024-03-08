@@ -492,7 +492,7 @@ while (my $json=<IN>){
 		push (@subfields,'2', "gnd-content");
 	    }
 	    
-	    my $new_field = MARC::Field->new('650', ' ',  ' ', @subfields);
+	    my $new_field = MARC::Field->new('650', ' ',  '4', @subfields);
 
 	    push @{$output_fields_ref->{'650'}}, $new_field if ($new_field);	    
 #	    $marc_record->append_fields($new_field) if ($new_field);	    	

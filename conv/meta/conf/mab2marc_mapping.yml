@@ -39,7 +39,7 @@ convtab:
         from_field: '0015' # Sprache
         subfield: 'a'
 
-    '245_1_0':
+    '245_1_ ':
       -
         from_field: '0331'		
         subfield: 'a'
@@ -91,7 +91,7 @@ convtab:
         from_field: '0413'		
         subfield: 'f' # manufacturer
 
-    '264_ _ ':
+    '264_ _1':
       -
         from_field: '0410' 
         subfield: 'a' # place of production, publication, distribution, manufacture
@@ -155,7 +155,7 @@ convtab:
       -
         from_field: '0673'		
         subfield: 'a'
-    '773_ _ ':
+    '773_0_8':
       -
         from_field: '0590' # HST der Quelle
         subfield: 't'

@@ -556,10 +556,10 @@ while (my $json=<IN>){
     my $mediatype = "BK"; # default: Book
 
     # HSTQuelle usw. -> Artikel/Aufsatz
-    if ($fields_ref->{'0590'} || $fields_ref->{'0591'} | $fields_ref->{'0597'}) {
+    if (defined $fields_ref->{'0590'} || defined $fields_ref->{'0591'} || defined $fields_ref->{'0597'}) {
 	$mediatype = "AR"; # Artikel
     }   
-    elsif ($fields_ref->{'0519'}) {
+    elsif (defined $fields_ref->{'0519'}) {
 	$mediatype = "HS"; # Hochsculschrift
     }   
     elsif (defined $fields_ref->{'0572'} || defined $fields_ref->{'0543'}) {

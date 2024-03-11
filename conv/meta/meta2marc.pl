@@ -4,7 +4,7 @@
 #
 #  meta2marc.pl
 #
-#  Generierung einer MARC21 Datei aus dem Meta-Format
+#  Generierung einer MARC21 Datei aus dem (MAB2) Meta-Format
 #
 #  Dieses File ist (C) 2024 Oliver Flimm <flimm@openbib.org>
 #

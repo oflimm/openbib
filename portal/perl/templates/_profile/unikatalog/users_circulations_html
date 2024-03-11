@@ -21,7 +21,7 @@
 
 [% IF layout_param.always_portrait %]
 <style>
-@media screen and (min-width: 320px) and (max-width: 800px) and (orientation: landscape) {
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
   html {
     transform: rotate(-90deg);
     transform-origin: left top;

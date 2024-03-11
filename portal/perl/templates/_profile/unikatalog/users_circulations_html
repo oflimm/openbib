@@ -22,7 +22,7 @@
 [% IF always_portrait %]
 <style>
 
-#ob-always_portrait {
+.ob-always_portrait {
     width: 100%;
     height: 100%;
     position: fixed;
@@ -38,7 +38,7 @@
 }
 
 @media only screen and (max-device-width: 768px) and (min-device-width: 320px) and (orientation: landscape){
-  #ob-always_portrait {
+  .ob-always_portrait {
     display: block;
   }
 }
@@ -50,7 +50,7 @@
 <div class="card-body">
 
   <div class="text-center">
-    <p class="h2 pb-2">[% msg.maketext("Gültig ab 1.4.2024") %]</p>
+    <p class="h2 pb-2">[% msg.maketext("Digital gültig ab 1.4.2024") %]</p>
     <p class="h5">[% userdata.fullname %]</p>
 
     <img id="ob-barcode" class="img-fluid" src="[% path_prefix %]/connector/barcode?text=[% username |uri %]"/>

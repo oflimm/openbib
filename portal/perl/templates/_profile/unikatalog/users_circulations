@@ -8,6 +8,8 @@
       'main_template' = 'users_circulations_html'
       'sidebar_template' = 'users_navigation'
 
+      'css_id' = 'ob-always_portrait'
+
       'active_menu' = 'users'
       'active_submenu' = 'circulations'
       

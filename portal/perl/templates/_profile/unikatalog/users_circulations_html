@@ -21,25 +21,16 @@
 
 [% IF always_portrait %]
 <style>
-
-.ob-always_portrait {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    z-index: 9999;
-    top: 0;
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+  html {
+    transform: rotate(-90deg);
+    transform-origin: left top;
+    width: 100vh;
+    height: 100vw;
+    overflow-x: hidden;
+    position: absolute;
+    top: 100%;
     left: 0;
-/*    background-color: #000;
-    background-image: url(/path to img/rotate.png); /)
-    background-size: 100px 100px;
-    background-position: center;
-    background-repeat: no-repeat; */
-    display: none;
-}
-
-@media only screen and (max-device-width: 768px) and (min-device-width: 320px) and (orientation: landscape){
-  .ob-always_portrait {
-    display: block;
   }
 }
 </style>

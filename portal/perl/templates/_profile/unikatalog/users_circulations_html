@@ -41,7 +41,7 @@
 <div class="card-body">
 
   <div class="text-center">
-    <p class="h2 pb-2">[% msg.maketext("Digital gültig ab 1.4.2024") %]</p>
+    <p class="h2 pb-2">[% msg.maketext("Digitaler Ausweis gültig ab 1.4.2024") %]</p>
     <p class="h5">[% userdata.fullname %]</p>
 
     <img id="ob-barcode" class="img-fluid" src="[% path_prefix %]/connector/barcode?text=[% username |uri %]"/>

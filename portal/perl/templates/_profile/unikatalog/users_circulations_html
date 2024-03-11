@@ -18,36 +18,39 @@
 <p>[% msg.maketext("Grund der Sperrung") %]: [% userdata.block_reason %]</p>
 </div>
 [% END %]
+
+[% IF always_portrait %]
 <style>
 
-
-#rotate-device {
+#ob-always_portrait {
     width: 100%;
     height: 100%;
     position: fixed;
     z-index: 9999;
     top: 0;
     left: 0;
-    background-color: #000;
-    background-image: url(/path to img/rotate.png);
+/*    background-color: #000;
+    background-image: url(/path to img/rotate.png); /)
     background-size: 100px 100px;
     background-position: center;
-    background-repeat: no-repeat;
+    background-repeat: no-repeat; */
     display: none;
 }
 
-@media only screen and (max-device-width: 800px) and (min-device-width: 320px) and (orientation: landscape){
+@media only screen and (max-device-width: 768px) and (min-device-width: 320px) and (orientation: landscape){
   #ob-always_portrait {
     display: block;
   }
 }
 </style>
+[% END %]
+
 <div class="card">
 <div class="card-header">[% msg.maketext("Bibliotheksausweis") %]</div>
 <div class="card-body">
 
   <div class="text-center">
-    <p class="h2">[% msg.maketext("Gültig ab 1.4.2024") %]</p>
+    <p class="h2 pb-2">[% msg.maketext("Gültig ab 1.4.2024") %]</p>
     <p class="h5">[% userdata.fullname %]</p>
 
     <img id="ob-barcode" class="img-fluid" src="[% path_prefix %]/connector/barcode?text=[% username |uri %]"/>

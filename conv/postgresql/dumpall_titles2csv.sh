@@ -7,6 +7,6 @@ for i in `/opt/openbib/bin/show_active_pools.pl|egrep '^inst[0-9][0-9][0-9]$'|eg
 do
   if [ -d "$exportbasepath/$i" ]
   then
-     /opt/openbib/conv/fulldump_titles2csv.pl --database=$i --configfile=/opt/git/openbib-current/conv/postgresql/conf/default.yml --outputfile="$exportbasepath/$i/$i.csv" --logfile=/tmp/titles2csv.log
+     /opt/git/openbib-current/conv/postgresql/fulldump_titles2csv.pl --database=$i --configfile=/opt/git/openbib-current/conv/postgresql/conf/default.yml --outputfile="$exportbasepath/$i/$i.csv" --logfile=/tmp/titles2csv.log
   fi
 done

@@ -484,7 +484,7 @@ while (my $json=<IN>){
 	    # Ansetzungsform
 	    if ($subject_fields_ref->{'0800'}){
 		my @terms = ();
-		foreach my $item_ref ($subject_fields_ref->{'0800'}){
+		foreach my $item_ref (@{$subject_fields_ref->{'0800'}}){
 		    push @terms, $item_ref->{content};
 		}
 

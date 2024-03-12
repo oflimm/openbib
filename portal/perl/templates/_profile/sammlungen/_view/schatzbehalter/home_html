@@ -65,6 +65,6 @@
   </div>
 </div>
 
-<div class="text-center ob-bg text-white"><h4>[% msg.maketext("Der Schatzbehalter - Historische Kinder- und Jugendliteratur") %]</h4></div>
+<div class="text-center ob-bg text-white"><h4>[% msg.maketext("Der Schatzbehalter – Portal für historische Kinder- und Jugendliteratur") %]</h4></div>
 
 [% config.get_templatetext('home',view,lang) %]

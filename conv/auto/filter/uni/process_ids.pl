@@ -30,6 +30,17 @@ while (<>){
 			content  => $zdbid,
 		    };
 		}
+		elsif ($item_ref->{content} =~m/^\(DE-599\)ZDB(.+?)$/){
+		    my $zdbid = $1;
+
+		    my $mult    = $mult_ref->{'1001'}++;
+
+		    push @{$record_ref->{fields}{'1001'}}, {
+			mult     => $mult,
+			subfield => 'z',
+			content  => $zdbid,
+		    };
+		}
 		elsif ($item_ref->{content} =~m/^\(EXLCZ\)(.+?)$/ || $item_ref->{content} =~m/^\(EXLNZ-49HBZ_NETWORK\)(.+?)$/ || $item_ref->{content} =~m/^\(DE-605\)(.+?)$/){
 		    my $hbzid = $1;
 

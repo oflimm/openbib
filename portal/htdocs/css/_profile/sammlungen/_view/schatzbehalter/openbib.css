@@ -301,8 +301,9 @@
     
     #ob-startpage .landing-page-img {
 	padding-bottom: 40px;
-	background:url('/images/openbib/views/schatzbehalter/teufelsbub_part.png') left 100% no-repeat;
-	background-position: 0% 40%;
+	/*	background:url('/images/openbib/views/schatzbehalter/teufelsbub_part.png') left 100% no-repeat; */
+	background:url('/images/openbib/views/schatzbehalter/Schatzbehalter-Bildmaterial.jpg') left 100% no-repeat; 	
+	background-position: 0% 0%;
 	background-size: cover;
 	height: 500px !important;
 /*	border-bottom-style: solid;

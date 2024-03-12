@@ -702,7 +702,7 @@ FOREACH field IN normdata;
          thisinfo  = thisfield.${'n'};
 	 thisisbn  = thisfield.${'z'};
 	 thisissn  = thisfield.${'x'};	 
-         thisid    = 0 ; #thisfield.${'w'};
+         thisid    = thisfield.${'w'};
 
          fullcontent = [];
 	 IF thisinfo ;
@@ -716,6 +716,12 @@ FOREACH field IN normdata;
 	    fullcontent.push(thistitle);
 	 END ;
 
+         thiszdbid = "";
+
+         IF thisid.match('\(DE-600\)');
+            thiszdbid = thisid.replace('\(DE-600\)','');
+         END;
+	 
          fullcontentstring = fullcontent.join(' ');
 
          # ggf. verlinken
@@ -732,6 +738,14 @@ FOREACH field IN normdata;
 	    # thisid = thisid.replace('\(.+?\)','');
             searchterm    = thisissn;
             searchprefix  = config.get('searchfield').freesearch.prefix;
+
+            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+
+	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
+	  ELSIF thiszdbid ;
+	    # thisid = thisid.replace('\(.+?\)','');
+            searchterm    = thiszdbid;
+            searchprefix  = config.get('searchfield').zdbid.prefix;
 
             localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
 

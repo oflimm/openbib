@@ -483,7 +483,14 @@ while (my $json=<IN>){
 	    
 	    # Ansetzungsform
 	    if ($subject_fields_ref->{'0800'}){
-		push (@subfields,'a', cleanup($subject_fields_ref->{'0800'}[0]{content}));
+		my @terms = ();
+		foreach my $item_ref ($subject_fields_ref->{'0800'}){
+		    push @terms, $item_ref->{content};
+		}
+
+		my $this_subject = join(' / ',@terms);
+		
+		push (@subfields,'a', cleanup($this_subject));
 	    }
 	    
 	    # GND

@@ -51,7 +51,7 @@
           "provenance" = msg.maketext("Provenienz")
           "provenancestring" = msg.maketext("Komplette Provenienz")
           "hbzid" = msg.maketext("TitelID im hbz")	  
-          "zdbid" = msg.maketext("TitelID in EZB")	  
+          "zdbid" = msg.maketext("TitelID in ZDB")	  
           "ft0335" = msg.maketext("Kompletter Zusatz zum HST")
           "ft0720" = msg.maketext("Komplette Provenienz")
           "ft0410" = msg.maketext("T0410")

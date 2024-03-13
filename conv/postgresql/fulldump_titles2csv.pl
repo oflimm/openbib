@@ -170,7 +170,9 @@ while (my $title=$titles->next){
 	}
     }
 
-    $logger->debug(YAML::Dump($output_fields_ref));
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump($output_fields_ref));
+    }
     
     my @output = ();
     foreach my $destfield  (@dest_fields){
@@ -192,7 +194,9 @@ while (my $title=$titles->next){
 	}
     }
 
-    $logger->debug(YAML::Dump(\@output));
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump(\@output));
+    }
     
     push @{$out_ref}, @output;
 

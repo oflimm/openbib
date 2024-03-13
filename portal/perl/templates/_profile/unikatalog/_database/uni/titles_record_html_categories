@@ -778,8 +778,11 @@ FOREACH field IN normdata;
 
             # Zur Auswertung merken
 	    IF thistitle && thisid && thismark ;
-	      thismark = thismark.replace('^no:','');	    
-	      binding_units.push({ titlelink = content, titleid = thisid, mediaid = thismark });
+	      thismark = thismark.replace('^no:','');
+	      thismarks = thismark.split(' : ');
+	      FOREACH thismark IN thismarks ;
+                 binding_units.push({ titlelink = content, titleid = thisid, mediaid = thismark });
+              END;
 	    END;
 
 	 END;

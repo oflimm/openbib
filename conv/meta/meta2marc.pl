@@ -504,11 +504,17 @@ while (my $json=<IN>){
 	    
 	    # Ansetzungsform
 	    if ($subject_fields_ref->{'0800'}){
-		my @terms = ();
+		# Sortierung der Ansetzungsformen fuer Schlagwortketten nach Mult-Wert
+		my %terms_mult = ();
 		foreach my $item_ref (@{$subject_fields_ref->{'0800'}}){
-		    push @terms, $item_ref->{content};
+		    $terms_mult{$item_ref->{mult}}= $item_ref->{content};
 		}
 
+		my @terms = ();
+		foreach my $mult (sort keys %terms_mult){
+		    push @terms, $terms_mult{$mult};
+		}
+		
 		my $this_subject = join(' / ',@terms);
 		
 		push (@subfields,'a', cleanup($this_subject));

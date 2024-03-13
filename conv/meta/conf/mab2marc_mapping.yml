@@ -174,10 +174,6 @@ convtab:
       -
         from_field: '0597' # Gesamttitelangabe der Quelle		
         subfield: 'k'
-    '830_ _0':
-      -
-        from_field: '0004' # Gesamttitelangabe		
-        subfield: 'w'
     '852_ _ ':
       -
         from_field: '3330'		

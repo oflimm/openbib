@@ -49,7 +49,7 @@ use YAML;
 
 use OpenBib::Config;
 
-my ($outputfile,$mappingfile,$locationfile,$database,$libraryid,$logfile,$loglevel,$count,$update,$help);
+my ($outputfile,$mappingfile,$locationfile,$database,$isil,$libraryid,$logfile,$loglevel,$count,$update,$help);
 
 &GetOptions(
     "outputfile=s"   => \$outputfile,
@@ -57,6 +57,7 @@ my ($outputfile,$mappingfile,$locationfile,$database,$libraryid,$logfile,$loglev
     "locationfile=s" => \$locationfile,
     "database=s"     => \$database,
     "library-id=s"   => \$libraryid,
+    "isil=s"         => \$isil,
     "logfile=s"      => \$logfile,
     "loglevel=s"     => \$loglevel,
     "update"         => \$update,
@@ -94,6 +95,8 @@ my $logger = get_logger();
 
 my $dir=`pwd`;
 chop $dir;
+
+$isil = ($isil)?$isil:'DE-38';
 
 my %data_person         = ();
 my %data_corporatebody  = ();
@@ -250,11 +253,13 @@ while (my $json=<IN>){
 
     $marc_record->add_fields('001',$titleid);
 
+    $marc_record->add_fields('003',$isil);
+    
     my $output_fields_ref = {};
             
     # ZDB-ID
     foreach my $thisfield_ref (@{$fields_ref->{'0572'}}){
-	my $content  = "(DE-599)ZDB".$thisfield_ref->{content};
+	my $content  = "(DE-600)".$thisfield_ref->{content};
 	
 	my @subfields = ();
 
@@ -280,8 +285,10 @@ while (my $json=<IN>){
 #	$marc_record->append_fields($new_field) if ($new_field);	    	
     }
     
-    
-    $logger->debug(YAML::Dump($fields_ref));
+
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump($fields_ref));
+    }
     
     foreach my $marcfield (keys %{$title_mapping_ref}){
 	my ($ind1)    = $marcfield =~m/^..._(.)_.$/;
@@ -299,7 +306,10 @@ while (my $json=<IN>){
 
 	# Titeldaten
 	foreach my $marcdef_ref (@{$title_mapping_ref->{$marcfield}}){
-	    $logger->debug(YAML::Dump($marcdef_ref));
+	    if ($logger->is_debug){
+		$logger->debug(YAML::Dump($marcdef_ref));
+	    }
+	    
 	    my $mab2_field = $marcdef_ref->{from_field};
 	    if (defined $fields_ref->{$mab2_field}){
 		
@@ -317,8 +327,10 @@ while (my $json=<IN>){
 	    }
 	}
 
-	$logger->debug(YAML::Dump($marcfields_ref));
-
+	if ($logger->is_debug){
+	    $logger->debug(YAML::Dump($marcfields_ref));
+	}
+	
 	# Aus interner MARC21-Struktur valide MARC21-Ausgabedaten erzeugen
 	foreach my $mult (sort keys %{$marcfields_ref}){
 	    my $first = 1;
@@ -356,7 +368,10 @@ while (my $json=<IN>){
 	
 	my $person_fields_ref = $data_person{$personid};
 
-	$logger->debug("Persondata: ".YAML::Syck::Dump($person_fields_ref));
+	if ($logger->is_debug){
+	    $logger->debug("Persondata: ".YAML::Syck::Dump($person_fields_ref));
+	}
+	
 	my @subfields = ();
 
 	# Ansetzungsform
@@ -418,7 +433,10 @@ while (my $json=<IN>){
 	
 	my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
 
-	$logger->debug("Corporatebodydata: ".YAML::Syck::Dump($corporatebody_fields_ref));
+	if ($logger->is_debug){
+	    $logger->debug("Corporatebodydata: ".YAML::Syck::Dump($corporatebody_fields_ref));
+	}
+	
 	my @subfields = ();
 
 	# Ansetzungsform
@@ -477,8 +495,11 @@ while (my $json=<IN>){
 	
 	foreach my $subjectid (@subjectids){	
 	    my $subject_fields_ref = $data_subject{$subjectid};
+
+	    if ($logger->is_debug){	    
+		$logger->debug("Subjectdata: ".YAML::Syck::Dump($subject_fields_ref));
+	    }
 	    
-	    $logger->debug("Subjectdata: ".YAML::Syck::Dump($subject_fields_ref));
 	    my @subfields = ();
 	    
 	    # Ansetzungsform
@@ -519,7 +540,10 @@ while (my $json=<IN>){
 	foreach my $classificationid (@classificationids){	
 	    my $classification_fields_ref = $data_classification{$classificationid};
 	    
-	    $logger->debug("Classificationdata: ".YAML::Syck::Dump($classification_fields_ref));
+	    if ($logger->is_debug){
+		$logger->debug("Classificationdata: ".YAML::Syck::Dump($classification_fields_ref));
+	    }
+	    
 	    my @subfields = ();
 	    
 	    # Ansetzungsform
@@ -691,7 +715,9 @@ while (my $json=<IN>){
     $count++;
 }
 
-$logger->debug("Holding: ".YAML::Dump(\%data_holding));
+if ($logger->is_debug){
+    $logger->debug("Holding: ".YAML::Dump(\%data_holding));
+}
 
 $logger->info("### $count Titelsaetze bearbeitet");
 
@@ -708,6 +734,10 @@ meta2marc.pl - Erzeugung einer MARC21 Datei aus den Import-Dateien im MAB2 Metaf
    --database=...        : Name des Katalogs (wg. Basis-Pfad zu den meta.* Dateien)       
    --outputfile=...      : Name der MARC21 Ausgabedatei (default: output.mrc)
    --mappingfile=...     : Name der Datei mit Kategorie-Mappings
+   --locationfile=...    : Definition valider Library-IDs (aus Feld 3330) sowie Umwandlung falscher IDs
+   --isil=...            : ISIL fuer control number 001 (default: DE-38)
+   --library-id=..       : Library-ID/ISIL fuer Exemplare
+   -update               : Setzen der Update-Markierung c im Leader anstelle n
    --logfile=...         : Logfile inkl Pfad.
    --loglevel=...        : Loglevel
 

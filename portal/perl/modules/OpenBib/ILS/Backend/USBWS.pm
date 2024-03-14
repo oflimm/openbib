@@ -187,10 +187,11 @@ sub register_librarycard {
     my @args = ($arg_ref->{salutation},$arg_ref->{forename},$arg_ref->{surname},$arg_ref->{birthdate},$arg_ref->{street},$arg_ref->{zip},$arg_ref->{city},"","","",$arg_ref->{email},$arg_ref->{password1});
 	    
     my $uri = "urn:/Account";
-	    	        
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -297,9 +298,10 @@ sub authenticate_uccard {
 	    
     my $uri = "urn:/Account";
 	    
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));	
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -419,9 +421,10 @@ sub activate_uccard {
 	    
     my $uri = "urn:/Account";
 	    
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+	$logger->debug("Using args ".YAML::Dump(\@args));
+    }
     
     my $result_ref;
     
@@ -531,9 +534,11 @@ sub update_email {
 	    
     my $uri = "urn:/Account";
 	    
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+	
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -625,9 +630,10 @@ sub update_phone {
 	    
     my $uri = "urn:/Account";
 	    	        
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -719,9 +725,10 @@ sub update_password {
 	    
     my $uri = "urn:/Account";
 	    	        
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));    
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -815,9 +822,11 @@ sub reset_password {
 	    
     my $uri = "urn:/Account";
 	    	        
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+	
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -1007,9 +1016,10 @@ sub get_article_orders {
 	    
     my $uri = "urn:/M3account";
 	    
-    $logger->debug("Trying connection to uri $uri at ".$config->get('zflws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('zflws_url'));    
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -1091,9 +1101,10 @@ sub get_zfl_orders {
 	    
     my $uri = "urn:/M3account";
 	    
-    $logger->debug("Trying connection to uri $uri at ".$config->get('zflws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('zflws_url'));	
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -1315,9 +1326,10 @@ sub make_reservation {
 	    
     my $uri = "urn:/Loan";
 	    	        
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));    
+	$logger->debug("Using args ".YAML::Dump(\@args));
+    }
     
     my $result_ref;
     
@@ -1450,9 +1462,10 @@ sub cancel_reservation {
 	    
     my $uri = "urn:/Loan";
 	    	        
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));	
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -1589,9 +1602,10 @@ sub make_order {
 	    
     my $uri = "urn:/Loan";
 	    
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));    
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -1754,9 +1768,10 @@ sub cancel_order {
 	    
     my $uri = "urn:/Mail";
 	    
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbwsmail_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbwsmail_url'));    
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -1880,9 +1895,10 @@ sub renew_loans {
 	    
     my $uri = "urn:/Account";
 	    
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));    
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -2059,9 +2075,10 @@ sub renew_single_loan {
 	    
     my $uri = "urn:/Account";
 	    	        
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));    
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -2309,7 +2326,9 @@ sub get_mediastatus {
 	    foreach my $nr (keys %{$circexlist->{$itemstring}}){
 		my $circ_ref = $circexlist->{$itemstring}{$nr};
 		
-		$logger->debug(YAML::Dump($circ_ref));
+		if ($logger->is_debug){    
+		    $logger->debug(YAML::Dump($circ_ref));
+		}
 		
 		$circ_ref->{'ZweigAbteil'} = $self->resolve_msg($circ_ref->{'ZweigAbteil'});
 		
@@ -2509,8 +2528,10 @@ sub get_mediastatus {
 	timestamp   => $self->get_timestamp,
     };
     
-    $logger->debug("Circ: ".YAML::Dump($response_ref));
-            
+    if ($logger->is_debug){    
+	$logger->debug("Circ: ".YAML::Dump($response_ref));
+    }
+    
     return $response_ref;
 }
 
@@ -2557,9 +2578,10 @@ sub check_order {
 	    
     my $uri = "urn:/Loan";
 	    	        
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));    
+	$logger->debug("Using args ".YAML::Dump(\@args));
+    }
     
     my $result_ref;
     
@@ -2718,9 +2740,10 @@ sub check_reservation {
 	    
     my $uri = "urn:/Loan";
 	        
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));	
+	$logger->debug("Using args ".YAML::Dump(\@args));
+    }
     
     my $result_ref;
     

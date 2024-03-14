@@ -37,6 +37,7 @@ while (<>){
     # 'g': Freier Zugriff (green)
     # 'y': Lizensierter Zugriff (yellow)
     # 'l': Unbestimmt Eingeschraenkter Zugriff y oder r (limited)
+    # 'n': Zugriff ueber Nationallizenz
     # 'r': Kein Zugriff (red)
 
     my $mult_ref = {};
@@ -545,14 +546,17 @@ while (<>){
 	my $url_info_ref = {};
 	
 	foreach my $item_ref (@{$fields_ref->{'0856'}}){
-	    $url_info_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content}; 
+	    $url_info_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content};
+	    $url_info_ref->{$item_ref->{mult}}{'ind'} = $item_ref->{ind}; 
+	    
 	}
 
 	foreach my $umult (sort keys %$url_info_ref){
 	    if (defined $url_info_ref->{$umult}{'u'}){
 		my $url  = $url_info_ref->{$umult}{'u'};
 		my $mult = $mult_ref->{'4662'}++;
-
+		my $ind  = $url_info_ref->{$umult}{'ind'};
+		
 		# URL schon ueber Portfolios verarbeitet? Dann ignorieren
 		next if (defined $url_done_ref->{$url} && $url_done_ref->{$url});
 		
@@ -585,7 +589,8 @@ while (<>){
 		    };
 		}
 		# EZB Zeitschriften
-		elsif ($url =~m/^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/ezeit\//){ # Bsp.: ISSN=1572-8358
+		elsif ($url =~m/^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/ezeit\//
+		    ){ # Bsp.: ISSN=1572-8358
 		    
 		    $have_ezb = 1;
 		    
@@ -613,8 +618,10 @@ while (<>){
 		    };
 		}
 		# Datenbanken
-		elsif ($url =~m/^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/dbinfo\/|cdroms\.digibib\.net|\.ica$/
-		       or $url =~m/^https?:\/\/dbis\.ur\.de\/$/
+		elsif ($url =~m/^https?:\/\/www\.bibliothek\.uni\-regensburg\.de\/dbinfo/
+		       or $url =~m/^https?:\/\/rzblx10\.uni\-regensburg\.de\/dbinfo/
+		       or $url =~m/^https?:\/\/dbis\.uni\-regensburg\.de\//
+		       or $url =~m/^https?:\/\/dbis\.ur\.de\//
 		       or $url =~m/https?:\/\/www\.ub\.uni\-koeln\.de\/usbportal\?service=dbinfo/){ # Bsp.: TI=wiso-net
 		    $have_dbis = 1;
 		    
@@ -654,43 +661,10 @@ while (<>){
 		# Hinweise aus 856$z
 		elsif (defined $url_info_ref->{$umult}{'z'}){
 		    my $public_note = $url_info_ref->{$umult}{'z'};
+		    my $material = $url_info_ref->{$umult}{'z'};
 
-		    if ($public_note =~m/(digitalisiert von|kostenfrei|DOAB|Frei zugänglich|Full text online|kostenloser Download|lizenzfrei|Volltext)/i){
-			my $description = "E-Book im Volltext";
-			my $access      = "g"; # green
-			
-			push @{$record_ref->{fields}{'4662'}}, {
-			    mult     => $mult,
-			    subfield => $access,
-			    content  => $url,
-			};
-			
-			push @{$record_ref->{fields}{'4663'}}, {
-			    mult     => $mult,
-			    subfield => '',
-			    content  => $description,
-			};
-
-		    }
-		    # elsif ($public_note =~m/(Lizenz|lizenzpflichtig)/i){
-		    # 	my $description = "E-Book im Volltext";
-		    # 	my $access      = "y"; # yellow
-			
-		    # 	push @{$record_ref->{fields}{'4662'}}, {
-		    # 	    mult     => $mult,
-		    # 	    subfield => $access,
-		    # 	    content  => $url,
-		    # 	};
-			
-		    # 	push @{$record_ref->{fields}{'4663'}}, {
-		    # 	    mult     => $mult,
-		    # 	    subfield => '',
-		    # 	    content  => $description,
-		    # 	};
-
-		    # }
-		    # Uebertragen in Titelfeld fuer Inhaltsverzeichnisse T4110	    
-		    elsif ($public_note =~m/Inhaltsverzeichnis|Inh\.\-Verz\./){ # Inhaltsverzeichnisse
+		    # Uebertragen in Titelfeld fuer Inhaltsverzeichnisse T4110
+		    if ($public_note =~m/Inhaltsverzeichnis|Inh\.\-Verz\./i || $material =~m/Inhaltsverz/i ){ # Inhaltsverzeichnisse
 			
 			# Falls bereits ein Link "Inhaltsverzeichnis" existiert, nur insgesamt einen Link berücksichtigen
 			if ($url =~m/hbz\-nrw\.de/){ # hbz-Inhaltsverzeichnis hat Vorrang, z.B. ID=7741043
@@ -709,13 +683,64 @@ while (<>){
 			}		
 			$have_toc = 1;
 		    }
+		    elsif ($public_note =~m/(Nationallizenz)/i){
+			my $description = "E-Book im Volltext über Nationallizenz";
+			my $access      = "n"; # Nationallizenz
+			
+			push @{$record_ref->{fields}{'4662'}}, {
+			    mult     => $mult,
+			    subfield => $access,
+			    content  => $url,
+			};
+			
+			push @{$record_ref->{fields}{'4663'}}, {
+			    mult     => $mult,
+			    subfield => '',
+			    content  => $description,
+			};
+
+		    }
+		    elsif ($ind =~m/[01]$/ && $public_note =~m/(digitalisiert|kostenfrei|kostenlos|DOAB|Frei zugänglich|Full text online|Freier Zugriff|Frei zugänglich|Gratis|kostenloser Download|lizenzfrei|Open ?Access)/i && $material =~m/(digitalisiert|Digitalisat|e-?book|PDF|Online-Ausgabe|Online-Zugang|Online-Version|Volltext)/i && ! $material =~m/(Verlag)/i){
+			my $description = "E-Book im Volltext";
+			my $access      = "g"; # green
+			
+			push @{$record_ref->{fields}{'4662'}}, {
+			    mult     => $mult,
+			    subfield => $access,
+			    content  => $url,
+			};
+			
+			push @{$record_ref->{fields}{'4663'}}, {
+			    mult     => $mult,
+			    subfield => '',
+			    content  => $description,
+			};
+
+		    }
+		    elsif ($ind =~m/[01]$/ && $public_note =~m/(lizenzpflichtig)/i && $material =~m/(e-?book|PDF|Online-Ausgabe|Online-Zugang|Online-Version|Volltext)/i && ! $material =~m/(Verlag)/){
+		    	my $description = "E-Book im Volltext";
+		    	my $access      = "y"; # yellow
+			
+		    	push @{$record_ref->{fields}{'4662'}}, {
+		    	    mult     => $mult,
+		    	    subfield => $access,
+		    	    content  => $url,
+		    	};
+			
+		    	push @{$record_ref->{fields}{'4663'}}, {
+		    	    mult     => $mult,
+		    	    subfield => '',
+		    	    content  => $description,
+		    	};
+
+		    }
 		    else {
 			$public_note =~ s!.*Interna: (.+)!$1!; 
 			$public_note =~ s!(.+); Bez.: \d[^;]*!$1!; # ID=6685427 
 			
-			if ($public_note =~m/(Digitalisierung|Langzeitarchivierung|Volltext)\; Info: kostenfrei/i # ID=6521146 ; Projekt Digitalis, Bsp.: Achenbach Berggesetzgebung
+			if ($ind =~m/[01]$/ &&  ( $public_note =~m/(Digitalisierung|Langzeitarchivierung|Volltext)\; Info: kostenfrei/i # ID=6521146 ; Projekt Digitalis, Bsp.: Achenbach Berggesetzgebung
 			    or $public_note =~m/Info: kostenfrei; Bezugswerk: Volltext/i # ID=6625319
-			    or $public_note =~m/Open Access/) { # ID=6693843  
+			    or $public_note =~m/Open Access/ ) ) { # ID=6693843  
 			    
 			    my $description = "Volltext";
 			    my $url         = $url;
@@ -761,7 +786,7 @@ while (<>){
 			    
 			    $url_done_ref->{$url} = 1;			
 			}
-			elsif ($public_note =~m/(Resolving-System|URN)/) { # Bsp.: TI=Bayerische Bauordnung 2008 ; ID=6685427 
+			elsif ($public_note =~m/(Resolving-System)/) { # Bsp.: TI=Bayerische Bauordnung 2008 ; ID=6685427 
 			    my $description = "Volltext";
 			    my $url         = $url;
 			    my $access      = ""; # Keine Ampel

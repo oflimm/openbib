@@ -486,7 +486,10 @@ unless ($nosearchengine){
 
 }
 
-$logger->info(YAML::Dump($use_searchengine_ref));
+if ($logger->is_debug){
+    $logger->debug(YAML::Dump($use_searchengine_ref));
+}
+
 # Suchmaschinen-Index fuer Titel aufbauen
 
 my $es_indexer;

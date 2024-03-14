@@ -811,7 +811,10 @@ sub get_popular_records {
 	
 	my $access_type = (defined $type_mapping_ref->{$access})?$type_mapping_ref->{$access}:'';
 
-	$logger->debug("Access Type:".YAML::Dump($access_type));
+	if ($logger->is_debug){
+	    $logger->debug("Access Type:".YAML::Dump($access_type));
+	}
+	
 	my $record = new OpenBib::Record::Title({id => $id, database => 'dbis', generic_attributes => { access => $access_info }});
 	
 	$logger->debug("Title is $title");

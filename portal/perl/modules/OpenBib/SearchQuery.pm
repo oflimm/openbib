@@ -348,15 +348,15 @@ sub set_from_psgi_request {
     
     $self->{_searchprofile}  = $self->_get_searchprofile;
 
-    if ($logger->is_debug){
-	my $searchterms_ref = $self->get_searchquery;
-	foreach my $key (keys %$searchterms_ref){
-	    if (!$searchterms_ref->{$key}{val}){
-		delete $searchterms_ref->{$key};
-	    }
+    my $searchterms_ref = $self->get_searchquery;
+    foreach my $key (keys %$searchterms_ref){
+	if (!$searchterms_ref->{$key}{val}){
+	    delete $searchterms_ref->{$key};
 	}
+    }
 	
-        $logger->debug("Searchquery-Terms: ".YAML::Dump($searchterms_ref));
+    if ($logger->is_debug){
+	$logger->debug("Searchquery-Terms: ".YAML::Dump($searchterms_ref));
     }
     
     return $self;

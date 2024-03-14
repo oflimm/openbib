@@ -697,8 +697,10 @@ sub get_fees {
 	}
     }
     
-    $logger->debug("Loan: ".YAML::Dump($response_ref));
-            
+    if ($logger->is_debug){    
+	$logger->debug("Loan: ".YAML::Dump($response_ref));
+    }
+    
     return $response_ref;
 }
 
@@ -777,7 +779,9 @@ sub get_loans {
 
 	    foreach my $item_ref (@{$json_result_ref->{'item_loan'}}){
 		
-		$logger->debug(YAML::Dump($item_ref));
+		if ($logger->is_debug){    
+		    $logger->debug(YAML::Dump($item_ref));
+		}
 		
 		my $about = $item_ref->{'title'} || $item_ref->{'item_barcode'};
 		
@@ -856,8 +860,10 @@ sub get_loans {
 	}
     }
     
-    $logger->debug("Loan: ".YAML::Dump($response_ref));
-            
+    if ($logger->is_debug){    
+	$logger->debug("Loan: ".YAML::Dump($response_ref));
+    }
+    
     return $response_ref;
 }
 
@@ -980,9 +986,10 @@ sub cancel_order_by_mail {
 	    
     my $uri = "urn:/Mail";
 	    
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbwsmail_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbwsmail_url'));    
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -1386,7 +1393,9 @@ sub get_mediastatus {
 	    
 	    foreach my $circ_ref (@{$json_result_ref->{'item'}}){
 		
-		$logger->debug(YAML::Dump($circ_ref));
+		if ($logger->is_debug){    
+		    $logger->debug(YAML::Dump($circ_ref));
+		}
 		
 		# Umwandeln
 		my $item_ref = {};
@@ -1659,7 +1668,9 @@ sub get_mediastatus {
 	timestamp   => $self->get_timestamp,
     };
     
-    $logger->debug("Circ: ".YAML::Dump($response_ref));
+    if ($logger->is_debug){    
+	$logger->debug("Circ: ".YAML::Dump($response_ref));
+    }
             
     return $response_ref;
 }
@@ -2106,8 +2117,10 @@ sub get_alma_request {
 	    
 	    foreach my $item_ref (@{$json_result_ref->{'user_request'}}){
 
-		$logger->debug(YAML::Dump($item_ref));		
-
+		if ($logger->is_debug){    
+		    $logger->debug(YAML::Dump($item_ref));		
+		}
+		
 		my @titleinfo = ();
 		
 		push @titleinfo, $item_ref->{'author'} if ($item_ref->{'author'});
@@ -2234,7 +2247,9 @@ sub get_alma_request {
 	}
     }
     
-    $logger->debug("Loan: ".YAML::Dump($response_ref));
+    if ($logger->is_debug){    
+	$logger->debug("Loan: ".YAML::Dump($response_ref));
+    }
             
     return $response_ref;
 }

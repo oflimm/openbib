@@ -138,8 +138,10 @@ sub show {
 	push @request_ids, $id;
     }
 
-    $logger->debug(YAML::Dump(\@request_ids));
-
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump(\@request_ids));
+    }
+    
     my $all_items_ref = [];
 
     foreach my $request_id (@request_ids){
@@ -198,7 +200,9 @@ sub show {
 		foreach my $nr (keys %{$circexlist->{$itemstring}}){
 		    my $circ_ref = $circexlist->{$itemstring}{$nr};
 
-		    $logger->debug(YAML::Dump($circ_ref));
+		    if ($logger->is_debug){
+			$logger->debug(YAML::Dump($circ_ref));
+		    }
 		    
 		    my $zweigabteil = $circ_ref->{'ZweigAbteil'};
 		    
@@ -236,7 +240,9 @@ sub show {
 	
 	push @$all_items_ref,  $item_ref;
 	
-	$logger->debug("Circ: ".YAML::Dump($item_ref));
+        if ($logger->is_debug){
+	    $logger->debug("Circ: ".YAML::Dump($item_ref));
+	}
     }
     
     my $ttdata={

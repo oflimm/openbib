@@ -102,8 +102,10 @@ sub create_record {
     }
     
     eval {
-	$logger->debug("Webhook Result body: $body");
-	$logger->debug("Webhook Result: ".YAML::Dump(decode_json($body)));
+	if ($logger->is_debug){
+	    $logger->debug("Webhook Result body: $body");
+	    $logger->debug("Webhook Result: ".YAML::Dump(decode_json($body)));
+	}
     };
 
     # No response content, just status 200    

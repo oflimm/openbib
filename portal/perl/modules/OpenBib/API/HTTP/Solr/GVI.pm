@@ -180,8 +180,10 @@ sub send_search_request {
 	}
     }
 
-    $logger->debug("Suche mit Facetten: ".YAML::Dump($json_facets_ref));
-
+    if ($logger->is_debug){
+	$logger->debug("Suche mit Facetten: ".YAML::Dump($json_facets_ref));
+    }
+    
     my $url = $config->get('solr')->{'gvi'}{'search_url'};
 
     # search options
@@ -588,8 +590,10 @@ sub process_facets {
     
     # Transformation Hash->Array zur Sortierung
 
-    $logger->debug("Start processing facets: ".YAML::Dump($json_result_ref->{facets}));
-
+    if ($logger->is_debug){
+	$logger->debug("Start processing facets: ".YAML::Dump($json_result_ref->{facets}));
+    }
+    
     delete $json_result_ref->{facets}{count};
     
     foreach my $type (keys %{$json_result_ref->{facets}}){

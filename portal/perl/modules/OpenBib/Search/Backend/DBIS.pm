@@ -120,8 +120,10 @@ sub get_records {
     $container->register('classifications_dbis',$classifications_ref);
     $container->register("popular_dbis_records_$gebiet",$popular_records->to_serialized_reference);    
 
-    $logger->debug(YAML::Dump($classifications_ref));
-    $logger->debug("Popular".YAML::Dump($popular_records->to_serialized_reference));
+    if ($logger->is_debug){    
+	$logger->debug(YAML::Dump($classifications_ref));
+	$logger->debug("Popular".YAML::Dump($popular_records->to_serialized_reference));
+    }
     
     my $recordlist = $self->get_api->get_search_resultlist;
 

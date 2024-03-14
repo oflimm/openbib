@@ -384,7 +384,10 @@ sub show_via_searchengine {
             
             # Ausfiltern der Datensaetze, die nicht zu base und range passen
             foreach my $item (@{$recordlist}){
-                $logger->info(YAML::Dump($item));
+		if ($logger->is_info){
+		    $logger->info(YAML::Dump($item));
+		}
+		
                 my $titleid = $item->{'id'};
                 
                 my $correct_locmark = "";

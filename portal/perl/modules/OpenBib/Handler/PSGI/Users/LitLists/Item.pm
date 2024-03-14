@@ -105,8 +105,10 @@ sub show_collection {
     my $sorttype       = $query->param('srt')    || "tstamp";
     my $sortorder      = $query->param('srto')   || "desc";
 
-    $logger->debug("A Litlist QueryOptions-Object with options ".YAML::Syck::Dump($queryoptions->get_options));
-
+    if ($logger->is_debug){
+	$logger->debug("A Litlist QueryOptions-Object with options ".YAML::Syck::Dump($queryoptions->get_options));
+    }
+    
     my $items = $user->get_litlistentries({litlistid => $litlistid, queryoptions => $queryoptions, view => $view});
 
     # TT-Data erzeugen

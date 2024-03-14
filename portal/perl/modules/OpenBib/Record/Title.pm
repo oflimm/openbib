@@ -1200,8 +1200,10 @@ sub enrich_similar_records {
 
         if ($config->{memc}){
             my $similar_records_ref = $similar_recordlist->to_serialized_reference;
-            $logger->debug("Storing ".YAML::Dump($similar_records_ref));
-
+	    if ($logger->is_debug){
+		$logger->debug("Storing ".YAML::Dump($similar_records_ref));
+	    }
+	    
             $config->{memc}->set($memc_key,$similar_records_ref,$config->{memcached_expiration}{'record:title:enrich_similar'});
         }
 
@@ -1392,8 +1394,11 @@ sub enrich_same_records {
 
         if ($config->{memc}){
             my $same_records_ref = $same_recordlist->to_serialized_reference;
-            $logger->debug("Storing ".YAML::Dump($same_records_ref));
-
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Storing ".YAML::Dump($same_records_ref));
+	    }
+	    
             $config->{memc}->set($memc_key,$same_records_ref,$config->{memcached_expiration}{'record:title:enrich_same'});
         }
         
@@ -1505,7 +1510,10 @@ sub load_circulation {
 
 		# unknown should not be returned, so have to log response
 		if ($availability eq "unknown"){
-		    $logger->error("Ausleihstatus konnte nicht bestimmt werden. Daten: ".YAML::Dump($mediastatus_ref->{items}[$i]{debug}));
+
+		    if ($logger->is_error){
+			$logger->error("Ausleihstatus konnte nicht bestimmt werden. Daten: ".YAML::Dump($mediastatus_ref->{items}[$i]{debug}));
+		    }
 		}
 		
 		my $location_mark    = $mediastatus_ref->{items}[$i]{label};
@@ -4392,7 +4400,9 @@ sub to_json {
     };
     
     if ($@){
-	$logger->error("Canonical Encoding failed: ".YAML::Dump($record));
+	if ($logger->is_error){
+	    $logger->error("Canonical Encoding failed: ".YAML::Dump($record));
+	}
     }
     
     return $contentstring; 
@@ -4480,7 +4490,10 @@ sub get_provenances_of_media {
                 next unless ($fields_ref);
                 
                 foreach my $field_ref (@{$fields_ref}){
-                    $logger->debug(YAML::Dump($field_ref));
+		    if ($logger->is_debug){
+			$logger->debug(YAML::Dump($field_ref));
+		    }
+		    
                     if ($field_ref->{mult} eq $mult){
                         push @{$this_provenance_ref->{$field}}, $field_ref;
                     }
@@ -4534,7 +4547,10 @@ sub get_provenances {
             next unless ($fields_ref);
             
             foreach my $field_ref (@{$fields_ref}){
-                $logger->debug(YAML::Dump($field_ref));
+		if ($logger->is_debug){
+		    $logger->debug(YAML::Dump($field_ref));
+		}
+		
                 if ($field_ref->{mult} eq $mult){
                         push @{$this_provenance_ref->{$field}}, $field_ref;
                     }

@@ -542,7 +542,9 @@ sub match2fields {
     
     foreach my $field (keys %$single_field_map_ref){
 	if ($match_ref->{_source}{$field}){
-	    $logger->debug("Processing field $field: ".YAML::Dump($match_ref->{_source}{$field}));
+	    if ($logger->is_debug){
+		$logger->debug("Processing field $field: ".YAML::Dump($match_ref->{_source}{$field}));
+	    }
 	    if (ref $match_ref->{_source}{$field} eq "ARRAY"){
 		my $mult = 1;
 		foreach my $content (@{$match_ref->{_source}{$field}}){

@@ -1360,7 +1360,9 @@ sub get_available_locations_of_view {
 
     my $result_ref = $statistics->get_result({ type => 15, id => $viewname });
 
-    $logger->debug("Locations for view $viewname :".YAML::Dump($result_ref));
+    if ($logger->is_debug){
+      $logger->debug("Locations for view $viewname :".YAML::Dump($result_ref));
+    }
 
     return () if (!$result_ref);				      
 

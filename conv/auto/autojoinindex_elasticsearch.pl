@@ -246,7 +246,9 @@ foreach my $searchprofile (@searchprofiles){
 	  # }
 	    
 	    
-	    $logger->info(YAML::Dump($es->tasks->get( task_id => $result_ref->{'task'} )));
+	    if ($logger->is_debug){
+		$logger->debug(YAML::Dump($es->tasks->get( task_id => $result_ref->{'task'} )));
+	  }
 	    
 	}	
     }

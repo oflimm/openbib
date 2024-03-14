@@ -571,8 +571,10 @@ sub login {
 	}
     }
     
-    $logger->debug(YAML::Dump($result_ref));
- 
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump($result_ref));
+    }
+    
     my $returnvalue;
 
     eval {

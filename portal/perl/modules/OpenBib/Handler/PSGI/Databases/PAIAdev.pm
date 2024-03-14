@@ -571,8 +571,10 @@ sub login {
 	}
     }
     
-    $logger->debug(YAML::Dump($result_ref));
- 
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump($result_ref));
+    }
+    
     my $returnvalue;
 
     eval {
@@ -894,7 +896,9 @@ sub request {
 
     my $titles_ref = [];
 
-    $logger->debug("JSON-Data: ".YAML::Dump($input_data_ref)." of type ".ref($input_data_ref->{doc}));
+    if ($logger->is_debug){
+	$logger->debug("JSON-Data: ".YAML::Dump($input_data_ref)." of type ".ref($input_data_ref->{doc}));
+    }
     
     if (defined $input_data_ref->{doc} && ref($input_data_ref->{doc}) eq "ARRAY"){
 
@@ -926,14 +930,17 @@ sub request {
 	}	
     }
 
-    $logger->debug("Found ".YAML::Dump($titles_ref));
-
+    if ($logger->is_debug){
+	$logger->debug("Found ".YAML::Dump($titles_ref));
+    }
     
     my $response_ref = {};
     
     foreach my $exemplar_ref (@$titles_ref){
 
-	$logger->debug("Checking item in database $database: ".YAML::Dump($exemplar_ref));
+        if ($logger->is_debug){
+	    $logger->debug("Checking item in database $database: ".YAML::Dump($exemplar_ref));
+	}
 	
 	if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
 
@@ -941,8 +948,10 @@ sub request {
 	    my $check_order_result_ref = $self->check_order($database,$username,$exemplar_ref->{gsi},$exemplar_ref->{zw});	    
 
 	    if (defined($check_order_result_ref)) {
-		$logger->debug("Result: ".YAML::Dump($check_order_result_ref));
-
+		if ($logger->is_debug){
+		    $logger->debug("Result: ".YAML::Dump($check_order_result_ref));
+		}
+		
 		# media already lent, so continue with reservation
 		if (defined $check_order_result_ref->{OpacBestellung} && defined $check_order_result_ref->{OpacBestellung}{ErrorCode} && $check_order_result_ref->{OpacBestellung}{ErrorCode} eq "OpsOrderVomAnderemBenEntl"){
 		    
@@ -950,7 +959,9 @@ sub request {
 		    my $check_reservation_result_ref = $self->check_reservation($database,$username,$exemplar_ref->{gsi},$exemplar_ref->{zw});	    
 		    
 		    if (defined($check_reservation_result_ref)) {
-			$logger->debug("Result: ".YAML::Dump($check_reservation_result_ref));
+			if ($logger->is_debug){
+			    $logger->debug("Result: ".YAML::Dump($check_reservation_result_ref));
+			}
 			# error
 			if (defined $check_reservation_result_ref->{OpacReservation} && defined $check_reservation_result_ref->{OpacReservation}{ErrorCode} ){
 			    my $response_ref = {
@@ -1033,7 +1044,9 @@ sub request {
 
 			    # order successful
 			    if (defined $order_result_ref){
-				$logger->debug(YAML::Dump($order_result_ref));
+				if ($logger->is_debug){
+				    $logger->debug(YAML::Dump($order_result_ref));
+				}
 				
 				my $this_response_ref = {};
 				$this_response_ref->{status}  = 2;
@@ -1076,7 +1089,10 @@ sub request {
 			
 			
 			if (defined $order_result_ref){
-			    $logger->debug(YAML::Dump($order_result_ref));
+			    if ($logger->is_debug){
+				$logger->debug(YAML::Dump($order_result_ref));
+			    }
+			    
 			    my $this_response_ref = {};
 			    
 			    $this_response_ref->{status}  = 2;
@@ -1392,9 +1408,10 @@ sub check_order {
     }
 	    
     
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));
+    if ($logger->is_debug){
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+        $logger->debug("Using args ".YAML::Dump(\@args));
+    }
     
     my $result_ref;
     
@@ -1446,9 +1463,11 @@ sub check_reservation {
     }
 	    
     
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));
+    if ($logger->is_debug){
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+	
+	$logger->debug("Using args ".YAML::Dump(\@args));
+    }
     
     my $result_ref;
     
@@ -1503,9 +1522,11 @@ sub make_order {
 	$uri = "urn:/Loan_inst";
     }
 	        
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));
+    if ($logger->is_debug){
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
+	
+	$logger->debug("Using args ".YAML::Dump(\@args));
+    }
     
     my $result_ref;
     

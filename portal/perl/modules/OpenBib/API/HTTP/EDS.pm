@@ -656,7 +656,9 @@ sub get_record {
 	    
 	    if (defined $json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}){
 		foreach my $item (@{$json_result_ref->{Record}{RecordInfo}{BibRecord}{BibRelationships}{HasContributorRelationships}}){
-		    $logger->debug("DebugRelationShips".YAML::Dump($item));
+		    if ($logger->is_debug){
+			$logger->debug("DebugRelationShips".YAML::Dump($item));
+		    }
 		    if (defined $item->{PersonEntity} && defined $item->{PersonEntity}{Name} && defined $item->{PersonEntity}{Name}{NameFull}){
 			my $name = $item->{PersonEntity}{Name}{NameFull};
 			
@@ -2026,7 +2028,9 @@ sub process_facets {
     
     # Transformation Hash->Array zur Sortierung
 
-    $logger->debug("Start processing facets: ".YAML::Dump($json_result_ref->{SearchResult}{AvailableFacets}));
+    if ($logger->is_debug){
+	$logger->debug("Start processing facets: ".YAML::Dump($json_result_ref->{SearchResult}{AvailableFacets}));
+    }
     
     foreach my $eds_facet (@{$json_result_ref->{SearchResult}{AvailableFacets}}){
 

@@ -184,9 +184,10 @@ sub make_campus_order {
 	    
     my $uri = "urn:/MyBib";
 	        
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));    
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -353,9 +354,10 @@ sub make_pda_order {
 	    
     my $uri = "urn:/PDA";
 	        
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));	
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     
@@ -523,9 +525,10 @@ sub make_ilias_order {
 	    
     my $uri = "urn:/MyBib";
 	        
-    $logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));
-    
-    $logger->debug("Using args ".YAML::Dump(\@args));    
+    if ($logger->is_debug){    
+	$logger->debug("Trying connection to uri $uri at ".$config->get('usbws_url'));	
+	$logger->debug("Using args ".YAML::Dump(\@args));    
+    }
     
     my $result_ref;
     

@@ -22,6 +22,7 @@
                 'X4000', # msg.maketext("X4000") # Bibliothek
                 'X4001', # msg.maketext("X4001") # Bibliotheks-Infoseite
     ];
+
 -%]
 
 [% IF circulation.size <= 0 %]
@@ -45,7 +46,7 @@
 <div class="table-responsive">
 <table class="table table-striped">
 <thead>
-<tr align="center"><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th>[% IF have_standort %]<th>[% msg.maketext("Standort") %]</th>[% END %]<th>[% msg.maketext("Signatur") %]</th>[% IF have_bestandsverlauf %]<th>[% msg.maketext("Bestand") %]</th>[% END %]</tr>
+<tr align="center"><th>[% msg.maketext("Bibliothek") %]</th>[% IF NOT hide_qrcode %]<th>QR-Code</th>[% END %][% IF have_standort %]<th>[% msg.maketext("Standort") %]</th>[% END %]<th>[% msg.maketext("Signatur") %]</th>[% IF have_bestandsverlauf %]<th>[% msg.maketext("Bestand") %]</th>[% END %]</tr>
 </thead>
 <tbody>
 [%  FOREACH thisholding IN holding %]
@@ -90,7 +91,7 @@ END;
 -%]
 
 [%-  IF isil_desc -%]
-<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% isil %].html?l=[% lang %]">[% isil_desc %]</a>
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% isil %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% isil %].include?l=[% lang %]">[% isil_desc %]</a>
 [%-  ELSIF thisholding.${"X4000"}.content && thisholding.${"X4001"}.content -%]
 [%-    IF dbinfo.get('locationid').${record.database} %]
 <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">
@@ -103,6 +104,7 @@ END;
 [%-  END -%]
 </strong>
 </td>
+[% IF NOT hide_qrcode %]
 [%-
 
   title    = normdata.${"T0331"}.first.content ;
@@ -112,6 +114,7 @@ END;
 
 -%]
 <td><a href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% thisholding.${"X4000"}.content.short | uri %] :: [% thisholding.${"X0016"}.content | uri %] :: [% thisholding.${"X0014"}.content | uri %]" title="Titel :: Bibliothek :: Standort :: Signatur" data-bs-toggle="modal" data-bs-target="#qrcodeModal" data-formattitle="QR-Code" data-formaturl="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% thisholding.${"X4000"}.content.short | uri %] :: [% thisholding.${"X0016"}.content | uri %] :: [% thisholding.${"X0014"}.content | uri %]"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" alt="[% msg.maketext("QR-Code") %]"/></a></td>
+[% END %]
 [%   IF have_standort %]<td>[% thisholding.${"X0016"}.content %]</td>[% END %]<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong></td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]</td>[% END %]</tr>
 [% END %]
 </tbody>

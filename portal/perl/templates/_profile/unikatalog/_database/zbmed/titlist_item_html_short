@@ -528,7 +528,7 @@
          <br /><i class="fas fa-map-marker-alt"></i>
 [%-  IF locations.size >= 1 -%]
 [%      IF locations.size == 1 %]
-         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].html?l=[% lang %]">[% locinfo.identifier.${locations.first}.description %]</a>
+         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].include?l=[% lang %]">[% locinfo.identifier.${locations.first}.description %]</a>
 [%      ELSIF locations.size > 1 %]
          [% msg.maketext('Verschiedene Standorte') %]
 [%      END %]
@@ -608,7 +608,7 @@
 [% END %]
           </div><!-- end ob-titleactions -->
 [% IF record_exists && record.id && record.database %]	  
- <div class="ms-auto ob-availability" data-catalog="[% record.database %]" data-id="[% record.get_encoded_id %]">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 me-1 ps-2 pe-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="ps-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% ELSIF NOT alma_disable_listitem_status %]<span id="availability_[% record.database %]_[% record.get_encoded_id %]"></span>[% END %]
+ <div class="ms-auto ob-availability" [% IF availability != "online" %]data-catalog="[% record.database %]" data-id="[% record.get_encoded_id %]"[% END %]>[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 me-1 ps-2 pe-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="ps-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% ELSIF NOT alma_disable_listitem_status %]<span id="availability_[% record.database %]_[% record.get_encoded_id %]"></span>[% END %]
 	   </div>
 [% END # record_exists %]
 

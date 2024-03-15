@@ -34,6 +34,7 @@ use warnings;
 
 use Benchmark ':hireswallclock';
 use Business::ISBN;
+use Date::Calc qw/check_date/;
 use DB_File;
 use Digest::MD5 qw(md5_hex);
 use Encode qw/decode_utf8/;
@@ -254,6 +255,51 @@ while (my $json=<IN>){
     $marc_record->add_fields('001',$titleid);
 
     $marc_record->add_fields('003',$isil);
+
+    my $last_tstamp = "1970-01-01 12:00:00";
+    my $create_tstamp = "700101";
+    
+    if (defined $fields_ref->{'0002'}){
+	my $date = $fields_ref->{'0002'}[0]{content};
+	my ($day,$month,$year) = $date =~m/^(\d\d)\.(\d\d)\.(\d\d\d\d)$/;
+
+	if ($day && $month && $year && check_date($year,$month,$day)){
+	    $last_tstamp = "$year$month$day"."120000.0";
+	    $create_tstamp = substr($year,2,2)."$month$day";
+	}
+
+    }
+
+    if (defined $fields_ref->{'0003'}){
+	my $date = $fields_ref->{'0003'}[0]{content};
+	my ($day,$month,$year) = $date =~m/^(\d\d)\.(\d\d)\.(\d\d\d\d)$/;
+	
+	if ($day && $month && $year && check_date($year,$month,$day)){
+	    $last_tstamp = "$year$month$day"."120000.0";
+	}
+    }
+
+    $marc_record->add_fields('005',$last_tstamp);
+
+    $marc_record->add_fields('007','tu');
+
+    my $fixed_length_008 = "700101|1970####xxu###########|||#|#eng#c"; # example
+
+    my $year = "";
+    if (defined $fields_ref->{'0424'}){
+	($year) = $fields_ref->{'0424'}[0]{content} =~m/(\d\d\d\d)/;
+    }
+    elsif (defined $fields_ref->{'0425'}){
+	($year) = $fields_ref->{'0425'}[0]{content} =~m/(\d\d\d\d)/;
+    }
+    
+    substr($fixed_length_008,0,6)  = $create_tstamp;
+    substr($fixed_length_008,7,4)  = $year if ($year);    
+    substr($fixed_length_008,15,3) = "gw#"; # all works published in Germany, regardless of the date of publication
+    substr($fixed_length_008,24,1) = "|";
+    substr($fixed_length_008,25,3) = "eng";
+
+    $marc_record->add_fields('008',$fixed_length_008);
     
     my $output_fields_ref = {};
             
@@ -289,70 +335,11 @@ while (my $json=<IN>){
     if ($logger->is_debug){
 	$logger->debug(YAML::Dump($fields_ref));
     }
-    
-    foreach my $marcfield (keys %{$title_mapping_ref}){
-	my ($ind1)    = $marcfield =~m/^..._(.)_.$/;
-	my ($ind2)    = $marcfield =~m/^..._._(.)$/;
-
-	$logger->debug("$marcfield -> Ind1: x${ind1}x - Ind2: x${ind2}x");
-	
-	$ind1 = "\'$ind1\'";
-	$ind2 = "\'$ind2\'";
-
-	my ($fieldno) = $marcfield =~m/^(\d\d\d)/;
-
-	# Daten mit mapping-Datein in interne MARC21-Struktur ueberfuehren
-	my $marcfields_ref = {};
-
-	# Titeldaten
-	foreach my $marcdef_ref (@{$title_mapping_ref->{$marcfield}}){
-	    if ($logger->is_debug){
-		$logger->debug(YAML::Dump($marcdef_ref));
-	    }
-	    
-	    my $mab2_field = $marcdef_ref->{from_field};
-	    if (defined $fields_ref->{$mab2_field}){
-		
-		foreach my $thisfield_ref (@{$fields_ref->{$mab2_field}}){
-		    if (!defined $marcfields_ref->{$thisfield_ref->{mult}}){
-			$marcfields_ref->{$thisfield_ref->{mult}} = [];
-		    }
-		    push @{$marcfields_ref->{$thisfield_ref->{mult}}}, {
-			ind1 => $ind1,
-			ind2 => $ind2,
-			subfield => $marcdef_ref->{subfield},
-			content => cleanup($thisfield_ref->{content}),
-		    }
-		}
-	    }
-	}
-
-	if ($logger->is_debug){
-	    $logger->debug(YAML::Dump($marcfields_ref));
-	}
-	
-	# Aus interner MARC21-Struktur valide MARC21-Ausgabedaten erzeugen
-	foreach my $mult (sort keys %{$marcfields_ref}){
-	    my $first = 1;
-	    my $new_field;
-	    foreach my $thisitem_ref (@{$marcfields_ref->{$mult}}){
-		if ($first){
-		    $new_field = MARC::Field->new($fieldno, $thisitem_ref->{ind1}, $thisitem_ref->{ind2}, $thisitem_ref->{subfield} => $thisitem_ref->{content});
-
-		}
-		else {
-		    $new_field->add_subfields($thisitem_ref->{subfield} => $thisitem_ref->{content});
-		}
-		$first = 0;
-	    }
-	    push @{$output_fields_ref->{$fieldno}}, $new_field if ($new_field);	    
-#	    $marc_record->append_fields($new_field) if ($new_field);	    
-	}
-    }
 
     # Normdaten processen
 
-    # Personendaten
+    my $have_1xx = 0; # Geistiger Schoepfer
+    
     my @personids = ();
 
     foreach my $field ('0100','0101','0102','0103'){	    
@@ -363,7 +350,7 @@ while (my $json=<IN>){
     
     if (@personids){
 	
-	# Erste in 100 11
+	# Erste in 100 1#
 	my $personid = shift @personids;
 	
 	my $person_fields_ref = $data_person{$personid};
@@ -389,7 +376,10 @@ while (my $json=<IN>){
 	
 	my $new_field = MARC::Field->new('100', '1',  ' ', @subfields);
 
-	push @{$output_fields_ref->{'100'}}, $new_field if ($new_field);	
+	push @{$output_fields_ref->{'100'}}, $new_field if ($new_field);
+	
+	$have_1xx = 1;
+	
 #	$marc_record->append_fields($new_field) if ($new_field);	    	
 
 	foreach my $personid (@personids){
@@ -428,7 +418,7 @@ while (my $json=<IN>){
     
     if (@corporatebodyids){
 	
-	# Erste in 100 11
+	# Erste in 110 2#
 	my $corporatebodyid = shift @corporatebodyids;
 	
 	my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
@@ -450,11 +440,14 @@ while (my $json=<IN>){
 	}
 
 	# Relationship
-	push (@subfields,'4', "prt");
+	push (@subfields,'4', "aut");
 	
-	my $new_field = MARC::Field->new('110', '1',  ' ', @subfields);
+	my $new_field = MARC::Field->new('110', '2',  ' ', @subfields);
 
-	push @{$output_fields_ref->{'110'}}, $new_field if ($new_field);	
+	push @{$output_fields_ref->{'110'}}, $new_field if ($new_field);
+
+	$have_1xx = 1;
+	
 #	$marc_record->append_fields($new_field) if ($new_field);	    	
 
 	foreach my $corporatebodyid (@corporatebodyids){
@@ -671,8 +664,9 @@ while (my $json=<IN>){
 	    if ($this_libraryid && !defined $output_fields_ref->{'040'}){
 		@subfields = ();
 
-		push (@subfields,'a', $this_libraryid) ;		
-		push (@subfields,'c', $this_libraryid) ;
+		push (@subfields,'a', $this_libraryid) ;
+		push (@subfields,'b', 'ger') ;
+		push (@subfields,'c', 'DE-38') ;
 		
 		$new_field = MARC::Field->new('040', ' ',  ' ', @subfields);
 		
@@ -686,8 +680,81 @@ while (my $json=<IN>){
 	}
     }
 
-    # Felder aus output_fields_ref in MARC-Record setzen
 
+    # Felder aus Mapping-Datei verarbeiten
+    foreach my $marcfield (keys %{$title_mapping_ref}){
+	my ($ind1)    = $marcfield =~m/^..._(.)_.$/;
+	my ($ind2)    = $marcfield =~m/^..._._(.)$/;
+	my ($fieldno) = $marcfield =~m/^(\d\d\d)/;
+
+	# Korrektur einzelner Felder und Indikatoren
+	if ($fieldno eq "240" && !$have_1xx){ # Aendern von aunf 130 0#
+	    $fieldno = "130";
+	    $ind1 = '0';
+	    $ind2 = ' ';
+	}
+
+	if ($fieldno eq "245" && !$have_1xx){ # Aendern von default 1# auf 0#
+	    $ind1 = '0';
+	}
+
+	
+	$logger->debug("$marcfield -> Ind1: x${ind1}x - Ind2: x${ind2}x");
+	
+#	$ind1 = "\'$ind1\'";
+#	$ind2 = "\'$ind2\'";
+		
+	# Daten mit mapping-Datein in interne MARC21-Struktur ueberfuehren
+	my $marcfields_ref = {};
+
+	# Titeldaten
+	foreach my $marcdef_ref (@{$title_mapping_ref->{$marcfield}}){
+	    if ($logger->is_debug){
+		$logger->debug(YAML::Dump($marcdef_ref));
+	    }
+	    
+	    my $mab2_field = $marcdef_ref->{from_field};
+	    if (defined $fields_ref->{$mab2_field}){
+		
+		foreach my $thisfield_ref (@{$fields_ref->{$mab2_field}}){
+		    if (!defined $marcfields_ref->{$thisfield_ref->{mult}}){
+			$marcfields_ref->{$thisfield_ref->{mult}} = [];
+		    }
+		    push @{$marcfields_ref->{$thisfield_ref->{mult}}}, {
+			ind1 => $ind1,
+			ind2 => $ind2,
+			subfield => $marcdef_ref->{subfield},
+			content => cleanup($thisfield_ref->{content}),
+		    }
+		}
+	    }
+	}
+
+	if ($logger->is_debug){
+	    $logger->debug(YAML::Dump($marcfields_ref));
+	}
+	
+	# Aus interner MARC21-Struktur valide MARC21-Ausgabedaten erzeugen
+	foreach my $mult (sort keys %{$marcfields_ref}){
+	    my $first = 1;
+	    my $new_field;
+	    foreach my $thisitem_ref (@{$marcfields_ref->{$mult}}){
+		if ($first){
+		    $new_field = MARC::Field->new($fieldno, $thisitem_ref->{ind1}, $thisitem_ref->{ind2}, $thisitem_ref->{subfield} => $thisitem_ref->{content});
+
+		}
+		else {
+		    $new_field->add_subfields($thisitem_ref->{subfield} => $thisitem_ref->{content});
+		}
+		$first = 0;
+	    }
+	    push @{$output_fields_ref->{$fieldno}}, $new_field if ($new_field);	    
+#	    $marc_record->append_fields($new_field) if ($new_field);	    
+	}
+    }
+
+    
+    # Felder aus output_fields_ref in MARC-Record setzen
     foreach my $fieldno (sort keys %{$output_fields_ref}){
 	foreach my $field (@{$output_fields_ref->{$fieldno}}){
 	    $marc_record->append_fields($field);
@@ -706,13 +773,30 @@ while (my $json=<IN>){
 
     # Process Leader
     my $leader = $marc_record->leader();
-
+    
     if ($update){
 	substr($leader,5,1) = "c"; # changed
     }
     else {
 	substr($leader,5,1) = "n"; # new	
     }
+
+    # Bibliographic level
+    my $biblevel="m"; # default: Monograph/Item
+    if ($mediatype eq "AR"){ # Artikel
+	$biblevel="a"; # Monographic component part
+    }
+    elsif ($mediatype eq "CR"){ # Zeitschrift/Serie
+	$biblevel="s"; # Serial
+    }
+    substr($leader,7,1) = $biblevel;
+    
+    # Encoding level: Full level, material not examined
+    substr($leader,17,1) = "1";
+
+    # Descriptive cataloging form: ISBD punctuation omitted    
+    substr($leader,18,1) = "c"; 
+
     
     $marc_record->leader($leader);
     

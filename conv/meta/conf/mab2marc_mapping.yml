@@ -15,7 +15,7 @@
 #
 convtab:
   title:
-    '020_ _ ':
+    '020_ _ ': # ISBN
       -
         from_field: '0540'		
         subfield: 'a'
@@ -26,7 +26,7 @@ convtab:
         from_field: '0586' # ISBN der Quelle (Aufsaetze)		
         subfield: 'a'
 
-    '022_ _ ':
+    '022_ _ ': # ISSN
       -
         from_field: '0543'		
         subfield: 'a'
@@ -34,12 +34,16 @@ convtab:
         from_field: '0585' # ISSN der Quelle (Aufsaetze)		
         subfield: 'a'
 
-    '041_ _ ':
+    '041_ _ ': # Sprachencode
       -
         from_field: '0015' # Sprache
         subfield: 'a'
 
-    '245_1_ ':
+    '240_1_0': # Bevorzugter Titel des Werkes (mit geistigem Schöpfer): default, Nachbearbeitung der Indikatoren im Konverter 
+      -
+        from_field: '0303'		
+        subfield: 'a'
+    '245_1_0': # Titelangaben: default, Nachbearbeitung der Indikatoren im Konverter 
       -
         from_field: '0331'		
         subfield: 'a'
@@ -68,12 +72,23 @@ convtab:
         from_field: '0451'		
         subfield: 'p'
         
-    '246_1_ ':
+    '246_1_1': # Paralleltitel
       -
-        from_field: '0340'		
+        from_field: '0341'		
+        subfield: 'a'
+      -
+        from_field: '0504'		
+        subfield: 'a'
+    '246_3_ ': # Abweichender Titel
+      -
+        from_field: '0370'		
+        subfield: 'a'
+    '246_1_0': # Stichwörter in abweichender Orthografie
+      -
+        from_field: '0370'		
         subfield: 'a'
         
-    '250_ _ ':
+    '250_ _ ': # Ausgabe
       -
         from_field: '0403'		
         subfield: 'a'
@@ -102,7 +117,7 @@ convtab:
         from_field: '0425'
         subfield: 'c' # date of publication
         
-    '300_ _ ':
+    '300_ _ ': # Physische Beschreibung
       -
         from_field: '0433'		
         subfield: 'a'
@@ -110,10 +125,13 @@ convtab:
         from_field: '0434'		
         subfield: 'b'
       -
+        from_field: '0435'		
+        subfield: 'c'
+      -
         from_field: '0437'		
         subfield: 'e'
 
-    '490_1_ ':
+    '490_0_ ': # Gesamttitel (ungezählt und nicht verlinkt)
       -
         from_field: '0451'		
         subfield: 'a'
@@ -121,7 +139,7 @@ convtab:
         from_field: '0455'		
         subfield: 'v'
        
-    '500_ _ ':
+    '500_ _ ': # Fußnote
       -
         from_field: '0501'		
         subfield: 'a'

@@ -103,7 +103,7 @@
      END ;
 
      IF department_url;
-        standort_with_url = "<a href=\"${department_url}\">${standort}</a>";
+        standort_with_url = "<a href=\"${department_url}.html?l=${lang}\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${department_url}.include?l=${lang}\">${standort}</a>";
      ELSE ;
         standort_with_url = standort;   
      END;

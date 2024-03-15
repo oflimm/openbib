@@ -59,7 +59,7 @@ var marker_single = L.marker([[% coordinates_single %]]).addTo(librariesmap_sing
 
 <div class="card-body  d-flex align-items-center justify-content-center">
 
-<div class="display-1"><span style="color:[% current_color %];font-weight:bold;">[% current_occupancy.num_occupancy %]</span> / [% max_occupancy %]</div>
+<div class="display-4"><span style="color:[% current_color %];font-weight:bold;">[% current_occupancy.num_occupancy %]</span> / [% max_occupancy %]</div>
 
 </div>
 </div>
@@ -112,6 +112,7 @@ var occupancyChart = new Chart(occupancy_ctx, {
         }]
     },
     options: {
+        maintainAspectRatio: false,
         scales: {
             xAxes: [{
 	        scaleLabel: {

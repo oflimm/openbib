@@ -53,7 +53,7 @@ var marker_single = L.marker([[% coordinates_single %]]).addTo(librariesmap_sing
 
 <div class="row mt-5 mb-5">
 
-<div class="col-md-6">
+<div class="col-md-6"  style="height: 300px; position: relative;">
 
 <div class="card h-100 text-center">
 <div class="card-header"><h4>[% msg.maketext("Aktuelle Besucherzahl") %]</h4></div>
@@ -67,7 +67,7 @@ var marker_single = L.marker([[% coordinates_single %]]).addTo(librariesmap_sing
 
 </div>
 
-<div class="col-md-6">
+<div class="col-md-6"  style="height: 300px; position: relative;">
 
 <div class="card h-100 text-center">
 <div class="card-header"><h4>[% msg.maketext("Zahl der Besucher heute") %]</h4></div>
@@ -113,6 +113,7 @@ var occupancyChart = new Chart(occupancy_ctx, {
         }]
     },
     options: {
+        maintainAspectRatio: false,
         scales: {
             xAxes: [{
 	        scaleLabel: {

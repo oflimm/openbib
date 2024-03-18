@@ -22,18 +22,11 @@ convtab:
       -
         from_field: '0553'		
         subfield: 'a'
-      -
-        from_field: '0586' # ISBN der Quelle (Aufsaetze)		
-        subfield: 'a'
 
     '022_ _ ': # ISSN
       -
         from_field: '0543'		
         subfield: 'a'
-      -
-        from_field: '0585' # ISSN der Quelle (Aufsaetze)		
-        subfield: 'a'
-
     '041_ _ ': # Sprachencode
       -
         from_field: '0015' # Sprache
@@ -175,10 +168,13 @@ convtab:
         subfield: 'a'
     '773_0_8':
       -
-        from_field: '0590' # HST der Quelle
-        subfield: 't'
+        from_field: '0585' # ISSN der Quelle (Aufsaetze)		
+        subfield: 'x'
       -
-        from_field: '0591' # Verfasser der Quelle
+        from_field: '0586' # ISBN der Quelle (Aufsaetze)		
+        subfield: 'z'
+      -
+        from_field: '0590' # HST der Quelle
         subfield: 't'
       -
         from_field: '0593' # Ausgabe der Quelle

@@ -295,9 +295,9 @@ while (my $json=<IN>){
     
     substr($fixed_length_008,0,6)  = $create_tstamp;
     substr($fixed_length_008,7,4)  = $year if ($year);    
-    substr($fixed_length_008,15,3) = "gw#"; # all works published in Germany, regardless of the date of publication
-    substr($fixed_length_008,24,1) = "|";
-    substr($fixed_length_008,25,3) = "eng";
+    substr($fixed_length_008,15,3) = '|||';
+    substr($fixed_length_008,24,1) = '|';
+    substr($fixed_length_008,25,3) = '|||';
 
     $marc_record->add_fields('008',$fixed_length_008);
     
@@ -580,6 +580,24 @@ while (my $json=<IN>){
 #	$marc_record->append_fields($new_field) if ($new_field);	    	
     }
 
+    # Zusammenfassen 590/591
+    {
+	my @quellangaben = ();
+	if ($fields_ref->{'0590'}){
+	    push @quellangaben, $fields_ref->{'0590'}[0]{content};
+	}
+	
+	if ($fields_ref->{'0591'}){ # Verfasser der Quelle
+	    push @quellangaben, $fields_ref->{'0591'}[0]{content};
+	    $fields_ref->{'0591'} = [];
+	    delete $fields_ref->{'0591'};
+	}
+	
+	my $quellangabe = join(' / ',@quellangaben);
+	$fields_ref->{'0590'}[0]{content} = $quellangabe;
+	
+    }
+    
     # Medientyp setzen
 
     # Koha Medientyp
@@ -678,8 +696,7 @@ while (my $json=<IN>){
 #	    $marc_record->append_fields($new_field) if ($new_field);	    	
 	    
 	}
-    }
-
+    }    
 
     # Felder aus Mapping-Datei verarbeiten
     foreach my $marcfield (keys %{$title_mapping_ref}){

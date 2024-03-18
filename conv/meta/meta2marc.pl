@@ -580,31 +580,38 @@ while (my $json=<IN>){
 #	$marc_record->append_fields($new_field) if ($new_field);	    	
     }
 
-    # Zusammenfassen 590/591
+    # Zusammenfassen 590/591 bei Aufsaetzen. Voraussetzung: Neu eine Quellangabe
     {
 	my @quellangaben = ();
-	if ($fields_ref->{'0590'}){
+	if (defined $fields_ref->{'0590'}){
 	    push @quellangaben, $fields_ref->{'0590'}[0]{content};
 	}
 	
-	if ($fields_ref->{'0591'}){ # Verfasser der Quelle
+	if (defined $fields_ref->{'0591'}){ # Verfasser der Quelle
 	    push @quellangaben, $fields_ref->{'0591'}[0]{content};
-	    $fields_ref->{'0591'} = [];
+	    $fields_ref->{'0591'} = []; # entfernen
 	    delete $fields_ref->{'0591'};
 	}
 	
 	my $quellangabe = join(' / ',@quellangaben);
-	$fields_ref->{'0590'}[0]{content} = $quellangabe;
-	
+
+	$fields_ref->{'0590'} = []; # entfernen
+
+	push @{$fields_ref->{'0590'}}, { # und neu setzen
+	    content  => $quellangabe,
+	    mult     => "001",
+	    subfield => "",
+	};	
     }
-    
+
+    #print YAML::Dump($fields_ref->{'0590'}),"\n";
     # Medientyp setzen
 
     # Koha Medientyp
     my $mediatype = "BK"; # default: Book
 
     # HSTQuelle usw. -> Artikel/Aufsatz
-    if (defined $fields_ref->{'0590'} || defined $fields_ref->{'0591'} || defined $fields_ref->{'0597'}) {
+    if (defined $fields_ref->{'0590'} || defined $fields_ref->{'0597'}) {
 	$mediatype = "AR"; # Artikel
     }   
     elsif (defined $fields_ref->{'0519'}) {

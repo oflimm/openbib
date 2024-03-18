@@ -374,10 +374,19 @@
     fulltext_icon = config.get('ezb_unknown_img');
     fulltext_desc  = "Volltext";
 
+    # KUSELIT-Titel nicht lizensiert. Kein Volltext!
+    IF record.id.match('edswis.KUSE') && item.${'T4120'};
+      item.${'T4120'}.first.subfield = "r";
+    END;
+
     IF item.${'T4120'}.first.subfield == "g";
       fulltext_availability = "lawngreen";
       fulltext_icon = config.get('ezb_green_img');
       fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
+      availability = "online";
+    ELSIF item.${'T4120'}.first.subfield == "r";
+      fulltext_icon = config.get('ezb_red_img');
+      fulltext_desc = msg.maketext("Kein Zugriff: Unlizensierter Volltext");;
       availability = "online";
     ELSIF item.${'T4120'}.first.subfield == "y";
       fulltext_availability = "yellow";

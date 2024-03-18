@@ -50,9 +50,13 @@ print "### $pool: Erweiterung um Zugriffsinformation online, Typ Digital und The
 
 system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
-print "### $pool: Erweiterung um Standortinformationen, weiteres Processing\n";
+print "### $pool: Erweiterung um Standortinformationen, weiteres Processing - Stage 1\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/remove_duplicates_in_nz.pl | $rootdir/filter/$pool/remove_ill.pl | $rootdir/filter/$pool/fix-linkage.pl | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/$pool/process_urls.pl | $rootdir/filter/$pool/process_ids.pl | $rootdir/filter/$pool/volume2year.pl | $rootdir/filter/$pool/process_provenances.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/remove_duplicates_in_nz.pl | $rootdir/filter/$pool/remove_ill.pl | $rootdir/filter/$pool/fix-linkage.pl   > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+
+print "### $pool: Erweiterung um Standortinformationen, weiteres Processing - Stage 2\n";
+
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/$pool/process_urls.pl | $rootdir/filter/$pool/process_ids.pl | $rootdir/filter/$pool/volume2year.pl | $rootdir/filter/$pool/process_provenances.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Anreicherung der Exemplarinformationen\n";
 

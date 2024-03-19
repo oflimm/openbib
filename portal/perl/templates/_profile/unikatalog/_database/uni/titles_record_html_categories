@@ -571,8 +571,6 @@ FOREACH field IN normdata;
          IF content ;
            IF super_titleid ;
              content = "<a href=\"${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${super_titleid}.html?l=${lang}\" class=\"inturl\">${content}</a>";
-	   ELSE ;
-             content = "<a href=\"${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}\" class=\"inturl\">${content}</a>";
 	   END ;
 	   
 	   IF volume ;
@@ -909,8 +907,7 @@ FOREACH field IN normdata;
          content = thisfield.${'e'};
          super         = from_json(content);
          # USE dumper;dumper.dump(super);
-         searchterm    = super.id;
-         searchprefix  = config.get('searchfield').id.prefix;
+         super_titleid = super.id;
 
          super_title   = "";
 
@@ -924,8 +921,8 @@ FOREACH field IN normdata;
             super_title = "Zur &Uuml;berordnung";
          END ;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
-         content   = "<a class=\"inturl\" href=\"${localurl}\">${super_title}</a>";
+         content = "<a href=\"${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${super_titleid}.html?l=${lang}\" class=\"inturl\">${super_title}</a>";
+
          IF NOT content_map.${'T5005'} ;
 	    content_map.${'T5005'} = [];
 	 END;

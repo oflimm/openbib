@@ -20,10 +20,10 @@ our %title_has_parent       = ();
 our %is_parent              = ();
 our %title_with_no_children = ();
 
-tie %title_locationid,             'MLDBM', "./title_locationid.db"
+tie %title_locationid,      'MLDBM', "./title_locationid.db"
     or die "Could not tie title_locationid.\n";
 
-tie %title_has_parent,             'MLDBM', "./title_has_parent.db"
+tie %title_has_parent,      'MLDBM', "./title_has_parent.db"
     or die "Could not tie title_has_parent.\n";
 
 tie %is_parent,             'MLDBM', "./is_parent.db"
@@ -291,7 +291,7 @@ sub mark_parent {
     if (defined $title_has_parent{$parent_titleid} && $level < 10){
 	$level++;
 	foreach my $next_parent_titleid (@{$title_has_parent{$parent_titleid}}){
-	    mark_parent($next_parent_titleid,$parent_element_ref,$level);
+	    mark_parent($next_parent_titleid,$parent_titleid,$level);
 	}
     }
     elsif (defined $title_has_parent{$parent_titleid}){

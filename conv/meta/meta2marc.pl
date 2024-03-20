@@ -1254,17 +1254,19 @@ while (my $json=<IN>){
 	    $fields_ref->{'0591'} = []; # entfernen
 	    delete $fields_ref->{'0591'};
 	}
+
+	if (@quellangaben){
+	    my $quellangabe = join(' / ',@quellangaben);
+	    
+	    $fields_ref->{'0590'} = []; # entfernen
+	    
+	    push @{$fields_ref->{'0590'}}, { # und neu setzen
+		content  => $quellangabe,
+		mult     => "001",
+		subfield => "",
+	    };
+	}
 	
-	my $quellangabe = join(' / ',@quellangaben);
-
-	$fields_ref->{'0590'} = []; # entfernen
-
-	push @{$fields_ref->{'0590'}}, { # und neu setzen
-	    content  => $quellangabe,
-	    mult     => "001",
-	    subfield => "",
-	};
-
 	# Prefixen der HBZ-ID als Fremdnummer in 4599 (Aufsatzkatalog)
 	if (defined $fields_ref->{'4599'}){
 	    my $hbzid_quelle = $fields_ref->{'4599'}[0]{content};

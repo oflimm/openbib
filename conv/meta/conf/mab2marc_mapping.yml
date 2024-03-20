@@ -124,6 +124,11 @@ convtab:
         from_field: '0437'		
         subfield: 'e'
 
+    '337_ _ ': # Medientyp
+      -
+        from_field: '0800'		
+        subfield: 'a'
+
     '490_0_ ': # Gesamttitel (ungezählt und nicht verlinkt)
       -
         from_field: '0451'		

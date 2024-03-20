@@ -811,6 +811,8 @@ while (my $json=<IN>){
 
 close(IN);
 
+$count = 1;
+
 $logger->info("### Pass 2: Informationen zu Ueberordnungen sammeln");
 
 open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | " )     || die "IN konnte nicht geoeffnet werden";

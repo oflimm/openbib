@@ -868,35 +868,6 @@ while (my $json=<IN>){
     
     my $output_fields_ref = {};
             
-    # ZDB-ID
-    foreach my $thisfield_ref (@{$fields_ref->{'0572'}}){
-	my $content  = "(DE-600)".$thisfield_ref->{content};
-	
-	my @subfields = ();
-
-	push (@subfields,'a', $content);
-
-	my $new_field = MARC::Field->new('035', ' ',  ' ', @subfields);
-
-	push @{$output_fields_ref->{'035'}}, $new_field if ($new_field);
-#	$marc_record->append_fields($new_field) if ($new_field);	    	
-    }
-
-    # HBZ-ID
-    foreach my $thisfield_ref (@{$fields_ref->{'4599'}}){
-	my $content  = "(DE-605)".$thisfield_ref->{content};
-	
-	my @subfields = ();
-
-	push (@subfields,'a', $content);
-
-	my $new_field = MARC::Field->new('035', ' ',  ' ', @subfields);
-
-	push @{$output_fields_ref->{'035'}}, $new_field if ($new_field);	
-#	$marc_record->append_fields($new_field) if ($new_field);	    	
-    }
-    
-
     if ($logger->is_debug){
 	$logger->debug(YAML::Dump($fields_ref));
     }
@@ -1145,8 +1116,37 @@ while (my $json=<IN>){
 #	$marc_record->append_fields($new_field) if ($new_field);	    	
     }
 
-    # Zusammenfassen 590/591 bei Aufsaetzen. Voraussetzung: Neu eine Quellangabe
+    #print YAML::Dump($fields_ref->{'0590'}),"\n";
+    # Medientyp setzen
+
+    # Koha Medientyp
+    my $mediatype = "BK"; # default: Book
+
+    # HSTQuelle usw. -> Artikel/Aufsatz
+    if (defined $fields_ref->{'0590'} || defined $fields_ref->{'0591'} || defined $fields_ref->{'0597'}) {
+	$mediatype = "AR"; # Artikel
+    }   
+    elsif (defined $fields_ref->{'0519'}) {
+	$mediatype = "HS"; # Hochsculschrift
+    }   
+    elsif (defined $fields_ref->{'0572'} || defined $fields_ref->{'0543'}) {
+	$mediatype = "CR"; # Zeitschrift/Serie
+    }
+
     {
+	my @subfields = ();
+    
+	push (@subfields,'c', $mediatype);
+	
+	my $new_field = MARC::Field->new('942', ' ',  ' ', @subfields);
+	
+	push @{$output_fields_ref->{'942'}}, $new_field if ($new_field);
+    }
+
+    # Korrektur der Ursprungsdaten
+    {
+	
+	# Zusammenfassen 590/591 bei Aufsaetzen. Voraussetzung: Neu eine Quellangabe
 	my @quellangaben = ();
 	if (defined $fields_ref->{'0590'}){
 	    push @quellangaben, $fields_ref->{'0590'}[0]{content};
@@ -1166,34 +1166,64 @@ while (my $json=<IN>){
 	    content  => $quellangabe,
 	    mult     => "001",
 	    subfield => "",
-	};	
-    }
+	};
 
-    #print YAML::Dump($fields_ref->{'0590'}),"\n";
-    # Medientyp setzen
-
-    # Koha Medientyp
-    my $mediatype = "BK"; # default: Book
-
-    # HSTQuelle usw. -> Artikel/Aufsatz
-    if (defined $fields_ref->{'0590'} || defined $fields_ref->{'0597'}) {
-	$mediatype = "AR"; # Artikel
-    }   
-    elsif (defined $fields_ref->{'0519'}) {
-	$mediatype = "HS"; # Hochsculschrift
-    }   
-    elsif (defined $fields_ref->{'0572'} || defined $fields_ref->{'0543'}) {
-	$mediatype = "CR"; # Zeitschrift/Serie
-    }
-
-    {
-	my @subfields = ();
-    
-	push (@subfields,'c', $mediatype);
+	# Prefixen der HBZ-ID als Fremdnummer in 4599 (Aufsatzkatalog)
+	if (defined $fields_ref->{'4599'}){
+	    my $hbzid_quelle = $fields_ref->{'4599'}[0]{content};
+	    unless ($hbzid_quelle =~m/DE-605/){
+		$hbzid_quelle = "(DE-605)".$hbzid_quelle;
+	    }
+	    
+	    $fields_ref->{'4599'} = [];
+	    push @{$fields_ref->{'4599'}}, {
+		content  => $hbzid_quelle,
+		mult     => "001",
+		subfield => "",
+	    };
+	}
 	
-	my $new_field = MARC::Field->new('942', ' ',  ' ', @subfields);
-	
-	push @{$output_fields_ref->{'942'}}, $new_field if ($new_field);
+	if ($mediatype eq "AR"){ # Aufsatz
+	    # ZDB-ID 'interpretieren' als Fremdid in 773 via 4599. ZDBID geht vor HBZ-ID (wg. Verfuegbarkeitsrecherche mit OpenURL)
+	    if (defined $fields_ref->{'0572'}){
+		foreach my $thisfield_ref (@{$fields_ref->{'0572'}}){
+		    my $zdbid_quelle  = $thisfield_ref->{content};
+		    unless ($zdbid_quelle =~m/DE-600/){
+			$zdbid_quelle = "(DE-600)".$zdbid_quelle;
+		    }
+
+		    $fields_ref->{'4599'} = [];
+		    push @{$fields_ref->{'4599'}}, {
+			content  => $zdbid_quelle,
+			mult     => "001",
+			subfield => "",
+		    };
+
+		    last; # nur eine 572
+		}
+	    }
+	}
+	else {
+	    # ZDB-ID als ID nach 035
+	    foreach my $thisfield_ref (@{$fields_ref->{'0572'}}){
+		my $zdbid  = $thisfield_ref->{content};
+
+		unless ($zdbid =~m/DE-600/){
+		    $zdbid = "(DE-600)".$zdbid;
+		}
+		
+		my @subfields = ();
+		
+		push (@subfields,'a', $zdbid);
+		
+		my $new_field = MARC::Field->new('035', ' ',  ' ', @subfields);
+		
+		push @{$output_fields_ref->{'035'}}, $new_field if ($new_field);
+
+		last; # Nur eine 0572
+	    }    
+	    
+	}
     }
     
     # Exemplardaten processen (Koha holding scheme)

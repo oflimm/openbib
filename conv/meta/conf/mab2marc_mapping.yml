@@ -156,7 +156,12 @@ convtab:
       -
         from_field: '0517'		
         subfield: 'a'
-        
+
+    '590_ _ ': # Bemerkung = lokale Fussnote
+      -
+        from_field: '0600'		
+        subfield: 'a'
+      
     '720_ _ ':
       -
         from_field: '0370'		
@@ -188,6 +193,9 @@ convtab:
       -
         from_field: '0597' # Gesamttitelangabe der Quelle		
         subfield: 'k'
+      -
+        from_field: '4599' # ZDBID/HBZID der Quelle
+        subfield: 'w'
     '852_ _ ':
       -
         from_field: '3330'		

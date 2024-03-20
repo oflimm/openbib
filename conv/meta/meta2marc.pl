@@ -69,8 +69,6 @@ if ($help || (!$mappingfile && ! -f $mappingfile && !$database)) {
     print_help();
 }
     
-my $config      = OpenBib::Config->new;
-
 $logfile=($logfile)?$logfile:"./meta2marc.log";
 $loglevel=($loglevel)?$loglevel:"INFO";
 $outputfile=($outputfile)?$outputfile:"./output.mrc";
@@ -1320,8 +1318,41 @@ while (my $json=<IN>){
 		push @{$output_fields_ref->{'035'}}, $new_field if ($new_field);
 
 		last; # Nur eine 0572
-	    }    
-	    
+	    }    	    
+	}
+
+	# Korrektur 451 mit Zaehlung, wenn diese bereits in 455 enthalten ist
+	if (defined $fields_ref->{'0451'} && defined $fields_ref->{'0455'}){
+
+	    foreach my $item451_ref (@{$fields_ref->{'0451'}}){
+		my $mult451    = $item451_ref->{mult};
+		my $content451 = $item451_ref->{content};
+		
+		my $content455 = "";
+		foreach my $item455_ref (@{$fields_ref->{'0455'}}){
+		    if ($item455_ref->{mult} eq $mult451){
+			$content455 = $item455_ref->{content};
+			last;
+		    }
+		}
+
+		if ($content451 =~m/^(.+) ; (.+?)$/){
+		    my $titel    = $1;
+		    my $zaehlung = $2;
+
+		    if ($zaehlung =~m/$content455/i){
+			$item451_ref->{content} = $titel;
+		    }
+		}
+		
+	    }
+
+	    my $thisfields_ref = {};
+	    foreach my $field ('0451','0455'){
+		foreach my $thisfield_ref (@{$fields_ref->{$field}}){
+		    $thisfields_ref->{$thisfield_ref->{mult}}{$field} = $thisfield_ref->{content};
+		}
+	    }	    
 	}
     }
     

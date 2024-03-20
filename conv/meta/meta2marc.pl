@@ -1374,7 +1374,7 @@ while (my $json=<IN>){
 		push (@subfields,'b', $this_libraryid) ;
 	    }
 
-	    push (@subfields,'y', 'BK');
+	    push (@subfields,'y', $mediatype);
 
 	    my $new_field = MARC::Field->new('952', ' ',  ' ', @subfields);
 

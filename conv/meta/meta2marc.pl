@@ -1191,6 +1191,9 @@ while (my $json=<IN>){
 	if (defined $fields_ref->{'0004'}){
 	    foreach my $item_ref (@{$fields_ref->{'0004'}}){
 		my $super_titleid    = $item_ref->{content};
+		
+		next unless (defined $data_super{$super_titleid} && $data_super{$super_titleid});
+		
 		my $super_fields_ref = $data_super{$super_titleid};
 
 		my $super_title = "";

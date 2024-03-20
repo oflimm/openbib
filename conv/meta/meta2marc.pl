@@ -654,6 +654,8 @@ my %data_corporatebody  = ();
 my %data_classification = ();
 my %data_subject        = ();
 my %data_holding        = ();
+my %data_superids       = ();
+my %data_super          = ();
 my %titleid_exists      = ();
 
 unlink "./data_person.db";
@@ -661,6 +663,8 @@ unlink "./data_corporatebody.db";
 unlink "./data_classification.db";
 unlink "./data_subject.db";
 unlink "./data_holding.db";
+unlink "./data_superids.db";
+unlink "./data_super.db";
 
 tie %data_person,        'MLDBM', "./data_person.db"
         or die "Could not tie data_person.\n";
@@ -676,6 +680,12 @@ tie %data_classification,        'MLDBM', "./data_classification.db"
 
 tie %data_holding,        'MLDBM', "./data_holding.db"
     or die "Could not tie data_holding.\n";
+
+tie %data_superids,        'MLDBM', "./data_superids.db"
+    or die "Could not tie data_superids.\n";
+
+tie %data_super,        'MLDBM', "./data_super.db"
+    or die "Could not tie data_super.\n";
 
 my $stammdateien_ref = {
     person => {
@@ -771,6 +781,63 @@ $stammdateien_ref = {
         infile             => "$basepath/meta.title.gz",
     },    
 };
+
+$logger->info("### Pass 1: Ueberordnungen identifizieren");
+
+$count = 1;
+
+# Pass 1: Uebeordnungsinformationen bestimmen
+open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | " )     || die "IN konnte nicht geoeffnet werden";
+binmode (IN, ":raw");
+
+while (my $json=<IN>){
+    
+    my $record_ref = decode_json $json;
+
+    my $fields_ref = $record_ref->{fields};
+
+    if (defined $fields_ref->{'0004'}){
+	foreach my $item_ref (@{$fields_ref->{'0004'}}){
+	    $data_superids{$item_ref->{content}} = 1;
+	}
+    }
+
+    if ($count % 1000 == 0) {
+        $logger->info("### $count Titelsaetze bearbeitet");
+    } 
+
+    $count++;
+}
+
+close(IN);
+
+$logger->info("### Pass 2: Informationen zu Ueberordnungen sammeln");
+
+open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | " )     || die "IN konnte nicht geoeffnet werden";
+binmode (IN, ":raw");
+
+while (my $json=<IN>){
+    
+    my $record_ref = decode_json $json;
+
+    my $titleid    = $record_ref->{id};
+    my $fields_ref = $record_ref->{fields};
+
+    if (defined $data_superids{$titleid} && $data_superids{$titleid}){
+	$data_super{$titleid} = $fields_ref;
+    }
+    
+    if ($count % 1000 == 0) {
+        $logger->info("### $count Titelsaetze bearbeitet");
+    } 
+    
+    $count++;
+
+}
+
+close(IN);
+
+$logger->info("### Pass 3: Titeldaten verarbeiten");
 
 open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | " )     || die "IN konnte nicht geoeffnet werden";
 
@@ -1116,6 +1183,31 @@ while (my $json=<IN>){
 #	$marc_record->append_fields($new_field) if ($new_field);	    	
     }
 
+    # Ueberordnungen entsprechen 0004 nach 830 schreiben
+    {
+	# Titel hat Ueberordnung
+	if (defined $fields_ref->{'0004'}){
+	    foreach my $item_ref (@{$fields_ref->{'0004'}}){
+		my $super_titleid    = $item_ref->{content};
+		my $super_fields_ref = $data_super{$super_titleid};
+
+		my $super_title = "";
+		if (defined $super_fields_ref->{'0331'} && $super_fields_ref->{'0331'}){
+		    $super_title = $super_fields_ref->{'0331'}[0]{content};
+		}
+		
+		my @subfields = ();
+		
+		push (@subfields,'t', $super_title) if ($super_title);
+		push (@subfields,'w', $super_titleid) if ($super_titleid);	
+		
+		my $new_field = MARC::Field->new('830', ' ',  '0', @subfields);
+		
+		push @{$output_fields_ref->{'830'}}, $new_field if ($new_field);
+	    }
+	}
+
+    }
     #print YAML::Dump($fields_ref->{'0590'}),"\n";
     # Medientyp setzen
 

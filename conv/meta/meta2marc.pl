@@ -878,7 +878,7 @@ while (my $json=<IN>){
 	my @subfields = ();
 	
 	push (@subfields,'c', $titleid);
-	push (@subfields,'d', $titleid);
+#	push (@subfields,'d', $titleid);
 	
 	my $new_field = MARC::Field->new('999', ' ',  ' ', @subfields);
 	

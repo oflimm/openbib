@@ -58,12 +58,6 @@ convtab:
       -
         from_field: '0089'		
         subfield: 'n'
-      -
-        from_field: '0455'		
-        subfield: 'n'
-      -
-        from_field: '0451'		
-        subfield: 'p'
         
     '246_1_1': # Paralleltitel
       -

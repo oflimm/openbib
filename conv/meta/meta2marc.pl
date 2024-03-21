@@ -1444,9 +1444,12 @@ while (my $json=<IN>){
 	}
 
 	if ($fieldno eq "245" && !$have_1xx){ # Aendern von default 1# auf 0#
-	    $ind1 = '0';
+	    $ind1 = '0'; # no added entry
 	}
 
+	if ($fieldno eq "490" && defined $fields_ref->{'0004'}){
+	    $ind1 = '1'; # series is (probably...) traced, default is 0 = untraced
+	}
 	
 	$logger->debug("$marcfield -> Ind1: x${ind1}x - Ind2: x${ind2}x");
 	

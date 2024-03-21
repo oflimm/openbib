@@ -865,12 +865,26 @@ while (my $json=<IN>){
 
     my $fields_ref = $record_ref->{fields};
 
+    my $output_fields_ref = {};
+                
     my $marc_record = new MARC::Record;
     
     my $titleid = $record_ref->{id};
 
     $marc_record->add_fields('001',$titleid);
 
+    # Set Koha biblionumber and biblioitemnumber in 999    
+    {
+	my @subfields = ();
+	
+	push (@subfields,'c', $titleid);
+	push (@subfields,'d', $titleid);
+	
+	my $new_field = MARC::Field->new('999', ' ',  ' ', @subfields);
+	
+	push @{$output_fields_ref->{'999'}}, $new_field if ($new_field);
+    }
+    
     $marc_record->add_fields('003',$isil);
 
     my $last_tstamp = "1970-01-01 12:00:00";
@@ -933,8 +947,6 @@ while (my $json=<IN>){
 
     $marc_record->add_fields('008',$fixed_length_008);
     
-    my $output_fields_ref = {};
-            
     if ($logger->is_debug){
 	$logger->debug(YAML::Dump($fields_ref));
     }
@@ -1183,7 +1195,7 @@ while (my $json=<IN>){
 #	$marc_record->append_fields($new_field) if ($new_field);	    	
     }
 
-    # Ueberordnungen entsprechen 0004 nach 830 schreiben
+    # Ueberordnungen entsprechen 0004 nach 773 schreiben
     {
 	# Titel hat Ueberordnung
 	if (defined $fields_ref->{'0004'}){
@@ -1202,11 +1214,11 @@ while (my $json=<IN>){
 		my @subfields = ();
 		
 		push (@subfields,'t', $super_title) if ($super_title);
-		push (@subfields,'w', $super_titleid) if ($super_titleid);	
+		push (@subfields,'0', $super_titleid) if ($super_titleid);	
 		
-		my $new_field = MARC::Field->new('830', ' ',  '0', @subfields);
+		my $new_field = MARC::Field->new('773', '0',  ' ', @subfields);
 		
-		push @{$output_fields_ref->{'830'}}, $new_field if ($new_field);
+		push @{$output_fields_ref->{'773'}}, $new_field if ($new_field);
 	    }
 	}
 

@@ -874,16 +874,16 @@ while (my $json=<IN>){
     $marc_record->add_fields('001',$titleid);
 
     # Set Koha biblionumber and biblioitemnumber in 999    
-    {
-	my @subfields = ();
+#     {
+# 	my @subfields = ();
 	
-	push (@subfields,'c', $titleid);
-#	push (@subfields,'d', $titleid);
+# 	push (@subfields,'c', $titleid);
+# #	push (@subfields,'d', $titleid);
 	
-	my $new_field = MARC::Field->new('999', ' ',  ' ', @subfields);
+# 	my $new_field = MARC::Field->new('999', ' ',  ' ', @subfields);
 	
-	push @{$output_fields_ref->{'999'}}, $new_field if ($new_field);
-    }
+# 	push @{$output_fields_ref->{'999'}}, $new_field if ($new_field);
+#     }
 
     # Alte ID in 035 mit "modifizierter" ISIL als Prefix sichern
     {

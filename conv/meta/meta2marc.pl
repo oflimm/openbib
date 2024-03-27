@@ -976,18 +976,24 @@ while (my $json=<IN>){
 
     my $have_1xx = 0; # Geistiger Schoepfer / Haupteintragung
 
+    my $firstpersonid = 0;
+    
     my @personids = ();
 
     foreach my $field ('0100','0101','0102','0103'){	    
 	foreach my $thisfield_ref (@{$fields_ref->{$field}}){
-	    push @personids, $thisfield_ref->{id};
+	    if ($field eq '0100' && !$firstpersonid){
+		$firstpersonid = $thisfield_ref->{id};
+	    }
+	    else {
+		push @personids, $thisfield_ref->{id};
+	    }
 	}
     }
 
-    if (@personids){
-	
+    if ($firstpersonid){
 	# Erste in 100 1#
-	my $personid = shift @personids;
+	my $personid = $firstpersonid;
 
 	my $person_fields_ref = $data_person{$personid};
 
@@ -1011,13 +1017,13 @@ while (my $json=<IN>){
 	push (@subfields,'4', "aut");
 	
 	my $new_field = MARC::Field->new('100', '1',  ' ', @subfields);
-
+	
 	push @{$output_fields_ref->{'100'}}, $new_field if ($new_field);
 	
 	$have_1xx = 1;
-	
-#	$marc_record->append_fields($new_field) if ($new_field);	    	
-
+    }
+    
+    if (@personids){
 	foreach my $personid (@personids){
 	    my $person_fields_ref = $data_person{$personid};
 
@@ -1038,55 +1044,59 @@ while (my $json=<IN>){
 	    	    
 	    my $new_field = MARC::Field->new('700', '1',  ' ', @subfields);
 
-	    push @{$output_fields_ref->{'700'}}, $new_field if ($new_field);	    
-#	    $marc_record->append_fields($new_field) if ($new_field);	    	
+	    push @{$output_fields_ref->{'700'}}, $new_field if ($new_field);	
 	}	
     }
 	
     # Koerperschaften
+    my $firstcorporatebodyid = 0;
+    
     my @corporatebodyids = ();
 
     foreach my $field ('0200','0201'){	
 	foreach my $thisfield_ref (@{$fields_ref->{$field}}){
-	    push @corporatebodyids, $thisfield_ref->{id};
+	    if ($field eq '0200' && !$firstcorporatebodyid && !$have_1xx){
+		$firstcorporatebodyid = $thisfield_ref->{id};
+	    }
+	    else {
+		push @corporatebodyids, $thisfield_ref->{id};
+	    }
 	}
     }
     
-    if (@corporatebodyids){
-
-	unless ($have_1xx){ # only one main entry
-	    # Erste in 110 2#
-	    my $corporatebodyid = shift @corporatebodyids;
-	    
-	    my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
-	    
-	    if ($logger->is_debug){
-		$logger->debug("Corporatebodydata: ".YAML::Syck::Dump($corporatebody_fields_ref));
-	    }
-	    
-	    my @subfields = ();
-	    
-	    # Ansetzungsform
-	    if ($corporatebody_fields_ref->{'0800'}){
-		push (@subfields,'a', cleanup($corporatebody_fields_ref->{'0800'}[0]{content}));
-	    }
-	    
-	    # GND
-	    if ($corporatebody_fields_ref->{'0010'}){
-		push (@subfields,'0', "(DE-588)".$corporatebody_fields_ref->{'0010'}[0]{content});
-	    }
-	    
-	    # Relationship
-	    push (@subfields,'4', "aut");
-	    
-	    my $new_field = MARC::Field->new('110', '2',  ' ', @subfields);
-	    
-	    push @{$output_fields_ref->{'110'}}, $new_field if ($new_field);
-	    
-	    $have_1xx = 1;
+    if ($firstcorporatebodyid){
+	# Erste in 110 2#
+	my $corporatebodyid = $firstcorporatebodyid;
+	
+	my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
+	
+	if ($logger->is_debug){
+	    $logger->debug("Corporatebodydata: ".YAML::Syck::Dump($corporatebody_fields_ref));
 	}
 	
-#	$marc_record->append_fields($new_field) if ($new_field);	    	
+	my @subfields = ();
+	
+	# Ansetzungsform
+	if ($corporatebody_fields_ref->{'0800'}){
+	    push (@subfields,'a', cleanup($corporatebody_fields_ref->{'0800'}[0]{content}));
+	}
+	
+	# GND
+	if ($corporatebody_fields_ref->{'0010'}){
+	    push (@subfields,'0', "(DE-588)".$corporatebody_fields_ref->{'0010'}[0]{content});
+	}
+	
+	# Relationship
+	push (@subfields,'4', "aut");
+	
+	my $new_field = MARC::Field->new('110', '2',  ' ', @subfields);
+	
+	push @{$output_fields_ref->{'110'}}, $new_field if ($new_field);
+	
+	$have_1xx = 1;
+    }
+
+    if (@corporatebodyids){
 
 	foreach my $corporatebodyid (@corporatebodyids){
 	    my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
@@ -1109,8 +1119,6 @@ while (my $json=<IN>){
 	    my $new_field = MARC::Field->new('710', '2',  ' ', @subfields);
 
 	    push @{$output_fields_ref->{'710'}}, $new_field if ($new_field);
-	    
-#	    $marc_record->append_fields($new_field) if ($new_field);	    	
 	}	
     }
 
@@ -1219,24 +1227,22 @@ while (my $json=<IN>){
     }
 
     # Beigefuegte Werte in 0361 behandeln
-    # {	
-    # 	if (defined $fields_ref->{'0361'}){
-    # 	    foreach my $item_ref (@{$fields_ref->{'0361'}}){
-    # 		my $content    = $item_ref->{content};
+    {	
+	if (defined $fields_ref->{'0361'}){
+	    foreach my $item_ref (@{$fields_ref->{'0361'}}){
+		my $content    = $item_ref->{content};
 
-    # 		my ($titel,$verfasser) = split(' / ',$content);
+		my @subfields = ();
 		
-    # 		my @subfields = ();
+		push (@subfields,'i', "Erweitert durch");
+		push (@subfields,'t', $content);
 		
-    # 		push (@subfields,'a', $titel) if ($titel;
-    # 		push (@subfields,'v', $desc) if ($verfasser);	
+		my $new_field = MARC::Field->new('787', '0',  '8', @subfields);
 		
-    # 		my $new_field = MARC::Field->new('249', ' ',  ' ', @subfields);
-		
-    # 		push @{$output_fields_ref->{'249'}}, $new_field if ($new_field);
-    # 	    }
-    # 	}
-    # }
+		push @{$output_fields_ref->{'787'}}, $new_field if ($new_field);
+	    }
+	}
+    }
     
     # Ueberordnungen entsprechen 0004 nach 773 schreiben
     {

@@ -884,7 +884,17 @@ while (my $json=<IN>){
 	
 	push @{$output_fields_ref->{'999'}}, $new_field if ($new_field);
     }
-    
+
+    # Alte ID in 035 mit "modifizierter" ISIL als Prefix sichern
+    {
+	my @subfields = ();
+	
+	push (@subfields,'a', "(".$isil."-".uc($database).")".$titleid);
+	
+	my $new_field = MARC::Field->new('035', ' ',  ' ', @subfields);
+	
+	push @{$output_fields_ref->{'035'}}, $new_field if ($new_field);
+    }
     $marc_record->add_fields('003',$isil);
 
     my $last_tstamp = "1970-01-01 12:00:00";
@@ -951,6 +961,17 @@ while (my $json=<IN>){
 	$logger->debug(YAML::Dump($fields_ref));
     }
 
+    my $is_band       = 0;
+    my $is_serialpart = 0;
+    
+    if (defined $fields_ref->{'0089'}){
+	$is_band = 1;
+    }    
+
+    if (defined $fields_ref->{'0451'}){
+	$is_serialpart = 1;
+    }    
+    
     # Normdaten processen
 
     my $have_1xx = 0; # Geistiger Schoepfer
@@ -1214,7 +1235,7 @@ while (my $json=<IN>){
 		my @subfields = ();
 		
 		push (@subfields,'t', $super_title) if ($super_title);
-		push (@subfields,'0', $super_titleid) if ($super_titleid);	
+		push (@subfields,'w', $super_titleid) if ($super_titleid);	
 		
 		my $new_field = MARC::Field->new('773', '0',  ' ', @subfields);
 		
@@ -1234,7 +1255,7 @@ while (my $json=<IN>){
 	$mediatype = "AR"; # Artikel
     }   
     elsif (defined $fields_ref->{'0519'}) {
-	$mediatype = "HS"; # Hochsculschrift
+	$mediatype = "HS"; # Hochschulschrift
     }   
     elsif (defined $fields_ref->{'0572'} || defined $fields_ref->{'0543'}) {
 	$mediatype = "CR"; # Zeitschrift/Serie
@@ -1547,13 +1568,21 @@ while (my $json=<IN>){
 
     # Bibliographic level
     my $biblevel="m"; # default: Monograph/Item
-    if ($mediatype eq "AR"){ # Artikel
+    if ($mediatype eq "AR" || $is_band){ # Artikel oder Band
 	$biblevel="a"; # Monographic component part
     }
     elsif ($mediatype eq "CR"){ # Zeitschrift/Serie
 	$biblevel="s"; # Serial
     }
+
+    if ($is_serialpart){
+	$biblevel="b"; # Serial component part
+    }
+
+    
     substr($leader,7,1) = $biblevel;
+
+    substr($leader,9,1) = "a"; # Unicode
     
     # Encoding level: Full level, material not examined
     substr($leader,17,1) = "1";

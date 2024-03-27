@@ -934,7 +934,7 @@ while (my $json=<IN>){
 	($year) = $fields_ref->{'0425'}[0]{content} =~m/(\d\d\d\d)/;
     }
 
-    my $lang = "eng";
+    my $lang = '###';
 
     if (defined $fields_ref->{'0015'}){
 	my $thislang = $fields_ref->{'0015'}[0]{content};
@@ -974,8 +974,8 @@ while (my $json=<IN>){
     
     # Normdaten processen
 
-    my $have_1xx = 0; # Geistiger Schoepfer
-    
+    my $have_1xx = 0; # Geistiger Schoepfer / Haupteintragung
+
     my @personids = ();
 
     foreach my $field ('0100','0101','0102','0103'){	    
@@ -983,12 +983,12 @@ while (my $json=<IN>){
 	    push @personids, $thisfield_ref->{id};
 	}
     }
-    
+
     if (@personids){
 	
 	# Erste in 100 1#
 	my $personid = shift @personids;
-	
+
 	my $person_fields_ref = $data_person{$personid};
 
 	if ($logger->is_debug){
@@ -1053,36 +1053,38 @@ while (my $json=<IN>){
     }
     
     if (@corporatebodyids){
-	
-	# Erste in 110 2#
-	my $corporatebodyid = shift @corporatebodyids;
-	
-	my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
 
-	if ($logger->is_debug){
-	    $logger->debug("Corporatebodydata: ".YAML::Syck::Dump($corporatebody_fields_ref));
+	unless ($have_1xx){ # only one main entry
+	    # Erste in 110 2#
+	    my $corporatebodyid = shift @corporatebodyids;
+	    
+	    my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Corporatebodydata: ".YAML::Syck::Dump($corporatebody_fields_ref));
+	    }
+	    
+	    my @subfields = ();
+	    
+	    # Ansetzungsform
+	    if ($corporatebody_fields_ref->{'0800'}){
+		push (@subfields,'a', cleanup($corporatebody_fields_ref->{'0800'}[0]{content}));
+	    }
+	    
+	    # GND
+	    if ($corporatebody_fields_ref->{'0010'}){
+		push (@subfields,'0', "(DE-588)".$corporatebody_fields_ref->{'0010'}[0]{content});
+	    }
+	    
+	    # Relationship
+	    push (@subfields,'4', "aut");
+	    
+	    my $new_field = MARC::Field->new('110', '2',  ' ', @subfields);
+	    
+	    push @{$output_fields_ref->{'110'}}, $new_field if ($new_field);
+	    
+	    $have_1xx = 1;
 	}
-	
-	my @subfields = ();
-
-	# Ansetzungsform
-	if ($corporatebody_fields_ref->{'0800'}){
-	    push (@subfields,'a', cleanup($corporatebody_fields_ref->{'0800'}[0]{content}));
-	}
-
-	# GND
-	if ($corporatebody_fields_ref->{'0010'}){
-	    push (@subfields,'0', "(DE-588)".$corporatebody_fields_ref->{'0010'}[0]{content});
-	}
-
-	# Relationship
-	push (@subfields,'4', "aut");
-	
-	my $new_field = MARC::Field->new('110', '2',  ' ', @subfields);
-
-	push @{$output_fields_ref->{'110'}}, $new_field if ($new_field);
-
-	$have_1xx = 1;
 	
 #	$marc_record->append_fields($new_field) if ($new_field);	    	
 
@@ -1102,7 +1104,7 @@ while (my $json=<IN>){
 	    }
 	    
 	    # Relationship
-	    push (@subfields,'4', "prt");
+	    push (@subfields,'4', "aut");
 	    	    
 	    my $new_field = MARC::Field->new('710', '2',  ' ', @subfields);
 
@@ -1216,6 +1218,26 @@ while (my $json=<IN>){
 #	$marc_record->append_fields($new_field) if ($new_field);	    	
     }
 
+    # Beigefuegte Werte in 0361 behandeln
+    # {	
+    # 	if (defined $fields_ref->{'0361'}){
+    # 	    foreach my $item_ref (@{$fields_ref->{'0361'}}){
+    # 		my $content    = $item_ref->{content};
+
+    # 		my ($titel,$verfasser) = split(' / ',$content);
+		
+    # 		my @subfields = ();
+		
+    # 		push (@subfields,'a', $titel) if ($titel;
+    # 		push (@subfields,'v', $desc) if ($verfasser);	
+		
+    # 		my $new_field = MARC::Field->new('249', ' ',  ' ', @subfields);
+		
+    # 		push @{$output_fields_ref->{'249'}}, $new_field if ($new_field);
+    # 	    }
+    # 	}
+    # }
+    
     # Ueberordnungen entsprechen 0004 nach 773 schreiben
     {
 	# Titel hat Ueberordnung
@@ -1311,6 +1333,26 @@ while (my $json=<IN>){
 		mult     => "001",
 		subfield => "",
 	    };
+	}
+
+	# Aufsplitten von Illustrationsangaben aus 0433 nach 0434
+	if (defined $fields_ref->{'0433'}){
+	    foreach my $thisfield_ref (@{$fields_ref->{'0433'}}){
+		my $content = $thisfield_ref->{content};
+
+		if ($content =~m/^(.+?) : (.+)$/){
+		    my $kollation = $1;
+		    my $illustr   = $2;
+		    $thisfield_ref->{content} = $kollation;
+		    $fields_ref->{'0434'} = [];
+		    push @{$fields_ref->{'0434'}}, {
+			content  => $illustr,
+			mult     => $thisfield_ref->{mult},
+			subfield => $thisfield_ref->{subfield},
+		    };
+		}
+		last;
+	    }
 	}
 	
 	if ($mediatype eq "AR"){ # Aufsatz

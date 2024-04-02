@@ -76,7 +76,11 @@
      IF thiscirculation.department_id.match('^(38|38-HLS)$');
        library_isil = "DE-38";
      ELSIF thiscirculation.department_id.match('^38-HWA$') ;
-       library_isil = "DE-38-HWA";     
+        IF thiscirculation.storage_id.match('^38-HWA-THF$');
+          library_isil = "DE-38-326";	
+	ELSE ;
+          library_isil = "DE-38-HWA";
+	END;
      ELSIF thiscirculation.department_id.match('^KN3$') && thiscirculation.storage_id.match('^KN3-SCHLAD$') ;
        library_isil = "DE-Kn3-SL";     
      ELSIF thiscirculation.department_id.match('^KN3$') ;

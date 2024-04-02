@@ -495,7 +495,7 @@
         <div class="ob-titlemark ps-2 d-flex d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]
         </div>
 [% END # Signatur zu einzelnem Standort %]
-	<div class="d-flex flex-wrap ps-2">
+	<div class="d-flex ps-2">
           <div class="d-flex flex-wrap ob-titleactions">
 [% IF record_exists && record.id && record.database %]
 [%   IF NOT record_from_cache %]

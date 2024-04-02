@@ -231,7 +231,7 @@
     }
 
     .occupancyContainer {
-	max-width: 600px;
+	max-width: 300px;
     }
 
     #ob-occupancy_current {
@@ -893,9 +893,9 @@
 
     .ob-item .ob-titleactions {
 	white-space: nowrap;
-	margin-bottom: 1rem;
-	height: 45px;
-	padding-top: 0.2rem;
+	margin-bottom: 0.5rem;
+	/* height: 45px; */
+	padding-top: 0.4rem;
 	padding-bottom: 0.5rem;
     }
 

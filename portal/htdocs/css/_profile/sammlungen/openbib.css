@@ -106,6 +106,10 @@
 	z-index: 49;
     }
 
+    .ob-logged_in {
+	color: orange;
+    }
+    
     .ob-title {
 	font-size: 1.2em;
     }
@@ -118,7 +122,7 @@
     }
 
     /* kein caret */
-    #ob-titlist_options .dropdown-toggle::after, #ob-titlist_options_books .dropdown-toggle::after, #ob-titlist_options_articles .dropdown-toggle::after{
+    #ob-titlist_options .dropdown-toggle::after, #ob-titlist_options_books .dropdown-toggle::after, #ob-titlist_options_articles .dropdown-toggle::after, #ob-titlist_options_cartitems .dropdown-toggle::after, #ob-titlist_options_litlists .dropdown-toggle::after{
 	display: none;
     }
     
@@ -232,6 +236,10 @@
 
     #ob-occupancy_current {
 	margin-top: 180px;
+    }
+
+    #ob-barcode {
+	height: 70px;
     }
     
     #ob-maincontent {
@@ -881,9 +889,9 @@
 
     .ob-item .ob-titleactions {
 	white-space: nowrap;
-	margin-bottom: 1rem;
-	height: 45px;
-	padding-top: 0.2rem;
+	margin-bottom: 0.5rem;
+	/* height: 45px; */
+	padding-top: 0.4rem;
 	padding-bottom: 0.5rem;
     }
 
@@ -1978,6 +1986,14 @@ a.ext {
 }
 
 
+table.ob-title_fields td a {
+    text-decoration: underline;
+}
+
+table.ob-title_fields td a.btn {
+    text-decoration: none;
+}
+
 @media only screen and (max-width: 1400px) {
 
     #ob-startpage .ob-mainsearchform .container {
@@ -2283,12 +2299,14 @@ header nav .navbar-brand {
 
 header .navbottom {
     background-color: #3e566c;
-    height: 90px;
+    /*    height: 90px; */
+    height: auto;
+    padding-top: 24px;
+    padding-bottom: 25px;
 }
 
 header .navbottom .brandname {
     white-space: nowrap;
-    padding-top: 24px;
     font-size: 1.5em; 
 }
 
@@ -2413,6 +2431,10 @@ a.card-link, a.card-link:hover {
 
 }
 
+.modal-xl {
+    max-width: 1350px;
+}
+
 @media all and (min-width: 992px) {
     .navbar .nav-item .dropdown-menu {
 	display: none;
@@ -2445,7 +2467,12 @@ a.card-link, a.card-link:hover {
 }
 
 @media (min-width: 576px) {
+    header .navbottom {
+	padding-top: 26px;
+	height: auto;
+    }
 
+    
     .ob-jumbotron {
 	padding: 4rem 2rem;
     }
@@ -2457,6 +2484,24 @@ a.card-link, a.card-link:hover {
     
 }
 
+@media (max-width: 768px) {
+
+    header .navbottom  {
+	padding-top:10px;
+	padding-bottom: 10px;
+    }
+}
+
+
+/*
+@media (max-width: 576px) {
+
+    header .navbottom .brandname {
+	font-size: 1.1em;
+    }
+}
+*/
+
 @media screen and (max-width:480px) {
     html {
 	font-size: 0.8em;
@@ -2466,13 +2511,11 @@ a.card-link, a.card-link:hover {
 	border-bottom: solid 5px #90c4eb;
     }
             
-    header .navbottom {
+/*    header .navbottom {
 	height: 50px;
     }
+*/
     
-    header .navbottom .brandname {
-	padding-top: 9px;
-    }
 
     .ob-jump_top, .ob-jump_top:hover {
 	position: fixed;

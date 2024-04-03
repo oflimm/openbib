@@ -1,0 +1,15 @@
+[Unit]
+Description=Starman
+ 
+[Service]
+Type=forking
+User=openbib
+Group=www-data
+ExecStart=starman --user openbib --port 8008 --workers 15 --backlog 4096 -D --error-log /var/log/openbib/starman.log --pid /var/log/openbib/starman.pid /opt/openbib/conf/portal.psgi
+PIDFile=/var/log/openbib/starman.pid
+#Restart=always
+Nice=19
+LimitNOFILE=16384
+ 
+[Install]
+WantedBy=multi-user.target

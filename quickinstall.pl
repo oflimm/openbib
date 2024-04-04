@@ -144,6 +144,11 @@ my %git_links = (
     "$repositoryroot/conv/auto/openbib-autocron.pl"          => "/opt/openbib/autoconv/bin/openbib-autocron.pl",
     "$repositoryroot/conv/auto/openbib-autocron-weekdays.pl" => "/opt/openbib/autoconv/bin/openbib-autocron-weekdays.pl",
     "$repositoryroot/conv/auto/openbib-autocron-weekend.pl"  => "/opt/openbib/autoconv/bin/openbib-autocron-weekend.pl",
+    "$repositoryroot/conv/meta/enrich_meta.pl" => "/opt/openbib/conv/enrich_meta.pl",
+    "$repositoryroot/conv/auto/autojoinindex-in-parallel.pl" => "/opt/openbib/autoconv/bin/autojoinindex-in-parallel.pl",
+    "$repositoryroot/conv/auto/index-in-parallel.pl" => "/opt/openbib/autoconv/bin/index-in-parallel.pl",
+    "$repositoryroot/conv/auto/openbib-autocron-full.pl" => "/opt/openbib/autoconv/bin/openbib-autocron-full.pl",
+    "$repositoryroot/conv/auto/openbib-autocron-pda.pl" => "/opt/openbib/autoconv/bin/openbib-autocron-pda.pl",
     "$repositoryroot/conv/simple/conf/paperc.yml"          => "/opt/openbib/conf/paperc.yml",    
     "$repositoryroot/conv/simple/conf/nla.yml"             => "/opt/openbib/conf/nla.yml",
     "$repositoryroot/conv/aleph/conf/spoho.yml"            => "/opt/openbib/conf/spoho.yml",
@@ -227,6 +232,7 @@ my %copy_files = (
     "$repositoryroot/portal/perl/conf/convert.yml-dist"               => "/opt/openbib/conf/convert.yml",
     "$repositoryroot/portal/perl/conf/dispatch_rules.yml-dist"        => "/opt/openbib/conf/dispatch_rules.yml",
     "$repositoryroot/portal/starman/init.d/starman"                   => "/etc/init.d/starman",
+    "$repositoryroot/portal/starman/systemd/starman.service"          => "/etc/systemd/system/starman.service",
     "$repositoryroot/portal/perl/modules/OpenBib/Search/Backend/Z3950/USBK/Config.pm-dist"
                                                            => "$repositoryroot/portal/perl/modules/OpenBib/Search/Backend/Z3950/USBK/Config.pm",
 );

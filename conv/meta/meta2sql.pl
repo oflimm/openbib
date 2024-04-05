@@ -1080,7 +1080,7 @@ TITLEITEMTRUNC
 }
 
 if ($incremental){
-    print CONTROL << "TITLEITEM";
+    print CONTROL << "TITLEITEMINC";
 TRUNCATE TABLE holding, holding_fields cascade;
 
 COPY holding FROM PROGRAM 'zcat $dir/$stammdateien_ref->{'holding'}{outfile}' WITH DELIMITER '' NULL AS '';
@@ -1185,7 +1185,7 @@ DROP TABLE IF EXISTS corporatebody_delete;
 DROP TABLE IF EXISTS classification_delete;
 DROP TABLE IF EXISTS subject_delete;
 DROP TABLE IF EXISTS title_delete;
-TITLEITEM
+TITLEITEMINC
 }
 else {
     print CONTROL << "TITLEITEM";

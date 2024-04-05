@@ -54,7 +54,7 @@ while (<>){
 	my $new_fields_ref = [];
 	foreach my $item_ref (@{$field_scheme_ref->{'0984'}}){
 	    my ($mult) = $item_ref->{'8'} =~m/(\d+)/;	    
-	    my $gnd    = $item_ref->{'0'};
+	    my $gnd    = $item_ref->{'0'} || '';
 	    my $name   = $item_ref->{'a'};	    
 
 	    $gnd =~s/^\(DE-588\)//;

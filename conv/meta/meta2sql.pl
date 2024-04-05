@@ -707,7 +707,7 @@ if ($addsuperpers) {
 
 $logger->info("### $database: Bearbeite meta.title");
 system("ls -l");
-open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | " )     || die "IN konnte nicht geoeffnet werden";
+open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | " )     || die "IN ".$stammdateien_ref->{'title'}{'infile'}." konnte nicht geoeffnet werden: ";
 
 binmode (IN, ":raw");
 

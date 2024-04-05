@@ -675,22 +675,24 @@ if ($addsuperpers) {
 	
         next unless (defined $storage_ref->{listitemdata_superid}{$id} && ref  $storage_ref->{listitemdata_superid}{$id} eq "HASH");
 
-        # Anreichern mit content;
-        foreach my $field ('0100','0101','0102','0103','1800','4308') {
-            if (defined $record_ref->{fields}{$field}) {
-                foreach my $item_ref (@{$record_ref->{fields}{$field}}) {
-                    my $personid   = $item_ref->{id} || '';
-                    
-                    if ($personid && exists $storage_ref->{listitemdata_person}{$personid}) {
-                        $item_ref->{content} = $storage_ref->{listitemdata_person}{$personid};
-                    }
-                    else {
-                        $logger->error("PER ID $personid doesn't exist in TITLE ID $id");
-                    }
-                }
-            }
-        }
-
+	unless ($scheme eq "marc"){
+	    # Anreichern mit content;
+	    foreach my $field ('0100','0101','0102','0103','1800','4308') {
+		if (defined $record_ref->{fields}{$field}) {
+		    foreach my $item_ref (@{$record_ref->{fields}{$field}}) {
+			my $personid   = $item_ref->{id} || '';
+			
+			if ($personid && exists $storage_ref->{listitemdata_person}{$personid}) {
+			    $item_ref->{content} = $storage_ref->{listitemdata_person}{$personid};
+			}
+			else {
+			    $logger->error("PER ID $personid doesn't exist in TITLE ID $id");
+			}
+		    }
+		}
+	    }
+	}
+	
         $storage_ref->{listitemdata_superid}{$id} = $record_ref;
 
        if ($count % 100000 == 0){

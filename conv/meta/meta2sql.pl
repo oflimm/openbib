@@ -679,9 +679,9 @@ if ($addsuperpers) {
         foreach my $field ('0100','0101','0102','0103','1800','4308') {
             if (defined $record_ref->{fields}{$field}) {
                 foreach my $item_ref (@{$record_ref->{fields}{$field}}) {
-                    my $personid   = $item_ref->{id};
+                    my $personid   = $item_ref->{id} || '';
                     
-                    if (exists $storage_ref->{listitemdata_person}{$personid}) {
+                    if ($personid && exists $storage_ref->{listitemdata_person}{$personid}) {
                         $item_ref->{content} = $storage_ref->{listitemdata_person}{$personid};
                     }
                     else {
@@ -704,7 +704,7 @@ if ($addsuperpers) {
 }
 
 $logger->info("### $database: Bearbeite meta.title");
-
+system("ls -l");
 open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | " )     || die "IN konnte nicht geoeffnet werden";
 
 binmode (IN, ":raw");

@@ -1511,6 +1511,40 @@ while (my $json=<IN>){
 	}
     }    
 
+    # 3330 nur in Titeldaten, d.h. ohne sinnvolle Exemplarinformationen wie Signaturen? Dann daraus 040 erzeugen
+    if (defined $fields_ref->{'3330'} && !defined $output_fields_ref->{'040'}){
+	foreach my $item_ref (@{$fields_ref->{'3330'}}){
+	    my $this_libraryid = $item_ref->{content};
+
+	    if ($this_libraryid && $locationfile){
+		# Falsche Location (in 3330), dann Aenderungsversuch
+		$logger->debug("Libraryid ist '$this_libraryid'");
+		if ($location_ref->{change}{$this_libraryid}){
+		    $logger->info("Korrektur Libraryid $this_libraryid -> ".$location_ref->{change}{$this_libraryid});
+		    $this_libraryid = $location_ref->{change}{$this_libraryid};
+		}
+
+		unless ($location_ref->{valid}{$this_libraryid}){
+#		    $logger->error(YAML::Dump($location_ref));
+		    $logger->error("Libraryid $this_libraryid ist nicht gueltig");
+		    $this_libraryid = "";
+		}
+	    }
+
+	    if ($this_libraryid){
+		my @subfields = ();
+		
+		push (@subfields,'a', $this_libraryid) ;
+		push (@subfields,'b', 'ger') ;
+		push (@subfields,'c', 'DE-38') ;
+		
+		my $new_field = MARC::Field->new('040', ' ',  ' ', @subfields);
+		
+		push @{$output_fields_ref->{'040'}}, $new_field if ($new_field);
+	    }
+	}
+    }
+
     # Felder aus Mapping-Datei verarbeiten
     foreach my $marcfield (keys %{$title_mapping_ref}){
 	my ($ind1)    = $marcfield =~m/^..._(.)_.$/;

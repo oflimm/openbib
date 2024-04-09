@@ -49,6 +49,10 @@
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('locations_loc')}.csv?l=${lang}"
 	  }
           {
+	     type = 'csv (seats)'
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('locations_loc')}.csv?l=${lang};seats=1"
+	  }
+          {
 	     type = 'json'
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('locations_loc')}.json?l=${lang}"
 	  }

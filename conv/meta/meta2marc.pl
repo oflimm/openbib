@@ -1720,7 +1720,7 @@ sub cleanup {
     $content=~s/&lt;/</g;
     $content=~s/&gt;/>/g;
     $content=~s/&amp;/&/g;
-    $content=~s/^¬//;
+    $content=~s/¬//;
     
     return $content;
 }

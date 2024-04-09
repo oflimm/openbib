@@ -3,7 +3,7 @@
 nur_arbeitsplaetze = query.param('seats');
 
 IF nur_arbeitsplaetze;
-x = csv.print(r,['identifier','description','anzahl_arbeitsplaetze','sigel','geo']);
+x = csv.print(r,['identifier','description','anzahl_arbeitsplaetze','sigel']);
 ELSE ;
 x = csv.print(r,['identifier','type','description','shortdesc','institution','adresse','gebaeude','gemeinsame_bibliothek','weitere_kataloge','telefon','fax','email','internet','bibliothekare','oeffnungszeiten','anzahl_arbeitsplaetze','bestand_monos','bestand_zeitschriften','laufende_zeitschriften','sammelgebiete','art','sigel','geo']);
 END;
@@ -33,7 +33,7 @@ FOREACH location IN locations ;
   geo = field.${"L0280"}.first.content;
 
   IF nur_arbeitsplaetze ;
-    IF anzahlarbeitsplaetze ;
+    IF anzahlarbeitsplaetze && anzahlarbeitsplaetze.match('[0-9]+') ;
       x = csv.print(r,[location.identifier,location.description,anzahlarbeitsplaetze,sigel]);
     END;
   ELSE ;

@@ -1,6 +1,12 @@
 [%-
 
+nur_arbeitsplaetze = query.param('seats');
+
+IF nur_arbeitsplaetze;
+x = csv.print(r,['identifier','description','anzahl_arbeitsplaetze','sigel','geo']);
+ELSE ;
 x = csv.print(r,['identifier','type','description','shortdesc','institution','adresse','gebaeude','gemeinsame_bibliothek','weitere_kataloge','telefon','fax','email','internet','bibliothekare','oeffnungszeiten','anzahl_arbeitsplaetze','bestand_monos','bestand_zeitschriften','laufende_zeitschriften','sammelgebiete','art','sigel','geo']);
+END;
 
 FOREACH location IN locations ;
 
@@ -26,7 +32,13 @@ FOREACH location IN locations ;
   sigel = field.${"L0250"}.first.content;
   geo = field.${"L0280"}.first.content;
 
-  x = csv.print(r,[location.identifier,location.type,location.description,location.shortdesc,institution,adresse,gebaeude,gemeinsame_bibliothek,weitere_kataloge,telefon,fax,e_mail,internet,bibliothekare,oeffnungszeiten,anzahlarbeitsplaetze,bestand_monos,bestand_zeitschriften,laufende_zeitschriften,sammelgebiete,art,sigel,geo]);
+  IF nur_arbeitsplaetze ;
+    IF anzahlarbeitsplaetze ;
+      x = csv.print(r,[location.identifier,location.description,anzahlarbeitsplaetze,sigel]);
+    END;
+  ELSE ;
+    x = csv.print(r,[location.identifier,location.type,location.description,location.shortdesc,institution,adresse,gebaeude,gemeinsame_bibliothek,weitere_kataloge,telefon,fax,e_mail,internet,bibliothekare,oeffnungszeiten,anzahlarbeitsplaetze,bestand_monos,bestand_zeitschriften,laufende_zeitschriften,sammelgebiete,art,sigel,geo]);
+  END ;
 END ;
 
 -%]

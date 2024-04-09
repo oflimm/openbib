@@ -118,7 +118,7 @@ convtab:
         from_field: '0437'		
         subfield: 'e'
 
-    '337_ _ ': # Medientyp
+    '655_ _4': # Medientyp
       -
         from_field: '0800'		
         subfield: 'a'

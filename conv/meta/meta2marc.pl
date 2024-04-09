@@ -949,6 +949,7 @@ while (my $json=<IN>){
     }
     
     substr($fixed_length_008,0,6)  = $create_tstamp;
+    substr($fixed_length_008,6,1)  = "s";
     substr($fixed_length_008,7,4)  = $year if ($year);    
     substr($fixed_length_008,15,3) = '|||';
     substr($fixed_length_008,24,1) = '|';
@@ -1299,6 +1300,49 @@ while (my $json=<IN>){
 	push @{$output_fields_ref->{'942'}}, $new_field if ($new_field);
     }
 
+    # Verschiedene Defaults setzten
+    {
+	# 336$b = txt
+	# see: https://www.loc.gov/standards/valuelist/rdacontent.html
+	{
+	    my @subfields = ();
+	    
+	    push (@subfields,'b', "txt");
+	    push (@subfields,'2', "rdacontent");
+	    
+	    my $new_field = MARC::Field->new('336', ' ',  ' ', @subfields);
+	    
+	    push @{$output_fields_ref->{'336'}}, $new_field if ($new_field);
+	}
+
+	# 337$b = n
+	# see: https://www.loc.gov/standards/valuelist/rdamedia.html
+	{
+	    my @subfields = ();
+	    
+	    push (@subfields,'b', "n");
+	    push (@subfields,'2', "rdamedia");
+	    
+	    my $new_field = MARC::Field->new('337', ' ',  ' ', @subfields);
+	    
+	    push @{$output_fields_ref->{'337'}}, $new_field if ($new_field);
+	}
+	
+	# 338$b = nc = Volume
+	# see: https://www.loc.gov/standards/valuelist/rdacarrier.html
+	{
+	    my @subfields = ();
+	    
+	    push (@subfields,'b', "nc");
+	    push (@subfields,'2', "rdacarrier");
+	    
+	    my $new_field = MARC::Field->new('338', ' ',  ' ', @subfields);
+	    
+	    push @{$output_fields_ref->{'338'}}, $new_field if ($new_field);
+	}
+	
+    }
+    
     # Korrektur der Ursprungsdaten
     {
 	
@@ -1666,8 +1710,8 @@ while (my $json=<IN>){
 
     substr($leader,9,1) = "a"; # Unicode
     
-    # Encoding level: Full level, material not examined
-    substr($leader,17,1) = "1";
+    # Encoding level: 1 Full level, material not examined ; blank Vallstaendiges Niveau
+    substr($leader,17,1) = " ";
 
     # Descriptive cataloging form: ISBD punctuation omitted    
     substr($leader,18,1) = "c"; 

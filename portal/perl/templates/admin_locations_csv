@@ -33,7 +33,7 @@ FOREACH location IN locations ;
   geo = field.${"L0280"}.first.content;
 
   IF nur_arbeitsplaetze ;
-    IF location.identifier.match('^DE-38') && NOT location.identifier.match('[A-Z]$') ;
+    IF location.identifier.match('^DE-38') && NOT location.identifier.match('[A-Za-z]$') ;
       x = csv.print(r,[location.identifier,location.description,anzahlarbeitsplaetze,bestand_monos,bestand_zeitschriften,laufende_zeitschriften,sigel]);
     END;
   ELSE ;

@@ -255,35 +255,40 @@ sub show_record {
     my $no_log        = $query->param('no_log')    || '';
     my $flushcache    = $query->param('flush_cache')    || '';
 
-    my $database_in_view = 0;
-
-    my @dbs_in_view = $config->get_viewdbs($view);
-
-    # Add 'special' databases of type api
-    push @dbs_in_view, $config->get_apidbs;
-    
-    foreach my $dbname (@dbs_in_view){
-        if ($dbname eq $database){
-            $database_in_view = 1;
-            last;
-        }
+    # Katalog aktiv bzw. in View?
+    unless ($config->database_defined_in_view({ database => $database, view => $view }) && $config->db_is_active($database)){
+	return $self->print_warning("Der Katalog existiert nicht.");
     }
     
-    # Databases with API are always considered
-#     foreach my $dbname ($config->get_apidbs){
+#     my $database_in_view = 0;
+
+#     my @dbs_in_view = $config->get_viewdbs($view);
+
+#     # Add 'special' databases of type api
+#     push @dbs_in_view, $config->get_apidbs;
+    
+#     foreach my $dbname (@dbs_in_view){
 #         if ($dbname eq $database){
 #             $database_in_view = 1;
 #             last;
 #         }
 #     }
     
-    unless ($database_in_view || $user->is_admin){
-	if ($logger->is_debug){
-	    $logger->debug("Access denied for database $database. Viewdbs: ".YAML::Dump(@dbs_in_view));
-	}
-        $self->header_add('Status' => 404); # NOT_FOUND
-        return;
-    }
+#     # Databases with API are always considered
+# #     foreach my $dbname ($config->get_apidbs){
+# #         if ($dbname eq $database){
+# #             $database_in_view = 1;
+# #             last;
+# #         }
+# #     }
+    
+#     unless ($database_in_view || $user->is_admin){
+# 	if ($logger->is_debug){
+# 	    $logger->debug("Access denied for database $database. Viewdbs: ".YAML::Dump(@dbs_in_view));
+# 	}
+#         $self->header_add('Status' => 404); # NOT_FOUND
+#         return;
+#     }
     
 #     if ($user->{ID} && !$userid){
 #         my $args = "?l=".$self->param('lang');

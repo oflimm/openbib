@@ -332,6 +332,11 @@ sub show_record {
     my $queryid       = $query->param('queryid')   || '';
     my $format        = $query->param('format')    || 'full';
     my $no_log        = $query->param('no_log')    || '';
+
+    # Katalog aktiv bzw. in View?
+    unless ($config->database_defined_in_view({ database => $database, view => $view }) && $config->db_is_active($database)){
+	return $self->print_warning("Der Katalog existiert nicht.");
+    }
     
     if ($user->{ID} && !$userid){
         my $args = "?l=".$self->param('lang');

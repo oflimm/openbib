@@ -31,19 +31,19 @@
 
       IF this_representation.type == 'csv'
       -%]
-<a class="ob-representation_csv ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext(" Ressource im CSV-Format") %]" href="[% this_representation.url %]">CSV</a>&nbsp;
+<a class="ob-representation_csv ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext(" Ressource im CSV-Format") %]" href="[% this_representation.url %]">[% IF this_representation.desc %][% this_representation.desc %][% ELSE %]CSV[% END %]</a>&nbsp;
       [%-
       ELSIF this_representation.type == 'json'
       -%]
-<a class="ob-representation_json ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext("Ressource im JSON-Format") %]" href="[% this_representation.url %]">{JSON}</a>&nbsp;
+<a class="ob-representation_json ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext("Ressource im JSON-Format") %]" href="[% this_representation.url %]">[% IF this_representation.desc %][% this_representation.desc %][% ELSE %]{JSON}[% END %]</a>&nbsp;
       [%-
       ELSIF this_representation.type == 'rss' ;
       -%]
-<a class="ob-representation_rss ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext("Ressource als RSS-Feed") %]" href="[% this_representation.url %]"><i class="fas fa-rss"></i></a>
+<a class="ob-representation_rss ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext("Ressource als RSS-Feed") %]" href="[% this_representation.url %]">[% IF this_representation.desc %][% this_representation.desc %][% ELSE %]<i class="fas fa-rss"></i>[% END %]</a>
       [%-
       ELSIF this_representation.type == 'dfg' ;
       -%]
-<a class="ob-reprensentation_dfg ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext("Anzeige der Ressource im DFG-Viewer") %]" href="[% this_representation.url %]" target="dfgviewer"><img src="/images/openbib/dfgviewer.png" alt="DFG-Viewer" /></a>
+<a class="ob-reprensentation_dfg ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext("Anzeige der Ressource im DFG-Viewer") %]" href="[% this_representation.url %]" target="dfgviewer">[% IF this_representation.desc %][% this_representation.desc %][% ELSE %]<img src="/images/openbib/dfgviewer.png" alt="DFG-Viewer" />[% END %]</a>
       [%-
       END ; 
    END -%]

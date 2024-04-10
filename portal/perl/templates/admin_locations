@@ -47,10 +47,12 @@
           {
 	     type = 'csv'
 	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('locations_loc')}.csv?l=${lang}"
+	     desc = 'CSV (alles)'
 	  }
           {
-	     type = 'csv (seats)'
-	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('locations_loc')}.csv?l=${lang};seats=1"
+	     type = 'csv'
+	     url  = "${path_prefix}/${config.get('admin_loc')}/${config.get('locations_loc')}.csv?l=${lang};his=1"
+	     desc = 'CSV (HIS)'
 	  }
           {
 	     type = 'json'

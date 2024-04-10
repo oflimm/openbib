@@ -48,6 +48,9 @@ my $konvdir       = $config->{'conv_dir'};
 my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
+print "### $pool: Erweiterung um Standort DE-38-USBFB \n";
+
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Prefixen der Signaturen mit 'VWL/128/'\n";
 

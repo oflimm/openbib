@@ -49,6 +49,10 @@ my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 
+print "### $pool: Erweiterung um Standort DE-38-USBFB \n";
+
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+
 print "### $pool: Prefixen der Signaturen mit 'VWL/103/'\n";
 
 system("cd $rootdir/data/$pool ; $rootdir/filter/$pool/change-mark.pl < meta.holding > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");

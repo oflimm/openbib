@@ -208,6 +208,7 @@ rswkswt_done      = {};
 # Preprocessing
 
 rswkswt_done = {};
+person_done  = {};
 
 # Lizensierter Volltext? (Ausgabe Zugriffshinweis)
 is_licensed = 0;
@@ -334,6 +335,8 @@ FOREACH field IN normdata;
          searchterm    = uri_escape(content);
          searchprefix  = config.get('searchfield').person.prefix;
 
+         NEXT IF person_done.${searchterm} == 1;
+	 
          resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/lobidgnd/${config.get('titles_loc')}/id/${gndid}";
          localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
@@ -351,6 +354,8 @@ FOREACH field IN normdata;
 	     content_map.${'Person'} = [];
 	   END;
            content_map.${'Person'}.push(content);
+
+           person_done.${searchterm} = 1;
 	 END;
 
     CASE [ "T0110" "T0710" ];

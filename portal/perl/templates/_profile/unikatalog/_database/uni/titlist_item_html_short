@@ -170,6 +170,8 @@
      personslength = 0 ;
      truncatepers  = 0 ;
 
+     person_done = {};
+     
      # Personen
      FOREACH part IN item.${'T0100'} ;
        thislength = part.content.length ;
@@ -177,10 +179,14 @@
          searchterm    = uri_escape(part.${'a'});
          searchprefix  = config.get('searchfield').personstring.prefix;
 
+         NEXT IF person_done.${searchterm} == 1;
+
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
          persons.push(part.${'a'});
          personslength = personslength+thislength ;
+
+         person_done.${searchterm} = 1;
        ELSE ;
          truncatepers = 1 ;
        END ;
@@ -192,10 +198,14 @@
          searchterm    = uri_escape(part.${'a'});
          searchprefix  = config.get('searchfield').personstring.prefix;
 
+         NEXT IF person_done.${searchterm} == 1;
+
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
          persons.push(part.${'a'});
          personslength = personslength+thislength ;
+
+         person_done.${searchterm} = 1;
        ELSE ;
          truncatepers = 1 ;
        END ;
@@ -213,10 +223,14 @@
          searchterm    = uri_escape(part.${'a'});
          searchprefix  = config.get('searchfield').personstring.prefix;
 
+         NEXT IF person_done.${searchterm} == 1;
+
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
          persons.push(part.${'a'});
          personslength = personslength+thislength ;
+
+         person_done.${searchterm} = 1;
        ELSE ;
          truncatepers = 1 ;
        END ;
@@ -237,6 +251,8 @@
 
          persons.push(part.${'a'});
          personslength = personslength+thislength ;
+
+         person_done.${searchterm} = 1;
        ELSE ;
          truncatepers = 1 ;
        END ;
@@ -253,10 +269,14 @@
          searchterm    = uri_escape(part.${'a'});
          searchprefix  = config.get('searchfield').personstring.prefix;
 
+         NEXT IF person_done.${searchterm} == 1;
+
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
          persons.push(part.${'a'});
          personslength = personslength+thislength ;
+
+         person_done.${searchterm} = 1;
        ELSE ;
          truncatepers = 1 ;
        END ;

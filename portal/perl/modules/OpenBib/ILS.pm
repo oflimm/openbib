@@ -409,6 +409,20 @@ sub make_pda_order {
 	return $response_ref	
     }
 
+    if (defined $result_ref->{NotOK}){
+	$response_ref = {
+	    "error" => "error",
+		"error_description" => $result_ref->{NotOK},
+		"code" => 405,
+	};
+	
+	if ($logger->is_debug){
+	    $response_ref->{debug} = $result_ref;
+	}
+
+	return $response_ref	
+    }
+    
     $response_ref = {
 	    "code" => 405,
 		"error" => "unknown error",

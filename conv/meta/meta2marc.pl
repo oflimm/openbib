@@ -1651,7 +1651,7 @@ while (my $json=<IN>){
 	{
 	    foreach my $mult (sort keys %{$marcfields_ref}){
 		foreach my $thisitem_ref (@{$marcfields_ref->{$mult}}){
-		    if ($fieldno = "773" && $thisitem_ref->{ind1} eq "8" && $thisitem_ref->{ind2} && $thisitem_ref->{subfield} eq "t"){
+		    if ($fieldno eq "773" && $thisitem_ref->{ind1} eq "8" && $thisitem_ref->{ind2} && $thisitem_ref->{subfield} eq "t"){
 			push @{$marcfields_ref->{$mult}}, {
 			    ind1     => $thisitem_ref->{ind1},
 			    ind2     => $thisitem_ref->{ind2},

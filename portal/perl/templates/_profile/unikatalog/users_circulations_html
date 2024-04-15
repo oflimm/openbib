@@ -45,7 +45,7 @@
 
     <img id="ob-barcode" class="img-fluid" src="[% path_prefix %]/connector/barcode?text=[% username |uri %]"/>
 
-    <p>[% username %][% userdata.external_group %][% IF ils_group %] ([% ils_group %])[% END %]</p>
+    <p>[% username %][% IF ils_group %] ([% ils_group %])[% END %]</p>
 
   </div>
 

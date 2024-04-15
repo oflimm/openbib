@@ -13,7 +13,22 @@
 -%]
 [%-
 
- this_json_output = {
+  ils_group_desc = {
+    '1' => 'Ersthörer*innen der Uni Köln'
+    '2' => 'Beschäftigte der Uni Köln'
+    '3' => 'Angehörige der Uni Köln'
+    '4' => 'Externe/Beschäftigte'
+    '5' => 'Externe ohne Jahresgebühr'
+    '6' => 'Externe mit Jahresgebühr'
+  };
+
+  ils_groupid = userdata.external_group;
+  ils_group   = "";
+  IF ils_groupid ;
+    ils_group = ils_group_desc.${ils_groupid};
+  END;
+
+  this_json_output = {
      link = {
           rel = 'self'
           href = location
@@ -21,6 +36,13 @@
 
      loginname    = loginname
      id           = user.ID
+     ils = {
+       id       = userdata.external_id
+       group    = {
+         name        = ils_groupid
+	 description = ils_group
+       }
+     }
      startdate    = userdata.startdate
      enddate      = userdata.enddate
      block_reason = userdata.block_reason

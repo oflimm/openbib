@@ -1,3 +1,20 @@
+[%-
+
+  ils_group_desc = {
+    '1' => 'Ersthörer*innen der Uni Köln'
+    '2' => 'Beschäftigte der Uni Köln'
+    '3' => 'Angehörige der Uni Köln'
+    '4' => 'Externe/Beschäftigte'
+    '5' => 'Externe ohne Jahresgebühr'
+    '6' => 'Externe mit Jahresgebühr'
+  };
+
+  ils_groupid = userdata.external_group;
+  ils_group   = "";
+  IF ils_groupid ;
+    ils_group = ils_group_desc.${ils_groupid};
+  END;
+-%]
 <!-- Start: Adressinformationen anzeigen -->
 <div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="addressModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">

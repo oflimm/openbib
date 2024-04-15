@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[%# USE dumper;dumper.dump(userdata)%]
+[% USE dumper;dumper.dump(userdata)%]
 [% IF userdata.block_reason %]
 <div class="alert alert-danger mt-2 mb-3 pt-4">
 <h2>[% msg.maketext("Ihr Bibliotheksausweis ist gesperrt!") %]</h2>
@@ -45,7 +45,7 @@
 
     <img id="ob-barcode" class="img-fluid" src="[% path_prefix %]/connector/barcode?text=[% username |uri %]"/>
 
-    <p>[% username %]</p>
+    <p>[% username %][% userdata.external_group %][% IF ils_group %] ([% ils_group %])[% END %]</p>
 
   </div>
 

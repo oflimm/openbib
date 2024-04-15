@@ -3758,7 +3758,9 @@ sub add_litlistentry {
     my $config = $self->get_config;
     
     my $new_litlistitem;
-    
+
+    $logger->debug("Adding litlistentry titleid: $titleid dbname: $dbname");
+
     if ($titleid && $dbname){
         # DBI: "delete from litlistitem where litlistid=? and titleid=? and dbname=?"
         my $litlistitem = $self->get_schema->resultset('Litlistitem')->search_rs(
@@ -5852,13 +5854,12 @@ sub delete_private_info {
         }
     )->update(
         {
-            nachname    => '',
-            vorname     => '',
-#            sperre      => '',
-            email       => '',	    
-#            sperrdatum  => '',
-            token       => '',
-            external_id => '',	    
+            nachname       => '',
+            vorname        => '',
+            email          => '',	    
+            token          => '',
+            external_id    => '',	    
+            external_group => '',	    
         }
     );
    
@@ -5882,12 +5883,11 @@ sub set_private_info {
         }
     )->update(
         {
-            nachname     => $userinfo_ref->{'surname'},
-            vorname      => $userinfo_ref->{'forename'},
-	    email        => $userinfo_ref->{'email'},
-	    external_id  => $userinfo_ref->{'external_id'},
-            # sperre     => $userinfo_ref->{'Sperre'},
-            # sperrdatum => $userinfo_ref->{'Sperrdatum'},
+            nachname       => $userinfo_ref->{'surname'},
+            vorname        => $userinfo_ref->{'forename'},
+	    email          => $userinfo_ref->{'email'},
+	    external_id    => $userinfo_ref->{'external_id'},
+	    external_group => $userinfo_ref->{'external_group'},
         }
     );
 
@@ -5908,17 +5908,18 @@ sub get_info {
     my $userinfo_ref={};
 
     if ($userinfo){
-        $userinfo_ref->{'id'}         = $userinfo->id;
-        $userinfo_ref->{'external_id'}= $userinfo->external_id;	
-        $userinfo_ref->{'nachname'}   = $userinfo->nachname;
-        $userinfo_ref->{'vorname'}    = $userinfo->vorname;
-        $userinfo_ref->{'sperre'}     = $userinfo->sperre;
-        $userinfo_ref->{'sperrdatum'} = $userinfo->sperrdatum;
-        $userinfo_ref->{'email'}      = $userinfo->email;
-	$userinfo_ref->{'status'}     = $userinfo->status;
-        $userinfo_ref->{'username'}   = $userinfo->username;
-        $userinfo_ref->{'password'}   = $userinfo->password;
-        $userinfo_ref->{'masktype'}   = $userinfo->masktype;
+        $userinfo_ref->{'id'}             = $userinfo->id;
+        $userinfo_ref->{'external_id'}    = $userinfo->external_id;	
+        $userinfo_ref->{'external_group'} = $userinfo->external_group;	
+        $userinfo_ref->{'nachname'}       = $userinfo->nachname;
+        $userinfo_ref->{'vorname'}        = $userinfo->vorname;
+        $userinfo_ref->{'sperre'}         = $userinfo->sperre;
+        $userinfo_ref->{'sperrdatum'}     = $userinfo->sperrdatum;
+        $userinfo_ref->{'email'}          = $userinfo->email;
+	$userinfo_ref->{'status'}         = $userinfo->status;
+        $userinfo_ref->{'username'}       = $userinfo->username;
+        $userinfo_ref->{'password'}       = $userinfo->password;
+        $userinfo_ref->{'masktype'}       = $userinfo->masktype;
 	$userinfo_ref->{'login_failure'}          = $userinfo->login_failure;
         $userinfo_ref->{'autocompletiontype'}     = $userinfo->autocompletiontype;
         $userinfo_ref->{'spelling_as_you_type'}   = $userinfo->spelling_as_you_type;

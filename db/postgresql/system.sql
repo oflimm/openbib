@@ -344,6 +344,7 @@ CREATE TABLE userinfo (
  username        TEXT,
  password        TEXT,
  external_id     TEXT,
+ external_group  TEXT,
  token           TEXT,
  login_failure   BIGINT default 0,
  status          TEXT,

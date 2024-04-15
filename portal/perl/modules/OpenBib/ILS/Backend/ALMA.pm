@@ -245,12 +245,13 @@ sub authenticate {
     $userdn = $entry->dn();
     
     # Essential Data
-    $account_ref->{username}    = $entry->get_value('USBportalName');
-    $account_ref->{fullname}    = $entry->get_value('cn');
-    $account_ref->{surname}     = $entry->get_value('sn');
-    $account_ref->{forename}    = $entry->get_value('givenName');
-    $account_ref->{email}       = $entry->get_value('USBEmailAdr');
-    $account_ref->{alma_id}     = $entry->get_value('uid');    
+    $account_ref->{username}  = $entry->get_value('USBportalName');
+    $account_ref->{fullname}  = $entry->get_value('cn');
+    $account_ref->{surname}   = $entry->get_value('sn');
+    $account_ref->{forename}  = $entry->get_value('givenName');
+    $account_ref->{email}     = $entry->get_value('USBEmailAdr');
+    $account_ref->{alma_id}   = $entry->get_value('uid');    
+    $account_ref->{alma_gid}  = $entry->get_value('gidNumber');    
     
     if ($logger->is_debug){
 	$logger->debug(YAML::Dump($entry));
@@ -278,12 +279,13 @@ sub authenticate {
 	$success = 1;
 	
 	# Store essential data
-	$response_ref->{userinfo}{username}    = $account_ref->{username};    
-	$response_ref->{userinfo}{fullname}    = $account_ref->{fullname};
-	$response_ref->{userinfo}{surname}     = $account_ref->{surname};
-	$response_ref->{userinfo}{forename}    = $account_ref->{forename};
-	$response_ref->{userinfo}{email}       = $account_ref->{email};
-	$response_ref->{userinfo}{external_id} = $account_ref->{alma_id};	
+	$response_ref->{userinfo}{username}       = $account_ref->{username};    
+	$response_ref->{userinfo}{fullname}       = $account_ref->{fullname};
+	$response_ref->{userinfo}{surname}        = $account_ref->{surname};
+	$response_ref->{userinfo}{forename}       = $account_ref->{forename};
+	$response_ref->{userinfo}{email}          = $account_ref->{email};
+	$response_ref->{userinfo}{external_id}    = $account_ref->{alma_id};	
+	$response_ref->{userinfo}{external_group} = $account_ref->{alma_gid};	
 	
     }
         
@@ -536,7 +538,9 @@ sub get_userdata {
     $response_ref->{phone2}            = $entry->get_value('USBztel');
     $response_ref->{email}             = $entry->get_value('USBEmailAdr');
     $response_ref->{email2}            = $entry->get_value('USB2Emailadr');
-
+    $response_ref->{external_id}       = $entry->get_value('uid');
+    $response_ref->{external_group}    = $entry->get_value('gidNumber');
+    
     my @block_reasons                  = $entry->get_value('ALMASperrgrund');
 
     @block_reasons = map { m/^([^:]+)::/ } @block_reasons;

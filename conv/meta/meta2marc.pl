@@ -1245,7 +1245,7 @@ while (my $json=<IN>){
 	}
     }
     
-    # Ueberordnungen entsprechen 0004 nach 773 schreiben
+    # Ueberordnungen entsprechen 0004 nach 773 0# schreiben
     {
 	# Titel hat Ueberordnung
 	if (defined $fields_ref->{'0004'}){
@@ -1644,12 +1644,31 @@ while (my $json=<IN>){
 	if ($logger->is_debug){
 	    $logger->debug(YAML::Dump($marcfields_ref));
 	}
+
+	# Nachtraegliche Korrekturen
+	
+	# 773 $i = Enthalten In zusaetzlich setzen fuer Aufsaetze in 773 80
+	{
+	    foreach my $mult (sort keys %{$marcfields_ref}){
+		foreach my $thisitem_ref (@{$marcfields_ref->{$mult}}){
+		    if ($fieldno = "773" && $item_ref->{ind1} eq "8" && $item_ref->{ind2} && item_ref->{subfield} eq "t"){
+			push @{$marcfields_ref->{$mult}}, {
+			    ind1     => $item_ref->{ind1},
+			    ind2     => $item_ref->{ind2},
+			    subfield => "i",
+			    content  => "Enthalten in",
+			}
+		    }
+		}
+	    }
+	}
 	
 	# Aus interner MARC21-Struktur valide MARC21-Ausgabedaten erzeugen
 	foreach my $mult (sort keys %{$marcfields_ref}){
 	    my $first = 1;
 	    my $new_field;
 	    foreach my $thisitem_ref (@{$marcfields_ref->{$mult}}){
+		
 		if ($first){
 		    $new_field = MARC::Field->new($fieldno, $thisitem_ref->{ind1}, $thisitem_ref->{ind2}, $thisitem_ref->{subfield} => $thisitem_ref->{content});
 

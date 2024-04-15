@@ -353,7 +353,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
                 $incremental_status_map{$result_ref->{id}}{old} = $result_ref->{import_hash};
             }
             
-            open(IN , "zcat ".$stammdateien_ref->{$type}{infile}." | " )        || die "IN konnte nicht geoeffnet werden";
+            open(IN , "zcat ".$stammdateien_ref->{$type}{infile}." | " )        || die "IN konnte nicht geoeffnet werden: $!";
 
 	    binmode (IN, ":raw");
 		;
@@ -379,7 +379,7 @@ foreach my $type (keys %{$stammdateien_ref}) {
 
             $actions_map_ref = analyze_status_map(\%incremental_status_map);
 
-            open(OUTDELETE,           ">:utf8",$stammdateien_ref->{$type}{deletefile})        || die "OUTDELETE konnte nicht geoeffnet werden";            
+            open(OUTDELETE,           ">:utf8",$stammdateien_ref->{$type}{deletefile})        || die "OUTDELETE konnte nicht geoeffnet werden: $!";            
 
             foreach my $id (keys %$actions_map_ref){
                 print OUTDELETE "$id\n" if ($actions_map_ref->{$id} eq "delete" || $actions_map_ref->{$id} eq "change"); 
@@ -395,12 +395,12 @@ foreach my $type (keys %{$stammdateien_ref}) {
         
         $logger->info("### $database: Bearbeite $stammdateien_ref->{$type}{infile} / $stammdateien_ref->{$type}{outfile}");
         
-        open(IN , "zcat ".$stammdateien_ref->{$type}{infile}." | " )        || die "IN konnte nicht geoeffnet werden";
+        open(IN , "zcat ".$stammdateien_ref->{$type}{infile}." | " )        || die "IN konnte nicht geoeffnet werden: $!";
 
 	binmode(IN,":raw");
 	
-        open(OUT,           "| gzip > ".$stammdateien_ref->{$type}{outfile})        || die "OUT konnte nicht geoeffnet werden";	
-        open(OUTFIELDS,     "| gzip > ".$stammdateien_ref->{$type}{outfile_fields}) || die "OUTFIELDS konnte nicht geoeffnet werden";
+        open(OUT,           "| gzip > ".$stammdateien_ref->{$type}{outfile})        || die "OUT konnte nicht geoeffnet werden: $!";	
+        open(OUTFIELDS,     "| gzip > ".$stammdateien_ref->{$type}{outfile_fields}) || die "OUTFIELDS konnte nicht geoeffnet werden: $!";
 
 	binmode(OUT,":utf8");
 	binmode(OUTFIELDS,":utf8");
@@ -488,13 +488,13 @@ $stammdateien_ref->{holding} = {
 if (-f $stammdateien_ref->{holding}{infile}){
     $logger->info("### $database: Bearbeite meta.holding");
 
-    open(IN , "zcat ".$stammdateien_ref->{'holding'}{'infile'}." | ")               || die "IN konnte nicht geoeffnet werden";
+    open(IN , "zcat ".$stammdateien_ref->{'holding'}{'infile'}." | ")               || die "IN konnte nicht geoeffnet werden: $!";
 
     binmode (IN, ":raw");
 
-    open(OUT,                   "| gzip > ".$stammdateien_ref->{holding}{outfile})               || die "OUT konnte nicht geoeffnet werden";
-    open(OUTFIELDS,             "| gzip > ".$stammdateien_ref->{holding}{outfile_fields})        || die "OUTFIELDS konnte nicht geoeffnet werden";
-    open(OUTTITLEHOLDING,       "| gzip > ".$stammdateien_ref->{holding}{outfile_titleholding})         || die "OUTTITLEHOLDING konnte nicht geoeffnet werden";
+    open(OUT,                   "| gzip > ".$stammdateien_ref->{holding}{outfile})               || die "OUT konnte nicht geoeffnet werden: $!";
+    open(OUTFIELDS,             "| gzip > ".$stammdateien_ref->{holding}{outfile_fields})        || die "OUTFIELDS konnte nicht geoeffnet werden: $!";
+    open(OUTTITLEHOLDING,       "| gzip > ".$stammdateien_ref->{holding}{outfile_titleholding})         || die "OUTTITLEHOLDING konnte nicht geoeffnet werden: $!";
 
     binmode(OUT,":utf8");
     binmode(OUTFIELDS,":utf8");
@@ -568,11 +568,11 @@ if (-f $stammdateien_ref->{holding}{infile}){
     $logger->error("### $database: meta.holding nicht vorhanden!");
 }
 
-open(OUTTITLETITLE,          "| gzip > title_title.dump.gz")           || die "OUTTITLETITLE konnte nicht geoeffnet werden";
-open(OUTTITLEPERSON,         "| gzip > title_person.dump.gz")          || die "OUTTITLEPERSON konnte nicht geoeffnet werden";
-open(OUTTITLECORPORATEBODY,  "| gzip > title_corporatebody.dump.gz")   || die "OUTTITLECORPORATEBODY konnte nicht geoeffnet werden";
-open(OUTTITLESUBJECT,        "| gzip > title_subject.dump.gz")         || die "OUTTITLESUBJECT konnte nicht geoeffnet werden";
-open(OUTTITLECLASSIFICATION, "| gzip > title_classification.dump.gz")  || die "OUTTITLECLASSIFICATION konnte nicht geoeffnet werden";
+open(OUTTITLETITLE,          "| gzip > title_title.dump.gz")           || die "OUTTITLETITLE konnte nicht geoeffnet werden: $!";
+open(OUTTITLEPERSON,         "| gzip > title_person.dump.gz")          || die "OUTTITLEPERSON konnte nicht geoeffnet werden: $!";
+open(OUTTITLECORPORATEBODY,  "| gzip > title_corporatebody.dump.gz")   || die "OUTTITLECORPORATEBODY konnte nicht geoeffnet werden: $!";
+open(OUTTITLESUBJECT,        "| gzip > title_subject.dump.gz")         || die "OUTTITLESUBJECT konnte nicht geoeffnet werden: $!";
+open(OUTTITLECLASSIFICATION, "| gzip > title_classification.dump.gz")  || die "OUTTITLECLASSIFICATION konnte nicht geoeffnet werden: $!";
 
 binmode(OUTTITLETITLE,":utf8");
 binmode(OUTTITLEPERSON,":utf8");
@@ -594,7 +594,7 @@ $stammdateien_ref->{title} = {
 if ($addsuperpers) {
     $logger->info("### $database: Option addsuperpers ist aktiviert");
     $logger->info("### $database: 1. Durchgang: Uebergeordnete Titel-ID's finden");
-    open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | ") || die "IN konnte nicht geoeffnet werden";
+    open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | ") || die "IN konnte nicht geoeffnet werden: $!";
 
     binmode (IN, ":raw");
 
@@ -653,7 +653,7 @@ if ($addsuperpers) {
     close(IN);
     
     $logger->info("### $database: 2. Durchgang: Informationen in uebergeordneten Titeln finden und merken");
-    open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | " ) || die "IN konnte nicht geoeffnet werden";
+    open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | " ) || die "IN konnte nicht geoeffnet werden: $!";
 
     binmode (IN, ":raw");
 
@@ -705,15 +705,15 @@ if ($addsuperpers) {
     close(IN);
 }
 
-$logger->info("### $database: Bearbeite meta.title");
+$logger->info("### $database: Bearbeite ".$stammdateien_ref->{'title'}{'infile'});
 system("ls -l");
-open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | " )     || die "IN ".$stammdateien_ref->{'title'}{'infile'}." konnte nicht geoeffnet werden: ";
+open(IN , "zcat ".$stammdateien_ref->{'title'}{'infile'}." | " )     || die "IN ".$stammdateien_ref->{'title'}{'infile'}." konnte nicht geoeffnet werden: $!";
 
 binmode (IN, ":raw");
 
-open(OUT,           "| gzip > title.dump.gz"         )     || die "OUT konnte nicht geoeffnet werden";
-open(OUTFIELDS,     "| gzip > title_fields.dump.gz"  )     || die "OUTFIELDS konnte nicht geoeffnet werden";
-open(SEARCHENGINE,  "| gzip > searchengine.json.gz"  )     || die "SEARCHENGINE konnte nicht goeffnet werden";
+open(OUT,           "| gzip > title.dump.gz"         )     || die "OUT konnte nicht geoeffnet werden: $!";
+open(OUTFIELDS,     "| gzip > title_fields.dump.gz"  )     || die "OUTFIELDS konnte nicht geoeffnet werden: $!";
+open(SEARCHENGINE,  "| gzip > searchengine.json.gz"  )     || die "SEARCHENGINE konnte nicht goeffnet werden: $!";
 
 binmode (OUT, ":utf8");
 binmode (OUTFIELDS, ":utf8");
@@ -737,7 +737,7 @@ if ($incremental){
         $incremental_status_map{$result_ref->{id}}{old} = $result_ref->{import_hash};
     }
     
-    open(INHASH , "zcat ".$stammdateien_ref->{'title'}{infile}." | " )        || die "IN konnte nicht geoeffnet werden";
+    open(INHASH , "zcat ".$stammdateien_ref->{'title'}{infile}." | " )        || die "IN konnte nicht geoeffnet werden: $!";
 
     binmode (INHASH, ":raw");
     
@@ -763,8 +763,8 @@ if ($incremental){
     
     $actions_map_ref = analyze_status_map(\%incremental_status_map);
 
-    open(OUTDELETE,           ">:utf8",$stammdateien_ref->{'title'}{deletefile})        || die "OUTDELETE konnte nicht geoeffnet werden";            
-    open(OUTINSERT,           ">:utf8",$stammdateien_ref->{'title'}{insertfile})        || die "OUTINSERT konnte nicht geoeffnet werden";            
+    open(OUTDELETE,           ">:utf8",$stammdateien_ref->{'title'}{deletefile})        || die "OUTDELETE konnte nicht geoeffnet werden: $!";            
+    open(OUTINSERT,           ">:utf8",$stammdateien_ref->{'title'}{insertfile})        || die "OUTINSERT konnte nicht geoeffnet werden: $!";            
     
     foreach my $id (keys %$actions_map_ref){
         print OUTDELETE "$id\n" if ($actions_map_ref->{$id} eq "delete" || $actions_map_ref->{$id} eq "change");

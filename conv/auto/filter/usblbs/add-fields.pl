@@ -6,6 +6,7 @@ use utf8;
 use MLDBM qw(DB_File Storable);
 use Storable ();
 use DB_File;
+use List::MoreUtils qw/ uniq /;
 
 #open(CHANGED,">./changed.json");
 
@@ -77,10 +78,12 @@ my $kunstmessekatalog_regexp_ref = [
 unlink "./ausstellungskatalog.db";
 unlink "./sammlungskatalog.db";
 unlink "./kunstmessekatalog.db";
+unlink "./kmbsystematik.db";
 
 my %ausstellungskatalog = ();
 my %sammlungskatalog = ();
 my %kunstmessekatalog = ();
+my %kmbsystematik = ();
 
 tie %ausstellungskatalog,             'MLDBM', "./ausstellungskatalog.db"
     or die "Could not tie ausstellungskatalog.\n";
@@ -90,6 +93,9 @@ tie %sammlungskatalog,                'MLDBM', "./sammlungskatalog.db"
 
 tie %kunstmessekatalog,               'MLDBM', "./kunstmessekatalog.db"
     or die "Could not tie kunstmessekatalog.\n";
+
+tie %kmbsystematik,                   'MLDBM', "./kmbsystematik.db"
+    or die "Could not tie kmbsystematik.\n";
 
 
 while (<HOLDING>){
@@ -141,6 +147,12 @@ while (<HOLDING>){
 		    #print "Matched ",$item->{content},"\n";
 		}
 	    }
+
+	    # KMB Systematik
+
+	    if ($item->{content} =~m{KMB/[=+!]*([A-Za-z]+)}){
+		$kmbsystematik{$titleid} = $1;
+	    }
         }	
     }
 
@@ -179,6 +191,15 @@ while (<>){
             }
 	    
         }	
+    }
+
+    # KMB Systematik
+    if (defined $kmbsystematik{$titleid}){
+	push @{$title_ref->{fields}{'1002'}}, {
+	    mult     => 1,
+	    subfield => 'k',
+	    content  => $kmbsystematik{$titleid},
+	};	
     }
     
     ### Auktionskatalog
@@ -331,6 +352,121 @@ while (<>){
     # 	print CHANGED encode_json $title_ref, "\n";
 
     # }
+
+    my @bks  = (); # Fuer 4100    
+    my @rvks = (); # Fuer 4101
+    my @ddcs = (); # Fuer 4102
+    
+    # Auswertung von 082$ fuer DDC
+    if (defined $title_ref->{fields}{'0082'}){
+        foreach my $item (@{$title_ref->{fields}{'0082'}}){
+	    if ($item->{subfield} eq "a"){
+		push @ddcs, $item->{content};
+	    }
+	}
+    }
+
+    # BK, RVK und DDC aus 084$a in 4100ff vereinheitlichen
+    
+    # Auswertung von 084$
+    if (defined $title_ref->{fields}{'0084'}){
+	my $cln_ref = {};
+        foreach my $item (@{$title_ref->{fields}{'0084'}}){
+	    $cln_ref->{$item->{mult}}{$item->{subfield}} = $item->{content};
+	}
+	
+	foreach my $mult (keys %{$cln_ref}){
+	    next unless (defined $cln_ref->{$mult}{'2'} && defined $cln_ref->{$mult}{'a'});
+	    if ($cln_ref->{$mult}{'2'} eq "rvk"){
+		push @rvks, $cln_ref->{$mult}{'a'};
+	    }
+	    elsif ($cln_ref->{$mult}{'2'} eq "bkl"){
+		push @bks, $cln_ref->{$mult}{'a'};
+	    }
+	    elsif ($cln_ref->{$mult}{'2'} eq "ddc"){
+		push @ddcs, $cln_ref->{$mult}{'a'};
+	    }
+	}
+    }
+    
+    # Alte RVKs von 38-503 aus 983$a in 4101 vereinheitlichen
+    # Alte BKs aus 983$a in 4100 vereinheitlichen    
+    if (defined $title_ref->{fields}{'0983'}){
+        foreach my $item (@{$title_ref->{fields}{'0983'}}){
+	    if ($item->{subfield} eq "a" && $item->{content} =~m{^38/503}){
+		if ($item->{content} =~m{^38/503: ([A-Z][A-Z] \d+)}){
+		    push @rvks, $1;
+		}
+	    }
+	    if ($item->{subfield} eq "b" && $item->{content} =~m{^\d\d\.\d\d$}){
+		push @bks, $item->{content};
+	    }
+	}
+    }
+
+    if (@bks){
+	my $bk_mult = 1;
+
+	foreach my $bk (uniq @bks){
+	    push @{$title_ref->{fields}{'4100'}}, {
+		mult     => $bk_mult++,
+		subfield => '',
+		content  => $bk,
+	    };
+	}
+    }
+    
+    if (@rvks){
+	my $rvk_mult = 1;
+
+	foreach my $rvk (uniq @rvks){
+	    push @{$title_ref->{fields}{'4101'}}, {
+		mult     => $rvk_mult++,
+		subfield => '',
+		content  => $rvk,
+	    };
+	}
+    }
+
+    if (@ddcs){
+	my $ddc_mult = 1;
+
+	foreach my $ddc (uniq @ddcs){
+	    push @{$title_ref->{fields}{'4102'}}, {
+		mult     => $ddc_mult++,
+		subfield => '',
+		content  => $ddc,
+	    };
+	}
+    }
+
+    # GNDs verarbeiten und in 1003$a prefix-los abspeichern
+    my @gnds = ();
+
+    foreach my $field ('0100', '0110', '0700', '0710'){
+	if (defined $title_ref->{fields}{$field}){
+	    foreach my $item (@{$title_ref->{fields}{$field}}){
+		if ($item->{subfield} =~m{^(0|6)$} && $item->{content} =~m{DE-588}){
+		    if ($item->{content} =~m{^\(DE-588\)(.+)}){
+			push @gnds, $1;
+		    }
+		}
+	    }
+	}
+    }
+
+    if (@gnds){
+	my $gnd_mult = 1;
+
+	foreach my $gnd (uniq @gnds){
+	    push @{$title_ref->{fields}{'1003'}}, {
+		mult     => $gnd_mult++,
+		subfield => 'a',
+		content  => $gnd,
+	    };
+	}
+    }
+    
     ### Medientyp Digital/online zusaetzlich vergeben
     my $is_digital = 0;
 

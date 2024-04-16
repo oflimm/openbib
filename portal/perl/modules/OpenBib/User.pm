@@ -5983,6 +5983,27 @@ sub get_info {
     return $userinfo_ref;
 }
 
+sub get_external_info {
+    my ($self,$userid)=@_;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    $userid = (defined $userid)?$userid:$self->{ID};
+    # DBI: "select * from userinfo where id = ?"
+    my $userinfo = $self->get_schema->resultset('Userinfo')->single({ id => $userid });
+    
+    my $userinfo_ref={};
+
+    if ($userinfo){
+        $userinfo_ref->{'external_id'}    = $userinfo->external_id;	
+        $userinfo_ref->{'external_group'} = $userinfo->external_group;	
+    }
+    
+    return $userinfo_ref;
+}
+
 sub get_all_roles {
     my ($self)=@_;
     

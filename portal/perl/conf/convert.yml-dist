@@ -1861,6 +1861,10 @@ convtab:
         'a':         # USB LBS und LS
           index:
             'ft1002': 1
+      '1003': # GNDs ohne Prefix
+        'a':         # 
+          index:
+            'gnd': 1
       '4100':         # BK
         '':
           index:

@@ -439,6 +439,33 @@ while (<>){
 	    };
 	}
     }
+
+    # GNDs verarbeiten und in 1003$a prefix-los abspeichern
+    my @gnds = ();
+
+    foreach my $field ('0100', '0110', '0700', '0710'){
+	if (defined $title_ref->{fields}{$field}){
+	    foreach my $item (@{$title_ref->{fields}{$field}}){
+		if ($item->{subfield} =~m{^(0|6)$} && $item->{content} =~m{DE-588}){
+		    if ($item->{content} =~m{^\(DE-588\)(.+)}){
+			push @gnds, $1;
+		    }
+		}
+	    }
+	}
+    }
+
+    if (@gnds){
+	my $gnd_mult = 1;
+
+	foreach my $gnd (uniq @gnds){
+	    push @{$title_ref->{fields}{'1003'}}, {
+		mult     => $gnd_mult++,
+		subfield => 'a',
+		content  => $gnd,
+	    };
+	}
+    }
     
     ### Medientyp Digital/online zusaetzlich vergeben
     my $is_digital = 0;

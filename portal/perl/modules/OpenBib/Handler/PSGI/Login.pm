@@ -302,6 +302,18 @@ sub authenticate {
     
 	    return $self->print_warning($reason,$code);	    
 	}
+
+	my $ils_barcode_regexp = $config->get('ils_barcode_regexp');
+
+	if ($authenticator->get('type') eq "ils" && $ils_barcode_regexp && $username !~/$ils_barcode_regexp/){
+	    
+	    my $code   = -9;
+	    my $reason = $self->get_error_message($code);
+	    $logger->error("Authentication Error for user $username: $reason ");
+	    
+	    return $self->print_warning($reason,$code);	    
+	}
+
     }
 
     $userid = $authenticator->authenticate({
@@ -504,6 +516,8 @@ sub get_error_message {
 	-7 => $msg->maketext("Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"),
 
         -8 => $msg->maketext("Die Anmeldung mit Ihrer angegebenen Benutzerkennung und Passwort ist zu oft fehlgeschlagen. Die Kennung ist gesperrt. Wenn Sie Ihr Passwort vergessen haben, dann lassen Sie es bitte in der USB auf Ihr Geburtsdatum zuruecksetzen."),
+
+        -9 => $msg->maketext("Der eingegebene Benutzernummer ist ungültig. Benutzernummern bestehen aus Großbuchstaben, Zahlen und #, z.B. A123456789#B."),
 	
 	);
 

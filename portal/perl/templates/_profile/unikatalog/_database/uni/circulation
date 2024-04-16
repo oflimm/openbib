@@ -25,7 +25,13 @@
    circ_config = config.load_alma_circulation_config;
 
    abstract_fields = record.to_abstract_fields;
-     
+
+   external_info = {};
+
+   IF user.ID;
+     external_info = user.get_external_info(user.ID);
+   END;
+
    # First pass
    FOREACH thiscirculation IN circulation ;
      IF thiscirculation.location_mark.match('#$') ; # LBS-Exemplare: Mediennummer statt Signatur anzeigen
@@ -503,7 +509,7 @@ Präsenzbestand
 
 [%############### ANFANG CAMPUSLIEFERDIENST ######### %]
 [% ELSIF scan_dienst == "campus" %]
-[%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && username.match('^(B|S)') && NOT thiscirculation.location_mark.match('^ZBM/') %]
+[%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && external_info.external_group.match('^(2)$') && NOT thiscirculation.location_mark.match('^ZBM/') %]
 [%    
 
       domain    = "usb";

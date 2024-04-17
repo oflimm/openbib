@@ -12,10 +12,19 @@
 #######################################################################
 -%]
 [%# USE dumper;dumper.dump(record.to_hash)%]
+[%-
+
+   external_info = {};
+
+   IF user.ID;
+     external_info = user.get_external_info(user.ID);
+   END;
+
+-%]
 <div class="card mt-5 mb-5 me-5">
 <div class="card-header">[% msg.maketext("Neuanschaffung") %]</div>
 <div class="card-body">
-[% IF NOT userinfo.username.match("^([ABCKRSTVW]|I00011011#7)") %]
+[% IF NOT external_info.external_group.match('^[1-6]$') %]
 
 <p>[% msg.maketext("Ihre Benutzergruppe ist nicht für diese Funktion zugelassen.") %]</p>
 

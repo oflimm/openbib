@@ -1387,6 +1387,22 @@ while (my $json=<IN>){
 	    # delete $fields_ref->{'0425'};
 	}
 	
+	if (defined $fields_ref->{'0595'} && !defined $fields_ref->{'0425'}){
+	    if  (defined $fields_ref->{'0594'}){
+		$fields_ref->{'0594'}[0]{content} = $fields_ref->{'0594'}[0]{content}.", ".$fields_ref->{'0595'}[0]{content};
+	    }
+	    elsif (!defined $fields_ref->{'0594'}){
+		push @{$fields_ref->{'0594'}}, { # und neu setzen
+		    content  => $fields_ref->{'0595'}[0]{content},
+		    mult     => "001",
+		    subfield => "",
+		};
+	    }
+
+	    # $fields_ref->{'0425'} = [];
+	    # delete $fields_ref->{'0425'};
+	}
+	
 	# Prefixen der HBZ-ID als Fremdnummer in 4599 (Aufsatzkatalog)
 	if (defined $fields_ref->{'4599'}){
 	    my $hbzid_quelle = $fields_ref->{'4599'}[0]{content};

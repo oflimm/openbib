@@ -1369,6 +1369,15 @@ while (my $json=<IN>){
 		subfield => "",
 	    };
 	}
+
+	# Bei Aufsaetzen Erscheinungsjahr der Quelle aus 425 nach 595, wenn 595 noch nicht besetzt.
+	if (defined $fields_ref->{'0590'} && defined $fields_ref->{'0425'} && !defined $fields_ref->{'0595'}){
+	    push @{$fields_ref->{'0595'}}, { # und neu setzen
+		content  => $fields_ref->{'0425'}[0]{content},
+		mult     => "001",
+		subfield => "",
+	    };
+	}
 	
 	# Prefixen der HBZ-ID als Fremdnummer in 4599 (Aufsatzkatalog)
 	if (defined $fields_ref->{'4599'}){
@@ -1609,7 +1618,7 @@ while (my $json=<IN>){
 	if ($fieldno eq "490" && defined $fields_ref->{'0004'}){
 	    $ind1 = '1'; # series is (probably...) traced, default is 0 = untraced
 	}
-	
+
 	$logger->debug("$marcfield -> Ind1: x${ind1}x - Ind2: x${ind2}x");
 	
 #	$ind1 = "\'$ind1\'";
@@ -1660,6 +1669,28 @@ while (my $json=<IN>){
 			}
 		    }
 		}
+	    }
+	}
+
+	# Sortierung Subfelder 773 08: i - t - b - d - g - k - w - x - z
+	{
+	    foreach my $mult (sort keys %{$marcfields_ref}){
+		my $new_marcmult_ref = [];
+		foreach my $subfield ('i','t','b','d','g','k','w','x','z'){
+		    foreach my $thisitem_ref (@{$marcfields_ref->{$mult}}){
+			if ($fieldno eq "773" && $thisitem_ref->{ind1} eq "0" && $thisitem_ref->{ind2} eq "8" && $thisitem_ref->{subfield} eq $subfield){
+			    push @{$new_marcmult_ref}, {
+				ind1     => $thisitem_ref->{ind1},
+				ind2     => $thisitem_ref->{ind2},
+				subfield => $thisitem_ref->{subfield},
+				content  => $thisitem_ref->{content},
+			    };
+			}
+		    }
+		}
+		if (@{$new_marcmult_ref}){
+		    $marcfields_ref->{$mult} = $new_marcmult_ref;
+		}		
 	    }
 	}
 	

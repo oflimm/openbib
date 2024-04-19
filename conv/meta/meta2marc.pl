@@ -1370,13 +1370,21 @@ while (my $json=<IN>){
 	    };
 	}
 
-	# Bei Aufsaetzen Erscheinungsjahr der Quelle aus 425 nach 595, wenn 595 noch nicht besetzt.
-	if (defined $fields_ref->{'0590'} && defined $fields_ref->{'0425'} && !defined $fields_ref->{'0595'}){
-	    push @{$fields_ref->{'0595'}}, { # und neu setzen
-		content  => $fields_ref->{'0425'}[0]{content},
-		mult     => "001",
-		subfield => "",
-	    };
+	# Bei Aufsaetzen Erscheinungsjahr der Quelle aus 425 nach 594 anghaengen
+	if (defined $fields_ref->{'0590'} && defined $fields_ref->{'0425'}){
+	    if  (defined $fields_ref->{'0594'}){
+		$fields_ref->{'0594'}[0]{content} = $fields_ref->{'0594'}[0]{content}.", ".$fields_ref->{'0425'}[0]{content};
+	    }
+	    elsif (!defined $fields_ref->{'0594'}){
+		push @{$fields_ref->{'0594'}}, { # und neu setzen
+		    content  => $fields_ref->{'0425'}[0]{content},
+		    mult     => "001",
+		    subfield => "",
+		};
+	    }
+
+	    # $fields_ref->{'0425'} = [];
+	    # delete $fields_ref->{'0425'};
 	}
 	
 	# Prefixen der HBZ-ID als Fremdnummer in 4599 (Aufsatzkatalog)

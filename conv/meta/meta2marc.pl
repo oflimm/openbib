@@ -645,6 +645,9 @@ my $iso_639_2_ref = {
 my $dir=`pwd`;
 chop $dir;
 
+# Aufsaetze: Nach Verarbeitung von 424/425 als Jahr Quelle loeschen?
+my $purge_year = 0;
+
 $isil = ($isil)?$isil:'DE-38';
 
 my %data_person         = ();
@@ -1372,23 +1375,27 @@ while (my $json=<IN>){
 
 	if ($database eq "aufsaetze"){
 	    # Bei Aufsaetzen Erscheinungsjahr der Quelle aus 425 nach 594 anghaengen
-	    if (defined $fields_ref->{'0590'} && defined $fields_ref->{'0425'}){
+	    if (defined $fields_ref->{'0590'} && $year){
 		if  (defined $fields_ref->{'0594'}){
-		    $fields_ref->{'0594'}[0]{content} = $fields_ref->{'0594'}[0]{content}.", ".$fields_ref->{'0425'}[0]{content};
+		    $fields_ref->{'0594'}[0]{content} = $fields_ref->{'0594'}[0]{content}.", ".$year;
 		}
 		elsif (!defined $fields_ref->{'0594'}){
 		    push @{$fields_ref->{'0594'}}, { # und neu setzen
-			content  => $fields_ref->{'0425'}[0]{content},
+			content  => $year,
 			mult     => "001",
 			subfield => "",
 		    };
 		}
-		
-		# $fields_ref->{'0425'} = [];
-		# delete $fields_ref->{'0425'};
+
+		if ($purge_year){
+		    $fields_ref->{'0424'} = [];
+		    $fields_ref->{'0425'} = [];		
+		    delete $fields_ref->{'0424'};
+		    delete $fields_ref->{'0425'};
+		}
 	    }
 	    
-	    if (defined $fields_ref->{'0595'} && !defined $fields_ref->{'0425'}){
+	    if (defined $fields_ref->{'0595'} && !$year){
 		if  (defined $fields_ref->{'0594'}){
 		    $fields_ref->{'0594'}[0]{content} = $fields_ref->{'0594'}[0]{content}.", ".$fields_ref->{'0595'}[0]{content};
 		}
@@ -1399,9 +1406,6 @@ while (my $json=<IN>){
 			subfield => "",
 		    };
 		}
-		
-		# $fields_ref->{'0425'} = [];
-		# delete $fields_ref->{'0425'};
 	    }
 	    
 	    # Prefixen der HBZ-ID als Fremdnummer in 4599 (Aufsatzkatalog)

@@ -495,7 +495,8 @@ sub to_cgi_params {
             # escaped werden.									
             push @cgiparams, {
                 param  => $base_prefix.$param_suffix,
-                val    => uri_escape_utf8($self->{_searchquery}->{$param}{val}),
+#                val    => uri_escape_utf8($self->{_searchquery}->{$param}{val}),
+                val    => $self->{_searchquery}->{$param}{val},
             };
         }
     }

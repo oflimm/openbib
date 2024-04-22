@@ -187,9 +187,6 @@ convtab:
         from_field: '0594' # Erscheinungsort der Quelle		
         subfield: 'd'
       -
-        from_field: '0595' # Erscheinungsjahr der Quelle
-        subfield: 'd'
-      -
         from_field: '0596' # Kollation der Quelle
         subfield: 'g'
       -

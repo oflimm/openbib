@@ -113,6 +113,7 @@ create table rssinfo (
 
 drop table IF EXISTS rsscache;
 create table rsscache (
+ pid           BIGSERIAL,
  rssinfoid     BIGINT NOT NULL,
  id            TEXT,
  tstamp        TIMESTAMP,

@@ -40,6 +40,7 @@ ALTER TABLE rssinfo ADD CONSTRAINT fk_rssinfo_db FOREIGN KEY (dbid) REFERENCES d
 CREATE INDEX rssinfo_type ON rssinfo (type);
 CREATE INDEX rssinfo_dbid ON rssinfo (dbid);
 
+ALTER TABLE rsscache ADD PRIMARY KEY (pid);
 CREATE INDEX rsscache_rssinfo ON rsscache (rssinfoid);
 ALTER TABLE rsscache ADD CONSTRAINT fk_rsscache_rssinfo FOREIGN KEY (rssinfoid) REFERENCES rssinfo (id);
 CREATE INDEX rsscache_tstamp ON rsscache (tstamp);

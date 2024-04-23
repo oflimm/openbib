@@ -3514,7 +3514,6 @@ sub del_databaseinfo {
 	    $databaseinfo->user_dbs->delete;
           }
 
-          $databaseinfo->update({ parentdbid => \'NULL' });
           $databaseinfo->update({ locationid => \'NULL' });
           $databaseinfo->delete;
       }

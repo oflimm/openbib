@@ -138,7 +138,6 @@ sub show_form {
 
     my $mailtype_noauth_ref = {
 	"kmb" => 1,
-        "kmbcopy" => 1,
     };
     
     # Zentrale Ueberpruefung der Authentifizierung
@@ -161,10 +160,10 @@ sub show_form {
     }
     
     my $mailtype_is_valid_ref = {
-	"handset" => 1,
-        "kmb"     => 1,
-        "kmbcopy" => 1,
-        "default" => 1,
+	"handset"   => 1,
+        "kmb"       => 1,
+        "testothek" => 1,
+        "default"   => 1,
     };
     
     my $show_handler   = "show_$mailtype";
@@ -202,7 +201,6 @@ sub mail_form {
 
     my $mailtype_noauth_ref = {
 	"kmb" => 1,
-        "kmbcopy" => 1,
     };
     
     # Zentrale Ueberpruefung der Authentifizierung
@@ -224,10 +222,10 @@ sub mail_form {
     }
 
     my $mailtype_is_valid_ref = {
-	"handset" => 1,
-        "kmb"     => 1,
-        "kmbcopy" => 1,
-        "default" => 1,
+	"handset"   => 1,
+        "kmb"       => 1,
+        "testothek" => 1,
+        "default"   => 1,
     };
     
     my $mail_handler   = "mail_$mailtype";
@@ -432,7 +430,7 @@ sub show_kmb {
     return $self->print_page($config->{tt_users_circulations_mail_kmb_tname},$ttdata);
 }
 
-sub show_kmbcopy {
+sub show_testothek {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -464,7 +462,7 @@ sub show_kmbcopy {
     my $label          = $input_data_ref->{'label'};
     my $location       = $input_data_ref->{'location'};
 
-    $logger->debug("Dispatched to show_kmbcopy");
+    $logger->debug("Dispatched to show_testothek");
     
     if (!$titleid || !$realm || !$label || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
@@ -493,7 +491,7 @@ sub show_kmbcopy {
 	database   => $database,
     };
     
-    return $self->print_page($config->{tt_users_circulations_mail_kmbcopy_tname},$ttdata);
+    return $self->print_page($config->{tt_users_circulations_mail_testothek_tname},$ttdata);
 }
 
 sub mail_handset {
@@ -772,7 +770,7 @@ sub mail_kmb {
     return $self->print_page($config->{tt_users_circulations_mail_kmb_mail_success_tname},$ttdata);
 }
 
-sub mail_kmbcopy {
+sub mail_testothek {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -793,6 +791,7 @@ sub mail_kmbcopy {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $servername     = $self->param('servername');    
     
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
@@ -803,84 +802,37 @@ sub mail_kmbcopy {
     my $titleid        = $input_data_ref->{'titleid'};
     my $label          = $input_data_ref->{'label'};
     my $location       = $input_data_ref->{'location'};
-    my $volume         = $input_data_ref->{'volume'};
-    my $source         = $input_data_ref->{'source'};
-    my $articleauthor  = $input_data_ref->{'articleauthor'};
-    my $articletitle   = $input_data_ref->{'artitletitle'};
-    my $issue          = $input_data_ref->{'issue'};
-    my $pages          = $input_data_ref->{'pages'};
-    my $shipment       = $input_data_ref->{'shipment'};
-    my $customergroup  = $input_data_ref->{'customergroup'};
-    my $freeusername   = $input_data_ref->{'freeusername'};
-    my $address        = $input_data_ref->{'address'};
-    # Kein Receipt, da unauthentifiziert!
+    my $receipt        = $input_data_ref->{'receipt'};
     my $remark         = $input_data_ref->{'remark'};
-    my $year           = $input_data_ref->{'year'};
-    my $email          = $input_data_ref->{'email'};
-    my $confirm        = $input_data_ref->{'confirm'};
-    my $numbering      = $input_data_ref->{'numbering'};
+    my $amount         = $input_data_ref->{'amount'};
+    my $forview        = $input_data_ref->{'forview'};
+    my $materialonly   = $input_data_ref->{'materialonly'};
     
-    $logger->debug("Dispatched to mail_kmbcopy");
+    $logger->debug("Dispatched to mail_testothek");
     
     if (!$titleid || !$label || !$realm || !$location || !$database){
 	return $self->print_warning("Zuwenige Parameter übergeben");
     }
-
+    
     if (!$config->db_exists($database)){
 	return $self->print_warning("Datenbank existiert nicht");
     }
+
+    # Zentrale Ueberpruefung der Authentifizierung bereits in show_form
     
-    if (!$confirm){
-	return $self->print_warning("Bitte akzeptieren Sie die Allgemeinen Geschäftsbedingungen.");
-    }
+    my ($accountname,$password,$access_token) = $user->get_credentials();
 
-    if (!$pages){
-	return $self->print_warning("Bitte geben Sie die gewünschten Seiten an.");
-    }
+    my $userinfo_ref = $user->get_info($user->{ID});
 
-    if (!$freeusername){
-	return $self->print_warning("Bitte geben Sie Ihren Namen an.");
-    }
-
-    if (!$shipment){
-	return $self->print_warning("Bitte wählen Sie die Lieferart aus.");
-    }
-
-    if (!$address){
-	return $self->print_warning("Bitte geben Sie Ihre E-Mail bzw. Postadresse für die Lieferung an.");
-    }
-
-    if (!$email){
-	return $self->print_warning("Bitte geben Sie Ihre E-Mail-Adresse an.");
-    }
-
-    if (!$customergroup){
-	return $self->print_warning("Bitte geben Sie Ihre Kundengruppe an.");
-    }
-
-    if (!$articletitle && $numbering ){
-	return $self->print_warning("Bitte geben Sie den Titel des gewünschten Aufsatzes an.");
-    }
-
-    if (!$articleauthor && $numbering){
-	return $self->print_warning("Bitte geben Sie den Autor des gewünschten Aufsatzes an.");
-    }
-
-    if (!$volume && $numbering){
-	return $self->print_warning("Bitte geben Sie den Band an, in dem der gewünschte Aufsatz erschienen ist.");
-    }
-
-    if (!$year && $numbering){
-	return $self->print_warning("Bitte geben Sie das Jahr an, in dem der gewünschte Aufsatz erschienen ist.");
-    }
-
+    my $accountemail = $userinfo_ref->{email};
+    
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
-        if (!defined $config->get('mail')->{realm}{$realm}) {
+    if (!defined $config->get('mail')->{realm}{$realm}) {
         return $self->print_warning($msg->maketext("Eine Bestellung ist nicht moeglich."));
     }
 
-    unless (Email::Valid->address($email)) {
+    unless (Email::Valid->address($accountemail)) {
         return $self->print_warning($msg->maketext("Sie verwenden eine ungültige Mailadresse."));
     }	
 
@@ -893,29 +845,23 @@ sub mail_kmbcopy {
     # TT-Data erzeugen
     
     my $ttdata={
+	servername   => $servername,
+	path_prefix  => $path_prefix,
         view         => $view,
-	current_date   => $current_date,
+	current_date => $current_date,
 
-	record        => $record,
-	database      => $database,
+	userinfo    => $userinfo_ref,
+	record      => $record,
 	
-	realm         => $realm,
-        label         => $label,
-	source        => $source,
-	articleauthor => $articleauthor,
-	articletitle  => $articletitle,
-	volume        => $volume,
-	issue         => $issue,
-	year          => $year,
-	pages         => $pages,
-	shipment      => $shipment,
-	customergroup => $customergroup,
-	freeusername  => $freeusername,
-	address       => $address,
-	numbering     => $numbering,
-	
-	email         => $email,
-	remark        => $remark,
+	realm       => $realm,
+        label       => uri_unescape($label),
+	title_location    => $location, # Standort = Zweigstelle / Abteilung
+	email       => $accountemail,
+	loginname   => $accountname,
+	remark      => $remark,
+	amount        => $amount,
+	forview       => $forview,
+	materialonly  => $materialonly,
 	
         config      => $config,
         user        => $user,
@@ -939,7 +885,7 @@ sub mail_kmbcopy {
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($config->{tt_users_circulations_mail_kmbcopy_mail_body_tname}, $ttdata ) || do { 
+    $maintemplate->process($config->{tt_users_circulations_mail_testothek_mail_body_tname}, $ttdata ) || do { 
         $logger->error($maintemplate->error());
         $self->header_add('Status',400); # server error
         return;
@@ -948,25 +894,25 @@ sub mail_kmbcopy {
     my $mail_to = $config->{mail}{realm}{$realm}{recipient};
     
     # Fuer Tests erstmal deaktiviert...
-    # if ($receipt){
-    # 	$mail_to.=",$accountemail";
-    # }
+    if ($receipt){
+    	$mail_to.=",$accountemail";
+    }
     
     my $anschfile="/tmp/" . $afile;
 
     # $pickup_location =~ s!f\xC3\xBCr!=?ISO-8859-15?Q?f=FCr?=!;
     
     Email::Stuffer->to($mail_to)
-	->from("no-reply\@ub.uni-koeln.de")
+	->from($config->{mail}{realm}{$realm}{sender})	
 	->reply_to($config->{mail}{realm}{$realm}{sender})
 	->header("Content-Type" => 'text/plain; charset="utf-8"')
-	->subject("KMB-Dokumentenlieferdienst - $label ($realm)")
+	->subject("Bestellung Testothek")
 	->text_body(read_binary($anschfile))
 	->send;
     
     unlink $anschfile;
     
-    return $self->print_page($config->{tt_users_circulations_mail_kmbcopy_mail_success_tname},$ttdata);
+    return $self->print_page($config->{tt_users_circulations_mail_testothek_mail_success_tname},$ttdata);
 }
 
 sub mail_default {
@@ -1024,7 +970,7 @@ sub mail_default {
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
-        if (!defined $config->get('mail')->{realm}{$realm}) {
+    if (!defined $config->get('mail')->{realm}{$realm}) {
         return $self->print_warning($msg->maketext("Eine Bestellung ist nicht moeglich."));
     }
 
@@ -1223,6 +1169,22 @@ sub get_input_definition {
             type     => 'scalar',
         },
         confirm => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+	# Testothek
+        amount => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        forview => {
+            default  => '',
+            encoding => 'utf8',
+            type     => 'scalar',
+        },
+        materialonly => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',

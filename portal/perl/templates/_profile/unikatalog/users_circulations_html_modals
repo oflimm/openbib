@@ -149,8 +149,8 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       [%-
-      IF userdata.username.match('^A') && userdata.email.match('@smail.uni-koeln.de');
-      is_smail = 1;
+      IF ils_groupid.match('^1$') && userdata.email.match('smail.uni-koeln.de');
+      is_smail = 1; 
 
       END;
       -%]

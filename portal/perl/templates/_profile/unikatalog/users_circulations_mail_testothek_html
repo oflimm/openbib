@@ -1,30 +1,19 @@
 [% PROCESS common/subtemplate name="titles_record_abstract_fields" %]
 
- <div id="kmbcopy_agb" class="accordion">
-  <div class="card">
-    <div class="card-header" id="headingOne">
-      <h5 class="mb-0">
-        <a class="card-link" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-          [% msg.maketext("Allgemeine Geschäftsbedingungen") %]
-        </a>
-      </h5>
-    </div>
+<div class="card mt-5 mb-5 me-5">
+<div class="card-header">[% msg.maketext("Bestellung in der Testothek") %]</div>
+<div class="card-body">
 
-    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#kmbcopy_agb">
-      <div class="card-body">
-        <h4>Bestellung</h4>
+ <p>Die Bestellung von Tests erfolgt über dieses Formular. Sie
+ tauchen nicht in Ihrem Bibliothekskonto auf. Sollte es noch Rückfrage
+ zu Ihrer Bestellung geben, erhalten Sie diese zeitnah per E-Mail.
+ </p>
 
-	<p>Es können Papierkopien von Aufsätzen oder einzelnen Kapiteln aus monographischen Werken bestellt werden, sofern die Bestellung einen gewissen Umfang nicht überschreitet (max. 25 Seiten oder 15 Prozent des Gesamtwerks).</p><p>Die Bestellungen werden im bitonalen oder Graustufen-Modus (16 oder 256 Graustufen) in der Regel mit einer Auflösung von 300 dpi gescannt.<br/>Sie erhalten einen Ausdruck des gescannten Dokuments per Briefpost zugeschickt.</p>
-	
-        <p>Die Angabe sowohl einer postalischen als auch einer E-Mail-Adresse ist zwingend. Ebenso notwendig ist die wahrheitsgemässe Zuordnung zu einer der vier Kundengruppen. Wir behalten uns vor, die Richtigkeit Ihrer Angaben zu überprüfen.</p><h4>Preise</h4><p>Bestellung bis 20 Seiten: 5,50 Euro zzgl. Porto<br/>Jede weitere Seite: 0,20 Euro</p><p>Ansonsten gelten die Bestimmungen des Gesetzes über Urheberrecht und verwandte Schutzrechte.</p>
-        <h4>Lieferung und Bezahlung</h4><p>Ihre Bestellung wird von uns in der Regel innerhalb von drei Werktagen bearbeitet. Nach der Lieferung erhalten Sie von uns per E-Mail eine Rechnung über das von Ihnen zu entrichtende Entgelt. Sollten Sie zwingend eine postalische Rechnungszustellung wünschen, müssen Sie dies im Feld "Bemerkung zur Bestellung" vermerken. Hier muss ebenfalls eine Rechnungsadresse eingegeben werden, sofern diese von der angegebenen postalischen Adresse abweicht. Bei Postversand der Rechnung wird zusätzlich das Briefporto in Rechnung gestellt. Sie können die Rechnung nur per Überweisung begleichen. Andere Zahlungsarten sind leider nicht möglich. Bitte überweisen Sie das Entgelt mit folgenden Angaben:</p>
-        <p>[% config.get('kmb_bankverbindung_html') %]</p><p>Bitte beachten Sie, dass eventuelle Bankgebühren vom Besteller zu entrichten und zusammen mit dem Gesamtbetrag der Rechnung zu überweisen sind.</p>
-      </div>
-    </div>
-  </div>
- </div>
+ <p>
+ Die Ausleihe von Tests ist nur für Mitglieder und Angehörige der Universität zu Köln möglich. Zur Abholung bringen Sie bitte die unterschriebene <a class="exturl" href="[% cms_links.testothekformular %]">Verpflichtungserklärung</a> mit.
+ </p>
 
- <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/mail/kmbcopy">
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/mail/testothek">
  
      <input type="hidden" name="realm"       value="[% realm %]" />
      <input type="hidden" name="location"    value="[% title_location %]" />
@@ -59,6 +48,13 @@
 </div>
 [% END %]
 
+[% IF year %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% year %]</span>
+      <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
+</div>
+[% END %]
+
 [%
      signatur = "";
      IF label ;
@@ -74,166 +70,80 @@
       <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
 </div>
 
-<div class="form-floating mb-3">
-      <span class="form-control">[% source %]</span>
-      <input type="hidden" name="label" value="[% uri_escape(source) %]" />
-      <label for="location_mark">[% msg.maketext("In") %]:</label>
-</div>
-
 [% IF numbering %]
 <div class="form-floating mb-3">
       <span class="form-control">[% numbering %]</span>
       <input type="hidden" name="numbering" value="[% uri_escape(numbering) %]" />
-     <label for="numbering">[% msg.maketext("Bestand in der KMB") %]:</label>
+     <label for="numbering">[% msg.maketext("Bestand in der USB") %]:</label>
 </div>
 [% END %]
 
-<p>Mit * gekennzeichnete Felder sind Pflichtfelder</p>
+[%
+   name = "";
+   IF userinfo.nachname || userinfo.vorname ;
+        IF userinfo.nachname ;
+          name = userinfo.nachname ;
+	END ;
+	IF userinfo.vorname ;
+	  name = "${userinfo.vorname} ${name}";
+	END;
+   END;
 
-[% is_zeitschrift = fields.${"T0405"}.first.content # hat Erscheinungsverlauf %]
-[% IF is_zeitschrift %]
-<div class="form-floating mb-3">
-      <input class="form-control" type="text" name="articleauthor" value="" />
-      <label for="articleauthor">[% msg.maketext("Artikelautor") %] (*):</label>
-</div>
-
-<div class="form-floating mb-3">
-      <input class="form-control" type="text" name="articletitle" value="" />
-      <label for="articletitle">[% msg.maketext("Artikeltitel") %] (*):</label>
-</div>
-
-<div class="form-floating mb-3">
-      <input class="form-control" type="text" name="volume" value="" />
-      <label for="volume">[% msg.maketext("Band") %] (*):</label>
-</div>
-
-<div class="form-floating mb-3">
-      <input class="form-control" type="text" name="issue" value="" />
-      <label for="issue">[% msg.maketext("Heft") %]:</label>
-</div>
-
-<div class="form-floating mb-3">
-      <input class="form-control" type="text" name="year" value="" />
-      <label for="year">[% msg.maketext("Jahrgang") %] (*):</label>
-</div>
-
-<div class="form-floating mb-3">
-      <input class="form-control" type="text" name="pages" value="" />
-      <label for="pages">[% msg.maketext("Seitenangaben") %] (*):</label>
-</div>
-[% ELSE # Monographie %]
-
-[%   IF year %]
-<div class="form-floating mb-3">
-      <span class="form-control">[% year %]</span>
-      <input type="hidden" name="year" value="[% uri_escape(year) %]" />
-      <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
-</div>
-[%   END %]
-
-<div class="form-floating mb-3">
-      <input class="form-control" type="text" name="pages" value="" />
-      <label for="pages">[% msg.maketext("Seitenangaben") %] (*):</label>
-</div>
-
-<div class="form-floating mb-3">
-      <input class="form-control" type="text" name="articleauthor" value="" />
-      <label for="articleauthor">[% msg.maketext("Artikelautor") %]:</label>
-</div>
-
-<div class="form-floating mb-3">
-      <input class="form-control" type="text" name="articletitle" value="" />
-      <label for="articletitle">[% msg.maketext("Artikeltitel") %]:</label>
-</div>
-
-<div class="form-floating mb-3">
-      <input class="form-control" type="text" name="volume" value="" />
-      <label for="volume">[% msg.maketext("Band") %]:</label>
-</div>
-[% END %]
+%]
 
 <legend class="mt-2">[% msg.maketext("Weitere Angaben zur Bestellung") %]</legend>
 
 <div class="form-floating mb-3">
-      <input class="form-control" type="text" name="username" value="" />
-      <label for="username">[% msg.maketext("Nutzername") %] (*):</label>
-</div>
-
-<legend class="mt-2">[% msg.maketext("Lieferart") %] (*)</legend>
-
-<!-- 
-<div class="form-check">
-      <input class="form-check-input" type="radio" name="shipment" value="E-Mail"/>
-      <label class="form-check-label" for="shipment">E-Mail</label>
-</div>
--->
-
-<div class="form-check">
-      <input class="form-check-input" type="radio" name="shipment" value="Post" checked/>
-      <label class="form-check-label" for="shipment">Post</label>
-</div>
-
-<p/>
-
-<div class="form-floating mb-3">
-      <input class="form-control" type="text" name="address" value="" />
-      <label for="address">[% msg.maketext("Liefer- und Rechnungsadresse") %] (*):</label>
-</div>
-
-
-<div class="form-floating mb-3">
-      <input class="form-control" type="text" name="email" value="" />
-      <label for="email">[% msg.maketext("E-Mail") %] (*):</label>
+      <span class="form-control">[% username %]</span>
+      <input type="hidden" name="loginname" value="[% username %]" />
+     <label for="loginname">[% msg.maketext("Nutzer-Kennung") %]:</label>
 </div>
 
 <div class="form-floating mb-3">
-      <textarea class="form-control" type="text" name="remark" placeholder="[% msg.maketext("Geben Sie hier bitte ggf. Bemerkungen zu Ihrer Bestellung ein") %]" value="" maxlength="120" size="37" ></textarea>
+      <span class="form-control">[% name %]</span>
+      <input type="hidden" name="username" value="[% name %]" />
+      <label for="username">[% msg.maketext("Name") %]:</label>
+</div>
+
+<div class="form-floating mb-3">
+     <input class="form-control" type="text" name="amount" />
+     <label for="loginname">[% msg.maketext("Anzahl der Testpersonen") %]:</label>
+</div>
+
+<div class="form-check mb-3">
+     <input class="form-check-input" type="checkbox" name="forview" id="ansicht" value="Ja" />
+     <label for="ansicht">[% msg.maketext("Bestellung zur Ansicht") %]</label>
+</div>
+
+<div class="form-check mb-3">
+     <input class="form-check-input" type="checkbox" name="materialonly" id="material" value="Ja" />
+     <label for="material">[% msg.maketext("Möchten Sie lediglich Verbrauchsmaterial bestellen?") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+      <textarea class="form-control" type="text" name="remark" id="remark" placeholder="[% msg.maketext("Geben Sie hier bitte ggf. Bemerkungen zu Ihrer Bestellung ein") %]" value="" maxlength="120" size="37" ></textarea>
       <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
 </div>
 
-<legend class="mt-2">[% msg.maketext("Kundengruppe") %] (*)</legend>
-
-<div class="form-check">
-      <input class="form-check-input" type="radio" name="customergroup" value="1" checked/>
-      <label class="form-check-label" for="customergroup">Kundengruppe 1</label>
-      Angehörige und Mitarbeiter von Hochschulen (außer Studierende), von überwiegend aus öffentlichen Mitteln finanzierten Wissenschafts- und Forschungseinrichtungen und von juristischen Personen des öffentlichen Rechts, jeweils einschließlich ihrer Mitglieder
-</div>
-
-<div class="form-check">
-      <input class="form-check-input" type="radio" name="customergroup" value="1a" />
-      <label class="form-check-label" for="customergroup">Kundengruppe 1a</label>
-      Schüler, Auszubildende, Studierende
-</div>
-
-<div class="form-check">
-      <input class="form-check-input" type="radio" name="customergroup" value="2" />
-      <label class="form-check-label" for="customergroup">Kundengruppe 2</label>
-      Privatpersonen
-</div>
-
-<div class="form-check">
-      <input class="form-check-input" type="radio" name="customergroup" value="3" />
-      <label class="form-check-label" for="customergroup">Kundengruppe 3</label>
-      Alle Personen, die nicht den Kundengruppen 1 bis 2 angehören, einschließlich gewerbliche Unternehmen und Personen, die in deren Namen bzw. Interesse handeln
-</div>
-
-<p>
-Standardmäßig erfolgt der Versand der Rechnung per E-Mail. Wenn Sie den Versand der Rechnung per Post wünschen, tragen Sie dies bitte im Bemerkungsfeld ein. Bei Postversand der Rechnung wird das Porto für den Rechnungsbrief in Rechnung gestellt.
-</p>
-
-<p>
-Die fälligen Entgelte sind unmittelbar nach Eingang der Rechnung zu überweisen.
-</p>
-
-<legend class="mt-2">[% msg.maketext("Einverständniserklärung") %] (*)</legend>
+<legend class="mt-2">[% msg.maketext("Bestellquittung") %]</legend>
 
 <div class="form-check mt-2 mb-2">
-      <input class="form-check-input" type="checkbox" name="confirm" id="confirm"/>
-      <label class="form-check-label" for="confirm">[% msg.maketext("Ja, Ich akzeptiere die Allgemeinen Geschäftsbedingungen für den KMB-Dokumentlieferdienst") %]</label>
+      <input class="form-check-input" type="checkbox" value="" name="receipt" id="receipt"/>
+      <label class="form-check-label" for="receipt">[% msg.maketext("Ja, ich möchte eine Kopie dieser Bestellung als E-Mail erhalten") %].</label>
 </div>
 
+<div class="form-floating mb-3">
+      <span class="form-control">[% userinfo.email %]</span>
+      <label for="email">[% msg.maketext("E-Mail") %]:</label>
+</div>
+
+<p class="fw-bold">
+Sie erhalten eine Benachrichtigungsmail, wenn Ihre Bestellung zur Abholung bereitsteht.
+</p>
 
 <button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Bestellen") %]</button>
 
 </form>
 
+</div>
+</div>

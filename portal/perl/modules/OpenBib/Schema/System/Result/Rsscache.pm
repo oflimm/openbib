@@ -44,6 +44,13 @@ __PACKAGE__->table("rsscache");
   data_type: 'text'
   is_nullable: 1
 
+=head2 pid
+
+  data_type: 'bigint'
+  is_auto_increment: 1
+  is_nullable: 0
+  sequence: 'rsscache_pid_seq'
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -55,7 +62,26 @@ __PACKAGE__->add_columns(
   { data_type => "timestamp", is_nullable => 1 },
   "content",
   { data_type => "text", is_nullable => 1 },
+  "pid",
+  {
+    data_type         => "bigint",
+    is_auto_increment => 1,
+    is_nullable       => 0,
+    sequence          => "rsscache_pid_seq",
+  },
 );
+
+=head1 PRIMARY KEY
+
+=over 4
+
+=item * L</pid>
+
+=back
+
+=cut
+
+__PACKAGE__->set_primary_key("pid");
 
 =head1 RELATIONS
 
@@ -75,8 +101,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07049 @ 2024-04-15 07:59:09
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:iL/ouOSin4/Jy++3VFk4tg
+# Created by DBIx::Class::Schema::Loader v0.07049 @ 2024-04-23 11:10:42
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:7PqG7ceqy+CUPfK/IbkNlQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

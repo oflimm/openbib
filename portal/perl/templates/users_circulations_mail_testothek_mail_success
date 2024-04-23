@@ -3,7 +3,7 @@
     suppress_unauthorized = 1;
     layout_param = {
 
-      'main_template' = 'users_circulations_mail_kmbcopy_mail_success_html'
+      'main_template' = 'users_circulations_mail_testothek_mail_success_html'
 
       'active_menu' = 'mail_kmbcopy'
       
@@ -13,7 +13,7 @@
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext("KMB-Dokumentlieferdienst")
+	     desc = msg.maketext("Bestellung Testothek")
 	     url  = '#'
 	     current = 1
 	  }

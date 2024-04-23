@@ -3485,11 +3485,16 @@ sub del_databaseinfo {
           }
     
           if ($databaseinfo->search_related('rssinfos')){
-	  #$databaseinfo->rssinfos->rsscaches->delete if ($databaseinfo->rssinfos->search_related('rsscaches'));
+            my $rssinfos = $databaseinfo->rssinfos;
+            if ($rssinfos->search_related('rsscaches')){
+              while (my $rsscaches = $rssinfos->search_related('rsscaches')->next()){
+ 	         $rsscaches->delete;
+              }
+            }
   	    if ($databaseinfo->rssinfos->search_related('view_rsses')){
-	      $databaseinfo->rssinfos->search_related('view_rsses')->delete;
+	      $rssinfos->search_related('view_rsses')->delete;
 	    }
-	    $databaseinfo->rssinfos->delete;
+	    $rssinfos->delete;
           }
 
           if ($databaseinfo->search_related('updatelogs')){
@@ -3505,7 +3510,11 @@ sub del_databaseinfo {
           if ($databaseinfo->search_related('view_dbs')){
 	    $databaseinfo->view_dbs->delete;
           }
+          if ($databaseinfo->search_related('user_dbs')){
+	    $databaseinfo->user_dbs->delete;
+          }
 
+          $databaseinfo->update({ parentdbid => \'NULL' });
           $databaseinfo->update({ locationid => \'NULL' });
           $databaseinfo->delete;
       }

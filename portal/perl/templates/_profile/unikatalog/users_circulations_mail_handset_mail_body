@@ -1,0 +1,34 @@
+[% PROCESS common/subtemplate name="titles_record_abstract_fields" %]
+[%-
+
+  name = "";
+  IF userinfo.nachname || userinfo.vorname ;
+        IF userinfo.nachname ;
+          name = userinfo.nachname ;
+	END ;
+	IF userinfo.vorname ;
+	  name = "${userinfo.vorname} ${name}";
+	END;
+  END;
+
+-%]
+*** E-Mail-Bestellung (Handapp.) vom [% current_date %] ***
+
+   Signatur: [% label %]
+   
+      Titel: [% title %]
+      Autor: [% person %]
+      Körp.: [% corporatebody %]
+ Ort/Verlag: [% publisher %]
+     E-Jahr: [% year %]
+    Bestand: [% numbering %]
+    
+     Katkey: [% titleid %]
+        URL: https://[% servername %]/[% path_prefix %]/databases/id/[% record.database %]/titles/id/[% titleid %]?l=de
+	
+Bemerkungen: [% remark %]
+
+       Name: [% name %]
+Benutzernr.: [% loginname %]
+E-Mail-Adr.: [% email %]
+

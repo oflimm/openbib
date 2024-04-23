@@ -515,6 +515,7 @@ sub mail_handset {
     my $stylesheet     = $self->param('stylesheet');    
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+    my $servername     = $self->param('servername');    
     
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
@@ -566,6 +567,9 @@ sub mail_handset {
     # TT-Data erzeugen
     
     my $ttdata={
+	servername   => $servername,
+	path_prefix  => $path_prefix,
+	
         view         => $view,
 	current_date => $current_date,
 
@@ -573,7 +577,7 @@ sub mail_handset {
 	record      => $record,
 	
 	realm       => $realm,
-        label       => $label,
+        label       => uri_unescape($label),
 	title_location    => $location, # Standort = Zweigstelle / Abteilung
 	email       => $accountemail,
 	loginname   => $accountname,

@@ -1801,6 +1801,10 @@ convtab:
           'index':
             'isbn': 1
             'freesearch': 1
+        'x': # ISSN Sekundaerform
+          'index':
+            'issn': 1
+            'freesearch': 1
       '0852': 
         'h': # Grundsignatur
           index:

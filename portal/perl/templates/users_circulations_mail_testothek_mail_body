@@ -25,7 +25,6 @@ E-Jahr            : [% year %]
 Titel-ID          : [% titleid %]
 URL               : https://[% servername %][% path_prefix %]/databases/id/[% record.database %]/titles/id/[% titleid %].html?l=de
 
-Zur Ansicht       : [% IF forview %][% forview %][% ELSE %]Nein[% END %]
 Nur Material      : [% IF materialonly%][% materialonly %][% ELSE %]Nein[% END %]
 Zahl Testpersonen : [% amount %]
 Bemerkungen       : [% remark %]

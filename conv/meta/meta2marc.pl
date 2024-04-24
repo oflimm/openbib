@@ -929,11 +929,17 @@ while (my $json=<IN>){
 
     my $fixed_length_008 = "700101|1970####xxu###########|||#|#eng#c"; # example
 
-    my $year = "";
     if (defined $fields_ref->{'0424'}){
-	($year) = $fields_ref->{'0424'}[0]{content} =~m/(\d\d\d\d)/;
+	my $tmp_ref = $fields_ref->{'0424'}[0];
+	$fields_ref->{'0424'} = [];
+	$fields_ref->{'0425'} = [];
+	push @{$fields_ref->{'0425'}}, $tmp_ref;
+	
+	delete $fields_ref->{'0424'};
     }
-    elsif (defined $fields_ref->{'0425'}){
+
+    my $year = "";    
+    if (defined $fields_ref->{'0425'}){
 	($year) = $fields_ref->{'0425'}[0]{content} =~m/(\d\d\d\d)/;
     }
 

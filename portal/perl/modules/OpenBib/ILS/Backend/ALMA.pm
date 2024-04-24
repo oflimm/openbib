@@ -1484,6 +1484,7 @@ sub get_mediastatus {
 		# Moeglich Werte fuer Policy:
 		#
 		# A: ausleihbar oder bestellbar
+		# T: Testothek ausleihbar mit verkuerzter Leihfrist
 		# X: nicht ausleihbar
 		# L: nur ausleihbar oder bestellbar in den Lesesaal
 		# LBS: Lehrbuchsammlug ausleihbar
@@ -1526,14 +1527,14 @@ sub get_mediastatus {
 		    };
 		}
 		# Bestellbar
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && ($policy eq "A"  || $policy eq "LBS") && $this_circ_conf->{'order'} && ( !defined $circ_ref->{'item_data'}{'requested'} || !$circ_ref->{'item_data'}{'requested'}) ){ 
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && ($policy eq "A"  || $policy eq "LBS" || $policy eq "T") && $this_circ_conf->{'order'} && ( !defined $circ_ref->{'item_data'}{'requested'} || !$circ_ref->{'item_data'}{'requested'}) ){ 
 		    push @$available_ref, {
 			service => 'order',
 			content => "bestellbar",
 		    };
 		}
 		# Ausleihbar vor Ort
-		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && ($policy eq "A" || $policy eq "LBS") && $this_circ_conf->{'loan'}){ 
+		elsif ($circ_ref->{'item_data'}{'base_status'}{'value'} == 1 && ($policy eq "A" || $policy eq "LBS" || $policy eq "T") && $this_circ_conf->{'loan'}){ 
 		    push @$available_ref, {
 			service => 'loan',
 			content => "ausleihbar",

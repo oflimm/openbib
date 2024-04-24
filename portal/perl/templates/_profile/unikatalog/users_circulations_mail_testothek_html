@@ -128,10 +128,12 @@ Verbrauchsmaterial</a> mit.</p>
 
 <legend class="mt-2">[% msg.maketext("Bestellquittung") %]</legend>
 
+<!--
 <div class="form-check mt-2 mb-2">
       <input class="form-check-input" type="checkbox" value="" name="receipt" id="receipt"/>
       <label class="form-check-label" for="receipt">[% msg.maketext("Ja, ich möchte eine Kopie dieser Bestellung als E-Mail erhalten") %].</label>
 </div>
+-->
 
 <div class="form-floating mb-3">
       <span class="form-control">[% userinfo.email %]</span>

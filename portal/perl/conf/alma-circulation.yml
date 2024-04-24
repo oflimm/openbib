@@ -89,6 +89,10 @@
       - type: 'LIBRARY'
         id: 'Ausgabe'
         desc: 'Humanwiss. Abteilung: Ausgabe'
+  '38-HWA-THF':
+    'order': 1
+    'loan': 0
+    'reservation': 1
 '38-101':
   '38-101-MAG':
     'order': 1

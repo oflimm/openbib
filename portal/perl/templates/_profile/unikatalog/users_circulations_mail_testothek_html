@@ -4,14 +4,20 @@
 <div class="card-header">[% msg.maketext("Bestellung in der Testothek") %]</div>
 <div class="card-body">
 
- <p>Die Bestellung von Tests erfolgt über dieses Formular. Sie
- tauchen nicht in Ihrem Bibliothekskonto auf. Sollte es noch Rückfrage
+ <p>Die Bestellungen von Tests erfolgen über dieses Formular. Sie
+ tauchen nicht in Ihrem Bibliothekskonto auf. Sollte es noch Rückfragen
  zu Ihrer Bestellung geben, erhalten Sie diese zeitnah per E-Mail.
  </p>
 
- <p>
- Die Ausleihe von Tests ist nur für Mitglieder und Angehörige der Universität zu Köln möglich. Zur Abholung bringen Sie bitte die unterschriebene <a class="exturl" href="[% cms_links.testothekformular %]">Verpflichtungserklärung</a> mit.
- </p>
+<p> Die Ausleihe von Tests ist nur für Mitglieder und Angehörige der
+Universität zu Köln möglich. Zur Abholung bringen Sie bitte die
+unterschriebene <a class="exturl" target="_blank" href="[%
+cms_links.testothekformular %]">Verpflichtungserklärung</a> mit.</p>
+
+<p> Falls Sie NUR Verbrauchsmaterial bestellen, bringen Sie bitte die
+unterschriebene <a class="exturl" target="_blank" href="[%
+cms_links.testothekverbrauch %]">Verpflichtungserklärung für
+Verbrauchsmaterial</a> mit.</p>
 
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/mail/testothek">
  
@@ -111,13 +117,8 @@
 </div>
 
 <div class="form-check mb-3">
-     <input class="form-check-input" type="checkbox" name="forview" id="ansicht" value="Ja" />
-     <label for="ansicht">[% msg.maketext("Bestellung zur Ansicht") %]</label>
-</div>
-
-<div class="form-check mb-3">
      <input class="form-check-input" type="checkbox" name="materialonly" id="material" value="Ja" />
-     <label for="material">[% msg.maketext("Möchten Sie lediglich Verbrauchsmaterial bestellen?") %]</label>
+     <label for="material">[% msg.maketext("Ich möchte lediglich Verbrauchsmaterial bestellen") %]</label>
 </div>
 
 <div class="form-floating mb-3">

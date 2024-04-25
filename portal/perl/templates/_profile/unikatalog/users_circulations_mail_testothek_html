@@ -4,20 +4,32 @@
 <div class="card-header">[% msg.maketext("Bestellung in der Testothek") %]</div>
 <div class="card-body">
 
- <p>Die Bestellungen von Tests erfolgen über dieses Formular. Sie
- tauchen nicht in Ihrem Bibliothekskonto auf. Sollte es noch Rückfragen
- zu Ihrer Bestellung geben, erhalten Sie diese zeitnah per E-Mail.
- </p>
+[%-
+   external_info = {};
 
+   IF user.ID;
+     external_info = user.get_external_info(user.ID);
+   END;
+
+-%]
+
+[% IF external_info.external_group.match('^[1-3]$')%]
+<div class="alert alert-info">
 <p> Die Ausleihe von Tests ist nur für Mitglieder und Angehörige der
 Universität zu Köln möglich. Zur Abholung bringen Sie bitte die
-unterschriebene <a class="exturl" target="_blank" href="[%
+unterschriebene <a class="exturl fs-5" target="_blank" href="[%
 cms_links.testothekformular %]">Verpflichtungserklärung</a> mit.</p>
 
 <p> Falls Sie NUR Verbrauchsmaterial bestellen, bringen Sie bitte die
-unterschriebene <a class="exturl" target="_blank" href="[%
+unterschriebene <a class="exturl fs-5" target="_blank" href="[%
 cms_links.testothekverbrauch %]">Verpflichtungserklärung für
 Verbrauchsmaterial</a> mit.</p>
+
+Die Bestellungen von Tests erfolgen über dieses Formular. Sie tauchen
+ nicht in Ihrem Bibliothekskonto auf. Sollte es noch Rückfragen zu
+ Ihrer Bestellung geben, erhalten Sie diese zeitnah per E-Mail.
+
+</div>
 
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/mail/testothek">
  
@@ -140,13 +152,20 @@ Verbrauchsmaterial</a> mit.</p>
 </div>
 -->
 
-<p class="fw-bold">
+<p class="fw-bold fs-5">
 Sie erhalten eine Benachrichtigungsmail, wenn Ihre Bestellung zur Abholung bereitsteht.
 </p>
 
-<button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Bestellen") %]</button>
+<button type="submit" class="btn btn-primary mb-2 mt-2">[% msg.maketext("Bestellen") %]</button>
 
 </form>
+[% ELSE %]
+<div class="alert alert-info fs-3">
+ <i class="pe-2 fas fa-exclamation-triangle"></i>[% msg.maketext("Eine Bestellung oder Vormerkung ist ausschliesslich für Mitglieder und Angehörige der Universität möglich.") %]
+</div>
 
+<a class="btn btn-primary" href="[% path_prefix %]/databases/id/[% database %]/titles/id/[% titleid %].html?l=[% lang %]">[% msg.maketext("Zurück") %]</a>
+
+[% END %]
 </div>
 </div>

@@ -58,12 +58,11 @@ print "### $database: Hole Exportdateien mit $wgetexe von $url\n";
 system("cd $pooldir/$pool ; rm $marcfile ");
 system("$wgetexe -o $pooldir/$pool/$marcfile \"$url\" > /dev/null 2>&1 ");
 
-
 print "### $pool: Konvertierung von $filename\n";
 system("cd $pooldir/$pool ; rm meta.* ");
 
 print "### $pool: Umwandlung von $filename in MARC-in-JSON via yaz-marcdump\n";
-system("cd $pooldir/$pool; yaz-marcdump -i marcxml -o json $marcfile | jq -S -c . |  > pool.json");
+system("cd $pooldir/$pool; yaz-marcdump -i marcxml -o json $marcfile | jq -S -c .  > pool.json");
 
 print "### $pool: IDs fixen\n";
 system("cd $pooldir/$pool; cat pool.json | $rootdir/filter/$pool/fix-id.pl > pool.json.tmp ; mv -f pool.json.tmp pool.json");

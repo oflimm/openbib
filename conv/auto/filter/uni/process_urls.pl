@@ -1136,8 +1136,8 @@ while (<>){
 		    subfield => $item_ref->{subfield},
 		    content  => $item_ref->{content},
 						 }];
+		last;
 	    }
-	    last;
 	}	
     }    
     

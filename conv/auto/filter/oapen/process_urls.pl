@@ -70,7 +70,7 @@ while (<>){
 
 		# URL schon ueber Portfolios verarbeitet? Dann ignorieren
 		next if (defined $url_done_ref->{$url} && $url_done_ref->{$url});
-		if ($note =~m/download/){
+		if ($note =~m/download/i){
 		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $default_access,
@@ -113,8 +113,8 @@ while (<>){
 		    subfield => $item_ref->{subfield},
 		    content  => $item_ref->{content},
 						 }];
+		last;
 	    }
-	    last;
 	}	
     }    
     

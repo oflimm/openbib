@@ -41,7 +41,7 @@ my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 my $confdir       = $config->{'base_dir'}."/conf";
 my $wgetexe       = "/usr/bin/curl";
-my $marc2metaexe   = "$konvdir/marc2meta.pl";
+my $marcjson2marcmetaexe   = "$konvdir/marcjson2marcmeta.pl";
 
 my $pool          = $ARGV[0];
 
@@ -51,12 +51,21 @@ my $filename      = $dbinfo->titlefile;
 
 my $url =  $dbinfo->protocol."://".$dbinfo->host."/".$filename;
 
+my $marcfile = "oapen.marc.xml";
+
 print "### $database: Hole Exportdateien mit $wgetexe von $url\n";
 
-system("cd $pooldir/$pool ; rm oapen.marc.xml ");
-system("$wgetexe -o $pooldir/$pool/oapen.marc.xml \"$url\" > /dev/null 2>&1 ");
+system("cd $pooldir/$pool ; rm $marcfile ");
+system("$wgetexe -o $pooldir/$pool/$marcfile \"$url\" > /dev/null 2>&1 ");
 
 
 print "### $pool: Konvertierung von $filename\n";
 system("cd $pooldir/$pool ; rm meta.* ");
-system("cd $pooldir/$pool; $marc2metaexe --database=$pool --loglevel=DEBUG -use-xml --encoding='UTF-8' --inputfile=oapen.marc.xml --configfile=/opt/openbib/conf/oapen.yml; gzip meta.*");
+
+print "### $pool: Umwandlung von $filename in MARC-in-JSON via yaz-marcdump\n";
+system("cd $pooldir/$pool; yaz-marcdump -i marcxml -o json $marcfile  | jq -S -c . > pool.json");
+
+print "### $pool: Konvertierung von pool.json\n";
+system("cd $pooldir/$pool; $marcjson2marcmetaexe --database=$pool -reduce-mem --inputfile=pool.json --configfile=/opt/openbib/conf/uni.yml; gzip meta.*");
+
+system("cd $pooldir/$pool ; rm pool.json");

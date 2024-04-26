@@ -1,10 +1,12 @@
 #!/usr/bin/perl
 
 use JSON::XS;
+use List::MoreUtils qw/ uniq /;
 
 while (<>){
     my $title_ref = decode_json $_;
 
+    ### Medientyp Digital/online zusaetzlich vergeben    
     $title_ref->{fields}{'4400'} = [
         {
             mult     => 1,

@@ -63,7 +63,7 @@ print "### $pool: Konvertierung von $filename\n";
 system("cd $pooldir/$pool ; rm meta.* ");
 
 print "### $pool: Umwandlung von $filename in MARC-in-JSON via yaz-marcdump\n";
-system("cd $pooldir/$pool; yaz-marcdump -i marcxml -o json $marcfile  | jq -S -c . > pool.json");
+system("cd $pooldir/$pool; yaz-marcdump -i marcxml -o json $marcfile | $rootdir/filter/$pool/fix-id.pl | jq -S -c . |  > pool.json");
 
 print "### $pool: Konvertierung von pool.json\n";
 system("cd $pooldir/$pool; $marcjson2marcmetaexe --database=$pool -reduce-mem --inputfile=pool.json --configfile=/opt/openbib/conf/uni.yml; gzip meta.*");

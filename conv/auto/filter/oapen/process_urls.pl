@@ -8,7 +8,7 @@ use utf8;
 use warnings;
 use strict;
 
-my $default_access = 'y';
+my $default_access = 'g';
 
 while (<>){
     my $record_ref = decode_json $_;
@@ -70,19 +70,32 @@ while (<>){
 
 		# URL schon ueber Portfolios verarbeitet? Dann ignorieren
 		next if (defined $url_done_ref->{$url} && $url_done_ref->{$url});
-
-		push @{$record_ref->{fields}{'4662'}}, {
-		    mult     => $mult,
-		    subfield => $default_access,
-		    content  => $url,
-		};
-		
-		push @{$record_ref->{fields}{'4663'}}, {
-		    mult     => $mult,
-		    subfield => '',
-		    content  => $description,
-		};
-
+		if ($note =~m/download/){
+		    push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => $default_access,
+			content  => $url,
+		    };
+		    
+		    push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $description,
+		    };
+		}
+		else {
+		    push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $url,
+		    };
+		    
+		    push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => $note,
+		    };
+		}
 		
 		$url_done_ref->{$url} = 1;			
 		

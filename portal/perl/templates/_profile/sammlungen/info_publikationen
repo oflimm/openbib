@@ -1,7 +1,7 @@
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
 
-      'main_template' = 'info_internetquellen_html'
+      'main_template' = 'info_publikationen_html'
 
       'active_menu' = 'info'
       'breadcrumb' = [
@@ -10,7 +10,7 @@
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Internetquellen')
+	     desc = msg.maketext('Publikationen')
 	     url  = '#'
 	     current = 1
 	  }

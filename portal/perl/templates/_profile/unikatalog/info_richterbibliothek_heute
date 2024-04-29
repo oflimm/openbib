@@ -1,7 +1,7 @@
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
 
-      'main_template' = 'info_internetquellen_html'
+      'main_template' = 'info_richterbibliothek_heute_html'
 
       'active_menu' = 'info'
       'breadcrumb' = [
@@ -10,7 +10,7 @@
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Internetquellen')
+	     desc = msg.maketext('Die Richter-Bibliothek heute')
 	     url  = '#'
 	     current = 1
 	  }

@@ -17,9 +17,9 @@
 <div class="ob-breadcrumb bg-white">
 <ol class="list-group list-group-horizontal">
    <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-   <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/richter/[% config.get('titles_loc') %]/fields/id/0720.html?l=[% lang %]">[% msg.maketext("Register") %]</a></li>
-   <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('info_loc') %]/buecherlisten.html?l=[% lang %]">[% msg.maketext("Rekonstruktion") %]</a></li>
    <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('info_loc') %]/richterbibliothek_heute.html?l=[% lang %]">[% msg.maketext("Die Bibliothek") %]</a></li>
+   <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('info_loc') %]/buecherlisten.html?l=[% lang %]">[% msg.maketext("Rekonstruktion") %]</a></li>
+   <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/richter/[% config.get('titles_loc') %]/fields/id/0720.html?l=[% lang %]">[% msg.maketext("Register") %]</a></li>
 
 [% IF layout_param.representations %]
 <li class="ob-representation list-group-item ms-auto d-none d-md-block">

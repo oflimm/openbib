@@ -1975,6 +1975,10 @@ a.ext {
 
 @media only screen and (max-width: 575px) {
 
+    .navbar-brand {
+	font-size: 16px;
+    }
+    
     .ob-availability_online {
 	width: auto;
 	background: #90c4eb;    
@@ -2002,6 +2006,10 @@ a.ext {
 
 @media screen and (max-width:480px) {
 
+    .navbar-brand {
+	font-size: 12px;
+    }
+        
     .ob-floating_sidebar_button, .ob-floating_sidebar_button:hover {
 	position:fixed;
 	width:50px;
@@ -2052,6 +2060,13 @@ a.ext {
     table.ob-title_fields td {
 	font-size:1.1em;
 	padding: 0.3 0 0.5em 0.2em;
+    }
+}
+
+@media screen and (max-width:360px) {
+
+    .navbar-brand {
+	font-size: 10px;
     }
 }
 

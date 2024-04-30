@@ -1,0 +1,95 @@
+[%#-
+#######################################################################
+#
+# Templatename: subnavigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu fuer Tabs
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+[% IF active_menu == "info" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Informationen") %]</h6>
+ <ul>
+[% IF active_submenu == "richterbibliothek_heute" %]
+  <li class="active"><strong>Die Bibliothek Richter heute</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/richterbibliothek_heute.html?l=[% lang %]">Die Bibliothek</a></li>
+[% END %]
+<li><span>Biographien</span>
+    <ul>
+[% IF active_submenu == "elise"  %]
+      <li class="active"><strong>Elise Richter</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/elise_richter.html?l=[% lang %]">Elise Richter</a></li>
+[% END %]
+[% IF active_submenu == "helene" %]
+      <li class="active"><strong>Helene Richter</strong></li>
+[% ELSE %]
+      <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/helene_richter.html?l=[% lang %]">Helene Richter</a></li>
+[% END %]
+    </ul>
+</li>
+[% IF active_submenu == "externe_nachweise" %]
+  <li class="active"><strong>Externe Nachweise</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/externe_nachweise.html?l=[% lang %]">Externe Nachweise</a></li>
+[% END %]
+ </ul>
+</nav>
+[% END %]
+[% IF active_menu == "searchform" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("Recherche") %]</h6>
+ <ul>
+[% IF active_submenu == "search_advanced" %]
+  <li class="active"><strong>Erweiterte Recherche</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">Erweiterte Recherche</a></li>
+[% END %]
+ </ul>
+</nav>
+[% END %]
+[% IF active_menu == "cloud" ;
+   thisdatabase = config.get_dbs_of_view(view).first ; %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">[% msg.maketext("&Uuml;bersichten") %]</h6>
+ <ul>
+[% IF active_submenu == "clouds_year" %]
+  <li class="active"><strong>[% msg.maketext("Jahr") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% thisdatabase %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_person" %]
+  <li class="active"><strong>[% msg.maketext("Personen") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% thisdatabase %]/[% config.get('clouds_loc') %]/id/person.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_corporatebody" %]
+  <li class="active"><strong>[% msg.maketext("K&ouml;rperschaften") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% thisdatabase %]/[% config.get('clouds_loc') %]/id/corporatebody.html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_subject" %]
+  <li class="active"><strong>[% msg.maketext("Schlagwort") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% thisdatabase %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
+[% END %]
+[% IF active_submenu == "clouds_classification" %]
+  <li class="active"><strong>[% msg.maketext("Systematik") %]</strong></li>
+[% ELSE %]
+   <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% thisdatabase %]/[% config.get('clouds_loc') %]/id/classification.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
+[% END %]
+ </ul>
+</nav>
+[% END %]

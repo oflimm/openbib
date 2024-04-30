@@ -1,0 +1,51 @@
+[%#-
+#######################################################################
+#
+# Templatename: subnavigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu fuer Tabs
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+[% IF active_menu == "project" %]
+<nav class="ym-vlist">
+<h6 class="ym-vtitle">Informationen zum Projekt</h6>
+ <ul>
+[% IF active_submenu == "buecherlisten" %]
+  <li class="active"><strong>Die B&uuml;cherlisten</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/buecherlisten.html?l=[% lang %]">Die B&uuml;cherlisten</a></li>
+[% END %]
+[% IF active_submenu == "arbeitsablauf" %]
+  <li class="active"><strong>Arbeitsablauf / Aktuelles</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/arbeitsablauf.html?l=[% lang %]">Arbeitsablauf / Aktuelles</a></li>
+[% END %]
+[% IF active_submenu == "publikationen" %]
+  <li class="active"><strong>Publikationen</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/publikationen.html?l=[% lang %]">Publikationen</a></li>
+[% END %]
+[% IF active_submenu == "internetquellen" %]
+  <li class="active"><strong>Internetquellen</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/internetquellen.html?l=[% lang %]">Internetquellen</a></li>
+[% END %]
+[% IF active_submenu == "ansprechpartner" %]
+  <li class="active"><strong>Ansprechpartner</strong></li>
+[% ELSE %]
+  <li><a href="[% path_prefix %]/[% config.get('info_loc') %]/ansprechpartner.html?l=[% lang %]">Ansprechpartner</a></li>
+[% END %]
+ </ul>
+</nav>
+[% END %]

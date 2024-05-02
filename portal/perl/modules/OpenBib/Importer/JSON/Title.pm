@@ -2443,7 +2443,7 @@ sub process_marc {
         }
     }
     
-    # Index-Data imer mit ALLEN Titelfeldern fuellen
+    # Index-Data immer mit ALLEN Titelfeldern fuellen
     foreach my $field (keys %{$fields_ref}) {            
         # Kategorien in listitemcat werden fuer die Kurztitelliste verwendet
         if ($self->{conv_config}{store_full_record} || defined $self->{conv_config}{listitemcat}{$field}) {
@@ -2671,7 +2671,7 @@ sub process_marc {
 		#                $logger->error("subfield fehlt") if (!defined $item_ref->{subfield});
 
 		
-                push @{$self->{_columns_title_fields}}, [$self->{serialid},$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{ind},$item_ref->{content}];
+                push @{$self->{_columns_title_fields}}, [$self->{serialid},$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{ind},$item_ref->{content}] if ($item_ref->{content});
                 #push @{$self->{_columns_title_fields}}, ['',$id,$field,$item_ref->{mult},$item_ref->{subfield},$item_ref->{content}];
                 $self->{serialid}++;
             }

@@ -910,7 +910,7 @@ sub mail_testothek {
 	->from($config->{mail}{realm}{$realm}{sender})	
 	->reply_to($config->{mail}{realm}{$realm}{sender})
 	->header("Content-Type" => 'text/plain; charset="utf-8"')
-	->subject("Bestellung Testothek")
+	->subject("Bestellung Testothek: $label")
 	->text_body(read_binary($anschfile))
 	->send;
     

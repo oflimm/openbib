@@ -304,6 +304,7 @@ my $denylist_ref = {
     'lesesaal' => 1,
     'oapen' => 1,
     'openlibrary' => 1,
+    'gesiskoeln' => 1,
     'proquestpda' => 1,
     'rheinabt' => 1,
     'rheinabt' => 1,
@@ -474,7 +475,8 @@ sub threadA {
 #    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['doab','elis','gallica','gdz','gresham_oer','hathitrust','gutenberg','intechopen','khanacademy','khanacademy_de','loc','loviscach_oer','mitocw_oer','nptelhrd_oer','stanford_oer','ucberkeley_oer','ucla_oer','yale_oer','zvdd'] });
     autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['doab','oapen'] });
 
-#    autoconvert({ updatemaster => $updatemaster, databases => ['gbvnationallizenzen','gesiskoeln'] });
+#    autoconvert({ updatemaster => $updatemaster, databases => ['gbvnationallizenzen'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['gesiskoeln'] });
 
     $logger->info("### Sammlungen aus dem Universitaet");
     

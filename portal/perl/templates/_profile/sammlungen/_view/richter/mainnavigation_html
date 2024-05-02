@@ -71,6 +71,12 @@
       <ul class="list-unstyled components">
 
         <li class="nav-item">
+	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/richter/[% config.get('titles_loc') %]/fields/id/0720.html?l=[% lang %]">
+            <i class="fas fa-list"></i> [% msg.maketext("Register") %]
+	    
+          </a>
+	</li>
+        <li class="nav-item">
 	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/richter/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">
             <i class="fas fa-cloud"></i> [% msg.maketext("Wortwolken") %]
 	    

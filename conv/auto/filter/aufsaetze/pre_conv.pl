@@ -2,7 +2,7 @@
 
 #####################################################################
 #
-#  post_unpack.pl
+#  pre_conv.pl
 #
 #  Bearbeitung der Titeldaten
 #
@@ -46,11 +46,6 @@ my $pooldir       = $rootdir."/pools";
 my $datadir       = $rootdir."/data";
 my $konvdir       = $config->{'conv_dir'};
 
-my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
+print "### $pool: Erweiterung um Standortinformationen, weiteres Processing\n";
 
-
-print "### $pool: Erweiterung um Standort entsprechend des Besitzkennzeichens in 3330\n";
-
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/add-fields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
-
+system("cd $datadir/$pool ; cat meta.title  | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/$pool/process_urls.pl | $rootdir/filter/$pool/volume2year.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");

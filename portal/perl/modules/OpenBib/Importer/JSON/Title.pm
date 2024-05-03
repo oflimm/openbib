@@ -1755,12 +1755,14 @@ sub process_marc {
         if ($fields_ref->{'0773'}) {
 	    foreach my $item_ref (@{$fields_ref->{'0773'}}) {
 
-		unless (defined $have_type_ref->{'Aufsatz'}){
-		    push @{$fields_ref->{'4410'}}, {
-			mult      => $type_mult++,
-			content   => 'Aufsatz',
-			subfield  => 'e', # enriched
-		    } if (defined $item_ref->{'t'});
+		if ($item_ref->{'subfield'} eq "i" && $item_ref->{'content'} =~m{Enthalten in}i){
+		    unless (defined $have_type_ref->{'Aufsatz'}){
+			push @{$fields_ref->{'4410'}}, {
+			    mult      => $type_mult++,
+			    content   => 'Aufsatz',
+			    subfield  => 'e', # enriched
+			};
+		    }
 		}
 	    }
         }   

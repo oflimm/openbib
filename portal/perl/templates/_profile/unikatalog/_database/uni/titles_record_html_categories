@@ -565,7 +565,7 @@ FOREACH field IN normdata;
            content_map.${'Erscheinungsverlauf'}.push(content);
 	 END;
 
-    CASE "T0830"; # Gesamttitel
+    CASE [ "T0830" "T0490" ]; # Gesamttitel
          content       = thisfield.${'a'} ;
          volume        = thisfield.${'v'} ;	 
          super_titleid = thisfield.${'w'} ;

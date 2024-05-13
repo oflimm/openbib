@@ -237,7 +237,7 @@ List collection items
 
 e.g:
 
-./cdm_ctl.pl --do=list_collection --outputfile=collections.json
+./cdm_ctl.pl --do=list_collections --outputfile=collections.json
 ./cdm_ctl.pl --do=list_fieldinfo -stdout --collection=abc | jq -S . | more
 ./cdm_ctl.pl --do=list_items --outputfile=abc_items.json --collection=abc
 

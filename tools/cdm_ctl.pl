@@ -111,6 +111,18 @@ sub list_items {
 	exit;
     }
 
+    my $fieldinfo_ref = {};
+
+    {
+	my $url = "https://${host}/dmwebservices/index.php?q=dmGetCollectionFieldInfo/$collection/json";
+	
+	my $response_ref = get_json($url);
+
+	foreach my $field_ref (@$response_ref){
+	    $fieldinfo_ref->{$field_ref->{nick}} = $field_ref->{name};
+	}
+    }
+    
     my $url = "https://${host}/dmwebservices/index.php?q=dmQuery/$collection/0/dmrecord/dmrecord/1024/0/0/0/0/0/json";
     
     my $response_ref = get_json($url);
@@ -148,7 +160,22 @@ sub list_items {
 	$logger->info("Getting info for id $cdmid") unless ($stdout);	    
 	my $response_ref = get_json($url);
 
-	push @$items_ref, $response_ref;
+	my $item_ref = {
+	    id => $cdmid,
+	    dbname => $collection,
+	};
+	
+	foreach my $field (keys %{$response_ref}){
+	    $response_ref->{$field} = "" if (ref $response_ref->{$field} eq "HASH" && !keys %{$response_ref->{$field}});
+	    
+	    push @{$item_ref->{fields}{$field}}, {
+		content => $response_ref->{$field},
+		description => $fieldinfo_ref->{$field},
+		mult => 1,
+	    };
+	
+	}
+	push @$items_ref, $item_ref;
     }
     
     output($items_ref,"Listing items in collection $collection");    
@@ -170,14 +197,28 @@ sub output {
     my ($response_ref,$description) = @_;
     
     if ($stdout){
-        print encode_json($response_ref),"\n";
+	if (ref $response_ref eq "ARRAY"){
+	    foreach my $item_ref (@$response_ref){
+		print encode_json($item_ref),"\n";		
+	    }
+	}
+	else {
+	    print encode_json($response_ref),"\n";
+	}
     }
     else {
 	open(OUTPUT,">$outputfile");
 	
 	$logger->info($description);
-	
-	print OUTPUT encode_json($response_ref),"\n";
+
+	if (ref $response_ref eq "ARRAY"){
+	    foreach my $item_ref (@$response_ref){
+		print OUTPUT encode_json($item_ref),"\n";		
+	    }
+	}
+	else {
+	    print OUTPUT encode_json($response_ref),"\n";
+	}
 	
 	close(OUTPUT);
     }

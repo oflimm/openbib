@@ -278,7 +278,7 @@ sub update_record {
     }
     
     if ($input_data_ref->{locationid} eq ""){
-        delete $input_data_ref->{locationid};
+        $input_data_ref->{locationid} = \'NULL';
     }
     else {
         my $location = $config->get_locationinfo->single({identifier => $input_data_ref->{locationid} });
@@ -287,7 +287,7 @@ sub update_record {
             $input_data_ref->{locationid} = $location->id;
         }
         else {
-            delete $input_data_ref->{locationid};
+            $input_data_ref->{locationid} = \'NULL';
         }
     }
     

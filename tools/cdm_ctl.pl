@@ -132,7 +132,6 @@ sub list_items {
 	    $logger->debug("Getting items for offset $offset");	    
 	    my $response_ref = get_json($url);
 
-
 	    push @{$records_ref}, $response_ref->{records};
 	    
 	    $offset = $offset + $maxrecs;
@@ -146,7 +145,7 @@ sub list_items {
 	my $cdmid = $record_ref->{pointer};
 	my $url = "https://${host}/dmwebservices/index.php?q=dmGetItemInfo/$collection/$cdmid/json";
 	
-	$logger->info("Getting info for id $cdmid");	    
+	$logger->info("Getting info for id $cdmid") unless ($stdout);	    
 	my $response_ref = get_json($url);
 
 	push @$items_ref, $response_ref;

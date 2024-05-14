@@ -802,7 +802,9 @@ FOREACH field IN normdata;
          IF NOT normdata.defined('T4662');
       	   url           = thisfield.${'u'};
 	   
-	   IF thisfield.${'y'}; # Linktext
+	   IF thisfield.${'3'}; # Linktext
+	     content = thisfield.${'3'};
+	   ELSIF thisfield.${'y'}; # Linktext
 	     content = thisfield.${'y'};
 	   ELSIF thisfield.${'z'}; # Public Note
 	     content = thisfield.${'z'};
@@ -811,7 +813,9 @@ FOREACH field IN normdata;
 	   ELSE;
       	     content = url;
     	   END;
-	 
+
+           NEXT IF content.match('Inhaltsverzeichnis') && normdata.defined('T4110');
+	   
     	   content   = "<a href=\"${url}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";         
 
            IF NOT content_map.${'URL'} ;

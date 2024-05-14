@@ -717,7 +717,7 @@ while (<>){
 		    }
 		    $have_toc = 1;		    
 		}
-
+		
 		# Hinweise aus 856$z
 		elsif (defined $url_info_ref->{$umult}{'z'}){
 		    my $public_note = $url_info_ref->{$umult}{'z'};
@@ -994,6 +994,49 @@ while (<>){
 			}
 		    }
 		}
+
+		elsif (defined $url_info_ref->{$umult}{'3'}){
+		    my $description = $url_info_ref->{$umult}{'3'};
+
+		    if ($description =~m/Inhaltsverzeichnis|Inh\.\-Verz\./i ){ # Inhaltsverzeichnisse
+			
+			# Falls bereits ein Link "Inhaltsverzeichnis" existiert, nur insgesamt einen Link berücksichtigen
+			if ($url =~m/hbz\-nrw\.de/){ # hbz-Inhaltsverzeichnis hat Vorrang, z.B. ID=7741043
+			    $record_ref->{fields}{'4110'} = [{
+				mult     => 1,
+				subfield => '',
+				content  => $url,
+							     }];
+			}
+			elsif (!$have_toc){
+			    $record_ref->{fields}{'4110'} = [{
+				mult     => 1,
+				subfield => '',
+				content  => $url,
+							     }];
+			}		
+			$have_toc = 1;
+		    }
+		    else {
+			my $access      = ""; # Normaler URL
+			
+			push @{$record_ref->{fields}{'4662'}}, {
+			    mult     => $mult,
+			    subfield => $access,
+			    content  => $url,
+			};
+			
+			push @{$record_ref->{fields}{'4663'}}, {
+			    mult     => $mult,
+			    subfield => '',
+			    content  => $description,
+			};
+
+		    }
+			    
+		    $url_done_ref->{$url} = 1;			
+		}
+		
 		# Beschreibung aus 856$x wg. falsch erfasster valider Inhalte als Non-Public-Note in $x
 		elsif (defined $url_info_ref->{$umult}{'x'}){
 		    my $description = $url_info_ref->{$umult}{'x'};

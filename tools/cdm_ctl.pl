@@ -118,6 +118,11 @@ sub list_items {
 	
 	my $response_ref = get_json($url);
 
+	if ($response_ref->{code}){
+	    $logger->error("Error ".$response_ref->{code}.": ".$response_ref->{message}) unless ($stdout);
+	    next;
+	}
+	
 	foreach my $field_ref (@$response_ref){
 	    $fieldinfo_ref->{$field_ref->{nick}} = $field_ref->{name};
 	}
@@ -198,6 +203,11 @@ sub list_fieldinfo {
     my $url = "https://${host}/dmwebservices/index.php?q=dmGetCollectionFieldInfo/$collection/json";
     
     my $response_ref = get_json($url);
+
+    if ($response_ref->{code}){
+	$logger->error("Error ".$response_ref->{code}.": ".$response_ref->{message}) unless ($stdout);
+	exit;
+    }
     
     output($response_ref,"Listing fieldinfo for collection $collection");        }
 
@@ -249,7 +259,7 @@ sub get_json {
 	$logger->error($response->code . ' - ' . $response->message);
 	exit;
     }
-    
+
     my $result = decode_utf8($response->content);
 
     my $json_ref = undef;
@@ -259,12 +269,12 @@ sub get_json {
     };
 
     if ($@){
-	$logger->error("Error: ".$@);
+	$logger->error($response->content);
 	exit;
     }
-
+    
     $logger->debug("Returning ".YAML::Dump($json_ref));
-        
+            
     return $json_ref;
 }
 

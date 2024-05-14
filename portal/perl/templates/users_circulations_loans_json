@@ -13,7 +13,14 @@
 -%]
 [%-
 
- this_json_output = {
+ IF loans.error;
+  this_json_output = {
+     error = loans.error_description
+     code  = loans.error_code
+  };
+ ELSE ;
+
+   this_json_output = {
      link = {
           rel = 'self'
           href = location
@@ -21,8 +28,10 @@
      items = loans.items
      num_renewables = loans.num_renewables
      num_total = loans.num_total
- };
+   };
+
+ END;
 
   to_json(this_json_output);
-
+  
 -%]

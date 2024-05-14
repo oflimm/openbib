@@ -160,14 +160,22 @@ sub list_items {
 	$logger->info("Getting info for id $cdmid") unless ($stdout);	    
 	my $response_ref = get_json($url);
 
+	if ($response_ref->{code}){
+	    $logger->error("Error ".$response_ref->{code}.": ".$response_ref->{message}) unless ($stdout);
+	    next;
+	}
+	
 	my $item_ref = {
 	    id => $cdmid,
 	    dbname => $collection,
 	};
 	
 	foreach my $field (keys %{$response_ref}){
+	    # Leeres Hashrefs auf "" vereinheitlichen
 	    $response_ref->{$field} = "" if (ref $response_ref->{$field} eq "HASH" && !keys %{$response_ref->{$field}});
-	    
+
+	    next if (!$response_ref->{$field});
+		     
 	    push @{$item_ref->{fields}{$field}}, {
 		content => $response_ref->{$field},
 		description => $fieldinfo_ref->{$field},

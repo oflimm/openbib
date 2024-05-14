@@ -95,6 +95,8 @@ function update_collection(yourform, checked, item) {
 [%-  PROCESS common/subtemplate name="cartitems_html_as_harvard" -%]
 [%   ELSIF format == 'mla' %]
 [%-  PROCESS common/subtemplate name="cartitems_html_as_mla" -%]
+[%   ELSE %]
+[%-  PROCESS common/subtemplate name="cartitems_html_default" -%]
 [%   END %]
 
 

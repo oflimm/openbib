@@ -394,6 +394,7 @@ elsif ($type eq "cart"){
 	    $logger->error("Cartitemid $id: DB: $dbname - TITLEID: $titleid existiert nicht!");
 	    if ($deletemissing){
 		$logger->error("Cartitemid $id: DB: $dbname - TITLEID: $titleid wird auf Wunsch geloescht.");
+		$thiscartitem->user_cartitems->delete;		
 		$thiscartitem->delete;
 	    }	    
 	}

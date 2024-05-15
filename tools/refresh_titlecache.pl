@@ -46,7 +46,7 @@ use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::User;
 
-my ($type,$username,$from,$to,$database,$listusers,$outputfile,$dumpitems,$selectobsolete,$authenticatorid,$viewname,$dryrun,$help,$logfile,$loglevel);
+my ($type,$username,$from,$to,$database,$listusers,$outputfile,$dumpitems,$selectobsolete,$authenticatorid,$viewname,$deletemissing,$dryrun,$help,$logfile,$loglevel);
 
 &GetOptions(
     "type=s"          => \$type,
@@ -57,6 +57,7 @@ my ($type,$username,$from,$to,$database,$listusers,$outputfile,$dumpitems,$selec
     "authenticatorid=s" => \$authenticatorid,
     "viewname=s"      => \$viewname,
     "database=s"      => \$database,
+    "delete-missing"  => \$deletemissing,
     "dry-run"         => \$dryrun,
     "list-users"      => \$listusers,
     "outputfile=s"    => \$outputfile,
@@ -263,6 +264,10 @@ if ($type eq "litlist"){
 	    }
 	    else {
 		$logger->error("Litlistitemid $id: DB: $dbname - TITLEID: $titleid existiert nicht!");
+		if ($deletemissing){
+		    $logger->error("Litlistitemid $id: DB: $dbname - TITLEID: $titleid wird auf Wunsch geloescht.");
+		    $thislitlistitem->delete;
+		}
 	    }
 	}
     }
@@ -387,6 +392,10 @@ elsif ($type eq "cart"){
 	}
 	else {
 	    $logger->error("Cartitemid $id: DB: $dbname - TITLEID: $titleid existiert nicht!");
+	    if ($deletemissing){
+		$logger->error("Cartitemid $id: DB: $dbname - TITLEID: $titleid wird auf Wunsch geloescht.");
+		$thiscartitem->delete;
+	    }	    
 	}
     }
 }

@@ -1,3 +1,0 @@
-[% config.get_templatetext('info_tipps','unikatalog',lang) %]
-
-<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Tipps zur Nutzung") %]</div>

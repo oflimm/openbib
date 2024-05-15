@@ -1,1 +1,0 @@
-[% config.get_templatetext('info_fernleihe',view,lang) %]

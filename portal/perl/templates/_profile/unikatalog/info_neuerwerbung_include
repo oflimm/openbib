@@ -1,3 +1,0 @@
-[% config.get_templatetext('info_neuerwerbung',view,lang) %]
-
-<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Neuerwerbungslisten abonnieren") %]</div>

@@ -1,7 +1,0 @@
-[%- IF representation == '' || representation == 'html' -%]
-[%- PROCESS common/subtemplate name="mainnavigation_html" -%]
-[%- ELSIF representation == 'mobile' -%]
-[%- PROCESS common/subtemplate name="mainnavigation_mobile" -%]
-[%- ELSE -%]
-This Resource-Type is not available in the representation [% representation %]
-[%- END -%]

@@ -1,3 +1,0 @@
-[% config.get_templatetext('info_anschaffung',view,lang) %]
-
-<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Anschaffungsvorschlag") %]</div>

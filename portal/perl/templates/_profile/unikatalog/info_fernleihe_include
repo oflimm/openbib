@@ -1,3 +1,0 @@
-[% config.get_templatetext('info_fernleihe',view,lang) %]
-
-<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Fernleihe über die USB") %]</div>

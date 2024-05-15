@@ -1,3 +1,0 @@
-[% config.get_templatetext('info_help',view,lang) %]
-
-<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Informationen zum Unikatalog") %]</div>

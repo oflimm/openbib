@@ -1,0 +1,15 @@
+      <div class="ob-brieftitle p-3">
+[%-
+
+     record.to_isbd.replace('\n','<br/>');
+
+     holding = record.get_holding ;
+-%]
+      </div>
+      
+[% IF holding.size > 0 %]
+      <div class="ob-titlemark p-3">
+[% PROCESS common/subtemplate name="holding" hide_qrcode=1 %]
+      </div><!-- End Bestand -->
+[% END %]
+

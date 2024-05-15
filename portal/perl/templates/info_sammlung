@@ -1,20 +1,16 @@
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
 
-      'main_template' = 'info_externe_nachweise_html'
-      'sidebar_template' = 'subnavigation'
-      'sidebar_button_in_main_template' = 1 # Sidebar im Desktop anzeige, Mobil via Button
+      'main_template' = 'info_sammlung_html'
 
       'active_menu' = 'project'
-      'active_submenu' = 'externe_nachweise'
-
       'breadcrumb' = [
           {
              desc = msg.maketext('Start')
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Externe Nachweise')
+	     desc = msg.maketext('Die Sammlungen der USB')
 	     url  = '#'
 	     current = 1
 	  }
@@ -22,6 +18,8 @@
     };
 -%]
 [%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="info_sammlung_include" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

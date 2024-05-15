@@ -17,7 +17,7 @@
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+        <a class="card-link collapsed" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
           [% msg.maketext("Neue Rolle anlegen") %]
         </a>
       </h5>
@@ -27,14 +27,14 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('viewadmin_loc') %]/[% config.get('roles_loc') %]">
 
-<div class="form-group">
-<label for="rolename">[% msg.maketext("Name") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="rolename" id="rolename"/>
+<label for="rolename">[% msg.maketext("Name") %]</label>
 </div>
 
-<div class="form-group">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="description" id="description"/>
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
@@ -54,7 +54,7 @@
 <h3>[% msg.maketext("Bereits existierende Rollen") %]</h3>
 
 <div class="table-responsive text-nowrap">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th></th><th></th><th></th></tr>
 </thead>

@@ -29,6 +29,12 @@
 [% record.to_bibtex %]
 </pre>
 </div>
+[% ELSIF format == "ISBD" %]
+<div>
+<pre>
+[% record.to_isbd %]
+</pre>
+</div>
 [% ELSIF format == "Text" %]
 <pre>
 [% FOREACH category IN categories;

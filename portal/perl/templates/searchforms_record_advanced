@@ -1,4 +1,4 @@
-[%- IF representation == '' || representation == 'html' ;
+[%-
     layout_param = {
      'page_title' = 'Erweiterte Suche'
 
@@ -6,6 +6,9 @@
       'sidebar_template' = 'subnavigation'
       'active_menu' = 'searchform'
       'active_submenu' = 'searchform_advanced'
+      'active_authoritysearch' = 0
+
+      'sidebar_button_in_main_template' = 1
 
       'without_navigation_search' = '1'
 
@@ -22,6 +25,7 @@
       ]
     };
 -%]
+[%- IF representation == '' || representation == 'html' %]
 [%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'include' -%]
 [%- PROCESS common/subtemplate name="searchforms_record_advanced_include" -%]

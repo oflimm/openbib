@@ -24,36 +24,29 @@
    normset_type = "";
    
    IF     num_of_available_records > 0;
-      normset = available_recordlist.get_records.first.get_fields;
+      normset = available_recordlist.get_records.first.to_abstract_fields;
    END;
 -%]
-[%- IF normset.${"T0331"}.first.content || normset.${"T0540"}.first.content %]
+[%- IF normset.title || normset.isbn %]
 <title_summary>
-[%- IF normset.${"T0331"}.first.content %]
-  <title>[% normset.${"T0331"}.first.content %]</title>
+[%- IF normset.title %]
+  <title>[% normset.title %]</title>
 [%- END %]
-[%- FOREACH category IN [ "P0100" "P0102" "P0103" ] %]
-[%-   FOREACH item IN normset.$category %]
-  <creator>[% item.content %]</creator>
-[%-   END %]
+[%- IF normset.authors %]
+  <creator>[% normset.authors.join(' ; ') %]</creator>
 [%- END %]
   <type>text</type>
-[%- IF normset.${"T0412"}.first.content %]
-  <publisher>[% normset.${"T0412"}.first.content %]</publisher>
+[%- IF normset.publisher %]
+  <publisher>[% normset.publisher %]</publisher>
 [%- END %]
-[%- IF normset.${"T0425"}.first.content %]
-  <date>[% normset.${"T0425"}.first.content %]</date>
+[%- IF normset.year %]
+  <date>[% normset.year %]</date>
 [%- END %]
-[%- IF normset.${"T0516"}.first.content %]
-  <language>[% normset.${"T0516"}.first.content %]</language>
+[%- IF normset.subject %]
+  <subject>[% normset.subjedt %]</subject>
 [%- END %]
-[%- FOREACH item IN normset.${"T0710"} %]
-  <subject>[% item.content %]</subject>
-[%- END %]
-[%- IF normset.${"T0540"}.first.content %]
-  <identifier>URN:ISBN:[% normset.${"T0540"}.first.content %]</identifier>
-[%- ELSIF have_bibkey -%]
-  <identifier>URN:BIBKEY:[% key %]</identifier>
+[%- IF normset.isbn %]
+  <identifier>URN:ISBN:[% normset.isbn %]</identifier>
 [% END %]
 </title_summary>
 [% END -%]

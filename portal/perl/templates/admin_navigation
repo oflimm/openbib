@@ -292,7 +292,6 @@
 [%   END %]
 [% END %]
 [% IF user.has_right({scope = 'admin_users', right = 'right_read'}) || user.has_right({scope = 'admin_users', right = 'right_update'}) %]
-[%   IF layout_param.active_submenu == "admin_users" %]
 <li class="nav-item"><span>[% msg.maketext("Nutzerverwaltung") %]</span>
     <ul>
 [%     IF layout_param.active_subsubmenu == "overview" %]
@@ -307,9 +306,6 @@
 [%     END %]
     </ul>
 </li>
-[%   ELSE %]
-  <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %].html?l=[% lang %]">[% msg.maketext("Nutzerverwaltung") %]</a></li>
-[%   END %]
 [% END %]
 [% IF user.has_right({scope = 'admin_authenticators', right = 'right_read'}) || user.has_right({scope = 'admin_authenticators', right = 'right_update'}) %]
 [%   IF layout_param.active_submenu == "admin_authenticators" %]

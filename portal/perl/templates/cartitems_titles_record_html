@@ -1,0 +1,204 @@
+[%#-
+#######################################################################
+#
+# Templatename: titles_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%]
+[%- PROCESS common/subtemplate name="search_title_field" -%]
+[%-
+
+  toc_i18n        = msg.maketext("Inhaltsverzeichnis");
+
+  request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) ;
+  normdata        = record.get_fields ;
+  holding         = record.get_holding ;
+  circulation     = record.load_circulation.get_circulation ; 
+
+  all_locations = record.get_locations;
+
+  # Filter locations
+  locations = [];
+
+  is_freemedia = 0;
+  is_licensedmedia = 0;
+  
+  FOREACH loc IN all_locations ;
+    IF loc.match('^DE-38$') ;
+       locations.push(loc);
+    ELSIF loc.match('^DE-38-[0-9][0-9][0-9]') ;
+       locations.push(loc);
+    ELSIF NOT loc.match('^DE-38-[a-zA-Z]');   
+       locations.push(loc);
+    END;
+    IF loc.match('emedien') ;
+       is_licensedmedia = 1;
+    ELSIF loc.match('freemedia') ;
+       is_freemedia = 1;
+    END;
+  END;
+
+  bibkey = record.to_bibkey ;
+  isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
+  IF NOT isbn ;
+      isbn   = normdata.${"T0553"}.first.content.replace('-','') ;
+  END ;
+
+  # E-Book/Inhaltsverzeichnis vorhanden
+  fulltext  = normdata.${'T4120'}.first.content ;
+  toc       = normdata.${'T4110'}.first.content ;
+
+
+  recordname = normdata.${'T0331'}.first.content;
+  IF normdata.${'PC0001'}.first.content ;
+     pc = normdata.${'PC0001'}.first.content ;
+     recordname = "${pc} - ${recordname}";
+  END ;
+  title      = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc)
+
+    fulltext_availability  = "";
+    fulltext_icon = config.get('ezb_unknown_img');
+    fulltext_desc  = "Volltext";
+
+    IF normdata.${'T4120'}.first.subfield == "g";
+      fulltext_availability = "lawngreen";
+      fulltext_icon = config.get('ezb_green_img');
+      fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
+    ELSIF normdata.${'T4120'}.first.subfield == "y";
+      fulltext_availability = "yellow";
+      fulltext_icon = config.get('ezb_yellow_img');
+      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+    ELSIF normdata.${'T4120'}.first.subfield == "f";
+      fulltext_icon = config.get('ezb_green_yellow_img');
+      fulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
+    ELSE ;
+      fulltext_icon = config.get('ezb_unknown_img');
+      fulltext_desc = msg.maketext("Unbekannter Zugang");;
+    END;
+
+
+-%]
+
+<!--               <script type="text/javascript">
+                        $(function(){
+
+                                // Tabs
+                                $('#ob-additional_title_info').tabs();
+                                        
+                        });
+                </script>
+-->
+
+
+[% IF NOT hide_detail && NOT hide_hit %]
+
+<div class="content"><!-- Begin Fulltitle -->
+
+<div class="ob-category_header">
+[%-  IF is_freemedia -%]
+         [% locinfo.identifier.${"freemedia"}.description %]
+[%-  ELSIF is_licensedmedia -%]
+         [% locinfo.identifier.${"emedien"}.description %]
+[%-  ELSIF locations.size >= 1 -%]
+[%      IF locations.size == 1 %]
+         [% locinfo.identifier.${locations.first}.description %]
+[%      ELSIF locations.size > 1 %]
+         [% msg.maketext('Verschiedene Standorte') %]
+[%      END %]
+[%-  ELSE %]
+[%     dbinfo.get('dbnames').${database}.short %]
+[%   END %]
+</div>
+
+<div class="row flex-md-row-reverse"><!-- Begin Details -->
+
+<!-- <div class="col-xs-6 col-md-3 ob-titleimage"><!-- Begin Images -->
+<div class="col-md-3"><!-- Begin Images -->
+  <div class="ob-titleimage"><!-- Begin ob-titleimage -->
+[% PROCESS common/subtemplate name="titles_record_html_images" %]
+  </div><!-- End ob-titleimage -->
+</div><!-- End Col Images -->
+
+<!-- Title begins here -->
+<!-- <div class="col-md-9 categories ob-title_record"><!-- Begin Categories -->
+<div class="col-md-9"><!-- Begin Categories -->
+  <div class="ob-title_record">
+[% IF record_exists %]
+
+[%-
+     record_type = "" ; 
+     IF normdata.${'T4410'}.first.content.match('Monographie');
+       record_type = "mono";
+       PROCESS common/subtemplate name="visible_categories_title_mono";
+       PROCESS common/subtemplate name="visible_categories_title_mono_supplement";
+     ELSIF normdata.${'T4410'}.first.content.match('Zeitschrift/Serie');
+       record_type = "journal";        
+       PROCESS common/subtemplate name="visible_categories_title_journal";
+       PROCESS common/subtemplate name="visible_categories_title_journal_supplement";
+     ELSIF  normdata.${'T4410'}.first.content.match('Aufsatz');
+       record_type = "article";
+       PROCESS common/subtemplate name="visible_categories_title_article";
+       PROCESS common/subtemplate name="visible_categories_title_article_supplement";
+     ELSE;
+       record_type = "default";
+       PROCESS common/subtemplate name="visible_categories_title";
+       PROCESS common/subtemplate name="visible_categories_title_supplement";
+     END;
+-%]
+
+[%   PROCESS common/subtemplate name="titles_record_html_categories" %]
+
+[% IF is_oa %]
+<div class="alert alert-info">
+Open Access. Im Internet weltweit frei verfügbar
+</div>
+[% ELSIF is_licensed %]
+<div class="alert alert-info">
+Zugriff nur im <a class="inturl" href="[% cms_links.vpn %]">Netz der Universität Köln</a> bzw. für autorisierte Benutzer. Die <a class="inturl" href="[% cms_links.druck_download %]">Druck- und Downloadmöglichkeiten</a> variieren je nach Anbieter.
+</div>
+[% END %]
+
+
+[% ELSE %]
+<h2>[% msg.maketext("Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden.") %]</h2>
+[% END %]
+
+[% IF config.get('unAPI') %]
+<abbr class="unapi-id" title="[% record.database %]:[% record.get_encoded_id %]"></abbr>
+[% END %]
+
+
+<!-- Removed ob-fulltitle_actions -->
+
+</div><!-- End ob-fulltitle -->
+</div><!-- End Col Categories -->
+
+</div><!-- End Row Details -->
+
+<div class="ob-bottominfo"><!-- Begin Bottominfo -->
+[%   PROCESS common/subtemplate name="cartitems_titles_record_html_bottom" database=record.database %]
+</div><!-- End: Bottom Info -->
+
+</div><!-- End Fulltitle -->
+
+<!--</div>--><!-- End record -->
+
+[% ELSE %]
+[% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]
+        <div class="ob-jumbotron">
+         <h1 class="display-4">[% msg.maketext("Kein Zugriff") %]</h1>
+         <p class="lead">[% hide_detail_msg %]</p>
+         <p class="lead">
+            <a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %]" role="button">[% msg.maketext('Weiter') %]</a>
+         </p>
+        </div><!-- End: ob-jumbotron -->
+[%  END %]
+
+<!-- Title ends here -->

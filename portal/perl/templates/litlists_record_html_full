@@ -13,17 +13,19 @@
 <div class="images"><!-- Begin Images -->
 [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
 <p>
-<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE',isbn) %]" target="_blank"><img src="[% config.get('coverscans_full_exturl').replace('ISBNINHERE',isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>
+<a href="[% config.get('coverscans_credits_exturl').replace('ISBNINHERE',isbn) %]" target="_blank"><img src="[% config.get('coverscans_full_exturl').replace('ISBNINHERE',isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" alt="Cover-Scan"/></a>
 </p>
 [% END %]
 <p>
-<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]?action=lookup;isbn=[% normdata.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
+[% IF 0 == 1 && isbn # disabled%]
+<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]?action=lookup;isbn=[% isbn %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" alt="Google Books Icon"/></a><br/>
 </p>
+[% END %]
+[%- IF 0 == 1 && bibkey # disabled -%]
 <p>
-[%- IF bibkey -%]
-<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
-[%- END -%]
+<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" alt="BibSonomy Icon" border="0" /></a><br/>
 </p>
+[%- END -%]
 </div><!-- End Images -->
 
 <div class="categories"><!-- Begin Categories -->
@@ -110,7 +112,7 @@ FOREACH category IN categories;
          END ;
          IF thiscontent ;
             IF content.match('digitool.hbz-nrw.de') ;
-               thiscontent = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)" ;
+               thiscontent = "<img src=\"${config.get('pdf_img')}\" alt=\"PDF Logo\"/>&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)" ;
 #               content     = "${path_prefix}/${config.get('redirect_loc')}?type=500;url=${uri_escape(content)}" ;
             END ;
             content   = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
@@ -129,7 +131,7 @@ FOREACH category IN categories;
 
     CASE "E4110";
          thisindicator = item.indicator ;
-         thiscontent   = "<img src=\"${config.get('pdf_img')}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
+         thiscontent   = "<img src=\"${config.get('pdf_img')}\" alt=\"PDF Logo\"/>&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
 #         content       = "${path_prefix}/${config.get('redirect_loc')}?type=500;url=${uri_escape(content)}" ;
          content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
 
@@ -182,7 +184,7 @@ FOREACH category IN categories;
 
     CASE "T1600";
          IF content.match('Sie einen Bestellschein aus');
-             content = "${content} Ebenso können Sie eine Mail an die <a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/ortsleihe/index_ger.html\" target=\"_blank\">Ortsleihe</a> schicken";
+             content = "${content} Ebenso können Sie eine Mail an die <a href=\"${cms_links.kontaktol}\" target=\"_blank\">Ortsleihe</a> schicken";
          END;
 
     CASE "T4500";

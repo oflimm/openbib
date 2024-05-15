@@ -1,0 +1,115 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_navigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Navigations-Menu fuer Mein OpenBib
+#
+#######################################################################
+-%]
+
+[%
+  allroles = [];
+  thisroles = user.get_roles_of_user(user.ID) ;
+  FOREACH thisrole IN thisroles.keys ;
+    allroles.push(thisroles.${thisrole});
+  END;
+%]
+
+<div class="card">
+
+<div class="card-header"><span class="ob-nav_description"><a href="[% path_prefix%]/[% config.get('users_loc') %]/id/[% user.ID %]/edit.html?l=[% lang %]">[% username %]</a></span><br/><small>[% allroles.join(' , ') %]</small></div>
+
+<div class="card-body">
+
+<div class="container">
+
+<div class="row">
+<div class="col">
+<h4><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Einstellungen") %]</a></h3>
+
+ <ul class="list-unstyled">
+  <li class="[% IF layout_param.active_submenu == "account" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/edit.html?l=[% lang %]">[% msg.maketext("Kennung") %]</a></li>
+  <li class="[% IF layout_param.active_submenu == "userprefs" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/preferences.html?l=[% lang %]">[% msg.maketext("Grundeinstellungen") %]</a></li>
+  <li class="[% IF layout_param.active_submenu == "listofinterest" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get("cartitems_loc") %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
+[% IF config.get('litlists') %]
+  <li class="[% IF layout_param.active_submenu == "litlists" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/litlists.html?l=[% lang %]">[% msg.maketext("Literaturlisten") %]</a></li>
+[% END %]
+<li class=""><span>[% msg.maketext("Tags") %]</span>
+    <ul>
+       <li class="[% IF layout_param.active_subsubmenu == "tags_names" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/names.html?l=[% lang %];format=cloud">[% msg.maketext("nach Tagnamen") %]</a></li>
+       <li class="[% IF layout_param.active_subsubmenu == "tags_titles" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags.html?l=[% lang %];num=[% qopts.get_option('num') %];srt=title_asc">[% msg.maketext("nach Titeln") %]</a></li>
+     </ul>
+</li>
+[% IF config.get('reviews') %]
+   <li class="[% IF layout_param.active_submenu == "userreviews" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews.html?l=[% lang %]">[% msg.maketext("Rezensionen") %]</a></li>
+[% END %]
+
+  <li class="[% IF layout_param.active_submenu == "userlocations" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchlocations_loc') %]/edit.html?l=[% lang %]">[% msg.maketext("Suchraum") %]</a></li>
+
+[% IF config.get('cache_external_password_for_ugc_migration') && NOT user.is_admin %]
+  <li class="[% IF layout_param.active_submenu == "migration" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/migration.html?l=[% lang %]">[% msg.maketext("Konto-Migration") %]</a></li>
+[% END %]
+
+[% IF user.has_templates(user.ID) %]
+  <li class="[% IF layout_param.active_submenu == "viewadmin_templates" %]active[% END %]"><a class="ob-dropdown_link"href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('templates_loc') %].html?l=[% lang %]">[% msg.maketext("Templates") %]</a></li>
+[% END %]
+ </ul>
+</div> <!-- Ende: col -->
+
+[% IF user.get_targettype_of_session(session.ID) == 'ils' %]
+<div class="col">
+
+<h4><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %].html?l=[% lang %]">[% msg.maketext("Bibliothekskonto") %]</a></h4>
+
+<ul class="list-unstyled">
+      <li><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %].html?l=[% lang %]">[% msg.maketext("Gesamtübersicht") %]</a></li>
+      <li><span>[% msg.maketext("Einzelne Übersichten") %]</span>
+        <ul class="components">
+          <li class="[% IF layout_param.active_submenu == "loans" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
+          <li class="[% IF layout_param.active_submenu == "orders" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% msg.maketext("Bestellungen") %]</a></li>
+          <li class="[% IF layout_param.active_submenu == "reservations" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a></li>
+          <li class="[% IF layout_param.active_submenu == "fees" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/fees.html?l=[% lang %]">[% msg.maketext("Gebühren") %]</a></li>
+	</ul>
+     </li>
+      <li><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/suggestions.html?l=[% lang %]">[% msg.maketext("Anschaffungsvorschläge") %]</a></li>
+</ul>
+
+</div> <!-- Ende: col -->
+[% END %]
+
+[%
+
+  user_gets_admin_navigation = 0;
+
+  FOREACH scope IN config.get_scopes ;
+     IF scope.match('^admin_') ;
+        IF user.has_right({scope = scope, right = 'right_read'}) || user.has_right({scope = scope, right = 'right_update'}) ;
+          user_gets_admin_navigation = 1;
+        END;
+     END;
+  END;
+
+%]
+
+[% IF user.has_role('viewadmin',user.ID) || user_gets_admin_navigation %]
+<div class="col">
+[% IF user.has_role('viewadmin',user.ID) %]
+[%   PROCESS common/subtemplate name="viewadmin_navigation_dropdown" %]
+[% END %]
+
+
+[% IF user_gets_admin_navigation %]
+[%   PROCESS common/subtemplate name="admin_navigation_dropdown" %]
+[% END %]
+</div><!-- End: col -->
+[% END %]
+</div><!-- End: row -->
+<a class="btn btn-primary ms-1 me-1 mt-4" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %];purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a>
+</div><!-- End: container -->
+</div><!-- End: card-body -->
+</div><!-- End: card -->

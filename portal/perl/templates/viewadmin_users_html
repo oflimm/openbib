@@ -17,9 +17,9 @@
 
 <h1 class="display-5">[% msg.maketext("Nutzer suchen") %]</h1>
 
-<div class="form-group">
-<label for="username">[% msg.maketext("Kennung") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="username" id="username"  value=""/>
+<label for="username">[% msg.maketext("Kennung") %]</label>
 </div>
 
 <button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Los") %]</button>

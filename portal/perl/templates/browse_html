@@ -15,8 +15,11 @@
 <h4>[% msg.maketext("Blättern nach") %]</h4>
 
 <p />
-<ul class="list-group">
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('browse_loc') %]/topics.html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
+<ul class="list-group mb-3">
 <li class="list-group-item"><a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks.html?l=[% lang %]">[% msg.maketext("Basisklassifikation") %]</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('browse_loc') %]/rvk.html?l=[% lang %]">[% msg.maketext("Regensburger Verbundklassifikation RVK") %]</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('browse_loc') %]/lbs.html?l=[% lang %]">[% msg.maketext("Systematik der Lehrbuchsammlung") %]</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('browse_loc') %]/ls.html?l=[% lang %]">[% msg.maketext("Systematik des Lesesaals") %]</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('browse_loc') %]/topics.html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
 </ul>
 

@@ -30,11 +30,13 @@
 [% ELSE %]
   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% layout_param.database %]/titles.html?l=[% lang %]">[% msg.maketext("Alle Titel") %]</a></li>
 [% END %]
+<!--
 [% IF layout_param.active_submenu == "popular" %]
   <li class="navbar-item active"><strong>[% msg.maketext("Populäre Titel") %]</strong></li>
 [% ELSE %]
   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% layout_param.database %]/titles/popular.html?l=[% lang %]">[% msg.maketext("Populäre Titel") %]</a></li>
 [% END %]
+-->
 </ul>
 </nav>
 </div>

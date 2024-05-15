@@ -17,7 +17,7 @@
 [% IF orgunits.size > 0 %]
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <tr><td><b>[% msg.maketext("Name") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Nr") %]</b></td><td><b>[% msg.maketext("Kataloge") %]</b></td><td></td></tr>
 [% FOREACH thisorgunit IN orgunits.all %]
 <tr><td>[% thisorgunit.orgunitname %]</td><td><a href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profilename %]/[% config.get('orgunits_loc')%]/id/[% thisorgunit.orgunitname %].html?l=[% lang %]">[% thisorgunit.description %]</a></td><td>[% thisorgunit.nr %]</td><td><ul>[% FOREACH item IN config.get_orgunitdbs(profilename,thisorgunit.orgunitname).sort %]<li>[% item %]: [% dbinfo.get('dbnames').${item}.full %]</li>[% END %]</ul></td></tr>

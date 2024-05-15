@@ -22,7 +22,7 @@
 <div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped">
 <tr><th>id</th><td>[% record.id %]</td></tr>
 
 [% PROCESS common/subtemplate name="visible_categories_corporatebody" %]

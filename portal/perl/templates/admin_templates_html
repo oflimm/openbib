@@ -17,7 +17,7 @@
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+        <a class="card-link collapsed" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
           [% msg.maketext("Neues Template anlegen") %]
         </a>
       </h5>
@@ -27,35 +27,35 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]" >
 
-<div class="form-group">
-<label for="templatelang">[% msg.maketext("Sprache") %]</label>
-  <select class="form-control" name="templatelang" id="templatelang">
+<div class="form-floating mb-3">
+  <select class="form-select" name="templatelang" id="templatelang">
      <option value="de">[% msg.maketext("Deutsch") %]</option>
      <option value="en">[% msg.maketext("Englisch") %]</option>
   </select>
+<label for="templatelang">[% msg.maketext("Sprache") %]</label>
 </div>
 
-<div class="form-group">
-<label for="templatename">[% msg.maketext("Name") %]</label>
-  <select class="form-control" name="templatename" id="templatename">
+<div class="form-floating mb-3">
+  <select class="form-select" name="templatename" id="templatename">
 [% FOREACH templatename IN all_templates.keys.sort %]    
      <option value="[% templatename %]">[% templatename %]</option>
 [% END %]
   </select>
+<label for="templatename">[% msg.maketext("Name") %]</label>
 </div>
 
-<div class="form-group">
-<label for="viewname">[% msg.maketext("View") %]</label>
-  <select class="form-control" name="viewname" id="viewname">
+<div class="form-floating mb-3">
+  <select class="form-select" name="viewname" id="viewname">
 [% FOREACH viewinfo IN config.get_viewinfo_overview %]    
      <option value="[% viewinfo.viewname %]">[% viewinfo.viewname %]: [% viewinfo.description %]</option>
 [% END %]
   </select>
+<label for="viewname">[% msg.maketext("View") %]</label>
 </div>
 
-<div class="form-group">
-<label for="templatetext">[% msg.maketext("Text") %]</label>
+<div class="form-floating mb-3">
 <textarea class="form-control" name="templatetext" id="templatetext" cols="60" rows="20"  ></textarea>
+<label for="templatetext">[% msg.maketext("Text") %]</label>
 </div>
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
@@ -76,7 +76,7 @@
 <h3>[% msg.maketext("Bereits existierende Templates") %]:  [% templateinfos.count %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Sprache") %]</th><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("View") %]</th><th></th><th></th></tr>
 </thead>
@@ -87,9 +87,9 @@
 <td><img style="vertical-align: bottom;" src="/images/openbib/[% templateinfo.templatelang %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",templateinfo.templatelang) %]" /></td>
 <td>
 [%   IF user.has_right({scope = 'admin_templates', right = 'right_update'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %]">[% templateinfo.templatename %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %]">[% templateinfo.templatename %]</a>
 [%   ELSIF user.has_right({scope = 'admin_templates', right = 'right_read'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %]">[% templateinfo.templatename %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %]">[% templateinfo.templatename %]</a>
 [%   END %]
 </td>
 <td>[% templateinfo.viewid.viewname %]: [% templateinfo.viewid.description %]</td>

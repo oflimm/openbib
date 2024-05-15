@@ -1,0 +1,35 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecartitems_tit_as_bibtex
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *aller* Merklisten-Items im BibTeX-Format *ohne* Funktions-
+# elemente
+#
+#######################################################################
+-%]
+[% IF NOT data_only %]
+<div class="row">
+<div class="col-md-12 ps-4 pe-4">
+
+[% IF NOT representation == 'include' %]<h3>[% IF title %][% title %][% ELSE %][% msg.maketext("Merkliste im Harvard-Zitierstil") %][% END %]</h3>[% END %]
+
+[% END %]
+[%- FOREACH record IN recordlist.get_records -%]
+
+[%   IF data_only %]
+[%     record.to_harvard_citation({ no_html = no_html }) %]
+[%   ELSE %]
+<p>[%     record.to_harvard_citation %]</p>
+[%   END %]
+[% END -%]
+[% IF NOT data_only %]
+
+</div>
+</div>
+[% IF representation == 'include' %]<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Harvard-Zitierstil") %]</div>[% END %]
+[% END %]

@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 
-        <div class="jumbotron">
+        <div class="ob-jumbotron">
          <h1 class="display-4">[% msg.maketext("Die Bestellung des folgenden Mediums wurde abgeschickt.") %]</h1>
          <p class="lead">
 
@@ -37,4 +37,4 @@
 
             <a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]" role="button">[% msg.maketext('Weiter') %]</a>
          </p>
-        </div><!-- End: jumbotron -->
+        </div><!-- End: ob-jumbotron -->

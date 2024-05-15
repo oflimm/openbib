@@ -35,7 +35,7 @@
 %]
 [% IF allcount.number %]
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <tr><th>Bibliothek</th><td><b>[% ubcount %]</b> </td><td>([% ubcount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
 <tr><th>Universit&auml;t</th><td><b>[% unicount %]</b> </td><td>([% unicount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
 <tr><th>Extern</th><td><b>[% externcount %]</b> </td><td>([% externcount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
@@ -50,7 +50,7 @@ Es liegen keine Daten vor
 <h3>[% msg.maketext("Zugreifende IP's nach H&auml;ufigkeit") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 [% clients = statistics.get_ranking_of_event({ type => 102, limit => 50, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}"}) %]
 [% FOREACH client IN clients %]
 <tr><th>[% client.content %]</th><td><b>[% client.number %]</b> </td><td>([% client.number * 100 / allcount.number | format ("%.3f") %]) Prozent</td></tr>

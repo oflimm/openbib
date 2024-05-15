@@ -1,13 +1,13 @@
 [%#-
 #######################################################################
 #
-# Templatename: titles_include
+# Templatename: titles_record_availability
 #
 # Typ         : Mastertemplate
 #
 # Aufgabe:
 #
-# Ausgabe eines Titel-Normdatensatzes zur Einbettung in andere HTML-Seiten
+# Ausgabe des Zugriffsstatus
 #
 #######################################################################
 -%]
@@ -30,11 +30,11 @@
 %]
 
 [% IF overall_mediastatus.${"lendable"} == 1%]
-<button class="btn btn-primary ob-availability_lendable mb-1 mr-1 pr-2"><img src="[% config.get_icon('lendable',view,sysprofile) %]" alt="[% msg.maketext("ausleihbar") %]" /><span class="pl-1 d-none d-sm-inline">[% msg.maketext("ausleihbar") %]</span></button>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_lendable mb-1 me-1 pe-2"><img src="[% config.get_icon('lendable',view,sysprofile) %]" alt="[% msg.maketext("ausleihbar") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("ausleihbar") %]</span></a>
 [% ELSIF overall_mediastatus.${"presence"} == 1 %]
-<button class="btn btn-primary ob-availability_presence mb-1 mr-1 pr-2"><img src="[% config.get_icon('presence',view,sysprofile) %]" alt="[% msg.maketext("einsehbar") %]" /><span class="pl-1 d-none d-sm-inline">[% msg.maketext("einsehbar") %]</span></button>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_presence mb-1 me-1 pe-2"><img src="[% config.get_icon('presence',view,sysprofile) %]" alt="[% msg.maketext("einsehbar") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("einsehbar") %]</span></a>
 [% ELSIF overall_mediastatus.${"lent"} == 1 %]
-<button class="btn btn-primary ob-availability_borrowed mb-1 mr-1 pr-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("entliehen") %]" /><span class="pl-1 d-none d-sm-inline">[% msg.maketext("entliehen") %]</span></button>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_borrowed mb-1 me-1 pe-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("entliehen") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("entliehen") %]</span></a>
 [% ELSIF overall_mediastatus.${"missing"} == 1 %]
-<button class="btn btn-primary ob-availability_borrowed mb-1 mr-1 pr-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("vermisst") %]" /><span class="pl-1 d-none d-sm-inline">[% msg.maketext("vermisst") %]</span></button>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_borrowed mb-1 me-1 pe-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("vermisst") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("vermisst") %]</span></a>
 [% END %]

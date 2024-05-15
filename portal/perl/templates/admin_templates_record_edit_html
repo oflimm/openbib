@@ -19,32 +19,32 @@
 
 <h1 class="display-5">[% msg.maketext("Template bearbeiten") %]</h1>
 
-<div class="form-group">
-<label for="id">[% msg.maketext("Id") %]</label>
+<div class="form-floating mb-3">
 <span class="form-control">[% templateinfo.id %]</span>
+<label for="id">[% msg.maketext("Id") %]</label>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
+<span class="form-control" id="templatelang"><img style="vertical-align: bottom;" src="/images/openbib/[% templateinfo.templatelang %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",templateinfo.templatelang) %]" /></span>
 <label for="templatelang">[% msg.maketext("Sprache") %]</label>
-<span class="form-control"><img style="vertical-align: bottom;" src="/images/openbib/[% templateinfo.templatelang %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",templateinfo.templatelang) %]" /></span>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
+<span class="form-control" id="viewname">[% templateinfo.viewid.viewname %]: [% templateinfo.viewid.description %]</span>
 <label for="viewname">[% msg.maketext("View") %]</label>
-<span class="form-control">[% templateinfo.viewid.viewname %]: [% templateinfo.viewid.description %]</span>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
+<span class="form-control" id="templatename">[% templateinfo.templatename %]</span>
 <label for="templatename">[% msg.maketext("Name") %]</label>
-<span class="form-control">[% templateinfo.templatename %]</span>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
 <!-- <label for="templatetext">[% msg.maketext("Text") %]</label> -->
-<textarea class="form-control" name="templatetext" id="templatetext" style="width:100%" rows="50">[% templateinfo.templatetext %]</textarea>
+<textarea class="form-control" name="templatetext" id="templatetext" aria-label="[% msg.maketext("Template-Text") %]" style="width:100%; height:25em;">[% templateinfo.templatetext %]</textarea>
 </div>
 
-<button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+<button type="submit" name="do_change" class="btn btn-primary mb-2 ms-2">[% msg.maketext("Ändern") %]</button>
 
 &nbsp;&nbsp;&nbsp;
 
@@ -56,7 +56,7 @@
 
 [% IF templateinfo.templateinforevisions %]
 
-<h2>Revisionen</h2>
+<h2>[% msg.maketext("Revisionen") %]</h2>
 
 <p>
 [% msg.maketext("Anzahl") %]
@@ -69,7 +69,7 @@
 </p>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Datum") %]</th><th>[% msg.maketext("Text") %]</th><th>&nbsp;</th></tr>
 </thead>

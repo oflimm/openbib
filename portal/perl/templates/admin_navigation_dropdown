@@ -1,0 +1,231 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_navigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Navigations-Menu fuer die Webadministration
+#
+#######################################################################
+-%]
+
+<h4>[% msg.maketext("Administration") %]</h4>
+
+<ul class="list-unstyled components">
+  <li class="[% IF layout_param.active_submenu == "admin_overview" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">[% msg.maketext("Übersicht") %]</a></li>
+
+[% IF user.has_right({scope = 'admin_clusters', right = 'right_read'}) || user.has_right({scope = 'admin_clusters', right = 'right_update'}) %]
+  <li class="[% IF layout_param.active_submenu == "admin_clusters" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %].html?l=[% lang %]">[% msg.maketext("Cluster") %]</a></li>
+[%   IF layout_param.active_submenu == "admin_clusters_record" %]
+<li class="active"><span style="padding-left:35px">[% clusterinfo.description %]</span>
+    <ul>
+[%       IF user.has_right({scope = 'admin_clusters', right = 'right_update'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_clusters_record_main" %]active[% END %]><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       ELSIF user.has_right({scope = 'admin_clusters', right = 'right_read'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_clusters_record_main" %]active"[% END %]><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       END %]
+[%       IF user.has_right({scope = 'admin_clusters', right = 'right_read'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_clusters_record_consistency" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]/consistency.html?l=[% lang %]">[% msg.maketext("Katalog-Konsistenz") %]</a></li>
+[%       END %]
+    </ul>
+</li>
+[%   END %]
+[% END %]
+[% IF user.has_right({scope = 'admin_servers', right = 'right_read'}) || user.has_right({scope = 'admin_servers', right = 'right_update'}) %]
+  <li class="[% IF layout_param.active_submenu == "admin_servers" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %].html?l=[% lang %]">[% msg.maketext("Server") %]</a></li>
+
+[%   IF layout_param.active_submenu == "admin_servers_record" %]
+<li class="active"><span style="padding-left:35px">[% serverinfo.description %]</span>
+    <ul>
+[%       IF user.has_right({scope = 'admin_servers', right = 'right_update'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_servers_record_main" %]active[% END %]><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       ELSIF user.has_right({scope = 'admin_servers', right = 'right_read'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_servers_record_main" %]active[% END %]><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       END %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_servers_record_updates" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]/updates.html?l=[% lang %]">[% msg.maketext("Aktualisierung") %]</a></li>
+    </ul>
+</li>
+[%   END %]
+[% END %]
+[% IF user.has_right({scope = 'admin_locations', right = 'right_read'}) || user.has_right({scope = 'admin_locations', right = 'right_update'}) %]
+  <li class="[% IF layout_param.active_submenu == "admin_locations" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %].html?l=[% lang %]">[% msg.maketext("Standorte") %]</a></li>
+[%   IF layout_param.active_submenu == "admin_locations_record" %]
+<li class="active"><span style="padding-left:35px">[% locationinfo.description %]</span>
+    <ul>
+[%       IF user.has_right({scope = 'admin_locations', right = 'right_update'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_locations_record_main" %]active[% END %]><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% locationinfo.identifier %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       ELSIF user.has_right({scope = 'admin_locations', right = 'right_read'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_locations_record_main" %]active[% END %]><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %]/id/[% locationinfo.identifier %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       END %]
+    </ul>
+</li>
+[%   END %]
+[% END %]
+[% IF user.has_right({scope = 'admin_databases', right = 'right_read'}) || user.has_right({scope = 'admin_databases', right = 'right_update'}) %]
+  <li class="[% IF layout_param.active_submenu == "admin_databases" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
+
+[%   IF layout_param.active_submenu == "admin_databases_record" %]
+<li class="active"><span style="padding-left:35px">[% databaseinfo.description %]</span>
+    <ul>
+[%       IF user.has_right({scope = 'admin_databases', right = 'right_update'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_databases_record_main" %]active[% END %]"><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% databaseinfo.dbname %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       ELSIF user.has_right({scope = 'admin_databases', right = 'right_read'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_databases_record_main" %]active[% END %]"><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% databaseinfo.dbname %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       END %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_databases_record_rss" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% databaseinfo.dbname %]/rss.html?l=[% lang %]">[% msg.maketext("RSS") %]</a></li>
+      <li class="[% IF layout_param.active_subsubmenu == "admin_databases_record_updates" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% databaseinfo.dbname %]/updates.html?l=[% lang %]">[% msg.maketext("Aktualisierung") %]</a></li>
+    </ul>
+</li>
+[%   END %]
+[% END %]
+[% IF user.has_right({scope = 'admin_profiles', right = 'right_read'}) || user.has_right({scope = 'admin_profiles', right = 'right_update'}) %]
+  <li class="[% IF layout_param.active_submenu == "admin_profiles" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %].html?l=[% lang %]">[% msg.maketext("Katalog-Profile") %]</a></li>
+
+[%   IF layout_param.active_submenu == "admin_profiles_record" %]
+<li class="active"><span style="padding-left:35px">[% profileinfo.description %]</span>
+    <ul>
+[%       IF user.has_right({scope = 'admin_profiles', right = 'right_update'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_profiles_record_main" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       ELSIF user.has_right({scope = 'admin_profiles', right = 'right_read'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_profiles_record_main" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       END %]
+[% IF layout_param.active_subsubmenu == "admin_profiles_record_orgunit" %]
+      <li class="active"><strong>[% orgunitinfo.description %]</strong></li>
+[%   END %]
+    </ul>
+</li>
+[%   END %]
+[% END %]
+[% IF user.has_right({scope = 'admin_views', right = 'right_read'}) || user.has_right({scope = 'admin_views', right = 'right_update'}) %]
+  <li class="[% IF layout_param.active_submenu == "admin_views" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %].html?l=[% lang %]">[% msg.maketext("Views") %]</a></li>
+[%   IF layout_param.active_submenu == "admin_views_record" %]
+<li class="active"><span style="padding-left:35px">[% viewinfo.description %]</span>
+    <ul>
+[%      IF user.has_right({scope = 'admin_views', right = 'right_update'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_views_record_main" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+      <li class="[% IF layout_param.active_subsubmenu == "admin_views_record_rss" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/rss/edit.html?l=[% lang %]">[% msg.maketext("RSS") %]</a></li>
+[%      ELSIF user.has_right({scope = 'admin_views', right = 'right_read'}) %]
+      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+      <li class="[% IF layout_param.active_subsubmenu == "admin_views_record_rss" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/rss.html?l=[% lang %]">[% msg.maketext("RSS") %]</a></li>
+[%      END %]
+    </ul>
+</li>
+[%   END %]
+[% END %]
+[% IF user.has_right({scope = 'admin_searchprofiles', right = 'right_read'}) || user.has_right({scope = 'admin_searchprofiles', right = 'right_update'}) %]
+  <li class="[% IF layout_param.active_submenu == "admin_searchprofiles" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Suchprofil") %]</a></li>
+[%   IF layout_param.active_submenu == "admin_searchprofiles_record" %]
+<li class="active"><span style="padding-left:35px">[% searchprofileid %]</span>
+    <ul>
+[%       IF user.has_right({scope = 'admin_searchprofiles', right = 'right_update'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_searchprofiles_record" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('searchprofiles_loc') %]/id/[% searchprofileid %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       ELSIF user.has_right({scope = 'admin_searchprofiles', right = 'right_read'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_searchprofiles_record" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('searchprofiles_loc') %]/id/[% searchprofileid %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       END %]
+    </ul>
+</li>
+[%   END %]
+[% END %]
+[% IF user.has_right({scope = 'admin_sessions', right = 'right_read'}) || user.has_right({scope = 'admin_sessions', right = 'right_update'}) %]
+
+  <li class="[% IF layout_param.active_submenu == "admin_sessions" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
+[%  IF layout_param.active_subsubmenu == "active" || layout_param.active_subsubmenu == "explorer" %]
+  <li>
+    <ul>
+      <li class="[% IF layout_param.active_subsubmenu == "active" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active.html?l=[% lang %]">[% msg.maketext("Aktiv") %]</a></li>
+      <li class="[% IF layout_param.active_subsubmenu == "archived" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/archived/search/form.html?l=[% lang %]">[% msg.maketext("Explorer") %]</a></li>
+    </ul>
+  </li>
+[%   END %]
+[% END %]
+
+[% IF user.has_right({scope = 'admin_statistics', right = 'right_read'}) || user.has_right({scope = 'admin_statistics', right = 'right_update'}) %]
+  <li class="[% IF layout_param.active_submenu == "admin_statistics" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %].html?l=[% lang %]">[% msg.maketext("Statistik") %]</a></li>
+[%   IF layout_param.active_submenu == "admin_statistics" %]
+   <li>
+    <ul>
+      <li class="[% IF layout_param.active_subsubmenu == "general" %]active[% END %]><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %].html">[% msg.maketext("Allgemein") %]</a></li>
+      <li class="[% IF layout_param.active_subsubmenu == "request" %]active[% END%]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/request.html">[% msg.maketext("Interne Aufrufe") %]</a></li>
+      <li class="[% IF layout_param.active_subsubmenu == "redirect" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/redirect.html">[% msg.maketext("Externe Aufrufe") %]</a></li>
+      <li class="[% IF layout_param.active_subsubmenu == "view" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/view.html">[% msg.maketext("Views") %]</a></li>
+      <li class="[% IF layout_param.active_subsubmenu == "query" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/query.html">[% msg.maketext("Recherche-Arten") %]</a></li>
+      
+<!-- Standarmaessig werden DSGVO-konform keine IP-Adressen archiviert. Dementsprechend koennen keine Statistische Auswertungen gemacht werden -->
+
+      <li class="[% IF layout_param.active_subsubmenu == "browser" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/browser.html">[% msg.maketext("Browser") %]</a></li>
+      <li class="[% IF layout_param.active_subsubmenu == "access" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %]/id/access.html">[% msg.maketext("Zahl Recherchen/Sessions") %]</a></li>
+    </ul>
+</li>
+[%   END %]
+[% END %]
+
+[% IF user.has_right({scope = 'admin_roles', right = 'right_read'}) || user.has_right({scope = 'admin_roles', right = 'right_update'}) %]
+  <li class="[% IF layout_param.active_submenu == "admin_roles" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %].html?l=[% lang %]">[% msg.maketext("Rollen") %]</a></li>
+[%   IF layout_param.active_submenu == "admin_roles_record" %]
+<li class="active"><span style="padding-left:35px">[% roleinfo.description %]</span>
+    <ul>
+[%       IF user.has_right({scope = 'admin_roles', right = 'right_update'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_roles_record_main" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.id %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       ELSIF user.has_right({scope = 'admin_roles', right = 'right_read'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_roles_record_main" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('roles_loc') %]/id/[% roleinfo.id %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       END %]
+    </ul>
+</li>
+[%   END %]
+[% END %]
+
+[% IF user.has_right({scope = 'admin_users', right = 'right_read'}) || user.has_right({scope = 'admin_users', right = 'right_update'}) %]
+  <li class="[% IF layout_param.active_submenu == "admin_users" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %].html?l=[% lang %]">[% msg.maketext("Nutzerverwaltung") %]</a></li>
+    <ul>
+      <li class="[% IF layout_param.active_subsubmenu == "overview" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+      <li class="[% IF layout_param.active_subsubmenu == "admin_users_migration" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/migration.html?l=[% lang %]">[% msg.maketext("Konto-Migration") %]</a></li>
+    </ul>
+</li>
+[% END %]
+
+[% IF user.has_right({scope = 'admin_authenticators', right = 'right_read'}) || user.has_right({scope = 'admin_authenticators', right = 'right_update'}) %]
+  <li class="[% IF layout_param.active_submenu == "admin_authenticators" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %].html?l=[% lang %]">[% msg.maketext("Anmeldung") %]</a></li>
+
+[%   IF layout_param.active_submenu == "admin_authenticators_record" %]
+<li class="active"><span style="padding-left:35px">[% authenticatorinfo.description %]</span>
+    <ul>
+[%       IF user.has_right({scope = 'admin_authenticators', right = 'right_update'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_authenticators_record_main" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% authenticatorid %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       ELSIF user.has_right({scope = 'admin_authenticators', right = 'right_read'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_authenticators_record_main" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% authenticatorid %].html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+[%       END %]
+    </ul>
+</li>
+[%   END %]
+[% END %]
+
+[% IF user.has_right({scope = 'admin_topics', right = 'right_read'}) || user.has_right({scope = 'admin_topics', right = 'right_update'}) %]
+  <li class="[% IF layout_param.active_submenu == "admin_topics" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Themengebiete") %]</a></li>
+
+[%   IF layout_param.active_submenu == "admin_topics_record" %]
+<li class="active"><span style="padding-left:35px">[% topic.name %]</span>
+    <ul>
+      <li class="[% IF layout_param.active_subsubmenu == "admin_topics_record_main" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %]/id/[% topics.id %]/edit.html?l=[% lang %]">[% msg.maketext("Allgemein") %]</a></li>
+    </ul>
+</li>
+[%   END %]
+[% END %]
+[% IF user.has_right({scope = 'admin_templates', right = 'right_read'}) || user.has_right({scope = 'admin_templates', right = 'right_update'}) %]
+  <li class="[% IF layout_param.active_submenu == "admin_templates" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %].html?l=[% lang %]">[% msg.maketext("Templates") %]</a></li>
+
+[%   IF layout_param.active_submenu == "admin_templates_record" %]
+<li class="active"><span style="padding-left:35px">[% templateinfo.id %]</span>
+    <ul>
+[%       IF user.has_right({scope = 'admin_templates', right = 'right_update'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_templates_record_main" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=3">[% msg.maketext("Allgemein") %]</a></li>
+[%       ELSIF user.has_right({scope = 'admin_templates', right = 'right_read'}) %]
+      <li class="[% IF layout_param.active_subsubmenu == "admin_templates_record_main" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %];numrev=3">[% msg.maketext("Allgemein") %]</a></li>
+[%       END %]
+    </ul>
+</li>
+[%   END %]
+[% END %]
+ </ul>

@@ -20,7 +20,7 @@
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+        <a class="card-link collapsed" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
           [% msg.maketext("Neuen Katalog anlegen") %]
         </a>
       </h5>
@@ -30,42 +30,42 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]">
 
-<div class="form-group">
-<label for="dbname">[% msg.maketext("DB-Name") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="dbname" id="dbname" size="8" />
+<label for="dbname">[% msg.maketext("DB-Name") %]</label>
 </div>
 
-<div class="form-group">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="description" id="description" size="20" />
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
 <!--
-<div class="form-group">
-<label for="system">[% msg.maketext("System") %]</label>
-  <select class="form-control" name="system" id="system">
+<div class="form-floating mb-3">
+  <select class="form-select" name="system" id="system">
 [% FOREACH source_system IN config.get('source_systems').keys.sort %]
        <option value="[% source_system %]">[% source_system %]</option>
 [% END %]
    </select>
+<label for="system">[% msg.maketext("System") %]</label>
 </div>
 
-<div class="form-group">
-<label for="sigel">[% msg.maketext("Sigel") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="sigel" id="sigel" size="3" />
+<label for="sigel">[% msg.maketext("Sigel") %]</label>
 </div>
 
-<div class="form-group">
-<label for="url">[% msg.maketext("URL") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="url" id="url" size="15" />
+<label for="url">[% msg.maketext("URL") %]</label>
 </div>
 -->
-<div class="form-group">
-<label for="active">[% msg.maketext("Aktiv") %]</label>
-  <select class="form-control" name="active" id="active">
+<div class="form-floating mb-3">
+  <select class="form-select" name="active" id="active">
      <option value="true">[% msg.maketext("Ja") %]</option>
      <option value="false" selected>[% msg.maketext("Nein") %]</option>
   </select>
+<label for="active">[% msg.maketext("Aktiv") %]</label>
 </div>
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
@@ -84,7 +84,7 @@
 <h3>[% msg.maketext("Bereits existierende Kataloge") %]: [% config.get_number_of_dbs %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th>[% msg.maketext("DB-Name") %]</th><th>[% msg.maketext("Info") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Auto-Konv") %]</th><th>[% msg.maketext("Titel-Anzahl") %]</th></tr>
 </thead>
@@ -105,13 +105,13 @@
 </td>
 <td>
 [% IF user.has_right({scope = 'admin_databases', right = 'right_update'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/edit.html?l=[% lang %]" title="[% catalog.description %]">[% catalog.description | truncate(70) %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/edit.html?l=[% lang %]" title="[% catalog.description %]">[% catalog.description | truncate(70) %]</a>
 [% ELSIF user.has_right({scope = 'admin_databases', right = 'right_read'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %].html?l=[% lang %]" title="[% catalog.description %]">[% catalog.description | truncate (70) %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %].html?l=[% lang %]" title="[% catalog.description %]">[% catalog.description | truncate (70) %]</a>
 [% END %]
 </td>
-<td align="center">[%- IF catalog.autoconvert == 1 -%][% msg.maketext("Ja") %][%- ELSE -%] [% msg.maketext("Nein") %][%- END -%]</td>
-<td align="right">[% IF catalog.system.match('Backend') %]extern[% ELSE %]<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/updates.html?l=[% lang %]" title="[% msg.maketext("Aktualisierung") %]">[% catalog.allcount %]</a>[% END %]</td></tr>
+<td>[%- IF catalog.autoconvert == 1 -%][% msg.maketext("Ja") %][%- ELSE -%] [% msg.maketext("Nein") %][%- END -%]</td>
+<td>[% IF catalog.system.match('Backend') %]extern[% ELSE %]<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% catalog.dbname %]/updates.html?l=[% lang %]" title="[% msg.maketext("Aktualisierung") %]">[% catalog.allcount %]</a>[% END %]</td></tr>
 [% END %]
 </tbody>
 </table>

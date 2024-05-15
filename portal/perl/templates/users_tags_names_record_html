@@ -21,9 +21,9 @@
 
 <h3>[% msg.maketext("Tag in allen Titeln ändern") %]</h3>
 
-<div class="form-group">
-<label for="to">[% msg.maketext("Neuer Tagname") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="to" id="to" />
+<label for="to">[% msg.maketext("Neuer Tagname") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Ändern") %]</button>
@@ -42,45 +42,39 @@
     query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
 -%]
 
+<div class="row d-flex flex-md-row">
+
 <!-- Titlelist begins here -->
-<div class="ob-resultlist">
-  <div class="ob-resultheader">
+<div class="ob-resultlist w-100">
+  <div class="ob-resultheader pb-4">
     <div class="left">
 [% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
     </div>
-    <div class="right">
-<form method="get" action="[% path_prefix%]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names/id/[% tagname %].html">
-<input type="hidden" name="page" value="1" />
+    <div class="right mt-2">
 
 [% cgiapp.to_cgi_hidden_input({ exclude = ['page','srt','srto']}) %]
 
-<b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
-<select name="srt" class="autosubmit">
-  <option value="year_desc"[%- IF query.param('srt') == 'year_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&darr;</option>
-  <option value="year_asc"[%- IF query.param('srt') == 'year_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&uarr;</option>
-  <option value="person_asc"[%- IF query.param('srt') == 'person_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
-  <option value="title_asc"[%- IF query.param('srt') == 'title_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
-</select>
+[% PROCESS common/subtemplate name="titlist_options" no_relevance=1 no_htmx=1 this_loc="${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('tags_loc')}/names/id/${tagname}" %]
 
-<input class="ob-nojs_show" type="submit" value="[% msg.maketext("Los") %]" />
-</form>
 
     </div>
   </div>
   <div class="ob-resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [%- FOREACH record IN recordlist.get_records -%]
-[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 %] 
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database = record.database %] 
 [%- END -%]
   </div>
 </div>
 <!-- Titlelist ends here -->
-</form>
 
 <p/>
 
   <div class="ob-footer">
-[% PROCESS common/subtemplate name="pagination" %]
     <div class="ob-resulttime">
 <!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->
     </div>
   </div>
+
+[% PROCESS common/subtemplate name="pagination" %]
+
+</div><!-- End: flex-md-row -->

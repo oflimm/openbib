@@ -1,7 +1,5 @@
 [%- PROCESS common/subtemplate name="local_config" -%]
-[%- PROCESS common/subtemplate name="titles_record_preprocess" -%]
 [%- PROCESS common/subtemplate name="search_title_field" -%]
-
 [%- IF representation == '' || representation == 'html' ;
 
     used_fields = [] ;
@@ -14,12 +12,15 @@
        used_fields.push( "<b>${fieldname}</b>: ${fieldcontent}" );
     END;
 
+    show_modal_template = "titles_record_html_modals";
+    
     layout_param = {
      'page_title' = "Titel anzeigen"
 
       'main_template' = 'titles_record_html'
       'sidebar_template' = 'titles_record_html_actions'
-      'sidebar_template_description' = msg.maketext("Aktionen")   
+      'sidebar_template_description' = msg.maketext("Titelaktionen")
+      'sidebar_button_in_main_template' = 1
 
       'active_submenu' = 'database'
       'database' = databaseinfo.dbname

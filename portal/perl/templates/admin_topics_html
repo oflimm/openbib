@@ -19,7 +19,7 @@
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+        <a class="card-link collapsed" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
           [% msg.maketext("Neues Themengebiet anlegen") %]
         </a>
       </h5>
@@ -29,14 +29,14 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]">
 
-<div class="form-group">
-<label for="name">[% msg.maketext("Themengebiet") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="name" id="name" size="8" />
+<label for="name">[% msg.maketext("Themengebiet") %]</label>
 </div>
 
-<div class="form-group">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="description" id="description" size="20" />
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
@@ -60,7 +60,7 @@
 </p>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th>[% msg.maketext("Themengebiet") %]</th><th>[% msg.maketext("Systematik-Gruppen") %]</th></tr>
 </thead>
@@ -69,9 +69,9 @@
 <tr>
 <td>
 [%   IF user.has_right({scope = 'admin_topics', right = 'right_update'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %]/edit.html?l=[% lang %]">[% topic.name %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %]/edit.html?l=[% lang %]">[% topic.name %]</a>
 [%   ELSIF user.has_right({scope = 'admin_topics', right = 'right_read'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a>
+<a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('topics_loc') %]/id/[% topic.id %].html?l=[% lang %]">[% topic.name %]</a>
 [%   END %]
 </td>
 <td>[% FOREACH thisbk IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id}) %][% bks.${thisbk} %]<br/> [% END %]</td>

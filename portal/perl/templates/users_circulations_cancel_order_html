@@ -14,13 +14,13 @@
 
 [%# USE dumper; dumper.dump(cancel_reservation) %]
 
-        <div class="jumbotron">
-         <h1 class="display-4">[% msg.maketext("Stornierung der Bestellung") %]</h1>
+        <div class="ob-jumbotron">
+         <h1 class="display-4">[% msg.maketext("Die Stornierung der Bestellung wurde übermittelt") %]</h1>
 [% IF cancel_order.author || cancel_order.title %]	 
          <p class="lead">[% IF cancel_order.author %][% cancel_order.author %]: [% END %][% IF cancel_order.title %][% cancel_order.title %][% END %]</p>
 [% END %]	 
          <p class="lead">[% cancel_order.message %]</p>
          <p class="lead">
-            <a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userid %]/[% config.get('databases_loc ') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]" role="button">[% msg.maketext('Weiter') %]</a>
+            <a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userid %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]" role="button">[% msg.maketext('Weiter') %]</a>
          </p>
-        </div><!-- End: jumbotron -->
+        </div><!-- End: ob-jumbotron -->

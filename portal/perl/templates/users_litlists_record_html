@@ -15,9 +15,20 @@
 [%- toc_i18n        = msg.maketext("Inhaltsverzeichnis") -%]
 [%- popularity_i18n = msg.maketext("Popularität") -%]
 
-[% PROCESS common/subtemplate name="visible_categories_title" %]
+[%-
+    request_base    = "num=${qopts.get_option('num')};srt=tstamp_desc;page=1;" ;
+    start_range     = nav.current_page*qopts.get_option('num')-qopts.get_option('num') + 1;
+    end_range       = nav.current_page*qopts.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
 
 <p/>
+
+<div id="ob-searchresult_tab_[% current_tab %]">
 
 <div class="ob-page_title">Literaturliste: [% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</div>
 <div class="ob-page_subtitle"><b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
@@ -48,11 +59,38 @@
 [% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
     </div>
     <div class="right">
-<form method="get" action="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/edit">
+[%
+  user_loc = "";
+  IF user.ID ;
+    user_loc = "${config.get('users_loc')}/id/%{user.ID}";
+  END;
+%]
+[%-
 
-[% PROCESS common/subtemplate name="titlist_options" this_loc="${path_prefix}/${config.get('litlists_loc')}/id/${litlist.properties.id}" no_relevance=1 %]
+   sort_args = cgiapp.to_cgi_querystring({ change = {'page' = 1 }, exclude = ['srt', 'srto'] });
 
-</form>
+   sorttype_desc_map = {
+     tstamp_desc = msg.maketext("Zuletzt hinzugefügt")
+     tstamp_asc  = msg.maketext("Zuerst hinzugefügt")
+   };
+
+   this_loc = "${path_prefix}/${config.get('cartitems_loc')}";
+   IF user.ID ;
+      this_loc = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('cartitems_loc')}";
+   END;
+-%]
+
+<div class="dropdown" id="ob-titlist_options_cartitems">
+  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuSortCartitems" data-bs-toggle="dropdown" aria-expanded="false">
+    [% IF sorttype_desc_map.defined(session_sort) %][% sorttype_desc_map.${session_sort} %][% ELSE %][% msg.maketext("Sortierung") %][% END %]<i class="fas fa-sort ps-2"></i>
+  </button>
+
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuSortCartitems">
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'tstamp_desc' || session_sort == 'tstamp_desc' %]text-strong[% END %]" href="[% this_loc %].html?[% sort_args %];srt=tstamp_desc" title="[% msg.maketext("Zuletzt hinzugefügt") %]">[% msg.maketext("Zuletzt hinzugefügt") %]</a></li>
+
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'tstamp_asc' || session_sort == 'tstamp_asc' %]text-strong[% END %]" href="[% this_loc %].html?[% sort_args %];srt=tstamp_asc" title="[% msg.maketext("Zuerst hinzugefügt") %]">[% msg.maketext("Zuerst hinzugefügt") %]</a></li>
+  </ul>
+
     </div>
   </div>
   
@@ -77,6 +115,18 @@
 [% ELSIF format == 'full' %]
 
 [% PROCESS common/subtemplate name="litlists_record_html_full" %]
+
+[% ELSIF format == 'apa' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_apa" %]
+
+[% ELSIF format == 'harvard' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_harvard" %]
+
+[% ELSIF format == 'mla' %]
+
+[% PROCESS common/subtemplate name="litlists_record_html_as_mla" %]
 
 [%- END # Ende Alles -%]
 
@@ -145,3 +195,5 @@
 [%  END %]
 
 [% END %]
+
+</div><!-- ob-searchresult_tab -->

@@ -1,0 +1,134 @@
+<div class="modal fade" id="cartitemsPrintModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="cartitemsPrintModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+	<form method="GET" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/print?l=[% lang%];page=[% qopts.get_option('page') %];num=[% qopts.get_option('num') %]" target="_blank">
+	  <div class="modal-header">
+            <h5 class="modal-title" id="cartitemsPrintModalLabel">[% msg.maketext("Merkliste drucken") %]</h5>
+	  </div>
+	  <div class="modal-body" id="cartitem_savemessage">
+	    
+	    <div class="form-floating mb-3">
+	      <select class="form-select" name="format" id="format_print">
+		<option value="default">[% msg.maketext("Standard") %]</option>
+		<!--
+		<option value="full">[% msg.maketext("Vollanzeige") %]</option> -->
+		<option value="Text">[% msg.maketext("Einfacher Text") %]</option>
+		<option value="BibTeX">[% msg.maketext("BibTeX (z.B. Citavi)") %]</option>
+		<option value="EndNote">[% msg.maketext("EndNote") %]</option>
+		<option value="ISBD">[% msg.maketext("ISBD") %]</option>
+		<option value="apa">[% msg.maketext("Zitat: APA") %]</option>
+		<option value="harvard">[% msg.maketext("Zitat: Harvard") %]</option>    
+		<option value="mla">[% msg.maketext("Zitat: MLA") %]</option>   	      </select>
+	      <label for="format_print">[% msg.maketext("Ausgabeformat") %]</label>
+	    </div>
+	    
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn btn-primary pe-3" data-bs-dismiss="modal" onclick="submitForm()">[% msg.maketext("Drucken") %]</button>
+	    
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>	
+	  </div>
+	</form>
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="cartitemsModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="cartitemsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cartitemsModalLabel">Merkliste</h5>
+      </div>
+      <div class="modal-body" id="cartitem_message">
+[% msg.maketext("Der Titel wurde Ihrer Merkliste hinzugefügt.") %]
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="cartitemsSaveModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="cartitemsSaveModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+	<form method="GET" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/save?l=[% lang%];page=[% qopts.get_option('page') %];num=[% qopts.get_option('num') %]">
+	  <div class="modal-header">
+            <h5 class="modal-title" id="cartitemsSaveModalLabel">[% msg.maketext("Merkliste exportieren") %]</h5>
+	  </div>
+	  <div class="modal-body" id="cartitem_savemessage">
+	    
+	    
+	    <div class="form-floating mb-3">
+	      <select class="form-select" name="format" id="format_save">
+		<optgroup label="Systeme">
+                  <option value="Citavi" selected="selected">[% msg.maketext("Citavi") %]</option>
+                  <option value="Zotero">[% msg.maketext("Zotero") %]</option>
+		</optgroup>
+		<optgroup label="Formate">		
+                  <option value="Text">[% msg.maketext("Einfacher Text") %]</option>
+                  <option value="BibTeX">[% msg.maketext("BibTeX") %]</option>
+                  <option value="EndNote">[% msg.maketext("EndNote") %]</option>
+                  <option value="ISBD">[% msg.maketext("ISBD") %]</option>
+		</optgroup>
+                <optgroup label="Zitierstile">
+		   <option value="apa">[% msg.maketext("Zitat: APA") %]</option>
+		   <option value="harvard">[% msg.maketext("Zitat: Harvard") %]</option>    
+		   <option value="mla">[% msg.maketext("Zitat: MLA") %]</option>
+		</optgroup> 
+	      </select>
+	      <label for="format_save">[% msg.maketext("Exportformat") %]</label>
+	    </div>
+	    
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn btn-primary pe-3" data-bs-dismiss="modal" onclick="submitForm()">[% msg.maketext("Export") %]</button>
+	    
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>	
+	  </div>
+	</form>
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="cartitemsMailModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="cartitemsMailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <form method="POST" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/mail" enctype="application/x-www-form-urlencoded">
+
+       <input type="hidden" name="page" value="[% qopts.get_option('page') %]"/>
+       <input type="hidden" name="num"  value="[% qopts.get_option('num') %]"/>       
+	<div class="modal-header">
+          <h5 class="modal-title" id="cartitemsMailModalLabel">[% msg.maketext("Merkliste per E-Mail versenden") %]</h5>
+	</div>
+	<div class="modal-body" id="cartitem_mailmessage">
+	  
+	  <div class="form-floating mb-3">
+	    <input class="form-control" type="text" name="subject" id="mail_subject" value=""/>
+	    <label for="mail_subject">[% msg.maketext("Betreff der E-Mail:") %]</label>
+	  </div>
+	  
+	  <div class="form-floating mb-3">
+	    <input class="form-control" type="text" name="email" id="mail_address" value=""/>
+	    <label for="mail_address">[% msg.maketext("E-Mail-Adresse") %]</label>
+	  </div>
+	  
+	  <div class="form-floating mb-3">
+	    <select class="form-select" name="format" id="format_mail">
+	      <option value="Text">[% msg.maketext("Einfacher Text") %]</option>
+	      <option value="BibTeX">[% msg.maketext("BibTeX (z.B. Citavi)") %]</option>
+	      <option value="EndNote">[% msg.maketext("EndNote") %]</option>
+	      <option value="ISBD">[% msg.maketext("ISBD") %]</option>
+	      <option value="apa">[% msg.maketext("Zitat: APA") %]</option>
+	      <option value="harvard">[% msg.maketext("Zitat: Harvard") %]</option>    
+	      <option value="mla">[% msg.maketext("Zitat: MLA") %]</option>    
+	    </select>
+	    <label for="format_mail">[% msg.maketext("Ausgabeformat") %]</label>
+	  </div>
+	  
+	</div>
+	<div class="modal-footer">
+	  <button class="btn btn-primary pe-3" type="submit">[% msg.maketext("Abschicken") %]</button>
+	  
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>	
+	</div>
+      </form>
+    </div>
+  </div>
+</div>

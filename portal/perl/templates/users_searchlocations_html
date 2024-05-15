@@ -31,7 +31,7 @@ function update_fak(yourform, checked, fak) {
 
 <h1 class="display-5">[% msg.maketext("Bevorzugte Standorte definieren") %]</h1>
 
-[% USE dumper;dumper.dump(checkedloc)%]
+[%# USE dumper;dumper.dump(checkedloc)%]
 [%# USE dumper;dumper.dump(config.get_orgunitinfo_overview(profile)) %]
 
 <p />
@@ -44,7 +44,7 @@ function update_fak(yourform, checked, fak) {
 
 <p />
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 [%- FOREACH thislocation IN searchlocations -%]
 
 <tr><td><input type="checkbox" name="location" value="[% thislocation.identifier %]" title="[% thislocation.description %]" [% IF checkedloc.${thislocation.identifier} %]checked="checked"[% END %]/></td><td><a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% thislocation.identifier %]">[% thislocation.description %]</a></td></tr>

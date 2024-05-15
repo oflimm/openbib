@@ -16,14 +16,6 @@
 [% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
 [%- request_base    = "l=${lang};num=${hitrange};srt=${sorttype}_${sortorder};"  -%]
 
-  <body>
-
-  <div class="wrapper container-fluid">
-
-[% PROCESS common/subtemplate name="corporate_banner" start=1 %]
-
-[% PROCESS common/subtemplate name="mainnavigation" %] 
-
 [% PROCESS common/subtemplate name="search_title_field" %]
 
 [%-
@@ -47,6 +39,8 @@
      END;
 
     layout_param = {
+      'page_title' = msg.maketext("Recherche-Ergebnis")
+    
       'active_menu' = 'register'
       'breadcrumb' = [
           {
@@ -59,6 +53,8 @@
 	     current = 1
 	  }
       ]
+      
+      'without_navigation_search' = '1'
     };
 
     IF NOT qopts.get_option('sm');
@@ -77,7 +73,55 @@
 
 -%]
 
-[% PROCESS common/subtemplate name="breadcrumbs" %] 
+  <body id="ob-page_top">
+
+<!-- Modals -->
+[%   PROCESS common/subtemplate name="cartitems_html_modals" %]
+
+[%   PROCESS common/subtemplate name="litlists_html_modals" %]
+
+<div class="modal fade" id="genericModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="genericModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="genericModalLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+      </div>
+      <div class="modal-body" id="generic_message">
+      <div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Flushing existing content with pure JS
+
+  if (!document.getElementById('genericModal').getAttribute('data-initialized')){
+
+    const genericModal = document.getElementById('genericModal')
+    genericModal.setAttribute('data-initialized', true);
+    genericModal.addEventListener('hidden.bs.modal', event => {
+    // Update the modal's content.
+    const modalTitle = genericModal.querySelector('#genericModalLabel')
+    const modalBody  = genericModal.querySelector('#generic_message')
+
+    modalTitle.textContent = ''
+    modalBody.innerHTML    = '<div class="spinner-border" role="status" data-initialized="true"><span class="sr-only">Loading...</span></div>'
+    });
+   }
+</script>
+
+  <div class="wrapper container-fluid">
+
+[% PROCESS common/subtemplate name="corporate_banner" start=1 %]
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+[% PROCESS common/subtemplate name="search_title_field" %]
 
 [% IF config.get('deutsche_bibliotheksstatistik') %]
 <!-- DBS 'Zaehl-Pixel' USB - Kategorie: KUG-->

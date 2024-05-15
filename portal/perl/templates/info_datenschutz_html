@@ -13,19 +13,42 @@
 -%]
 <h2>Datenschutzerklärung nach DSGVO</h2>
 
-<p>Grunds&auml;tzlich gilt uneingeschränkt die <a
+<p>Grunds&auml;tzlich gilt uneingeschränkt die <a class="inturl"
 href="https://www.portal.uni-koeln.de/9468.html"
 target="_target">allgemeine Datenschutzerklärung der Universität zu
 Köln</a> mit dem dort genannten Verantwortlichen und
 Datenschutzbeauftragten.<p>
 
 <p>Im Folgenden werden datenschutzrechlich relevante Spezifika der
-Web-Portale - wie diesem - er&ouml;rtert, die mithilfe der KUG
+Web-Portale - wie diesem - er&ouml;rtert, die mithilfe der USB
 Recherche-Infrastruktur betrieben werden.</p>
+
+<h3>Cookies</h3>
+
+<p>Wir verwenden in den Recherche-Portalen der USB
+Recherche-Infrastruktur so genannte Cookies. Cookies sind kleine
+Textdateien, die Ihr Browser auf Ihrem Rechner speichert und unserem
+Server schickt, wenn Sie unsere Seiten besuchen. Cookies richten auf
+Ihrem Rechner keinen Schaden an und enthalten keine Viren. Sie dienen
+dazu, dass diese Webanwendung funktioniert. Die wesentlichen von uns
+verwendeten Cookies sind so genannte Session-Cookies, die nach Ende
+Ihres Besuchs automatisch gelöscht werden. Darüber hinaus speichern
+wir die von Ihnen ausgewählte Sprache sowie die Kenntnisnahme unseres
+Cookie-Informations-Pop-Ups in einem eigenen Cookie. Die Recherche-Portale
+der USB verwenden ausschließlich essentielle und für deren Funktionieren
+absolut notwendige Cookies.</p>
+
+<p>Sie haben die volle Kontrolle über die Verwendung von Cookies:
+Durch eine Änderung der Einstellungen in Ihrem Internetbrowser können
+Sie die Übertragung von Cookies deaktivieren oder
+einschränken. Bereits gespeicherte Cookies können jederzeit gelöscht
+werden. Dies kann auch automatisiert erfolgen. Werden Cookies für
+unsere Recherche-Portale deaktiviert, können nicht mehr alle
+Funktionen der Portale vollumfänglich genutzt werden.</p>
 
 <h3>Web-Protokolle (Logdateien)</h3>
 
-<p>Anfragen von Endnutzern an die KUG Recherche-Infrastruktur werden
+<p>Anfragen von Endnutzern an die USB Recherche-Infrastruktur werden
 technisch von einem Lastverteiler (haproxy) auf verschiedene
 Web-Server im Backend verteilt, die sie beantworten.</p>
 
@@ -71,27 +94,6 @@ Protokolldateien gespeichert</b>, da der Personenbezug durch den
 bewussten Verzicht auf die Protokollierung der IP-Adresse des Nutzers
 enf&auml;llt.</p>
 
-<h3>Cookies</h3>
-
-<p>Wir verwenden in den Recherche-Portalen der KUG
-Recherche-Infrastruktur so genannte Cookies. Cookies sind kleine
-Textdateien, die Ihr Browser auf Ihrem Rechner speichert und unserem
-Server schickt, wenn Sie unsere Seiten besuchen. Cookies richten auf
-Ihrem Rechner keinen Schaden an und enthalten keine Viren. Sie dienen
-dazu, unser Angebot nutzerfreundlicher, effektiver und sicherer zu
-machen. Die von uns verwendeten Cookies sind so genannte
-Session-Cookies, die nach Ende Ihres Besuchs automatisch gelöscht
-werden.</p>
-
-
-<p>Sie haben die volle Kontrolle über die Verwendung von Cookies:
-Durch eine Änderung der Einstellungen in Ihrem Internetbrowser können
-Sie die Übertragung von Cookies deaktivieren oder
-einschränken. Bereits gespeicherte Cookies können jederzeit gelöscht
-werden. Dies kann auch automatisiert erfolgen. Werden Cookies für
-unsere Recherche-Portale deaktiviert, können möglicherweise nicht mehr
-alle Funktionen der Portale vollumfänglich genutzt werden.</p>
-
 <h3>Verwendung von SSL</h3>
 
 <p>Die Selbstregistrierung, Anmeldung und sämtliche Seiten des
@@ -108,8 +110,8 @@ sog. Double-Opt-In Verfahren verwendet, bei dem Sie zun&auml;chst eine
 Bestätigungsmail mit einem Web-Link erhalten. Erst durch dessen Aufruf
 wird das Konto im Portal unter Ihrer E-Mail-Adresse angelegt.</p>
 
-<p>Grunds&auml;tzlich verwendet die KUG Recherche-Infrastruktur eine
-eigene Nutzerdatenbank (KUG Nutzerdatenbank), in der jeder Nutzer nach
+<p>Grunds&auml;tzlich verwendet die USB Recherche-Infrastruktur eine
+eigene Nutzerdatenbank (USB Nutzerdatenbank), in der jeder Nutzer nach
 erstmaliger Anmeldung mit einem Bibliotheksausweis oder nach
 Selbstregistrierung mit seiner E-Mailadresse eine interne Nutzernummer
 zugeweisen bekommt, unter der personenbezogene Basis-Informationen,
@@ -129,12 +131,11 @@ die Kopplung mit unserem Bibliothekssystem weitere Daten
 zwischengespeichert. Entweder sofort mit der Abmeldung des Nutzers
 oder automatisch nach spätestens 24 Stunden - falls diese nicht durch
 den Nutzer erfolgt - werden diese Informationen aus seinem Eintrag in
-der KUG Nutzerdatenbank gelöscht. Es handelt sich um folgende
+der USB Nutzerdatenbank gelöscht. Es handelt sich um folgende
 Informationen:</p>
 
 <ul>
-<li>Personenbezogene Grunddaten: Nachname, Vorname und E-Mailadresse</li>
-<li>Personenbezogene Ausleihinformationen: Guthaben, Soll, Offene Gebühren, Ausgeliehene/Vorgemerkte/Bestellte Medien, bestehende Bibliothekskonto-Sperrung samt Begr&uuml;ndung und Sperrdatum)
+<li>Personenbezogene Grunddaten: Nachname, Vorname</li>
 </ul>
 
 <h4>Daten über die Nutzung des Dienstes</h4>
@@ -155,7 +156,7 @@ des Dienstes benötigt. Dazu gehören u.a.</p>
 <p>Diese Informationen werden grunds&auml;tzlich <b>anonym und ohne
 Personenbezug</b> unter einer zuf&auml;llig erzeugten Sitzungs-ID
 (z.B. 354b5be395fe06ee0121ab87f364b218) für die Dauer einer Sitzung
-gespeichert und danach in einer eigenen KUG Statistikdatenbank
+gespeichert und danach in einer eigenen USB Statistikdatenbank
 archiviert. Hat sich der Nutzer am Dienst mit seiner Kennung
 angemeldet (eingeloggt), dann werden diese Daten temporär mit seiner
 Person verknüpft, stellen also personenbezogene Daten dar. Mit dem
@@ -164,20 +165,23 @@ anonymen Daten</b> werden, wie die eines nicht angemeldeten Nutzers,
 archiviert. </p>
 
 <p>Anhand dieser Informationen k&ouml;nnen die verschiedenen Dienste
-der KUG Recherche-Infrastruktur generell verbessert werden. So
+der USB Recherche-Infrastruktur generell verbessert werden. So
 k&ouml;nnen z.B. automatisiert Hilfestellungen für Nutzer gegeben
 werden - wie z.B. das Auffinden besonders populärer Titel zu einer
 Suchanfrage oder Hinweise auf thematisch relevante Empfehlungen zu
 einem Titel.</p>
 
+<p>Rechtsgrundlage für die vorübergehende Speicherung der Daten ist Art. 6 Abs. 1 lit. f DSGVO, denn es besteht ein
+berechtigtes Interesse der Universität zu Köln zur den Dienst zu betreiben und zu verbessern.</p>
+
 <h3>Vom Nutzer freiwillig gespeicherte Daten zur Nutzung externer Dienste</h3>
 
 <h4>Bibsonomy</h4>
 
-<p>Zur Übertragung von bibliographischen Daten aus der KUG
+<p>Zur Übertragung von bibliographischen Daten aus der USB
 Recherche-Infrastruktur an Bibsonomy - einem Social Bookmark und
 Publication Sharing Dienst - kann der Nutzer in Recherche-Portalen der
-KUG Recherche-Infrastruktur seinen Bibsonomy API Usernamen und Key
+USB Recherche-Infrastruktur seinen Bibsonomy API Usernamen und Key
 abspeichern.</p>
 
 
@@ -187,11 +191,16 @@ Dienste (Mashups)</h3>
 <h4>Coverbilder</h4>
 
 <p>Bei der Nutzung dieses Dienstes werden ggf. Coverbilder zu
-gefundener Literatur von einer externen Quelle - der OpenLibrary -
-eingebunden. Das Coverbild wird vom Webbrowser des Nutzers damit
-effektiv von den Web-Servern der OpenLibrary angefordert und
-hinterlässt ggf. dort personenbezogene Daten wie z.B. die IP-Adresse
-des Nutzers, Informationen zum verwendeten Webbrowser usw.</p>
+gefundener Literatur von einer externen Quelle - hier <a
+href="https://www.buchhandel.de/" target="_blank">VLB</a> -
+eingebunden. Das Coverbild wird für den Nutzers von der
+Recherche-Infrastrktur bei VLB unter Weitergabe des personenbezogenen
+Datums, der IP-Adresse des Nutzers, über den
+sog. X-Forwarded-For-Header angefordert. Die Recherche-Infrastruktur
+schirmt den Nutzer damit bestmöglich vor dem externen Dienst ab und
+stellt sicher, dass nicht weitere Daten über den Nutzer, wie
+z.B. Informationen zum verwendeten Web-Browser, ggf. Werbe-Cookies
+usw. an den externen Dienst übertragen werden.</p>
 
 <h4>Kartenmaterial</h4>
 
@@ -212,8 +221,9 @@ vorgenommen, um einen dort ggf. verfügbaren Volltext oder zumindest
 Textauszüge des Buches abzufragen und für den Nutzer a) die Art des
 möglichen Zugriffs zu signalisieren (Volltext, Auszug) und b) zu
 verlinken. Durch die Integration der Abfrage an Google in unseren
-Dienst werden ausser der IP-Adresse keine weiteren Informationen an
-Google weitergeleitet, wie z.B. Webbrowser, Cookies usw.</p>
+Dienst werden ausser der IP-Adresse (s.o.) keine weiteren
+Informationen an Google weitergeleitet, wie z.B. Webbrowser, Cookies
+usw.</p>
 
 <h4>Verlinkung zu korrespondieren Titel in Bibsonomy</h4>
 
@@ -225,26 +235,25 @@ unseren Dienst werden ausser der IP-Adresse keine weiteren
 Informationen an Bibsonomy weitergeleitet, wie z.B. Webbrowser,
 Cookies usw.</p>
 
-<h3>Löschung aller Daten in der KUG Nutzerdatenbank</h3>
+<h3>Löschung aller Daten in der USB Nutzerdatenbank</h3>
 
 <p>Nutzergenerierte Daten wie Merklisteneintr&auml;ge, Literaturlisten
 und Tags k&ouml;nnen durch den Nutzer jederzeit gel&ouml;scht
 werden.</p>
 
-
 <p>Ebenso ist es jedem angemeldeten Nutzer möglich seine Kennung in
-der Nutzerdatenbank der KUG Recherche-Infrastruktur mit allen
+der Nutzerdatenbank der USB Recherche-Infrastruktur mit allen
 verbundenen Daten zu löschen. Dazu gehören auch alle
 Merklisteneinträge, Literaturlisten und Tags. Das ist sowohl für dort
 selbstregistrierte Nutzer möglich, wie auch für Nutzer, die sich dort
 mit der Nutzernummer ihres Bibliotheksausweis angemeldet haben.</p>
 
 <p>Eine Löschung der Kennung des Bibliotheksausweises in dem von der
-KUG Nutzerdatenbank separaten Bibliothekssystem ist nur bei einem
+USB Nutzerdatenbank separaten Bibliothekssystem ist nur bei einem
 Mitarbeiter der jeweiligen Bibliothek vor Ort möglich.</p>
 
 <p>Solange die Kennung eines Nutzers im Bibliothekssystem nicht
 gelöscht wurde, kann sich ein Nutzer - auch nach Löschung seiner Daten
-in der KUG Nutzerdatenbank - weiterhin an diesem Portal anmelden. Es
-wird bei der Anmeldung dann automatisch ein neuer Eintrag in der KUG
+in der USB Nutzerdatenbank - weiterhin an diesem Portal anmelden. Es
+wird bei der Anmeldung dann automatisch ein neuer Eintrag in der USB
 Nutzerdatenbank mit einer anderen lokalen Nutzer-ID erzeugt.</p>

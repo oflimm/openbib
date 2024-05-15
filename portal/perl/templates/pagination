@@ -1,7 +1,9 @@
-<nav aria-label="Page navigation">
-  [%- forget_it = nav.pages_per_set(5) -%]
+<nav aria-label="Page navigation" class="ob-fixed_bottom">
+[%- forget_it = nav.pages_per_set(5)
+    have_pagination = 1;
+-%]
 
-  <ul class="pagination justify-content-start">
+  <ul class="pagination d-flex justify-content-center">
 [% IF nav.current_page > 1 %]
     <li class="page-item">
        <a class="page-link" href="[% path %]?page=[% nav.current_page - 1 %][% IF query_args_base %];[% query_args_base %][% END %]">[% msg.maketext("Zurück") %]</a>

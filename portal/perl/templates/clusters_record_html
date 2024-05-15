@@ -15,7 +15,7 @@
 <h3>[% msg.maketext("Cluster") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <tr><th>[% msg.maketext("Id") %]</th><td>[% clusterinfo.id %]</td></tr>
 <tr><th>[% msg.maketext("Beschreibung") %]</th><td>[% clusterinfo.description %]</td></tr>
 <tr><th>[% msg.maketext("Status") %]</th><td>

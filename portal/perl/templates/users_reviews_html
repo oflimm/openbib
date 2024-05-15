@@ -18,7 +18,7 @@
 <!-- Begin Reviews -->
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 [%- FOREACH item IN reviews -%]
 
 [%# Verfasser konstruieren %]
@@ -83,7 +83,7 @@ class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearof
 <p />[%    IF item.review %][% item.review %][% END %]
 
 <p>
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('reviews_loc') %]/id/[% item.id %]/edit"><span>Bearbeiten</span></a><a class="btn btn-primary mb-2 ml-5" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=DELETE;confirm=1"><span>L&ouml;schen</span></a>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('reviews_loc') %]/id/[% item.id %]/edit"><span>Bearbeiten</span></a><a class="btn btn-primary mb-2 ms-5" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=DELETE;confirm=1"><span>L&ouml;schen</span></a>
 </p>
 </td></tr>
 <tr><td></td></tr>
@@ -93,7 +93,7 @@ class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearof
 <!-- End Reviews -->
 
 [% ELSE %]
-<div class="jumbotron">
+<div class="ob-jumbotron">
 <h1 class="display-4">[% msg.maketext('Keine Rezensionen vorhanden') %]</h1>
 
 <p class="lead">[% msg.maketext("Bisher haben Sie noch keine Rezensionen geschrieben oder Bewertungen vergeben.") %]</p>

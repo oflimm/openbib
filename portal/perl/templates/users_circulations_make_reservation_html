@@ -12,12 +12,12 @@
 #######################################################################
 -%]
 
-<div class="card mt-5 mb-5 mr-5">
+<div class="card mt-5 mb-5 me-5">
 <div class="card-header">[% msg.maketext("Vormerkung") %]</div>
 <div class="card-body">
 
 [% IF title || author %]<p>
-[% IF author %][% author%]: [% END %][% IF title %][% title %][% END %]
+[% IF author %][% author%]: [% END %][% IF title %][% title %][% END %][% IF holdingid %] ([% holdingid %])[% END %]
 </p>
 [% END %]
 

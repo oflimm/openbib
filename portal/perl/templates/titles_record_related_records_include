@@ -24,7 +24,5 @@
 </ul>
 <p/>
 [% ELSE %]
-<script>
-    $(".ob-related").hide();
-</script>
+[% msg.maketext("Es sind keine Titel in der Wikipedia vorhanden.") %]
 [% END %]

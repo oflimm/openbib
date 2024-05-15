@@ -18,7 +18,7 @@
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+        <a class="card-link collapsed" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
           [% msg.maketext("Neuen View anlegen") %]
         </a>
       </h5>
@@ -28,33 +28,31 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('views_loc') %]">
 
-<div class="form-group">
-<label for="viewname">[% msg.maketext("Viewname") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="viewname" id="viewname"/>
+<label for="viewname">[% msg.maketext("Viewname") %]</label>
 </div>
 
-<div class="form-group">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="description" id="description"/>
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
-<div class="form-group">
-<label for="profilename">[% msg.maketext("Katalog-Profile") %]</label>
-
-<select class="form-control" id="profilename" name="profilename">
+<div class="form-floating mb-3">
+<select class="form-select" id="profilename" name="profilename">
 [% FOREACH profile IN config.get_profileinfo_overview.all %]
   <option value="[% profile.profilename %]">[% profile.description %]</option>
 [% END %]
 </select>
+<label for="profilename">[% msg.maketext("Katalog-Profile") %]</label>
 </div>
 
-<div class="form-group">
-<label for="active">[% msg.maketext("Aktiv") %]</label>
-
-<select class="form-control" id="active" name="active">
+<div class="form-floating mb-3">
+<select class="form-select" id="active" name="active">
 <option value="true">[% msg.maketext("Ja") %]</option>
 <option value="false">[% msg.maketext("Nein") %]</option>
 </select>
+<label for="active">[% msg.maketext("Aktiv") %]</label>
 </div>
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
@@ -99,7 +97,7 @@ $(document).ready(function(){
 </p>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th>[% msg.maketext("Viewname") %]</th><th>[% msg.maketext("RSS") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Profil") %]</th><th>[% msg.maketext("Datenbanken") %]</th></tr>
 </thead>
@@ -107,10 +105,10 @@ $(document).ready(function(){
 [% FOREACH viewinfo IN views %]
 <tr [% IF viewinfo.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
   <td>[% viewinfo.viewname %]</td>
-  <td align="center"><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/rss/edit.html?l=[% lang %]"><img src="[% config.get_icon('rssfeed',view,sysprofile) %]" alt="RSS-Icon" /></a></td>
+  <td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/rss/edit.html?l=[% lang %]"><img src="[% config.get_icon('rssfeed',view,sysprofile) %]" alt="RSS-Icon" /></a></td>
   <td>
 [%   IF user.has_right({scope = 'admin_views', right = 'right_update'}) %]
-     <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/edit.html?l=[% lang %]" title="[% viewinfo.description %]">[% viewinfo.description %]</a>
+     <a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]/edit.html?l=[% lang %]" title="[% viewinfo.description %]">[% viewinfo.description %]</a>
 [%   ELSIF user.has_right({scope = 'admin_views', right = 'right_read'}) %]
      <a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %].html?l=[% lang %]">[% viewinfo.description %]</a>
 [%   END %]

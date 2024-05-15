@@ -17,47 +17,47 @@
 
 <h1 class="display-5">[% msg.maketext("Server bearbeiten") %]</h1>
 
-<div class="form-group">
-<label for="id">[% msg.maketext("Id") %]</label>
+<div class="form-floating mb-3">
 <span class="form-control">[% serverinfo.id %]</span>
+<label for="id">[% msg.maketext("Id") %]</label>
 </div>
 
-<div class="form-group">
-<label for="hostip">[% msg.maketext("IP-Adresse") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="hostip" id="hostip" value="[% serverinfo.hostip %]"/>
+<label for="hostip">[% msg.maketext("IP-Adresse") %]</label>
 </div>
 
-<div class="form-group">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="description" id="description" value="[% serverinfo.description %]"/>
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
-<div class="form-group">
-<label for="status">[% msg.maketext("Status") %]</label>
-  <select class="form-control" name="status" id="status">
+<div class="form-floating mb-3">
+  <select class="form-select" name="status" id="status">
      <option value="updatable" [% IF serverinfo.status == 'updatable' %]selected="selected"[% END %]>[% msg.maketext("Aktualisierbar") %]</option>
      <option value="updating" [% IF serverinfo.status == 'updating' %]selected="selected"[% END %]>[% msg.maketext("Aktualisieren") %]</option>
      <option value="updated" [% IF serverinfo.status == 'updated' %]selected="selected"[% END %]>[% msg.maketext("Fertig mit Aktualisierung") %]</option>
      <option value="searchable" [% IF serverinfo.status == 'searchable' %]selected="selected"[% END %]>[% msg.maketext("Recherchierbar") %]</option>
   </select>
+<label for="status">[% msg.maketext("Status") %]</label>
 </div>
 
-<div class="form-group">
-<label for="clusterid">[% msg.maketext("Cluster") %]</label>
-  <select class="form-control" name="clusterid" id="clusterid">
+<div class="form-floating mb-3">
+  <select class="form-select" name="clusterid" id="clusterid">
      <option value="updatable">[% msg.maketext("Aktualisierbar") %]</option>
 [%  FOREACH clusterinfo IN config.get_clusterinfo_overview.all %]
      <option value="[% clusterinfo.id %]" [% IF serverinfo.clusterid.id == clusterinfo.id %]selected="selected"[% END %]>[% clusterinfo.description %]</option>
 [% END %]
   </select>
+<label for="clusterid">[% msg.maketext("Cluster") %]</label>
 </div>
 
-<div class="form-group">
-<label for="active">[% msg.maketext("Aktiv") %]</label>
-  <select class="form-control" name="active" id="active">
+<div class="form-floating mb-3">
+  <select class="form-select" name="active" id="active">
      <option value="true" [%- IF serverinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Ja") %]</option>
      <option value="false" [%- IF NOT serverinfo.active -%]selected="selected"[%- END -%]>[% msg.maketext("Nein") %]</option>
   </select>
+<label for="active">[% msg.maketext("Aktiv") %]</label>
 </div>
 
 <button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>

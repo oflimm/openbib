@@ -24,15 +24,172 @@
 
   bklist = bklist.sort;
 
+  usblbs      = config.load_yaml('/opt/openbib/conf/usblbs.yml');
+
+  usbls       = config.load_yaml('/opt/openbib/conf/usbls.yml');
+  
+  usblbs_topics = user.get_classifications_of_topic({ type => 'lbs', topicid => topicid});
+
+  usbls_topics  = user.get_classifications_of_topic({ type => 'ls', topicid => topicid});
+  
 %]
 
-<h4>[% msg.maketext("Katalogtitel nach Bibliothekssystematik") %]</h4>
+<h3 class="mb-4">[% user.get_topic({ id = topicid }).name %]</h3>
 
-<ul class="list-group">
-[% FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topicid}) %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('browse_loc') %]/bks/id/[% classification %]">[% bks.${classification} %]</a> / [% classification %] ([% thisbklist.${classification}%] Titel)</li>
+[% IF usblbs_topics.size > 0 %]
+<h4>[% msg.maketext("Medien in der USB Lehrbuchsammlung") %] </h4>
+
+<ul class="list-group mb-3">
+[% FOREACH classification IN usblbs_topics.sort %]
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/lbs/id/[% classification %]">[% usblbs.${classification}.desc %]</a></li>
 [% END %]
+
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/lbs.html?l=[% lang %]">[% msg.maketext("alle Fachgebiete") %]</a></li>
 </ul>
+[% END %]
+
+[% IF usbls_topics.size > 0 %]
+<h4>[% msg.maketext("Medien im USB Lesesaal") %]</h4>
+
+<ul class="list-group mb-3">
+[% FOREACH classification IN usbls_topics.sort %]
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/ls/id/[% classification %]">[% usbls.${classification}.desc %]</a></li>
+[% END %]
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/ls.html?l=[% lang %]">[% msg.maketext("alle Fachgebiete") %]</a></li>
+</ul>
+[% END %]
+
+<h4>[% msg.maketext("Medien nach Bibliothekssystematik") %]</h4>
+
+[%# USE dumper;dumper.dump(thisbklist) %]
+[%
+    rvk_base = [
+    'A',
+    'B',
+    'CA - CK',
+    'CL - CZ',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'I',
+    'K',
+    'LA - LC',
+    'LD - LG',
+    'LD,LH - LO',
+    'LD,LP - LY',
+    'MA - ML',
+    'MN - MS',
+    'MT',
+    'MX - MZ',
+    'N',
+    'P',
+    'Q',
+    'R',
+    'SA - SP',
+    'SQ - SU',
+    'TA - TD',
+    'TE - TZ',
+    'U',
+    'V',
+    'W',
+    'X - Y',
+    'ZA - ZE',
+    'ZG - ZS',
+    'ZX - ZY',
+    ];
+
+    rvks     = user.get_classifications_of_topic({ type => 'rvk', topicid => topicid}) ;
+    base_rvks = [];
+    # RVKs auf Basis-RVKs der ersten Ebene zurueckfuehren    
+    FOREACH rvk IN rvks ;
+      IF rvk.match('^A');
+        base_rvks.push('A');
+      ELSIF rvk.match('^B');
+        base_rvks.push('B');
+      ELSIF rvk.match('^C[A-K]');
+        base_rvks.push('CA - CK');
+      ELSIF rvk.match('^C[L-Z]');
+        base_rvks.push('CL - CZ');
+      ELSIF rvk.match('^D');
+        base_rvks.push('D');
+      ELSIF rvk.match('^E');
+        base_rvks.push('E');
+      ELSIF rvk.match('^F');
+        base_rvks.push('F');
+      ELSIF rvk.match('^G');
+        base_rvks.push('G');
+      ELSIF rvk.match('^H');
+        base_rvks.push('H');
+      ELSIF rvk.match('^I');
+        base_rvks.push('I');
+      ELSIF rvk.match('^K');
+        base_rvks.push('K');
+      ELSIF rvk.match('^L[A-C]');
+        base_rvks.push('LA - LC');
+      ELSIF rvk.match('^LD');
+        base_rvks.push('LD - LG');
+        base_rvks.push('LD,LH - LO');	
+        base_rvks.push('LD,LP - LY');	
+      ELSIF rvk.match('^L[E-G]');
+        base_rvks.push('LD - LG');
+      ELSIF rvk.match('^L[H-O]');
+        base_rvks.push('LD,LH - LO');
+      ELSIF rvk.match('^L[P-Y]');
+        base_rvks.push('LD,LP - LY');
+      ELSIF rvk.match('^M[A-L]');
+        base_rvks.push('MA - ML');
+      ELSIF rvk.match('^M[N-S]');
+        base_rvks.push('MN - MS');
+      ELSIF rvk.match('^MT');
+        base_rvks.push('MT');
+      ELSIF rvk.match('^M[X-Z]');
+        base_rvks.push('MX - MZ');
+      ELSIF rvk.match('^N');
+        base_rvks.push('N');
+      ELSIF rvk.match('^P');
+        base_rvks.push('P');
+      ELSIF rvk.match('^Q');
+        base_rvks.push('Q');
+      ELSIF rvk.match('^R');
+        base_rvks.push('R');
+      ELSIF rvk.match('^S[A-P]');
+        base_rvks.push('SA - SP');
+      ELSIF rvk.match('^S[Q-U]');
+        base_rvks.push('SQ - SU');
+      ELSIF rvk.match('^T[A-D]');
+        base_rvks.push('TA - TD');
+      ELSIF rvk.match('^T[E-Z]');
+        base_rvks.push('TE - TZ');
+      ELSIF rvk.match('^U');
+        base_rvks.push('U');
+      ELSIF rvk.match('^V');
+        base_rvks.push('V');
+      ELSIF rvk.match('^W');
+        base_rvks.push('W');
+      ELSIF rvk.match('^[X-Y]');
+        base_rvks.push('X - Y');
+      ELSIF rvk.match('^Z[A-E]');
+        base_rvks.push('ZA - ZE');
+      ELSIF rvk.match('^Z[G-S]');
+        base_rvks.push('ZG - ZS');
+      ELSIF rvk.match('^Z[X-Y]');
+        base_rvks.push('ZX - ZY');
+      END;
+    END;
+    rvks = base_rvks.sort.unique;
+    rvksdesc = config.get_description_of_classification(type => 'rvk', names => rvks );
+    #USE dumper;dumper.dump(rvksdesc)%]
+<ul class="list-group mb-3">
+[% FOREACH classification IN rvks %]
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/rvk/id/[% classification %].html?l=[% lang %]">[% rvksdesc.${classification} %]</a></li>
+[% END %]
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('browse_loc') %]/rvk.html?l=[% lang %]">[% msg.maketext("alle Fachgebiete") %]</a></li>
+</ul>
+
+<div class="alert alert-info">[% msg.maketext("Hinweis: Hier finden Sie nur die Titel, die nach der Regensburger Verbundklassifikation (RVK) sachlich erschlossen wurden. Recherchieren Sie mit Suchbegriffen, um alle relevanten Titel zu finden!") %]
+</div>
 
 <p />
 
@@ -52,9 +209,10 @@
    searchterm    = topic.name;
    searchprefix  = config.get('searchfield').classification.prefix;
 %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% searchprefix %]=[% searchterm %]">[% topic.desc %]</a> / [% topic.name %] ([% msg.maketext("[_1] Zeitschriften",topic.count) %])</li>
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% searchprefix %]=[% searchterm %]">[% topic.desc %]</a> ([% msg.maketext("[_1] Zeitschriften",topic.count) %])</li>
 [%   END %]
 [% END %]
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/[% config.get('classifications_loc') %].html?l=[% lang %]">[% msg.maketext("alle Fachgebiete") %]</a></li>
 </ul>
 
 <p />
@@ -78,22 +236,35 @@
    searchterm    = topic.name;
    searchprefix  = config.get('searchfield').classification.prefix;
 %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% searchprefix %]=[% searchterm %]">[% topic.desc %]</a> / [% topic.name %] ([% msg.maketext("[_1] Datenbanken",topic.count) %])</li>
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% searchprefix %]=[% searchterm %]">[% topic.desc %]</a> ([% msg.maketext("[_1] Datenbanken",topic.count) %])</li>
 [%   END %]
 [% END %]
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/[% config.get('classifications_loc') %].html?l=[% lang %]">[% msg.maketext("alle Fachgebiete") %]</a></li>
 </ul>
-
 <p />
 [% END %]
 
 [% litlists = user.get_public_litlists({ topicid => topicid, view => view}) %]
+[% # Preprocessing der Literaturlisten
+
+  processed_litlists = [];
+
+  FOREACH thisitem IN litlists;
+   IF thisitem.itemcount;
+     processed_litlists.push(thisitem);
+   END;
+  END;
+
+  litlists = processed_litlists;
+%]
+
 [% IF litlists.size > 0 %]
 <h4>[% msg.maketext("Literaturlisten") %]</h4>
 
-<ul class="list-group">
+<ul class="list-group mb-3">
 [% FOREACH thisitem IN litlists%]
 [% IF thisitem.itemcount %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% thisitem.id %].html?l=[% lang %]">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% thisitem.id %].html?l=[% lang %]">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img data-bs-toggle="tooltip" data-bs-placement="top" src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
 [% ELSE %]
 <li class="list-group-item">[% thisitem.title%] ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.get_icon('university,view,sysprofile') %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
 [% END %]

@@ -11,25 +11,27 @@
 #
 #######################################################################
 -%]
-        <div class="jumbotron">
+        <div class="ob-jumbotron">
          <h1 class="display-4">[% msg.maketext("Registrieren") %]</h1>
 
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %]" enctype="application/x-www-form-urlencoded">
 
-<div class="form-group">
-<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="username" id="email_username" value="[% username %]" />
-</div>
-<div class="form-group">
-<label for="email_password1">[% msg.maketext("Passwort") %]</label>
-<input class="form-control" type="password" name="password1" id="email_password1" />
-</div>
-<div class="form-group">
-<label for="email_password">[% msg.maketext("Passwort (wiederholt)") %]</label>
-<input class="form-control" type="password" name="password2" id="email_password" />
+<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
 </div>
 
-<div class="form-group">
+<div class="form-floating mb-3">
+<input class="form-control" type="password" name="password1" id="email_password1" />
+<label for="email_password1">[% msg.maketext("Passwort") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="password" name="password2" id="email_password" />
+<label for="email_password">[% msg.maketext("Passwort (wiederholt)") %]</label>
+</div>
+
+<div class="form-floating mb-3">
 [%- IF config.${"recaptcha_public_key"} -%]
 [%- recaptcha_options = { lang => lang, theme => 'white' } -%]
 [% recaptcha.get_html_v2(config.${"recaptcha_public_key"},'',1,recaptcha_options) %]
@@ -42,4 +44,4 @@
 
 </form>
 
-</div><!-- End: jumbotron -->
+</div><!-- End: ob-jumbotron -->

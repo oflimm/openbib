@@ -18,7 +18,7 @@
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+        <a class="card-link collapsed" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
           [% msg.maketext("Neues Suchprofil anlegen") %]
         </a>
       </h5>
@@ -28,9 +28,9 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]">
 
-<div class="form-group">
-<label for="profilename">[% msg.maketext("Names des Profils") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="profilename" id="profilename" size="50" />
+<label for="profilename">[% msg.maketext("Names des Profils") %]</label>
 </div>
 
 <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Neu") %]</button>
@@ -48,7 +48,7 @@
 <h3>[% msg.maketext("Bereits existierende Profile") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("Ausgew&auml;hlte Kataloge") %]</th><th></th></tr>
 </thead>

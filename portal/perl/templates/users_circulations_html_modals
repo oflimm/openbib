@@ -1,0 +1,255 @@
+[%-
+
+  ils_group_desc = {
+    '1' => 'Ersthörer*innen der Uni Köln'
+    '2' => 'Beschäftigte der Uni Köln'
+    '3' => 'Angehörige der Uni Köln'
+    '4' => 'Externe/Beschäftigte'
+    '5' => 'Externe ohne Jahresgebühr'
+    '6' => 'Externe mit Jahresgebühr'
+  };
+
+  ils_groupid = userdata.external_group;
+  ils_group   = "";
+  IF ils_groupid ;
+    ils_group = ils_group_desc.${ils_groupid};
+  END;
+-%]
+<!-- Start: Adressinformationen anzeigen -->
+<div class="modal fade" id="addressModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="addressModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addressModalLabel">[% msg.maketext("Persönliche Angaben") %]</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+        </button>
+      </div>
+      <div class="modal-body" id="address">
+
+<div class="table-responsive">
+<table class="table table-striped ">
+<tbody>
+<tr><th>[% msg.maketext("Anrede") %]</th><td>[% userdata.salutation %]</td></tr>
+<tr><th>[% msg.maketext("Name") %]</th><td>[% userdata.fullname %]</td></tr>
+<tr><th>[% msg.maketext("Geburtsdatum") %]</th><td>[% userdata.birthdate %]</td></tr>
+<tr><th>[% msg.maketext("Anmeldung am") %]</th><td>[% userdata.startdate %]</td></tr>
+<tr><th>[% msg.maketext("Ausweis gültig bis") %]</th><td>[% userdata.enddate %]</td></tr>
+[% IF userdata.street || userdata.zip || userdata.city %]
+<tr><th>[% msg.maketext("Postanschrift") %]</th><td>[% userdata.street %]<br/>[% userdata.zip %] [% userdata.city %]</td></tr>
+[% END %]
+[% IF userdata.street2 || userdata.zip2 || userdata.city2 %]
+<tr><th>[% msg.maketext("Zweitanschrift") %]</th><td>[% userdata.street2 %]<br/>[% userdata.zip2 %] [% userdata.city2 %]</td></tr>
+[% END %]
+<tr><th>[% msg.maketext("Telefon-Nummer") %]</th><td>[% IF userdata.phone %][% userdata.phone %][% ELSE %][% msg.maketext("keine angegeben") %][% END %]</td></tr>
+<tr><th>[% msg.maketext("E-Mail Adresse") %]</th><td>[% userdata.email %]</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>
+[% msg.maketext("Die Anschrift hat sich geändert? Korrektur am Schalter Bibliotheksausweise & Fernleihrückgabe im EG. Bitte bringen Sie mit: Personalausweis oder Meldebescheinigung vom Bürgeramt.") %]
+</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End: Adressinformationen anzeigen -->
+
+<!-- Start: Passwort aendern -->
+<div class="modal fade" id="passwordModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="passwordModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+
+      <form method="post" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("circulations_loc") %]">
+	<input type="hidden" name="field" value="password" />
+
+	<div class="modal-header">
+          <h5 class="modal-title" id="passwordModalLabel">[% msg.maketext("Passwort ändern") %]</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+          </button>
+	</div>
+	<div class="modal-body" id="password">
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="password" name="oldpassword" id="oldpassword" value="" size="10"/>
+            <label for="oldpassword">[% msg.maketext("Derzeitiges Passwort") %]</label>
+	  </div>
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="password" pattern="(?=.*\d)(?=.*[a-zA-Z]).{6,}" name="password1" id="password1" value="" size="10"  />
+            <label for="password1">[% msg.maketext("Neues Passwort") %] *</label>
+	  </div>
+	  
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="password" name="password2" id="password2" value="" size="10" />
+            <label for="password2">[% msg.maketext("Passwort bestätigen") %]</label>
+	  </div>
+
+	  <p style="color: red; font-size:0.8em;">* [% msg.maketext("mindestens 6 Zeichen, nur Zahlen und lateinische Buchstaben, ohne Umlaute und ß, mindestens eine Zahl und ein Klein- oder Großbuchstabe, d.h. a-z, A-Z, 0-9 sowie -!\"#%&'()*,./:;?@[]_{}.") %]</p>
+	  
+	  
+	</div>
+	<div class="modal-footer">
+          <button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Änderung speichern") %]</button>
+	  
+          <button type="button" class="btn btn-primary mb-2" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+	</div>
+      </form>      
+    </div>
+  </div>
+</div>
+<!-- End: Passwort aendern -->
+
+<!-- Start: Pin aendern -->
+<div class="modal fade" id="pinModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="pinModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+
+      <form method="post" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("circulations_loc") %]">
+	<input type="hidden" name="field" value="pin" />
+
+	<div class="modal-header">
+          <h5 class="modal-title" id="pinModalLabel">[% msg.maketext("Ausleih-Pin ändern") %]</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+          </button>
+	</div>
+	<div class="modal-body" id="pin">
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="pin" name="pin1" id="pin1" value="" size="4" maxlength="4" />
+            <label for="pin1">[% msg.maketext("Neue Pin") %] *</label>
+	  </div>
+	  
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="pin" name="pin2" id="pin2" value="" size="4" maxlength="4" />
+            <label for="pin2">[% msg.maketext("Neue Pin bestätigen") %]</label>
+	  </div>
+
+	  <p style="color: red; font-size:0.8em;">* [% msg.maketext("genau 4 Stellen, nur Zahlen") %]</p>
+	  
+	</div>
+	<div class="modal-footer">
+          <button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Änderung speichern") %]</button>
+	  
+          <button type="button" class="btn btn-primary mb-2" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+	</div>
+      </form>      
+    </div>
+  </div>
+</div>
+<!-- End: Pin aendern -->
+
+<!-- Start: E-Mail aendern -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="emailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      [%-
+      IF ils_groupid.match('^1$') && userdata.email.match('smail.uni-koeln.de');
+      is_smail = 1; 
+
+      END;
+      -%]
+      
+      [% IF NOT is_smail %]      
+      <form method="post" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("circulations_loc")%]">
+      [% END %]	
+	<input type="hidden" name="field" value="email" />
+
+	<div class="modal-header">
+          <h5 class="modal-title" id="emailModalLabel">[% IF userdata.email %][% msg.maketext("E-Mail-Adresse ändern") %][% ELSE %][% msg.maketext("E-Mail-Adresse eintragen") %][% END %]</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+          </button>
+	</div>
+	<div class="modal-body" id="email">
+[% IF is_smail %]
+
+<table>
+<tr><th>[% msg.maketext("E-Mail-Adresse") %]</th><td>[% userdata.email %]</td></tr>
+</table>
+
+<p>
+  [% msg.maketext("Die S-Mail-Adresse wird automatisch eingetragen und kann nicht überschrieben werden. Weiterleitung an private E-Mail-Adresse:") %]
+</p>
+<p>
+  <a href="http://mailportal.uni-koeln.de" target="_blank">http://mailportal.uni-koeln.de</a>
+</p>
+[% ELSE %]
+	  <div class="form-floating mb-3">
+            <span class="form-control">[% IF userdata.email %][% userdata.email %][% ELSE %][% msg.maketext("kein Eintrag") %][% END %]</span>
+            <label>[% msg.maketext("Derzeitige E-Mail-Adresse") %]</label>
+	  </div>
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="text" name="email1" id="email1" value="" size="20" />
+            <label for="email1">[% msg.maketext("Neue E-Mail-Adresse") %]</label>
+	  </div>
+	  
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="text" name="email2" id="email2" value="" size="20" />
+            <label for="email2">[% msg.maketext("E-Mail-Adresse bestätigen") %]</label>
+	  </div>
+[% END %]
+	  
+	</div>
+	<div class="modal-footer">
+      [% IF NOT is_smail %]      	  
+          <button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Änderung speichern") %]</button>
+      [% END %]
+          <button type="button" class="btn btn-primary mb-2" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+	</div>
+      [% IF NOT is_smail %]      
+      </form>
+      [% END %]
+    </div>
+  </div>
+</div>
+<!-- End: E-Mail aendern -->
+
+<!-- Start: Telefonnummer aendern -->
+<div class="modal fade" id="phoneModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="phoneModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+
+      <form method="post" action="[% path_prefix%]/[% config.get("users_loc")%]/id/[% user.ID %]/[% config.get("circulations_loc") %]">
+	<input type="hidden" name="field" value="phone" />
+
+	<div class="modal-header">
+          <h5 class="modal-title" id="phoneModalLabel">[% IF userdata.phone %][% msg.maketext("Telefonnummer ändern") %][% ELSE %][% msg.maketext("Telefonnummer eintragen") %][% END %]</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+          </button>
+	</div>
+	<div class="modal-body" id="phone">
+	  
+	  <div class="form-floating mb-3">
+            <span class="form-control">[% IF userdata.phone %][% userdata.phone %][% ELSE %][% msg.maketext("kein Eintrag") %][% END %]</span>
+            <label>[% msg.maketext("Derzeitige Telefonnummer") %]</label>
+	  </div>
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="text" name="phone1" id="phone1" value="" size="20" />
+            <label for="phone1">[% msg.maketext("Neue Telefonnummer") %]</label>
+	  </div>
+	  
+	  
+	  <div class="form-floating mb-3">
+            <input class="form-control" type="text" name="phone2" id="phone2" value="" size="20" />
+            <label for="phone2">[% msg.maketext("Telefonnummer bestätigen") %]</label>
+	  </div>
+	  
+	</div>
+	<div class="modal-footer">
+          <button type="submit" class="btn btn-primary mb-2">[% msg.maketext("Änderung speichern") %]</button>
+	  
+          <button type="button" class="btn btn-primary mb-2" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+	</div>
+      </form>      
+    </div>
+  </div>
+</div>
+<!-- End: Telefonnummer aendern -->

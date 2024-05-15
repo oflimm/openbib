@@ -16,6 +16,10 @@
 
   corporatebody   = corporatebodies.join(' ; ');
 
+  classifications = fields.classifications;
+
+  classification  = classifications.join(' ; ');
+  
   pubplace  = [];
   publisher = fields.publisher;
   place     = fields.place;

@@ -11,16 +11,36 @@
 #
 #######################################################################
 -%]
-<select name="srt" class="custom-select autosubmit" style="width:auto;" aria-label="Sortierung">
-[% IF NOT no_relevance %]  <option value="relevance_desc"[%- IF query.param('srt') == 'relevance_dsc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>[% END %]
-  <option value="popularity_desc"[%- IF query.param('srt') == 'popularity_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
-  <option value="year_desc"[%- IF query.param('srt') == 'year_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&darr;</option>
-  <option value="year_asc"[%- IF query.param('srt') == 'year_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]&nbsp;&uarr;</option>
-  <option value="person_asc"[%- IF query.param('srt') == 'person_asc' %] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
-  <option value="title_asc"[%- IF query.param('srt') == 'title_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
-  <option value="order_asc"[%- IF query.param('srt') == 'order_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
-  <option value="mark_asc"[%- IF query.param('srt') == 'mark_asc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]&nbsp;&uarr;</option>
-  <option value="mark_desc"[%- IF query.param('srt') == 'mark_desc' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]&nbsp;&darr;</option>
-</select>
+[%-
 
-<button class="btn btn-primary p-1 ob-nojs_show" type="submit">[% msg.maketext("Los") %]</button>
+   sort_args = cgiapp.to_cgi_querystring({ change = {'page' = 1 }, exclude = ['srt', 'srto'] });
+
+   sorttype_desc_map = {
+     relevance_desc = msg.maketext("Relevanz")
+     year_desc = msg.maketext("Jahr absteigend (neueste zuerst)")
+     year_asc = msg.maketext("Jahr aufsteigend")
+     title_asc = msg.maketext("Titel aufsteigend")
+     person_asc = msg.maketext("Personen aufsteigend")
+     order_desc = msg.maketext("Zählung absteigend")
+     order_asc = msg.maketext("Zählung aufsteigend")
+   };
+   
+-%]
+
+<div class="dropdown" id="ob-titlist_options[% idsuffix %]">
+  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuSort[% idsuffix %]" data-bs-toggle="dropdown" aria-expanded="false">
+    [% IF sorttype_desc_map.defined(session_sort) %][% sorttype_desc_map.${session_sort} %][% ELSE %][% msg.maketext("Sortierung") %][% END %]<i class="fas fa-sort ps-2"></i>
+  </button>
+
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuSort[% idsuffix %]">
+[% IF NOT no_relevance %]  
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'relevance_desc' || session_sort == 'relevance_desc' %]text-strong[% END %]" [% IF NOT no_htmx %]hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].include?[% sort_args %];srt=relevance_desc"[% END %] href="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].html?[% sort_args %];srt=relevance_desc" title="[% msg.maketext("Relevanz") %]">[% msg.maketext("Relevanz") %]</a></li>
+[% END %]    
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'year_desc' || session_sort == 'year_desc' %]text-strong[% END %]" [% IF NOT no_htmx %]hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].include?[% sort_args %];srt=year_desc"[% END %] href="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].html?[% sort_args %];srt=year_desc" title="[% msg.maketext("Jahr&nbsp;&darr;") %]">[% msg.maketext("Jahr absteigend (neueste zuerst)") %]</a></li>
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'year_asc' || session_sort == 'year_asc' %]text-strong[% END %]" [% IF NOT no_htmx %]hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].include?[% sort_args %];srt=year_asc"[% END %] href="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].html?[% sort_args %];srt=year_asc" title="[% msg.maketext("Jahr&nbsp;&uarr;") %]">[% msg.maketext("Jahr aufsteigend") %]</a></li>
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'title_asc' || session_sort == 'title_asc' %]text-strong[% END %]" [% IF NOT no_htmx %]hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].include?[% sort_args %];srt=title_asc"[% END %] href="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].html?[% sort_args %];srt=title_asc" title="[% msg.maketext("Titel&nbsp;&uarr;") %]">[% msg.maketext("Titel aufsteigend") %]</a></li>
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'person_asc' || session_sort == 'person_asc' %]text-strong[% END %]" [% IF NOT no_htmx %]hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].include?[% sort_args %];srt=person_asc"[% END %] href="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].html?[% sort_args %];srt=person_asc" title="[% msg.maketext("Person&nbsp;&uarr;") %]">[% msg.maketext("Personen aufsteigend") %]</a></li>
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'order_desc' || session_sort == 'order_desc' %]text-strong[% END %]" [% IF NOT no_htmx %]hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].include?[% sort_args %];srt=order_desc"[% END %] href="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].html?[% sort_args %];srt=order_desc" title="[% msg.maketext("Zählung&nbsp;&darr;") %]">[% msg.maketext("Zählung absteigend") %]</a></li>
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'order_asc' || session_sort == 'order_asc' %]text-strong[% END %]" [% IF NOT no_htmx %]hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].include?[% sort_args %];srt=order_asc"[% END %] href="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].html?[% sort_args %];srt=order_asc" title="[% msg.maketext("Zählung&nbsp;&uarr;") %]">[% msg.maketext("Zählung aufsteigend") %]</a></li>
+  </ul>
+</div>

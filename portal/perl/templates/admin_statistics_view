@@ -4,7 +4,7 @@
       'page_title' = 'Administration - Statistik Views'
       
       'main_template' = 'admin_statistics_view_html'
-      'sidebar_template' = 'users_navigation'
+      'sidebar_template' = 'admin_statistics_navigation'
 
       'active_menu' = 'admin'
       'active_submenu' = 'admin_statistics'

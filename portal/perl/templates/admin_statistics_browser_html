@@ -81,7 +81,7 @@
 <h3>[% msg.maketext("Browserverteilung") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <tr><th>Firefox</th><td>[% count_ff * 100.0 / count_all %] %</td></tr>
 <tr><th>MSIE</th><td>[% count_msie * 100.0 / count_all %] %</td></tr>
 <tr><th>Safari</th><td>[% count_safari * 100.0 / count_all %] %</td></tr>
@@ -94,7 +94,7 @@
 <h3>[% msg.maketext("Betriebssystemverteilung") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <tr><th>Windows</th><td>[% count_os_windows * 100.0 / count_os_all %] %</td></tr>
 <tr><th>Mac OS</th><td>[% count_os_macos * 100.0 / count_os_all %] %</td></tr>
 <tr><th>Linux</th><td>[% count_os_linux * 100.0 / count_os_all %] %</td></tr>
@@ -110,7 +110,7 @@
 <h3>[% msg.maketext("Genutzte Browser") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 [% FOREACH browser IN browsers %]
 <tr><th>[% browser.content %]</th><td><b>[% browser.number %]</b></td></tr>
 [% END %]

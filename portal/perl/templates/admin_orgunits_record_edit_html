@@ -18,44 +18,43 @@
 
 <h1 class="display-5">[% msg.maketext("Organisationseinheit bearbeiten") %]</h1>
 
-<div class="form-group">
-<label for="orgunitname">[% msg.maketext("Organisationseinheit") %]</label>
+<div class="form-floating mb-3">
 <span class="form-control">[% orgunitinfo.orgunitname %]</span>
+<label for="orgunitname">[% msg.maketext("Organisationseinheit") %]</label>
 </div>
 
-<div class="form-group">
-<label for="description">[% msg.maketext("Beschreibung") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="description" id="description" value="[% orgunitinfo.description %]" size="20" />
+<label for="description">[% msg.maketext("Beschreibung") %]</label>
 </div>
 
-<div class="form-group">
-<label for="nr">[% msg.maketext("Nr") %]</label>
+<div class="form-floating mb-3">
 <input class="form-control" type="text" name="nr" id="nr" value="[% orgunitinfo.nr %]" size="20" />
+<label for="nr">[% msg.maketext("Nr") %]</label>
 </div>
 
-<div class="form-group">
-<label for="searchprofileid">[% msg.maketext("Aktuelle Suchprofil-ID") %]</label>
+<div class="form-floating mb-3">
 <span class="form-control">[% config.get_searchprofile_of_orgunit(profileinfo.profilename,orgunitinfo.orgunitname) %]</span>
+<label for="searchprofileid">[% msg.maketext("Aktuelle Suchprofil-ID") %]</label>
 </div>
 
 <h1 class="display-5">[% msg.maketext("Katalogauswahl der Organisationseinheit") %]</h1>
 
-<div class="form-group">
-<label for="databases">[% msg.maketext("Kataloge") %]</label>
-
-<select class="form-control" id="databases" name="databases" multiple="multiple" size="20">
+<div class="mb-3">
+<label class="form-label" for="databases">[% msg.maketext("Kataloge") %]</label>
+<select class="form-select" id="databases" name="databases" multiple="multiple" size="20">
 [% FOREACH singledb IN activedbs.all %]
 <option value="[% singledb.dbname %]"[% IF orgunitdb_map.${singledb.dbname} %] selected="selected"[% END %]>[% singledb.dbname %]: [% singledb.description | truncate(100) %]</option>
 [% END %]
 </select>
 </div>
 
-<div class="form-group">
-<label for="own_index">[% msg.maketext("Eigener Index") %]</label>
-<select class="form-control" id="own_index" name="own_index">
+<div class="form-floating mb-3">
+<select class="form-select" id="own_index" name="own_index">
 <option value="1" [% IF orgunitinfo.own_index %]selected="selected"[% END %]>[% msg.maketext("Ja") %]</option>
 <option value="0" [% IF NOT orgunitinfo.own_index %]selected="selected"[% END %]>[% msg.maketext("Nein") %]</option>
 </select>
+<label for="own_index">[% msg.maketext("Eigener Index") %]</label>
 </div>
 
 <button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>

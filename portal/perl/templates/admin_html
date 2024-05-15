@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 
-<div class="jumbotron">
+<div class="ob-jumbotron">
           <h1 class="display-4">Die Web-Administration</h1>
 
 <h3>Katalog- und Portalmanagement</h3>

@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: visible_categories_autset
+# Templatename: visible_categories_person
 #
 # Typ         : Subtemplate
 #
@@ -13,10 +13,15 @@
 -%]
 [%# Ausgabekategorien %]
 [%- categories = [
+                 'P0010', # msg.maketext("P0010") GND
                  'P0800', # msg.maketext("P0800") Ansetzung
 	         'P0830', # msg.maketext("P0830") Verweisung
-	         'P0806', # msg.maketext("P0806") Daten zur Person
+	         'Beruf', # msg.maketext("Beruf") Beruf
+	         'Lebensdaten', # msg.maketext("Lebensdaten") Lebensjahre
+	         'Geburtsort', # msg.maketext("Geburtsort") Geburtsort
+	         'Wikipedia', # msg.maketext("Wikipedia") Wikipedia
 
+		 
                  # Erweiterungen
 	         'P0200', # msg.maketext("P0200") Lebensjahre
 	         'P0201', # msg.maketext("P0201") Beruf
@@ -38,6 +43,6 @@
 	         'P0313', # msg.maketext("P0313") Website
 	         'P0314', # msg.maketext("P0314") Ort
 
-	         'P5000', # msg.maketext("P5000") Anzahl Titel
+	         #'P5000', # msg.maketext("P5000") Anzahl Titel
 	         ];
 %]

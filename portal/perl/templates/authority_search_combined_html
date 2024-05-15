@@ -13,50 +13,61 @@
 -%]
 [%- PROCESS common/subtemplate name="local_config" -%] 
 
-<p/>
+<style>
+[data-bs-toggle="collapse"] {
+  cursor: pointer;
+}
 
-<div class="row">
+//@media screen and (min-width:768px) { #ob-sidebar { display: block!important;visibility:visible!important; } }
+
+</style>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar_authority" aria-labelledby="offcanvasSidebarLabel">
+
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title" id="offcanvasSidebarLabel_authority">[% msg.maketext("Suchergebnis filtern") %]</h3>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
 [% IF hits > 0 %]
-  <div class="col-md-4">
-[% PROCESS common/subtemplate name="authority_search_facet" %]
+
+[% PROCESS common/subtemplate name="authority_search_facet" facet_prefix="sidebar" offcanvas=1 %]
+
 [% ELSE %]
-[%
-   IF NOT viewdbs ;
-       viewdbs = config.get_dbs_of_view(view);
-   END ;
-   IF NOT prevprofile ;
-       prevprofile = session.get_profile ;
-   END ;
-   IF NOT searchprofileid_of_view ;
-      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
-   END ;
-   IF NOT searchprofileid_of_sysprofile ;
-      searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
-   END ;
-
-%]
-
 [%   IF viewdbs.size == 1 %]  
 <div class="ob-facets">
-[% PROCESS common/subtemplate name="search_radius" %]
+  [% PROCESS common/subtemplate name="search_radius" %]
 </div>
 [%   END %]
-  </div>
 [% END %]
+    </div>
+    
+    <div class="offcanvas-footer">
+      <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_authority">[% msg.maketext("Schließen") %]</button>
+    </div>
+  </div>
+</div>
+    
+[% IF hits > 0 %]
+<div id="ob-searchresult_authority_wrapper" class="row flex-md-row">
+<div id="ob-searchresult_authority" class="row flex-md-row">
+  <div id="ob-search_refine_authority" class="col-xs-6 col-md-3 d-none d-md-block">
+[% PROCESS common/subtemplate name="authority_search_facet" %]
+  </div>
 
-  <div class="col-md-8">
-
+  <div class="col-md-9">
+    
 [% IF spelling_suggestion.resultlist %]
 [%    suggestion = searchquery.get_spelling_suggestion %]
 [%     IF suggestion%]
-[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% escape_html(query.param('num')) %];srt=relevance_desc;st=[% escape_html(query.param('st')) %]fs=[% suggestion %]">[% suggestion %]</b>
+[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% escape_html(query.param('num')) %];srt=year_desc;st=[% escape_html(query.param('st')) %]fs=[% suggestion %]">[% suggestion %]</a></b>
 [%     END %]
 [% END %]
 
-[% IF hits > 0 %]
 <!-- Beginn Result Item -->
 [%-
-    request_base    = "num=${queryoptions.get_option('num')};srt=relevance_desc;page=1;" ;
+    request_base    = "num=${queryoptions.get_option('num')};srt=title_asc;page=1;" ;
     start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
     end_range       = nav.current_page*queryoptions.get_option('num');
     IF end_range >= hits ;
@@ -67,45 +78,58 @@
 -%]
 
 <div class="ob-resultlist">
-  <div class="ob-resultheader">
+  <div class="ob-resultheader pb-4">
     <div class="left">
-[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b>[% hits %]</b>
+      <div class="container-fluid ps-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
+        <div class="container-fluid d-block d-md-none ps-0 mt-2">
+          <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar[% idsuffix %]">
+            <i class="fa fa-sliders-h"></i> [% msg.maketext("Filtern") %]
+          </button>
+	</div>
+	<div class="d-none d-md-block mt-2">
+[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range.chunk(-3).join('.') %]-[% end_range.chunk(-3).join('.') %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b id="numhits[% idsuffix %]">[% hits.chunk(-3).join('.') %]</b>
+	</div>
+      </div>
     </div>
-    <div class="right">
-<form method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]">
-<input type="hidden" name="page" value="1" />
+    <div class="right mt-2">
+      <form method="get" action="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]">
+	<input type="hidden" name="page" value="1" />
+	<input type="hidden" name="l"    value="[% lang %]" />
 
-[% cgiapp.to_cgi_hidden_input({ exclude = ['page','srt','srto']}) %]
+[% cgiapp.to_cgi_hidden_input({ exclude = ['page','srt','srto','num']}) %]
 
 [% PROCESS common/subtemplate name="authlist_options" this_loc=config.get('search_loc') %]
-</form>
+      </form>
 
     </div>
-  </div>
+  </div><!-- End ob-resultheader -->
   <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [%- FOREACH record IN recordlist.get_records -%]
 [%    PROCESS common/subtemplate name="authlist_item_html_short" multiple_dbs=1 database=record.database %] 
 [%- END -%]
-  <div class="ob-footer">
-[% PROCESS common/subtemplate name="pagination" %]
-    <div class="ob-resulttime">
-<!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->
-    </div>
+<div class="ob-footer">
+
+<div class="ob-resulttime">
+  in: [% resulttime %] [% msg.maketext("Sekunden") %] 
+</div>
+</div><!-- End: ob-footer -->
+  </div><!-- End: ob-resultitems -->
+  <div class="ob-resultfooter">
+    &nbsp;
   </div>
 </div>
-<div class="ob-resultfooter">
-   &nbsp;
-</div>
 <p/>
+
+  </div><!-- End: col -->
+</div><!-- End: row -->
+
+[% PROCESS common/subtemplate name="authority_search_pagination" %]
+
+</div><!-- End: ob-searchresult_autority_wrapper -->
 [% ELSE %]
 <div class="ob-no_hits">
 <h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>
 </div>
 
 [% END %]
-<p/>
-
-  </div>
-
-</div>
 

@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: virtualsearch_result_start
+# Templatename: availability_search_start_html
 #
 # Typ         : Mastertemplate (1/3)
 #
@@ -81,22 +81,22 @@
 
 [% IF config.get('deutsche_bibliotheksstatistik') %]
 <!-- DBS 'Zaehl-Pixel' USB - Kategorie: KUG-->
-<img src="http://dbspixel.hbz-nrw.de/count?id=AB038&amp;page=4" width="1" height="1" />
+<img src="http://dbspixel.hbz-nrw.de/count?id=AB038&amp;page=4" width="1" height="1" alt="[% msg.maketext("Zählpixel der DBS") %]"/>
 [% END %]
 
 [%# USE dumper;dumper.dump(dbinfo)%]
 [%- END -%]
 
-<h2 class="pl-2">Verfügbarkeitsrecherche</h2>
+<h2 class="ps-2">Verfügbarkeitsrecherche</h2>
 
 [%
   artikel = 0;
-  IF query.param('jrnl') && query.param('tit');
+  IF query.param('typ') == 'article' || (query.param('jrnl') && query.param('tit'));
     artikel = 1;
   END ;
 %]
 
-<p class="pl-3"><i>
+<p class="ps-3"><i>
 [% IF artikel %]
 [% escape_html(query.param('tit')) %][% IF query.param('per') %] / [% escape_html(query.param('per')) %][% END %]<br/>
 In: [% escape_html(query.param('jrnl')) %][% IF query.param('vol') %] Vol. [% escape_html(query.param('vol')) %][% END %][% IF query.param('year') %] ([% escape_html(query.param('year')) %])[% END %][% IF query.param('issue') %] Nr. [% escape_html(query.param('issue')) %][% END %][% IF query.param('src') %] S. [% escape_html(query.param('src')) %][% END %]<br/>
@@ -107,3 +107,18 @@ In: [% escape_html(query.param('jrnl')) %][% IF query.param('vol') %] Vol. [% es
 [% IF query.param('issn') %]<br/>ISSN: [% escape_html(query.param('issn')) %][% END %]
 [% END %]
 </i></p>
+
+[% IF NOT query.param('issn') && NOT query.param('isbn') %]
+
+<div class="alert alert-info m-2">
+
+Es steht kein eindeutiges Identfizierungsmerkmal (ISBN, ISSN etc.) für
+das gesuchte Dokument zur Verfügung. Das Ergebnis der
+Verfügbarkeitsrecherche enthält daher möglicherweise keine oder
+unpassende Treffer.  Bitte recherchieren Sie den Buch-
+bzw. Zeitschriftentitel sicherheitshalber noch einmal im Unikatalog,
+bevor Sie eine Fernleihbestellung aufgeben.
+
+</div>
+
+[% END %]

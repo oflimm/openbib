@@ -50,10 +50,10 @@
 [% FOREACH singleuser IN userlist %]
     <div class="ob-item d-flex flex-row">
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
-      <div class="ob-thumbnail pt-5 ml-5 pr-2 mr-0 d-none d-md-block">
+      <div class="ob-thumbnail pt-5 ms-5 pe-2 me-0 d-none d-md-block">
          <i class="fas fa-user fa-3x" style="display: inline-block;"></i>      
       </div> 
-      <div class="ob-brieftitle pt-2 pl-2">
+      <div class="ob-brieftitle pt-2 ps-2">
 [%# USE dumper;dumper.dump(singleuser)%]
 
 <span class="ob-person">[% IF singleuser.nachname %][% singleuser.nachname %][% END %][% IF singleuser.vorname %], [% singleuser.vorname %][% END %]</span><br />

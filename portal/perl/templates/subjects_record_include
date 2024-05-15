@@ -19,17 +19,17 @@
    
 -%]
 
+<div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
+
 <div class="details ob-authority_record row"><!-- Begin Details -->
 <!-- Person begins here -->
 
 <div class="categories col-md-12"><!-- Begin Categories -->
 
-<div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
-
 <h4>[% msg.maketext("Index-Eintrag (Normdaten)") %]</h4>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover ob-normdata_fields">
+<table class="table table-striped ob-normdata_fields">
 
 [% PROCESS common/subtemplate name="visible_categories_subject" %]
 
@@ -82,7 +82,8 @@ END;
 <h4>[% msg.maketext("Weiterführende Links") %]</h4>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover ob-normdata_fields">
+<table class="table table-striped ob-normdata_fields">
+<!--
 [%-
 
     IF normset.${'S5000'};
@@ -99,11 +100,10 @@ END;
          content   = "<a href=\"${localurl}\">${content} ${desc}</a>";
 -%]
 <tr><th class="ob-field">[% msg.maketext("S5000") %]</th><td>[% content %]</td></tr>
-[%- END -%]
+[%- END -%] -->
 [% IF normset.defined('S0010') %]
 [% gnd = normset.${'S0010'}.first.content %]
 <tr><th class="ob-field">Dt.&nbsp;Nationalbibliothek</th><td><a href="http://d-nb.info/gnd/[% gnd %]" target="_blank">Normdatensatz</a></td></tr>
-<!-- <tr><th class="ob-field">Wikipedia (de)</th><td><a href="http://tools.wmflabs.org/persondata/redirect/gnd/de/[% gnd %]" target="_blank">Artikel</a></td></tr> -->
 [% END %]
 [% IF activefeed.4 && catalog_has_authorities ;
 
@@ -116,9 +116,20 @@ END;
 </table>
 </div>
 
-
   </div><!-- End Categories -->
+
+[% IF config.get('active_yewno') %]
+
+<h4 class="mt-2">[% msg.maketext("Konzepte aus Yewno Discover") %] <a href="https://yewno.ub.uni-koeln.de" target="_blank"><i class="far fa-question-circle"></i></a></h4>
+
+  <div class="images"><!-- Begin Images -->
+[% PROCESS common/subtemplate name="subjects_record_html_images" %]
+  </div><!-- End Images -->
+
+[% END # END active_yewno %]
 
 </div><!-- End row -->
 
 </div><!-- End Details -->
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Schlagwort-Information") %]</div>

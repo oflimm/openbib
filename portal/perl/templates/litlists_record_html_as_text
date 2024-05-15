@@ -1,35 +1,33 @@
-<pre>
-[%- FOREACH record IN litlist.recordlist.load_full_records.get_records -%]
-[%- normset    = record.get_fields -%]
-[%- holding = record.get_holding -%]
-[%-
-
-FOREACH category IN categories;
-    FOREACH item IN normset.$category;
-    content = item.content;
-
-    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
-    # in Config.pm fuer die entsprechende Datenbank definiert
-    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
-    # kodiert.
-    thiscategory = category ;
-    IF config.get('categorymapping').$database.$category ;
-       thiscategory = "${category}-${normset.database}" ;
-    END;
-
+[%#-
+#######################################################################
+#
+# Templatename: cartitems_html_as_text
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *aller* Merklisten-Items im Text-Format *ohne* Funktions-
+# elemente
+#
+#######################################################################
 -%]
-[% msg.maketext("${thiscategory}") | format("%- 24s") %]: [% content %]
-[% END -%]
-[%- END -%]
-[%- IF holding.size > 0 -%]
-[%- FOREACH thisholding IN holding -%]
-[% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% thisholding.${"X4000"}.content.full %]
-[% msg.maketext("Standort             ") %] [% loop.count %] : [% thisholding.${"X0016"}.content %]
-[% msg.maketext("Lokale Signatur      ") %] [% loop.count %] : [% thisholding.${"X0014"}.content %]
-[% msg.maketext("Inventarnummer       ") %] [% loop.count %] : [% thisholding.${"X0005"}.content %]
-[% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% thisholding.${"X1204"}.content %]
-[% END %]
-[%- END -%]
+[% PROCESS common/subtemplate name="visible_categories_title" %]
+[% IF NOT data_only %]
+<div class="row">
+<div class="col-md-12 ps-4 pe-4">
 
+<h3>[% IF title %][% title %][% ELSE %][% msg.maketext("Literaturliste im Text-Format") %][% END %]</h3>
+
+[% IF outputformat %]<h4>[% msg.maketext("Format") %]: [% outputformat %]</h4>[% END %]
+
+<pre>
 [% END %]
+[%- FOREACH record IN recordlist.get_records -%]
+[% PROCESS common/subtemplate name="titles_record_as_text" database=record.database %]
+[%  END %]
+[% IF NOT data_only %]
 </pre>
+</div>
+</div>
+[% END %]

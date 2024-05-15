@@ -1,0 +1,131 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_librarycard_registrations
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Eingabemaske fuer die Neuanmeldung eines Bibliotheksausweises
+#
+#######################################################################
+-%]
+
+        <div class="ob-jumbotron">
+         <h1 class="display-4">[% msg.maketext("Neuanmeldung für einen Bibliotheksausweis") %]</h1>
+
+[% IF alma_disable_librarycard %]
+<div class="alert alert-info">
+Wegen der Umstellung auf das neue Bibliothekssystem Alma ist bis voraussichtlich 6.9.2023 keine Online-Anmeldung möglich.
+</div>
+[% ELSE %]
+<p class="alert alert-warning">[% msg.maketext("Nur, wenn Sie keine UCCard der Uni Köln besitzen!") %]</p>
+
+<form method="post" action="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('librarycard_registrations_loc') %]" enctype="application/x-www-form-urlencoded">
+
+<input type="hidden" name="dbname" value="inst001" />
+
+<h4>[% msg.maketext("Allgemeine Angaben zu Ihrer Person") %]</h4>
+
+<div class="form-floating mt-3">
+<select class="form-select" name="salutation" id="salutation">
+<option value="none" selected="selected">[% msg.maketext("Bitte auswählen") %]</option>
+<option value="Frau">[% msg.maketext("Frau") %]</option>
+<option value="Frau Dr.">[% msg.maketext("Frau Dr.") %]</option>
+<option value="Frau Prof. Dr.">[% msg.maketext("Frau Prof. Dr.") %]</option>
+<option value="Herr">[% msg.maketext("Herr") %]</option>
+<option value="Herr Dr.">[% msg.maketext("Herr Dr.") %]</option>
+<option value="Herr Prof. Dr.">[% msg.maketext("Herr Prof. Dr.") %]</option>
+</select>
+<label for="salutation">[% msg.maketext("Anrede") %]*</label>
+</div>
+
+<div class="form-floating mt-3">
+<input class="form-control" type="text" name="forename" id="forename" />
+<label for="forename">[% msg.maketext("Vorname") %]*</label>
+</div>
+
+<div class="form-floating mt-3">
+<input class="form-control" type="text" name="surname" id="surname"  />
+<label for="surname">[% msg.maketext("Nachname") %]*</label>
+</div>
+
+<div class="form-floating mt-3 mb-4">
+<input class="form-control" type="text" name="birthdate" size="8" id="birthdate" />
+<label for="birthdate">[% msg.maketext("Geburtsdatum") %]*</label>
+Format: TT.MM.JJJJ
+</div>
+
+<h4>[% msg.maketext("Anschrift") %]</h4>
+
+<div class="form-floating mt-3">
+<input class="form-control" type="text" name="street" id="street" />
+<label for="street">[% msg.maketext("Straße / Nr") %]*</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" type="text" name="zip" id="zip" />
+<label for="zip">[% msg.maketext("Postleitzahl") %]*</label>
+</div>
+
+<div class="form-floating mt-3 mb-4">
+<input class="form-control" type="text" name="city" id="city" />
+<label for="city">[% msg.maketext("Stadt") %]*</label>
+</div>
+
+<h4>[% msg.maketext("Adresse für die Benachrichtung per E-Mail") %]</h4>
+
+<div class="form-floating mt-3 mb-4">
+<input class="form-control" type="text" name="email" id="email_username" />
+<label for="email_username">[% msg.maketext("E-Mail-Adresse") %]</label>
+</div>
+
+<h4>[% msg.maketext("Persönliches Passwort (genau 6 Zeichen)") %]</h4>
+
+<div class="form-floating mt-3">
+<input class="form-control" type="password" name="password1" id="password1" />
+<label for="password1">[% msg.maketext("Passwort") %]*</label>
+</div>
+
+<div class="form-floating mt-3 mb-4">
+<input class="form-control" type="password" name="password2" id="password2" />
+<label for="password2">[% msg.maketext("Passwort bestätigen") %]</label>
+</div>
+
+<p>
+[% msg.maketext("genau 6 Stellen, nur Zahlen und lateinische Buchstaben, ohne Umlaute und ß, mindestens eine Zahl und ein Klein- oder Großbuchstabe") %]
+</p>
+
+<p class="mb-4">
+[% msg.maketext("Bitte merken Sie sich Ihr Passwort! ") %]
+</p>
+
+<h4>[% msg.maketext("Anerkennung der Benutzungsordnung") %]</h4>
+
+<div class="form-check mt-3 mb-4">
+<input class="form-check-input" type="checkbox" name="confirmation" id="confirmation" />
+<label for="confirmation">Hiermit erkenne ich die <a class="exturl" href="[% cms_links.bno %]" target="_blank">Gebühren- und Nutzungsordnungen</a> an.</label>
+</div>
+
+[% IF use_captcha %]
+<div class="form-floating mb-3">
+[%- IF config.${"recaptcha_public_key"} -%]
+[%- recaptcha_options = { lang => lang, theme => 'white' } -%]
+[% recaptcha.get_html_v2(config.${"recaptcha_public_key"},'',1,recaptcha_options) %]
+[%- END -%]
+</div>
+[% END %]
+
+<p>
+[% msg.maketext("Mit * gekennzeichnete Felder sind Pflichtfelder und müssen ausgefüllt werden.") %]
+</p>
+
+<p/>
+
+<button class="btn btn-primary mb-2 type="submit">[% msg.maketext("Registrieren") %]</button>
+
+</form>
+
+[% END %]
+</div><!-- End: ob-jumbotron -->

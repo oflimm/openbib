@@ -1,0 +1,17 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_feedback_html
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+
+<h2>[% msg.maketext("Kontakt") %]</h2>
+
+[% config.get_templatetext('info_feedback',view,lang) %]

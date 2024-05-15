@@ -13,32 +13,37 @@
 -%]
 
 <!-- start: breadcrumb navigation -->
+<!-- <hr style="border-bottom-width:2px;"/> -->
 [% IF layout_param.breadcrumb %]
-<nav aria-label="breadcrumb">
-<ol class="breadcrumb border">
+<nav aria-label="breadcrumb" class="d-none d-md-block">
+<ol class="breadcrumb">
 [% FOREACH bc IN layout_param.breadcrumb %]
 [%   IF bc.current %]
-<li class="breadcrumb-item active" aria-current="page">[% bc.desc %]</li>
+<li class="breadcrumb-item active text-black" aria-current="page">[% bc.desc %]</li>
 [%   ELSE %]
-<li class="breadcrumb-item" aria-current="page"><a href="[% bc.url %]">[% bc.desc %]</a></li>
+<li class="breadcrumb-item text-black" aria-current="page"><a href="[% bc.url %]">[% bc.desc %]</a></li>
 [%   END %]
 [% END %]
 
 [% IF layout_param.representations %]
-<li class="ml-auto d-none d-md-block">
+<li class="ms-auto d-none d-md-block text-black">
 [%- FOREACH this_representation IN layout_param.representations ;
 
       IF this_representation.type == 'csv'
       -%]
-<a class="ob-representation_csv" href="[% this_representation.url %]"><img src="/images/openbib/csv.png" alt="CSV" /></a>&nbsp;
+<a class="ob-representation_csv ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext(" Ressource im CSV-Format") %]" href="[% this_representation.url %]">[% IF this_representation.desc %][% this_representation.desc %][% ELSE %]CSV[% END %]</a>&nbsp;
       [%-
       ELSIF this_representation.type == 'json'
       -%]
-<a class="ob-representation_json" href="[% this_representation.url %]"><img src="/images/openbib/JSON.png" alt="JSON" /></a>&nbsp;
+<a class="ob-representation_json ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext("Ressource im JSON-Format") %]" href="[% this_representation.url %]">[% IF this_representation.desc %][% this_representation.desc %][% ELSE %]{JSON}[% END %]</a>&nbsp;
       [%-
       ELSIF this_representation.type == 'rss' ;
       -%]
-<a class="ob-representation_rss" href="[% this_representation.url %]"><img src="/images/openbib/rssfeed.png" alt="RSS" /></a>
+<a class="ob-representation_rss ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext("Ressource als RSS-Feed") %]" href="[% this_representation.url %]">[% IF this_representation.desc %][% this_representation.desc %][% ELSE %]<i class="fas fa-rss"></i>[% END %]</a>
+      [%-
+      ELSIF this_representation.type == 'dfg' ;
+      -%]
+<a class="ob-reprensentation_dfg ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext("Anzeige der Ressource im DFG-Viewer") %]" href="[% this_representation.url %]" target="dfgviewer">[% IF this_representation.desc %][% this_representation.desc %][% ELSE %]<img src="/images/openbib/dfgviewer.png" alt="DFG-Viewer" />[% END %]</a>
       [%-
       END ; 
    END -%]

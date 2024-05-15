@@ -1,0 +1,107 @@
+<div class="modal fade" id="litlistsPrintModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="litlistsPrintModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+	<form method="GET" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('litlists_loc') %]/id/[% litlistid %]/print" target="_blank">
+	  <div class="modal-header">
+            <h5 class="modal-title" id="litlistsPrintModalLabel">[% msg.maketext("Literaturliste drucken") %]</h5>
+	  </div>
+	  <div class="modal-body" id="litlist_printmessage">
+	    
+	    <div class="form-floating mb-3">
+	      <select class="form-select" name="format" id="litlist_format_print">
+<!--		<option value="short">[% msg.maketext("Kurzübersicht") %]</option>
+		<option value="full">[% msg.maketext("Vollanzeige") %]</option> -->
+		<option value="Text">[% msg.maketext("Einfacher Text") %]</option>
+		<option value="BibTeX">[% msg.maketext("BibTeX (z.B. Citavi)") %]</option>
+		<option value="EndNote">[% msg.maketext("EndNote") %]</option>
+		<option value="apa">[% msg.maketext("Zitat: APA") %]</option>
+		<option value="harvard">[% msg.maketext("Zitat: Harvard") %]</option>    
+		<option value="mla">[% msg.maketext("Zitat: MLA") %]</option>    
+	      </select>
+	      <label for="litlist_format_mail">[% msg.maketext("Ausgabeformat") %]</label>
+	    </div>
+	    
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn btn-primary pe-3" data-bs-dismiss="modal" onclick="submitForm()">[% msg.maketext("Drucken") %]</button>
+	    
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>	
+	  </div>
+	</form>
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="litlistsSaveModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="litlistsSaveModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+	<form method="GET" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('litlists_loc') %]/id/[% litlistid %]/save">
+	  <div class="modal-header">
+            <h5 class="modal-title" id="litlistsSaveModalLabel">[% msg.maketext("Literaturliste speichern") %]</h5>
+	  </div>
+	  <div class="modal-body" id="litlist_savemessage">
+	    
+	    
+	    <div class="form-floating mb-3">
+	      <select class="form-select" name="format" id="litlist_format_save">
+		<option value="Text">[% msg.maketext("Einfacher Text") %]</option>
+		<option value="BibTeX">[% msg.maketext("BibTeX (z.B. Citavi)") %]</option>
+		<option value="EndNote">[% msg.maketext("EndNote") %]</option>
+		<option value="apa">[% msg.maketext("Zitat: APA") %]</option>
+		<option value="harvard">[% msg.maketext("Zitat: Harvard") %]</option>    
+		<option value="mla">[% msg.maketext("Zitat: MLA") %]</option>    
+	      </select>
+	      <label for="litlist_format_mail">[% msg.maketext("Ausgabeformat") %]</label>
+	    </div>
+	    
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn btn-primary pe-3" data-bs-dismiss="modal" onclick="submitForm()">[% msg.maketext("Speichern") %]</button>
+	    
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>	
+	  </div>
+	</form>
+      </div>
+  </div>
+</div>
+<div class="modal fade" id="litlistsMailModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="litlistsMailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <form method="POST" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('litlists_loc') %]/id/[% litlistid %]/mail" enctype="application/x-www-form-urlencoded">
+
+	<div class="modal-header">
+          <h5 class="modal-title" id="litlistsMailModalLabel">[% msg.maketext("Literaturliste per E-Mail versenden") %]</h5>
+	</div>
+	<div class="modal-body" id="litlist_mailmessage">
+	  
+	  <div class="form-floating mb-3">
+	    <input class="form-control" type="text" name="subject" id="litlist_mail_subject" value=""/>
+	    <label for="litlist_mail_subject">[% msg.maketext("Betreff der E-Mail:") %]</label>
+	  </div>
+	  
+	  <div class="form-floating mb-3">
+	    <input class="form-control" type="text" name="email" id="litlist_mail_address" value=""/>
+	    <label for="litlist_mail_subject">[% msg.maketext("E-Mail-Adresse") %]</label>
+	  </div>
+	  
+	  <div class="form-floating mb-3">
+	    <select class="form-select" name="format" id="litlist_format_mail">
+	      <option value="Text">[% msg.maketext("Einfacher Text") %]</option>
+	      <option value="BibTeX">[% msg.maketext("BibTeX (z.B. Citavi)") %]</option>
+	      <option value="EndNote">[% msg.maketext("EndNote") %]</option>
+	      <option value="apa">[% msg.maketext("Zitat: APA") %]</option>
+	      <option value="harvard">[% msg.maketext("Zitat: Harvard") %]</option>    
+	      <option value="mla">[% msg.maketext("Zitat: MLA") %]</option>    
+	    </select>
+	    <label for="litlist_format_mail">[% msg.maketext("Ausgabeformat") %]</label>
+	  </div>
+	  
+	</div>
+	<div class="modal-footer">
+	  <button class="btn btn-primary pe-3" type="submit">[% msg.maketext("Abschicken") %]</button>
+	  
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>	
+	</div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,203 @@
+[%#-
+#######################################################################
+#
+# Templatename: circulation_orders
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller bestellten Medien
+#
+#######################################################################
+-%]
+[%# USE dumper;dumper.dump(userdata)%]
+[% IF userdata.block_reason %]
+<div class="alert alert-danger mt-2 mb-3 pt-4">
+<h2>[% msg.maketext("Ihr Bibliotheksausweis ist gesperrt!") %]</h2>
+<p>[% msg.maketext("Grund der Sperrung") %]: [% userdata.block_reason %]</p>
+</div>
+[% END %]
+
+[% IF layout_param.always_portrait %]
+<style>
+@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
+  html {
+    transform: rotate(-90deg);
+    transform-origin: left top;
+    width: 100vh;
+    height: 100vw;
+    overflow-x: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+}
+</style>
+[% END %]
+
+<div class="card">
+<div class="card-header">[% msg.maketext("Bibliotheksausweis") %]</div>
+<div class="card-body">
+
+  <div class="text-center">
+    <p class="h5">[% userdata.fullname %]</p>
+
+    <img id="ob-barcode" class="img-fluid" src="[% path_prefix %]/connector/barcode?text=[% username |uri %]"/>
+
+    <p>[% username %][% IF ils_group %]<br/>[% ils_group %][% END %]</p>
+
+  </div>
+
+  <div class="text-center">
+     <img src="/images/openbib/uni-siegel-spinner.png" class="uzk-spinner" alt="[% msg.maketext("Lade-Animation mit UzK Logo") %]"/>
+  </div>
+
+<!-- See: https://loading.io/css/ CC0 -->
+<style>
+
+@keyframes uzk-spinner {
+    from { transform: rotate(0deg) }
+    to { transform: rotate(360deg) }
+}
+
+.uzk-spinner {
+    width: 100px;
+    height: 100px;
+    animation-name: uzk-spinner;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    /* linear | ease | ease-in | ease-out | ease-in-out */
+    animation-timing-function: linear;
+}
+
+</style>
+
+
+<div class="d-sm-none pt-4" style="font-size: 0.8em;">
+[% msg.maketext("Bitte erhöhen Sie die Helligkeit Ihres Smartphones zum besseren Einlesen des Barcodes an unseren Geräten.") %]
+</div>
+
+</div>
+</div>
+
+<p/>
+
+<div class="card">
+<div class="card-header">[% msg.maketext("Bücher: Ausleihen / Fernleihen") %]</div>
+<div class="card-body">
+
+[% IF account.is_locked %]
+<p class="alert alert-warning">
+<i class="fas fa-exclamation-triangle pe-2"></i>
+
+[% IF account.is_locked.id.match("BenGesperrt|BenSchonGeloescht") %]
+[% msg.maketext("Ihr Bibliotheksausweis ist gesperrt.") %] <a href="[% cms_links.bnrgesperrt %]">[% msg.maketext("Hilfe") %]</a>
+[% ELSIF account.is_locked.id.match("BenGebuehrenLimitErreicht") %]
+[% msg.maketext("Sie haben das Gebührenlimit erreicht. Bitte zahlen Sie Ihre offenen Gebühren.") %] <a href="[% cms_links.bezahlen %]">[% msg.maketext("Hilfe") %]</a>
+[% ELSIF account.is_locked.id.match("BenAusweisAbgelaufen") %]
+[% msg.maketext("Ihr Bibliotheksausweis ist abgelaufen.") %] <a href="[% cms_links.bnrgesperrt %]">[% msg.maketext("Hilfe") %]</a>
+[% END %]
+
+</p>
+[% END %]
+
+
+<p>[% msg.maketext("Übersicht über Ihre Ausleihen, Bestellungen und Vormerkungen.") %]</p>
+
+<ul>
+<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.include?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders.include?l=[% lang %]">[% msg.maketext("Offene Bestellungen") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations.include?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a></li>
+</ul>
+
+</div>
+</div>
+
+<p/>
+
+<div class="card">
+<div class="card-header">[% msg.maketext("Fernleihkonto") %]</div>
+<div class="card-body">
+
+<p> [% msg.maketext("Übersicht über die Bücher, die Sie über die Fernleihe bestellt haben sowie ihren aktuellen Bearbeitungsstatus.") %]</a></p>
+
+<ul>
+<li><a href="https://usb-koeln.digibib.net/account/ill/books/orderlist" target="fernleihkonto_aufsaetze">[% msg.maketext("Buchbestellungen") %]</a></li>
+</ul>
+
+<p> [% msg.maketext("Übersicht über die Zeitschriftenartikel und Abschnitte aus Büchern, die Sie als Kopie über die Fernleihe bestellt haben sowie ihren aktuellen Bearbeitungsstatus.") %]</a></p>
+
+<ul>
+<li><a href="https://usb-koeln.digibib.net/account/ill/articles/orderlist" target="fernleihkonto_aufsaetze">[% msg.maketext("Aufsatzbestellungen") %]</a></li>
+</ul>
+
+</div>
+</div>
+
+<p/>
+
+<div class="card">
+<div class="card-header">[% msg.maketext("Gebührenkonto") %]</div>
+<div class="card-body">
+
+<ul>
+<li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/fees.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/fees.include?l=[% lang %]">[% msg.maketext("Offene Gebühren") %]</a></li>
+</ul>
+
+</div>
+</div>
+
+<p/>
+
+<div class="card">
+<div class="card-header">[% msg.maketext("Persönliche Daten") %]</div>
+<div class="card-body">
+
+<ul>
+<li><a href="#" data-bs-toggle="modal" data-bs-target="#addressModal">[% msg.maketext("Persönliche Angaben anzeigen") %]</a></li>
+<li><a href="#" data-bs-toggle="modal" data-bs-target="#emailModal">[% msg.maketext("E-Mail-Adresse eintragen bzw. ändern") %]</li></a>
+<li><a href="#" data-bs-toggle="modal" data-bs-target="#pinModal">[% msg.maketext("Ausleih-PIN eintragen bzw. ändern") %]</a></li>
+<li><a href="#" data-bs-toggle="modal" data-bs-target="#passwordModal">[% msg.maketext("Passwort ändern") %]</a></li>
+</ul>
+
+</div>
+</div>
+
+<p/>
+
+<div class="card">
+<div class="card-header">[% msg.maketext("Anschaffungsvorschläge") %]</div>
+<div class="card-body">
+
+[% IF NOT alma_disable_suggestions %]
+<p>[% msg.maketext("Sie benötigen ein Buch, das Sie bei uns nicht finden können? Machen Sie einen Anschaffungsvorschlag.") %]</p>
+
+<a class="btn btn-primary mt-2 mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/suggestions.html?l=[% lang %]">[% msg.maketext("Anschaffungsvorschlag") %]</a>
+[% ELSE %]
+[% alma_disable_suggestions %]
+[% END %]
+</div>
+</div>
+
+<p/>
+
+<div class="card">
+<div class="card-header">[% msg.maketext("Benutzergesteuerte Erwerbung") %]</div>
+<div class="card-body">
+
+<p>
+[% msg.maketext("Sie bestellen, wir bezahlen und liefern.") %]
+</p>
+
+<p>
+[% msg.maketext('Bei Ihrer Suche erscheint der Hinweis: "Buchhandel- Neuanschaffung möglich"?') %]
+</p>
+<p>
+[% msg.maketext('Unser USB-Portal hält ständig Neuerscheinungen zum Direktkauf im Angebot. Erscheint bei Ihrem Suchbegriff ein Titel mit dem Hinweis  "Buchhandel - Neuanschaffung möglich", können Sie mit wenigen Klicks eine Bestellung durchführen. Dann schaffen wir diesen Titel für die USB an und benachrichtigen Sie, sobald er geliefert wurde. Mit Patron-Driven-Acquisition geht das ganz leicht.') %]
+</p>
+
+</div>
+</div>
+
+<p/>

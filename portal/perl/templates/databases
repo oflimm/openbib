@@ -20,7 +20,7 @@
      'page_title' = 'Kataloge'
 
       'main_template' = 'databases_html'
-      'sidebar_template' = 'databases_sidebar'
+      #'sidebar_template' = 'databases_sidebar'
 
       # 'active_menu' = ''
       'breadcrumb' = [

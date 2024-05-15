@@ -29,22 +29,53 @@
 
 <!-- Titlelist begins here -->
 <div class="ob-resultlist">
-  <div class="row pl-2">
-    <div class="col-md-6 d-flex justify-content-start">
-       <input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" />&nbsp;<b>[% msg.maketext("Alle Eintr&auml;ge ausw&auml;hlen") %]</b>
+  <div class="row ps-2">
+[% IF title %]
+    <h3>[% title %] ([% recordlist.get_size %]  [% msg.maketext("Titel") %])</h3>
+[% END %]
+    <div class="col-md-6 d-flex justify-content-start ob-cartitems_allselection">
+       <input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" aria-label="[% msg.maketext("Alle Eintr&auml;ge ausw&auml;hlen") %]" class="ms-1"/> <b class="ps-2 pt-2">[% msg.maketext("Alle Eintr&auml;ge ausw&auml;hlen") %]</b>
     </div>
     <div class="col-md-6 d-flex justify-content-end">
+[%-
+
+   sort_args = cgiapp.to_cgi_querystring({ change = {'page' = 1 }, exclude = ['srt', 'srto'] });
+
+   sorttype_desc_map = {
+     tstamp_desc = msg.maketext("Zuletzt hinzugefügt")
+     tstamp_asc  = msg.maketext("Zuerst hinzugefügt")
+   };
+
+   this_loc = "${path_prefix}/${config.get('cartitems_loc')}";
+   IF user.ID ;
+      this_loc = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('cartitems_loc')}";
+   END;
+-%]
+
+<div class="dropdown" id="ob-titlist_options_cartitems">
+  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuSortCartitems" data-bs-toggle="dropdown" aria-expanded="false">
+    [% IF sorttype_desc_map.defined(session_sort) %][% sorttype_desc_map.${session_sort} %][% ELSE %][% msg.maketext("Sortierung") %][% END %]<i class="fas fa-sort ps-2"></i>
+  </button>
+
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuSortCartitems">
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'tstamp_desc' || session_sort == 'tstamp_desc' %]text-strong[% END %]" href="[% this_loc %].html?[% sort_args %];srt=tstamp_desc" title="[% msg.maketext("Zuletzt hinzugefügt") %]">[% msg.maketext("Zuletzt hinzugefügt") %]</a></li>
+
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'tstamp_asc' || session_sort == 'tstamp_asc' %]text-strong[% END %]" href="[% this_loc %].html?[% sort_args %];srt=tstamp_asc" title="[% msg.maketext("Zuerst hinzugefügt") %]">[% msg.maketext("Zuerst hinzugefügt") %]</a></li>
+  </ul>
+</div>    
 [%# PROCESS common/subtemplate name="titlist_options" this_loc=config.get('cartitems_loc') no_jn=1 no_relevance=1 %]
     </div>
   </div>
 
   <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [% IF format == 'short' %]
+[%# USE dumper;dumper.dump(recordlist.to_ids)%]
 [%- FOREACH record IN recordlist.get_records -%]
 [%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database with_id_checkbox=1 with_cartitems_delete=1 %] 
 [%- END -%]
 
 [%-END -%]
+
  </div>
 </div>
 <!-- Titlelist ends here -->

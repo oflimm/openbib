@@ -13,14 +13,20 @@
 #######################################################################
 -%]
 [% IF NOT data_only %]
-<div style="float:left; width: 65%;">
-<pre>
+<div class="row">
+  <div class="col-md-12 ps-4 pe-4">
+    
+[% IF NOT representation == 'include' %]<h3>[% IF title %][% title %][% ELSE %][% msg.maketext("Merkliste im BibTeX-Format") %][% END %]</h3>[% END %]
+
+    <pre>
 [% END %]
 [%- FOREACH record IN recordlist.get_records -%]
 [% record.to_bibtex %]
 
 [% END -%]
 [% IF NOT data_only %]
-</pre>
+    </pre>
+  </div>
 </div>
+[% IF representation == 'include' %]<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("BibTeX-Format") %]</div>[% END %]
 [% END %]

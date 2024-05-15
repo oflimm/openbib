@@ -14,26 +14,31 @@
 -%]
 [% IF normdata.${"T6051"} %]
 <p>
-<a href="http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2F[%servername%]%2F[% path_prefix %]%2Fconnector%2Funapi%3Fid%3D[%record.database%]%3A[%record.get_encoded_id%]%26format%3Dmets" target="_blank"><center><img src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif" title="DFG-Viewer" /><br/>[Online lesen im DFG-Viewer]</center></a>
+<a href="http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2F[%servername%]%2F[% path_prefix %]%2Fconnector%2Funapi%3Fid%3D[%record.database%]%3A[%record.get_encoded_id%]%26format%3Dmets" target="_blank"><center><img src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif" title="DFG-Viewer" alt="[% msg.maketext("DFG-Viewer") %]"/><br/>[Online lesen im DFG-Viewer]</center></a>
 </p>
 [% END %]
 
 [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
 <p>
-<a id="cover_full_url" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=526;url=[% uri_escape("${config.get('coverscans_credits_exturl').replace('ISBNINHERE',isbn)}") %]" target="_blank"><img id="cover_full" class="mx-auto d-block" src="[% config.get('coverscans_full_exturl').replace('ISBNINHERE',isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>
+[% coverapi = config.get('covers').vlb %]
+[%# USE dumper;dumper.dump(coverapi)%]
+<a href="[% coverapi.credits_url %]" target="_blank"><img src="[% path_prefix %]/[% config.get('connector_cover_loc') %]/vlb/[% isbn %]?size=m" title="[% coverapi.credits_text %]" alt="[% msg.maketext("Cover-Scan") %]"/></a>
 </p>
 [% END %]
-[%- IF isbn -%]
+[%- IF 0 == 1 && isbn # disabled -%]
 <p>
 <a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=525;url=[% uri_escape("http://books.google.com/books?vid=ISBN${isbn}") %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/gbs/[% isbn %]" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a>
 </p>
 [%- END -%]
-[%- IF bibkey -%]
+[%- IF 0 == 1 && bibkey # disabled -%]
 <p>
 <a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=511;url=[% uri_escape("http://www.bibsonomy.org/bibtex/${bibkey}") %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/bibsonomy/[% bibkey %]" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a>
 </p>
 [%- END -%]
 [% IF cgiapp.is_authenticated('admin') || cgiapp.is_authenticated('librarian') %]
+<p>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %];flush_cache=1" >[% msg.maketext("Titel ohne Cache") %]</a>
+</p>
 <p>
 <a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/searchindex.html?l=[% lang %]" >[% msg.maketext("Zum Suchindex") %]</a>
 </p>

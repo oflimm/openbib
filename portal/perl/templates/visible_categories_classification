@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: visible_categories_notset
+# Templatename: visible_categories_classification
 #
 # Typ         : Subtemplate
 #
@@ -17,7 +17,7 @@
                  'N0800', # msg.maketext("N0800") Ansetzung 
                  'N0801', # msg.maketext("N0801") Ansetzung
                  'N0840', # msg.maketext("N0840") Verweisform
-                 'N5000', # msg.maketext("N5000") Anzahl Titel
+                 #'N5000', # msg.maketext("N5000") Anzahl Titel
                 ];
 
 %]

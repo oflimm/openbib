@@ -47,7 +47,7 @@ END ;
   <div class="card">
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
-        <a class="card-link collapsed" href="#collapseOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+        <a class="card-link collapsed" href="#collapseOne" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
           [% msg.maketext("Neuen RSS-Feed einrichten") %]
         </a>
       </h5>
@@ -58,21 +58,21 @@ END ;
 
 <form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% katalog.dbname %]/rss">
 
-<div class="form-group">
-<label for="type">[% msg.maketext("Art des Feeds") %]</label>
-  <select class="form-control" name="type" id="type">
+<div class="form-floating mb-3">
+  <select class="form-select" name="type" id="type">
 [% FOREACH type IN available_types.keys %]
 <option value="[% type%]">[% typedescription.${type} %]</option>
 [% END %]
   </select>
+<label for="type">[% msg.maketext("Art des Feeds") %]</label>
 </div>
 
-<div class="form-group">
-<label for="active">[% msg.maketext("Aktiv") %]</label>
-  <select class="form-control" name="active" id="active">
+<div class="form-floating mb-3">
+  <select class="form-select" name="active" id="active">
     <option value="true" [%- IF databaseinfo.active == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
     <option value="false" [%- IF databaseinfo.active == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
   </select>
+<label for="active">[% msg.maketext("Aktiv") %]</label>
 </div>
 
 <button type="submit" name="do_new" class="btn btn-primary mb-2">[% msg.maketext("Neu") %]</button>
@@ -93,7 +93,7 @@ END ;
 <h3>[% msg.maketext("Bereits existierende RSS-Feeds") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr>
 <th>Id</th><th>[% msg.maketext("Art des Feeds") %]</th><!-- <td>Unter-Art</td><td>Beschreibung Unter-Art</td> --><th>[% msg.maketext("Aktiv") %]</th>

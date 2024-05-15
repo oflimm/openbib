@@ -17,7 +17,7 @@
 <h3>[% msg.maketext("Templates") %]</h3>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Sprache") %]</th><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("View") %]</th></tr>
 </thead>
@@ -34,7 +34,7 @@
 </table>
 </div>
 [% ELSE %]
-<div class="jumbotron">
+<div class="ob-jumbotron">
 <h1 class="display-4">[% msg.maketext('Keine Templates vorhanden') %]</h1>
 
 <p class="lead">[% msg.maketext('Ihrer Kennung sind noch keine Templates zugeordnet') %]</p>

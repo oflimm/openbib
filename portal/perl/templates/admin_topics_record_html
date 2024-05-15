@@ -60,6 +60,28 @@
     lcclist.push(thislcc);
   END ;
 
+  usblbs      = config.load_yaml('/opt/openbib/conf/usblbs.yml');
+
+  usblbslist = [];
+  FOREACH group IN usblbs.keys.sort;
+    thisusblbs = {
+      classification   => group,
+      desc             => usblbs.${group}.desc,
+    };
+    usblbslist.push(thisusblbs);
+  END ;
+
+  usbls      = config.load_yaml('/opt/openbib/conf/usbls.yml');
+  
+  usblslist = [];
+  FOREACH group IN usbls.keys.sort;
+    thisusbls = {
+      classification   => group,
+      desc             => usbls.${group}.desc,
+    };
+    usblslist.push(thisusbls);
+  END ;
+
 %]
 
 <h2>[% msg.maketext("Themengebiet") %]: [% topic.name %]</h2>
@@ -204,3 +226,61 @@
 [% ELSE %]
 [% msg.maketext("Keine") %]
 [% END %]
+
+<div class="border-top my-3"></div>
+
+<form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/lbs">
+
+<h1 class="display-5">[% msg.maketext("Themengebiet(e) der Lehrbuchsammlungs-Systematik zuordnen") %]</h1>
+
+<div class="form-group">
+<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
+<select class="form-control" name="classifications" id="classifications" multiple="multiple" size="10">
+[%
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'lbs', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[% FOREACH usblbs IN usblbslist %]
+
+<option value="[% usblbs.classification %]" [% IF classification_selected.${usblbs.classification}  %]selected="selected"[% END %]>[% usblbs.classification %] [% usblbs.desc %]</option>
+
+[% END %]
+</select>
+
+</div>
+
+[%# USE dumper;dumper.dump(classification_selected)%]
+<button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+</form>
+
+<div class="border-top my-3"></div>
+
+<form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/ls">
+
+<h1 class="display-5">[% msg.maketext("Themengebiet(e) der Lesesaal-Systematik zuordnen") %]</h1>
+
+<div class="form-group">
+<label for="classifications">[% msg.maketext("Themengebiete") %]</label>
+<select class="form-control" name="classifications" id="classifications" multiple="multiple" size="10">
+[%
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'ls', topicid => topic.id});
+      classification_selected.${classification} = 1;
+   END;
+%]
+[% FOREACH usbls IN usblslist %]
+
+<option value="[% usbls.classification %]" [% IF classification_selected.${usbls.classification}  %]selected="selected"[% END %]>[% usbls.classification %] [% usbls.desc %]</option>
+
+[% END %]
+</select>
+
+</div>
+
+[%# USE dumper;dumper.dump(classification_selected)%]
+<button type="submit" name="do_change" class="btn btn-primary mb-2">[% msg.maketext("Ändern") %]</button>
+
+</form>

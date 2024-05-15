@@ -1,0 +1,93 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+[%-
+
+  # lbs_counter = config.get_datacache({id => 'usblbs', type => 16});
+
+  kmb_profileid = config.get_searchprofile_of_database('uni');
+
+  # Hierarchiestufen bestimmen
+  syshierarchy = [];
+
+  pos = 1;
+  
+  WHILE pos <= sysid.length;
+    syshierarchy.push(
+       sysid.substr(0,pos)
+    );
+    pos = pos + 1;
+  END;
+
+  # Aktuellen Subtree zu sysid bestimmen
+  kmbas_current = kmbas;
+  kmbas_path = [];
+  FOREACH thisid IN syshierarchy ;
+     IF kmbas_current.${thisid}.sub;
+        IF thisid == sysid;
+           kmbas_current = kmbas_current.${thisid} ;
+	ELSE ;
+	   kmbas_path.push({ id = thisid, desc = kmbas_current.${thisid}.desc });
+           kmbas_current = kmbas_current.${thisid}.sub ;	   
+	END;
+     END;
+  END;
+
+-%]
+
+<h4>KMB Systematik [% sysid %]: [% kmbas_current.desc %]</h4>
+
+<p>Überordnungen</p>
+
+<ul>
+<li><a class="" href="[% path_prefix %]/[% config.get('browse_loc') %]/kmb.html?l=[% lang %]">[% msg.maketext("Übersicht") %]</a></li>
+[% FOREACH thisitem IN kmbas_path %]
+<li><a class="" href="[% path_prefix %]/[% config.get('browse_loc') %]/kmb/id/[% thisitem.id %].html?l=[% lang %]">[% thisitem.id %]: [% kmbas_current.sub.${syssubid}.desc %][% thisitem.desc %]</a></li>
+[% END %]
+</ul>
+
+[%# USE dumper;dumper.dump(kmbas_path)%]
+[% IF kmbas_current.sub %]
+<p>Untergebiete</p>
+
+<div class="table-responsive mt-3">
+<table class="table table-striped ">
+[%- FOREACH syssubid IN kmbas_current.sub.keys.sort -%]
+[% IF kmbas_current.${sysid}.sub.${syssubid}.defined('heading') %]
+<tr>
+<th style="font-weight:bold;font-size:1.2em;" colspan="2">[% kmbas_current.sub.${syssubid}.heading %]</th>
+</tr>
+[% END %]
+[% IF 0 == 1 &&  NOT lbs_counter.${syssubid} %]
+<tr>
+<th style="font-weight:bold;font-size:1.2em;" width="5%">[% syssubid %]</th>
+<td><span class="ms-3">[% kmbas_current.sub.${syssubid}.desc %] ([% lbs_counter.${syssubid} %])</span></td>
+</tr>
+[%  ELSE %]
+<tr>
+<th style="font-weight:bold;font-size:1.2em;" width="5%">[% syssubid %]</th>
+<td>
+[% IF kmbas_current.sub.${syssubid}.sub %]
+<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('browse_loc') %]/kmb/id/[% syssubid %].html?l=[% lang %]">[% kmbas_current.sub.${syssubid}.desc %]</a> <i class="fas fa-sort-down"></i>
+[% ELSE %]
+<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?fmark=KMB_[% syssubid %]*;srt=mark_asc;profile=[% kmb_profileid %];l=[% lang%]">[% kmbas_current.sub.${syssubid}.desc %]</a>
+[% END%]
+</td>
+</tr>
+[%  END %]
+[% END %]
+</table>
+</div>
+[% ELSE %]
+<h5>Es sind aktuell keine Untergebiete definiert</h5>
+[% END %]

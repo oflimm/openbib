@@ -19,7 +19,7 @@
 <h4>[% msg.maketext("Aktualisierung") %]</h4>
 
 <p>
-
+<div class="row d-flex flex-md-row">
 <p class="alert alert-info">
 [% msg.maketext("Anzahl") %]
 &nbsp;
@@ -31,7 +31,7 @@
 </p>
 
 <div class="table-responsive">
-<table class="table table-striped table-hover">
+<table class="table table-striped ">
 <thead>
 <tr><th>[% msg.maketext("Katalog") %]</th><th>[% msg.maketext("Start") %]</th><th>[% msg.maketext("Dauer") %]</th><th>[% msg.maketext("Titel") %]</th></tr>
 </thead>
@@ -45,8 +45,10 @@
 [% END %]
 
   <div class="ob-footer">
-[% PROCESS common/subtemplate name="pagination" %]
     <div class="ob-resulttime">
 <!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->
     </div>
   </div>
+
+[% PROCESS common/subtemplate name="pagination" %]
+</div>

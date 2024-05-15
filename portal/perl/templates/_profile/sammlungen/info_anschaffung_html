@@ -1,1 +1,0 @@
-[% config.get_templatetext('info_anschaffung',view,lang) %]

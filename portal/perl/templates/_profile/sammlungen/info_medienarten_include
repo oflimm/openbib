@@ -1,3 +1,0 @@
-[% config.get_templatetext('info_medienarten',view,lang) %]
-
-<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Datenbanken und E-Medien") %]</div>

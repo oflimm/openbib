@@ -1,3 +1,0 @@
-<h2>[% msg.maketext("Elektronische Zeitungen") %]</h2>
-
-[% config.get_templatetext('info_ezeitungen',view,lang) %]

@@ -1,3 +1,0 @@
-[% config.get_templatetext('info_zugriff',view,lang) %]
-
-<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Herunterladen, ausleihen und einsehen") %]</div>

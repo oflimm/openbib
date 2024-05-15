@@ -1,3 +1,0 @@
-[% config.get_templatetext('info_internetquellen',view,lang) %]
-
-<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Recherchequellen Regional - National - International") %]</div>

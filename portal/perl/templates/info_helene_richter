@@ -2,8 +2,12 @@
     layout_param = {
 
       'main_template' = 'info_helene_richter_html'
+      'sidebar_template' = 'subnavigation'
+      'sidebar_button_in_main_template' = 1 # Sidebar im Desktop anzeige, Mobil via Button
 
       'active_menu' = 'info'
+      'active_submenu' = 'helene_richter'
+
       'breadcrumb' = [
           {
              desc = msg.maketext('Start')

@@ -533,7 +533,8 @@ FOREACH field IN normdata;
 
     CASE "T0300"; # 
          umfang = [];
-	 
+
+         begleitmaterial = "";
          IF thisfield.${'a'} ; # Kollation
 	   umfang.push(thisfield.${'a'});
 	 END;
@@ -547,7 +548,8 @@ FOREACH field IN normdata;
          END;
 
          IF thisfield.${'e'} ; # Begleitmaterial
-           umfang.push(thisfield.${'e'});	 
+           begleitmaterial = thisfield.${'e'};
+	   begleitmaterial = "Begleitmaterial: ${begleitmaterial}";
          END;
 
          umfangcontent = umfang.join(' ');
@@ -557,6 +559,13 @@ FOREACH field IN normdata;
             content_map.${'Umfang'} = [];
 	   END;
            content_map.${'Umfang'}.push(umfangcontent);
+         END;
+
+         IF begleitmaterial ;
+           IF NOT content_map.${'Hinweis'} ;
+            content_map.${'Hinweis'} = [];
+	   END;
+           content_map.${'Hinweis'}.push(begleitmaterial);
          END;
 
 

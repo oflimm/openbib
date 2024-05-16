@@ -533,7 +533,7 @@ FOREACH field IN normdata;
 
     CASE "T0300"; # 
          umfang = [];
-
+	 
          IF thisfield.${'a'} ; # Kollation
 	   umfang.push(thisfield.${'a'});
 	 END;
@@ -546,6 +546,10 @@ FOREACH field IN normdata;
            umfang.push(thisfield.${'c'});
          END;
 
+         IF thisfield.${'e'} ; # Begleitmaterial
+           umfang.push(thisfield.${'e'});	 
+         END;
+
          umfangcontent = umfang.join(' ');
 
          IF umfangcontent ;
@@ -554,6 +558,7 @@ FOREACH field IN normdata;
 	   END;
            content_map.${'Umfang'}.push(umfangcontent);
          END;
+
 
     CASE "T0362"; # Erscheinungsverlauf
          content = thisfield.${'a'} ;

@@ -411,6 +411,8 @@
    'KN3-ZSMAKK' = 'Zeitschriften/MAKK'
    };
 
+   searchfield_placeholder = msg.maketext("Bücher, E-Medien, Aufsätze &amp; mehr");
+   
    IF NOT viewdbs ;
        viewdbs = config.get_dbs_of_view(view);
    END ;

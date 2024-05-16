@@ -474,6 +474,32 @@
 }
 */
 
+
+    /* Eigenen Browseruebergreifenden Clear-Button definieren*/    
+    .ob-searchfield_clear {
+        position:relative;
+	border: 0px solid transparent;
+	background-color: transparent;
+	display: inline-block;
+	vertical-align: middle;
+	outline: 0;
+	cursor: pointer;
+	padding-top: 5px;
+	padding-right:9px;
+	margin-left: -29px!important;
+    }
+    
+    .ob-main_searchfield:not(:valid) ~ .ob-searchfield_clear {
+	display: none;
+    }
+
+    /* Chrome/Webkit-Basierte Clear-Buttons unterdruecken */
+    input[type='search']::-webkit-search-decoration,
+    input[type='search']::-webkit-search-cancel-button,
+    input[type='search']::-webkit-search-results-button,
+    input[type='search']::-webkit-search-results-decoration {
+	display: none;
+    }
     
     .ob-search_hints { 
 	background-color: #fff;

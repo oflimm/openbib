@@ -1,0 +1,130 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+<!-- Beginn Result Item -->
+[%- dbdesc   = dbinfo.get('dbnames').${database}.full ;
+    dburl    = dbinfo.get('urls').${database} ;
+    request_base    = [] ;#num=${hitrange};srt=${sorttype};srto=${sortorder};" ;
+
+    IF searchquery.get_option('num') ;
+       request_base.push("num=${searchquery.get_option('num')}");
+    END;
+    IF searchquery.get_option('srt') ;
+       request_base.push("srt=${searchquery.get_option('srt')}");
+    END;
+    IF searchquery.get_option('srto') ;
+       request_base.push("srto=${searchquery.get_option('srto')}");
+    END;
+    FOREACH thisdb IN db ;
+       request_base.push("db=${thisdb}");
+    END;
+
+    request_base = request_base.join(";");
+
+    start_range     = queryoptions.get_option('page')*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = start_range - 1 + hits;
+
+    allsubjects = {};
+
+    FOREACH record IN recordlist.get_records;
+      FOREACH subject  IN record.generic_attributes.subjects;
+        allsubjects.${subject} = 1;
+      END ;
+    END ;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
+
+[%# USE dumper;dumper.dump(nav)%]
+[%# nav.current_page()%]
+
+[%# USE dumper;dumper.dump(recordlist.generic_attributes)%]
+
+    <!-- begin: Layout with collapsable sidebar -->
+    <style>
+    [data-toggle="collapse"] {
+      cursor: pointer;
+    }
+
+    @media screen and (min-width:768px) { #ob-sidebar{ display: block!important;visibility:visible!important; } }
+
+    </style>
+
+    <div class="row flex-md-row-reverse">
+      <div id="ob-sidebar" class="col-xs-6 col-md-3 collapse">
+<div class="ob-facets">
+
+<h4>[% msg.maketext("Weitere Optionen") %]</h4>
+
+[% cgi_querystring = cgiapp.to_cgi_querystring({ change = {'page' = 1 }, exclude = ['typ'] })%]
+
+<dl class="ob-items">
+<dt class="ob-headline">[% msg.maketext("Eingrenzen") %]</dt>
+<dd [% IF searchquery.get_searchfield('mediatype').norm == "publication" %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% cgi_querystring %];typ=publication">[% msg.maketext("Publikationen") %]</a></dd>
+<dd [% IF searchquery.get_searchfield('mediatype').norm == "bookmark" %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% cgi_querystring %];typ=bookmark">[% msg.maketext("Web") %]</a></dd>
+</dl>
+
+<dl class="ob-items">
+<dt class="ob-headline">[% msg.maketext("Schlagwort suchen") %]</dt>
+<dd>
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+<input type="hidden" name="lang" value="[% lang %]"/>
+<input type="hidden" name="sm"   value="seq"/>
+<input type="hidden" name="page" value="1"/>
+<input type="hidden" name="db"   value="bibsonomy"/>
+<input type="hidden" name="typ"  value="[% searchquery.get_searchfield('mediatype').norm %]"/>
+<input type="text" name="fsubj" value="" size="10" maxlength="200" title="[% msg.maketext("Geben Sie hier einen oder mehrere Tags ein") %]" />&nbsp;<input type="submit" value="[% msg.maketext("Suchen") %]" />
+</form>
+</dd>
+</dl>
+
+<p/>
+
+<dl class="ob-items">
+<dt class="ob-headline">[% msg.maketext("Schlagworte in den angezeigten Titeln") %]</dt>
+[% FOREACH thissubject IN allsubjects.keys.unique.sort %]
+<dd><a class="tag" style="display: inline; cursor: pointer;" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;db=bibsonomy;sm=seq;typ=[% searchquery.get_searchfield('mediatype').norm %];fsubj=[% thissubject %]">[% thissubject %]</a></dd>
+[% END %]
+</dl>
+
+</div>
+      </div>
+      <div class="col-md-9" >
+<div class="ob-resultlist">
+  <div class="ob-category_header">[% dbinfo.get('dbnames').${database}.short %]</div>
+  <div class="ob-resultheader">
+    <div class="left">
+[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range %]-[% end_range %]</b>
+    </div>
+  </div>
+
+  <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=0 %] 
+[%- END -%]
+  <div class="ob-footer">
+[% PROCESS common/subtemplate name="pagination" %]
+    <div class="ob-resulttime">
+<!-- in: [% resulttime %] [% msg.maketext("Sekunden") %] -->
+    </div>
+  </div>
+</div>
+<div class="ob-resultfooter">
+&nbsp;
+</div>
+      </div>
+    </div>
+    <!-- end: Layout with sidebar -->      
+
+<p/>

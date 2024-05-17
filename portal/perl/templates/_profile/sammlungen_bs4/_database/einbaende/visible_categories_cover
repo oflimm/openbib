@@ -1,0 +1,27 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_coverset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer die Einband-Daten
+#
+#######################################################################
+-%]
+[%# Ausgabekategorien %]
+[% categories = [
+                'T0101', # msg.maketext("T0101-einbaende") Buchbinder/Werkstätten
+                'T0710', # msg.maketext("T0710-einbaende") Jahrhundert
+                'T0200', # msg.maketext("T0200-einbaende") Region
+                'T0425', # msg.maketext("T0425-einbaende") Fert.-Jahr
+                'T0700', # msg.maketext("T0700-einbaende") Einband
+                'T0435', # msg.maketext("T0435-einbaende") Maße
+                'T0750', # msg.maketext("T0750-einbaende") Beschreibung
+                'T0501', # msg.maketext("T0501-einbaende") Quellen
+                'T0508', # msg.maketext("T0508-einbaende") Bibl. Nachweis
+                ]
+
+%]

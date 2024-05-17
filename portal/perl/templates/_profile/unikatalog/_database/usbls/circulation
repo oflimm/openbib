@@ -11,6 +11,14 @@
 #
 #######################################################################
 -%]
+[%-
+   external_info = {};
+
+   IF user.ID;
+     external_info = user.get_external_info(user.ID);
+   END;
+
+-%]
 <p />
 [%# USE dumper;dumper.dump(have_provenance_for)%]
 <div class="table-responsive">
@@ -25,7 +33,13 @@
    circ_config = config.load_alma_circulation_config;
 
    abstract_fields = record.to_abstract_fields;
-     
+
+   external_info = {};
+
+   IF user.ID;
+     external_info = user.get_external_info(user.ID);
+   END;
+
    # First pass
    FOREACH thiscirculation IN circulation ;
      IF thiscirculation.location_mark.match('#$') ; # LBS-Exemplare: Mediennummer statt Signatur anzeigen
@@ -76,7 +90,11 @@
      IF thiscirculation.department_id.match('^(38|38-HLS)$');
        library_isil = "DE-38";
      ELSIF thiscirculation.department_id.match('^38-HWA$') ;
-       library_isil = "DE-38-HWA";     
+        IF thiscirculation.storage_id.match('^38-HWA-THF$');
+          library_isil = "DE-38-326";	
+	ELSE ;
+          library_isil = "DE-38-HWA";
+	END;
      ELSIF thiscirculation.department_id.match('^KN3$') && thiscirculation.storage_id.match('^KN3-SCHLAD$') ;
        library_isil = "DE-Kn3-SL";     
      ELSIF thiscirculation.department_id.match('^KN3$') ;
@@ -103,7 +121,7 @@
      END ;
 
      IF department_url;
-        standort_with_url = "<a href=\"${department_url}\">${standort}</a>";
+        standort_with_url = "<a href=\"${department_url}.html?l=${lang}\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${department_url}.include?l=${lang}\">${standort}</a>";
      ELSE ;
         standort_with_url = standort;   
      END;
@@ -265,7 +283,7 @@
         anon_redirect_url = "${path_prefix}/${config.get('users_loc')}/id/me/${config.get('circulations_loc')}/id/mail/handset.html?l=${lang};dbname=${database};titleid=${record.id};label=${uri_escape(thiscirculation.location_mark)};location=${uri_escape(standort)};realm=${realm}";
 
 %]
-<br/><a class="btn btn-primary mb-1" [% IF NOT user.ID %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=1;redirect_to=[% anon_redirect_url | uri %]"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/handset.html?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];realm=[% realm %]">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
+<br/><a class="btn btn-primary mb-1" [% IF NOT user.ID %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=15;redirect_to=[% anon_redirect_url | uri %]"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/handset.html?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];realm=[% realm %]">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%   ELSE %]
 [% availability_info %]
@@ -395,6 +413,18 @@ Präsenzbestand
 [%############### ANFANG MEDIENSTATUSAKTIONEN ######### %]
 [%############### BESTELLBUTTON ######### %]
 [% IF thiscirculation.availability.match('^(order)$') %]
+[%   IF thiscirculation.department_id == '38-HWA' && thiscirculation.storage_id == '38-HWA-THF' %]
+[%     # IF external_info.external_group.match('^[1-3]$')%]
+[%
+
+        anon_redirect_url = "${path_prefix}/${config.get('users_loc')}/id/me/${config.get('circulations_loc')}/id/mail/testothek.html?l=${lang};dbname=${database};titleid=${record.id};label=${uri_escape(thiscirculation.location_mark)};location=${uri_escape(standort)};realm=testothek";
+
+%]
+<br/> <a class="btn btn-primary mb-1" [% IF NOT user.ID %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=1;redirect_to=[% anon_redirect_url | uri %]"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/testothek?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];realm=testothek">[% msg.maketext("Bestellen mit Bestellformular") %]</a>
+[%     # ELSE %]
+<br/> <i class="pe-2 fas fa-exclamation-triangle"></i>[% msg.maketext("Nur für angemeldete Mitglieder und Angehörige der Universität") %]
+[%     # END %]
+[%   ELSE %]
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/orders">
    <input type="hidden" name="validtarget"   value="[% database %]" />
    <input type="hidden" name="titleid"       value="[% record.id %]" />
@@ -422,6 +452,7 @@ Präsenzbestand
 [%     END %]
 [%   END %]
 </form>
+[% END %]
 [%############### VORMERKBUTTON ######### %]
 [% ELSIF thiscirculation.availability.match('^(lent|ordered)$') && thiscirculation.unavailability_info.first.defined('queue') %]
 [%   
@@ -440,10 +471,10 @@ Präsenzbestand
            vormerkbutton = 0 ;
          END;
        END;
-     ELSIF thiscirculation.department_id == "38-HWA";
+     ELSIF thiscirculation.department_id == "38-HWA" && thiscirculation.storage_id != '38-HWA-THF';
        # Kein Vormerkbutton in der HWA, wenn mindestens ein Exemplar bestellbar ist
        FOREACH checkcirculation IN circulation ;
-         IF checkcirculation.department_id == "38-HWA" && checkcirculation.availability.match('^(loan|order)$');
+         IF checkcirculation.department_id == "38-HWA" && thiscirculation.storage_id != '38-HWA-THF' && checkcirculation.availability.match('^(loan|order)$');
            vormerkbutton = 0 ;
          END;
        END;
@@ -463,6 +494,16 @@ Präsenzbestand
        END;
 %]
 
+[%   IF thiscirculation.department_id == '38-HWA' && thiscirculation.storage_id == '38-HWA-THF' %]
+[%     # IF external_info.external_group.match('^[1-3]$')%]
+[%
+        anon_redirect_url = "${path_prefix}/${config.get('users_loc')}/id/me/${config.get('circulations_loc')}/id/mail/testothek.html?l=${lang};dbname=${database};titleid=${record.id};label=${uri_escape(thiscirculation.location_mark)};location=${uri_escape(standort)};realm=testothek";
+%]
+<br/> <a class="btn btn-primary mb-1" [% IF NOT user.ID %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=15;redirect_to=[% anon_redirect_url | uri %]"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/testothek?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];realm=testothek">[% msg.maketext("Vormerken mit Bestellformular") %]</a>
+[%     #ELSE %]
+<br/> <i class="pe-2 fas fa-exclamation-triangle"></i>[% msg.maketext("Nur für angemeldete Mitglieder und Angehörige der Universität") %]
+[%     #END %]
+[%   ELSE %]
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/reservations">
    <input type="hidden" name="l"             value="[% lang %]" />
    <input type="hidden" name="validtarget"   value="[% database %]" />
@@ -478,6 +519,7 @@ Präsenzbestand
    <!-- Kein Parameter pickup_location = Ausgabeort bestimmen -->
    <input type="submit" value="Vormerken" class="btn btn-primary mb-1" />
 </form>
+[%    END %]
 [%   END %]
 [% END %]
 [%############### ENDE MEDIENSTATUSAKTIONEN ######### %]
@@ -499,7 +541,7 @@ Präsenzbestand
 
 [%############### ANFANG CAMPUSLIEFERDIENST ######### %]
 [% ELSIF scan_dienst == "campus" %]
-[%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && username.match('^(B|S)') && NOT thiscirculation.location_mark.match('^ZBM/') %]
+[%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && external_info.external_group.match('^(2)$') && NOT thiscirculation.location_mark.match('^ZBM/') && NOT thiscirculation.storage_id.match('38-HWA-THF') %]
 [%    
 
       domain    = "usb";
@@ -518,7 +560,7 @@ Präsenzbestand
       END;
 
 %]
-[%    IF thiscirculation.availability.match('^(order)$') || (thiscirculation.availability.match('^loan$') && thiscirculation.storage_id.match('^38-SAB$') ) %]
+[%    IF thiscirculation.availability.match('^(order)$') || (thiscirculation.availability.match('^loan$') && thiscirculation.storage_id.match('^38-SAB$') || thiscirculation.storage_id.match('^38-LS$') || thiscirculation.storage_id.match('^38-LBS$') ) %]
 [%      IF config.get('active_ils') && (NOT user.ID || authenticator.type == 'ils') %]
 <p>
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/campusorders">

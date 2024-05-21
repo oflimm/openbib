@@ -540,10 +540,9 @@ Präsenzbestand
 [%############### ENDE KMB ######### %]
 
 [%############### ANFANG CAMPUSLIEFERDIENST ######### %]
-[% ELSIF scan_dienst == "campus" %]
-[%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && external_info.external_group.match('^(2)$') && NOT thiscirculation.location_mark.match('^ZBM/') && NOT thiscirculation.storage_id.match('38-HWA-THF') %]
+[% ELSIF scan_dienst == "campus" ;%]
+[%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && external_info.external_group.match('^(2)$') && NOT thiscirculation.location_mark.match('^ZBM/') && NOT thiscirculation.storage_id.match('38-HWA-THF') && NOT thiscirculation.availability.match('^(missing)$') %]
 [%    
-
       domain    = "usb";
       subdomain = "";
 

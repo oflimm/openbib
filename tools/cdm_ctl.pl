@@ -209,7 +209,7 @@ sub dump_collection {
     my $records_ref = get_records_in_collection($collection);
 
     foreach my $record_ref (@$records_ref){
-	my $id = $record_ref->{pointer};
+	$id = $record_ref->{pointer};
     
 	my $url = "https://${host}/cdm4/mets_gateway.php?CISOROOT=/$collection&CISOPTR=$id";
     

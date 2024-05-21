@@ -197,7 +197,7 @@ sub dump_item {
     
     my $manifest = get_url($url);
     
-    process_item($manifest);
+    process_item($id,$manifest);
 }
 
 sub dump_collection {
@@ -209,13 +209,13 @@ sub dump_collection {
     my $records_ref = get_records_in_collection($collection);
 
     foreach my $record_ref (@$records_ref){
-	$id = $record_ref->{pointer};
+	my $cdmid = $record_ref->{pointer};
     
-	my $url = "https://${host}/cdm4/mets_gateway.php?CISOROOT=/$collection&CISOPTR=$id";
+	my $url = "https://${host}/cdm4/mets_gateway.php?CISOROOT=/$collection&CISOPTR=$cdmid";
     
 	my $manifest = get_url($url);
     
-	process_item($manifest);
+	process_item($cdmid,$manifest);
     }
 }
 
@@ -368,6 +368,7 @@ sub get_url {
 }
 
 sub process_item {
+    my $id = shift;    
     my $item = shift;
 
     my $parser = XML::LibXML->new();

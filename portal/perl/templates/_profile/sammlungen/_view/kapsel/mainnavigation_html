@@ -141,7 +141,7 @@
  
   <span class="navbar-brand">
    <a class="text-white" href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">
-     <img src="/images/openbib/views/kapsel/kapsel-logo_40px.png" class="img-fluid d-sm-inline pe-3"  />[% msg.maketext("Kölner Zeitungsausschnittssammlung") %]
+     <img src="/images/openbib/views/kapsel/kapsel-logo_40px.png" class="img-fluid d-sm-inline pe-3"  />[% msg.maketext("Zeitungsausschnittsammlung") %]
    </a>
   </span>
 

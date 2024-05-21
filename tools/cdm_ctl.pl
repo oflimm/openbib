@@ -30,21 +30,26 @@ use strict;
 use warnings;
 
 use Encode qw(decode_utf8 encode_utf8);
+use File::Path qw(make_path);
 use Getopt::Long;
 use JSON::XS qw/encode_json decode_json/;
 use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
-use Search::Elasticsearch;
+use XML::LibXML;
+use XML::LibXML::XPathContext;
 use YAML;
 
-our ($do,$host,$collection,$outputfile,$stdout,$help,$loglevel,$logfile);
+our ($do,$host,$collection,$id,$outputdir,$outputfile,$viewerurl,$stdout,$help,$loglevel,$logfile);
 
 &GetOptions("do=s"            => \$do,
 
             "host=s"          => \$host,
 
 	    "collection=s"    => \$collection,
+	    "id=s"            => \$id,	    
 	    "outputfile=s"    => \$outputfile,
+	    "outputdir=s"     => \$outputdir,
+	    "viewer-url=s"    => \$viewerurl,	    
 	    "stdout"          => \$stdout,
 	    
             "logfile=s"       => \$logfile,
@@ -128,33 +133,8 @@ sub list_items {
 	}
     }
     
-    my $url = "https://${host}/dmwebservices/index.php?q=dmQuery/$collection/0/dmrecord/dmrecord/1024/0/0/0/0/0/json";
+    my $records_ref = get_records_in_collection($collection);
     
-    my $response_ref = get_json($url);
-
-    my $records_ref = $response_ref->{records};
-    my $total       = $response_ref->{pager}{total};
-    my $maxrecs     = $response_ref->{pager}{maxrecs};    
-
-    # Mehr als 1024, dann iterativ den Rest holen
-    unless ($total <= $maxrecs){
-	my $max_idx = int ($total / $maxrecs);
-	my $offset = $maxrecs;
-
-	$logger->debug("Max idx is $max_idx");
-	
-	for (my $idx=1;$idx <= $max_idx;$idx++){
-	    my $url = "https://${host}/dmwebservices/index.php?q=dmQuery/$collection/0/dmrecord/dmrecord/1024/$offset/0/0/0/0/json";
-
-	    $logger->debug("Getting items for offset $offset");	    
-	    my $response_ref = get_json($url);
-
-	    push @{$records_ref}, $response_ref->{records};
-	    
-	    $offset = $offset + $maxrecs;
-	}
-    }
-
     # Informatinen fuer Items holen
     my $items_ref = [];
     
@@ -194,6 +174,51 @@ sub list_items {
     output($items_ref,"Listing items in collection $collection");    
 }
 
+sub get_manifest {
+    if ((!$outputfile && !$stdout ) || !$collection || !$id){
+	$logger->error("Missing args collection");
+	exit;
+    }
+
+    my $url = "https://${host}/cdm4/mets_gateway.php?CISOROOT=/$collection&CISOPTR=$id";
+	
+    my $manifest = get_url($url);
+    
+    output($manifest,"Getting manifest for item $id in collection $collection");    
+}
+
+sub dump_item {
+    if (!$outputdir || !$collection || !$id){
+	$logger->error("Missing args");
+	exit;
+    }
+
+    my $url = "https://${host}/cdm4/mets_gateway.php?CISOROOT=/$collection&CISOPTR=$id";
+    
+    my $manifest = get_url($url);
+    
+    process_item($manifest);
+}
+
+sub dump_collection {
+    if (!$outputdir || !$viewerurl || !$collection){
+	$logger->error("Missing args");
+	exit;
+    }
+
+    my $records_ref = get_records_in_collection($collection);
+
+    foreach my $record_ref (@$records_ref){
+	my $id = $record_ref->{pointer};
+    
+	my $url = "https://${host}/cdm4/mets_gateway.php?CISOROOT=/$collection&CISOPTR=$id";
+    
+	my $manifest = get_url($url);
+    
+	process_item($manifest);
+    }
+}
+
 sub list_fieldinfo {
     if ((!$outputfile && !$stdout ) || !$collection){
 	$logger->error("Missing args collection");
@@ -215,7 +240,10 @@ sub output {
     my ($response_ref,$description) = @_;
     
     if ($stdout){
-	if (ref $response_ref eq "ARRAY"){
+	if (!ref $response_ref){ # Scalar == String?
+	    print $response_ref,"\n";		
+	}
+	elsif (ref $response_ref eq "ARRAY"){ # Arrayref?
 	    foreach my $item_ref (@$response_ref){
 		print encode_json($item_ref),"\n";		
 	    }
@@ -229,7 +257,10 @@ sub output {
 	
 	$logger->info($description);
 
-	if (ref $response_ref eq "ARRAY"){
+	if (!ref $response_ref){ # Scalar == String?
+	    print OUTPUT $response_ref,"\n";		
+	}
+	elsif (ref $response_ref eq "ARRAY"){ # Arrayref?
 	    foreach my $item_ref (@$response_ref){
 		print OUTPUT encode_json($item_ref),"\n";		
 	    }
@@ -276,6 +307,101 @@ sub get_json {
     $logger->debug("Returning ".YAML::Dump($json_ref));
             
     return $json_ref;
+}
+
+sub get_records_in_collection {
+    my $collection = shift;
+    
+    my $url = "https://${host}/dmwebservices/index.php?q=dmQuery/$collection/0/dmrecord/dmrecord/1024/0/0/0/0/0/json";
+    
+    my $response_ref = get_json($url);
+
+    my $records_ref = $response_ref->{records};
+    my $total       = $response_ref->{pager}{total};
+    my $maxrecs     = $response_ref->{pager}{maxrecs};    
+
+    # Mehr als 1024, dann iterativ den Rest holen
+    unless ($total <= $maxrecs){
+	my $max_idx = int ($total / $maxrecs);
+	my $offset = $maxrecs;
+
+	$logger->debug("Max idx is $max_idx");
+	
+	for (my $idx=1;$idx <= $max_idx;$idx++){
+	    my $url = "https://${host}/dmwebservices/index.php?q=dmQuery/$collection/0/dmrecord/dmrecord/1024/$offset/0/0/0/0/json";
+
+	    $logger->debug("Getting items for offset $offset");	    
+	    my $response_ref = get_json($url);
+
+	    push @{$records_ref}, $response_ref->{records};
+	    
+	    $offset = $offset + $maxrecs;
+	}
+    }
+
+    return $records_ref;
+}
+
+sub get_url {
+    my ($url) = @_;
+
+    $logger->debug("Request: $url");
+
+    my $request = HTTP::Request->new('GET' => $url);
+    
+    my $response = $ua->request($request);
+
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->content);
+    }
+    
+    if (!$response->is_success) {
+	$logger->error($response->code . ' - ' . $response->message);
+	exit;
+    }
+
+    my $result = decode_utf8($response->content);
+    
+    $logger->debug("Returning $result");
+            
+    return $result;
+}
+
+sub process_item {
+    my $item = shift;
+
+    my $parser = XML::LibXML->new();
+    my $tree   = $parser->parse_string($item);
+    my $xpc    = XML::LibXML::XPathContext->new($tree);
+
+    $xpc->registerNs('mets',  'http://www.loc.gov/METS/');
+    $xpc->registerNs('xlink',  'http://www.w3.org/1999/xlink');    
+
+    my $new_dir = "$outputdir/$collection/$id";
+    print $new_dir,"\n";
+    make_path($new_dir);
+    
+    foreach my $link_node ($xpc->findnodes('//mets:file/mets:FLocat')){
+	my $cdm_imgurl = $link_node->getAttribute('xlink:href');
+	$cdm_imgurl =~s/&amp;/&/g;
+	
+	my ($imgid) = $cdm_imgurl =~m{CISOPTR=(\d+)};
+	my ($width) = $cdm_imgurl =~m{WIDTH=(\d+)};
+
+	my $img_name = ($width)?"${imgid}_w${width}.jpg":"$imgid.jpg";
+	
+	my $new_url = $viewerurl."/$collection/$id/$img_name";
+
+	system("wget --quiet --no-check-certificate -O $new_dir/$img_name '$cdm_imgurl'");
+	$logger->info("Dumping $cdm_imgurl -> $img_name");
+
+	$link_node->setAttribute('xlink:href' => $new_url);
+    }
+    
+    $outputfile = "$new_dir/manifest.xml";
+    $logger->info("Dumping manifest $outputfile");
+    output($tree->toString,"Dumping item $id in collection $collection done");
+    return;
 }
 
 sub print_help {

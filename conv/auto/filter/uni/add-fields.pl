@@ -150,7 +150,10 @@ while (<HOLDING>){
 
 	    # KMB Systematik
 
-	    if ($item->{content} =~m{KMB/[=+!]*([A-Za-z]+)}){
+	    if ($item->{content} =~m{KMB/[=+!]*([A-Za-z]+ [1-9]+)}){
+		$kmbsystematik{$titleid} = $1;
+	    }
+	    elsif ($item->{content} =~m{KMB/[=+!]*([A-Za-z]+)}){
 		$kmbsystematik{$titleid} = $1;
 	    }
         }	
@@ -195,7 +198,7 @@ while (<>){
 
     # KMB Systematik
     if (defined $kmbsystematik{$titleid}){
-	push @{$title_ref->{fields}{'1002'}}, {
+	push @{$title_ref->{fields}{'1004'}}, {
 	    mult     => 1,
 	    subfield => 'k',
 	    content  => $kmbsystematik{$titleid},

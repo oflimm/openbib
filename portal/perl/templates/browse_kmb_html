@@ -15,6 +15,37 @@
 
   kmb_profileid = config.get_searchprofile_of_database('uni');
 
+  kmb_base = [
+    'A',
+    'B',
+    'C',
+    'D',
+    'E',
+    'F',
+    'G',
+    'H',
+    'I',
+    'J',
+    'K',
+    'L',
+    'M',
+    'N',
+    'O',
+    'P',
+    'Q',
+    'R',
+    'S',
+    'T',
+    'U',
+    'V',
+    'W',
+    'X',
+    'Y',
+    'Z',
+  ];
+
+  kmb = config.get_description_of_classification(type => 'kmbas', names => kmb_base );
+
 %]
 
 <h3>[% msg.maketext("Aufstellungssystematik der KMB") %]</h3>
@@ -27,15 +58,11 @@
 
 <div class="table-responsive mt-3">
 <table class="table table-striped ">
-[%- FOREACH sysid IN kmbas.keys.sort -%]
+[%- FOREACH sysid IN kmb_base -%]
 <tr>
-<th style="font-weight:bold;font-size:1.2em;" width="5%">[% sysid %]</th>
+<th style="font-weight:bold;font-size:1.2em;" width="15%">[% sysid %]</th>
 <td>
-[% IF kmbas.${sysid}.sub %]
-<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('browse_loc') %]/kmb/id/[% sysid %].html?l=[% lang %]">[% kmbas.${sysid}.desc %]</a> <i class="fas fa-sort-down"></i>
-[% ELSE %]
-<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?fmark=KMB_[% sysid %]*;srt=mark_asc;profile=[% kmb_profileid %];l=[% lang%]">[% kmbas.${sysid}.desc %]</a>
-[% END%]
+<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('browse_loc') %]/kmb/id/[% sysid %].html?l=[% lang %]">[% kmb.${sysid} %]</a> <i class="fas fa-sort-down"></i>
 </td>
 </tr>
 [% END %]

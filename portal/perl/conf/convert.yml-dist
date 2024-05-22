@@ -1857,7 +1857,7 @@ convtab:
         'h':         # hbzid (alte ID, NZ-ID, CZ-ID)
           index:
             'hbzid': 1
-      '1002': # Alternative Systematiken
+      '1002': # USB Systematiken
         'a':         # USB LBS und LS
           index:
             'ft1002': 1
@@ -1865,6 +1865,10 @@ convtab:
         'a':         # 
           index:
             'gnd': 1
+      '1004': # KMB Aufstellungssystematik
+        'k':         # KMB
+          index:
+            'ft1004': 1
       '4100':         # BK
         '':
           index:

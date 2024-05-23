@@ -678,7 +678,7 @@ while (my $json=<IN>){
     my $titleid = $record_ref->{id};
     my $dbname = $record_ref->{dbname};
 
-    $marc_record->add_fields('001',"cdm:".$dbname.":".$titleid);
+    $marc_record->add_fields('001',"cdm_".$dbname."_".$titleid);
 
     # Alle IDs in 035
     if (defined $fields_ref->{istc}){

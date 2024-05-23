@@ -1,0 +1,146 @@
+# Mapping eines CDM-Feldes'from_field' auf ein MARC21 'subfield' und MARC21-Feld (key)
+# Die MARC21-Feldangabe besteht aus der der Feldnummer (erste 3 Ziffern) gefolgt von den beiden
+# MARC21 Feld-Indikatoren jeweils beginnend mit _
+#
+# Beispiel:
+#  
+#  title:
+#    '020_ _ ':
+#      -
+#        from_field: '0540'		
+#        subfield: 'a'
+#
+# Das MAB2-Feld 0540 im Titelbereich (title) mappt im Feld 020 mit den Indikatoren
+# ' ' und ' ' auf das Subfield 'a'
+#
+convtab:
+  title:
+    '024_ _7': # VD16
+      -
+        from_field: 'vd'		
+        subfield: '2'
+      -
+        from_field: 'vda'		
+        subfield: '2'
+    '240_1_0': # Bevorzugter Titel des Werkes (mit geistigem Schöpfer): default, Nachbearbeitung der Indikatoren im Konverter 
+      -
+        from_field: 'einhei'		
+        subfield: 'a'
+    '245_1_0': # Titelangaben: default, Nachbearbeitung der Indikatoren im Konverter 
+      -
+        from_field: 'title'		
+        subfield: 'a'
+      -
+        from_field: 'titelz'		
+        subfield: 'b'
+      -
+        from_field: 'band'		
+        subfield: 'n'
+    '246_3_0': # Abweichender Titel
+      -
+        from_field: 'titel'		
+        subfield: 'a'
+      -
+        from_field: 'title2'		
+        subfield: 'b'
+    '250_ _ ': # Auflage
+      -
+        from_field: 'auflag'		
+        subfield: 'a'
+    '264_ _1':
+      -
+        from_field: 'drucko' 
+        subfield: 'a' # place of production, publication, distribution, manufacture
+      -
+        from_field: 'ersche' 
+        subfield: 'a' # place of production, publication, distribution, manufacture
+      -
+        from_field: 'druckv' 
+        subfield: 'a' # place of production, publication, distribution, manufacture
+      -
+        from_field: 'druckv' 
+        subfield: 'b' # place of production, publication, distribution, manufacture
+      -
+        from_field: 'verlag' 
+        subfield: 'b' # place of production, publication, distribution, manufacture
+      -
+        from_field: 'druckv' 
+        subfield: 'c' # place of production, publication, distribution, manufacture
+      -
+        from_field: 'drucke' 
+        subfield: 'b' # name of producer, publisher, distributor, manufacturer
+      -
+        from_field: 'jahr'
+        subfield: 'c' # date of publication
+    '300_ _ ':
+      -
+        from_field: 'umfang'		
+        subfield: 'a'
+      -
+        from_field: 'illust'		
+        subfield: 'a'
+      -
+        from_field: 'formaa'		
+        subfield: 'c'
+    '500_ _ ':
+      -
+        from_field: 'bemerk'		
+        subfield: 'a'
+      -
+        from_field: 'rechte'		
+        subfield: 'a'
+      -
+        from_field: 'quelle'		
+        subfield: 'a'
+    '510_4_ ':
+      -
+        from_field: 'istc'		
+        subfield: 'a'
+      -
+        from_field: 'istc2'		
+        subfield: 'a'
+      -
+        from_field: 'gw'		
+        subfield: 'a'
+      -
+        from_field: 'gw2'		
+        subfield: 'a'
+      -
+        from_field: 'gwnumm'		
+        subfield: 'a'
+    '561_ _ ':
+      -
+        from_field: 'proven'		
+        subfield: 'a'
+    '700_1_2':
+      -
+        from_field: 'enthlt'		
+        subfield: 'a'
+    '590_ _ ': # Bemerkung = lokale Fussnote
+      -
+        from_field: 'refere'		
+        subfield: 'a'      
+    '852_ _ ':
+      -
+        from_field: 'signat'		
+        subfield: 'h'
+      -
+        from_field: 'weitec'		
+        subfield: 'h'
+    '980_1_ ':
+      -
+        from_field: 'format'		
+        subfield: 'a'
+      -
+        from_field: 'vdibpr'		
+        subfield: 'a'
+      -
+        from_field: 'thalle'		
+        subfield: 'a'
+      -
+        from_field: 'projek'		
+        subfield: 'a'
+    '981_ _ ':
+      -
+        from_field: 'katkey'		
+        subfield: 'a'

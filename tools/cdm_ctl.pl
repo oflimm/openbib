@@ -88,7 +88,7 @@ our $ua = LWP::UserAgent->new();
 $ua->agent('USB Koeln/1.0');
 $ua->timeout(30);
 
-if (defined &{$do}){
+if ($do !~m/^_/ && defined &{$do}){
     no strict 'refs';
     &{$do};
 }
@@ -105,7 +105,7 @@ sub list_collections {
 
     my $url = "https://${host}/dmwebservices/index.php?q=dmGetCollectionList/json";
     
-    my $response_ref = get_json($url);
+    my $response_ref = _get_json($url);
 
     output($response_ref,"Listing collections");
 }
@@ -115,66 +115,23 @@ sub list_items {
 	$logger->error("Missing args collection");
 	exit;
     }
-
-    my $fieldinfo_ref = {};
-
-    {
-	my $url = "https://${host}/dmwebservices/index.php?q=dmGetCollectionFieldInfo/$collection/json";
-	
-	my $response_ref = get_json($url);
-
-	if ($response_ref->{code}){
-	    $logger->error("Error ".$response_ref->{code}.": ".$response_ref->{message}) unless ($stdout);
-	    next;
-	}
-	
-	foreach my $field_ref (@$response_ref){
-	    $fieldinfo_ref->{$field_ref->{nick}} = $field_ref->{name};
-	}
-    }
     
-    my $records_ref = get_records_in_collection($collection);
+    my $records_ref = _cdm_get_records_in_collection($collection);
     
     # Informatinen fuer Items holen
     my $items_ref = [];
     
     foreach my $record_ref (@$records_ref){
 	my $cdmid = $record_ref->{pointer};
-	my $url = "https://${host}/dmwebservices/index.php?q=dmGetItemInfo/$collection/$cdmid/json";
+	my $item_ref = cdm_get_item_info($cdmid);
 	
-	$logger->info("Getting info for id $cdmid") unless ($stdout);	    
-	my $response_ref = get_json($url);
-
-	if ($response_ref->{code}){
-	    $logger->error("Error ".$response_ref->{code}.": ".$response_ref->{message}) unless ($stdout);
-	    next;
-	}
-	
-	my $item_ref = {
-	    id => $cdmid,
-	    dbname => $collection,
-	};
-	
-	foreach my $field (keys %{$response_ref}){
-	    # Leeres Hashrefs auf "" vereinheitlichen
-	    $response_ref->{$field} = "" if (ref $response_ref->{$field} eq "HASH" && !keys %{$response_ref->{$field}});
-
-	    next if (!$response_ref->{$field});
-		     
-	    push @{$item_ref->{fields}{$field}}, {
-		content => $response_ref->{$field},
-		description => $fieldinfo_ref->{$field},
-		mult => 1,
-	    };
-	
-	}
 	push @$items_ref, $item_ref;
     }
     
     output($items_ref,"Listing items in collection $collection");    
 }
 
-sub get_manifest {
+sub get_manifest4dfgviewer {
     if ((!$outputfile && !$stdout ) || !$collection || !$id){
 	$logger->error("Missing args collection");
 	exit;
@@ -182,12 +139,62 @@ sub get_manifest {
 
     my $url = "https://${host}/cdm4/mets_gateway.php?CISOROOT=/$collection&CISOPTR=$id";
 	
-    my $manifest = get_url($url);
+    my $manifest = _get_url($url);
     
-    output($manifest,"Getting manifest for item $id in collection $collection");    
+    output($manifest,"Getting DFGviewer manifest for item $id in collection $collection");    
 }
 
-sub dump_item {
+sub get_manifest4iiif {
+    if ((!$outputfile && !$stdout ) || !$collection || !$id){
+	$logger->error("Missing args collection");
+	exit;
+    }
+
+    my $info_ref      = _cdm_get_iteminfo($collection,$id);
+    my $structure_ref = _cdm_get_structure($collection,$id);
+
+    my $procname = "_cdm_create_iiif_manifest_$collection";
+
+    if (defined &{$procname}){
+	no strict 'refs';
+	my $manifest_ref = &{$procname};
+
+	output($manifest_ref,"Getting IIIF manifest for item $id in collection $collection");    
+    }
+    else {
+	$logger->error("Action $do not supported");
+	exit;
+    }
+}
+
+sub get_structure {
+    if ((!$outputfile && !$stdout ) || !$collection || !$id){
+	$logger->error("Missing args");
+	exit;
+    }
+
+    my $structure_ref = _cdm_get_structure($collection,$id);
+    
+    output($structure_ref,"Getting structure for item $id in collection $collection");    
+}
+
+sub dump_item4iiif {
+    if (!$outputdir || !$collection || !$id){
+	$logger->error("Missing args");
+	exit;
+    }
+
+    my $info_ref      = _cdm_get_iteminfo($collection,$id);
+    my $structure_ref = _cdm_get_structure($collection,$id);
+    
+    my $url = "https://${host}/cdm4/mets_gateway.php?CISOROOT=/$collection&CISOPTR=$id";
+    
+    my $manifest = _get_url($url);
+    
+    _cdm_process_item($id,$manifest);
+}
+
+sub dump_item4dfgviewer {
     if (!$outputdir || !$collection || !$id){
 	$logger->error("Missing args");
 	exit;
@@ -195,27 +202,27 @@ sub dump_item {
 
     my $url = "https://${host}/cdm4/mets_gateway.php?CISOROOT=/$collection&CISOPTR=$id";
     
-    my $manifest = get_url($url);
+    my $manifest = _get_url($url);
     
-    process_item($id,$manifest);
+    _cdm_process_item($id,$manifest);
 }
 
-sub dump_collection {
+sub dump_collection4dfgviewer {
     if (!$outputdir || !$viewerurl || !$collection){
 	$logger->error("Missing args");
 	exit;
     }
 
-    my $records_ref = get_records_in_collection($collection);
+    my $records_ref = cdm_get_records_in_collection($collection);
 
     foreach my $record_ref (@$records_ref){
 	my $cdmid = $record_ref->{pointer};
     
 	my $url = "https://${host}/cdm4/mets_gateway.php?CISOROOT=/$collection&CISOPTR=$cdmid";
     
-	my $manifest = get_url($url);
+	my $manifest = _get_url($url);
     
-	process_item($cdmid,$manifest);
+	_cdm_process_item($cdmid,$manifest);
     }
 }
 
@@ -227,15 +234,18 @@ sub list_fieldinfo {
 
     my $url = "https://${host}/dmwebservices/index.php?q=dmGetCollectionFieldInfo/$collection/json";
     
-    my $response_ref = get_json($url);
+    my $response_ref = _get_json($url);
 
-    if ($response_ref->{code}){
+    if (ref $response_ref eq "HASH" && $response_ref->{code}){
 	$logger->error("Error ".$response_ref->{code}.": ".$response_ref->{message}) unless ($stdout);
 	exit;
     }
     
     output($response_ref,"Listing fieldinfo for collection $collection");        }
 
+##########################################################################
+# Helper functions
+##########################################################################
 sub output {
     my ($response_ref,$description) = @_;
     
@@ -273,7 +283,7 @@ sub output {
     }
 }
 
-sub get_json {
+sub _get_json {
     my ($url) = @_;
 
     $logger->debug("Request: $url");
@@ -309,12 +319,75 @@ sub get_json {
     return $json_ref;
 }
 
-sub get_records_in_collection {
+sub _cdm_get_iteminfo {
+    my $cdmid = shift;
+
+    my $fieldinfo_ref = {};
+
+    {
+	my $url = "https://${host}/dmwebservices/index.php?q=dmGetCollectionFieldInfo/$collection/json";
+	
+	my $response_ref = _get_json($url);
+
+	if (ref $response_ref eq "HASH" && $response_ref->{code}){
+	    $logger->error("Error ".$response_ref->{code}.": ".$response_ref->{message}) unless ($stdout);
+	    next;
+	}
+	
+	foreach my $field_ref (@$response_ref){
+	    $fieldinfo_ref->{$field_ref->{nick}} = $field_ref->{name};
+	}
+    }
+    
+    my $url = "https://${host}/dmwebservices/index.php?q=dmGetItemInfo/$collection/$cdmid/json";
+    
+    $logger->info("Getting info for id $cdmid") unless ($stdout);	    
+    my $response_ref = _get_json($url);
+
+    if (ref $response_ref eq "HASH" && $response_ref->{code}){
+	$logger->error("Error ".$response_ref->{code}.": ".$response_ref->{message}) unless ($stdout);
+	next;
+    }
+    
+    my $item_ref = {
+	id => $cdmid,
+	dbname => $collection,
+    };
+    
+    foreach my $field (keys %{$response_ref}){
+	# Leeres Hashrefs auf "" vereinheitlichen
+	$response_ref->{$field} = "" if (ref $response_ref->{$field} eq "HASH" && !keys %{$response_ref->{$field}});
+	
+	next if (!$response_ref->{$field});
+	
+	push @{$item_ref->{fields}{$field}}, {
+	    content => $response_ref->{$field},
+	    description => $fieldinfo_ref->{$field},
+	    mult => 1,
+	};
+	
+    }
+
+    return $item_ref;
+}
+
+sub _cdm_get_structure {
+    my $collection = shift;
+    my $cdmid = shift;
+
+    my $url = "https://${host}/dmwebservices/index.php?q=dmGetCompoundObjectInfo/$collection/$id/json";
+
+
+    my $structure_ref = _get_url($url);
+
+    return $structure_ref;
+}
+sub _cdm_get_records_in_collection {
     my $collection = shift;
     
     my $url = "https://${host}/dmwebservices/index.php?q=dmQuery/$collection/0/dmrecord/dmrecord/1024/0/0/0/0/0/json";
     
-    my $response_ref = get_json($url);
+    my $response_ref = _get_json($url);
 
     my $records_ref = $response_ref->{records};
     my $total       = $response_ref->{pager}{total};
@@ -331,7 +404,7 @@ sub get_records_in_collection {
 	    my $url = "https://${host}/dmwebservices/index.php?q=dmQuery/$collection/0/dmrecord/dmrecord/1024/$offset/0/0/0/0/json";
 
 	    $logger->debug("Getting items for offset $offset");	    
-	    my $response_ref = get_json($url);
+	    my $response_ref = _get_json($url);
 
 	    push @{$records_ref}, $response_ref->{records};
 	    
@@ -342,7 +415,7 @@ sub get_records_in_collection {
     return $records_ref;
 }
 
-sub get_url {
+sub _get_url {
     my ($url) = @_;
 
     $logger->debug("Request: $url");
@@ -367,7 +440,7 @@ sub get_url {
     return $result;
 }
 
-sub process_item {
+sub _cdm_process_item {
     my $id = shift;    
     my $item = shift;
 
@@ -405,6 +478,11 @@ sub process_item {
     return;
 }
 
+# USB specific processing
+sub _cdm_create_iiif_manifest_zas {
+
+}
+
 sub print_help {
     print << "ENDHELP";
 cdm_ctl.pl - Helper for CDM
@@ -425,6 +503,9 @@ e.g:
 ./cdm_ctl.pl --do=list_collections --outputfile=collections.json
 ./cdm_ctl.pl --do=list_fieldinfo -stdout --collection=abc | jq -S . | more
 ./cdm_ctl.pl --do=list_items --outputfile=abc_items.json --collection=abc
+./cdm_ctl.pl --do=get_structure --stdout --collection=inkunabeln --id=209521|jq -S .|less
+./cdm_ctl.pl --do=dump_item4dfgviewer --outputdir=/store/scans --collection=inkunabeln --id=209521  --viewer-url="https://search.ub.uni-koeln.de/scans"
+./cdm_ctl.pl --do=dump_collection4dfgviewer --outputdir=/store/scans --collection=inkunab_tmp  --viewer-url="https://search.ub.uni-koeln.de/scans"
 
 ENDHELP
     exit;

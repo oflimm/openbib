@@ -48,11 +48,11 @@ my $konvdir       = $config->{'conv_dir'};
 
 
 print "### $pool: Erweiterung um Zugriffsinformation online, Typ Digital und Themengebiet \n";
-system("cd $datadir/$pool ; ls -l ");
+
 system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Fachgruppe anreichern\n";
-system("cd $datadir/$pool ; ls -l ");
+
 system("cd $rootdir/data/$pool ; cat meta.title | $rootdir/filter/$pool/add-classification.pl > meta.title.tmp");
 system("cd $rootdir/data/$pool ;  mv -f meta.title.tmp meta.title");
 

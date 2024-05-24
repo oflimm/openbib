@@ -493,7 +493,15 @@ while (<>){
             }        
         }
     }
-    
+
+    # 3) 007 beginnt mit cr
+    if (defined $title_ref->{fields}{'0007'}){
+        foreach my $item (@{$title_ref->{fields}{'0007'}}){
+            if ($item->{content} =~m/^cr/){
+                $is_digital = 1;
+            }        
+        }
+    }
 
     if ($is_digital){
 	if (@{$title_ref->{fields}{'4400'}}){

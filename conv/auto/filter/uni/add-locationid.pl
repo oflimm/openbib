@@ -124,6 +124,19 @@ while (<>){
 	}
     }
 
+    # E-Medien ueber Anreicherung in 4120
+    if (defined $title_ref->{fields}{'4120'}){
+	foreach my $item_ref (@{$title_ref->{fields}{'4120'}}){
+	    if ($item_ref->{subfield} =~m/(g|y|f|n)/){
+		push @{$element_ref}, "emedien";		
+	    }
+
+	    if ($item_ref->{subfield} =~m/g/){
+		push @{$element_ref}, "freemedia";		
+	    }	    
+	}
+    }
+    
     # Anpassung KMB und ZBKUNST
     if (defined $title_ref->{fields}{'0980'}){
         foreach my $item (@{$title_ref->{fields}{'0980'}}){

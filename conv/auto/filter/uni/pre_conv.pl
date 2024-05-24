@@ -52,7 +52,7 @@ system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl
 
 print "### $pool: Erweiterung um Standortinformationen, weiteres Processing - Stage 1\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/remove_duplicates_in_nz.pl | $rootdir/filter/$pool/remove_ill.pl | $rootdir/filter/$pool/fix-linkage.pl   > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/remove_duplicates_in_nz.pl | $rootdir/filter/$pool/remove_empty_portfolio.pl | $rootdir/filter/$pool/remove_ill.pl | $rootdir/filter/$pool/fix-linkage.pl   > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Erweiterung um Standortinformationen, weiteres Processing - Stage 2\n";
 

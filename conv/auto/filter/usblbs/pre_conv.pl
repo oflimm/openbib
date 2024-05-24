@@ -63,5 +63,4 @@ system("mv -f $rootdir/data/$pool/meta.holding.tmp $rootdir/data/$pool/meta.hold
 
 print "### $pool: Erweiterung um Standortinformationen, weiteres Processing\n";
 
-system("cd $datadir/$pool ; ls -l ");
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/fix-linkage.pl | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/$pool/process_urls.pl | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/process_ids.pl | $rootdir/filter/$pool/volume2year.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/fix-linkage.pl | $rootdir/filter/$pool/remove_empty_portfolio.pl | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/$pool/process_urls.pl | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/process_ids.pl | $rootdir/filter/$pool/volume2year.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");

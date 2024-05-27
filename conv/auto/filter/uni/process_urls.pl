@@ -1262,9 +1262,6 @@ while (<>){
 	}
     }
 
-    print STDERR "Digi20?$is_green_collection_digi20/$is_yellow_collection_conditional\n";
-    
-    
     # Wichtig: Damit 4410 ausgewertet werden kann muss vorher add_fields.pl gelaufen sein!!!
     
     my $is_digital = 0;

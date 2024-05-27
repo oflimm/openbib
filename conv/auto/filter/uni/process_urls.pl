@@ -1187,77 +1187,84 @@ while (<>){
     my $is_green_collection_digi20       = 0;
     my $is_video_collection              = 0;
 
-    if (defined $fields_ref->{'0912'} || defined $fields_ref->{'0962'} || defined $fields_ref->{'1945'}){
+    if (defined $fields_ref->{'0912'}){
 	foreach my $item_ref (@{$fields_ref->{'0912'}}){
 	    if ($item_ref->{'subfield'} eq "a"){
 		if ($yellow_collection_ref->{$item_ref->{'content'}}){
-		    $is_yellow_collection = 1
+		    $is_yellow_collection = 1;
 		}
 		if ($yellow_collection_statistica_ref->{$item_ref->{'content'}}){
-		    $is_yellow_collection_statistica = 1
+		    $is_yellow_collection_statistica = 1;
 		}
 		if ($yellow_collection_conditional_ref->{$item_ref->{'content'}}){
-		    $is_yellow_collection_conditional = 1
+		    $is_yellow_collection_conditional = 1;
 		}
 		if ($green_collection_ref->{$item_ref->{'content'}}){
-		    $is_green_collection = 1
+		    $is_green_collection = 1;
 		}
-		if ($green_collection_ref->{$item_ref->{'content'}}){
-		    $is_green_collection_digi20 = 1
+		if ($green_collection_digi20_ref->{$item_ref->{'content'}}){
+		    $is_green_collection_digi20 = 1;
 		}
 		if ($video_collection_ref->{$item_ref->{'content'}}){
-		    $is_video_collection = 1
+		    $is_video_collection = 1;
 		}
 	    }
 	}
-
+    }
+    
+    if (defined $fields_ref->{'0962'}){
 	foreach my $item_ref (@{$fields_ref->{'0962'}}){
 	    if ($item_ref->{'subfield'} eq "e"){
 		if ($yellow_collection_ref->{$item_ref->{'content'}}){
-		    $is_yellow_collection = 1
+		    $is_yellow_collection = 1;
 		}
 		if ($yellow_collection_statistica_ref->{$item_ref->{'content'}}){
-		    $is_yellow_collection_statistica = 1
+		    $is_yellow_collection_statistica = 1;
 		}
 		if ($yellow_collection_conditional_ref->{$item_ref->{'content'}}){
-		    $is_yellow_collection_conditional = 1
+		    $is_yellow_collection_conditional = 1;
 		}
 		if ($green_collection_ref->{$item_ref->{'content'}}){
-		    $is_green_collection = 1
+		    $is_green_collection = 1;
 		}
-		if ($green_collection_ref->{$item_ref->{'content'}}){
-		    $is_green_collection_digi20 = 1
+		if ($green_collection_digi20_ref->{$item_ref->{'content'}}){
+		    $is_green_collection_digi20 = 1;
 		}
 		if ($video_collection_ref->{$item_ref->{'content'}}){
-		    $is_video_collection = 1
+		    $is_video_collection = 1;
 		}
 	    }
 	}
-
+    }
+    
+    if (defined $fields_ref->{'1945'}){
 	foreach my $item_ref (@{$fields_ref->{'1945'}}){
 	    if ($item_ref->{'subfield'} eq "q"){
 		if ($yellow_collection_ref->{$item_ref->{'content'}}){
-		    $is_yellow_collection = 1
+		    $is_yellow_collection = 1;
 		}
 		if ($yellow_collection_statistica_ref->{$item_ref->{'content'}}){
-		    $is_yellow_collection_statistica = 1
+		    $is_yellow_collection_statistica = 1;
 		}
 		if ($yellow_collection_conditional_ref->{$item_ref->{'content'}}){
-		    $is_yellow_collection_conditional = 1
+		    $is_yellow_collection_conditional = 1;
 		}
 		if ($green_collection_ref->{$item_ref->{'content'}}){
-		    $is_green_collection = 1
+		    $is_green_collection = 1;
 		}
-		if ($green_collection_ref->{$item_ref->{'content'}}){
-		    $is_green_collection_digi20 = 1
+		if ($green_collection_digi20_ref->{$item_ref->{'content'}}){
+		    $is_green_collection_digi20 = 1;
 		}
 		if ($video_collection_ref->{$item_ref->{'content'}}){
-		    $is_video_collection = 1
+		    $is_video_collection = 1;
 		}
 	    }
 	}
     }
 
+    print STDERR "Digi20?$is_green_collection_digi20/$is_yellow_collection_conditional\n";
+    
+    
     # Wichtig: Damit 4410 ausgewertet werden kann muss vorher add_fields.pl gelaufen sein!!!
     
     my $is_digital = 0;

@@ -8,6 +8,109 @@ use utf8;
 use warnings;
 use strict;
 
+# Setzen der Beschreibung 'Video' fuer Links aus diesen Paketen
+my $video_collection_ref = {
+    #'ZDB-101-VTB' => 1,
+};
+
+# Setzen der Zugriffampel 'Gelb' fuer Links aus diesen Paketen
+my $yellow_collection_ref = {
+    'ZDB-2-SWI' => 1,
+	'ZDB-2-SNA' => 1,
+	'ZDB-2-STI' => 1,
+	'ZDB-2-SGR' => 1,
+	'ZDB-2-SGRSpringer' => 1,
+	'ZDB-2-SEP' => 1,
+	'ZDB-2-SBE' => 1,
+	'ZDB-2-CMS' => 1,
+	'ZDB-2-PHA' => 1,
+	'ZDB-2-SMA' => 1,
+	'ZDB-2-MGE' => 1,
+	'ZDB-2-SZR' => 1,
+	'ZDB-2-BUM' => 1,
+	'ZDB-2-ECF' => 1,
+	'ZDB-2-SCS' => 1,
+	'ZDB-2-ESA' => 1,
+	'ZDB-5-WEB' => 1,
+	'ZDB-5-WMS' => 1,
+	'ZDB-5-WMW' => 1,
+	'ZDB-13-SOC' => 1,
+	'ZDB-14-DLO' => 1,
+	'ZDB-18-BEO' => 1,
+	'ZDB-18-BOH' => 1,
+	'ZDB-18-BST' => 1,
+	'ZDB-15-ACM' => 1,
+	'ZDB-16-Hanser-EBA' => 1,
+	'hbzebo_ebahanser' => 1,
+	'ZDB-18-Nomos-NRW' => 1,
+	'ZDB-18-Nomos-VDI-NRW' => 1,
+	'hbzebo_nrwnomos' => 1,
+	'ZDB-149-HCB' => 1,
+	'ZDB-162-Bloom-EBA' => 1,
+	'hbz_ebabloomsbury' => 1,
+	'ZDB-605-Preselect' => 1,
+	'hbzebo_preselect' => 1,
+	'ZDB-196-Meiner-EBA' => 1,
+	'hbzebo_ebameiner' => 1,
+	'ZDB-23-DGG' => 1,
+	'ZDB-98-IGB' => 1,
+	'ZDB-23-DGG-eba' => 1,
+	'ZDB-54-Duncker-EBA' => 1,
+	'hbzebo_ebaduncker' => 1,
+	'ZDB-2-BSP' => 1,
+	'ZDB-2-SBL' => 1,
+	'ZDB-2-BUM' => 1,
+	'ZDB-2-CMS' => 1,
+	'ZDB-2-SCS' => 1,
+	'ZDB-2-EES' => 1,
+	'ZDB-2-ECF' => 1,
+	'ZDB-2-EDA' => 1,
+	'ZDB-2-ENE' => 1,
+	'ZDB-2-ENG' => 1,
+	'ZDB-2-HTY' => 1,
+	'ZDB-2-INR' => 1,
+	'ZDB-2-LCR' => 1,
+	'ZDB-2-LCM' => 1,
+	'ZDB-2-SMA' => 1,
+	'ZDB-2-SME' => 1,
+	'ZDB-2-PHA' => 1,
+	'ZDB-2-POS' => 1,
+	'ZDB-2-CWD' => 1,
+	'ZDB-2-REP' => 1,
+	'ZDB-2-SLS' => 1,
+	'ZDB-41-UTB-EBA' => 1,
+	'ZDB-7-taylorfra-EBA' => 1,
+	'ZDB-71-Narr-EBA' => 1,
+};
+
+# Setzen der Zugriffampel 'Gelb' und der Beschreibung 'Dossier im Volltext' fuer Links aus diesen Paketen
+my $yellow_collection_statistica_ref = {
+    'ZDB-185-STD' => 1,
+	'ZDB-185-SDI' => 1,
+};
+
+# Setzen der Beschreibung 'E-Book im Volltext' und ggf. - nach Ueberpruefung weiterer Kriterien - Setzen der Zugriffampel 'Gelb' fuer Links aus diesen Paketen
+my $yellow_collection_conditional_ref = {
+    'oecd' => 1,
+	'ZDB-14-DLO' => 1,
+	'ZDB-57-DVR' => 1,
+	'ZDB-57-DSG' => 1,
+	'ZDB-57-DFS' => 1,
+};
+
+# Setzen der Zugriffampel 'Gruen' und Beschreibung 'E-Book im Volltext' fuer Links aus diesen Paketen
+my $green_collection_ref = {
+    'ZDB-2-SOB' => 1,
+	'ZDB-23-GOA' => 1,
+};
+
+# Setzen der Zugriffampel 'Gruen' fuer Links aus diesen Paketen (aktuell: Digitalisate aus dem Digi20 Projekt)
+my $green_collection_digi20_ref = {
+    'ZDB-57-DVR' => 1,
+	'ZDB-57-DSG' => 1,
+	'ZDB-57-DFS' => 1,
+};
+
 while (<>){
     my $record_ref = decode_json $_;
     
@@ -1076,25 +1179,82 @@ while (<>){
 	    }
 	}
     }
-    
-    my @pakete = ();
 
-    my $paketstring = "";
-    
-    if (defined $fields_ref->{'0912'} || defined $fields_ref->{'0962'}){
+    my $is_yellow_collection             = 0;
+    my $is_yellow_collection_statistica  = 0;
+    my $is_yellow_collection_conditional = 0;    
+    my $is_green_collection              = 0;
+    my $is_green_collection_digi20       = 0;
+    my $is_video_collection              = 0;
+
+    if (defined $fields_ref->{'0912'} || defined $fields_ref->{'0962'} || defined $fields_ref->{'1945'}){
 	foreach my $item_ref (@{$fields_ref->{'0912'}}){
 	    if ($item_ref->{'subfield'} eq "a"){
-		push @pakete, $item_ref->{'content'};
-	    }
-	}
-	foreach my $item_ref (@{$fields_ref->{'0962'}}){
-	    if ($item_ref->{'subfield'} eq "e"){
-		push @pakete, $item_ref->{'content'};
+		if ($yellow_collection_ref->{$item_ref->{'content'}}){
+		    $is_yellow_collection = 1
+		}
+		if ($yellow_collection_statistica_ref->{$item_ref->{'content'}}){
+		    $is_yellow_collection_statistica = 1
+		}
+		if ($yellow_collection_conditional_ref->{$item_ref->{'content'}}){
+		    $is_yellow_collection_conditional = 1
+		}
+		if ($green_collection_ref->{$item_ref->{'content'}}){
+		    $is_green_collection = 1
+		}
+		if ($green_collection_ref->{$item_ref->{'content'}}){
+		    $is_green_collection_digi20 = 1
+		}
+		if ($video_collection_ref->{$item_ref->{'content'}}){
+		    $is_video_collection = 1
+		}
 	    }
 	}
 
-	if (@pakete){
-	    $paketstring = join('; ',@pakete);
+	foreach my $item_ref (@{$fields_ref->{'0962'}}){
+	    if ($item_ref->{'subfield'} eq "e"){
+		if ($yellow_collection_ref->{$item_ref->{'content'}}){
+		    $is_yellow_collection = 1
+		}
+		if ($yellow_collection_statistica_ref->{$item_ref->{'content'}}){
+		    $is_yellow_collection_statistica = 1
+		}
+		if ($yellow_collection_conditional_ref->{$item_ref->{'content'}}){
+		    $is_yellow_collection_conditional = 1
+		}
+		if ($green_collection_ref->{$item_ref->{'content'}}){
+		    $is_green_collection = 1
+		}
+		if ($green_collection_ref->{$item_ref->{'content'}}){
+		    $is_green_collection_digi20 = 1
+		}
+		if ($video_collection_ref->{$item_ref->{'content'}}){
+		    $is_video_collection = 1
+		}
+	    }
+	}
+
+	foreach my $item_ref (@{$fields_ref->{'1945'}}){
+	    if ($item_ref->{'subfield'} eq "q"){
+		if ($yellow_collection_ref->{$item_ref->{'content'}}){
+		    $is_yellow_collection = 1
+		}
+		if ($yellow_collection_statistica_ref->{$item_ref->{'content'}}){
+		    $is_yellow_collection_statistica = 1
+		}
+		if ($yellow_collection_conditional_ref->{$item_ref->{'content'}}){
+		    $is_yellow_collection_conditional = 1
+		}
+		if ($green_collection_ref->{$item_ref->{'content'}}){
+		    $is_green_collection = 1
+		}
+		if ($green_collection_ref->{$item_ref->{'content'}}){
+		    $is_green_collection_digi20 = 1
+		}
+		if ($video_collection_ref->{$item_ref->{'content'}}){
+		    $is_video_collection = 1
+		}
+	    }
 	}
     }
 
@@ -1134,7 +1294,7 @@ while (<>){
 	    my $description = (defined $fields_ref->{'4663'} && defined $fields_ref->{'4663'}[$i])?$fields_ref->{'4663'}[$i]{content}:"";
 	    
 	    if ($is_digital && $url !~ /dbinfo/ && $description !~ /^(Inhalt|Verlag)/ &&
-		($has_isbn or $paketstring=~m/(oecd|ZDB-14-DLO|ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)$/)){ # ggf. Bedingung ergaenzen: Hat ISBN der Paralellausgabe in '1586', '1587', '1588', '1590', '1591', '1592', '1594', '1595', '1596'
+		($has_isbn or $is_yellow_collection_conditional)){ # ggf. Bedingung ergaenzen: Hat ISBN der Paralellausgabe in '1586', '1587', '1588', '1590', '1591', '1592', '1594', '1595', '1596'
 		$description = "E-Book im Volltext";
 		$fields_ref->{'4663'}[$i]{content} = $description;
 	    }
@@ -1145,23 +1305,23 @@ while (<>){
 	    # Auswertung Paketinformatione entsprechend:
 	    # https://intern.ub.uni-koeln.de/usbwiki/index.php/Anreicherung_von_IMX-Importdateien
 	    # OA via ZDB-2-SOB, ZDB-23-GOA ueberschreiben alle anderen Paketinfos
-	    elsif ($paketstring =~m/(ZDB-2-SOB|ZDB-23-GOA)/) { # z.B. ID=7807222, ID=6813324
+	    elsif ($is_green_collection) { # z.B. ID=7807222, ID=6813324
 		$fields_ref->{'4662'}[$i]{subfield} = "g"; # green
 		$fields_ref->{'4663'}[$i]{content}  = "E-Book im Volltext";
 	    }
-	    elsif ($paketstring =~m/(ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)/){ # Freie E-Books aus dem Projekt Digi20
+	    elsif ($is_green_collection_digi20){ # Freie E-Books aus dem Projekt Digi20
 		$fields_ref->{'4662'}[$i]{subfield} = "g"; # green Bsp.: ID=6822919		
 	    }
-	    elsif ($paketstring =~m/(ZDB-2-SWI|ZDB-2-SNA|ZDB-2-STI|ZDB-2-SGR|ZDB-2-SGRSpringer|ZDB-2-SEP|ZDB-2-SBE|ZDB-2-CMS|ZDB-2-PHA|ZDB-2-SMA|ZDB-2-MGE|ZDB-2-SZR|ZDB-2-BUM|ZDB-2-ECF|ZDB-2-SCS|ZDB-2-ESA|ZDB-5-WEB|ZDB-5-WMS|ZDB-5-WMW|ZDB-13-SOC|ZDB-14-DLO|ZDB-18-BEO|ZDB-18-BOH|ZDB-18-BST|ZDB-15-ACM|ZDB-16-Hanser-EBA|hbzebo_ebahanser|ZDB-18-Nomos-NRW|ZDB-18-Nomos-VDI-NRW|hbzebo_nrwnomos|ZDB-149-HCB|ZDB-162-Bloom-EBA|hbz_ebabloomsbury|ZDB-605-Preselect|hbzebo_preselect|ZDB-196-Meiner-EBA|hbzebo_ebameiner|ZDB-23-DGG|ZDB-98-IGB|ZDB-23-DGG-eba|ZDB-54-Duncker-EBA|hbzebo_ebaduncker|ZDB-2-BSP|ZDB-2-SBL|ZDB-2-BUM|ZDB-2-CMS|ZDB-2-SCS|ZDB-2-EES|ZDB-2-ECF|ZDB-2-EDA|ZDB-2-ENE|ZDB-2-ENG|ZDB-2-HTY|ZDB-2-INR|ZDB-2-LCR|ZDB-2-LCM|ZDB-2-SMA|ZDB-2-SME|ZDB-2-PHA|ZDB-2-POS|ZDB-2-CWD|ZDB-2-REP|ZDB-2-SLS|ZDB-41-UTB-EBA|ZDB-7-taylorfra-EBA|ZDB-71-Narr-EBA)/){
+	    elsif ($is_yellow_collection){
 		$fields_ref->{'4662'}[$i]{subfield} = "y"; # yellow
 		$fields_ref->{'4663'}[$i]{content}  = "E-Book im Volltext" if ($description !~m/Verlag/);
 		
 	    }
-	    elsif ($paketstring =~m/(ZDB-185-STD|ZDB-185-SDI)/){ # Statista-Dossiers
+	    elsif ($is_yellow_collection_statistica){ # Statista-Dossiers
 		$fields_ref->{'4662'}[$i]{subfield} = "y"; # yellow
 		$fields_ref->{'4663'}[$i]{content}  = "Dossier im Volltext";
 	    }
-	    elsif ($paketstring =~m/ZDB-101-VTB/){ # video2brain
+	    elsif ($is_video_collection){ # Video
 		$fields_ref->{'4663'}[$i]{content}  = "Video";
 	    }
 	    

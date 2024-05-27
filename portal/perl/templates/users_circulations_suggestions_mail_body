@@ -9,7 +9,8 @@
   Bemerkung: [% remark %]
 
        Name: [% userinfo.fullname %]
-        BNR: [% userinfo.username %]      
+        BNR: [% userinfo.username %]
+Alma UserID: [% userinfo.external_id %]
 
 E-Mail-Adr.: [% userinfo.email %]
 

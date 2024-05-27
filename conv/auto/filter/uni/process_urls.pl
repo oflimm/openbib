@@ -81,6 +81,8 @@ my $yellow_collection_ref = {
 	'ZDB-41-UTB-EBA' => 1,
 	'ZDB-7-taylorfra-EBA' => 1,
 	'ZDB-71-Narr-EBA' => 1,
+	'Edward Elgar Business 2023' => 1,
+	'Oxford Scholarship - Oxford University Press: Law' => 1,
 };
 
 # Setzen der Zugriffampel 'Gelb' und der Beschreibung 'Dossier im Volltext' fuer Links aus diesen Paketen

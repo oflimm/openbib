@@ -4,8 +4,8 @@
 #
 #  gen-subset.pl
 #
-#  Extrahieren einer Titeluntermenge eines Katalogs fuer die Erzeugung
-#  eines separaten neuen Katalogs
+#  Extrahieren einer Titeluntermenge eines Katalogs
+#  fuer die Erzeugung eines separaten neuen Katalogs
 #
 #  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -75,9 +75,9 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
+my $subset = new OpenBib::Catalog::Subset("uni",$pool);
 $subset->identify_by_mark('^323/AC/.*DDR$');
-$subset->identify_by_field_content('title',([ { field => '4710', content => '^DDR-Produktion' } ]));
+$subset->identify_by_field_content('title',([ { field => '0982', subfield => 'a', content => '^DDR-Produktion' } ]));
 $subset->write_set;
 
 sub print_help {

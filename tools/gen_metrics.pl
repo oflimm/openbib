@@ -5,7 +5,7 @@
 #
 #  Erzeugen von Metriken aus Katalog- sowie Relevance-Statistik-Daten
 #
-#  Dieses File ist (C) 2006-2021 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2024 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -139,6 +139,38 @@ my $is_subject_field_ref = {
     '0942' => 1,
     '0947' => 1,
 };
+
+if ($scheme && $scheme eq "marc21"){
+    $is_person_field_ref = {
+	'0100' => 1,
+	    '0700' => 1,
+	    '4308' => 1,
+    };
+    
+    $is_corporatebody_field_ref = {
+	'0110' => 1,
+	    '0111' => 1,
+	    '0710' => 1,
+	    '4307' => 1,
+    };
+    
+    $is_classification_field_ref = {
+	'0082' => 1,
+	    '0084' => 1,
+    };
+    
+    $is_subject_field_ref = {
+	'0600' => 1,
+	    '0610' => 1,
+	    '0610' => 1,
+	    '0648' => 1,
+	    '0650' => 1,
+	    '0651' => 1,
+	    '0655' => 1,
+	    '0688' => 1,
+	    '0689' => 1,
+    };
+}
 
 # Typ 17 => Besetzungszahlen der Merklisten 
 if ($type == 17){
@@ -801,10 +833,20 @@ if ($type == 9){
         my $metrics_ref=[];
 
         # DBI: "select count(distinct id) as scount, content from title where category=425 and content regexp ? group by content order by scount DESC" mit RegEXP "^[0-9][0-9][0-9][0-9]\$"
+
+	my $where_ref = {
+	    'title_fields.field' => 425,
+	};
+
+	if ($scheme && $scheme eq "marc21"){
+	    $where_ref = {
+		'title_fields.field' => 264,
+		    'title_fields.subfield' => 'c',
+	    };
+	}
+
         my $usage = $catalog->get_schema->resultset('Title')->search_rs(
-            {
-                'title_fields.field' => 425,
-            },
+	    $where_ref,
             {
                 select   => ['title_fields.content', {'count' => 'title_fields.titleid'}],
                 as       => ['thiscontent','titlecount'],
@@ -1097,7 +1139,13 @@ if ($type == 13){
 
 # Typ 14 => Meistvorkommender Feldinhalt pro Datenbank
 if ($type == 14 && $field){
+
+    my $subfield = "";
     
+    if ($field =~m/:/){
+	($field,$subfield) = $field =~m/^([^:]+):(.)$/
+    }
+
     my @databases = ();
     
     if ($database){
@@ -1187,10 +1235,17 @@ if ($type == 14 && $field){
         }	
         else {
 	    # DBI: "select count(distinct id) as scount, content from title where category=425 and content regexp ? group by content order by scount DESC" mit RegEXP "^[0-9][0-9][0-9][0-9]\$"
-	    $usage = $catalog->get_schema->resultset('Title')->search_rs( # 
-		{
+
+  	    my $where_ref = {
 		    'title_fields.field' => $field,
-		},
+	    };
+
+	    if ($subfield){
+	       $where_ref->{'subfield'} = $subfield;
+	    }      				  
+
+	    $usage = $catalog->get_schema->resultset('Title')->search_rs( # 
+	        $where_ref,
 		{
 		    select   => ['title_fields.content', {'count' => 'title_fields.titleid'}],
 		    as       => ['thiscontent','titlecount'],
@@ -1236,7 +1291,11 @@ if ($type == 14 && $field){
             sort { $collator->cmp($a->[1],$b->[1]) }
                 map { [$_, $_->{item}] }
                     @{$metrics_ref};
-        
+
+        if ($subfield){
+          $field = $field.":".$subfield;
+        }
+
         $config->set_datacache({
             type => 14,
             id   => "$database-$field",

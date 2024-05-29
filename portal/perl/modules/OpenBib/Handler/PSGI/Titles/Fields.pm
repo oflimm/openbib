@@ -195,6 +195,14 @@ sub show_record {
 
     return unless ($database && $field);
 
+    my $subfield = "";
+    
+    if ($field =~m/:/){
+	($field,$subfield) = $field =~m/^([^:]+):(.)$/
+    }
+
+    $logger->debug("Index for field '$field' and subfield '$subfield'");
+	    
     my $schema;
 
     eval {
@@ -209,7 +217,8 @@ sub show_record {
 
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
-
+    my $dataschema    = $dbinfotable->{dbinfo}{schema}{$database};
+    
     #####################################################################
     ## Eigentliche Suche (default)
 
@@ -284,32 +293,61 @@ sub show_record {
     my $hits           = 0;
 
     # Welche Kategorien sind mit Nordaten verknuepft, so dass dort die Ansetzungsform bestimmt werden muss
-    my $conn_field_ref = {
-        '0014' => 'holding',
-        '0016' => 'holding',
-        '0100' => 'person',
-        '0101' => 'person',
-        '0102' => 'person',
-        '0103' => 'person',
-        '4308' => 'person',
-        '0200' => 'corporatebody',
-        '0201' => 'corporatebody',
-        '4307' => 'corporatebody',
-        '0700' => 'classification',
-        '0710' => 'subject',
-        '0902' => 'subject',
-        '0902' => 'subject',
-        '0907' => 'subject',
-        '0912' => 'subject',
-        '0917' => 'subject',
-        '0922' => 'subject',
-        '0927' => 'subject',
-        '0932' => 'subject',
-        '0937' => 'subject',
-        '0942' => 'subject',
-        '0947' => 'subject',
-        '4306' => 'subject',
-    };
+    
+    my $conn_field_ref = {};
+
+    if ($dataschema eq "mab2"){
+	$conn_field_ref = {    
+	    '0014' => 'holding',
+		'0016' => 'holding',
+		'0100' => 'person',
+		'0101' => 'person',
+		'0102' => 'person',
+		'0103' => 'person',
+		'4308' => 'person',
+		'0200' => 'corporatebody',
+		'0201' => 'corporatebody',
+		'4307' => 'corporatebody',
+		'0700' => 'classification',
+		'0710' => 'subject',
+		'0902' => 'subject',
+		'0902' => 'subject',
+		'0907' => 'subject',
+		'0912' => 'subject',
+		'0917' => 'subject',
+		'0922' => 'subject',
+		'0927' => 'subject',
+		'0932' => 'subject',
+		'0937' => 'subject',
+		'0942' => 'subject',
+		'0947' => 'subject',
+		'4306' => 'subject',
+	};
+    }
+    elsif ($dataschema eq "marc21"){
+	$conn_field_ref = {    
+	    '0014' => 'holding',
+		'0016' => 'holding',
+		'0100' => 'person',
+		'0700' => 'person',
+		'4308' => 'person',
+		'0110' => 'corporatebody',
+		'0111' => 'corporatebody',
+		'0710' => 'corporatebody',
+		'4307' => 'corporatebody',
+		'0082' => 'classification',
+		'0084' => 'classification',		
+		'0710' => 'subject',
+		'0600' => 'subject',
+		'0610' => 'subject',
+		'0648' => 'subject',
+		'0650' => 'subject',
+		'0651' => 'subject',
+		'0655' => 'subject',
+		'0688' => 'subject',
+		'0689' => 'subject',
+	};
+    }
 
     my $contents;
 
@@ -432,11 +470,17 @@ sub show_record {
     # Sonst direkt in den Titelfeldern
     else {
         $logger->debug("Searching title field directly with hitrange $hitrange / offset $offset");
-        
-        $contents = $schema->resultset('TitleField')->search_rs(
-            {
+
+	my $where_ref = {
                 'field'   => $field,
-            },
+	};
+
+	if ($subfield){
+	    $where_ref->{'subfield'} = $subfield;
+	}
+
+        $contents = $schema->resultset('TitleField')->search_rs(
+	    $where_ref,
             {
                 select   => ['content'],
                 as       => ['thiscontent'],
@@ -445,10 +489,6 @@ sub show_record {
         );
         
         $hits = $contents->count;
-
-        my $where_ref = {
-	    'field'   => $field,
-	};
 
 	if ($start){
 	    $start = decode_utf8($start);
@@ -487,6 +527,7 @@ sub show_record {
     my $ttdata={
         database   => $database,
         field      => $field,
+	subfield   => $subfield,
         browselist => $browselist_ref,
         hits       => $hits,
         nav        => $nav,

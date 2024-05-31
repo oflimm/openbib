@@ -28,7 +28,7 @@
   <!-- AKTUELL [% current_profile %] - BOOKS [% searchprofileid_of_books %] - ARTICLES [% searchprofileid_of_articles %]  -->
 
     <div id="spinner" class="d-flex justify-content-center htmx-indicator spinner-large">
-      <img src="/images/openbib/views/schatzbehalter/kapsel-logo.png" class="uzk-spinner" alt="[% msg.maketext("Lade-Animation mit Kapselkatalog Logo") %]"/>
+      <img src="/images/openbib/views/kapsel/kapsel-logo.png" class="uzk-spinner" alt="[% msg.maketext("Lade-Animation mit Kapselkatalog Logo") %]"/>
     </div>
 
 <!-- See: https://loading.io/css/ CC0 -->

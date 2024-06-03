@@ -123,7 +123,7 @@ sub list_items {
     
     foreach my $record_ref (@$records_ref){
 	my $cdmid = $record_ref->{pointer};
-	my $item_ref = cdm_get_item_info($cdmid);
+	my $item_ref = _cdm_get_iteminfo($cdmid);
 	
 	push @$items_ref, $item_ref;
     }

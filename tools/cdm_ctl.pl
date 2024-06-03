@@ -213,7 +213,7 @@ sub dump_collection4dfgviewer {
 	exit;
     }
 
-    my $records_ref = cdm_get_records_in_collection($collection);
+    my $records_ref = _cdm_get_records_in_collection($collection);
 
     foreach my $record_ref (@$records_ref){
 	my $cdmid = $record_ref->{pointer};

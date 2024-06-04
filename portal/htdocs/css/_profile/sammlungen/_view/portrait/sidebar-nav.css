@@ -1,0 +1,140 @@
+/**
+ * based on:
+ *
+ * "Yet Another Multicolumn Layout" - YAML CSS Framework
+ *
+ * (en) Vertical list navigation "vlist"
+ * (de) Vertikale Navigationsliste "vlist"
+ *
+ * @copyright       Copyright 2005-2012, Dirk Jesse
+ * @license         CC-BY 2.0 (http://creativecommons.org/licenses/by/2.0/),
+ *                  YAML-CDL (http://www.yaml.de/license.html)
+ * @link            http://www.yaml.de
+ * @package         yaml
+ * @version         v4.0.1
+ * @revision        $Revision: 724 $
+ * @lastmodified    $Date: 2012-03-03 11:45:41 +0100 (Sa, 03 Mrz 2012) $
+ */
+
+.ob-sidebar {
+    margin:0 0 1.5em 0;
+    list-style-type:none;
+    background: transparent;
+    border: 0 none;
+    padding: 0px;
+}
+
+.ob-sidebar ul {
+    list-style-type:none;
+    margin:0;
+    padding:0;
+    width:100%;
+    overflow:hidden;
+/*		border-top:2px #ddd solid;
+		border-bottom:2px #ddd solid; */
+}
+
+.ob-sidebar ul ul {
+    border: 0 none;
+}
+
+.ob-sidebar li {
+    float:left; /* LTR */
+    width:100%;
+    margin:0;
+    padding:0;
+    background-color:#fff;
+}
+
+.ob-sidebar > li:first-child {
+    border-top:1px #ddd solid;
+}
+
+.ob-sidebar a,
+.ob-sidebar strong,
+.ob-sidebar span {
+    display:block;
+    padding:3px 0px 3px 10%;
+    text-decoration:none;
+    border-bottom:1px #ddd solid;
+}
+
+.ob-sidebar a,
+.ob-sidebar a:visited {
+    color:#444;
+}
+
+.ob-sidebar li span {
+    display:block;
+    font-weight:bold;
+    border-bottom:1px #ddd solid;
+    
+}
+
+/* active list element */
+.ob-sidebar li.active {
+/*    background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 1em 0.7em #fff;*/
+    font-weight: bold;    
+    color:#41799e;
+    /*		background-color:#444;*/
+}
+
+.ob-sidebar li.active strong {
+    /* background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 0.7em 0.8em #fff; */
+    font-weight:bold;
+}
+
+/*
+.ob-sidebar ul li span {
+    background: url(/images/openbib/navigation_arrow_blue.png) no-repeat scroll 0.9em 0.8em #fff;
+}
+*/
+
+.ob-sidebar ul li.active strong {
+/*    background: url(/images/openbib/navigation_arrow_blue_closed.png) no-repeat scroll 1em 0.8em #fff; */
+    font-weight:bold;
+}
+/* Level 1 */
+.ob-sidebar li a,
+.ob-sidebar li strong,
+/*.ob-sidebar li span { width:90%; padding-left:10%; } /* LTR */
+.ob-sidebar li span { width:90%; padding-left:0px; } /* LTR */
+
+.ob-sidebar li a:focus,
+.ob-sidebar li a:hover,
+.ob-sidebar li a:active { background: no-repeat scroll 1em 0.7em #ebebeb; color:#000; outline: 0 none; }
+
+/* Level 2 */
+.ob-sidebar li ul li a,
+.ob-sidebar li ul li strong,
+.ob-sidebar li ul li span { width:90%; padding-left:10%; } /* LTR */
+
+.ob-sidebar li ul li a,
+.ob-sidebar li ul li a:visited { background-color:#f8f8f8; color:#333; }
+
+.ob-sidebar li ul li a:focus,
+.ob-sidebar li ul li a:hover,
+.ob-sidebar li ul li a:active { background: no-repeat scroll 1em 0.7em #ebebeb; color:#000; }
+
+/* Level 3 */
+.ob-sidebar li ul li ul li a,
+.ob-sidebar li ul li ul li strong,
+.ob-sidebar li ul li ul li span { width:80%; padding-left:20%; } /* LTR */
+
+.ob-sidebar li ul li ul li a,
+.ob-sidebar li ul li ul li a:visited{ background-color:#f0f0f0; color:#222; }
+
+.ob-sidebar li ul li ul li a:focus,
+.ob-sidebar li ul li ul li a:hover,
+.ob-sidebar li ul li ul li a:active { background: no-repeat scroll 1em 0.7em #ebebeb; color:#000; }
+
+/* Level 4 */
+.ob-sidebar li ul li ul li ul li a,
+.ob-sidebar li ul li ul li ul li strong,
+.ob-sidebar li ul li ul li ul li span { width:70%; padding-left:30%; } /* LTR */
+
+.ob-sidebar li ul li ul li ul li a,
+.ob-sidebar li ul li ul li ul li a:visited { background-color:#e8e8e8; color:#111; }
+.ob-sidebar li ul li ul li ul li a:focus,
+.ob-sidebar li ul li ul li ul li a:hover,
+.ob-sidebar li ul li ul li ul li a:active { background: no-repeat scroll 2em 1.7em #ebebeb; color:#000; }

@@ -39,6 +39,7 @@
 </center>
 [% END %]
 
+[% IF 0 == 1 %]
 [% signaturen = [] ;
    FOREACH mex IN record.get_holding ;
    signaturen.push(mex.${"X0014"}.content);
@@ -76,3 +77,4 @@
 </fieldset>
 
 </form>
+[% END # 0 == 1 %]

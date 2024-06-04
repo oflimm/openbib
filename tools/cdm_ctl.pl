@@ -454,7 +454,9 @@ sub _cdm_process_item {
     $xpc->registerNs('xlink',  'http://www.w3.org/1999/xlink');    
 
     my $new_dir = "$outputdir/$collection/$id";
-    print $new_dir,"\n";
+
+    return if -d $new_dir;
+
     make_path($new_dir);
     
     foreach my $link_node ($xpc->findnodes('//mets:file/mets:FLocat')){

@@ -216,13 +216,15 @@ sub dump_collection4dfgviewer {
     my $records_ref = _cdm_get_records_in_collection($collection);
 
     foreach my $record_ref (@$records_ref){
-	my $cdmid = $record_ref->{pointer};
-    
-	my $url = "https://${host}/cdm4/mets_gateway.php?CISOROOT=/$collection&CISOPTR=$cdmid";
-    
-	my $manifest = _get_url($url);
-    
-	_cdm_process_item($cdmid,$manifest);
+	if (ref $record_ref eq "HASH"){
+	    my $cdmid = $record_ref->{pointer};
+	    
+	    my $url = "https://${host}/cdm4/mets_gateway.php?CISOROOT=/$collection&CISOPTR=$cdmid";
+	    
+	    my $manifest = _get_url($url);
+	    
+	    _cdm_process_item($cdmid,$manifest);
+	}
     }
 }
 

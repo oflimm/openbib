@@ -218,7 +218,14 @@ sub dump_collection4dfgviewer {
     foreach my $record_ref (@$records_ref){
 	if (ref $record_ref eq "HASH"){
 	    my $cdmid = $record_ref->{pointer};
-	    
+
+	    my $new_dir = "$outputdir/$collection/$cdmid";
+
+	    if (-d $new_dir) {
+		$logger->info("Skipping item. Already exists in $new_dir");
+		next ;
+	    }
+
 	    my $url = "https://${host}/cdm4/mets_gateway.php?CISOROOT=/$collection&CISOPTR=$cdmid";
 	    
 	    my $manifest = _get_url($url);
@@ -386,6 +393,8 @@ sub _cdm_get_structure {
 }
 sub _cdm_get_records_in_collection {
     my $collection = shift;
+
+    $logger->info("Getting first 1024 items in collection");    
     
     my $url = "https://${host}/dmwebservices/index.php?q=dmQuery/$collection/0/dmrecord/dmrecord/1024/0/0/0/0/0/json";
     
@@ -403,17 +412,24 @@ sub _cdm_get_records_in_collection {
 	$logger->debug("Max idx is $max_idx");
 	
 	for (my $idx=1;$idx <= $max_idx;$idx++){
+
+	    $logger->info("Getting next 1024 items in collection with offset $offset");    
+
 	    my $url = "https://${host}/dmwebservices/index.php?q=dmQuery/$collection/0/dmrecord/dmrecord/1024/$offset/0/0/0/0/json";
 
 	    $logger->debug("Getting items for offset $offset");	    
 	    my $response_ref = _get_json($url);
 
-	    push @{$records_ref}, $response_ref->{records};
+	    push @{$records_ref}, @{$response_ref->{records}};
 	    
 	    $offset = $offset + $maxrecs;
 	}
     }
 
+    my $total_count = scalar @{$records_ref};
+
+    $logger->info("Got $total_count items");
+    
     return $records_ref;
 }
 
@@ -454,9 +470,7 @@ sub _cdm_process_item {
     $xpc->registerNs('xlink',  'http://www.w3.org/1999/xlink');    
 
     my $new_dir = "$outputdir/$collection/$id";
-
-    return if -d $new_dir;
-
+    
     make_path($new_dir);
     
     foreach my $link_node ($xpc->findnodes('//mets:file/mets:FLocat')){

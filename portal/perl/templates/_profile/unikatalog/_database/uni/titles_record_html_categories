@@ -1083,6 +1083,8 @@ FOREACH field IN singular_normdata;
 
     CASE [ "T0662" ];
          content       = item.content;
+         content       = content.replace('%26','&'); # Fehlerhafte Kodierungen bei content-select 
+	 
          thismult      = item.mult ;
          thiscontent   = "" ;
 	 ampel         = "";

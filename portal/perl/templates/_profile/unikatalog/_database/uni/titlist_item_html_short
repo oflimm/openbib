@@ -26,6 +26,8 @@
      
      item   = record.to_custom_field_scheme_1;
      fields = record.get_fields;
+
+     # USE dumper;dumper.dump(item);
      
      listid = record.listid;
      all_locations = record.get_locations;
@@ -434,7 +436,7 @@
      yearofpub = item.${'T0264'}.first.${'c'};
 
      availability = fields.${'T4400'}.first.content;
-
+     
      # Signaturen konstruieren
      signaturen = [];
      FOREACH part IN item.${'X0014'};
@@ -462,6 +464,7 @@
 
     # E-Book/Inhaltsverzeichnis vorhanden
     fulltext  = fields.${'T4120'}.first.content ;
+    fulltext  = fulltext.replace('%26','&');
     toc       = fields.${'T4110'}.first.content ;
 
     # DBIS/EZB? Dann umleiten

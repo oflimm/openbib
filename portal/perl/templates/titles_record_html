@@ -315,6 +315,7 @@
    
   # E-Book/Inhaltsverzeichnis vorhanden
   fulltext  = normdata.${'T4120'}.first.content ;
+  fulltext  = fulltext.replace('%26','&');  
   toc       = normdata.${'T4110'}.first.content ;
 
   # Fix digitool-URLs

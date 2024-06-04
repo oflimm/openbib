@@ -14,26 +14,29 @@
 #
 #######################################################################
 -%]
-[% 
-   cdm_json_url = "https://services.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fportrait&start=1&maxrecs=100&field0=identi&mode0=exact&string0=${record.id}";
+[%
 
-   cdm = record.enrich_cdm(bezeichner,cdm_json_url) ;
+   cdmid = record.get_fields.${'T4114'}.first.content ;
+   cdm_imgurl = "";
+   cdm_webimgurl = "";   
+
+   IF cdmid || cdmid == '0';
+     cdm_webimgurl = "https://search.ub.uni-koeln.de/scans/portrait/${cdmid}/${cdmid}_w600.jpg";
+     cdm_imgurl = "https://search.ub.uni-koeln.de/scans/portrait/${cdmid}/${cdmid}_w950.jpg";
+   END;
 %]
-[% IF cdm.total > 0 ;
-   FOREACH cdmrecord IN cdm.records ;
-     cdm_url       = "https://services.ub.uni-koeln.de/cdm/singleitem/collection/portrait/id/${cdmrecord.pointer}/";
-     cdm_imgurl    = "https://services.ub.uni-koeln.de/cdm4/get_image.php?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&WIDTH=180";
-     cdm_webimgurl = "https://services.ub.uni-koeln.de/cdm4/get_image.php?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&WIDTH=800";
+[% IF cdm_imgurl ;
+   manifest_url  = "https://search.ub.uni-koeln.de/scans/portrait/${cdmid}/manifest.xml";
+   manifest_url = uri_escape(manifest_url);
+   dfgviewer_url = "https://dfg-viewer.de/show/?set%5Bmets%5D=${manifest_url}";
 %]
 <center>
-<a class="invisible cloud-zoom" rel="zoomWidth:400, zoomHeight:400, position:'left'" href="[% cdm_webimgurl %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]"/></a>
+<a class="invisible cloud-zoom" rel="zoomWidth:400, zoomHeight:400, position:'left'" href="[% cdm_imgurl %]" target="_blank"><img id="cover_full" width="180" src="[% cdm_webimgurl %]"/></a>
 
 <p>
-<a href="[% cdm_url %]" target="_blank">Zum Digitalisat</a>
+<a href="[% dfgviewer_url %]" target="_blank">Zum Digitalisat</a>
 </p>
 </center>
-  [% END %]
-
 [% END %]
 
 [% signaturen = [] ;

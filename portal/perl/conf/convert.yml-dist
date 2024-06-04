@@ -12,6 +12,7 @@ convtab:
       '4111': 1        # TOC-Text
       '4112': 1        # Register-URL
       '4113': 1        # Register-Text
+      '4114': 1        # CDMID
       '4120': 1        # eBook-URL
       '4200': 1        # Wikipedia
       '4201': 1        # Wikipedia
@@ -1263,6 +1264,7 @@ convtab:
       '4111': 1
       '4112': 1      
       '4113': 1
+      '4114': 1
       '4120': 1
       '4400': 1
       '5005': 1

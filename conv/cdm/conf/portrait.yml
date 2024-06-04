@@ -1,0 +1,11 @@
+# Tracelevel
+#tracelevel:
+
+# Feld der eindeutigen Titel-ID
+idfield: 'katkey'
+
+origin: '100'
+
+mapping:
+  'cdmid': '4114'  
+

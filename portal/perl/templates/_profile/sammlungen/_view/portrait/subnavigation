@@ -25,7 +25,7 @@
 
  <ul class="navbar-nav">
   <li class="navbar-item[% IF layout_param.active_submenu == "quellen" %] active[% END %]"> <a class="[% IF layout_param.active_submenu == "quellen" %]active [% END %]navbar-link" href="[% path_prefix %]/[% config.get('info_loc') %]/quellen.html?l=[% lang %]">[% msg.maketext('Weitere Suche') %]</a></li>
-  <li class="navbar-item[% IF layout_param.active_submenu == "unbekannte_portraits" %] active[% END %]"> <a class="navbar-link[% IF layout_param.active_submenu == "unbekannte_portraits" %] active" [% END %]" href="[% path_prefix %]/[% config.get('info_loc') %]/unbekannte_portraits.html?l=[% lang %]">[% msg.maketext('Unbekannte_Portraits') %]</a></li> 
+  <li class="navbar-item[% IF layout_param.active_submenu == "unbekannte_portraits" %] active[% END %]"> <a class="navbar-link[% IF layout_param.active_submenu == "unbekannte_portraits" %] active" [% END %]" href="[% path_prefix %]/[% config.get('info_loc') %]/unbekannte_portraits.html?l=[% lang %]">[% msg.maketext('Unbekannte Portraits') %]</a></li> 
  </ul>
 </nav>
 </div>

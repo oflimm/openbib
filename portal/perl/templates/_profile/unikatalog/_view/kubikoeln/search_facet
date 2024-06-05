@@ -98,6 +98,7 @@
 
       location_is_allowed = {
 	 'DE-Kn3' = 1
+	 'DE-Kn39' = 1
 	 'DE-38-428' = 1
 	 'DE-38-445' = 1
 	 'DE-2192' = 1

@@ -1215,6 +1215,11 @@ sub normalize {
     if ($searchreq){
         if ($type eq 'string'){
             $logger->debug("Processing Type $type");
+
+	    # Punctuation am Feld-Ende entfernen (MARC21 Absonderlichkeit z.B Punkt in 245$a ('Der Staat.')
+	    
+	    # $content=~s/\p{XPosixPunct}*$//;
+	    $content=~s/[.:]$//;	    
             
             # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
             # * wird fuer die Recherche als Wildcard nicht angefasst

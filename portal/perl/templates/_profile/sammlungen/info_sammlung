@@ -14,7 +14,7 @@
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Die Sammlungen der USB')
+	     desc = msg.maketext('Weitere Informationen zur Sammlung')
 	     url  = '#'
 	     current = 1
 	  }

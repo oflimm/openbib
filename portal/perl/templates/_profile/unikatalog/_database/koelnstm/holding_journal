@@ -85,6 +85,8 @@
          isil = "DE-38-${sigel}";
       ELSIF sigel.match('^KN3$');	  
          isil = "DE-Kn3";
+      ELSIF sigel.match('^DE-Kn39$');	  
+         isil = "DE-Kn39";
       ELSIF sigel.match('^DE-2192$');	  
          isil = "DE-2192";
       ELSE ;

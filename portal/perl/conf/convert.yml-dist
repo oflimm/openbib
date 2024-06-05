@@ -10756,20 +10756,14 @@ convtab:
         '':
           index:
             'ft0101': 1
-          facet:
-            'person': 1
       '0102':
         '':
           index:
             'ft0102': 1
-          facet:
-            'person': 1
       '0103':
         '':
           index:
             'ft0103': 1
-          facet:
-            'person': 1
       '0110':
         '':
           facet:
@@ -10784,8 +10778,14 @@ convtab:
             'person': 1
       '0200':
         '':
+          index:
+            'ft0200': 1
           facet:
             'corporatebody': 1
+      '0201':
+        '':
+          index:
+            'ft0201': 1
       '0310':         # AST
         '':
           index:
@@ -10902,7 +10902,7 @@ convtab:
           index:
             'markstring': 1
             'mark': 1
-      '4410':         # Medientyp
+      '0800':         # Medientyp
         '':
           index:
             'mediatype': 1

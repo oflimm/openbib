@@ -2,15 +2,19 @@
     layout_param = {
 
       'main_template' = 'info_quellen_html'
+      'sidebar_template' = 'subnavigation'
+      'sidebar_button_in_main_template' = 1 # Sidebar im Desktop anzeige, Mobil via Button
 
-      #'active_menu' = 'info'
+      'active_menu' = 'info'
+      'active_submenu' = 'quellen'
+
       'breadcrumb' = [
           {
              desc = msg.maketext('Start')
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Weitere Quellen')
+	     desc = msg.maketext('Weitere Suche nach Portraits')
 	     url  = '#'
 	     current = 1
 	  }

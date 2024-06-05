@@ -594,10 +594,10 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 
 <!-- Begin corporatebody facet -->
 [%         IF config.get('facets').corporatebody && facets.defined('corporatebody') && facets.corporatebody.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-corporatebody[% idsuffix %][% facet_prefix %]" aria-expanded="false">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-corporatebody[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Provenienz") %] 
         </h4>
-        <ul id="group-corporatebody[% idsuffix %][% facet_prefix %]" class="list-group in collapse">
+        <ul id="group-corporatebody[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.corporatebody ;
                   LAST IF loop.count > 25 ;
 %]
@@ -691,30 +691,6 @@ yearslider_to[% idsuffix %].addEventListener('change', function () {
 <p/>
 [%         END %]
 <!-- End topic facet -->
-
-<!-- Begin subject facet -->
-[%         IF config.get('facets').subject && facets.defined('subject') && facets.subject.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-subject[% idsuffix %][% facet_prefix %]" aria-expanded="true">
-           [% msg.maketext("Region") %] 
-        </h4>
-        <ul id="group-subject[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
-[%             FOREACH termitem IN facets.subject ;
-                  LAST IF loop.count > 25 ;
-
-                  searchterm    = termitem.0;
-                  searchprefix  = config.get('searchfield').subjectstring.prefix;
-                  filterstring  = "${searchprefix}:${searchterm}";
--%]
-<li class="ob-facet-item" [% IF facets.subject.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]">[% termitem.0 %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
-[%             END %]
-[% IF facets.subject.size > 5 %]
-<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
-<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
-[% END %]
-</ul>
-<p/>
-[%         END %]
-<!-- End subject facet -->
 
 
 [% IF 0 == 1 %]
@@ -892,22 +868,14 @@ yearslider_to[% facet_prefix %][% idsuffix %].addEventListener('change', functio
 [% END # EDS %]
 <!-- End year facet -->
 
+[% END %]
+
 <!-- Begin classification facet -->
 [%         IF config.get('facets').classification && facets.defined('classification') && facets.classification.size > 0 %]
-[%             all_rvk = [];
-               FOREACH termitem IN facets.classification;
-                  searchterm = termitem.0;
-                  LAST IF loop.count > 25 ;
-                  IF searchterm.match('^[A-Z][A-Z] \d\d\d+$');
-                    all_rvk.push(searchterm);
-                  END;
-               END;
-               rvklookup = config.get_description_of_classification(type => 'rvk', names => all_rvk );
-%]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-classification[% idsuffix %][% facet_prefix %]" aria-expanded="false">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-classification[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Beruf / Weltanschauung") %] 
         </h4>
-        <ul id="group-classification[% idsuffix %][% facet_prefix %]" class="list-group in collapse">
+        <ul id="group-classification[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.classification ;
                   LAST IF loop.count > 25 ;
  %]
@@ -928,8 +896,6 @@ yearslider_to[% facet_prefix %][% idsuffix %].addEventListener('change', functio
 <p/>
 [%         END %]
 <!-- End classification facet -->
-
-[% END %]
 
 <!-- Begin provenance facet -->
 [%         IF config.get('facets').provenance && facets.defined('provenance') && facets.provenance.size > 0 %]

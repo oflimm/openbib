@@ -23,7 +23,7 @@
   END ;
 %]
 
-<h3>[% msg.maketext("Personen") %]</h3>
+<h3>[% msg.maketext("Maler / Zeichner") %]</h3>
 
 <div class="row">
 <div class="col-md-9">

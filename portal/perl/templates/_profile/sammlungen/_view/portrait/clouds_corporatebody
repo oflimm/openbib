@@ -3,12 +3,12 @@
     layout_param = {
      'page_title' = 'Wortwolken'
 
-      'main_template' = 'clouds_person_html'
+      'main_template' = 'clouds_corporatebody_html'
       'sidebar_template' = 'clouds_navigation'
       'sidebar_button_in_main_template' = 1 # Sidebar im Desktop anzeige, Mobil via Button
 
       'active_menu' = 'cloud'
-      'active_submenu' = 'clouds_person'      
+      'active_submenu' = 'clouds_corporatebody'      
       
       'breadcrumb' = [
           {
@@ -20,7 +20,7 @@
 	     url  = "#",
 	  },
 	  {
-	     desc = msg.maketext('Maler / Zeichner')
+	     desc = msg.maketext('Provenienz')
 	     url  = '#'
 	     current = 1
 	  }
@@ -28,16 +28,16 @@
       'representations' = [
           {
 	     type = 'json'
-	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('clouds_loc')}/id/person.json?l=${lang}"
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('clouds_loc')}/id/corporatebody.json?l=${lang}"
 	  },
        ]
     };
 -%]
 [%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'json' -%]
-[%- PROCESS common/subtemplate name="clouds_person_json" -%]
+[%- PROCESS common/subtemplate name="clouds_corporatebody_json" -%]
 [%- ELSIF representation == 'include' -%]
-[%- PROCESS common/subtemplate name="clouds_person_include" -%]
+[%- PROCESS common/subtemplate name="clouds_corporatebody_include" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

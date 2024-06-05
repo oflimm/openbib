@@ -20,7 +20,7 @@
 	     url  = "#",
 	  },
 	  {
-	     desc = msg.maketext('Schlagworte')
+	     desc = msg.maketext('Region')
 	     url  = '#'
 	     current = 1
 	  }

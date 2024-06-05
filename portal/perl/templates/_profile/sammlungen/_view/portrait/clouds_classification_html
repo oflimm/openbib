@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: helpframe
+# Templatename: clouds_person_html
 #
 # Typ         : Mastertemplate
 #
@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [%
-      funcargs = { id => database, type => 3 } ;
+      funcargs = { id => database, type => 4 } ;
       resultlist = config.get_datacache(funcargs);
 %]
 
@@ -23,13 +23,13 @@
   END ;
 %]
 
-<h3>[% msg.maketext("Region") %]</h3>
+<h3>[% msg.maketext("Beruf / Weltanschauung") %]</h3>
 
 <div class="row">
 <div class="col-md-9">
 
 <div class="card">
-<div class="card-header">[% msg.maketext("Wolke der häufigsten Begriffe") %]</div>
+<div class="card-header">[% msg.maketext("Wolke der h&auml;ufigsten Begriffe") %]</div>
 <div class="card-body">
 <!-- Beginn Tag-Cloud -->
 [%
@@ -45,7 +45,7 @@
 %]
 
 [%- IF resultlist.size > 5 -%]
-[%- searchprefix  = config.get('searchfield').subjectstring.prefix -%]
+[%- searchprefix  = config.get('searchfield').classificationstring.prefix -%]
 [%- default_query_options = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) -%]
 
 <ol class="ob-cloud">
@@ -63,7 +63,6 @@
 [% END %]
 </div>
 </div>
-
 
 </div><!-- col-md-9 -->
 

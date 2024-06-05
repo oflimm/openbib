@@ -2,10 +2,25 @@
 [%- IF representation == '' || representation == 'html' ;
 
     IF field == '0100' ;
-       field_description = msg.maketext("Personen");
-       searchfield = 'personstring' ;
+       field_description = msg.maketext("Maler / Zeichner");
+       searchfield = 'ft0100' ;
+    ELSIF field == '0101' ;
+       field_description = msg.maketext("Stecher / Lithograph");
+       searchfield = 'ft0101' ;
+    ELSIF field == '0102' ;
+       field_description = msg.maketext("Dargestellte Person");
+       searchfield = 'ft0102' ;
+    ELSIF field == '0103' ;
+       field_description = msg.maketext("Weitere Person");
+       searchfield = 'ft0103' ;
+    ELSIF field == '0200' ;
+       field_description = msg.maketext("Provenienz");
+       searchfield = 'ft0200' ;
+    ELSIF field == '0700' ;
+       field_description = msg.maketext("Beruf / Weltanschauung");
+       searchfield = 'classificationstring' ;
     ELSIF field == '0710' ;
-       field_description = msg.maketext("Schlagworte");
+       field_description = msg.maketext("Region");
        searchfield = 'subjectstring' ;
     ELSIF field == '0425' ;
        field_description = msg.maketext("Erscheinungsjahr");

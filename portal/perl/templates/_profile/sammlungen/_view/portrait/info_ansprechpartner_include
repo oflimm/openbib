@@ -12,4 +12,7 @@
 #######################################################################
 -%]
 
-[% config.get_templatetext('info_project',view,lang) %]
+[% config.get_templatetext('info_ansprechpartner',view,lang) %]
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Ansprechpartner") %]</div>
+

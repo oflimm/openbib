@@ -97,6 +97,8 @@
       };
 
       location_is_allowed = {
+	 'DE-38' = 1
+	 'DE-38-HWA' = 1
 	 'DE-Kn3' = 1
 	 'DE-Kn39' = 1
 	 'DE-38-428' = 1

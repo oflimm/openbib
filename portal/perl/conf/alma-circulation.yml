@@ -98,6 +98,10 @@
     'order': 0
     'loan': 1
     'reservation': 0
+  '38-006-MAG':
+    'order': 0
+    'loan': 1
+    'reservation': 0
 '38-101':
   '38-101-MAG':
     'order': 1

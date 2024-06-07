@@ -1012,6 +1012,11 @@ sub cleanup {
     my $chars_to_replace   = $self->{chars_to_replace};
     my %char_replacements  = %{$self->{char_replacements}};
 
+    # Reset &lt; / &gt;
+    $content =~ s/&lt;/</g;
+    $content =~ s/&gt;/>/g;
+
+    # Normalize
     $content =~ s/($chars_to_replace)/$char_replacements{$1}/g;
 
     return $content;

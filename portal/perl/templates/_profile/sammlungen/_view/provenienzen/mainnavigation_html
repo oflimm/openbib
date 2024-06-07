@@ -71,7 +71,7 @@
       <ul class="list-unstyled components">
 
         <li class="nav-item">
-	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('info_loc') %]/adenauer.html?l=[% lang %]">
+	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">
             <i class="fas fa-bullseye"></i> [% msg.maketext("Sammlung") %]          </a>
 	</li>
         <li class="nav-item">

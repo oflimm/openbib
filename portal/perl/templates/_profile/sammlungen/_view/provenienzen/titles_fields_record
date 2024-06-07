@@ -5,13 +5,16 @@
        field_description = msg.maketext("Provenienz Sammlung");
        searchfield = 'subjectstring' ;
     ELSIF field == '4307' ;
-       field_description = msg.maketext("Vorbesitzer - Körperschaft");
+       field_description = msg.maketext("Provenienz Körperschaft");
        searchfield = 'ft4307' ;
     ELSIF field == '4308' ;
-       field_description = msg.maketext("Vorbesitzer - Person");
+       field_description = msg.maketext("Provenienz Person");
        searchfield = 'ft4308' ;
-    ELSIF field == '4310' ;
-       field_description = msg.maketext("Vorbesitzer - Beschreibung (mit T-PRO)");
+    ELSIF field == '4310' && subfield == 'a';
+       field_description = msg.maketext("Provenienz Typ (mit T-PRO)");
+       searchfield = 'ft4300' ;
+    ELSIF field == '4310' && subfield == 'm';
+       field_description = msg.maketext("Provenienz Beschreibung (mit T-PRO)");
        searchfield = 'mediatypestring' ;
     ELSIF field == '0980' ;
        field_description = msg.maketext("USB Sammlungsvermerk");
@@ -28,7 +31,7 @@
       
       'active_menu' = 'register'
 
-      'active_submenu' = "register_T${field}"
+      'active_submenu' = "register_T${field}${subfield}"
       
       'breadcrumb' = [
           {

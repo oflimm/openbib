@@ -1,112 +1,19 @@
 [%#-
 #######################################################################
 #
-# Templatename: admin_editview
+# Templatename: titles_record_provenances_record_include
 #
 # Typ         : Mastertemplate       
 #
 # Aufgabe:
 #
-# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+# Ausgabe aller Provenienzinformationen eines Mediums
 #
 #######################################################################
 -%]
 
-[%
-   has_4312 = 0;
-
-   FOREACH provenance IN provenances ;
-     IF provenance.defined('T4312') ;
-       has_4312 = 1;
-     END;
-   END;
-%]
-
 <h3>Alle Provenienzen des Mediums [% provenanceid %]</h3>
-[%# USE dumper;dumper.dump(provenances)%]
 
-<div class="table-responsive">
-<table class="table table-striped ">
-<thead>
-<tr><th>Vorbesitzer</th><th>Provenienz</th><th>Sigel</th>[% IF has_4312 %]<th>Selektionskennzeichen</th>[% END %]</tr>
-</thead>
-<tbody>
-
-[%-
-    categories = [
-                'T4307', # msg.maketext("T4307") Vorbesitzer Koerperschaft
-                'T4308', # msg.maketext("T4308") Vorbesitzer Person
-                'T4309', # msg.maketext("T4309") Mediennummer
-                'T4310', # msg.maketext("T4310") Provenienz
-                'T4311', # msg.maketext("T4311") Sigel
-                'T4312', # msg.maketext("T4312") Selektionskennzeichen
-    ]
--%]
-
-[% FOREACH provenance IN provenances ;
-
-     owner = [];
-
-     IF provenance.defined('T4307');
-       gndid = "";
-       corp  = "";
-       FOREACH field IN provenance.${'T4307'} ;
-         IF field.subfield == 'a' ;
-	   corp = field.content;
-	 END;
-         IF field.subfield == 'g' ;
-	   gndid = field.content;
-	 END;
-       END;
-       IF corp && gndid ;
-         resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/lobidgnd/${config.get('titles_loc')}/id/${gndid}";
-         normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"GND-Information\" ><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
-         owner.push("${corp} ${normdataicon}");
-       ELSIF corp ;
-       END;
-     END ;
-     IF provenance.defined('T4308');
-       gndid  = "";
-       person = "";
-       FOREACH field IN provenance.${'T4308'} ;
-         IF field.subfield == 'a' ;
-	   person = field.content;
-	 END;
-         IF field.subfield == 'g' ;
-	   gndid = field.content;
-	 END;
-       END;
-       IF person && gndid ;       
-         resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/lobidgnd/${config.get('titles_loc')}/id/${gndid}";
-         normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"GND-Information\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
-         owner.push("${person} ${normdataicon}");
-       ELSIF person ;
-         owner.push(person);       
-       END;
-     END;
-
-     ownerstring = owner.join(' / ');
-%]
-<tr>
-<td>
-[% ownerstring %]
-</td>
-<td>
-[% provenance.${'T4310'}.first.content %]
-</td>
-<td>
-[% provenance.${'T4311'}.first.content %]
-</td>
-[% IF has_4312 %]
-<td>
-[% provenance.${'T4312'}.first.content %]
-</td>
-[% END %]
-</tr>
-[% END %]
-
-</tbody>
-</table>
-</div>
+[% PROCESS common/subtemplate name="provenances" %]
 
 <div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Provenienz-Informationen") %]</div>

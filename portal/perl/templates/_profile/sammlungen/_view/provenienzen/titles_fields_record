@@ -3,7 +3,7 @@
 
     IF field == '4306' ;
        field_description = msg.maketext("Provenienz Sammlung");
-       searchfield = 'ft4306' ;
+       searchfield = 'subjectstring' ;
     ELSIF field == '4307' ;
        field_description = msg.maketext("Vorbesitzer - Körperschaft");
        searchfield = 'ft4307' ;
@@ -12,7 +12,7 @@
        searchfield = 'ft4308' ;
     ELSIF field == '4310' ;
        field_description = msg.maketext("Vorbesitzer - Beschreibung (mit T-PRO)");
-       searchfield = 'ft4310' ;
+       searchfield = 'mediatypestring' ;
     ELSIF field == '0980' ;
        field_description = msg.maketext("USB Sammlungsvermerk");
        searchfield = 'provenancestring' ;

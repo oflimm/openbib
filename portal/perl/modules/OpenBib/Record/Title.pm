@@ -4466,9 +4466,30 @@ sub get_provenances_of_media {
 
     my $logger = get_logger();
 
+    my $database = $self->{database};
+
+    my $schema   = $self->{dbinfo}{schema}{$database} || '';
+
+    if ($schema eq "mab2"){
+	$logger->debug("Provenances from mab2");
+	return $self->get_provenances_of_media_mab2($medianumber,$msg);
+    }
+    elsif ($schema eq "marc21"){
+	$logger->debug("Provenances from marc21");	
+	return $self->get_provenances_of_media_marc21($medianumber,$msg);
+    }
+
+    return [];
+}
+
+sub get_provenances_of_media_mab2 {
+    my ($self,$medianumber,$msg) = @_;
+
+    my $logger = get_logger();
+
     $logger->debug("Getting provenances for $medianumber");
     
-    my $config = OpenBib::Config::File->instance;
+    my $config = $self->get_config;
     
     my $provenances_ref = [];
 
@@ -4477,48 +4498,39 @@ sub get_provenances_of_media {
     if ($logger->is_debug){
         $logger->debug(YAML::Dump($self->get_fields));
     }
-    
-    foreach my $medianumber_ref (@{$self->{_fields}{'T4309'}}){
-        my $mult = $medianumber_ref->{mult};
 
-        if ($medianumber eq $medianumber_ref->{content}){
-            $logger->debug("Found Medianr $medianumber - $mult");
-
-            my $this_provenance_ref = {};
-            foreach my $field ('T4306','T4307','T4308','T4310','T4311','T4312','T4313','T4314','T4315','T4316','T4317'){
-                my $fields_ref = $self->get_field({ field => $field });
-                next unless ($fields_ref);
-                
-                foreach my $field_ref (@{$fields_ref}){
-		    if ($logger->is_debug){
-			$logger->debug(YAML::Dump($field_ref));
-		    }
-		    
-                    if ($field_ref->{mult} eq $mult){
-                        push @{$this_provenance_ref->{$field}}, $field_ref;
-                    }
-                }
-            }
-
-            # Anreicherung mit Feld-Bezeichnungen
-            if (defined $msg){
-                foreach my $fieldnumber (keys %{$this_provenance_ref}){
-                    my $effective_fieldnumber = $fieldnumber;
-                    my $mapping = $config->{'categorymapping'};
-                    if (defined $mapping->{$self->{database}}{$fieldnumber}){
-                        $effective_fieldnumber = $fieldnumber."-".$self->{database};
-                    }
-                    
-                    foreach my $fieldcontent_ref (@{$this_provenance_ref->{$fieldnumber}}){
-                        $fieldcontent_ref->{description} = $msg->maketext($effective_fieldnumber);
-                    }
-                }
-            }
-
-            push @$provenances_ref, $this_provenance_ref;
-        }
+    foreach my $provenance_ref  (@{$self->get_provenances_mab2($msg)}){
+	if ($provenance_ref->{'T4309'}[0]{content} eq $medianumber){
+	    push @{$provenances_ref}, $provenance_ref;
+	}
     }
+        
+    return $provenances_ref;
+}
+
+sub get_provenances_of_media_marc21 {
+    my ($self,$medianumber,$msg) = @_;
+
+    my $logger = get_logger();
+
+    $logger->debug("Getting provenances for $medianumber");
     
+    my $config = $self->get_config;
+    
+    my $provenances_ref = [];
+
+    return [] unless (defined $self->{_fields}{'T4309'});
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($self->get_fields));
+    }
+
+    foreach my $provenance_ref  (@{$self->get_provenances_marc21($msg)}){
+	if ($provenance_ref->{'T4309'}{'a'} eq $medianumber){
+	    push @{$provenances_ref}, $provenance_ref;
+	}
+    }
+        
     return $provenances_ref;
 }
 
@@ -4527,7 +4539,28 @@ sub get_provenances {
 
     my $logger = get_logger();
 
-    my $config = OpenBib::Config::File->instance;
+    my $database = $self->{database};
+
+    my $schema   = $self->{dbinfo}{schema}{$database} || '';
+
+    if ($schema eq "mab2"){
+	$logger->debug("Provenances from mab2");
+	return $self->get_provenances_mab2($msg);
+    }
+    elsif ($schema eq "marc21"){
+	$logger->debug("Provenances from marc21");	
+	return $self->get_provenances_marc21($msg);
+    }
+
+    return [];
+}
+
+sub get_provenances_mab2 {
+    my ($self,$msg) = @_;
+
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
 
     my $provenances_ref = [];
 
@@ -4573,6 +4606,46 @@ sub get_provenances {
         }
 
         push @$provenances_ref, $this_provenance_ref;
+    }
+    
+    return $provenances_ref;
+}
+
+sub get_provenances_marc21 {
+    my ($self,$msg) = @_;
+
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+
+    my $provenances_ref = [];
+
+    return [] unless (defined $self->{_fields}{'T4309'});
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($self->get_fields));
+    }
+
+    my $field_ref = $self->to_custom_field_scheme_1;
+
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump($field_ref));
+    }
+
+    my $tmp_fields_ref = {};
+    foreach my $field ('T4306','T4307','T4308','T4309','T4310','T4311','T4312','T4313','T4314','T4315','T4316','T4317'){
+
+	foreach my $subfield_ref (@{$field_ref->{$field}}){
+	    $tmp_fields_ref->{$subfield_ref->{mult}}{$field} = $subfield_ref;
+	}
+    }
+
+    if ($logger->is_debug){
+	$logger->debug(YAML::Dump($tmp_fields_ref));
+    }
+
+    foreach my $mult (sort keys %{$tmp_fields_ref}){
+	push @{$provenances_ref}, $tmp_fields_ref->{$mult};
     }
     
     return $provenances_ref;
@@ -4831,6 +4904,7 @@ sub enrich_cdm {
     my $enrich_data_ref = {};
     
     unless ($config->get('active_cdm')){
+	$logger->debug("CDM support disabled");
 	return $enrich_data_ref;
     }
     

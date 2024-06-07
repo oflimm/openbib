@@ -1,0 +1,20 @@
+[% PROCESS common/subtemplate name="titles_record_abstract_fields" %]
+*** Bestellung in den [% pickup_location %] vom [% current_date %] ***
+
+   Signatur: [% label %]
+   
+      Titel: [% title %]
+      Autor: [% person %]
+      Körp.: [% corporatebody %]
+ Ort/Verlag: [% publisher %]
+     E-Jahr: [% year %]
+         In: [% source %]
+    
+      MMSID: [% titleid %]
+        URL: https://katalog.ub.uni-koeln.de/portal/databases/id/[% database %]/titles/id/[% titleid %].html?l=de
+
+Bemerkungen: [% remark %]
+
+       Name: [% freeusername %]
+E-Mail-Adr.: [% email %]
+

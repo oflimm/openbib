@@ -1,0 +1,135 @@
+[% PROCESS common/subtemplate name="titles_record_abstract_fields" %]
+<div class="card mt-5 mb-5 me-5">
+<div class="card-header">[% msg.maketext("Bestellung in den Lesesaal der KMB") %]</div>
+<div class="card-body">
+
+<p>
+Bitte füllen Sie das Bestellformular vollständig aus. Ihr Bestellwunsch wird per E-Mail an unsere Benutzungsabteilung übermittelt und liegt in der Regel innerhalb von 3 Werktagen 14 Tage lang für Sie bereit.</p>
+
+<p>
+Sie werden über den Eingang der Bestellung <b>nicht</b> gesondert benachrichtigt.
+</p>
+
+ <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/me/[% config.get('circulations_loc') %]/id/mail/kmb">
+ 
+     <input type="hidden" name="realm"       value="[% realm %]" />
+     <input type="hidden" name="location"    value="[% title_location %]" />
+     <input type="hidden" name="dbname"      value="[% database %]" />
+
+<legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
+
+<div class="form-floating mb-3">
+      <span class="form-control">[% title %]</span>
+      <input type="hidden" name="titleid" value="[% titleid %]" />
+      <label for="title">Titel</label>
+</div>
+
+[% IF person %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% person %]</span>
+      <label for="person">[% msg.maketext("Autor") %]:</label>
+</div>
+[% END %]
+
+[% IF corporatebody %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% corporatebody %]</span>
+      <label for="corporatation">[% msg.maketext("Körperschaft") %]:</label>
+</div>
+[% END %]
+
+[% IF publisher %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% publisher %]</span>
+      <label for="publisher">[% msg.maketext("Ort/Verlag") %]:</label>
+</div>
+[% END %]
+
+[% IF year %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% year %]</span>
+      <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
+</div>
+[% END %]
+
+[% IF source %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% source %]</span>
+      <label for="source">[% msg.maketext("In") %]:</label>
+</div>
+[% END %]
+
+[%
+     signatur = "";
+     IF label ;
+       signatur = label ;
+     ELSE ;
+       signatur = holdingid ;
+     END;
+
+%]
+
+<div class="form-floating mb-3">
+      <span class="form-control">[% signatur %]</span>
+      <input type="hidden" name="label" value="[% signatur %]" />
+      <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
+</div>
+
+[% IF numbering %]
+<div class="form-floating mb-3">
+      <span class="form-control">[% numbering %]</span>
+      <input type="hidden" name="numbering" value="[% uri_escape(numbering) %]" />
+     <label for="numbering">[% msg.maketext("Bestand in der USB") %]:</label>
+</div>
+[% END %]
+
+[%
+   name = "";
+   IF userinfo.nachname || userinfo.vorname ;
+        IF userinfo.nachname ;
+          name = userinfo.nachname ;
+	END ;
+	IF userinfo.vorname ;
+	  name = "${userinfo.vorname} ${name}";
+	END;
+   END;
+
+%]
+
+<legend class="mt-2">[% msg.maketext("Bereitstellungsort") %]</legend>
+
+      <input type="hidden" name="pickup_location" value="Lesesaal im Museum Ludwig" />
+
+<p>
+<strong>Lesesaal im Museum Ludwig</strong>
+</p>
+
+<p/>
+
+<legend class="mt-2">[% msg.maketext("Weitere Angaben zur Bestellung") %]</legend>
+
+<p>Mit * gekennzeichnete Felder sind Pflichtfelder und müssen ausgefüllt werden.</p>
+
+<div class="form-floating mb-3">
+      <input class="form-control" type="text" name="freeusername" />
+     <label for="username">[% msg.maketext("Name, Vorname") %] (*):</label>
+</div>
+
+<p/>
+
+<div class="form-floating mb-3">
+      <input class="form-control" type="text" name="remark" />
+      <label class="form-floating mb-3-text" for="remark">[% msg.maketext("Bemerkung") %]:</label>
+</div>
+
+<div class="form-floating mb-3">
+      <input class="form-control" type="text" name="email" />
+      <label for="email">[% msg.maketext("E-Mail") %] (*):</label>
+</div>
+
+<button type="submit" class="btn btn-primary mb-2 mt-4">[% msg.maketext("Bestellen") %]</button>
+
+</form>
+
+</div>
+</div>

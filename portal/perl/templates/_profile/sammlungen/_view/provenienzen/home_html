@@ -54,11 +54,8 @@
         <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">
           <i class="fas fa-bullseye"></i> [% msg.maketext("Sammlung") %]
         </a>
-        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/[% config.get('titles_loc') %]/fields/id/4308.html?l=[% lang %]">
+        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/[% config.get('titles_loc') %]/fields/id/4308:a.html?l=[% lang %]">
           <i class="fas fa-list"></i> [% msg.maketext("Register") %]
-        </a>
-        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]">
-          <i class="fas fa-cloud"></i> [% msg.maketext("Wortwolken") %]
         </a>
         <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/[% config.get('titles_loc') %].html?l=[% lang %]">
           <i class="fas fa-th-list"></i> [% msg.maketext("Alle Titel") %]

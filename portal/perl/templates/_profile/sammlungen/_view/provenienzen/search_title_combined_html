@@ -28,7 +28,7 @@
   <!-- AKTUELL [% current_profile %] - BOOKS [% searchprofileid_of_books %] - ARTICLES [% searchprofileid_of_articles %]  -->
 
     <div id="spinner" class="d-flex justify-content-center htmx-indicator spinner-large">
-      <img src="/images/openbib/views/kapsel/logo-provenienzen.png" class="uzk-spinner" alt="[% msg.maketext("Lade-Animation mit Provenienz Logo") %]"/>
+      <img src="/images/openbib/views/provenienzen/logo-provenienzen.png" class="uzk-spinner" alt="[% msg.maketext("Lade-Animation mit Provenienz Logo") %]"/>
     </div>
 
 <!-- See: https://loading.io/css/ CC0 -->

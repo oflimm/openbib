@@ -276,7 +276,7 @@ $(document).on("click", ".ob-less_button", function () {
           ${config.get('searchfield').classificationstring.prefix} = msg.maketext("Systematik")
           ${config.get('searchfield').topic.prefix} = msg.maketext("Themengebiet")
           ${config.get('searchfield').locationstring.prefix} = msg.maketext("Standort")
-          ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("Medientyp")
+          ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("TPRO Typ")
           ${config.get('searchfield').provenancestring.prefix} = msg.maketext("Provenienz")
           ${config.get('searchfield').languagestring.prefix} = msg.maketext("Sprache")
           ${config.get('searchfield').yearstring.prefix} = msg.maketext("Jahr")
@@ -325,7 +325,7 @@ $(document).on("click", ".ob-less_button", function () {
 <!-- Begin mediatype facet -->
 [%         IF config.get('facets').mediatype && facets.defined('mediatype') && facets.mediatype.size > 0 %]
         <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-mediatype[% idsuffix %][% facet_prefix %]" aria-expanded="true">
-           [% msg.maketext("Medientyp") %] 
+           [% msg.maketext("TPRO Typ") %] 
         </h4>
         <ul id="group-mediatype[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.mediatype ;
@@ -376,10 +376,10 @@ $(document).on("click", ".ob-less_button", function () {
 
 <!-- Begin corporatebody facet -->
 [%         IF config.get('facets').corporatebody && facets.defined('corporatebody') && facets.corporatebody.size > 0 %]
-        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-corporatebody[% idsuffix %][% facet_prefix %]" aria-expanded="false">
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-corporatebody[% idsuffix %][% facet_prefix %]" aria-expanded="true">
            [% msg.maketext("Institution") %] 
         </h4>
-        <ul id="group-corporatebody[% idsuffix %][% facet_prefix %]" class="list-group in collapse">
+        <ul id="group-corporatebody[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
 [%             FOREACH termitem IN facets.corporatebody ;
                   LAST IF loop.count > 25 ;
 %]

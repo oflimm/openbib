@@ -56,14 +56,14 @@
 
 <div class="form-floating mb-3">
       <span class="form-control">[% signatur %]</span>
-      <input type="hidden" name="label" value="[% uri_escape(signatur) %]" />
+      <input type="hidden" name="label" value="[% signatur %]" />
       <label for="location_mark">[% msg.maketext("Signatur") %]:</label>
 </div>
 
 [% IF numbering %]
 <div class="form-floating mb-3">
       <span class="form-control">[% numbering %]</span>
-      <input type="hidden" name="numbering" value="[% uri_escape(numbering) %]" />
+      <input type="hidden" name="numbering" value="[% numbering %]" />
      <label for="numbering">[% msg.maketext("Bestand in der USB") %]:</label>
 </div>
 [% END %]

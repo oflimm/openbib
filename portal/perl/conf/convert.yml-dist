@@ -1971,7 +1971,7 @@ convtab:
           facet:
             'subject': 1
       '4306':         # Provenienzen Sammlung
-        '':
+        'a':
           index:
             'subject': 20
             'subjectstring': 20
@@ -1994,7 +1994,7 @@ convtab:
           facet:
             'provenance': 1
       '4307':         # Provenienzen Koerperschaften
-        '':
+        'a':
           index:
             'corporatebody': 20
             'corporatebodystring': 20
@@ -2017,7 +2017,7 @@ convtab:
           facet:
             'provenance': 1
       '4308':         # Provenienzen Person
-        '':
+        'a':
           index:
             'personbody': 20
             'personstring': 20
@@ -2040,7 +2040,7 @@ convtab:
           facet:
             'provenance': 1
       '4310':         # T-PRO Besitzkennzeichen
-        '':
+        'a':
           index:
             'freesearch': 20
             't4310': 1
@@ -2136,94 +2136,6 @@ convtab:
 # Sonderanpassungen fuer einzelne Kataloge
 ##############################################################################
   provenienzen:
-# Parametrisierung der Sortierung
-    sorting_order:
-      - 'P0800'
-      - 'C0800'
-      - 'S0800'
-      - 'PC0001'
-      - 'T0331'
-      - 'T5100'
-      - 'T4310'
-      - 'T0425' 
-      - 'T0424' # 424 hiner 425, d.h. 424 wichtiger, falls besetzt und gleiches Sortierungsfeld
-      - 'T0412'
-      - 'X0014'
-      - 'popularity'
-    sorting:
-      'P0800':
-        'sortfield': 'authority' # Normdaten-Ansetzungsform Person
-        'type': 'stringfield'
-      'C0800':
-        'sortfield': 'authority' # Normdaten-Ansetzungsform Koerperschaft
-        'type': 'stringfield'
-      'S0800':
-        'sortfield': 'authority' # Normdaten-Ansetzungsform Schlagwort
-        'type': 'stringfield'
-      'PC0001':
-        'sortfield': 'person'    # Verfasser/Koepeschaft
-        'type': 'stringfield'
-      'T0331':                   # Titel
-        'sortfield': 'title'
-        'type': 'stringfield'
-        'filter':
-           - 'filter_strip_nonsortable_word'
-      'T5100':
-        'sortfield': 'order'     # Zaehlung
-        'type': 'integerfield'
-      'T4310':
-        'sortfield': 'authority' # T-PRO Besitzkennzeichen
-        'type': 'stringfield'
-      'T0425':
-        'sortfield': 'year'      # Jahr
-        'type': 'integerfield'       
-        'filter':
-           - 'filter_force_signed_year'
-      'T0424':
-        'sortfield': 'year'      # Jahr
-        'type': 'integerfield'
-        'filter':
-           - 'filter_force_signed_year'
-      'T0412':
-        'sortfield': 'publisher' # Verlag
-        'type': 'stringfield'
-      'X0014':
-        'sortfield': 'mark'      # Signatur
-        'type': 'stringfield'
-      'popularity':
-        'sortfield': 'popularity'# Popularitaet
-        'type': 'integervalue'
-    inverted_authority_person:
-      '0800':         # Ansetzung
-        '':
-          index:
-            'person': 1
-            'personstring': 1
-            'freesearch': 1
-        ' ':
-          index:
-            'person': 1
-            'personstring': 1
-            'freesearch': 1
-      '0830':         # Verweisform
-        '':
-          index:
-            'person': 1
-            'personstring': 1
-            'freesearch': 1
-        ' ':
-          index:
-            'person': 1
-            'personstring': 1
-            'freesearch': 1
-      '4410':         # Medientyp
-        '':
-          index:
-            'mediatype': 1
-            'mediatypestring': 1
-            'freesearch': 1
-          facet:
-            'mediatype': 1
     inverted_person: # Fake Eintrag
       'XXXX':         # Ansetzung
         '':
@@ -2245,509 +2157,1135 @@ convtab:
             'subject': 1
             'subjectstring': 1
             'freesearch': 1
-    inverted_authority_corporatebody:
-      '0800':         # Ansetzung
-        '':
-          index:
-            'corporatebody': 1
-            'corporatebodystring': 1
-            'freesearch': 1
-        ' ':
-          index:
-            'corporatebody': 1
-            'corporatebodystring': 1
-            'freesearch': 1
-      '0810':         # Verweisform
-        '':
-          index:
-            'corporatebody': 1
-            'corporatebodystring': 1
-            'freesearch': 1
-        ' ':
-          index:
-            'corporatebody': 1
-            'corporatebodystring': 1
-            'freesearch': 1
-      '0812':         # Abkuerzung der Verweisform
-        '':
-          index:
-            'corporatebody': 1
-            'corporatebodystring': 1
-            'freesearch': 1
-        ' ':
-          index:
-            'corporatebody': 1
-            'corporatebodystring': 1
-            'freesearch': 1
-      '0881':         # Abkuerzung der Ansetzung
-        '':
-          index:
-            'corporatebody': 1
-            'corporatebodystring': 1
-            'freesearch': 1
-        ' ':
-          index:
-            'corporatebody': 1
-            'corporatebodystring': 1
-            'freesearch': 1
-      '0850':         # Frueherer/Spaeterer Name
-        '':
-          index:
-            'corporatebody': 1
-            'corporatebodystring': 1
-            'freesearch': 1
-        ' ':
-          index:
-            'corporatebody': 1
-            'corporatebodystring': 1
-            'freesearch': 1
-      '4410':         # Medientyp
-        '':
-          index:
-            'mediatype': 1
-            'mediatypestring': 1
-            'freesearch': 1
-          facet:
-            'mediatype': 1
-    inverted_authority_title:
-      '4306':         # Provenienzen Sammlung
-        '':
-          index:
-            'subject': 20
-            'subjectstring': 20
-            'freesearch': 20
-            't4306': 1
-            'ft4306': 1
-      '4307':         # Provenienzen Koerperschaften
-        '':
-          index:
-            'corporatebody': 20
-            'corporatebodystring': 20
-            'freesearch': 20
-            't4307': 1
-            'ft4307': 1
-      '4308':         # Provenienzen Person
-        '':
-          index:
-            'personbody': 20
-            'personstring': 20
-            'freesearch': 20
-            't4308': 1
-            'ft4308': 1
-      '4310':         # T-PRO Besitzkennzeichen
-        '':
-          index:
-            'freesearch': 20
-            't4310': 1
-            'ft4310': 1
-      '4410':         # Medientyp
-        '':
-          index:
-            'mediatype': 1
-            'mediatypestring': 1
-            'freesearch': 1
-          facet:
-            'mediatype': 1
-      '0700':         # T-PRO Vokabularium
-        '':
-          index:
-            'freesearch': 20
-            'classification': 1
-            'classificationstring': 1
-          facet:
-            'classification': 1
     inverted_title:
-      'id':           # Id
+      'tag':
         '':
+          index:
+            'tag': 1
+            'tagstring': 1
+            'freesearch': 1
+          facet:
+            'tag': 1      
+      'litlist':
+        '':
+          index:
+            'litlistid': 1
+            'litlist': 1
+            'litliststring': 1
+            'freesearch': 1
+          facet:
+            'litlist': 1
+      '4301':
+        'a': # erfasst
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e': # angereichert
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+      '0035':
+        'a': # Andere IDs
           index:
             'id': 1
-      '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
-        '':
+            'freesearch': 1
+      '0100':
+        'a':
           index:
-            'subid': 1
-      '0010':         # hbzid
-        '':
+            'freesearch': 1
+            'person': 1
+            'personstring': 1
+      '0700':
+        'a':
           index:
-            'hbzid': 1
-      '0014':         # Signatur, wenn nicht in den Exemplardaten
-        '':
+            'freesearch': 1
+            'person': 1
+            'personstring': 1
+      '0110':
+        'a':
           index:
-            'mark': 1
-            'markstring': 1
-      '0089':
-        '':
+            'freesearch': 1
+            'corporatebody': 1
+            'corporatebodystring': 1
+      '0710':
+        'a':
           index:
-            'source': 1
-      '0304':         # EST
-        '':
+            'freesearch': 1
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'corporatebody': 1
+      '0130':
+        'a': # EST
           index:
             'title': 1
             'titlestring': 1
-      '0306':         # RDA: Manifestation verkoerperter Werke
-        '':
-          index:
-            'title': 1
-      '0310':         # AST
-        '':
+            'freesearch': 1
+        'g': # EST
           index:
             'title': 1
             'titlestring': 1
-      '0331':         # HST
-        '':
+            'freesearch': 1
+      '0240':
+        'a': # EST
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 1
+      '0245':
+        'a': # HST
           index:
             'title': 50
             'titlestring': 50
-      '0335':         # Zusatz zum HST
-        '':
+            'freesearch': 50
+        'b': # Zusatz zum HST, PST, ...
+          index:
+            'ft245b': 1
+            'title': 1
+            'titlestring': 1
+            'freesearch': 30
+        'c':  # Vorl. Verfasser Koerperschaft
+          index:
+            'person': 40
+            'corporatebody': 40
+            'freesearch': 40
+        'p': # Band-Titel
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
+      '0246':
+        'a': # AST, WST, TitelOrth
           index:
             'title': 1
             'titlestring': 1
-      '0340':         # PSTAnsetzung
-        '':
+            'freesearch': 30
+        'b':  # Verlag, Drucker
           index:
-            'title': 1
-            'titlestring': 1
-      '0341':         # PSTVorlage
-        '':
-          index:
-            'title': 1
-            'titlestring': 1
-      '0343':         # RDA: Zusatz zum PST
-        '':
-          index:
-            'title': 1
-            'titlestring': 1
-      '0360':       # Unterreihe
-        '':
-          index:
-            'title': 40
-      '0361':       # Vorlage beigefuegtes Werk
-        '':
+            'publisher': 1
+            'publisherstring': 1
+      '0249':       # Vorlage beigefuegtes Werk
+        'a':
           index:
             'title': 40
             'titlestring': 40
-      '0362':         # RDA Doppelung von 0306: Manifestation verkoerperter Werke
-        '':
+            'freesearch': 40
+      '0250':         # Auflage
+        'a':
           index:
-            'title': 1
-            'titlestring': 1
-      '0370':         # WST
-        '':
-          index:
-            'title': 1
-            'titlestring': 1
-      '0371':         # RDA: erster/frueherer Sachtitel
-        '':
-          index:
-            'title': 1
-      '0375':         # ZSTnorm
-        '':
-          index:
-            'title': 1
-            'titlestring': 1
-      '0390':         # RDA: Angaben zum Inhalt
-        '':
-          index:
-            'title': 1
-            'titlestring': 1
-      '0412':         # Verlag
-        '':
-          index:
-            'publisher': 1
-            'publisherstring': 1
-      '0413':         # Drucker
-        '':
-          index:
-            'person': 1
-      '0424':
-        '':
+            'ft250a': 1
+      '0264':
+        'c': # Jahr 
           index:
             'year': 1
             'yearstring': 1
-      '0425':
-        '':
-          index:
-            'year': 1
-            'yearstring': 1
+            'freesearch': 1
           facet:
             'year': 1
-      '0451':
-        '':
+      '0490': # 1. GT
+        'a':
           index:
             'source': 1
-      '0508':
-        '':
+            'freesearch': 1
+      '0500': # Angabe zur Quelle
+        'a':
           index:
             'source': 1
-      '0519':         # Hochschulschriftenvermerk
-        '':
+      '0502': # Hochschulschriftenvermerk
+        'a':
           index:
             'hss': 1
-      '0520':         # RDA: Hochschulschriftenvermerk
-        '':
-          index:
-            'hss': 1
-      '0540':         # ISBN
-        '':
-          index:
+      '0020':
+        'a': # ISBN, ISBN Sekundaerform      
+          'index':
             'isbn': 1
-      '0541':         # ISBN falsch
-        '':
-          index:
+            'freesearch': 1
+          'collapse':
             'isbn': 1
-      '0543':         # ISSN
-        '':
+        'z': # ISBN falsch      
+          'index':
+            'isbn': 1
+            'freesearch': 1
+      '0022':
+        'a': # ISSN
           index:
             'issn': 1
-      '0544':         # ISSN falsch
-        '':
+            'freesearch': 1
+        'z': # ISSN falsch
           index:
             'issn': 1
-      '0547':         # ISMN ala ISBN
-        '':
+            'freesearch': 1
+      '0024':
+        'a': # ISMN ala ISBN
           index:
             'isbn': 1
-      '0553':         # ISBN
-        '':
-          index:
-            'isbn': 1
-      '0572':         # zdbid
-        '':
-          index:
-            'zdbid': 1
-      '0585':         # ISSN Quelle
-        '':
-          index:
-            'issn': 1
-      '0590':
-        '':
+            'freesearch': 1
+      '0773': # HST Quelle
+        'a':
           index:
             'source': 1
-      '0634':         # ISBN sekundaerform
-        '':
+            'freesearch': 1
+        'w':  # ID der Ueberordnung
           index:
-            'isbn': 1
-      '0670':         # TitelOrth
-        '':
-          index:
-            'title': 1
-            'titlestring': 1
-      '0675':         # HSTmodern
-        '':
+            'subid': 1
+      '0830': # Gesamttitel
+        'a':
           index:
             'title': 1
-            'titlestring': 1
-      '0688':         # RDA: Original-Verleger
-        '':
+            'freesearch': 1
+        'w':  # ID der Ueberordnung
           index:
-            'publisher': 1
-            'publisherstring': 1
-      '0700':
-        '':
+            'subid': 1
+      '0082': # DDC
+        'a':
           index:
             'classificationstring': 1
-          facet:
-            'classification': 1
-      '0750':         # Abstract
-        '':
+      '0600': # Schlagwort
+        'a':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+      '0610': # Schlagwort
+        'a':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+      '0648': # Schlagwort
+        'a':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+      '0650': # Schlagwort
+        'a':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+      '0651': # Schlagwort
+        'a':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+      '0655': # Schlagwort
+        'a':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+      '0688': # Schlagwort
+        'a':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+      '0689': # RSWK-Schlagwort (Kettenbestandteil)
+        'a':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+      '0520':         # Abstract
+        'a':
           index:
             'content': 1
-      '1203':         # Signatur, wenn nicht in den Exemplardaten
-        '':
+            'freesearch': 1
+      '0535': 
+        'g': # Signatur Sekundaerform
           index:
             'markstring': 1
             'mark': 1
-      '1550':         # ISSN_aut_r
-        '':
-          index:
+      '0776':
+        'z': # ISBN Sekundaerform
+          'index':
+            'isbn': 1
+            'freesearch': 1
+        'x': # ISSN Sekundaerform
+          'index':
             'issn': 1
-      '1551':         # ISSN_dat_r
-        '':
+            'freesearch': 1
+      '0852': 
+        'h': # Grundsignatur
           index:
-            'issn': 1
-      '1552':         # ISSN_www_r
-        '':
+            'markstring': 1
+            'mark': 1
+        'j': # Sonderstandort-Signatur
           index:
-            'issn': 1
-      '1553':         # ISSN_pnt_r
-        '':
+            'markstring': 1
+            'mark': 1
+      '0980':         # Provenienzen (Sammlungskennzeichnungen, "Koelner Modell")
+        's':
           index:
-            'issn': 1
-      '1567':         # ISSN_pnt_f
-        '':
+            'provenance': 20
+            'provenancestring': 20
+          facet:
+            'provenance': 1
+        'f': # KMB Einordnung Abrufzeichen, Erwerbungsgruppe
           index:
-            'issn': 1
-      '1586':         # ISBN_dat_o 
-        '':
+            'ft4800': 1
+        'g': # KMB Einordnung Abrufzeichen, Publikationsarten
           index:
-            'isbn': 1
-      '1587':         # ISBN_www_o 
-        '':
+            'ft4801': 1
+        'h': # KMB Einordnung Abrufzeichen, Schenkungen/Leihgaben
           index:
-            'isbn': 1
-      '1588':         # ISBN_pnt_o 
-        '':
+            'ft4802': 1
+      '0982': # Lokales (Instiuts)Schlagwort
+        'a':
           index:
-            'isbn': 1
-      '1590':         # ISBN_dat_r 
-        '':
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+      '0983': # Notation
+        'b':
           index:
-            'isbn': 1
-      '1591':         # ISBN_www_r 
-        '':
+            'classificationstring': 1
+      '1942': 
+        'a': # GND Anreicherung: Verweisungsform Person
           index:
-            'isbn': 1
-      '1592':         # ISBN_pnt_r 
-        '':
+            'person': 1
+            'freesearch': 1
+        'b': # GND Anreicherung: Verweisungsform Koerperschaft
           index:
-            'isbn': 1
-      '1594':         # ISBN_dat_f 
-        '':
+            'corporatebody': 1
+            'freesearch': 1
+      '1001': # Alternative IDs
+        'z':         # zdbid
           index:
-            'isbn': 1
-      '1595':         # ISBN_www_f 
-        '':
+            'zdbid': 1
+        'u':         # alte USB id/katkey
           index:
-            'isbn': 1
-      '1596':         # ISBN_pnt_f 
-        '':
+            'id': 1
+        'h':         # hbzid (alte ID, NZ-ID, CZ-ID)
           index:
-            'isbn': 1
-      '1780':         # ISBN RDA
-        '':
+            'hbzid': 1
+      '1002': # USB Systematiken
+        'a':         # USB LBS und LS
           index:
-            'isbn': 1
-      '1804':         # Nebeneintragung 1. Titel EST
-        '':
+            'ft1002': 1
+      '1003': # GNDs ohne Prefix
+        'a':         # 
           index:
-            'title': 1
-            'titlestring': 1
-      '1805':         # Nebeneintragung 1. Titel Ansetzungsform
-        '':
+            'gnd': 1
+      '1004': # KMB Aufstellungssystematik
+        'k':         # KMB
           index:
-            'title': 1
-            'titlestring': 1
-      '1806':         # Nebeneintragung 1. Titel in Mischform
-        '':
-          index:
-            'title': 1
-            'titlestring': 1
+            'ft1004': 1
       '4100':         # BK
         '':
           index:
             'ft4100': 1
             'classification': 1
             'classificationstring': 1
-          facet:
+        'e':
+          index:
+            'ft4100': 1
             'classification': 1
+            'classificationstring': 1
       '4101':         # RVK
         '':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
-          facet:
-            'classification': 1
         'e':
           index:
             'rvk': 1
             'classification': 1
             'classificationstring': 1
-          facet:
             'classification': 1
       '4102':         # Topic
         '':
           index:
             'topic': 1
-          facet:
+        'e':
+          index:
             'topic': 1
       '4111':         # TOC
         '':
+          index:
+            'toc': 1
+        'e':
           index:
             'toc': 1
       '4113':         # Register
         '':
           index:
             'reg': 1
+        'e':
+          index:
+            'reg': 1
       '4200':         # Wikipedia
         '':
           index:
             'content': 1
+            'freesearch': 1
+        'e':
+          index:
+            'content': 1
+            'freesearch': 1
       '4201':         # Wikipedia
         '':
           index:
             'content': 1
+            'freesearch': 1
+        'e':
+          index:
+            'content': 1
+            'freesearch': 1
       '4202':         # Wikipedia
         '':
           index:
             'content': 1
-      '4300':         # Fremde Schlagworte
-        '':
+            'freesearch': 1
+        'e':
           index:
-            'ft4300': 1
-      '4306':         # Provenienzen Sammlung
+            'content': 1
+            'freesearch': 1
+      '4300':         # Fremde Schlagworte
         '':
           index:
             'subject': 20
             'subjectstring': 20
             'freesearch': 20
-          facet:
-            'subject': 1
-      '4307':         # Provenienzen Koerperschaften
-        '':
+            'ft4300': 1
+        'e':
           index:
-            'corporatebody': 20
-            'corporatebodystring': 20
+            'subject': 20
+            'subjectstring': 20
             'freesearch': 20
-          facet:
-            'corporatebody': 1
-      '4308':         # Provenienzen Person
-        '':
+            'ft4300': 1
+      '4306':         # Provenienzen Sammlung
+        'a':
           index:
-            'person': 20
-            'personstring': 20
+            'subject': 20
+            'subjectstring': 20
             'freesearch': 20
-          facet:
-            'person': 1
-      '4309':         # Signatur
-        '':
-          index:
-            'freesearch': 20
-            'mark': 1
-            'markstring': 1
-      '4310':         # T-PRO Besitzkennzeichen
-        '':
-          index:
-            'freesearch': 20
-            't4310': 1
-            'ft4310': 1
-      '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder visible_[immediate|order]
-        '':
-          index:
-            'availabilitystring': 1
-      '4410':         # Medientyp
-        '':
-          index:
-            'mediatype': 1
-            'mediatypestring': 1
-            'freesearch': 1
-          facet:
-            'mediatype': 1
-      '4700':         # Sammlungsvermerk
-        '':
-          index:
+            't4306': 1
+            'ft4306': 1
             'provenance': 20
             'provenancestring': 20
           facet:
             'provenance': 1
+        'e':
+          index:
+            'subject': 20
+            'subjectstring': 20
+            'freesearch': 20
+            't4306': 1
+            'ft4306': 1
+            'provenance': 20
+            'provenancestring': 20
+          facet:
+            'provenance': 1
+      '4307':         # Provenienzen Koerperschaften
+        'a':
+          index:
+            'corporatebody': 20
+            'corporatebodystring': 20
+            'freesearch': 20
+            't4307': 1
+            'ft4307': 1
+            'provenance': 20
+            'provenancestring': 20
+          facet:
+            'corporatebody': 1
+        'e':
+          index:
+            'corporatebody': 20
+            'corporatebodystring': 20
+            'freesearch': 20
+            't4307': 1
+            'ft4307': 1
+            'provenance': 20
+            'provenancestring': 20
+          facet:
+            'corporatebody': 1
+      '4308':         # Provenienzen Person
+        'a':
+          index:
+            'personbody': 20
+            'personstring': 20
+            'freesearch': 20
+            't4308': 1
+            'ft4308': 1
+            'provenance': 20
+            'provenancestring': 20
+          facet:
+            'person': 1
+        'e':
+          index:
+            'personbody': 20
+            'personstring': 20
+            'freesearch': 20
+            't4308': 1
+            'ft4308': 1
+            'provenance': 20
+            'provenancestring': 20
+          facet:
+            'person': 1
+      '4310':         # T-PRO Besitzkennzeichen
+        'a':
+          index:
+            'freesearch': 20
+            't4310': 1
+            'ft4310': 1
+        'e':
+          index:
+            'freesearch': 20
+            't4310': 1
+            'ft4310': 1
+        'm':
+          index:
+            'freesearch': 20
+            'mediatype': 1
+            'mediatypestring': 1
+          facet:
+            'mediatype': 1
+      '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder presence_[immediate|order]
+        '':
+          index:
+            'availabilitystring': 1
+          facet:
+            'availability' : 1
+        'e':
+          index:
+            'availabilitystring': 1
+          facet:
+            'availability' : 1
       '5050':         # Bibkey
         '':
           index:
             'bkey': 1
+            'freesearch': 1
+          collapse:
+            'bibkey': 1
       '5051':         # Bibkey Base
         '':
           index:
             'bkey': 1
+            'freesearch': 1
+  
+#   provenienzen:
+# # Parametrisierung der Sortierung
+#     sorting_order:
+#       - 'P0800'
+#       - 'C0800'
+#       - 'S0800'
+#       - 'PC0001'
+#       - 'T0331'
+#       - 'T5100'
+#       - 'T4310'
+#       - 'T0425' 
+#       - 'T0424' # 424 hiner 425, d.h. 424 wichtiger, falls besetzt und gleiches Sortierungsfeld
+#       - 'T0412'
+#       - 'X0014'
+#       - 'popularity'
+#     sorting:
+#       'P0800':
+#         'sortfield': 'authority' # Normdaten-Ansetzungsform Person
+#         'type': 'stringfield'
+#       'C0800':
+#         'sortfield': 'authority' # Normdaten-Ansetzungsform Koerperschaft
+#         'type': 'stringfield'
+#       'S0800':
+#         'sortfield': 'authority' # Normdaten-Ansetzungsform Schlagwort
+#         'type': 'stringfield'
+#       'PC0001':
+#         'sortfield': 'person'    # Verfasser/Koepeschaft
+#         'type': 'stringfield'
+#       'T0331':                   # Titel
+#         'sortfield': 'title'
+#         'type': 'stringfield'
+#         'filter':
+#            - 'filter_strip_nonsortable_word'
+#       'T5100':
+#         'sortfield': 'order'     # Zaehlung
+#         'type': 'integerfield'
+#       'T4310':
+#         'sortfield': 'authority' # T-PRO Besitzkennzeichen
+#         'type': 'stringfield'
+#       'T0425':
+#         'sortfield': 'year'      # Jahr
+#         'type': 'integerfield'       
+#         'filter':
+#            - 'filter_force_signed_year'
+#       'T0424':
+#         'sortfield': 'year'      # Jahr
+#         'type': 'integerfield'
+#         'filter':
+#            - 'filter_force_signed_year'
+#       'T0412':
+#         'sortfield': 'publisher' # Verlag
+#         'type': 'stringfield'
+#       'X0014':
+#         'sortfield': 'mark'      # Signatur
+#         'type': 'stringfield'
+#       'popularity':
+#         'sortfield': 'popularity'# Popularitaet
+#         'type': 'integervalue'
+#     inverted_authority_person:
+#       '0800':         # Ansetzung
+#         '':
+#           index:
+#             'person': 1
+#             'personstring': 1
+#             'freesearch': 1
+#         ' ':
+#           index:
+#             'person': 1
+#             'personstring': 1
+#             'freesearch': 1
+#       '0830':         # Verweisform
+#         '':
+#           index:
+#             'person': 1
+#             'personstring': 1
+#             'freesearch': 1
+#         ' ':
+#           index:
+#             'person': 1
+#             'personstring': 1
+#             'freesearch': 1
+#       '4410':         # Medientyp
+#         '':
+#           index:
+#             'mediatype': 1
+#             'mediatypestring': 1
+#             'freesearch': 1
+#           facet:
+#             'mediatype': 1
+#     inverted_person: # Fake Eintrag
+#       'XXXX':         # Ansetzung
+#         '':
+#           index:
+#             'corporatebody': 1
+#             'corporatebodystring': 1
+#             'freesearch': 1
+#     inverted_corporatebody: # Fake Eintrag
+#       'XXXX':         # Ansetzung
+#         '':
+#           index:
+#             'corporatebody': 1
+#             'corporatebodystring': 1
+#             'freesearch': 1
+#     inverted_subject: # Fake Eintrag
+#       'XXXX':         # Ansetzung
+#         '':
+#           index:
+#             'subject': 1
+#             'subjectstring': 1
+#             'freesearch': 1
+#     inverted_authority_corporatebody:
+#       '0800':         # Ansetzung
+#         '':
+#           index:
+#             'corporatebody': 1
+#             'corporatebodystring': 1
+#             'freesearch': 1
+#         ' ':
+#           index:
+#             'corporatebody': 1
+#             'corporatebodystring': 1
+#             'freesearch': 1
+#       '0810':         # Verweisform
+#         '':
+#           index:
+#             'corporatebody': 1
+#             'corporatebodystring': 1
+#             'freesearch': 1
+#         ' ':
+#           index:
+#             'corporatebody': 1
+#             'corporatebodystring': 1
+#             'freesearch': 1
+#       '0812':         # Abkuerzung der Verweisform
+#         '':
+#           index:
+#             'corporatebody': 1
+#             'corporatebodystring': 1
+#             'freesearch': 1
+#         ' ':
+#           index:
+#             'corporatebody': 1
+#             'corporatebodystring': 1
+#             'freesearch': 1
+#       '0881':         # Abkuerzung der Ansetzung
+#         '':
+#           index:
+#             'corporatebody': 1
+#             'corporatebodystring': 1
+#             'freesearch': 1
+#         ' ':
+#           index:
+#             'corporatebody': 1
+#             'corporatebodystring': 1
+#             'freesearch': 1
+#       '0850':         # Frueherer/Spaeterer Name
+#         '':
+#           index:
+#             'corporatebody': 1
+#             'corporatebodystring': 1
+#             'freesearch': 1
+#         ' ':
+#           index:
+#             'corporatebody': 1
+#             'corporatebodystring': 1
+#             'freesearch': 1
+#       '4410':         # Medientyp
+#         '':
+#           index:
+#             'mediatype': 1
+#             'mediatypestring': 1
+#             'freesearch': 1
+#           facet:
+#             'mediatype': 1
+#     inverted_authority_title:
+#       '4306':         # Provenienzen Sammlung
+#         '':
+#           index:
+#             'subject': 20
+#             'subjectstring': 20
+#             'freesearch': 20
+#             't4306': 1
+#             'ft4306': 1
+#       '4307':         # Provenienzen Koerperschaften
+#         '':
+#           index:
+#             'corporatebody': 20
+#             'corporatebodystring': 20
+#             'freesearch': 20
+#             't4307': 1
+#             'ft4307': 1
+#       '4308':         # Provenienzen Person
+#         '':
+#           index:
+#             'personbody': 20
+#             'personstring': 20
+#             'freesearch': 20
+#             't4308': 1
+#             'ft4308': 1
+#       '4310':         # T-PRO Besitzkennzeichen
+#         '':
+#           index:
+#             'freesearch': 20
+#             't4310': 1
+#             'ft4310': 1
+#       '4410':         # Medientyp
+#         '':
+#           index:
+#             'mediatype': 1
+#             'mediatypestring': 1
+#             'freesearch': 1
+#           facet:
+#             'mediatype': 1
+#       '0700':         # T-PRO Vokabularium
+#         '':
+#           index:
+#             'freesearch': 20
+#             'classification': 1
+#             'classificationstring': 1
+#           facet:
+#             'classification': 1
+#     inverted_title:
+#       'id':           # Id
+#         '':
+#           index:
+#             'id': 1
+#       '0004':         # Id der Ueberordnung (In der Recherche findet man damit jedoch die Unterordnung, daher 'sub')
+#         '':
+#           index:
+#             'subid': 1
+#       '0010':         # hbzid
+#         '':
+#           index:
+#             'hbzid': 1
+#       '0014':         # Signatur, wenn nicht in den Exemplardaten
+#         '':
+#           index:
+#             'mark': 1
+#             'markstring': 1
+#       '0089':
+#         '':
+#           index:
+#             'source': 1
+#       '0304':         # EST
+#         '':
+#           index:
+#             'title': 1
+#             'titlestring': 1
+#       '0306':         # RDA: Manifestation verkoerperter Werke
+#         '':
+#           index:
+#             'title': 1
+#       '0310':         # AST
+#         '':
+#           index:
+#             'title': 1
+#             'titlestring': 1
+#       '0331':         # HST
+#         '':
+#           index:
+#             'title': 50
+#             'titlestring': 50
+#       '0335':         # Zusatz zum HST
+#         '':
+#           index:
+#             'title': 1
+#             'titlestring': 1
+#       '0340':         # PSTAnsetzung
+#         '':
+#           index:
+#             'title': 1
+#             'titlestring': 1
+#       '0341':         # PSTVorlage
+#         '':
+#           index:
+#             'title': 1
+#             'titlestring': 1
+#       '0343':         # RDA: Zusatz zum PST
+#         '':
+#           index:
+#             'title': 1
+#             'titlestring': 1
+#       '0360':       # Unterreihe
+#         '':
+#           index:
+#             'title': 40
+#       '0361':       # Vorlage beigefuegtes Werk
+#         '':
+#           index:
+#             'title': 40
+#             'titlestring': 40
+#       '0362':         # RDA Doppelung von 0306: Manifestation verkoerperter Werke
+#         '':
+#           index:
+#             'title': 1
+#             'titlestring': 1
+#       '0370':         # WST
+#         '':
+#           index:
+#             'title': 1
+#             'titlestring': 1
+#       '0371':         # RDA: erster/frueherer Sachtitel
+#         '':
+#           index:
+#             'title': 1
+#       '0375':         # ZSTnorm
+#         '':
+#           index:
+#             'title': 1
+#             'titlestring': 1
+#       '0390':         # RDA: Angaben zum Inhalt
+#         '':
+#           index:
+#             'title': 1
+#             'titlestring': 1
+#       '0412':         # Verlag
+#         '':
+#           index:
+#             'publisher': 1
+#             'publisherstring': 1
+#       '0413':         # Drucker
+#         '':
+#           index:
+#             'person': 1
+#       '0424':
+#         '':
+#           index:
+#             'year': 1
+#             'yearstring': 1
+#       '0425':
+#         '':
+#           index:
+#             'year': 1
+#             'yearstring': 1
+#           facet:
+#             'year': 1
+#       '0451':
+#         '':
+#           index:
+#             'source': 1
+#       '0508':
+#         '':
+#           index:
+#             'source': 1
+#       '0519':         # Hochschulschriftenvermerk
+#         '':
+#           index:
+#             'hss': 1
+#       '0520':         # RDA: Hochschulschriftenvermerk
+#         '':
+#           index:
+#             'hss': 1
+#       '0540':         # ISBN
+#         '':
+#           index:
+#             'isbn': 1
+#       '0541':         # ISBN falsch
+#         '':
+#           index:
+#             'isbn': 1
+#       '0543':         # ISSN
+#         '':
+#           index:
+#             'issn': 1
+#       '0544':         # ISSN falsch
+#         '':
+#           index:
+#             'issn': 1
+#       '0547':         # ISMN ala ISBN
+#         '':
+#           index:
+#             'isbn': 1
+#       '0553':         # ISBN
+#         '':
+#           index:
+#             'isbn': 1
+#       '0572':         # zdbid
+#         '':
+#           index:
+#             'zdbid': 1
+#       '0585':         # ISSN Quelle
+#         '':
+#           index:
+#             'issn': 1
+#       '0590':
+#         '':
+#           index:
+#             'source': 1
+#       '0634':         # ISBN sekundaerform
+#         '':
+#           index:
+#             'isbn': 1
+#       '0670':         # TitelOrth
+#         '':
+#           index:
+#             'title': 1
+#             'titlestring': 1
+#       '0675':         # HSTmodern
+#         '':
+#           index:
+#             'title': 1
+#             'titlestring': 1
+#       '0688':         # RDA: Original-Verleger
+#         '':
+#           index:
+#             'publisher': 1
+#             'publisherstring': 1
+#       '0700':
+#         '':
+#           index:
+#             'classificationstring': 1
+#           facet:
+#             'classification': 1
+#       '0750':         # Abstract
+#         '':
+#           index:
+#             'content': 1
+#       '1203':         # Signatur, wenn nicht in den Exemplardaten
+#         '':
+#           index:
+#             'markstring': 1
+#             'mark': 1
+#       '1550':         # ISSN_aut_r
+#         '':
+#           index:
+#             'issn': 1
+#       '1551':         # ISSN_dat_r
+#         '':
+#           index:
+#             'issn': 1
+#       '1552':         # ISSN_www_r
+#         '':
+#           index:
+#             'issn': 1
+#       '1553':         # ISSN_pnt_r
+#         '':
+#           index:
+#             'issn': 1
+#       '1567':         # ISSN_pnt_f
+#         '':
+#           index:
+#             'issn': 1
+#       '1586':         # ISBN_dat_o 
+#         '':
+#           index:
+#             'isbn': 1
+#       '1587':         # ISBN_www_o 
+#         '':
+#           index:
+#             'isbn': 1
+#       '1588':         # ISBN_pnt_o 
+#         '':
+#           index:
+#             'isbn': 1
+#       '1590':         # ISBN_dat_r 
+#         '':
+#           index:
+#             'isbn': 1
+#       '1591':         # ISBN_www_r 
+#         '':
+#           index:
+#             'isbn': 1
+#       '1592':         # ISBN_pnt_r 
+#         '':
+#           index:
+#             'isbn': 1
+#       '1594':         # ISBN_dat_f 
+#         '':
+#           index:
+#             'isbn': 1
+#       '1595':         # ISBN_www_f 
+#         '':
+#           index:
+#             'isbn': 1
+#       '1596':         # ISBN_pnt_f 
+#         '':
+#           index:
+#             'isbn': 1
+#       '1780':         # ISBN RDA
+#         '':
+#           index:
+#             'isbn': 1
+#       '1804':         # Nebeneintragung 1. Titel EST
+#         '':
+#           index:
+#             'title': 1
+#             'titlestring': 1
+#       '1805':         # Nebeneintragung 1. Titel Ansetzungsform
+#         '':
+#           index:
+#             'title': 1
+#             'titlestring': 1
+#       '1806':         # Nebeneintragung 1. Titel in Mischform
+#         '':
+#           index:
+#             'title': 1
+#             'titlestring': 1
+#       '4100':         # BK
+#         '':
+#           index:
+#             'ft4100': 1
+#             'classification': 1
+#             'classificationstring': 1
+#           facet:
+#             'classification': 1
+#       '4101':         # RVK
+#         '':
+#           index:
+#             'rvk': 1
+#             'classification': 1
+#             'classificationstring': 1
+#           facet:
+#             'classification': 1
+#         'e':
+#           index:
+#             'rvk': 1
+#             'classification': 1
+#             'classificationstring': 1
+#           facet:
+#             'classification': 1
+#       '4102':         # Topic
+#         '':
+#           index:
+#             'topic': 1
+#           facet:
+#             'topic': 1
+#       '4111':         # TOC
+#         '':
+#           index:
+#             'toc': 1
+#       '4113':         # Register
+#         '':
+#           index:
+#             'reg': 1
+#       '4200':         # Wikipedia
+#         '':
+#           index:
+#             'content': 1
+#       '4201':         # Wikipedia
+#         '':
+#           index:
+#             'content': 1
+#       '4202':         # Wikipedia
+#         '':
+#           index:
+#             'content': 1
+#       '4300':         # Fremde Schlagworte
+#         '':
+#           index:
+#             'ft4300': 1
+#       '4306':         # Provenienzen Sammlung
+#         '':
+#           index:
+#             'subject': 20
+#             'subjectstring': 20
+#             'freesearch': 20
+#           facet:
+#             'subject': 1
+#       '4307':         # Provenienzen Koerperschaften
+#         '':
+#           index:
+#             'corporatebody': 20
+#             'corporatebodystring': 20
+#             'freesearch': 20
+#           facet:
+#             'corporatebody': 1
+#       '4308':         # Provenienzen Person
+#         '':
+#           index:
+#             'person': 20
+#             'personstring': 20
+#             'freesearch': 20
+#           facet:
+#             'person': 1
+#       '4309':         # Signatur
+#         '':
+#           index:
+#             'freesearch': 20
+#             'mark': 1
+#             'markstring': 1
+#       '4310':         # T-PRO Besitzkennzeichen
+#         '':
+#           index:
+#             'freesearch': 20
+#             't4310': 1
+#             'ft4310': 1
+#       '4400':         # Verfuegbarkeit lendable_[immediate|order|weekend] oder visible_[immediate|order]
+#         '':
+#           index:
+#             'availabilitystring': 1
+#       '4410':         # Medientyp
+#         '':
+#           index:
+#             'mediatype': 1
+#             'mediatypestring': 1
+#             'freesearch': 1
+#           facet:
+#             'mediatype': 1
+#       '4700':         # Sammlungsvermerk
+#         '':
+#           index:
+#             'provenance': 20
+#             'provenancestring': 20
+#           facet:
+#             'provenance': 1
+#       '5050':         # Bibkey
+#         '':
+#           index:
+#             'bkey': 1
+#       '5051':         # Bibkey Base
+#         '':
+#           index:
+#             'bkey': 1
   
   instzs:
     listitemcat:

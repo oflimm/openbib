@@ -1210,11 +1210,16 @@ sub get_sessiontoken {
 
     $config->connectMemcached;
 
-    $logger->debug("Getting sessiontoken for sessionid ".$self->{sessionID});
-
+    if (defined $self->{sessionID}){
+	$logger->debug("Getting sessiontoken for sessionid ".$self->{sessionID});
+    }
+    else {
+	$logger->debug("No sessionid to get sessiontoken");
+    }
+    
     my $memc_key = "eds:sessiontoken:".$self->{sessionID};
 
-    if ($config->{memc}){
+    if ($config->{memc} && defined $self->{sessionID}){
         my $sessiontoken = $config->{memc}->get($memc_key);
 
 	if ($sessiontoken){
@@ -1495,7 +1500,7 @@ sub process_matches {
 	    my $url = "";
 	    
 	    eval { 	
-		$url = $match->{'FullText'}{'Links'}[0]{'Link'}[0]{'Url'};
+		$url = $match->{'FullText'}{'Links'}[0]{'Link'}[0]{'Url'} || '';
 		$logger->debug("Got first URL $url");
 	    };
 	    
@@ -2037,9 +2042,9 @@ sub process_facets {
 	my $id   = $eds_facet->{Id};
 	my $type = $config->get('eds_facet_mapping')->{$id};
 
-	$logger->debug("Process Id $id and type $type");
-	
 	next unless (defined $type) ;
+		
+	$logger->debug("Process Id $id and type $type");
 	
         my $contents_ref = [] ;
         foreach my $item_ref (@{$eds_facet->{AvailableFacetValues}}) {

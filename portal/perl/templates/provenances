@@ -166,23 +166,26 @@
 [% END %]
 [% IF has_4315 %]
 <td>
-[% IF provenance.${'T4315'}.${'a'} %]
+[% IF provenance.${'T4315'}.${'c'} %]
 [%
-   this_id = provenance.${'T4315'}.${'a'};
-   cdm_json_url = "https://services.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fprovenienzen&start=1&maxrecs=100&field0=identi&mode0=exact&string0=${this_id}";
 
-   cdm = record.enrich_cdm(bezeichner,cdm_json_url) ;
+   cdmid = provenance.${'T4315'}.${'c'};
+   cdm_imgurl = "";
+   cdm_webimgurl = "";   
+
+   IF cdmid || cdmid == '0';
+     cdm_webimgurl = "https://search.ub.uni-koeln.de/scans/provenienzen/${cdmid}/${cdmid}_w600.jpg";
+     cdm_imgurl = "https://search.ub.uni-koeln.de/scans/provenienzen/${cdmid}/${cdmid}.jpg";
+   END;
 %]
-[% IF cdm.total > 0 ;
-   FOREACH cdmrecord IN cdm.records ;
-     cdm_url       = "https://services.ub.uni-koeln.de/cdm/singleitem/collection/portrait/id/${cdmrecord.pointer}/";
-     cdm_imgurl    = "https://services.ub.uni-koeln.de/cdm4/get_image.php?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&WIDTH=200";
-     cdm_webimgurl = "https://services.ub.uni-koeln.de/cdm4/get_image.php?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&WIDTH=800";
+[% IF cdm_imgurl ;
+   manifest_url  = "https://search.ub.uni-koeln.de/scans/portrait/${cdmid}/manifest.xml";
+   manifest_url = uri_escape(manifest_url);
+   dfgviewer_url = "https://dfg-viewer.de/show/?set%5Bmets%5D=${manifest_url}";
 %]
-<a href="[% cdm_webimgurl %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]"/></a>
-
-  [% END %]
-
+<a href="[% cdm_imgurl %]" target="_blank">
+<img id="cover_full" class="img-fluid" width="300" src="[% cdm_webimgurl %]"/>
+</a>
 [% END # IF %]
 [% ELSE %]
 -

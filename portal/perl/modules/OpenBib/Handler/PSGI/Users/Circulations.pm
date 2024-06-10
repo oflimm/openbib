@@ -39,7 +39,7 @@ use DBI;
 use Digest::MD5;
 use Email::Valid;
 use Encode qw/decode_utf8 encode_utf8/;
-use HTML::Entities qw/decode_entities/;
+use HTML::Entities qw/decode_entities encode_entities/;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use SOAP::Lite;
@@ -354,8 +354,7 @@ sub update_ilsaccount {
 	}
 	
     }
-    
-    
+
     if ($self->param('representation') eq "html"){
 	my $reason = $response_ref->{message} || "Aktion erfolgreich.";
 	

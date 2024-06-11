@@ -391,6 +391,14 @@ FOREACH category IN categories;
    END;
 END;
 -%]
-<tr><th class="ob-field">Externe Ansicht</th><td><a href="http://dfg-viewer.de/show/?set[mets]=https%3A%2F%2Fservices.ub.uni-koeln.de%2Fcdm4%2Fmets_gateway.php%3FCISOROOT%3D%2Fmuenzen%26CISOPTR%3D[% cdmid %]" target="_blank"><img src="/images/openbib/dfgviewerLogo.svg" alt="DFG-Viewer" name="DFG-Viewer" /></a></td></tr>
+[%
+  cdmid = record.get_fields.${"T0011"}.first.content ;
+  IF cdmid ;
+         manifest_url  = "https://search.ub.uni-koeln.de/scans/muenzen/${cdmid}/manifest.xml";
+         manifest_url = uri_escape(manifest_url);
+         dfgviewer_url = "https://dfg-viewer.de/show/?set%5Bmets%5D=${manifest_url}";
+%]
+<tr><th class="ob-field">Externe Ansicht</th><td><a href="[% dfgviewer_url %]" target="_blank"><img src="/images/openbib/dfgviewerLogo.svg" alt="DFG-Viewer" name="DFG-Viewer" /></a></td></tr>
+[% END %]
 </table>
 [% END %]

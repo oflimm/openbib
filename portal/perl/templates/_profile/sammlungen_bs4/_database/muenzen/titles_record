@@ -42,19 +42,26 @@
     END;
 
     IF record_exists ;
-       viewerURL = record.get_fields.${"T2662"}.first.content ;
-       cdmid = viewerURL.match('id/(\d+)').first;
+       cdmid = record.get_fields.${"T0011"}.first.content ;
 
-       layout_param.representations = [
+       layout_param.representations = [];
+       
+       IF cdmid ;
+         manifest_url  = "https://search.ub.uni-koeln.de/scans/muenzen/${cdmid}/manifest.xml";
+         manifest_url = uri_escape(manifest_url);
+         dfgviewer_url = "https://dfg-viewer.de/show/?set%5Bmets%5D=${manifest_url}";
+         layout_param.representations.push(
           {
 	     type = 'dfg'
-	     url  = "https://dfg-viewer.de/show/?set[mets]=https%3A%2F%2Fservices.ub.uni-koeln.de%2Fcdm4%2Fmets_gateway.php%3FCISOROOT%3D%2Fmuenzen%26CISOPTR%3D${cdmid}"
-	  },
-          {
+	     url  = dfgviewer_url
+	  });
+       END;
+
+       layout_param.representations.push(
+           {
 	     type = 'json'
 	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}.json?l=${lang}"
-	  },
-       ];
+	  });
     END;
 
     IF searchquery ;

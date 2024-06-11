@@ -37,7 +37,7 @@ convtab:
      #'0005': 1        # Inventarnummer (in holding vorhanden)
       '0009': 1        # Herkunft
      #'0010': 1        # Fremdnummer
-      '0011': 1        # Lokale ID
+     #'0011': 1        # Lokale ID
      #'0014': 1        # Signatur (in holding vorhanden)
      #'0015': 1        # Sprache
      #'0016': 1        # Standort (in holding vorhanden)

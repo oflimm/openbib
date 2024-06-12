@@ -95,8 +95,8 @@
     'reservation': 1
 '38-006':
   '38-006-FHM':
-    'order': 1
-    'loan': 0
+    'order': 0
+    'loan': 1
     'reservation': 1
     'pickup_locations':
       - type: 'LIBRARY'

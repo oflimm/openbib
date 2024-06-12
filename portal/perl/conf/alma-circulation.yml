@@ -93,6 +93,10 @@
     'order': 1
     'loan': 0
     'reservation': 1
+    'pickup_locations':
+      - type: 'LIBRARY'
+        id: 'Ausgabe'
+        desc: 'Humanwiss. Abteilung: Ausgabe'
 '38-006':
   '38-006-FHM':
     'order': 0

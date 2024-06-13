@@ -425,7 +425,7 @@ sub _cdm_get_structure {
     my $collection = shift;
     my $cdmid = shift;
 
-    my $url = "https://${host}/dmwebservices/index.php?q=dmGetCompoundObjectInfo/$collection/$id/json";
+    my $url = "https://${host}/dmwebservices/index.php?q=dmGetCompoundObjectInfo/$collection/$cdmid/json";
 
 
     my $structure_ref = _get_json($url);

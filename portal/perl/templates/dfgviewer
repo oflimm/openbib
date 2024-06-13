@@ -1,0 +1,201 @@
+[%-
+
+owner = "Universitäts- und Stadtbibliothek Köln";
+owner_contact = "mailto:webmaster@ub.uni-koeln.de";
+owner_logo = "https://search.ub.uni-koeln.de/images/openbib/dfgviewer_usblogo.gif";
+
+collection2owner_siteurl = {
+  totenzettel = "https://totenzettel.ub.uni-koeln.de/"
+  inkunabeln  = "https://inkunabeln.ub.uni-koeln.de/"
+  inkunab_neu = "https://inkunabeln.ub.uni-koeln.de/"
+  zas         = "https://zeitungsausschnitte.ub.uni-koeln.de/"  
+};
+
+IF collection2owner_siteurl.${collection} ;
+  owner_siteurl = collection2owner_siteurl.${collection} ;
+ELSE ;
+  owner_siteurl = "https://ub.uni-koeln.de";
+END;
+
+physical_location = "Universitäts- und Stadtbibliothek Köln";
+
+IF record.info.fields.${rechte}.first.content ;
+  access_condition = record.info.fields.${rechte}.first.content ;
+ELSE ;
+  access_condition = "No copyright" ;
+END;
+
+reference_url = owner_siteurl ;
+
+presentation_url = reference_url ;
+
+fields = record.info.fields;
+
+images = [];
+
+IF collection == 'muenzen';
+ recordid  = fields.${'title'}.first.content;  
+ title     = fields.${'title'}.first.content;  
+ name      = fields.${'creato'}.first.content;  
+ place     = fields.${'stadt'}.first.content;
+ year      = fields.${'date'}.first.content;
+ reference_url = "https://muenzen.uni-koeln.de/portal/databases/id/muenzen/titles/id/${recordid}";
+ genre     = "Münzen";
+ELSIF collection == 'zas';
+ recordid  = fields.${'title'}.first.content;  
+ title     = fields.${'title'}.first.content;  
+ name      = fields.${'creato'}.first.content;  
+ place     = "Köln";
+ year      = fields.${'zeitr'}.first.content.match('(\d\d\d\d)').first;
+ reference_url = owner_siteurl;
+ genre     = "Kapselbuch";
+
+ FOREACH page IN record.structure.node.page ;
+    desc = page.pagetitle;
+    cdmid = page.pageptr ;
+  
+    min = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
+    thumb = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.jpg";
+    default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.jpg";
+
+    # Upgrade urls to https
+    thisimage = {
+      id = cdmid
+      thumb = thumb
+      min = min
+      default = default
+      desc = desc
+    };
+
+    images.push(thisimage);
+  END ;
+END;
+
+-%]
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/mets/mets.xsd"
+ xmlns:mets="http://www.loc.gov/METS/"
+ xmlns:mods="http://www.loc.gov/mods/v3"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:dv="http://dfg-viewer.de/">
+ <mets:metsHdr>
+    <mets:agent ROLE="CREATOR" TYPE="ORGANIZATION">
+      <mets:name>Universitäts- und Stadtbibliothek Köln</mets:name>
+    </mets:agent>
+  </mets:metsHdr>
+  <mets:dmdSec ID="dmdusbk[% record.info.id %]">
+    <mets:mdWrap MIMETYPE="text/xml" MDTYPE="MODS">
+      <mets:xmlData>
+	<mods:mods xmlns:mods="http://www.loc.gov/mods/v3" version="3.3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
+	  <mods:recordInfo>
+	    <mods:recordIdentifier source="CDMID">[% record.info.id %]</mods:recordIdentifier>
+	  </mods:recordInfo>
+	  <mods:titleInfo>
+	    <mods:title>[% title %]</mods:title>
+	  </mods:titleInfo>
+[% IF name %]	  
+	  <mods:name type="personal">
+	    <mods:namePart type="given">[% name %]</mods:namePart>
+	    <mods:displayForm>[% name %]</mods:displayForm>
+	  </mods:name>
+[% END %]
+[% IF place || year %]
+	  <mods:originInfo>
+[% IF place %]	  
+	    <mods:place>
+	      <mods:placeTerm type="text">[% place %]</mods:placeTerm>
+	    </mods:place>
+[% END %]
+[% IF year %]
+	    <mods:dateIssued>[% year %]</mods:dateIssued>
+[% END %]	    
+	  </mods:originInfo>
+[% END %]	  
+	  <mods:genre>[% genre %]</mods:genre>
+	  <mods:language>
+	    <mods:languageTerm type="code" authority="iso639-2b">und</mods:languageTerm>
+	  </mods:language>
+	  <mods:location>
+	    <mods:physicalLocation>[% physical_location %]</mods:physicalLocation>
+	    <mods:url>
+	      [% reference_url %]
+	    </mods:url>
+	  </mods:location>
+	  <mods:accessCondition type="use and reproduction">[% access_condition %]</mods:accessCondition>
+	</mods:mods>
+      </mets:xmlData>
+    </mets:mdWrap>
+  </mets:dmdSec>
+  <mets:amdSec ID="amdusbk[% record.info.id %]">
+    <mets:rightsMD ID="rightsusbk[% record.info.id %]">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVRIGHTS">
+	<mets:xmlData>
+	  <dv:rights xmlns:dv="http://dfg-viewer.de/">
+	    <dv:owner>[% owner %]</dv:owner>
+	    <dv:ownerContact>[% owner_contact %]</dv:ownerContact>
+	    <dv:ownerLogo>
+	      [% owner_logo %]
+	    </dv:ownerLogo>
+	    <dv:ownerSiteURL>
+	      [% owner_siteurl %]
+	    </dv:ownerSiteURL>
+	  </dv:rights>
+	</mets:xmlData>
+      </mets:mdWrap>
+    </mets:rightsMD>
+    <mets:digiprovMD ID="digiprovusbk[% record.info.id %]">
+      <mets:mdWrap MIMETYPE="text/xml" MDTYPE="OTHER" OTHERMDTYPE="DVLINKS">
+	<mets:xmlData>
+	  <dv:links xmlns:dv="http://dfg-viewer.de/">
+	    <dv:presentation>
+	      [% presentation_url %]
+	    </dv:presentation>
+	  </dv:links>
+	</mets:xmlData>
+      </mets:mdWrap>
+    </mets:digiprovMD>
+  </mets:amdSec>
+  <mets:fileSec>
+    <mets:fileGrp USE="DEFAULT">
+[% FOREACH thisimage IN images %]      
+      <mets:file ID="img[% thisimage.id %]" MIMETYPE="image/jpeg">
+	<mets:FLocat LOCTYPE="URL" xlink:href="[% thisimage.default %]"/>
+      </mets:file>
+[% END %]      
+    </mets:fileGrp>
+    <mets:fileGrp USE="THUMB">
+[% FOREACH thisimage IN images %]            
+      <mets:file ID="imgthumb[% thisimage.id %]" MIMETYPE="image/jpeg">
+	<mets:FLocat LOCTYPE="URL" xlink:href="[% thisimage.thumb %]"/>
+      </mets:file>
+[% END %]      
+    </mets:fileGrp>
+    <mets:fileGrp USE="MIN">
+[% FOREACH thisimage IN images %]            
+      <mets:file ID="imgmin[% thisimage.id %]" MIMETYPE="image/jpeg">
+	<mets:FLocat LOCTYPE="URL" xlink:href="[% thisimage.min %]"/>
+      </mets:file>
+[% END %]      
+    </mets:fileGrp>
+  </mets:fileSec>
+  <mets:structMap TYPE="PHYSICAL">
+    <mets:div ID="physusbk[% record.info.id %]" TYPE="physSequence">
+[% FOREACH thisimage IN images %]            
+      <mets:div ID="div[% thisimage.id %]" ORDER="[% thisimage.id %]" ORDERLABEL="[% thisimage.desc %]" LABEL="" TYPE="page">
+	<mets:fptr FILEID="img[% thisimage.id %]"/>
+	<mets:fptr FILEID="imgthumb[% thisimage.id %]"/>
+	<mets:fptr FILEID="imgmin[% thisimage.id %]"/>
+      </mets:div>
+[% END %]      
+    </mets:div>
+  </mets:structMap>
+  <mets:structMap TYPE="LOGICAL">
+    <mets:div ID="logusbk[% record.info.id %]" DMDID="dmdusbk[% record.info.id %]" ADMID="amdusbk[% record.info.id %]" LABEL="[% name %]" TYPE="monograph"> </mets:div>
+  </mets:structMap>
+  <mets:structLink>
+    <mets:smLink xlink:from="logusbk[% record.info.id %]" xlink:to="physusbk[% record.info.id %]"/>
+  </mets:structLink>
+</mets:mets>
+
+[%# USE dumper;dumper.dump(record)%]

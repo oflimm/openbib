@@ -97,15 +97,15 @@
   '38-006-FHM':
     'order': 0
     'loan': 1
-    'reservation': 1
+    'reservation': 0
     'pickup_locations':
       - type: 'LIBRARY'
         id: 'Ausgabe'
         desc: 'Informatik: Ausgabe'
   '38-006-MAG':
-    'order': 1
-    'loan': 0
-    'reservation': 1
+    'order': 0
+    'loan': 1
+    'reservation': 0
     'pickup_locations':
       - type: 'LIBRARY'
         id: 'Ausgabe'

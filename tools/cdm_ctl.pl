@@ -28,13 +28,16 @@
 
 use strict;
 use warnings;
+use utf8;
 
-use Encode qw(decode_utf8 encode_utf8);
+use Encode qw(decode_utf8 encode_utf8 encode decode);
 use File::Path qw(make_path);
 use Getopt::Long;
 use JSON::XS qw/encode_json decode_json/;
 use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
+use OpenBib::Template::Provider;
+use Template;
 use XML::LibXML;
 use XML::LibXML::XPathContext;
 use YAML;
@@ -87,6 +90,9 @@ my $logger = get_logger();
 our $ua = LWP::UserAgent->new();
 $ua->agent('USB Koeln/1.0');
 $ua->timeout(30);
+$ua->default_header(
+    'Accept-Charset' => 'utf-8',
+    );
 
 if ($do !~m/^_/ && defined &{$do}){
     no strict 'refs';
@@ -123,7 +129,7 @@ sub list_items {
     
     foreach my $record_ref (@$records_ref){
 	my $cdmid = $record_ref->{pointer};
-	my $item_ref = _cdm_get_iteminfo($cdmid);
+	my $item_ref = _cdm_get_iteminfo($collection,$cdmid);
 	
 	push @$items_ref, $item_ref;
     }
@@ -137,11 +143,44 @@ sub get_manifest4dfgviewer {
 	exit;
     }
 
+    my $info_ref      = _cdm_get_iteminfo($collection,$id);
+    my $structure_ref = _cdm_get_structure($collection,$id);
+
+    my $record_ref = {
+	info => $info_ref,
+	structure => $structure_ref,
+    };
+
+    my $procname = "_cdm_create_dfgviewer_manifest";
+
+    if (defined &{$procname."_".$collection}){
+	no strict 'refs';
+	my $manifest = &{$procname."_".$collection}($record_ref);
+
+	output($manifest,"Getting dfgviewer manifest for item $id in collection $collection");    
+    }
+    elsif (defined &{$procname}){
+	no strict 'refs';
+	my $manifest = &{$procname}($record_ref);
+	output($manifest,"Getting default dfgviewer manifest for item $id in collection $collection");    	
+    }
+    else {
+	$logger->error("Action $do not supported");
+	exit;
+    }
+}
+
+sub get_manifest4dfgviewer_obsolete {
+    if ((!$outputfile && !$stdout ) || !$collection || !$id){
+	$logger->error("Missing args collection");
+	exit;
+    }
+
     my $url = "https://${host}/cdm4/mets_gateway.php?CISOROOT=/$collection&CISOPTR=$id";
 	
-    my $manifest = _get_url($url);
+    my $manifest_ref = _get_url($url);
     
-    output($manifest,"Getting DFGviewer manifest for item $id in collection $collection");    
+    output($manifest_ref,"Getting DFGviewer manifest for item $id in collection $collection");    
 }
 
 sub get_manifest4iiif {
@@ -191,7 +230,7 @@ sub dump_item4iiif {
     
     my $manifest = _get_url($url);
     
-    _cdm_process_item($id,$manifest);
+    _cdm_process_item({ id => $id, manifest => $manifest, type => 'iiif'});
 }
 
 sub dump_item4dfgviewer {
@@ -204,7 +243,7 @@ sub dump_item4dfgviewer {
     
     my $manifest = _get_url($url);
     
-    _cdm_process_item($id,$manifest);
+    _cdm_process_item({ id => $id, type => 'dfgviewer'});
 }
 
 sub dump_collection4dfgviewer {
@@ -230,7 +269,7 @@ sub dump_collection4dfgviewer {
 	    
 	    my $manifest = _get_url($url);
 	    
-	    _cdm_process_item($cdmid,$manifest);
+	    _cdm_process_item({id => $cdmid, manifest => $manifest, type => 'dfgviewer'});
 	}
     }
 }
@@ -272,7 +311,7 @@ sub output {
 	}
     }
     else {
-	open(OUTPUT,">$outputfile");
+	open(OUTPUT,">:utf8",$outputfile);
 	
 	$logger->info($description);
 
@@ -302,7 +341,8 @@ sub _get_json {
     my $response = $ua->request($request);
 
     if ($logger->is_debug){
-	$logger->debug("Response: ".$response->content);
+	$logger->debug("Response: ".decode_utf8($response->content));
+	$logger->debug("Status: ".$response->status_line);
     }
     
     if (!$response->is_success) {
@@ -310,12 +350,12 @@ sub _get_json {
 	exit;
     }
 
-    my $result = decode_utf8($response->content);
+    my $result = $response->content;
 
     my $json_ref = undef;
     
     eval {
-	$json_ref = decode_json ($result);
+	$json_ref = decode_json $result;
     };
 
     if ($@){
@@ -329,6 +369,7 @@ sub _get_json {
 }
 
 sub _cdm_get_iteminfo {
+    my $collection = shift;
     my $cdmid = shift;
 
     my $fieldinfo_ref = {};
@@ -387,7 +428,7 @@ sub _cdm_get_structure {
     my $url = "https://${host}/dmwebservices/index.php?q=dmGetCompoundObjectInfo/$collection/$id/json";
 
 
-    my $structure_ref = _get_url($url);
+    my $structure_ref = _get_json($url);
 
     return $structure_ref;
 }
@@ -451,7 +492,7 @@ sub _get_url {
 	exit;
     }
 
-    my $result = decode_utf8($response->content);
+    my $result = $response->decoded_content;
     
     $logger->debug("Returning $result");
             
@@ -459,44 +500,230 @@ sub _get_url {
 }
 
 sub _cdm_process_item {
-    my $id = shift;    
-    my $item = shift;
+    my $arg_ref = shift;
+    my $id       = (defined $arg_ref->{id})?$arg_ref->{id}:undef;    
+    my $manifest = (defined $arg_ref->{manifest})?$arg_ref->{manifest}:'';
+    my $type     = (defined $arg_ref->{type})?$arg_ref->{type}:'dfgviewer';
 
-    my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($item);
-    my $xpc    = XML::LibXML::XPathContext->new($tree);
+    my $info_ref      = _cdm_get_iteminfo($collection,$id);
+    my $structure_ref = _cdm_get_structure($collection,$id);
+    
+    my $record_ref = {
+	info => $info_ref,
+	structure => $structure_ref,
+    };
 
-    $xpc->registerNs('mets',  'http://www.loc.gov/METS/');
-    $xpc->registerNs('xlink',  'http://www.w3.org/1999/xlink');    
-
-    my $new_dir = "$outputdir/$collection/$id";
+    my $new_dir = "$outputdir/$collection/$id";    
     
     make_path($new_dir);
-    
-    foreach my $link_node ($xpc->findnodes('//mets:file/mets:FLocat')){
-	my $cdm_imgurl = $link_node->getAttribute('xlink:href');
-	$cdm_imgurl =~s/&amp;/&/g;
-	
-	my ($imgid) = $cdm_imgurl =~m{CISOPTR=(\d+)};
-	my ($width) = $cdm_imgurl =~m{WIDTH=(\d+)};
 
-	my $img_name = ($width)?"${imgid}_w${width}.jpg":"$imgid.jpg";
-	
-	my $new_url = $viewerurl."/$collection/$id/$img_name";
+    $outputfile = "$new_dir/record.json";
+    $logger->info("Dumping JSON-Record to $outputfile");
+    output($record_ref,"Dumping item $id in collection $collection as record.json done");
 
-	system("wget --quiet --no-check-certificate -O $new_dir/$img_name '$cdm_imgurl'");
-	$logger->info("Dumping $cdm_imgurl -> $img_name");
+    foreach my $page_ref (@{$record_ref->{structure}{node}{node}}){
+	if (defined $page_ref->{page} && ref $page_ref->{page} eq "ARRAY"){
+	    foreach my $thispage_ref (@{$page_ref->{page}}){
+		my $format = "jpg";
+		if ($thispage_ref->{pagefile} =~m/\.tif/){
+		    $format = "tif";
+		}
+		my $filename = $thispage_ref->{pageptr}.".$format";
+		my $jpeg     = $thispage_ref->{pageptr}.".jpg";
+		my $webview  = $thispage_ref->{pageptr}."_web.jpg";
+		my $thumb    = $thispage_ref->{pageptr}."_thumb.jpg";
+		
+		if (-e "$new_dir/$filename"){
+		    $logger->info("File $filename already exists. Ignoring");
+		}
+		else {
+		    my $cdm_url = "https://${host}/cgi-bin/showfile.exe?CISOROOT=/${collection}&CISOPTR=".$thispage_ref->{pageptr};
+		    
+		    $logger->info("Getting $filename from $cdm_url");		
+		    
+		    system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'");
+		}
 
-	$link_node->setAttribute('xlink:href' => $new_url);
+		# Generate Thumbs und Webview
+		if ($jpeg ne $filename && !-e "$new_dir/$jpeg"){
+		    system("convert $new_dir/$filename $new_dir/$jpeg");
+		}
+		
+		if (!-e "$new_dir/$webview"){
+		    system("convert -resize '900x900>' $new_dir/$filename $new_dir/$webview");
+		}
+		
+		if (!-e "$new_dir/$thumb"){
+		    system("convert -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
+		}
+	    }
+	}
+	elsif (defined $page_ref->{page} && ref $page_ref->{page} eq "HASH"){
+	    my $format = "jpg";
+	    if ($page_ref->{page}{pagefile} =~m/\.tif/){
+		$format = "tif";
+	    }
+	    my $filename = $page_ref->{page}{pageptr}.".$format";
+	    my $jpeg     = $page_ref->{page}{pageptr}.".jpg";
+	    my $webview  = $page_ref->{page}{pageptr}."_web.jpg";
+	    my $thumb    = $page_ref->{page}{pageptr}."_thumb.jpg";
+	    
+	    if (-e "$new_dir/$filename"){
+		$logger->info("File $filename already exists. Ignoring");
+	    }
+	    else {
+		my $cdm_url = "https://${host}/cgi-bin/showfile.exe?CISOROOT=/${collection}&amp;CISOPTR=".$page_ref->{page}{pageptr};
+		
+		$logger->info("Getting $filename from $cdm_url");		
+		
+		system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'");
+	    }
+
+	    # Generate Thumbs und Webview
+	    if ($jpeg ne $filename && !-e "$new_dir/$jpeg"){
+		system("convert $new_dir/$filename $new_dir/$jpeg");
+	    }
+
+	    if (!-e "$new_dir/$webview"){
+		system("convert -resize '900x900>' $new_dir/$filename $new_dir/$webview");
+	    }
+	    
+	    if (!-e "$new_dir/$thumb"){
+		system("convert -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
+	    }
+	}
+    }
+
+    if (defined $record_ref->{structure}{node}{page} && ref $record_ref->{structure}{node}{page} eq "ARRAY"){    
+	foreach my $thispage_ref (@{$record_ref->{structure}{node}{page}}){
+	    my $format = "jpg";
+	    if ($thispage_ref->{pagefile} =~m/\.tif/){
+		$format = "tif";
+	    }
+	    my $filename = $thispage_ref->{pageptr}.".$format";
+	    my $jpeg     = $thispage_ref->{pageptr}.".jpg";
+	    my $webview  = $thispage_ref->{pageptr}."_web.jpg";
+	    my $thumb    = $thispage_ref->{pageptr}."_thumb.jpg";
+	    
+	    if (-e "$new_dir/$filename"){
+		$logger->info("File $filename already exists. Ignoring");
+	    }
+	    else {
+		my $cdm_url = "https://${host}/cgi-bin/showfile.exe?CISOROOT=/${collection}&CISOPTR=".$thispage_ref->{pageptr};
+		
+		$logger->info("Getting $filename from $cdm_url");		
+		
+		system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'");
+	    }
+	    
+	    # Generate Thumbs und Webview
+	    if ($jpeg ne $filename && !-e "$new_dir/$jpeg"){
+		system("convert $new_dir/$filename $new_dir/$jpeg");
+	    }
+	    
+	    if (!-e "$new_dir/$webview"){
+		system("convert -resize '900x900>' $new_dir/$filename $new_dir/$webview");
+	    }
+	    
+	    if (!-e "$new_dir/$thumb"){
+		system("convert -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
+	    }
+	}
     }
     
-    $outputfile = "$new_dir/manifest.xml";
-    $logger->info("Dumping manifest $outputfile");
-    output($tree->toString,"Dumping item $id in collection $collection done");
+    if ($type eq "dfgviewer"){
+	$outputfile = "$new_dir/manifest.xml";
+	my $procname = "_cdm_create_dfgviewer_manifest";
+	
+	if (defined &{$procname."_".$collection}){
+	    no strict 'refs';
+	    my $manifest = &{$procname."_".$collection}($record_ref);
+	    
+	    output($manifest,"Getting dfgviewer manifest for item $id in collection $collection");    
+	}
+	elsif (defined &{$procname}){
+	    no strict 'refs';
+	    my $manifest = &{$procname}($record_ref);
+	    output($manifest,"Getting default dfgviewer manifest for item $id in collection $collection");    	
+	}
+	else {
+	    $logger->error("Action $do not supported");
+	    exit;
+	}
+    }
+    
+    if ( 0 == 1 && $manifest && $type eq "dfgviewer"){
+	my $parser = XML::LibXML->new();
+	my $tree   = $parser->parse_string($manifest);
+	my $xpc    = XML::LibXML::XPathContext->new($tree);
+	
+	$xpc->registerNs('mets',  'http://www.loc.gov/METS/');
+	$xpc->registerNs('xlink',  'http://www.w3.org/1999/xlink');    
+	
+	my $new_dir = "$outputdir/$collection/$id";
+	
+	make_path($new_dir);
+	
+	foreach my $link_node ($xpc->findnodes('//mets:file/mets:FLocat')){
+	    my $cdm_imgurl = $link_node->getAttribute('xlink:href');
+	    $cdm_imgurl =~s/&amp;/&/g;
+	    
+	    my ($imgid) = $cdm_imgurl =~m{CISOPTR=(\d+)};
+	    my ($width) = $cdm_imgurl =~m{WIDTH=(\d+)};
+	    
+	    my $img_name = ($width)?"${imgid}_w${width}.jpg":"$imgid.jpg";
+	    
+	    my $new_url = $viewerurl."/$collection/$id/$img_name";
+	    
+	    system("wget --quiet --no-check-certificate -O $new_dir/$img_name '$cdm_imgurl'");
+	    $logger->info("Dumping $cdm_imgurl -> $img_name");
+	    
+	    $link_node->setAttribute('xlink:href' => $new_url);
+	}
+	
+	$outputfile = "$new_dir/manifest.xml";
+	$logger->info("Dumping manifest $outputfile");
+	output($tree->toString,"Dumping item $id in collection $collection done");
+    }
+    
     return;
 }
 
 # USB specific processing
+sub _cdm_create_dfgviewer_manifest {
+    my $record_ref = shift;
+    # Generate METS/MODS Manifest
+    my $manifest = "";
+
+    my $ttdata = {
+	record     => $record_ref,
+	collection => $collection,
+	viewerurl  => $viewerurl,
+    };
+    
+    my $template = Template->new({ 
+	# LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+	#     INCLUDE_PATH   => '/opt/openbib/templates',
+	#     ABSOLUTE       => 1,
+	#     STAT_TTL => 120,  # two minutes
+	#     COMPILE_DIR => '/tmp/ttc',
+	# 						     }) ],
+	INCLUDE_PATH   => '/opt/openbib/templates',
+	ENCODING     => 'utf8',
+	ABSOLUTE       => 1,
+	STAT_TTL => 120,  # two minutes
+	COMPILE_DIR => '/tmp/ttc',
+	OUTPUT         => \$manifest,    # Output geht in Scalar-Ref
+				 });
+    
+    $template->process('dfgviewer', $ttdata) || do {
+            $logger->fatal($template->error());
+    };
+    
+    
+    return $manifest;
+}
+
 sub _cdm_create_iiif_manifest_zas {
 
 }

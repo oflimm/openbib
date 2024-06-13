@@ -269,7 +269,7 @@ sub dump_collection4dfgviewer {
 	    
 	    my $manifest = _get_url($url);
 	    
-	    _cdm_process_item({id => $cdmid, manifest => $manifest, type => 'dfgviewer'});
+	    _cdm_process_item({id => $cdmid, type => 'dfgviewer'});
 	}
     }
 }

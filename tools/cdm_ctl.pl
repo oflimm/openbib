@@ -538,7 +538,7 @@ sub _cdm_process_item {
 
 		# Generate Thumbs und Webview
 		if ($format eq "tif" && !-e "$new_dir/$png"){
-		    system("rm $new_dir/$jpg");		
+		    system("rm $new_dir/$jpeg");		
 		    system("convert $new_dir/$filename $new_dir/$png");
 		}
 
@@ -581,7 +581,7 @@ sub _cdm_process_item {
 
 	    # Generate Thumbs und Webview
 	    if ($format eq "tif" && !-e "$new_dir/$png"){
-		system("rm $new_dir/$jpg");		
+		system("rm $new_dir/$jpeg");		
 		system("convert $new_dir/$filename $new_dir/$png");
 	    }
 
@@ -626,7 +626,7 @@ sub _cdm_process_item {
 	    
 	    # Generate Thumbs und Webview
 	    if ($format eq "tif" && !-e "$new_dir/$png"){
-		system("rm $new_dir/$jpg");		
+		system("rm $new_dir/$jpeg");		
 		system("convert $new_dir/$filename $new_dir/$png");
 	    }
 	    

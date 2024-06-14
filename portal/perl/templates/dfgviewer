@@ -56,7 +56,7 @@ ELSIF collection == 'zas';
   
     min = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
     thumb = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.jpg";
-    default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.jpg";
+    default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.png";
 
     # Upgrade urls to https
     thisimage = {
@@ -159,7 +159,7 @@ END;
   <mets:fileSec>
     <mets:fileGrp USE="DEFAULT">
 [% FOREACH thisimage IN images %]      
-      <mets:file ID="img[% thisimage.id %]" MIMETYPE="image/jpeg">
+      <mets:file ID="img[% thisimage.id %]" MIMETYPE="image/png">
 	<mets:FLocat LOCTYPE="URL" xlink:href="[% thisimage.default %]"/>
       </mets:file>
 [% END %]      

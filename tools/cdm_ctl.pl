@@ -258,17 +258,6 @@ sub dump_collection4dfgviewer {
 	if (ref $record_ref eq "HASH"){
 	    my $cdmid = $record_ref->{pointer};
 
-	    my $new_dir = "$outputdir/$collection/$cdmid";
-
-	    if (-d $new_dir) {
-		$logger->info("Skipping item. Already exists in $new_dir");
-		next ;
-	    }
-
-	    my $url = "https://${host}/cdm4/mets_gateway.php?CISOROOT=/$collection&CISOPTR=$cdmid";
-	    
-	    my $manifest = _get_url($url);
-	    
 	    _cdm_process_item({id => $cdmid, type => 'dfgviewer'});
 	}
     }
@@ -521,6 +510,7 @@ sub _cdm_process_item {
     $logger->info("Dumping JSON-Record to $outputfile");
     output($record_ref,"Dumping item $id in collection $collection as record.json done");
 
+    my $is_cover = 1;
     foreach my $page_ref (@{$record_ref->{structure}{node}{node}}){
 	if (defined $page_ref->{page} && ref $page_ref->{page} eq "ARRAY"){
 	    foreach my $thispage_ref (@{$page_ref->{page}}){
@@ -529,9 +519,11 @@ sub _cdm_process_item {
 		    $format = "tif";
 		}
 		my $filename = $thispage_ref->{pageptr}.".$format";
+		my $png      = $thispage_ref->{pageptr}.".png";
 		my $jpeg     = $thispage_ref->{pageptr}.".jpg";
 		my $webview  = $thispage_ref->{pageptr}."_web.jpg";
 		my $thumb    = $thispage_ref->{pageptr}."_thumb.jpg";
+		my $cover    = $thispage_ref->{pageptr}."_cover.jpg";
 		
 		if (-e "$new_dir/$filename"){
 		    $logger->info("File $filename already exists. Ignoring");
@@ -545,8 +537,14 @@ sub _cdm_process_item {
 		}
 
 		# Generate Thumbs und Webview
-		if ($jpeg ne $filename && !-e "$new_dir/$jpeg"){
-		    system("convert $new_dir/$filename $new_dir/$jpeg");
+		if ($format eq "tif" && !-e "$new_dir/$png"){
+		    system("rm $new_dir/$jpg");		
+		    system("convert $new_dir/$filename $new_dir/$png");
+		}
+
+		if ($is_cover && !-e "$new_dir/$cover"){
+		    system("convert -resize '150x150>' $new_dir/$filename $new_dir/$cover");
+		    $is_cover = 0;
 		}
 		
 		if (!-e "$new_dir/$webview"){
@@ -565,8 +563,10 @@ sub _cdm_process_item {
 	    }
 	    my $filename = $page_ref->{page}{pageptr}.".$format";
 	    my $jpeg     = $page_ref->{page}{pageptr}.".jpg";
+	    my $png      = $page_ref->{page}{pageptr}.".png";
 	    my $webview  = $page_ref->{page}{pageptr}."_web.jpg";
 	    my $thumb    = $page_ref->{page}{pageptr}."_thumb.jpg";
+	    my $cover    = $page_ref->{page}{pageptr}."_cover.jpg";
 	    
 	    if (-e "$new_dir/$filename"){
 		$logger->info("File $filename already exists. Ignoring");
@@ -580,8 +580,14 @@ sub _cdm_process_item {
 	    }
 
 	    # Generate Thumbs und Webview
-	    if ($jpeg ne $filename && !-e "$new_dir/$jpeg"){
-		system("convert $new_dir/$filename $new_dir/$jpeg");
+	    if ($format eq "tif" && !-e "$new_dir/$png"){
+		system("rm $new_dir/$jpg");		
+		system("convert $new_dir/$filename $new_dir/$png");
+	    }
+
+	    if ($is_cover && !-e "$new_dir/$cover"){
+		system("convert -resize '150x150>' $new_dir/$filename $new_dir/$cover");
+		$is_cover = 0;
 	    }
 
 	    if (!-e "$new_dir/$webview"){
@@ -602,8 +608,10 @@ sub _cdm_process_item {
 	    }
 	    my $filename = $thispage_ref->{pageptr}.".$format";
 	    my $jpeg     = $thispage_ref->{pageptr}.".jpg";
+	    my $png      = $thispage_ref->{pageptr}.".png";	    
 	    my $webview  = $thispage_ref->{pageptr}."_web.jpg";
 	    my $thumb    = $thispage_ref->{pageptr}."_thumb.jpg";
+	    my $cover    = $thispage_ref->{pageptr}."_cover.jpg";
 	    
 	    if (-e "$new_dir/$filename"){
 		$logger->info("File $filename already exists. Ignoring");
@@ -617,8 +625,14 @@ sub _cdm_process_item {
 	    }
 	    
 	    # Generate Thumbs und Webview
-	    if ($jpeg ne $filename && !-e "$new_dir/$jpeg"){
-		system("convert $new_dir/$filename $new_dir/$jpeg");
+	    if ($format eq "tif" && !-e "$new_dir/$png"){
+		system("rm $new_dir/$jpg");		
+		system("convert $new_dir/$filename $new_dir/$png");
+	    }
+	    
+	    if ($is_cover && !-e "$new_dir/$cover"){
+		system("convert -resize '150x150>' $new_dir/$filename $new_dir/$cover");
+		$is_cover = 0;
 	    }
 	    
 	    if (!-e "$new_dir/$webview"){

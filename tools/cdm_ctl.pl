@@ -54,6 +54,7 @@ our ($do,$host,$collection,$id,$outputdir,$outputfile,$viewerurl,$stdout,$help,$
 	    "outputdir=s"     => \$outputdir,
 	    "viewer-url=s"    => \$viewerurl,	    
 	    "stdout"          => \$stdout,
+	    "offline"         => \$offline,
 	    
             "logfile=s"       => \$logfile,
             "loglevel=s"      => \$loglevel,
@@ -797,10 +798,42 @@ Generel Options:
    --loglevel=...        : loglevel (default: INFO)
    --host=...            : host (default: services.ub.uni-koeln.de)
 
+List collections
+   --do=list_collections
+   --outputfile=...      : Outputfile
+   -stdout               : Ausgabe nach STDOUT anstelle Outputfile
+
+List fieldinfo of collection
+   --do=list_fieldinfo
+   --collection=...      : Collection Name
+   --outputfile=...      : Outputfile
+   -stdout               : Ausgabe nach STDOUT anstelle Outputfile
+
 List collection items
    --do=list_items
-   --index=collection    : Collection Name
+   --collection=...      : Collection Name
    --outputfile=...      : Outputfile
+   -stdout               : Ausgabe nach STDOUT anstelle Outputfile
+
+List compound structure of item
+   --do=get_structure
+   --collection=...      : Collection Name
+   --id=...              : Item ID
+   --outputfile=...      : Outputfile
+   -stdout               : Ausgabe nach STDOUT anstelle Outputfile
+
+Dump single item to display with DFG-Viewer
+   --do=dump_item4dfgviewer
+   --collection=...      : Collection Name
+   --id=...              : Item ID
+   --outputdir=...       : Base directory to output Images/Manifest
+   --viewer-url=...      : Base URL Prefix to reference files in base directory
+
+Dump all items in collection to display with DFG-Viewer
+   --do=dump_collection4dfgviewer
+   --collection=...      : Collection Name
+   --outputdir=...       : Base directory to output Images/Manifest
+   --viewer-url=...      : Base URL Prefix to reference files in base directory
 
 e.g:
 
@@ -810,6 +843,7 @@ e.g:
 ./cdm_ctl.pl --do=get_structure --stdout --collection=inkunabeln --id=209521|jq -S .|less
 ./cdm_ctl.pl --do=dump_item4dfgviewer --outputdir=/store/scans --collection=inkunabeln --id=209521  --viewer-url="https://search.ub.uni-koeln.de/scans"
 ./cdm_ctl.pl --do=dump_collection4dfgviewer --outputdir=/store/scans --collection=inkunab_tmp  --viewer-url="https://search.ub.uni-koeln.de/scans"
+./cdm_ctl.pl -offline --do=dump_collection4dfgviewer --outputdir=/store/scans --collection=inkunab_tmp  --viewer-url="https://search.ub.uni-koeln.de/scans"
 
 ENDHELP
     exit;

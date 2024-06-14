@@ -184,7 +184,7 @@ END;
   <mets:fileSec>
     <mets:fileGrp USE="DEFAULT">
 [% FOREACH thisimage IN images %]      
-      <mets:file ID="img[% thisimage.id %]" MIMETYPE="image/[% IF thisimage.default.match('png') %]png[% ELES%]jpeg[% END %]">
+      <mets:file ID="img[% thisimage.id %]" MIMETYPE="image/[% IF thisimage.default.match('png') %]png[% ELSE %]jpeg[% END %]">
 	<mets:FLocat LOCTYPE="URL" xlink:href="[% thisimage.default %]"/>
       </mets:file>
 [% END %]      

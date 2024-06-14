@@ -70,7 +70,6 @@ $host=($host)?$host:'services.ub.uni-koeln.de';
 $logfile=($logfile)?$logfile:'./cdm_ctl.log';
 $loglevel=($loglevel)?$loglevel:'INFO';
 
-
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=$loglevel, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
@@ -94,6 +93,11 @@ $ua->timeout(30);
 $ua->default_header(
     'Accept-Charset' => 'utf-8',
     );
+
+if ($offline && ( !$outputdir || !$viewerurl)){
+    $logger->error("Offline mode needs outputdir from previous run and viewer-url");
+    exit;
+}
 
 if ($do !~m/^_/ && defined &{$do}){
     no strict 'refs';

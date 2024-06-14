@@ -523,7 +523,7 @@ sub _cdm_process_item {
 		my $jpeg     = $thispage_ref->{pageptr}.".jpg";
 		my $webview  = $thispage_ref->{pageptr}."_web.jpg";
 		my $thumb    = $thispage_ref->{pageptr}."_thumb.jpg";
-		my $cover    = $thispage_ref->{pageptr}."_cover.jpg";
+		my $cover    = "cover.jpg";
 		
 		if (-e "$new_dir/$filename"){
 		    $logger->info("File $filename already exists. Ignoring");
@@ -566,7 +566,7 @@ sub _cdm_process_item {
 	    my $png      = $page_ref->{page}{pageptr}.".png";
 	    my $webview  = $page_ref->{page}{pageptr}."_web.jpg";
 	    my $thumb    = $page_ref->{page}{pageptr}."_thumb.jpg";
-	    my $cover    = $page_ref->{page}{pageptr}."_cover.jpg";
+	    my $cover    = "cover.jpg";
 	    
 	    if (-e "$new_dir/$filename"){
 		$logger->info("File $filename already exists. Ignoring");
@@ -611,7 +611,7 @@ sub _cdm_process_item {
 	    my $png      = $thispage_ref->{pageptr}.".png";	    
 	    my $webview  = $thispage_ref->{pageptr}."_web.jpg";
 	    my $thumb    = $thispage_ref->{pageptr}."_thumb.jpg";
-	    my $cover    = $thispage_ref->{pageptr}."_cover.jpg";
+	    my $cover    = "cover.jpg";
 	    
 	    if (-e "$new_dir/$filename"){
 		$logger->info("File $filename already exists. Ignoring");

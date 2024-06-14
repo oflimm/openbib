@@ -42,7 +42,7 @@ use XML::LibXML;
 use XML::LibXML::XPathContext;
 use YAML;
 
-our ($do,$host,$collection,$id,$outputdir,$outputfile,$viewerurl,$stdout,$help,$loglevel,$logfile);
+our ($do,$host,$collection,$id,$offline,$outputdir,$outputfile,$viewerurl,$stdout,$help,$loglevel,$logfile);
 
 &GetOptions("do=s"            => \$do,
 

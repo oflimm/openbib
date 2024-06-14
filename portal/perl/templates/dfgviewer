@@ -43,6 +43,7 @@ IF collection == 'muenzen';
  place     = fields.${'stadt'}.first.content;
  year      = fields.${'date'}.first.content;
  reference_url = "https://muenzen.uni-koeln.de/portal/databases/id/muenzen/titles/id/${recordid}";
+ presentation_url = "https://muenzen.uni-koeln.de/portal/databases/id/muenzen/titles/id/${recordid}";
  type      = "image";
  genre     = "Münzen";
 

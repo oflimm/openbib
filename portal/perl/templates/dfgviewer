@@ -29,7 +29,10 @@ reference_url = owner_siteurl ;
 
 presentation_url = reference_url ;
 
+cover     = "${viewerurl}/${collection}/${record.info.id}/cover.jpg";
+
 fields = record.info.fields;
+type  = "monograph";
 
 images = [];
 
@@ -40,23 +43,24 @@ IF collection == 'muenzen';
  place     = fields.${'stadt'}.first.content;
  year      = fields.${'date'}.first.content;
  reference_url = "https://muenzen.uni-koeln.de/portal/databases/id/muenzen/titles/id/${recordid}";
+ type      = "image";
  genre     = "Münzen";
 
- FOREACH page IN record.structure.node.page ;
+ FOREACH page IN record.structure.page ;
     desc = page.pagetitle;
     cdmid = page.pageptr ;
   
-    min = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
-    thumb = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_thumb.jpg";
+    min     = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
+    thumb   = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_thumb.jpg";
     default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.jpg";
 
     # Upgrade urls to https
     thisimage = {
-      id = cdmid
-      thumb = thumb
-      min = min
+      id      = cdmid
+      thumb   = thumb
+      min     = min
       default = default
-      desc = desc
+      desc    = desc
     };
 
     images.push(thisimage);
@@ -74,17 +78,17 @@ ELSIF collection == 'zas';
     desc = page.pagetitle;
     cdmid = page.pageptr ;
   
-    min = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
-    thumb = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_thumb.jpg";
+    min     = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
+    thumb   = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_thumb.jpg";
     default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.png";
 
     # Upgrade urls to https
     thisimage = {
-      id = cdmid
-      thumb = thumb
-      min = min
+      id      = cdmid
+      thumb   = thumb
+      min     = min
       default = default
-      desc = desc
+      desc    = desc
     };
 
     images.push(thisimage);
@@ -179,12 +183,12 @@ END;
   <mets:fileSec>
     <mets:fileGrp USE="DEFAULT">
 [% FOREACH thisimage IN images %]      
-      <mets:file ID="img[% thisimage.id %]" MIMETYPE="image/png">
+      <mets:file ID="img[% thisimage.id %]" MIMETYPE="image/[% IF thisimage.default.match('png') %]png[% ELES%]jpeg[% END %]">
 	<mets:FLocat LOCTYPE="URL" xlink:href="[% thisimage.default %]"/>
       </mets:file>
 [% END %]      
     </mets:fileGrp>
-    <mets:fileGrp USE="THUMB">
+    <mets:fileGrp USE="THUMBS">
 [% FOREACH thisimage IN images %]            
       <mets:file ID="imgthumb[% thisimage.id %]" MIMETYPE="image/jpeg">
 	<mets:FLocat LOCTYPE="URL" xlink:href="[% thisimage.thumb %]"/>
@@ -197,6 +201,11 @@ END;
 	<mets:FLocat LOCTYPE="URL" xlink:href="[% thisimage.min %]"/>
       </mets:file>
 [% END %]      
+    <mets:fileGrp USE="TEASER">
+      <mets:file ID="imgcover[% record.info.id %]" MIMETYPE="image/jpeg">
+	<mets:FLocat LOCTYPE="URL" xlink:href="[% cover %]"/>
+      </mets:file>
+    </mets:fileGrp>
     </mets:fileGrp>
   </mets:fileSec>
   <mets:structMap TYPE="PHYSICAL">
@@ -211,7 +220,7 @@ END;
     </mets:div>
   </mets:structMap>
   <mets:structMap TYPE="LOGICAL">
-    <mets:div ID="logusbk[% record.info.id %]" DMDID="dmdusbk[% record.info.id %]" ADMID="amdusbk[% record.info.id %]" LABEL="[% name %]" TYPE="monograph"> </mets:div>
+    <mets:div ID="logusbk[% record.info.id %]" DMDID="dmdusbk[% record.info.id %]" ADMID="amdusbk[% record.info.id %]" LABEL="[% name %]" TYPE="[% type %]"> </mets:div>
   </mets:structMap>
   <mets:structLink>
     <mets:smLink xlink:from="logusbk[% record.info.id %]" xlink:to="physusbk[% record.info.id %]"/>

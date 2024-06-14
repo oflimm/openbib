@@ -206,7 +206,6 @@ END;
 	<mets:FLocat LOCTYPE="URL" xlink:href="[% cover %]"/>
       </mets:file>
     </mets:fileGrp>
-    </mets:fileGrp>
   </mets:fileSec>
   <mets:structMap TYPE="PHYSICAL">
     <mets:div ID="physusbk[% record.info.id %]" TYPE="physSequence">

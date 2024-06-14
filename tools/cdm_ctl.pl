@@ -644,7 +644,52 @@ sub _cdm_process_item {
 	    }
 	}
     }
-    
+
+    if (defined $record_ref->{structure}{page} && ref $record_ref->{structure}{page} eq "ARRAY"){    
+	foreach my $thispage_ref (@{$record_ref->{structure}{page}}){
+	    my $format = "jpg";
+	    if ($thispage_ref->{pagefile} =~m/\.tif/){
+		$format = "tif";
+	    }
+	    my $filename = $thispage_ref->{pageptr}.".$format";
+	    my $jpeg     = $thispage_ref->{pageptr}.".jpg";
+	    my $png      = $thispage_ref->{pageptr}.".png";	    
+	    my $webview  = $thispage_ref->{pageptr}."_web.jpg";
+	    my $thumb    = $thispage_ref->{pageptr}."_thumb.jpg";
+	    my $cover    = "cover.jpg";
+	    
+	    if (-e "$new_dir/$filename"){
+		$logger->info("File $filename already exists. Ignoring");
+	    }
+	    else {
+		my $cdm_url = "https://${host}/cgi-bin/showfile.exe?CISOROOT=/${collection}&CISOPTR=".$thispage_ref->{pageptr};
+		
+		$logger->info("Getting $filename from $cdm_url");		
+		
+		system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'");
+	    }
+	    
+	    # Generate Thumbs und Webview
+	    if ($format eq "tif" && !-e "$new_dir/$png"){
+		system("rm $new_dir/$jpeg");		
+		system("convert $new_dir/$filename $new_dir/$png");
+	    }
+	    
+	    if ($is_cover && !-e "$new_dir/$cover"){
+		system("convert -resize '150x150>' $new_dir/$filename $new_dir/$cover");
+		$is_cover = 0;
+	    }
+	    
+	    if (!-e "$new_dir/$webview"){
+		system("convert -resize '900x900>' $new_dir/$filename $new_dir/$webview");
+	    }
+	    
+	    if (!-e "$new_dir/$thumb"){
+		system("convert -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
+	    }
+	}
+    }
+
     if ($type eq "dfgviewer"){
 	$outputfile = "$new_dir/manifest.xml";
 	my $procname = "_cdm_create_dfgviewer_manifest";

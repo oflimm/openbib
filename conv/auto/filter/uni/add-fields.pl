@@ -431,17 +431,17 @@ while (<>){
 	}
     }
 
-    if (@ddcs){
-	my $ddc_mult = 1;
+    # if (@ddcs){
+    # 	my $ddc_mult = 1;
 
-	foreach my $ddc (uniq @ddcs){
-	    push @{$title_ref->{fields}{'4102'}}, {
-		mult     => $ddc_mult++,
-		subfield => '',
-		content  => $ddc,
-	    };
-	}
-    }
+    # 	foreach my $ddc (uniq @ddcs){
+    # 	    push @{$title_ref->{fields}{'4102'}}, {
+    # 		mult     => $ddc_mult++,
+    # 		subfield => '',
+    # 		content  => $ddc,
+    # 	    };
+    # 	}
+    # }
 
     # GNDs verarbeiten und in 1003$a prefix-los abspeichern
     my @gnds = ();

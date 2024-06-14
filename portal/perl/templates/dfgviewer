@@ -201,6 +201,7 @@ END;
 	<mets:FLocat LOCTYPE="URL" xlink:href="[% thisimage.min %]"/>
       </mets:file>
 [% END %]      
+    </mets:fileGrp>
     <mets:fileGrp USE="TEASER">
       <mets:file ID="imgcover[% record.info.id %]" MIMETYPE="image/jpeg">
 	<mets:FLocat LOCTYPE="URL" xlink:href="[% cover %]"/>

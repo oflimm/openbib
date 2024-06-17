@@ -1,0 +1,47 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_images
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe des "Bilder"-Bereichs fuer einen
+# einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%
+   cdmid = record.get_fields.${'T4114'}.first.content;
+   
+   cdm_imgurl = "";
+   cdm_webimgurl = "";   
+
+   IF cdmid || cdmid == '0';
+     cdm_webimgurl = "https://search.ub.uni-koeln.de/scans/zas/${cdmid}/cover.jpg";
+   END;
+%]
+[% IF cdmid || cdmid == '0' ;
+   manifest_url  = "https://search.ub.uni-koeln.de/scans/zas/${cdmid}/manifest.xml";
+   manifest_url = uri_escape(manifest_url);
+   dfgviewer_url = "https://dfg-viewer.de/show/?set%5Bmets%5D=${manifest_url}";
+%]
+<center>
+<img id="cover_full" class="img-fluid" width="150" src="[% cdm_webimgurl %]"/>
+
+<p class="mt-4">
+<a class="btn btn-primary" href="[% dfgviewer_url %]" target="_blank">Zum Digitalisat</a>
+</p>
+  <span class="pb-4" style="font-face:bold;font-size:0.8em;">Klicken Sie auf "Zum Digitalisat". Orientieren Sie sich im DFG-Viewer am Select-Button anhand der laufenden Nummer (Bestandteil der Signatur hinter dem Komma).</span>
+</center>
+[% END %]
+
+[% IF cgiapp.is_authenticated('admin') || cgiapp.is_authenticated('librarian') %]
+<p>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %];flush_cache=1" >[% msg.maketext("Titel ohne Cache") %]</a>
+</p>
+<p>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/searchindex.html?l=[% lang %]" >[% msg.maketext("Zum Suchindex") %]</a>
+</p>
+[% END %]

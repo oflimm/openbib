@@ -45,5 +45,5 @@ system("mv -f $rootdir/data/$pool/meta.subject $rootdir/data/$pool/meta.subject.
 system("$rootdir/filter/$pool/alter840to830.pl < $rootdir/data/$pool/meta.classification > $rootdir/data/$pool/meta.subject");
 system("mv -f $rootdir/data/$pool/meta.subject.tmp $rootdir/data/$pool/meta.classification");
 
-system("cd $rootdir/data/$pool/ ; cat meta.title | $rootdir/filter/$pool/swap710x700.pl | $rootdir/filter/$pool/add-locationid.pl > meta.title.tmp");
+system("cd $rootdir/data/$pool/ ; cat meta.title | $rootdir/filter/$pool/swap710x700.pl | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/add-picture.pl > meta.title.tmp");
 system("mv -f $rootdir/data/$pool/meta.title.tmp $rootdir/data/$pool/meta.title");

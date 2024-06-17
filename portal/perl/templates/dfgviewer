@@ -67,7 +67,6 @@ IF collection == 'muenzen';
     images.push(thisimage);
  END ;
 ELSIF collection == 'zas';
- recordid  = fields.${'title'}.first.content;  
  title     = fields.${'title'}.first.content;  
  name      = fields.${'creato'}.first.content;  
  place     = "Köln";
@@ -93,6 +92,36 @@ ELSIF collection == 'zas';
     };
 
     images.push(thisimage);
+ END ;
+ELSIF collection == 'inkunabeln';
+ title     = fields.${'title'}.first.content;  
+ name      = fields.${'creato'}.first.content;
+ place     = fields.${'drucko'}.first.content;  
+ year      = fields.${'jahr'}.first.content.match('(\d\d\d\d)').first;
+ reference_url = owner_siteurl;
+ genre     = "Inkunabel";
+
+ order_id = 1;
+ FOREACH page IN record.structure.node.page ;
+    desc = page.pagetitle;
+    cdmid = page.pageptr ;
+  
+    min     = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
+    thumb   = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_thumb.jpg";
+    default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.png";
+
+    # Upgrade urls to https
+    thisimage = {
+      id       = cdmid
+      order_id = order_id
+      thumb    = thumb
+      min      = min
+      default  = default
+      desc     = desc
+    };
+
+    images.push(thisimage);
+    order_id = order_id + 1;
  END ;
 END;
 
@@ -212,7 +241,7 @@ END;
   <mets:structMap TYPE="PHYSICAL">
     <mets:div ID="physusbk[% record.info.id %]" TYPE="physSequence">
 [% FOREACH thisimage IN images %]            
-      <mets:div ID="div[% thisimage.id %]" ORDER="[% thisimage.id %]" ORDERLABEL="[% thisimage.desc %]" LABEL="" TYPE="page">
+      <mets:div ID="div[% thisimage.id %]" ORDER="[% thisimage.id %]" ORDERLABEL="[% thisimage.order_id %]" LABEL="[% thisimage.desc %]" TYPE="page">
 	<mets:fptr FILEID="img[% thisimage.id %]"/>
 	<mets:fptr FILEID="imgthumb[% thisimage.id %]"/>
 	<mets:fptr FILEID="imgmin[% thisimage.id %]"/>

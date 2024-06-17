@@ -501,6 +501,22 @@ sub _cdm_process_item {
 
     my $info_ref      = _cdm_get_iteminfo($collection,$id);
     my $structure_ref = _cdm_get_structure($collection,$id);
+
+    # Not Compound Object?
+    if (defined $info_ref->{fields}{'find'}){
+	my $find = $info_ref->{fields}{'find'}[0]{content};
+	if ($find !~m/\.cpd$/){
+	    $structure_ref = {
+		page => [
+		    {
+			pagefile => $find,
+			pageptr => $id,
+			pagetitle => "1",
+		    },
+		    ],
+	    };
+	}
+    }
     
     my $record_ref = {
 	info => $info_ref,
@@ -543,7 +559,6 @@ sub _cdm_process_item {
 
 		# Generate Thumbs und Webview
 		if ($format eq "tif" && !-e "$new_dir/$png"){
-		    system("rm $new_dir/$jpeg");		
 		    system("convert $new_dir/$filename $new_dir/$png");
 		}
 
@@ -586,7 +601,6 @@ sub _cdm_process_item {
 
 	    # Generate Thumbs und Webview
 	    if ($format eq "tif" && !-e "$new_dir/$png"){
-		system("rm $new_dir/$jpeg");		
 		system("convert $new_dir/$filename $new_dir/$png");
 	    }
 
@@ -631,7 +645,6 @@ sub _cdm_process_item {
 	    
 	    # Generate Thumbs und Webview
 	    if ($format eq "tif" && !-e "$new_dir/$png"){
-		system("rm $new_dir/$jpeg");		
 		system("convert $new_dir/$filename $new_dir/$png");
 	    }
 	    
@@ -676,7 +689,6 @@ sub _cdm_process_item {
 	    
 	    # Generate Thumbs und Webview
 	    if ($format eq "tif" && !-e "$new_dir/$png"){
-		system("rm $new_dir/$jpeg");		
 		system("convert $new_dir/$filename $new_dir/$png");
 	    }
 	    

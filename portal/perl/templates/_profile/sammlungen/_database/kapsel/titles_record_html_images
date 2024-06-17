@@ -12,36 +12,42 @@
 #
 #######################################################################
 -%]
-[%
-   cdmid = record.get_fields.${'T4114'}.first.content;
-   
-   cdm_imgurl = "";
-   cdm_webimgurl = "";   
-
-   IF cdmid || cdmid == '0';
-     cdm_webimgurl = "https://search.ub.uni-koeln.de/scans/zas/${cdmid}/cover.jpg";
+[% 
+   FOREACH mex IN holding ;
+      bezeichner = mex.${"X0014"}.content ;
+      IF (matches = bezeichner.match('^ZTGSLG-(\d+)'));
+          bezeichner = matches.first;
+          zas_type = 1;
+      ELSIF (matches = bezeichner.match('^ZTGSLG-([IXVMC]+)\.(\d+)'));
+          bezeichner = "${matches.0} near2 ${matches.1}";
+          zas_type = 2;
+      ELSIF (matches = bezeichner.match('^ZTGSLG-([A-Za-z0-9]+)'));
+          bezeichner = matches.first;
+          zas_type = 3;
+      END ;
    END;
-%]
-[% IF cdmid || cdmid == '0' ;
-   manifest_url  = "https://search.ub.uni-koeln.de/scans/zas/${cdmid}/manifest.xml";
-   manifest_url = uri_escape(manifest_url);
-   dfgviewer_url = "https://dfg-viewer.de/show/?set%5Bmets%5D=${manifest_url}";
-%]
-<center>
-<img id="cover_full" class="img-fluid" width="150" src="[% cdm_webimgurl %]"/>
 
-<p class="mt-4">
-<a class="btn btn-primary" href="[% dfgviewer_url %]" target="_blank">Zum Digitalisat</a>
-</p>
-  <span class="pb-4" style="font-face:bold;font-size:0.8em;">Klicken Sie auf "Zum Digitalisat". Orientieren Sie sich im DFG-Viewer am Select-Button anhand der laufenden Nummer (Bestandteil der Signatur hinter dem Komma).</span>
-</center>
+   cdmurl = "http://www.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fzas&start=1&maxrecs=100&field0=title&mode0=exact&string0=";
+%]
+[% cdm = record.enrich_cdm(bezeichner,cdmurl)%]
+[% IF cdm.total > 0 ;
+     IF cdm.records.first.filetype == "cdp";
+        cdm_base = "/cdm4/document.php";
+     ELSE ;
+#        cdm_base = "/cdm4/item_viewer.php";
+        cdm_base = "/cgi-bin/getimage.exe";
+     END ;
+
+   FOREACH cdmrecord IN cdm.records ;
+     NEXT IF zas_type == 1 && NOT cdmrecord.title.match("^${bezeichner}\$") ;
+     cdm_url       = "http://www.ub.uni-koeln.de/cdm/compoundobject/collection/zas/id/${cdmrecord.pointer}";
+     cdm_imgurl = "http://www.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&width=200";
+
+%]
+<p><a id="cover_full_url" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=534;url=[% uri_escape(cdm_url) %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]" title="Zum Digitalisat des Titels in ContentDM" /></a><br/>[% cdmrecord.title %]</p>
+  [% END %]
+
+  <span style="font-face:bold;font-size:0.8em;">Klicken Sie auf das
+Vorschaubild. Orientieren Sie sich in der rechten Spalte (Thumbnails) anhand der laufenden Nummer (Bestandteil der Signatur hinter dem Komma).</span>
 [% END %]
 
-[% IF cgiapp.is_authenticated('admin') || cgiapp.is_authenticated('librarian') %]
-<p>
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %];flush_cache=1" >[% msg.maketext("Titel ohne Cache") %]</a>
-</p>
-<p>
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/searchindex.html?l=[% lang %]" >[% msg.maketext("Zum Suchindex") %]</a>
-</p>
-[% END %]

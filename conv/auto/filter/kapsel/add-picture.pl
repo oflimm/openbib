@@ -18,6 +18,8 @@ my $zas_ref = XMLin('/opt/openbib/autoconv/pools/kapsel/zas.xml', ForceArray => 
 my $mark_to_cdmid_ref = {};
 
 foreach my $item_ref (@{$zas_ref->{record}}){
+    next if ($item_ref->{signaturgruppe} =~m/Inhaltsverzeichnis/ );
+    
     if ($item_ref->{signaturgruppe} =~m/^(\S+)\s+/){
 	$item_ref->{signaturgruppe} = $1;
     }

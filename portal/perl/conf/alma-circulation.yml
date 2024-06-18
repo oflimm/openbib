@@ -122,7 +122,11 @@
   '38-101-FHM':
     'order': 0
     'loan': 1
-    'reservation': 0
+    'reservation': 1
+    'pickup_locations':
+      - type: 'LIBRARY'
+        id: 'Ausgabe'
+        desc: 'Gemeinsame Fachbibliothek VWL: Ausgabe'
 '38-106':
   '38-106-MAG':
     'order': 1

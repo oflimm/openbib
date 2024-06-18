@@ -557,22 +557,24 @@ sub _cdm_process_item {
 		    system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'");
 		}
 
+		my $convertargs = ($format eq "tif")?'-flatten':'';
+		
 		# Generate Thumbs und Webview
 		if ($format eq "tif" && !-e "$new_dir/$png"){
-		    system("convert $new_dir/$filename $new_dir/$png");
+		    system("convert $convertargs $new_dir/$filename $new_dir/$png");
 		}
 
 		if ($is_cover && !-e "$new_dir/$cover"){
-		    system("convert -resize '150x150>' $new_dir/$filename $new_dir/$cover");
+		    system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$cover");
 		    $is_cover = 0;
 		}
 		
 		if (!-e "$new_dir/$webview"){
-		    system("convert -resize '900x900>' $new_dir/$filename $new_dir/$webview");
+		    system("convert $convertargs -resize '900x900>' $new_dir/$filename $new_dir/$webview");
 		}
 		
 		if (!-e "$new_dir/$thumb"){
-		    system("convert -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
+		    system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
 		}
 	    }
 	}
@@ -599,22 +601,24 @@ sub _cdm_process_item {
 		system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'");
 	    }
 
+	    my $convertargs = ($format eq "tif")?'-flatten':'';
+	    
 	    # Generate Thumbs und Webview
 	    if ($format eq "tif" && !-e "$new_dir/$png"){
-		system("convert $new_dir/$filename $new_dir/$png");
+		system("convert $convertargs $new_dir/$filename $new_dir/$png");
 	    }
 
 	    if ($is_cover && !-e "$new_dir/$cover"){
-		system("convert -resize '150x150>' $new_dir/$filename $new_dir/$cover");
+		system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$cover");
 		$is_cover = 0;
 	    }
 
 	    if (!-e "$new_dir/$webview"){
-		system("convert -resize '900x900>' $new_dir/$filename $new_dir/$webview");
+		system("convert $convertargs -resize '900x900>' $new_dir/$filename $new_dir/$webview");
 	    }
 	    
 	    if (!-e "$new_dir/$thumb"){
-		system("convert -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
+		system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
 	    }
 	}
     }
@@ -643,22 +647,24 @@ sub _cdm_process_item {
 		system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'");
 	    }
 	    
+	    my $convertargs = ($format eq "tif")?'-flatten':'';
+
 	    # Generate Thumbs und Webview
 	    if ($format eq "tif" && !-e "$new_dir/$png"){
-		system("convert $new_dir/$filename $new_dir/$png");
+		system("convert $convertargs $new_dir/$filename $new_dir/$png");
 	    }
 	    
 	    if ($is_cover && !-e "$new_dir/$cover"){
-		system("convert -resize '150x150>' $new_dir/$filename $new_dir/$cover");
+		system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$cover");
 		$is_cover = 0;
 	    }
 	    
 	    if (!-e "$new_dir/$webview"){
-		system("convert -resize '900x900>' $new_dir/$filename $new_dir/$webview");
+		system("convert $convertargs -resize '900x900>' $new_dir/$filename $new_dir/$webview");
 	    }
 	    
 	    if (!-e "$new_dir/$thumb"){
-		system("convert -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
+		system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
 	    }
 	}
     }
@@ -675,6 +681,8 @@ sub _cdm_process_item {
 	    my $webview  = $thispage_ref->{pageptr}."_web.jpg";
 	    my $thumb    = $thispage_ref->{pageptr}."_thumb.jpg";
 	    my $cover    = "cover.jpg";
+
+	    $logger->debug("Pageptr: ".$thispage_ref->{pageptr}." Filename: $filename ; JPEG: $jpeg ; PNG: $png ; Webview: $webview ; Thumb: $thumb ; Cover: $cover");
 	    
 	    if (-e "$new_dir/$filename"){
 		$logger->info("File $filename already exists. Ignoring");
@@ -686,23 +694,25 @@ sub _cdm_process_item {
 		
 		system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'");
 	    }
+
+	    my $convertargs = ($format eq "tif")?'-flatten':'';
 	    
 	    # Generate Thumbs und Webview
 	    if ($format eq "tif" && !-e "$new_dir/$png"){
-		system("convert $new_dir/$filename $new_dir/$png");
+		system("convert $convertargs $new_dir/$filename $new_dir/$png");
 	    }
 	    
 	    if ($is_cover && !-e "$new_dir/$cover"){
-		system("convert -resize '150x150>' $new_dir/$filename $new_dir/$cover");
+		system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$cover");
 		$is_cover = 0;
 	    }
 	    
 	    if (!-e "$new_dir/$webview"){
-		system("convert -resize '900x900>' $new_dir/$filename $new_dir/$webview");
+		system("convert $convertargs -resize '900x900>' $new_dir/$filename $new_dir/$webview");
 	    }
 	    
 	    if (!-e "$new_dir/$thumb"){
-		system("convert -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
+		system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
 	    }
 	}
     }

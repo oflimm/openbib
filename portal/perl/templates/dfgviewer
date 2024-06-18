@@ -130,7 +130,8 @@ ELSIF collection == 'portrait';
  date      = fields.${'date'}.first.content;
  year      = date.match('(\d\d\d\d)').first;
  reference_url = owner_siteurl;
- genre     = "Inkunabel";
+ type      = "image";
+ genre     = "Portrait";
 
  order_id = 1;
  FOREACH page IN record.structure.page ;

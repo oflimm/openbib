@@ -30,6 +30,7 @@ reference_url = owner_siteurl ;
 presentation_url = reference_url ;
 
 cover     = "${viewerurl}/${collection}/${record.info.id}/cover.jpg";
+pdf       = "";
 
 fields = record.info.fields;
 type  = "monograph";
@@ -145,6 +146,41 @@ ELSIF collection == 'portrait';
     min     = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
     thumb   = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_thumb.jpg";
     default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.png";
+
+    # Upgrade urls to https
+    thisimage = {
+      id       = cdmid
+      order_id = order_id
+      thumb    = thumb
+      min      = min
+      default  = default
+      desc     = desc
+    };
+
+    images.push(thisimage);
+    order_id = order_id + 1;
+ END ;
+ELSIF collection == 'digitalis';
+ title     = fields.${'title'}.first.content;  
+ name      = fields.${'creato'}.first.content;
+ mark      = fields.${'signat'}.first.content;
+ date      = fields.${'date'}.first.content;
+ year      = date.match('(\d\d\d\d)').first;
+ reference_url = "https://digitalis.ub.uni-koeln.de/";
+ presentation_url = "https://digitalis.ub.uni-koeln.de/";
+ genre     = "Monographie";
+
+ order_id = 1;
+ FOREACH page IN record.structure.page ;
+    desc = page.pagetitle;
+    cdmid = page.pageptr ;
+
+    IF NOT pdf ;
+       pdf     = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.pdf";
+    END ;
+    min     = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
+    thumb   = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_thumb.jpg";
+    default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.jpg";
 
     # Upgrade urls to https
     thisimage = {
@@ -279,9 +315,19 @@ END;
 	<mets:FLocat LOCTYPE="URL" xlink:href="[% cover %]"/>
       </mets:file>
     </mets:fileGrp>
+[% IF pdf %]
+    <mets:fileGrp USE="DOWNLOAD">
+      <mets:file ID="pdfdownload[% record.info.id %]" MIMETYPE="application/pdf">
+	<mets:FLocat LOCTYPE="URL" xlink:href="[% pdf %]"/>
+      </mets:file>
+    </mets:fileGrp>
+[% END %]
   </mets:fileSec>
   <mets:structMap TYPE="PHYSICAL">
     <mets:div ID="physusbk[% record.info.id %]" TYPE="physSequence">
+[% IF pdf %]
+      <mets:fptr FILEID="pdfdownload[% record.info.id %]"/>
+[% END %]
 [% FOREACH thisimage IN images %]            
       <mets:div ID="div[% thisimage.id %]" ORDER="[% thisimage.id %]" ORDERLABEL="[% thisimage.order_id %]" LABEL="[% thisimage.desc %]" TYPE="page">
 	<mets:fptr FILEID="img[% thisimage.id %]"/>

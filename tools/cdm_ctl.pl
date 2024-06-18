@@ -539,6 +539,9 @@ sub _cdm_process_item {
 		if ($thispage_ref->{pagefile} =~m/\.tif/){
 		    $format = "tif";
 		}
+		elsif ($thispage_ref->{pagefile} =~m/\.pdf/){
+		    $format = "pdf";
+		}
 		my $filename = $thispage_ref->{pageptr}.".$format";
 		my $png      = $thispage_ref->{pageptr}.".png";
 		my $jpeg     = $thispage_ref->{pageptr}.".jpg";
@@ -582,6 +585,9 @@ sub _cdm_process_item {
 	    my $format = "jpg";
 	    if ($page_ref->{page}{pagefile} =~m/\.tif/){
 		$format = "tif";
+	    }
+	    elsif ($page_ref->{page}{pagefile} =~m/\.pdf/){
+		$format = "pdf";
 	    }
 	    my $filename = $page_ref->{page}{pageptr}.".$format";
 	    my $jpeg     = $page_ref->{page}{pageptr}.".jpg";
@@ -629,6 +635,9 @@ sub _cdm_process_item {
 	    if ($thispage_ref->{pagefile} =~m/\.tif/){
 		$format = "tif";
 	    }
+	    elsif ($thispage_ref->{pagefile} =~m/\.pdf/){
+		$format = "pdf";
+	    }
 	    my $filename = $thispage_ref->{pageptr}.".$format";
 	    my $jpeg     = $thispage_ref->{pageptr}.".jpg";
 	    my $png      = $thispage_ref->{pageptr}.".png";	    
@@ -675,7 +684,11 @@ sub _cdm_process_item {
 	    if ($thispage_ref->{pagefile} =~m/\.tif/){
 		$format = "tif";
 	    }
+	    elsif ($thispage_ref->{pagefile} =~m/\.pdf/){
+		$format = "pdf";
+	    }
 	    my $filename = $thispage_ref->{pageptr}.".$format";
+	    my $pdf      = $thispage_ref->{pageptr}.".pdf";
 	    my $jpeg     = $thispage_ref->{pageptr}.".jpg";
 	    my $png      = $thispage_ref->{pageptr}.".png";	    
 	    my $webview  = $thispage_ref->{pageptr}."_web.jpg";
@@ -695,6 +708,12 @@ sub _cdm_process_item {
 		system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'");
 	    }
 
+	    if ($format eq "pdf"){
+		system("cd $new_dir ; pdftoppm -f 1 -l 1 $pdf ".$thispage_ref->{pageptr}." -jpeg");
+		system("cd $new_dir ; mv ".$thispage_ref->{pageptr}."-01.jpg $jpeg");
+		$filename = $jpeg;
+	    }
+	    
 	    my $convertargs = ($format eq "tif")?'-flatten':'';
 	    
 	    # Generate Thumbs und Webview

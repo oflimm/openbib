@@ -123,6 +123,37 @@ ELSIF collection == 'inkunabeln';
     images.push(thisimage);
     order_id = order_id + 1;
  END ;
+ELSIF collection == 'portrait';
+ title     = fields.${'title'}.first.content;  
+ name      = fields.${'creato'}.first.content;
+ mark      = fields.${'signat'}.first.content;
+ date      = fields.${'date'}.first.content;
+ year      = date.match('(\d\d\d\d)').first;
+ reference_url = owner_siteurl;
+ genre     = "Inkunabel";
+
+ order_id = 1;
+ FOREACH page IN record.structure.page ;
+    desc = page.pagetitle;
+    cdmid = page.pageptr ;
+  
+    min     = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
+    thumb   = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_thumb.jpg";
+    default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.png";
+
+    # Upgrade urls to https
+    thisimage = {
+      id       = cdmid
+      order_id = order_id
+      thumb    = thumb
+      min      = min
+      default  = default
+      desc     = desc
+    };
+
+    images.push(thisimage);
+    order_id = order_id + 1;
+ END ;
 END;
 
 -%]
@@ -161,8 +192,11 @@ END;
 	      <mods:placeTerm type="text">[% place %]</mods:placeTerm>
 	    </mods:place>
 [% END %]
+[% IF date && year && date != year %]
+            <mods:dateIssued>[% date %]</mods:dateIssued>
+[% END %]
 [% IF year %]
-	    <mods:dateIssued>[% year %]</mods:dateIssued>
+	    <mods:dateIssued keyDate="yes" encoding="w3cdtf">[% year %]</mods:dateIssued>
 [% END %]	    
 	  </mods:originInfo>
 [% END %]	  
@@ -172,6 +206,9 @@ END;
 	  </mods:language>
 	  <mods:location>
 	    <mods:physicalLocation>[% physical_location %]</mods:physicalLocation>
+[% IF mark %]
+            <mods:shelfLocator>[% mark %]</mods:shelfLocator>
+[% END %]
 	    <mods:url>
 	      [% reference_url %]
 	    </mods:url>

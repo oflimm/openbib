@@ -710,7 +710,7 @@ sub _cdm_process_item {
 
 	    if ($format eq "pdf"){
 		system("cd $new_dir ; pdftoppm -f 1 -l 1 $pdf ".$thispage_ref->{pageptr}." -jpeg");
-		system("cd $new_dir ; mv ".$thispage_ref->{pageptr}."-01.jpg $jpeg");
+		system("cd $new_dir ; mv ".$thispage_ref->{pageptr}."-0*1.jpg $jpeg");
 		$filename = $jpeg;
 	    }
 	    

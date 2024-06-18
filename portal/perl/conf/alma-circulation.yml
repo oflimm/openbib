@@ -111,6 +111,54 @@
         id: 'Ausgabe'
         desc: 'Informatikbibliothek: Ausgabe'
 '38-101':
+  '38-101-BMA':
+    'order': 1
+    'loan': 0
+    'reservation': 1
+    'pickup_locations':
+      - type: 'LIBRARY'
+        id: 'Ausgabe'
+        desc: 'WiSo Bibliothek: Ausgabe'
+  '38-101-PMA':
+    'order': 1
+    'loan': 0
+    'reservation': 1
+    'pickup_locations':
+      - type: 'LIBRARY'
+        id: 'Ausgabe'
+        desc: 'WiSo Bibliothek: Ausgabe'
+  '38-101-SMA':
+    'order': 1
+    'loan': 0
+    'reservation': 1
+    'pickup_locations':
+      - type: 'LIBRARY'
+        id: 'Ausgabe'
+        desc: 'WiSo Bibliothek: Ausgabe'
+  '38-101-VFH':
+    'order': 0
+    'loan': 1
+    'reservation': 1
+    'pickup_locations':
+      - type: 'LIBRARY'
+        id: 'Ausgabe'
+        desc: 'WiSo Bibliothek: Ausgabe'
+  '38-101-VMA':
+    'order': 1
+    'loan': 0
+    'reservation': 1
+    'pickup_locations':
+      - type: 'LIBRARY'
+        id: 'Ausgabe'
+        desc: 'WiSo Bibliothek: Ausgabe'
+  '38-101-WMA':
+    'order': 1
+    'loan': 0
+    'reservation': 1
+    'pickup_locations':
+      - type: 'LIBRARY'
+        id: 'Ausgabe'
+        desc: 'WiSo Bibliothek: Ausgabe'
   '38-101-MAG':
     'order': 1
     'loan': 0

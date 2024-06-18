@@ -423,7 +423,7 @@
    cdmid = item.${'T4114'}.first.content ;
    cdm_imgurl = "";
    IF cdmid || cdmid == '0';
-     cdm_imgurl = "https://search.ub.uni-koeln.de/scans/portrait/${cdmid}/${cdmid}_w600.jpg";
+     cdm_imgurl = "https://search.ub.uni-koeln.de/scans/portrait/${cdmid}/${cdmid}_thumb.jpg";
    END;
 %]
 [% IF cdm_imgurl %]

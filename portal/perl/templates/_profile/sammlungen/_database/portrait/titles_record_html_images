@@ -21,8 +21,8 @@
    cdm_webimgurl = "";   
 
    IF cdmid || cdmid == '0';
-     cdm_webimgurl = "https://search.ub.uni-koeln.de/scans/portrait/${cdmid}/${cdmid}_w600.jpg";
-     cdm_imgurl = "https://search.ub.uni-koeln.de/scans/portrait/${cdmid}/${cdmid}_w950.jpg";
+     cdm_webimgurl = "https://search.ub.uni-koeln.de/scans/portrait/${cdmid}/${cdmid}_web.jpg";
+     cdm_imgurl = "https://search.ub.uni-koeln.de/scans/portrait/${cdmid}/${cdmid}.png";
    END;
 %]
 [% IF cdm_imgurl ;
@@ -31,7 +31,8 @@
    dfgviewer_url = "https://dfg-viewer.de/show/?set%5Bmets%5D=${manifest_url}";
 %]
 <center>
-<img id="cover_full" class="img-fluid" width="350" src="[% cdm_webimgurl %]"/>
+
+<a target="_blank" href="[% cdm_imgurl %]"><img id="cover_full" class="img-fluid" width="350" src="[% cdm_webimgurl %]"/></a>
 
 <p class="mt-4">
 <a class="btn btn-primary" href="[% dfgviewer_url %]" target="_blank">Zum Digitalisat</a>

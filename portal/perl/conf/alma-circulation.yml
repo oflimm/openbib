@@ -101,7 +101,7 @@
     'pickup_locations':
       - type: 'LIBRARY'
         id: 'Ausgabe'
-        desc: 'Informatikbibliothek: Ausgabe'
+        desc: 'Informatik-Bibliothek: Ausgabe'
   '38-006-MAG':
     'order': 0
     'loan': 1
@@ -109,7 +109,7 @@
     'pickup_locations':
       - type: 'LIBRARY'
         id: 'Ausgabe'
-        desc: 'Informatikbibliothek: Ausgabe'
+        desc: 'Informatik-Bibliothek: Ausgabe'
 '38-101':
   '38-101-BMA':
     'order': 1

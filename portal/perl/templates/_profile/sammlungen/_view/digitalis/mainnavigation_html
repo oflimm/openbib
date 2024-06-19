@@ -1,0 +1,261 @@
+[%-
+#######################################################################
+#
+# Templatename: mainnavigation
+#
+# Typ         : Subtemplage       
+#
+# Aufgabe:
+#
+# Ausgabe der Hauptmenu-Punkte
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# databasechoice
+# searchform
+# resultlists
+# collection
+# startpage
+# rssfeeds
+# login
+# info
+# tutorial
+#
+#######################################################################
+-%]
+<style>
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu a::after {
+  transform: rotate(-90deg);
+  position: absolute;
+  right: 6px;
+  top: .8em;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-left: .1rem;
+  margin-right: .1rem;
+}
+</style>
+
+<!--
+-->
+
+[%-
+   username    = user.get_username ;
+   
+   session_sort = "year_desc";
+   IF qopts.get_option('srt') && NOT qopts.get_option('srt').match('_') && qopts.get_option('srto') ;
+     session_sort = "${qopts.get_option('srt')}_${qopts.get_option('srto')}";
+   END;
+
+-%]
+    <!-- begin: main navigation  -->
+
+<!-- Targs: [% USE dumper; dumper.dump(layout_param) %] -->
+
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar_hamburger" aria-labelledby="offcanvasSidebarLabel">
+  
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title" id="offcanvasSidebarLabel_hamburger">[% msg.maketext("Menu") %]</h3>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="ps-2">
+      <ul class="list-unstyled components">
+
+        <li class="nav-item">
+	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]">
+            <i class="fas fa-bullseye"></i> [% msg.maketext("Sammlung") %]                </a>
+	</li>
+        <li class="nav-item">
+	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/digitalis/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">
+            <i class="fas fa-list"></i> [% msg.maketext("Register") %]
+	    
+          </a>
+	</li>
+        <li class="nav-item">
+	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/digitalis/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">
+            <i class="fas fa-cloud"></i> [% msg.maketext("Wortwolken") %]
+	    
+          </a>
+	</li>
+	<li class="nav-item">
+        <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/digitalis/[% config.get('titles_loc') %].html?l=[% lang %]">
+          <i class="fas fa-th-list"></i> [% msg.maketext("Alle Titel") %]
+        </a>
+	</li>
+	
+        <li class="nav-item"><a class="nav-link text-black" href="[% path_prefix %]/[% config.get("cartitems_loc") %].html?l=[% lang %]"><i class="far fa-bookmark"></i>  [% msg.maketext("Merkliste") %]</a></li>
+
+     [% lang_desc = {
+       'en' = "English"
+       'de' = "Deutsch"
+     }
+     %]
+
+    [% IF config.get('lang').size == 2 %]
+               <li class="nav-item">		
+      [% FOREACH thislang IN config.get('lang') %]
+       [% IF lang != thislang %]<a class="nav-link text-black" href="[% path %]?[% qstring = cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% IF qstring %][% qstring %];[% END %]l=[% thislang %]"><i class="fas fa-globe"></i> [% lang_desc.${thislang} %]</a>[% END %]
+     [% END %]
+               </li>
+    [% ELSE %]
+     
+               <li class="nav-item order-2 order-md-1 mt-1">
+	        <form method="get" action="[% path %]">
+                   <select name="l" class="autosubmit selectpicker" data-width="fit">
+
+     [% FOREACH thislang IN config.get('lang') %]
+      <option value="[% thislang %]"[% IF lang == thislang %] selected[% END %]>[% lang_desc.${thislang} %]</option>
+     [% END %]
+                    </select>
+		[% cgiapp.to_cgi_hidden_input({ exclude = ['l']}) %]
+
+		    
+		  <button class="btn btn-primary p-1 ob-nojs_show" type="submit">[% msg.maketext("Los") %]</button>
+		  </form>
+               </li>
+    [% END %]
+    		
+      </ul>
+      
+    </div>
+    
+    <div class="offcanvas-footer">
+      <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_hamburger">[% msg.maketext("Schließen") %]</button>
+    </div>
+  </div>
+</div>
+
+
+
+<header>
+<nav class="navbar navbar-expand-lg ps-2">
+ 
+  <span class="navbar-brand">
+   <a class="text-white" href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">
+     <img src="/images/openbib/views/[% view %]/digitalis-logo-rund-48px.png" class="img-fluid d-sm-inline pe-3"  />[% msg.maketext("Digitalis Sammlung") %]
+   </a>
+  </span>
+
+  <div id="ob-header_navbarmenu_small" class="d-flex justify-content-end">
+    <span class="d-lg-none p-1 pe-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar_hamburger" aria-controls="offcanvasSidebar"><i class="fas fa-bars fa-2x"></i></span>
+  </div>
+  <div class="collapse navbar-collapse"">
+<!--    <a class="navbar-brand" href="#">Hidden brand</a> -->
+
+    <ul id="ob-header_navbarmenu" class="nav navbar-nav flex-row justify-content-between ms-auto me-3 text-white">
+           <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
+
+[%     IF config.get_viewauthenticators(view) %]
+    [%  IF username %]
+      [% IF NOT suppress_unauthorized %]
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %] dropdown">
+	        <a class="nav-link dropdown-toggle" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/edit.html?l=[% lang %]" data-bs-toggle="dropdown">[% msg.maketext("Mein Konto") %]</a>
+		<div class="dropdown-menu ob-dropdown">
+    [% PROCESS common/subtemplate name="users_navigation_dropdown" %] 
+		</div>
+	   </li>
+           <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %];purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a></li>
+      [% END %]
+    [%  ELSE %]
+           <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]"  data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %]"><span class="d-none d-md-block">[% msg.maketext("Mein Konto") %] | [% msg.maketext("Anmelden") %]</span></a></li>
+    [%  END %]
+[%     END %]
+
+     [% lang_desc = {
+       'en' = "English"
+       'de' = "Deutsch"
+     }
+     %]
+
+    [% IF config.get('lang').size == 2 %]
+               <li class="nav-item">		
+      [% FOREACH thislang IN config.get('lang') %]
+       [% IF lang != thislang %]<a class="nav-link" href="[% path %]?[% qstring = cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% IF qstring %][% qstring %];[% END %]l=[% thislang %]">[% lang_desc.${thislang} %]</a>[% END %]
+     [% END %]
+               </li>
+    [% ELSE %]
+     
+               <li class="nav-item order-2 order-md-1 mt-1">
+	        <form method="get" action="[% path %]">
+                   <select name="l" class="autosubmit selectpicker" data-width="fit">
+
+     [% FOREACH thislang IN config.get('lang') %]
+      <option value="[% thislang %]"[% IF lang == thislang %] selected[% END %]>[% lang_desc.${thislang} %]</option>
+     [% END %]
+                    </select>
+		[% cgiapp.to_cgi_hidden_input({ exclude = ['l']}) %]
+
+		    
+		  <button class="btn btn-primary p-1 ob-nojs_show" type="submit">[% msg.maketext("Los") %]</button>
+		  </form>
+               </li>
+    [% END %]
+    		
+            </ul>
+  
+  </div>
+</nav>
+
+    [% IF not suppress_unauthorized %]
+    [% PROCESS common/subtemplate name="breadcrumbs" %] 
+    [% END %]
+</header>
+
+[% PROCESS common/subtemplate name="searchforms_suggestions" %]
+
+[% IF NOT suppress_unauthorized && NOT layout_param.without_navigation_search %]
+<div id="ob-mainnavigation_searchbar" class="mb-3">
+<div class="card border-0 sticky-top" style="min-width: 100%!important;">
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+
+<input type="hidden" name="num"        value="20" />
+<input type="hidden" name="page"       value="1" />
+<input type="hidden" name="l"          value="[% lang %]" />
+
+<input type="hidden" name="srt"        value="[% session_sort %]" />
+<input type="hidden" name="st"         value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+        <div class="card-header p-0 border-0">
+	  
+          <div id="search_wrapper_top" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
+            <div class="input-group">
+              <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
+                <span class="input-group-btn ps-1">
+                    <button class="btn btn-primary fas fa-search" style="height: 36px;" type="submit"></button>
+                    <span class="btn btn-primary fas fa-cog" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>
+                </span>
+            </div>
+
+          </div>
+
+	<div class="row pb-0">     
+	  <div class="col collapse p-0 bg-white" id="search_options">
+            <ul class="list-group flex-row flex-wrap justify-content-center">
+              <li class="list-group-item pe-1 pt-3" style="border: none" >
+		<a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-indicator=".spinner-border" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
+	      </li>      	  
+              <li class="list-group-item pe-1 pt-3" style="border: none" >
+		<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	      </li>
+            </ul>
+	  </div><!-- col -->
+	</div><!-- row -->
+
+        </div>
+
+</form>
+<!-- </nav> -->
+</div><!-- End: sticky-top -->
+</div><!-- End: d-md-none -->
+[% END # End: suppress_unauthorized %]
+    <!-- end: main navigation -->

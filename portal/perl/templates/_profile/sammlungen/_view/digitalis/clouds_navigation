@@ -36,6 +36,13 @@
    <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/person.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
 [%   END %]
 [% END %]
+[% IF config.datacache_exists({ id => database, type => 5 }) %]
+[%   IF layout_param.active_submenu == "clouds_corporatebody" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("K&ouml;rperschaften") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/corporatebody.html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
+[%   END %]
+[% END %]
 [% IF config.datacache_exists({ id => database, type => 3 }) %]
 [%   IF layout_param.active_submenu == "clouds_subject" %]
   <li class="navbar-item active"><strong>[% msg.maketext("Schlagwort") %]</strong></li>

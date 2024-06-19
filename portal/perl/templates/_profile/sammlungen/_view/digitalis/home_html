@@ -52,7 +52,7 @@
           <i class="fas fa-search-plus"></i> [% msg.maketext("Erweiterte Suche") %]
         </a>
         <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]">
-          <i class="fas fa-bullseye"></i> [% msg.maketext("Sammlung") %]
+          <i class="fas fa-bullseye"></i> [% msg.maketext("Projekt") %]
         </a>
         <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/digitalis/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">
           <i class="fas fa-list"></i> [% msg.maketext("Register") %]

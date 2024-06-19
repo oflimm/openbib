@@ -521,10 +521,6 @@ Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es au
 	    </div>
 [% END %]
 	     
-	     <div class="pe-1 pb-3">
-	       <button class="ob-sidebar_button sidebar-toggler d-none d-md-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-described-by="[% msg.maketext("Mehr Aktionen mit dem Titel") %]" title="[% msg.maketext("Titelaktionen") %]"><i class="fas fa-plus fa-2x"></i></button>     
-	     </div>
-
 
        </div><!-- End ob-fulltitle_actions -->
 

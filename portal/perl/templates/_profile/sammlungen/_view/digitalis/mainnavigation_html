@@ -72,7 +72,7 @@
 
         <li class="nav-item">
 	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]">
-            <i class="fas fa-bullseye"></i> [% msg.maketext("Sammlung") %]                </a>
+            <i class="fas fa-bullseye"></i> [% msg.maketext("Projekt") %]                </a>
 	</li>
         <li class="nav-item">
 	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/digitalis/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">
@@ -141,7 +141,7 @@
  
   <span class="navbar-brand">
    <a class="text-white" href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">
-     <img src="/images/openbib/views/[% view %]/digitalis-logo-rund-48px.png" class="img-fluid d-sm-inline pe-3"  />[% msg.maketext("Digitalis Sammlung") %]
+     <img src="/images/openbib/views/[% view %]/digitalis-logo-rund-40px.png" class="img-fluid d-sm-inline pe-3"  />[% msg.maketext("Digitalis Sammlung") %]
    </a>
   </span>
 

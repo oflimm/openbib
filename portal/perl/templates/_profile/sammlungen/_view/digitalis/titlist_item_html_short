@@ -408,8 +408,8 @@
 %]
 [% IF cdm_imgurl %]
 <img class="img-fluid" src="[% cdm_imgurl %]" style="padding-left: 20px; max-height: 80px; max-width:80px" />
-      </div>
 [% END %]      
+      </div>
       <div class="ob-brieftitle ps-4">
 [%# USE dumper;dumper.dump(dbinfo) %]
         <div class="ob-titleinfo ps-2 mt-4">

@@ -46,6 +46,13 @@
   END ;
   title      = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc)
 
+   cdmid = normdata.${'T4114'}.first.content ;
+   cdm_imgurl = "";
+   cdm_pdfurl = "";
+   IF cdmid || cdmid == '0';
+     cdm_imgurl = "https://search.ub.uni-koeln.de/scans/digitalis/${cdmid}/${cdmid}_web.jpg";
+     cdm_pdfurl = "https://search.ub.uni-koeln.de/scans/digitalis/${cdmid}/${cdmid}.pdf";
+   END;
 -%]
 
 <!--               <script type="text/javascript">
@@ -89,7 +96,6 @@ $(document).ready(function(){
 [% IF record_exists %]
 [%   PROCESS common/subtemplate name="visible_categories_title" %]
 
-
 [%   PROCESS common/subtemplate name="titles_record_html_categories" %]
 [% ELSE %]
 <h2>[% msg.maketext("Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden.") %]</h2>
@@ -108,6 +114,10 @@ $(document).ready(function(){
 
 </div><!-- End Fulltitle -->
 <p>
+[% IF cdm_pdfurl %]
+<a class="btn btn-primary" title="[% msg.maketext("Zum Volltext") %]" href="[% cdm_pdfurl %]"><i class="fas fa-download"></i> [% msg.maketext("Zum Volltext") %]</a>
+[% END %]
+
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#apaModal">[% msg.maketext("APA Zitat") %]</button>
 
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#harvardModal">[% msg.maketext("Harvard Zitat") %]</button>

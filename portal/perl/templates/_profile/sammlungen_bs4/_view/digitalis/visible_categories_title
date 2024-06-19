@@ -1,0 +1,148 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_titset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%-# Ausgabekategorien -%]
+[%- categories = [
+                'T0100', # msg.maketext("T0100") Verfasser
+                'T0101', # msg.maketext("T0101") Person
+                'T0103', # msg.maketext("T0103") Gefeierte Person
+                'T0200', # msg.maketext("T0200") Urheber
+                'T0201', # msg.maketext("T0201") Koerperschaft
+                'T0089', # msg.maketext("T0089") Bandangabe  
+                'T0310', # msg.maketext("T0310") AST  
+                'T0304', # msg.maketext("T0304") EST 
+                'T0331', # msg.maketext("T0331") HST
+                'T0370', # msg.maketext("T0370") WST
+                'T0670', # msg.maketext("T0670") Sachtitel in abweichender Orthographie
+                'T0341', # msg.maketext("T0341") PSTVorlage
+                'T0333', # msg.maketext("T0333") Zu erg. Urheber/HST Urheber
+                'T0335', # msg.maketext("T0335") Zusatz zum HST
+                'T0300', # msg.maketext("T0300") Sammlungsvermerk
+                'T0361', # msg.maketext("T0361") Vorlage beigef. Werk
+                'T0365', # msg.maketext("T0365") Gemeins. Angaben
+                'T0369', # msg.maketext("T0369") Gemeins. Angaben Verfasser
+                'T0359', # msg.maketext("T0359") Vorl. Verfasser/Koerperschaft
+                'T0360', # msg.maketext("T0360") Vorl. Unterreihe
+                'T0403', # msg.maketext("T0403") Auflage
+                'T0410', # msg.maketext("T0410") Verlagsort
+                'T0412', # msg.maketext("T0412") Verlag
+                'T0425', # msg.maketext("T0425") ErschJahr
+                'T0424', # msg.maketext("T0424") ErschJahr/Ansetzung
+                'T0405', # msg.maketext("T0405") Erscheinungsverlauf
+                'T0523', # msg.maketext("T0523") Erscheinungsweise
+                'T0591', # msg.maketext("T0591") Verfasser Quelle
+                'T0594', # msg.maketext("T0594") ErschOrt Quelle
+                'T0595', # msg.maketext("T0595") ErschJahr Quelle
+#                'T0434', # msg.maketext("T0434") Ill_Angabe
+                'T0413', # msg.maketext("T0413") Drucker
+                'T0035', # msg.maketext("T0035") ErschLand
+                'T0435', # msg.maketext("T0435") Format
+                'T0508', # msg.maketext("T0508") Quelle
+                'T0433', # msg.maketext("T0433") Kollation
+                'T0334', # msg.maketext("T0334") Material
+                'T0652', # msg.maketext("T0652") EDV Material
+                'T0655', # msg.maketext("T0655") EDV Adress
+                'T0451', # msg.maketext("T0451") GesTit Vorl
+                'T0590', # msg.maketext("T0590") HSTQuelle
+                'T0585', # msg.maketext("T0585") ISSN der Quelle
+#                'T0600', # msg.maketext("T0600") Bemerkung
+                'T0407', # msg.maketext("T0407") Massstab
+                'T0434', # msg.maketext("T0434") Sonst. Angaben
+                'T0437', # msg.maketext("T0437") Begleitmat.
+                'T0504', # msg.maketext("T0504") PST Fussnote
+                'T0505', # msg.maketext("T0505") WST Fussnote
+                'T0507', # msg.maketext("T0507") Ang. HST
+                'T0509', # msg.maketext("T0509") Verfasser Fussnote
+                'T0510', # msg.maketext("T0510") Ausgabe Fussnote
+                'T0511', # msg.maketext("T0511") Erschverm. Fussnote
+                'T0512', # msg.maketext("T0512") Koll. Fussnote
+                'T0513', # msg.maketext("T0513") Impress. Aend.
+                'T0515', # msg.maketext("T0515") Ergaenzt. GesamtTitel
+                'T0517', # msg.maketext("T0517") Angaben zum Inhalt
+                'T0522', # msg.maketext("T0522") Teilungsvermerk
+                'T0525', # msg.maketext("T0525") Herkunft Fussnote
+                'T0534', # msg.maketext("T0534") Titelkonk.
+                'T0535', # msg.maketext("T0535") Anz. Ex.
+                'T0536', # msg.maketext("T0536") Vorr. Erschtermin
+                'T0527', # msg.maketext("T0527") Parallel Ausg.
+                'T0529', # msg.maketext("T0529") Titbeilage
+                'T0530', # msg.maketext("T0530") Bezugswerk
+                'T0531', # msg.maketext("T0531") FruehAusgabe
+                'T0532', # msg.maketext("T0532") FruehTit
+                'T0533', # msg.maketext("T0533") SpaetAusgabe
+                'T0519', # msg.maketext("T0519") HSSVermerk
+                'T0619', # msg.maketext("T0619") Jahr Vorlage
+                'T0580', # msg.maketext("T0580") Nachweise / Sonstige Nummern
+                'T0646', # msg.maketext("T0646") Filmbesitz
+                'T0015', # msg.maketext("T0015") Sprache
+                'T0516', # msg.maketext("T0516") Sprache
+                'T0750', # msg.maketext("T0750") Abstract
+                'T0503', # msg.maketext("T0503") Uebers. HST
+                'T0026', # msg.maketext("T0026") NE/R
+                'T4410', # msg.maketext("T4410") Allgemeiner (Medien)Typ
+                'T0800', # msg.maketext("T0800") Art/Inhalt Medienart
+                'T0710', # msg.maketext("T0710") Schlagwort
+                'T0902', # msg.maketext("T0902") Schlagwort
+                'T0907', # msg.maketext("T0907") Schlagwort
+                'T0912', # msg.maketext("T0912") Schlagwort
+                'T0917', # msg.maketext("T0917") Schlagwort
+                'T0922', # msg.maketext("T0922") Schlagwort
+                'T0927', # msg.maketext("T0927") Schlagwort
+                'T0932', # msg.maketext("T0932") Schlagwort
+                'T0937', # msg.maketext("T0937") Schlagwort
+                'T0942', # msg.maketext("T0942") Schlagwort
+                'T0947', # msg.maketext("T0947") Schlagwort
+                #'E4300', # msg.maketext("E4300") Schlagwort 
+                'T0700', # msg.maketext("T0700") Notation
+                'E4100', # msg.maketext("E4100") Basisklassifikation
+                'E4102', # msg.maketext("E4102") KUG Themengebiet
+                'T0540', # msg.maketext("T0540") ISBN
+                'T0553', # msg.maketext("T0553") ArtikelNr. als 13-stellige ISBN
+                'T0543', # msg.maketext("T0543") ISSN
+                #'T0662', # msg.maketext("T0662") EDVurl
+                'T1664', # msg.maketext("T1664") Provenienz
+                'T2662', # msg.maketext("T2662") USB EDVurl
+                'T2663', # msg.maketext("T2663") USB URLInfo
+                'T4220', # msg.maketext("T4220") Nutzer
+                'E4110', # msg.maketext("E4110") Inhaltsverzeichnis
+                'E4120', # msg.maketext("E4120") Ebook-URL
+                #'T0422', # msg.maketext("T0422") Ercheinungsjahr erster Band
+                #'T0423', # msg.maketext("T0423") Ercheinungsjahr letzter Band
+                #'T0671', # msg.maketext("T0671") Originalschrift
+                #'T1024', # msg.maketext("T1024") Erstkatalogisierungs Verbund-ID
+                #'T1701', # msg.maketext("T1701") RVK
+                #'T2086', # msg.maketext("T2086") Selektionskennzeichen Sprache
+                #'T4200', # msg.maketext("T4200") Wikipedia-Artikelname: deutsch
+                #'T4201', # msg.maketext("T4201") Wikipedia-Artikelname: englisch
+                #'T4202', # msg.maketext("T4202") Wikipedia-Artikelname: franzoesisch
+                #'T4220', # msg.maketext("T4220") Nutzername
+                #'T4230', # msg.maketext("T4230") Standort-ID		
+                #'T4500', # msg.maketext("T4500") Nutzer-Tags
+                'T4700', # msg.maketext("T4700") Sammlungsschwerpunkt
+                #'T4702', # msg.maketext("T4702") Ehemal. Instituts-Katkey
+                #'T4712', # msg.maketext("T4712") Markierung Wirtschafswissenschaften
+                #'T4715', # msg.maketext("T4715") Markierung EDZ
+                #'T4717', # msg.maketext("T4717") Markierung FB VWL
+                #'T5050', # msg.maketext("T5050") BibKey
+                #'T5051', # msg.maketext("T5051") BibKey Basis-String
+                #'T5055', # msg.maketext("T5055") WorkKey Basis-String
+                'T5005', # msg.maketext("T5005") Uebergeordn. Werke
+                'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
+                'T4211', # msg.maketext("T4211") Preis
+                'T4212', # msg.maketext("T4212") Waehrung
+                'T4210', # msg.maketext("T4210") Copyright-Information
+                'T0501', # msg.maketext("T0501") Fussnoten		
+                'T5100', # msg.maketext("T5100") Allg. Zaehlung
+                ]
+
+-%]

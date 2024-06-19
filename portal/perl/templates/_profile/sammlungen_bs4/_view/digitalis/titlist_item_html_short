@@ -292,11 +292,6 @@
       titleinfos.push("Tags: ${tags.join(' ')}") ;
     END ;
 
-    IF ebook ;
-      ebook = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(ebook)}" ;
-      titleinfos.push("<a href=\"${ebook}\" target=\"_blank\">${ebook_i18n}</a>") ;
-    END ;
-
     IF toc ;
 #      toc = "${path_prefix}/${config.get('redirect_loc')}?type=500;url=${uri_escape(toc)}" ;
       titleinfos.push("<a href=\"${toc}\" target=\"_blank\">${toc_i18n}</a>") ;
@@ -319,18 +314,19 @@ $(document).ready(function(){
 </script>
 
       <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
-      <div class="ob-thumbnail pt-3 pl-5 mr-0 d-none d-md-block">
-[% 
-   cdm_json_url = "https://services.ub.uni-koeln.de/cdm4/json_gateway.php?collection=%2Fdigitalis&start=1&maxrecs=100&field0=identi&mode0=exact&string0=${record.id}";
-
-   cdm = record.enrich_cdm(bezeichner,cdm_json_url) ;
+      <div class="ob-thumbnail pt-3 pl-4 mr-0 d-none d-md-block">
+[%
+   cdmid = item.${'T4114'}.first.content ;
+   cdm_imgurl = "";
+   cdm_pdfurl = "";
+   IF cdmid || cdmid == '0';
+     cdm_imgurl = "https://search.ub.uni-koeln.de/scans/digitalis/${cdmid}/${cdmid}_thumb.jpg";
+     cdm_pdfurl = "https://search.ub.uni-koeln.de/scans/digitalis/${cdmid}/${cdmid}.pdf";
+   END;
 %]
-[% IF cdm.total > 0 ;
-    cdmrecord = cdm.records.first;
-    cdm_imgurl = "https://services.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}";
-%]
-<img src="[% cdm_imgurl %]" style="max-height: 80px; max-width:65px" />
-[% END %]
+[% IF cdm_imgurl %]
+<img class="img-fluid" src="[% cdm_imgurl %]" style="padding-left: 20px; max-height: 80px; max-width:80px" />
+[% END %]      
       </div>
       <div class="ob-brieftitle mt-2 ml-5">
 [%# USE dumper;dumper.dump(dbinfo) %]
@@ -350,9 +346,9 @@ $(document).ready(function(){
        <div class="pr-1">
 	 <a class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %]" alt="[% title %]" title="[% title %]"><i class="fas fa-ellipsis-h"></i> <span class="d-none d-sm-inline">Details</span></a>
        </div>
-[% IF volltext_url %]
+[% IF cdm_pdfurl %]
        <div class="pr-1">
-          <a  class="btn btn-light pr-2" title="[% msg.maketext("Zum Volltext") %]" href="[% volltext_url %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Zum Volltext") %]</span></a>
+          <a  class="btn btn-light pr-2" title="[% msg.maketext("Zum Volltext") %]" href="[% cdm_pdfurl %]"><i class="fas fa-download"></i> [% msg.maketext("Zum Volltext") %]</a>
        </div>
 [% END %]
 [% IF NOT with_cartitems_delete %]

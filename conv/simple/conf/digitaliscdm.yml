@@ -1,0 +1,49 @@
+# Encoding der Daten
+# encoding: iso-8859-1
+# encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# XPath-Parameter
+
+# Record-Selector
+recordselector: /metadata/record
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'katkey'
+
+# Personen
+person:
+  'verfasser': '0100'        # Verfasser
+
+# Koerperschaften
+corporatebody:
+
+# Systematik
+classification: 
+
+# Schlagworte
+subject:
+  'serien': '0710'
+  
+# Titel
+title:
+  'titel': '0331'
+  'cdmid': '4114'  
+  'gesamttitel': '0451'
+  'jahr': '0425'
+  'band': '0089'
+  'verlag': '0412'
+  'ort': '0410'
+  'auflage': '0403'
+  'ast': '0310'
+  'bemerkung': '0600'
+  'isbn': '0540'
+  'issn': '0543'
+
+holding:
+  'signatur': '0014'
+
+defaultmediatype: 'Digital'
+

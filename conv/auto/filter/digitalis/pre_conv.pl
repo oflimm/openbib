@@ -50,9 +50,6 @@ my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 my $url           = "http://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
 
-print "### $pool: Erweiterung um Zugriffsinformation online und Typ Digital\n";
+print "### $pool: Verschiedene Anpassungen in den Daten\n";
 
-system("cd $pooldir/$pool ; rm *.xml");
-system("$wgetexe -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
-
-system("cd $rootdir/data/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl |  $rootdir/filter/$pool/remove_copyrighted.pl | $rootdir/filter/$pool/fix-url.pl | $rootdir/filter/$pool/process_urls.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $rootdir/data/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl | $rootdir/filter/$pool/add-picture.pl |  $rootdir/filter/$pool/remove_copyrighted.pl | $rootdir/filter/$pool/fix-url.pl | $rootdir/filter/$pool/process_urls.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");

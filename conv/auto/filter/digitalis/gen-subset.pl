@@ -75,8 +75,22 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
+# Ingest Katkeys from CDM
+
+my %katkeys = ();
+
+open(IN,"</opt/openbib/autoconv/pools/digitalis/digitalis.xml");
+
+while (my $line=<IN>){
+    if ($line =~m{<katkey>(\d+)</katkey>}){
+	$katkeys{$1} = 1;
+    }
+}
+
+close(IN);
+
 my $subset = new OpenBib::Catalog::Subset("inst137",$pool);
-$subset->identify_by_field_content('title',[ { field => '0662', content => '^http://www.digitalis.uni-koeln.de' } ]);
+$subset->set_titleid(\%katkeys);
 $subset->write_set;
 
 sub print_help {

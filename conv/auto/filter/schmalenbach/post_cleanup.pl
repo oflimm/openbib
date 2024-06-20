@@ -2,9 +2,9 @@
 
 #####################################################################
 #
-#  alt_remote.pl
+#  post_cleanup.pl
 #
-#  Dieses File ist (C) 2005-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -23,22 +23,29 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################
+#####################################################################   
 
 #####################################################################
-# Einladen der benoetigten Perl-Module
+# Einladen der benoetigten Perl-Module 
 #####################################################################
 
+use DBI;
 use OpenBib::Config;
+use YAML;
 
-my $config = OpenBib::Config->new;
+my $config = new OpenBib::Config();
 
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
+my $confdir       = $config->{'base_dir'}."/conf";
+my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
+my $simplecsv2metaexe  = "$konvdir/simplecsv2meta.pl";
 
 my $pool          = $ARGV[0];
+my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
+my $filename = $dbinfo->titlefile;
 
-print "### $pool: Extrahiere die Daten aus uni\n";
-
-system("$rootdir/filter/$pool/gen-subset.pl $pool");
+print "### $pool: Metriken erstellen und cachen\n";
+system("/opt/openbib/bin/gen_metrics.pl --database=schmalenbach --type=14 --field=4101");
+system("/opt/openbib/bin/gen_metrics.pl --database=schmalenbach --type=14 --field=689:a");

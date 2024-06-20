@@ -2,7 +2,7 @@
 
 #####################################################################
 #
-#  pre_unpack.pl
+#  pre_conv.pl
 #
 #  Bearbeitung der Titeldaten
 #
@@ -43,12 +43,21 @@ my $baseurl       = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepat
 
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
+my $datadir       = $rootdir."/data";
 my $konvdir       = $config->{'conv_dir'};
 
-my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
+print "### $pool: Erweiterung um Zugriffsinformation online, Typ Digital und Themengebiet \n";
 
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
-print "### $pool: Erweiterung um Information Digial/online\n";
+print "### $pool: Erweiterung um Standortinformationen, weiteres Processing - Stage 1\n";
 
-system("cd $rootdir/data/$pool ; $rootdir/filter/$pool/add-fields.pl < meta.title > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/remove_duplicates_in_nz.pl | $rootdir/filter/$pool/remove_empty_portfolio.pl | $rootdir/filter/$pool/remove_ill.pl | $rootdir/filter/$pool/fix-linkage.pl   > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+
+print "### $pool: Erweiterung um Standortinformationen, weiteres Processing - Stage 2\n";
+
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/$pool/process_urls.pl | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/process_ids.pl | $rootdir/filter/$pool/volume2year.pl | $rootdir/filter/$pool/process_provenances.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+
+print "### $pool: Anreicherung der Exemplarinformationen\n";
+
+system("cd $datadir/$pool ; cat meta.holding| $rootdir/filter/$pool/add-navid.pl > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");

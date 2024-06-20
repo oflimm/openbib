@@ -2,10 +2,10 @@
 
 #####################################################################
 #
-#  gen-subset-holding.pl
+#  gen-subset.pl
 #
-#  Extrahieren einer Titeluntermenge eines Katalogs anhand der
-#  mex-Daten fuer die Erzeugung eines separaten neuen Katalogs
+#  Extrahieren einer Titeluntermenge eines Katalogs
+#  fuer die Erzeugung eines separaten neuen Katalogs
 #
 #  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -75,23 +75,12 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $enrich_mediatype_ref = sub {
-    my ($content,$io) = @_;
-
-    if ($content=~/^0662.\d\d\d:http:\/\/www.ub.uni-koeln.de\/permalink.+$/){
-        print $io "0800.010:Digital\n";
-    }
-
-    return;
-};
-
-my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
-$subset->set_title_filter($enrich_mediatype_ref);
-$subset->identify_by_field_content('title',([ { field => '4700', content => '^Sammlung Eugen Schmalenbach' } ]));
+my $subset = new OpenBib::Catalog::Subset("uni",$pool);
+$subset->identify_by_field_content('title',([ { field => '0980', subfield => 's', content => '^Bibliothek Eugen Schmalenbach' } ]));
 $subset->write_set;
 
 sub print_help {
-    print "gen-subset-mex.pl - Erzeugen von Kataloguntermengen\n\n";
+    print "gen-subset.pl - Erzeugen von Kataloguntermengen\n\n";
     print "Optionen: \n";
     print "  -help                   : Diese Informationsseite\n\n";
 

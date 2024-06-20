@@ -320,7 +320,7 @@ while (<DAT>){
 		    elsif ($field eq "082"){
 			$classification_data_ref->{$subfield_code} = $content;
 		    }
-		    elsif ($field eq "650" || $field eq "650"){
+		    elsif ($field eq "600" || $field eq "610" || $field eq "648" || $field eq "650" || $field eq "651" || $field eq "655" || $field eq "688" || $field eq "689"){
 			$subject_data_ref->{$subfield_code} = $content;
 		    }
 

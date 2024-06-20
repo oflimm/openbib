@@ -1,0 +1,64 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+
+    IF subfield ;
+      field = "${field}:${subfield}";
+    END;
+
+    IF field == '100:a' ;
+       field_description = msg.maketext("Verfasser");
+       searchfield = 'personstring' ;
+    ELSIF field == '110:a' ;
+       field_description = msg.maketext("Körperschaft");
+       searchfield = 'corporatebodystring' ;
+    ELSIF field == '4101' ;
+       field_description = msg.maketext("Systematik");
+       searchfield = 'rvk' ;
+    ELSIF field == '689:a' ;
+       field_description = msg.maketext("Schlagwort");
+       searchfield = 'subjectstring' ;
+    ELSIF field == '264:c' ;
+       field_description = msg.maketext("T${field}");
+       searchfield = 'yearstring' ;
+    ELSE ;
+       field_description = msg.maketext("T${field}");
+    END ;
+
+    layout_param = {
+
+      'main_template' = 'titles_fields_record_html'
+      'sidebar_template' = 'subnavigation'
+      'sidebar_button_in_main_template' = 1
+
+      'active_menu' = 'register'
+
+      'active_submenu' = "register_T${field}"
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Felder')
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}/fields.html?l=${lang}"
+	  }
+	  {
+	     desc = field_description
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="titles_fields_record_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="titles_fields_record_include" -%]
+[%- ELSIF representation == 'mobile' -%]
+[%- PROCESS common/subtemplate name="titles_fields_record_mobile" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

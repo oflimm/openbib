@@ -1,0 +1,134 @@
+[%#-
+#######################################################################
+#
+# Templatename: std_header
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Seiten-Headers
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+<!doctype html>
+<html lang="[% lang %]" class="js">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="htmx-config" content='{"historyCacheSize":"5"}'>
+    
+[% IF NOT disable_cache_control %]
+    <meta http-equiv="content-type"  content="text/html; charset=utf-8"/>
+    <meta http-equiv="Pragma"        content="no-cache" />
+    <meta http-equiv="Cache-Control" content="private,no-cache,no-store" />
+    <meta http-equiv="Expires"       content="Thu, 01 Dec 1970 12:00:00 GMT" />
+[% END %]
+
+<!-- Default Language is german -->
+[%-
+     language_location_args = cgiapp.to_cgi_querystring({ change = {'l' = 'de' }});
+     language_location = "${cgiapp.param('scheme')}://${cgiapp.param('servername')}${cgiapp.param('path')}?${language_location_args}";
+%]
+<link rel="alternate" href="[% language_location %]" hreflang="x-default" />
+
+<!-- All Language Versions  -->
+[%- FOREACH thislang IN config.get('lang') ;
+     language_location_args = cgiapp.to_cgi_querystring({ change = {'l' = thislang }});
+     language_location = "${cgiapp.param('scheme')}://${cgiapp.param('servername')}${cgiapp.param('path')}?${language_location_args}" %]
+<link rel="alternate" href="[% language_location %]" hreflang="[% thislang %]" />
+[%- END %]
+
+[% IF record %]
+    <meta name="Bibkey"              content="[% record.to_bibkey %]" />
+    <meta name="Tags"                content="[% record.to_tags %]" />
+[% END %]
+[% IF NOT config.strip_view_from_uri(view) %]
+    <meta name="View"                content="[% view %]" />
+[% END %]
+<link href="/images/openbib/favicon.ico" rel="shortcut icon" />
+
+[% IF view && primrssfeed %]
+<link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% path_prefix %]/[% primrssfeed %]" />
+[% END %]
+[% IF LinkedData == "title" %]
+<link rel="alternate" type="application/rdf+xml" title="RDF Representation" href="https://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[%- record.database -%]/[% config.get('titles_loc') %]/id/[%- record.id -%].rdf"/>
+<link rel="alternate" type="application/json" title="JSON Representation" href="https://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[%- record.database -%]/[% config.get('titles_loc') %]/id/[%- record.id -%].json"/>
+[% END %]
+[% IF unapi && config.get('unAPI') %]
+    <link rel="unapi-server" title="unAPI" type="application/xml" href="[% path_prefix %]/[% config.get('connector_unapi_loc') %]" />
+[% END %]
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/css/bootstrap-5.1.3/bootstrap.min.css">
+
+    <!-- Bootstrap Select CSS -->
+    <link rel="stylesheet" href="/css/bootstrap-select.css">
+
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="/css/fontawesome-free-5.3.1.css">
+
+    <!-- Material Design CSS -->
+<!--    <link rel="stylesheet" href="/css/bootstrap-material-design.min.css"> -->
+
+    <!-- Select2 CSS -->
+    <link rel="stylesheet" href="/css/select2-4.0.13/select2.min.css">
+
+    <!-- noUiSlider CSS -->
+    <link rel="stylesheet" href="/css/nouislider.css">
+
+    <!-- Leaflet for OSM CSS -->
+    <link rel="stylesheet" href="/js/leaflet-1.7.1/leaflet.css">
+
+  [% css_ver = "20240620" %]
+
+  [%- TRY -%]
+    [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_profile/$sysprofile/_view/$view/openbib.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/_profile/$sysprofile/_view/$view/openbib.css" %]?ver=[% css_ver %]" media="all" />
+  [%- CATCH -%]        
+    [%- TRY -%]
+      [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_profile/$sysprofile/openbib.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/_profile/$sysprofile/openbib.css" %]?ver=[% css_ver %]" media="all" />
+    [%- CATCH -%]
+      [%- TRY -%]
+        [%- USE File "${config.get('document_root_path')}${config.get('css_loc')}/_view/$view/openbib.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/_view/$view/openbib.css" %]?ver=[% css_ver %]" media="all" />
+      [%- CATCH -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.get('css_loc')}/openbib.css" %]?ver=[% css_ver %]" media="all" />
+      [%- END -%]
+    [%- END -%]
+  [%- END -%]
+
+
+<!-- jQuery & Plugins -->
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="/js/jquery-3.3.1.min.js"></script>
+<script src="/js/popper-2.10.2/popper.min.js"></script>
+<script src="/js/bootstrap-5.1.3/bootstrap.bundle.min.js"></script>
+<script src="/js/bootstrap-select.min.js"></script>
+<script src="/js/jquery-ui-1.8.24.min.js"></script>
+<script src="/js/jquery.autocomplete.js"></script>
+<script src="/js/Chart.bundle.min.js"></script>
+<script src="/js/nouislider.min.js"></script>
+<script src="/js/htmx-1.9.4/htmx.min.js"></script>
+
+<!-- <script src="/js/bootstrap-material-design.min.js"></script> -->
+
+<!-- Leaflet for OSM -->
+<script src="/js/leaflet-1.7.1/leaflet.js"></script>
+
+<!-- Then static OpenBib JS -->
+<script src="/js/_profile/unikatalog/openbib.js"></script> 
+
+[% IF config.get('active_yewno') %]
+<!-- And finally yewno -->
+<script src="https://static.yewno.com/assets/widget/yewno.min.js"></script>
+[% END %]
+
+    <title>[% IF layout_param.page_title %][% layout_param.page_title %][% ELSE %][% config.get_viewdesc_from_viewname(view) %][% END %]</title>
+
+
+   </head>
+

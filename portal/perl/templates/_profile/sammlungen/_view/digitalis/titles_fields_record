@@ -1,18 +1,29 @@
 [%- PROCESS common/subtemplate name="local_config" -%] 
 [%- IF representation == '' || representation == 'html' ;
 
-    IF subfield ;
-      field = "${field}:${subfield}";
-    END;
-    
-    IF field == '0100' ;
-       field_description = msg.maketext("Personen");
+IF field == '0800' ;
+       field_description = msg.maketext("Medienart");
+       searchfield = 'mediatypestring' ;
+    ELSIF field == '0100' ;
+       field_description = msg.maketext("Verfasser");
        searchfield = 'personstring' ;
-    ELSIF field == '0982:a' ;
-       field_description = msg.maketext("Schlagworte");
+    ELSIF field == '0200' ;
+       field_description = msg.maketext("Körperschaft");
+       searchfield = 'corporatebodystring' ;
+    ELSIF field == '0700' ;
+       field_description = msg.maketext("Klassifikation");
+       searchfield = 'classificationstring' ;
+    ELSIF field == '0710' ;
+       field_description = msg.maketext("Schlagwort");
        searchfield = 'subjectstring' ;
-    ELSIF field == '0264:c' ;
-       field_description = msg.maketext("Erscheinungsjahr");
+    ELSIF field == '0410' ;
+       field_description = msg.maketext("Verlagsort");
+       searchfield = 'ft0410' ;
+    ELSIF field == '0424' ;
+       field_description = msg.maketext("T${field}");
+       searchfield = 'yearstring' ;
+    ELSIF field == '0425' ;
+       field_description = msg.maketext("T${field}");
        searchfield = 'yearstring' ;
     ELSE ;
        field_description = msg.maketext("T${field}");
@@ -23,7 +34,7 @@
       'main_template' = 'titles_fields_record_html'
       'sidebar_template' = 'subnavigation'
       'sidebar_button_in_main_template' = 1
-      
+
       'active_menu' = 'register'
 
       'active_submenu' = "register_T${field}"
@@ -34,8 +45,8 @@
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Register')
-	     url  = "#",
+	     desc = msg.maketext('Felder')
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}/${config.get('titles_loc')}/fields.html?l=${lang}"
 	  }
 	  {
 	     desc = field_description

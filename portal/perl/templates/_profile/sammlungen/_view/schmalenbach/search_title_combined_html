@@ -28,7 +28,7 @@
   <!-- AKTUELL [% current_profile %] - BOOKS [% searchprofileid_of_books %] - ARTICLES [% searchprofileid_of_articles %]  -->
 
     <div id="spinner" class="d-flex justify-content-center htmx-indicator spinner-large">
-      <img src="/images/openbib/views/digitalis/digitalis-logo-rund.png" class="uzk-spinner" alt="[% msg.maketext("Lade-Animation Digitalis") %]"/>
+      <img src="/images/openbib/views/schmalenbach/logo-schmalenbach.png" class="uzk-spinner" alt="[% msg.maketext("Lade-Animation Schmalenbach") %]"/>
     </div>
 
 <!-- See: https://loading.io/css/ CC0 -->

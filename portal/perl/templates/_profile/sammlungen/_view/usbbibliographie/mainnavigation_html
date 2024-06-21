@@ -71,8 +71,8 @@
       <ul class="list-unstyled components">
 
         <li class="nav-item">
-	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]">
-            <i class="fas fa-bullseye"></i> [% msg.maketext("Projekt") %]                </a>
+	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('info_loc') %]/systematik.html?l=[% lang %]">
+            <i class="fas fa-bullseye"></i> [% msg.maketext("Systematik") %]                </a>
 	</li>
         <li class="nav-item">
 	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/usbbibliographie/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">

@@ -43,8 +43,6 @@ my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
 my $simplecsv2metaexe  = "$konvdir/simplecsv2meta.pl";
 
 my $pool          = $ARGV[0];
-my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
-my $filename = $dbinfo->titlefile;
 
 print "### $pool: Metriken erstellen und cachen\n";
 system("/opt/openbib/bin/gen_metrics.pl --database=mies --type=14 --field=4101");

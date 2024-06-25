@@ -21,3 +21,4 @@ localfields:
        'r': '0032' # Receiving date subfield
        'x': '0033' # Retention reason subfield
        'y': '0034' # Retention note subfield
+       'j': '0050' # Storage location Id = Navigation zum Medium

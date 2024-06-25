@@ -952,6 +952,10 @@ convtab:
             'subjectstring': 1
           facet:
             'subject': 1
+      '0960':
+        '':
+          index:
+            'ft0960': 1
       '1203':         # Signatur, wenn nicht in den Exemplardaten
         '':
           index:

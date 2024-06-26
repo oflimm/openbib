@@ -6183,86 +6183,28 @@ sub set_default_searchfields {
   
     my $logger = get_logger();
 
+    my $config = $self->get_config;
+    
     $self->get_schema->resultset('Searchfield')->search_rs(
         {
             userid => $userid,
         }
     )->delete;
 
+    my $searchfields_ref = [];
+
+    my $default_searchfields_ref = $config->get('default_searchfields');
+    
+    foreach my $searchfield (keys %{$default_searchfields_ref}){
+	push @{$searchfields_ref}, {
+	    userid      => $userid,
+	    searchfield => $searchfield,
+	    active      => $default_searchfields_ref->{$searchfield}{active},
+	};
+    }
+    
     # DBI: "insert into searchfield values (?,?,?)"
-    $self->get_schema->resultset('Searchfield')->populate(
-        [
-            {
-                userid      => $userid,
-                searchfield => 'freesearch',
-                active      => 1,
-            },
-            {
-                userid      => $userid,
-                searchfield => 'title',
-                active      => 1,
-            },
-            {
-                userid      => $userid,
-                searchfield => 'titlestring',
-                active      => 1,
-            },
-            {
-                userid      => $userid,
-                searchfield => 'classification',
-                active      => 1,
-            },
-            {
-                userid      => $userid,
-                searchfield => 'corporatebody',
-                active      => 1,
-            },
-            {
-                userid      => $userid,
-                searchfield => 'subject',
-                active      => 1,
-            },
-            {
-                userid      => $userid,
-                searchfield => 'source',
-                active      => 1,
-            },
-            {
-                userid      => $userid,
-                searchfield => 'person',
-                active      => 1,
-            },
-            {
-                userid      => $userid,
-                searchfield => 'year',
-                active      => 1,
-            },
-            {
-                userid      => $userid,
-                searchfield => 'isbn',
-                active      => 1,
-            },
-            {
-                userid      => $userid,
-                searchfield => 'issn',
-                active      => 1,
-            },
-            {
-                userid      => $userid,
-                searchfield => 'content',
-                active      => 1,
-            },
-            {
-                userid      => $userid,
-                searchfield => 'mediatype',
-                active      => 0,
-            },
-            {
-                userid      => $userid,
-                searchfield => 'mark',
-                active      => 1,
-            },
-        ]);
+    $self->get_schema->resultset('Searchfield')->populate($searchfields_ref);
     
     return;
 }

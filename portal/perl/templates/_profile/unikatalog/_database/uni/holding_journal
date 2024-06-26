@@ -320,6 +320,14 @@
 [% IF this_item.bemerkung %]
 <emph>[% msg.maketext("Hinweis") %]:</emph> [% this_item.bemerkung %]<br/>
 [% END %]
+[% IF this_item.issues %]
+<emph>[% msg.maketext("Hefte") %]:</emph><br/>
+   <ul>
+[% FOREACH thisissue IN this_item.issues %]
+    <li>[% thisissue.remark %] ([% IF thisissue.availability.match('lent')%][% msg.maketext("noch nicht eingegangen") %][% ELSE %][% msg.maketext("eingegangen") %][% END %])</li>
+[% END %]
+   </ul>
+[% END %]
 </li>
 [% END %]
 </ul>

@@ -57,6 +57,7 @@
           "ft0410" = msg.maketext("T0410")
           "ft0412" = msg.maketext("T0412")
           "ft4100" = msg.maketext("E4100")
+          "ft1004" = msg.maketext("KMB-Systematik")
           "ft4300" = msg.maketext("Externes Schlagwort")
           "t4306" = msg.maketext("Provenienz Sammlung")
           "t4307" = msg.maketext("Provenienz Koerperschaft")

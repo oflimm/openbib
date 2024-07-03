@@ -106,13 +106,47 @@ ELSIF collection == 'inkunabeln';
  genre     = "Inkunabel";
 
  order_id = 1;
+ FOREACH item IN record.structure.node.node ;
+  page = item.page.list ;
+  FOREACH thispage IN page ;  
+    desc = thispage.pagetitle;
+    cdmid = thispage.pageptr ;
+  
+    min     = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
+    thumb   = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_thumb.jpg";
+    default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.jpg";
+
+    # Upgrade urls to https
+    thisimage = {
+      id       = cdmid
+      order_id = order_id
+      thumb    = thumb
+      min      = min
+      default  = default
+      desc     = desc
+    };
+
+    images.push(thisimage);
+    order_id = order_id + 1;
+  END;
+ END ;
+ELSIF collection == 'inkunab_tmp';
+ title     = fields.${'title'}.first.content;  
+ name      = fields.${'creato'}.first.content;
+ place     = fields.${'drucko'}.first.content;  
+ date      = fields.${'jahr'}.first.content;
+ year      = date.match('(\d\d\d\d)').first;
+ reference_url = owner_siteurl;
+ genre     = "Inkunabel";
+
+ order_id = 1;
  FOREACH page IN record.structure.node.page ;
     desc = page.pagetitle;
     cdmid = page.pageptr ;
   
     min     = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
     thumb   = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_thumb.jpg";
-    default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.png";
+    default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.jpg";
 
     # Upgrade urls to https
     thisimage = {

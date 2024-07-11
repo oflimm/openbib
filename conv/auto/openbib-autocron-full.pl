@@ -324,7 +324,8 @@ $logger->info("###### Starting automatic update");
 
 $logger->info("### Restarting starman");
 
-system("/etc/init.d/starman stop ; pkill -9 starman  ; /etc/init.d/starman start");
+system("/usr/bin/sudo /usr/bin/systemctl restart starman.service");
+#system("/etc/init.d/starman stop ; pkill -9 starman  ; /etc/init.d/starman start");
 
 if ($cluster){
     if ($config->local_server_belongs_to_updatable_cluster()){

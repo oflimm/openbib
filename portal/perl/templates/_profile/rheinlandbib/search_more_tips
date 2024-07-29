@@ -1,0 +1,10 @@
+<h5>[% msg.maketext("Tipps zur Suche") %]</h5>
+
+<ul>
+  <li>[% msg.maketext("Suchen Sie mit wenigen Begriffen, z.&nbsp;B. mit einem Wort aus dem Titel und dem Nachnamen des Autors.") %]</li>
+            
+  <li>[% msg.maketext("Verwenden Sie am Wortende das Sternchen&nbsp;<strong>*</strong>&nbsp;als Platzhalter.") %]</li>
+
+  <li>[% msg.maketext("Verwenden Sie für die Suche nach Titeln von konkreten Personen die Phrasensuche mit \" in der Form \"Nachname, Vorname\".") %]</li>
+
+</ul>

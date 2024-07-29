@@ -1,0 +1,310 @@
+<h3>[% locationinfo.description %]</h3>
+
+[%- IF locationinfo.fields.${"L0280"}.first.content -%]
+
+[%-
+     coordinates_single = locationinfo.fields.${"L0280"}.first.content ;
+     description_single = locationinfo.description ;
+     id_single          = locationinfo.identifier ;
+-%]
+
+<p>
+<div id="libraries_single_mapid" style="width: 100%; height: 300px; position: relative;"></div>
+</p>
+
+<script type="text/javascript">
+var librariesmap_single = L.map('libraries_single_mapid', {
+    scrollWheelZoom: false,
+    dragging: !L.Browser.mobile,
+    tap: false    
+}).setView([[% coordinates_single %]], 15);
+L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+      }).addTo(librariesmap_single);
+	    
+var marker_single = L.marker([[% coordinates_single %]]).addTo(librariesmap_single);
+</script>
+
+[% END %]
+
+[%
+
+   current_occupancy = locationinfo.occupancy.last;
+   max_occupancy = 1000;
+   max_green  = 700;
+   max_yellow = 900;
+
+   IF current_occupancy.num_occupancy < max_green;
+     current_color = "green";
+   ELSIF current_occupancy.num_occupancy < max_yellow ;
+     current_color = "#CB5A28";
+   ELSE ;
+     current_color = "red";      
+   END;
+
+   IF current_occupancy.num_occupancy < 0 ;
+     current_occupancy.num_occupancy = 0;
+   END ;
+%]
+
+[% IF NOT disable_occupancy && current_occupancy %]
+[%# USE dumper;dumper.dump(current_occupancy)%]
+
+<div class="row mt-5 mb-5">
+
+<div class="col-md-6">
+
+<div class="card h-100 text-center">
+<div class="card-header"><h4>[% msg.maketext("Aktuelle Besucherzahl") %]</h4></div>
+
+<div class="card-body  d-flex align-items-center justify-content-center">
+
+<div class="display-1"><span style="color:[% current_color %];font-weight:bold;">[% current_occupancy.num_occupancy %]</span> / [% max_occupancy %]</div>
+
+</div>
+</div>
+
+</div>
+
+<div class="col-md-6">
+
+<div class="card h-100 text-center">
+<div class="card-header"><h4>[% msg.maketext("Zahl der Besucher heute") %]</h4></div>
+
+<div class="card-body">
+
+[%
+      occupancycount = {};
+      FOREACH occupancy_thisitem IN locationinfo.occupancy;
+        item      = occupancy_thisitem.tstamp;
+        itemcount = occupancy_thisitem.num_occupancy;
+
+        IF itemcount <= 0 ;
+	   NEXT;
+	END;
+        occupancycount.${item} = itemcount;
+      END;
+
+      occupancy_labels = [];
+      occupancy_itemcounts = [];
+      FOREACH occupancy_label IN occupancycount.keys.sort ;
+        occupancy_labels.push("'${occupancy_label}'");
+	occupancy_itemcounts.push(occupancycount.${occupancy_label});
+
+      END;
+
+%]
+
+<canvas id="occupancyChart"></canvas>
+
+<script>
+var occupancy_ctx = document.getElementById('occupancyChart');
+var occupancyChart = new Chart(occupancy_ctx, {
+    type: 'bar',
+    data: {    
+        labels: [[% occupancy_labels.join(',') %]],
+        datasets: [{
+            label: 'Besucherzahl',
+            data: [[% occupancy_itemcounts.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            xAxes: [{
+	        scaleLabel: {
+	            display: true,
+                    labelString: 'Uhrzeit (Stunde)',
+                },
+                type: 'time',
+                time: {
+                    unit: 'hour',
+                    displayFormats: {
+                       millisecond: 'HH:mm:ss.SSS',
+                       second: 'HH:mm:ss',
+                       minute: 'HH:mm',
+                       hour: 'HH'
+		    },
+                },
+		ticks: {
+		    min: '00:00:00',
+		    max: '23:59:00',
+                    beginAtZero: true,
+		},
+            }],
+
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
+</div>
+</div>
+</div>
+</div>
+
+[% END %]
+
+<div class="table-responsive mt-2">
+<table class="table table-striped ">
+[%-
+
+PROCESS common/subtemplate name="visible_categories_location";
+
+thisdbname = config.get_databases_of_isil(locationinfo.identifier).first;
+
+sigel = locationinfo.identifier.replace('DE-38-','');
+
+IF NOT thisdbname ;
+  thisdbname = "inst${sigel}";
+END;
+
+IF sigel == '123';
+  recent_litlists1 = user.get_recent_litlists({database = 'inst123', view = view});
+  recent_litlists2 = user.get_recent_litlists({database = 'inst218', view = view});
+  recent_litlists = recent_litlists1.merge(recent_litlists2);
+ELSIF sigel == '401';
+  recent_litlists = user.get_recent_litlists({ userid = 7703 });
+ELSE ;
+  recent_litlists = user.get_recent_litlists({database = thisdbname, view = view});
+END;
+
+litlist_content = [];
+
+IF recent_litlists.size > 0;
+  litlist_content.push("<ul>");
+  FOREACH litlist IN recent_litlists;
+    lecturestring = "" ;
+    IF litlist.lecture ;
+       lectureinfo   = "Offizielle Literaturliste des Instituts/Seminars";
+       lecturestring = "&nbsp;<img src=\"https://search.ub.uni-koeln.de${config.get('university_img')}\" title=\"${lectureinfo}\" alt=\"${lectureinfo}\" style=\"vertical-align:bottom\" />";
+    ELSE ;
+       lectureinfo   = "Öffentliche Literaturliste von Nutzern";
+       lecturestring = "&nbsp;<img src=\"https://search.ub.uni-koeln.de${config.get('persons_img')}\" title=\"${lectureinfo}\" alt=\"${lectureinfo}\" style=\"vertical-align:bottom\" />";
+    END ;
+    litlist_content.push("<li><a href=\"https://www.ub.uni-koeln.de/usbportal?service=search&kugview=38_${sigel}%7Ckug&fs=litlistid:${litlist.id}\">${litlist.title}</a> (${litlist.itemcount} Titel)${lecturestring}</li>");
+  END;
+  litlist_content.push("</ul>");
+ELSE;
+  litlist_content.push("Es wurden noch keine Literaturlisten mit Titeln dieses Kataloges angelegt.");
+END;
+
+IF sigel == '123';
+  recent_tags1 = user.get_recent_tags({database = 'inst123'});
+  recent_tags2 = user.get_recent_tags({database = 'inst218'});
+  recent_tags = recent_tags1.merge(recent_tags2);
+ELSE ;
+  recent_tags = user.get_recent_tags({database = thisdbname});
+END;
+
+tags_content = [];
+
+recent_tags = [] ;
+
+IF recent_tags.size > 0;
+  tags_content.push("<ul>");
+  FOREACH tag IN recent_tags;
+    IF tag.tag ;
+      tags_content.push("<li><a target=\"kug\" href=\"http://kug.ub.uni-koeln.de/portal/kug/tags/names/id/${tag.tag}.html?l=de\">${tag.tag}</a></li>");
+    END ;
+  END;
+  tags_content.push("</ul>");
+ELSE;
+  tags_content.push("F&uuml;r Titel in diesem Katalog wurden noch keine Tags vergeben");
+END;
+
+no_journals = {
+                 '009' = 1
+                 '112' = 1
+                 '124' = 1
+                 '141' = 1 # Gesis
+                 '155' = 1
+                 '158' = 1
+                 '159' = 1
+                 '227' = 1
+                 '235' = 1
+                 '236' = 1
+                 '302' = 1
+                 '317' = 1
+                 '326' = 1
+                 '460' = 1
+                 '462' = 1
+                 '463' = 1
+                 '464' = 1
+                 '466' = 1
+                 '467' = 1
+              };
+
+IF NOT no_journals.exists("${sigel}") ;
+   locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriftenliste dieser Bibliothek als <a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-${sigel}-all.pdf\">e-Book</a>" } ];
+ELSIF sigel == '141';
+   locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriftenliste dieser Bibliothek als <a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-587-all.pdf\">e-Book</a>" } ];
+END ;
+
+IF sigel != 'ARTES' ;
+  locationinfo.fields.${"Die 5 zuletzt angelegten Literaturlisten"} = [ { content = litlist_content.join("\n") } ];
+  locationinfo.fields.${"Die 5 zuletzt vergebenen Tags"} = [ { content = tags_content.join("\n") } ];
+END;
+
+trclass = "even" ;
+
+
+FOREACH category IN categories;
+    IF category == 'Bestand';
+       contentarray = [];
+       IF locationinfo.fields.${"L0120"}.first.content ;
+          thiscontent = locationinfo.fields.${"L0120"}.first.content;
+          contentarray.push("Monographien: ${thiscontent}");
+       END;
+       IF locationinfo.fields.${"L0130"}.first.content ;
+          thiscontent = locationinfo.fields.${"L0130"}.first.content;
+          contentarray.push("Zeitschriften: ${thiscontent}");
+       END;
+       IF locationinfo.fields.${"L0140"}.first.content ;
+          thiscontent = locationinfo.fields.${"L0140"}.first.content;
+          contentarray.push("Lfd. Zeitschriften: ${thiscontent}");
+       END;
+       IF contentarray.size > 0;
+          content = contentarray.join(" / ");
+          locationinfo.fields.${"Bestand"} = [ { content = content } ];
+       ELSE ;
+         NEXT;
+       END;
+    END;
+
+    IF locationinfo.fields.${category} ;
+      FOREACH item IN locationinfo.fields.$category;
+        content  = item.content;
+        mult     = item.mult;
+        subfield = item.subfield;
+
+
+        # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+        # in Config.pm fuer die entsprechende Datenbank definiert
+        # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+        # kodiert.
+        thiscategory = category ;
+        IF config.get('categorymapping').${locationinfo.databaseinfos.dbname}.$category ;
+          thiscategory = "${category}-${record.database}" ;
+        END;
+-%]
+<tr><th>[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+[%-   END ;
+   END ;
+END ;-%]
+</table>
+</div>
+
+<p style="font-size:0.8em;">
+<b>Hinweis:</b> Diese Informationen beruhen auf Selbstangaben der
+Campusbibliotheken und entsprechen dem uns jeweils zuletzt mitgeteilten
+Stand. Bitte wenden Sie sich bei etwaigen Unstimmigkeiten direkt an
+die jeweilige Bibliothek.
+</p>

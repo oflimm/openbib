@@ -1,0 +1,53 @@
+<style>
+
+.ob-mainsearchform {
+   display: none;
+}
+
+.ob-fulltitle_actions {
+   visibility: hidden;
+}
+
+.uzk15__mainfooter, .uzk15_header_separator {
+   visibility: hidden;
+}
+
+.navbottom {
+    margin-left: -15px;
+}
+
+nav.navbar, .navbottom img {
+    display: none;
+}
+
+
+</style>
+
+<script language="javascript">
+window.print();
+</script>
+
+[% show_record_with_supplemental_fields = 1 %]
+
+[% IF format == 'full' %]
+[%   PROCESS common/subtemplate name="cartitems_html_full" hide_options=1  %]
+[% ELSIF format == 'short' %]
+[%   PROCESS common/subtemplate name="cartitems_html_short" hide_options=1  %]
+[% ELSIF format == 'Text' %]
+[%   PROCESS common/subtemplate name="cartitems_html_as_text" hide_options=1 %]
+[% ELSIF format == 'BibTeX' %]
+[%   PROCESS common/subtemplate name="cartitems_html_as_bibtex" hide_options=1 %]
+[% ELSIF format == 'EndNote' %]
+[% PROCESS common/subtemplate name="cartitems_html_as_endnote" hide_options=1 %]
+[% ELSIF format == 'ISBD' %]
+[%   PROCESS common/subtemplate name="cartitems_html_as_isbd" hide_options=1 %]
+[% ELSIF format == 'apa' %]
+[%   PROCESS common/subtemplate name="cartitems_html_as_apa" hide_options=1 %]
+[% ELSIF format == 'harvard' %]
+[%   PROCESS common/subtemplate name="cartitems_html_as_harvard" hide_options=1 %]
+[% ELSIF format == 'mla' %]
+[%   PROCESS common/subtemplate name="cartitems_html_as_mla" hide_options=1 %]
+[% ELSE %]
+[%   PROCESS common/subtemplate name="cartitems_html_default" hide_options=1 %]
+[% END %]
+

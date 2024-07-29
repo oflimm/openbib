@@ -1,0 +1,1140 @@
+[% IF queryoptions.get_option('facets') != 'none' %]
+[%
+
+     separate_refine = 1;
+     separate_facets = 0;
+
+
+%]
+[%# USE dumper; dumper.dump(facets) %]
+
+<div class="ob-facets ob-facets_all sliding-sidebar">
+
+[% IF qopts.get_option('sb') == "eds" || searchprofileid_of_articles == searchquery.get_searchprofile || ( qopts.get_option('sb') == "xapian" && hits <= config.get('xapian_option').maxmatch ) || qopts.get_option('sb') == 'elasticsearch' || qopts.get_option('sb') == 'solr' ;
+      IF NOT facet_prefix ;
+        IF query.param('facet_prefix') ;
+         facet_prefix = escape_html(query.param('facet_prefix'));
+	ELSE ;
+         facet_prefix = "dd";
+	END;
+      END;
+
+      is_location_of_emedia = {
+         freemedia = 1
+         emedien = 1
+         bdr = 1
+	 digitalis = 1
+	 doab = 1
+	 eupub = 1
+	 freebooks = 1
+	 gallica = 1
+	 gdea = 1
+	 gdz = 1
+	 gresham_oer = 1
+	 gutenberg = 1
+	 hathitrust = 1
+	 intechopen = 1
+	 'DE-38-KAPSEL' = 1
+	 khanacademy = 1
+	 loc = 1
+	 loviscach_oer = 1
+	 mdz = 1
+	 mitocw_oer = 1
+	 nationallizenzen = 1
+	 ndltd = 1
+	 nla = 1
+	 nomos = 1
+	 nptelhrd_oer = 1
+	 nsdl = 1
+	 oapen = 1
+	 ocwconsortium = 1
+	 openlibrary = 1
+	 otl = 1
+	 stanford_oer = 1
+	 ucberkeley_oer = 1
+	 ucla_oer = 1	 
+	 usbebooks = 1
+	 usbweb = 1
+	 wikisource_de = 1
+	 yale_oer = 1
+      };
+
+      location_is_blacklisted = {
+	 digitalis = 1
+	 doab = 1
+	 eupub = 1
+	 freebooks = 1
+	 gallica = 1
+	 gdea = 1
+	 gdz = 1
+	 gresham_oer = 1
+	 gutenberg = 1
+	 hathitrust = 1
+	 intechopen = 1
+	# 'DE-38-KAPSEL' = 1
+	 khanacademy = 1
+	 loc = 1
+	 loviscach_oer = 1
+	 mdz = 1
+	 mitocw_oer = 1
+	 nationallizenzen = 1
+	 ndltd = 1
+	 nla = 1
+	 nomos = 1
+	 nptelhrd_oer = 1
+	 nsdl = 1
+	 oapen = 1
+	 ocwconsortium = 1
+	 openlibrary = 1
+	 otl = 1
+	 stanford_oer = 1
+	 ucberkeley_oer = 1
+	 ucla_oer = 1	 
+	 usbebooks = 1
+	 usbweb = 1
+	 wikisource_de = 1
+	 yale_oer = 1
+      };
+
+      is_favourite_user_location = {};
+      IF user.ID ;
+        FOREACH favloc IN user.get_searchlocations ;
+          is_favourite_user_location.${favloc} = 1;
+        END;
+      END ;
+      
+      facets_emedia = [];
+      facets_pmedia = [];
+      facets_fav    = [];
+      FOREACH loc IN facets.location;
+         thislocation = loc.first;
+	 IF is_favourite_user_location.${thislocation} == 1;
+	    facets_fav.push(loc);	 
+	 ELSE;
+	   IF is_location_of_emedia.${thislocation} == 1;
+	     IF location_is_blacklisted.${thislocation} == 1;
+	        NEXT;
+	     END ;
+	     facets_emedia.push(loc);
+	   ELSE ;
+	     IF location_is_blacklisted.${thislocation} == 1;
+	        NEXT;
+	     END ;
+	    facets_pmedia.push(loc);
+	   END;
+	 END;
+      END;
+
+      IF NOT facets.favlocation && facets_fav.size > 0;
+         facets.favlocation = facets_fav;
+      END;
+
+      IF NOT facets.elocation && facets_emedia.size > 0;
+         facets.elocation = facets_emedia;
+      END;
+
+      IF NOT facets.printlocation && facets_pmedia.size > 0;
+         facets.printlocation = facets_pmedia;
+      END;
+
+      # Only once
+      IF NOT bklookup ;
+        bklookup    = config.load_bk;
+      END ;
+      
+      # USB Spezifika
+      bklookup.${"11.98"} = "Theologie, Religionswissenschaft: Unspezifiziert";
+      bklookup.${"17.98"} = "Sprach- und Literaturwissenschaft: Unspezifiziert";
+      bklookup.${"21.98"} = "Einzelne Kunstformen: Unspezifiziert";
+      bklookup.${"24.98"} = "Theater, Film, Musik: Unspezifiziert";
+      bklookup.${"44.98"} = "Medizin: Unspezifiziert";
+      bklookup.${"71.98"} = "Soziologie: Unspezifiziert";
+      bklookup.${"83.98"} = "Volkswirtschaft: Unspezifiziert";
+      bklookup.${"85.98"} = "Betriebswirtschaft: Unspezifiziert";
+      bklookup.${"86.98"} = "Recht: Unspezifiziert";
+
+ %]
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+[%
+
+   # Only once
+   IF NOT exclude_args ;
+     exclude_args = [ ];
+     FOREACH field IN config.searchfield.keys ;
+       thisprefix = config.searchfield.${field}.prefix;
+       exclude_args.push(thisprefix);
+       exclude_args.push("b${thisprefix}");
+       exclude_args.push("f\[${thisprefix}\]");
+       IF config.searchfield.${field}.type == 'integer';
+         exclude_args.push("${thisprefix}_from");
+         exclude_args.push("b${thisprefix}_from");
+         exclude_args.push("f\[${thisprefix}_from\]");
+         exclude_args.push("${thisprefix}_to");
+         exclude_args.push("b${thisprefix}_to");
+         exclude_args.push("f\[${thisprefix}_to\]");
+       END;
+     END;
+     exclude_args.push("profile");
+     exclude_args.push("facets");
+     exclude_args.push("searchft"); # EDS
+     exclude_args.push("showft");  # EDS: limiter=FT:y vs showft1: limiter=FT1:y
+   END;
+   
+   # Only once
+   IF NOT facets_query_args_base ;
+     facets_query_args_base    = cgiapp.to_cgi_querystring({ change = {'page' = 1 }, exclude = exclude_args }) ;
+   END;
+   
+   IF idsuffix == '_books' && separate_facets;
+      facets_query_args_base = "${facets_query_args_base};facets=none";
+   END;
+
+   all_filters = [];
+   have_filter = {};
+       FOREACH filter IN searchquery.get_filter ;
+          all_filters.push("f[${filter.field}]=${filter.term}");
+          have_filter.${"${filter.field}:${filter.term}"} = 1;
+   END ;
+
+   # Only once
+   IF NOT topic_map ;
+     topic_map = {};
+     FOREACH topic IN user.get_topics;
+       topic_map.${topic.id} = topic.name;
+     END;
+   END;
+
+   # Only once
+   IF NOT default_cgi_querystring ;
+      default_cgi_querystring = searchquery.to_cgi_querystring;
+   END ;
+%]
+<!-- Generel Query Args -->
+[% cgiapp.to_cgi_hidden_input({ change = {'page' = 1 }, exclude = exclude_args }) %]
+<!-- End -->
+
+<!-- Searchquery Args -->
+[%# searchquery.to_cgi_hidden_input({ exclude_filter = [ 'all' ], exclude = [ 'year_from','year_to' ] }) %]
+[% searchquery.to_cgi_hidden_input({ exclude = [ 'year_from','year_to' ] }) %]
+<!-- End -->
+
+[% IF queryoptions.get_option('searchft') %]
+<input type="hidden" name="searchft" value="1"/>
+[% END %]
+[% IF queryoptions.get_option('showft') %]
+<input type="hidden" name="showft" value="1"/>
+[% END %]
+
+<script>
+$(document).on("click", ".ob-more_button", function () {
+  $(this).siblings().prop("hidden",false);
+  $(this).prop("hidden",true);
+});
+
+$(document).on("click", ".ob-less_button", function () {
+  var siblings = $(this).siblings();
+  for (i=0; i < siblings.length; i++ ) {
+    if (i>4){
+      $(siblings[i]).prop("hidden",true);
+    }
+  }
+  $('.ob-more_button').prop("hidden", false);
+  $(this).prop("hidden", true)
+});
+</script>
+
+[%# USE dumper;dumper.dump(category_map)%]
+
+[% PROCESS common/subtemplate name="search_radius" %]
+
+<h5 class="d-none d-md-block">[% msg.maketext("Suchergebnis filtern") %]</h5>
+
+<!-- <div class="card">
+<div class="card-header"><span id="ob-facets_all_toggle[% idsuffix %][% facet_prefix %]">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+
+<div class="card-body">
+<div id="ob-facets_all_toggle_do">
+-->
+<div>
+
+
+[% IF separate_refine %]
+[%# USE dumper;dumper.dump(have_filter)%]
+[%         IF searchquery.get_filter.size > 0 || queryoptions.get_option('searchft') || queryoptions.get_option('showft') || searchquery.get_searchfield("year_from").val || searchquery.get_searchfield("year_to").val %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-database[% idsuffix %][% facet_prefix %]" aria-expanded="true">
+           [% msg.maketext("Aktive Filter") %] 
+        </h4>
+        <ul id="group-database[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
+[%
+    filter_prefix_map = {
+          ${config.get('searchfield').dbstring.prefix} = msg.maketext("Katalog")
+          ${config.get('searchfield').personstring.prefix} = msg.maketext("Person")
+          ${config.get('searchfield').corporatebodystring.prefix} = msg.maketext("K&ouml;perschaft")
+          ${config.get('searchfield').subjectstring.prefix} = msg.maketext("Thema")
+          ${config.get('searchfield').sourcestring.prefix} = msg.maketext("Quelle")
+          ${config.get('searchfield').classificationstring.prefix} = msg.maketext("Systematik")
+          ${config.get('searchfield').topic.prefix} = msg.maketext("Themengebiet")
+          ${config.get('searchfield').locationstring.prefix} = msg.maketext("Standort")
+          ${config.get('searchfield').mediatypestring.prefix} = msg.maketext("Medientyp")
+          ${config.get('searchfield').provenancestring.prefix} = msg.maketext("Provenienz")
+          ${config.get('searchfield').languagestring.prefix} = msg.maketext("Sprache")
+          ${config.get('searchfield').yearstring.prefix} = msg.maketext("Jahr")
+          ${config.get('searchfield').tagstring.prefix} = msg.maketext("Tag")
+          ${config.get('searchfield').litliststring.prefix} = msg.maketext("Literaturliste")
+          ${config.get('searchfield').availabilitystring.prefix} = msg.maketext("Verfügbarkeit")
+};
+
+%]
+
+[% IF queryoptions.get_option('searchft') %]
+
+<li class="ob-facet-item d-flex"><a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %];searchft=0" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %];searchft=0" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %];searchft=0"><img style="vertical-align:bottom" src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" />&nbsp;[% msg.maketext("Auch Volltexte durchsuchen") %]</a></li>
+
+[% END %]
+
+[% IF queryoptions.get_option('showft') %]
+
+<li class="ob-facet-item d-flex"><a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %];showft=0" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %];showft=0" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %];showft=0"><img style="vertical-align:bottom" src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" />&nbsp;[% msg.maketext("Zeige nur Treffer mit Volltext") %]</a></li>
+
+[% END %]
+
+[% IF searchquery.get_searchfield("year_from").val || searchquery.get_searchfield("year_to").val %]
+<li class="ob-facet-item d-flex"><a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude = [ 'year_from','year_to' ] }) %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude = [ 'year_from', 'year_to' ] }) %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude = [ 'year_from', 'year_to' ] }) %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]"><img style="vertical-align:bottom" src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" />&nbsp;[% msg.maketext("Zeitspanne") %]: [% searchquery.get_searchfield("year_from").val %] - [% searchquery.get_searchfield("year_to").val %]</a></li>
+[% END %]
+
+[%# USE dumper;dumper.dump(searchquery.get_filter)%]
+[%             FOREACH filter IN searchquery.get_filter ;
+                   this_filters = [];
+                   this_filterstring = "f[${filter.field}]=${filter.term}";
+                   FOREACH all_filter IN all_filters;
+                       IF all_filter != this_filterstring ;
+                           this_filters.push(all_filter);
+                       END;
+                   END ;
+%]
+[%# USE dumper;dumper.dump(category_map) %]
+<li class="ob-facet-item d-flex"><a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" />&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSIF filter.field == "floc" %][% locinfo.get('identifier').${filter.term}.description %][% ELSIF filter.field == "topic" %][% topic_map.${filter.term} %][% ELSE %][% filter.term %][% END %]</a></li>
+[%             END %]
+</ul>
+
+</p>
+[%        END %]
+[% END %]
+
+
+[% IF qopts.get_option('sb') == "eds" || searchprofileid_of_articles == searchquery.get_searchprofile # Start EDS %]
+
+[% IF NOT searchquery.get_option('searchft') || NOT searchquery.get_option('showft') %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-source[% idsuffix %][% facet_prefix %]" aria-expanded="true">
+           [% msg.maketext("Volltexte") %] 
+        </h4>
+        <ul id="group-source_fulltext[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
+
+[% IF NOT searchquery.get_option('searchft') %]
+<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="searchft" value="[% IF NOT queryoptions.get_option('searchft') %]1[% ELSE %]0[% END %]" [% IF queryoptions.get_option('searchft') %] %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %];searchft=1" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %];searchft=1" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %];searchft=1">[% msg.maketext("Auch Volltexte durchsuchen") %]</a></li>
+[% END %]
+
+[% IF NOT searchquery.get_option('showft') %]
+<li class="ob-facet-item d-flex">[% IF NOT separate_refine %]<input type="checkbox" name="showft" value="[% IF NOT queryoptions.get_option('showft') %]1[% ELSE %]0[% END %]" [% IF queryoptions.get_option('showft') %] %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %];showft=1" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %];showft=1" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %];showft=1">[% msg.maketext("Zeige nur Treffer mit Volltext") %]</a></li>
+[% END %]
+        </ul>
+<p/>
+[% END %]
+
+[% END # End EDS %]
+
+
+<!-- Begin subject facet -->
+[%         IF config.get('facets').subject && facets.defined('subject') && facets.subject.size > 0 %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-subject[% idsuffix %][% facet_prefix %]" aria-expanded="true">
+           [% msg.maketext("Schlagwort") %] 
+        </h4>
+        <ul id="group-subject[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
+[%             FOREACH termitem IN facets.subject ;
+                  LAST IF loop.count > 25 ;
+
+                  searchterm    = termitem.0;
+                  searchprefix  = config.get('searchfield').subjectstring.prefix;
+                  filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item" [% IF facets.subject.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]">[% termitem.0 %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+[%             END %]
+[% IF facets.subject.size > 5 %]
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
+[% END %]
+</ul>
+<p/>
+[%         END %]
+<!-- End subject facet -->
+
+<!-- Begin year facet -->
+[% IF qopts.get_option('sb') == "eds" || searchprofileid_of_articles == searchquery.get_searchprofile %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% facet_prefix %][% idsuffix %]" aria-expanded="true">
+           [% msg.maketext("Erscheinungsjahr") %] 
+        </h4>
+
+        <div id="group-year[% facet_prefix %][% idsuffix %]" class="in collapse show">
+
+         <p>
+           [% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% facet_prefix %][% idsuffix %]" type="text" size="4" name="year_from" title="[% msg.maketext("Eingabe Jahr von") %]" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% facet_prefix %][% idsuffix %]" type="text" size="4" name="year_to" title="[% msg.maketext("Eingabe Jahr bis") %]" value="[% searchquery.get_searchfield("year_to").val %]" /><button id="ob-year_from_to" class="btn btn-primary ms-3" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-post="[% path_prefix %]/[% config.get('search_loc') %].include">[% msg.maketext("Los") %]</button>
+         </p>
+
+        </div>
+
+[% ELSE %]
+[%         IF config.get('facets').year && facets.defined('year') && facets.year.size > 0 %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% facet_prefix %][% idsuffix %]" aria-expanded="true">
+           [% msg.maketext("Erscheinungsjahr") %] 
+        </h4>
+[%
+      minyear = 9999;
+      maxyear = -9999;
+      
+      yearcount = {};
+      FOREACH year_thisitem IN facets.year;
+        item      = year_thisitem.0;
+
+        itemmatch = item.match('(-?\d\d\d\d)');
+	IF itemmatch.0 ;
+	  item = itemmatch.0;
+	ELSE ;
+	   NEXT;
+	END;
+
+        itemcount = year_thisitem.1;
+        yearcount.${item} = itemcount;
+        IF item < minyear ;
+	   minyear = item;
+	END;
+	IF item > maxyear ;
+	   maxyear = item;
+        END;
+
+      END;
+
+      year_labels = [];
+      year_itemcounts = [];
+      FOREACH year_label IN yearcount.keys.sort ;
+        year_labels.push("'${year_label}'");
+        year_itemcounts.push(yearcount.${year_label});
+      END;
+
+%]
+<div id="group-year[% facet_prefix %][% idsuffix %]" class="in collapse show">
+[% IF facets.year.size > 1 %]
+<canvas id="ob-yearChart-[% facet_prefix %][% idsuffix %]" width="300" height="200"></canvas>
+
+<div id="ob-yearSlider[% facet_prefix %][% idsuffix %]" class="m-4"></div>
+
+<p>
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% facet_prefix %][% idsuffix %]" type="text" size="4" name="year_from" title="[% msg.maketext("Eingabe Jahr von") %]" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% facet_prefix %][% idsuffix %]" type="text" size="4" name="year_to" title="[% msg.maketext("Eingabe Jahr bis") %]" value="[% searchquery.get_searchfield("year_to").val %]" /><button id="ob-year_from_to" class="btn btn-primary ms-3" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-post="[% path_prefix %]/[% config.get('search_loc') %].include">[% msg.maketext("Los") %]</button>
+</p>
+
+<script>
+var type_ctx[% idsuffix %] = document.getElementById('ob-yearChart-[% facet_prefix %][% idsuffix %]');
+var typeChart[% idsuffix %] = new Chart(type_ctx[% idsuffix %], {
+    type: 'bar',
+    data: {    
+        labels: [[% year_labels.join(',') %]],
+        datasets: [{
+            label: 'Trefferzahl',
+            data: [[% year_itemcounts.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+            BarThickness: 8,
+        }],
+    },
+    options: {
+        legend: {
+           display: false
+        },
+        tooltips: {
+          callbacks: {
+             label: function(tooltipItem) {
+                  return tooltipItem.yLabel;
+             }
+          }
+        },
+        scales: {
+	   xAxes: [{
+                type: 'time',
+                time: {
+                    unit: 'year'
+                }
+           }],
+           yAxes: [{
+                ticks: {
+		    stepSize: 1,
+                    beginAtZero: true
+                }
+            }]
+        },	
+    }
+});
+
+[% IF 0 == 1 %]
+var yearslider[% idsuffix %] = document.getElementById('ob-yearSlider[% facet_prefix %][% idsuffix %]');
+
+noUiSlider.create(yearslider[% idsuffix %], {
+    start: [[% minyear %], [% maxyear %]],
+    connect: true,
+    range: {
+        'min': [% minyear %],
+        'max': [% maxyear %]
+    }
+});
+
+var yearslider_from[% idsuffix %] = document.getElementById('ob-yearSlider_from[% facet_prefix %][% idsuffix %]');
+var yearslider_to[% idsuffix %]   = document.getElementById('ob-yearSlider_to[% facet_prefix %][% idsuffix %]');
+
+yearslider[% idsuffix %].noUiSlider.on('update', function (values, handle) {
+
+    var value = values[handle];
+
+    if (handle) {
+        yearslider_to[% idsuffix %].value = Math.round(value);
+    } else {
+        yearslider_from[% idsuffix %].value = Math.round(value);
+    }
+});
+
+yearslider_from[% idsuffix %].addEventListener('change', function () {
+    yearslider[% idsuffix %].noUiSlider.set([this.value, null]);
+});
+
+yearslider_to[% idsuffix %].addEventListener('change', function () {
+    yearslider[% idsuffix %].noUiSlider.set([null, this.value]);
+});
+[% END %]
+
+</script>
+
+[% END %] 
+
+        <ul class="list-group">
+[%             FOREACH termitem IN facets.year ;
+                  LAST IF loop.count > 25 ;
+ %]
+
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').yearstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item" [% IF facets.year.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+[%             END %]
+[% IF facets.year.size > 5 %]
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
+[% END %]
+</ul>
+</div><!-- group-year -->
+<p/>
+
+<!-- <p>
+
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input type="text" size="4" name="year_from" title="[% msg.maketext("Eingabe Jahr von") %]" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input type="text" size="4" name="year_to" title="[% msg.maketext("Eingabe Jahr bis") %]" value="[% searchquery.get_searchfield("year_to").val %]" /><button id="ob-year_from_to" class="btn btn-primary ms-3" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-post="[% path_prefix %]/[% config.get('search_loc') %].include">[% msg.maketext("Los") %]</button>
+</p> -->
+
+[%         END %]
+[% END # EDS %]
+<!-- End year facet -->
+
+[% IF 0 == 1 %]
+<!-- Begin year facet -->
+[% IF qopts.get_option('sb') == "eds" || searchprofileid_of_articles == searchquery.get_searchprofile %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% facet_prefix %][% idsuffix %]" aria-expanded="true">
+           [% msg.maketext("Erscheinungsjahr") %] 
+        </h4>
+
+        <div id="group-year[% facet_prefix %][% idsuffix %]" class="in collapse show">
+
+         <p>
+           [% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% facet_prefix %][% idsuffix %]" type="text" size="4" title="[% msg.maketext("Eingabe Jahr von") %]" name="year_from" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% facet_prefix %][% idsuffix %]" type="text" size="4" title="[% msg.maketext("Eingabe Jahr bis") %]" name="year_to" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
+         </p>
+
+        </div>
+
+[% ELSE %]
+[%         IF config.get('facets').year && facets.defined('year') && facets.year.size > 0 %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-year[% facet_prefix %][% idsuffix %]" aria-expanded="true">
+           [% msg.maketext("Erscheinungsjahr") %] 
+        </h4>
+[%
+      minyear = 9999;
+      maxyear = -9999;
+      
+      yearcount = {};
+      FOREACH year_thisitem IN facets.year;
+        item      = year_thisitem.0;
+
+        itemmatch = item.match('(-?\d\d\d\d)');
+	IF itemmatch.0 ;
+	  item = itemmatch.0;
+	ELSE ;
+	   NEXT;
+	END;
+
+        itemcount = year_thisitem.1;
+        yearcount.${item} = itemcount;
+        IF item < minyear ;
+	   minyear = item;
+	END;
+	IF item > maxyear ;
+	   maxyear = item;
+        END;
+
+      END;
+
+      year_labels = [];
+      year_itemcounts = [];
+      FOREACH year_label IN yearcount.keys.sort ;
+        year_labels.push("'${year_label}'");
+        year_itemcounts.push(yearcount.${year_label});
+      END;
+
+%]
+<div id="group-year[% facet_prefix %][% idsuffix %]" class="in collapse show">
+[% IF facets.year.size > 1 %]
+<canvas id="ob-yearChart-[% facet_prefix %][% idsuffix %]" width="300" height="200"></canvas>
+
+<div id="ob-yearSlider[% facet_prefix %][% idsuffix %]" class="m-4"></div>
+
+<p>
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input id="ob-yearSlider_from[% facet_prefix %][% idsuffix %]" type="text" size="4" name="year_from" title="[% msg.maketext("Eingabe Jahr von") %]" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input id="ob-yearSlider_to[% facet_prefix %][% idsuffix %]" type="text" size="4" name="year_to" title="[% msg.maketext("Eingabe Jahr bis") %]" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
+</p>
+
+<script>
+var type_ctx[% facet_prefix %][% idsuffix %] = document.getElementById('ob-yearChart-[% facet_prefix %][% idsuffix %]');
+var typeChart[% facet_prefix %][% idsuffix %] = new Chart(type_ctx[% facet_prefix %][% idsuffix %], {
+    type: 'bar',
+    data: {    
+        labels: [[% year_labels.join(',') %]],
+        datasets: [{
+            label: 'Trefferzahl',
+            data: [[% year_itemcounts.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+            BarThickness: 8,
+        }],
+    },
+    options: {
+        legend: {
+           display: false
+        },
+        tooltips: {
+          callbacks: {
+             label: function(tooltipItem) {
+                  return tooltipItem.yLabel;
+             }
+          }
+        },
+        scales: {
+	   xAxes: [{
+                type: 'time',
+                time: {
+                    unit: 'year'
+                }
+           }],
+           yAxes: [{
+                ticks: {
+		    stepSize: 1,
+                    beginAtZero: true
+                }
+            }]
+        },	
+    }
+});
+
+[% IF 0 == 1 %]
+var yearslider[% facet_prefix %][% idsuffix %] = document.getElementById('ob-yearSlider[% facet_prefix %][% idsuffix %]');
+
+noUiSlider.create(yearslider[% facet_prefix %][% idsuffix %], {
+    start: [[% minyear %], [% maxyear %]],
+    connect: true,
+    range: {
+        'min': [% minyear %],
+        'max': [% maxyear %]
+    }
+});
+
+var yearslider_from[% facet_prefix %][% idsuffix %] = document.getElementById('ob-yearSlider_from[% facet_prefix %][% idsuffix %]');
+var yearslider_to[% facet_prefix %][% idsuffix %]   = document.getElementById('ob-yearSlider_to[% facet_prefix %][% idsuffix %]');
+
+yearslider[% facet_prefix %][% idsuffix %].noUiSlider.on('update', function (values, handle) {
+
+    var value = values[handle];
+
+    if (handle) {
+        yearslider_to[% facet_prefix %][% idsuffix %].value = Math.round(value);
+    } else {
+        yearslider_from[% facet_prefix %][% idsuffix %].value = Math.round(value);
+    }
+});
+
+yearslider_from[% facet_prefix %][% idsuffix %].addEventListener('change', function () {
+    yearslider[% facet_prefix %][% idsuffix %].noUiSlider.set([this.value, null]);
+});
+
+yearslider_to[% facet_prefix %][% idsuffix %].addEventListener('change', function () {
+    yearslider[% facet_prefix %][% idsuffix %].noUiSlider.set([null, this.value]);
+});
+[% END %]
+
+</script>
+
+[% END %] 
+
+        <ul class="list-group">
+[%             FOREACH termitem IN facets.year ;
+                  LAST IF loop.count > 25 ;
+ %]
+
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').yearstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item" [% IF facets.year.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+[%             END %]
+[% IF facets.year.size > 5 %]
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
+[% END %]
+</ul>
+</div><!-- group-year -->
+<p/>
+
+<!-- <p>
+
+[% msg.maketext("Von") %]&nbsp;&nbsp;<input type="text" size="4" name="year_from"  title="[% msg.maketext("Eingabe Jahr von") %]" value="[% searchquery.get_searchfield("year_from").val %]" />&nbsp;&nbsp;[% msg.maketext("bis") %]&nbsp;&nbsp;<input type="text" size="4" name="year_to"  title="[% msg.maketext("Eingabe Jahr bis") %]" value="[% searchquery.get_searchfield("year_to").val %]" />&nbsp;&nbsp;<input type="submit" class="btn btn-primary" value="Los"/>
+</p> -->
+
+[%         END %]
+[% END # EDS %]
+<!-- End year facet -->
+
+[% END %]
+
+<!-- Begin classification facet -->
+[%         IF config.get('facets').classification && facets.defined('classification') && facets.classification.size > 0 %]
+[%             all_rvk = [];
+               FOREACH termitem IN facets.classification;
+                  searchterm = termitem.0;
+                  LAST IF loop.count > 25 ;
+                  IF searchterm.match('^[A-Z][A-Z] \d\d\d+$');
+                    all_rvk.push(searchterm);
+                  END;
+               END;
+               rvklookup = config.get_description_of_classification(type => 'rvk', names => all_rvk );
+%]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-classification[% idsuffix %][% facet_prefix %]" aria-expanded="false">
+           [% msg.maketext("Systematik") %] 
+        </h4>
+        <ul id="group-classification[% idsuffix %][% facet_prefix %]" class="list-group in collapse">
+[%             FOREACH termitem IN facets.classification ;
+                  LAST IF loop.count > 25 ;
+ %]
+
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').classificationstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+
+    # Beschreibungen hinzufuegen
+    clndesc = "";
+    IF searchterm.match('^\d\d\.\d\d$') && bklookup.${searchterm};
+      clndesc = bklookup.${searchterm};
+    ELSIF searchterm.match('^[A-Z][A-Z] \d\d\d+$') && rvklookup.${searchterm};
+      clndesc = rvklookup.${searchterm};
+    END;
+
+-%]
+<li class="ob-facet-item" [% IF facets.classification.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %] [% IF clndesc %]&nbsp;([% clndesc %])[% END %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+[%             END %]
+[% IF facets.classification.size > 5 %]
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
+[% END %]
+</ul>
+<p/>
+[%         END %]
+<!-- End classification facet -->
+<!-- Begin provenance facet -->
+[%         IF config.get('facets').provenance && facets.defined('provenance') && facets.provenance.size > 0 %]
+
+[%-
+  collection_map = {
+   'Bibliothek Eugen Schmalenbach' = 'https://schmalenbach.ub.uni-koeln.de/'
+   'Sammlung Belgisches Haus' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/belgisches-haus'
+   'Sammlung Breslauer Dissertationen' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/breslaudiss'
+   'Sammlung Dante - Sammlung Wilhelm Reiners' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/dante'
+   'Sammlung Eberhard Wolff' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/eberhard-wolff'
+   'Sammlung Elise und Helene Richter' = 'https://richterbibliothek.ub.uni-koeln.de/'
+   'Sammlung Ernst von Oidtman' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/oidtmann'
+   'Sammlung Eugen Schmalenbach' = 'https://schmalenbach.ub.uni-koeln.de/'
+   'Sammlung Evangelische Bibliothek' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/ebk'
+   'Sammlung Fachbibliothek Medienkultur und Theater' = 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/gfb/index_ger.html'
+   'Sammlung Fachbibliothek Schmalenbach' = 'https://www.ub.uni-koeln.de/lernen_arbeiten/bibliotheken/gfb/index_ger.html'
+   'Sammlung Ferdinand Franz Wallraf' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/wallraf'
+   'Sammlung Franz Thorbecke' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/thorbecke'
+   'Sammlung Franz Weinkauff' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/weinkauff'
+   'Sammlung Fred Bänfer' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/baenfer'
+   'Sammlung Friedrich Wilhelm Bäumker' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/baeumker'
+   'Sammlung Fritz von Westerholt' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/westerholt'
+   'Sammlung Georg Andreas und Gerlinde Bachem' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/georg-andreas-und-gerlinde-bachem'
+   'Sammlung Gernot Uwe Gabel' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/gabel'
+   'Sammlung Gertrud von Le Fort' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/lefort'
+   'Sammlung Günter Herterich' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/gentz'
+   'Sammlung Gustav von Mevissen' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/mevissen'
+   'Sammlung Gymnasialbibliothek' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/gymnasialbibliothek'
+   'Sammlung Hallische Jahrbücher' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/hallische'
+   'Sammlung Hanns-Theo Schmitz-Otto' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/familie-schmitz-otto'
+   'Sammlung Hans Engländer' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/englaender'
+   'Sammlung H. C. Artmann - Sammlung Karl-Heinz Knupfer' = 'https://artmann.ub.uni-koeln.de/'
+   'Sammlung Heinrich Erkes' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/islandica'
+   'Sammlung Herbert von Dirksen' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/dirksen'
+   'Sammlung Hermann Heinrich Becker' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/becker'
+   'Sammlung Immo Mikloweit' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/mikloweit'
+   'Sammlung Inkunabeln und Blockbücher' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/inkunabeln'
+   'Sammlung Islandica' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/islandica'
+   'Sammlung Jakob Ignaz Hittorff' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/hittorff'
+   'Sammlung Jesuitenbibliothek' = 'https://jesuitensammlung.ub.uni-koeln.de/'
+   'Sammlung Johannes Fastenrath' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/fastenrath'
+   'Sammlung Josef Quint' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/quint'
+   'Sammlung Jürgen Scholle' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/scholle'
+   'Sammlung Klassiker der Soziologie' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/klassiker-der-soziologie'
+   'Sammlung Kölner Dissertationen vor 1800' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/dissertationen1800'
+   'Sammlung Kölner Personal- und Vorlesungsverzeichnisse' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/vorlesung'
+   'Sammlung Kölner Provenienzportal' = 'http://provenienzen.ub.uni-koeln.de/'
+   'Sammlung Kölnische Bibliotheksgesellschaft' = 'https://ub.uni-koeln.de/die-usb/koelnische-bibliotheksgesellschaft'
+   'Sammlung Königsberger Dissertationen' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/koenigsberg'
+   'Sammlung Martin Stankowski' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/stankowski'
+   'Sammlung Mathilde von Mevissen' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/mevissen'
+   'Sammlung Melanie von Mevissen' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/mevissen'
+   'Sammlung Otto Löffler' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/islandica'
+   'Sammlung Otto Stein' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/stein'
+   'Sammlung Otto Wolff' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/otto-wolff'
+   'Sammlung Poetica' = 'https://poetica.ub.uni-koeln.de/portal/home.html?l=de'
+   'Sammlung Publikationen aus und über Kölner Hochschulen' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/koelnerhochschulen'
+   'Sammlung Publikationen der Ges. für Rheinische Geschichtsforschung' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/grhg'
+   'Sammlung Rheinische Monographien' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/rheinischemonographien'
+   'Sammlung Rheinische Zeitschriften' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/rheinischezeitschriften'
+   'Sammlung Rudolf Hilferding' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/hilferding'
+   'Sammlung Schriften aus dem Monschauer Land' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/monschau'
+   'Sammlung Syndikatsbibliothek' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/syndikatsbibliothek'
+   'Sammlung Thomas a Kempis' = 'http://kempis.ub.uni-koeln.de/'
+   'Sammlung Westerholt' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/westerholt'
+   'Sammlung Wilhelm Alff' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/alff'
+   'Sammlung Wilhelmine von Westerholt' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/westerholt'
+  }
+
+-%]
+
+
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-provenance[% idsuffix %][% facet_prefix %]" aria-expanded="true">
+           [% msg.maketext("Sammlungsportal") %]<i class="ms-2 fas fa-archway"></i>  / [% msg.maketext("Provenienz") %]
+        </h4>
+        <ul id="group-provenance[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
+[%             FOREACH termitem IN facets.provenance ;
+                  LAST IF loop.count > 25 ;
+ %]
+
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').provenancestring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item" [% IF facets.provenance.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>[% IF collection_map.defined(termitem.0) %] <a class="ps-2 pe-2" title="USB [% msg.maketext("Sammlungsportal") %] [% termitem.0 %]" target="_blank" href="[% collection_map.${termitem.0} %]"><i class="fas fa-archway"></i></a>[% END %] <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+[%             END %]
+[% IF facets.provenance.size > 5 %]
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
+[% END %]
+</ul>
+<p/>
+[%         END %]
+<!-- End provenance facet -->
+<!-- Begin tag facet -->
+[%         IF config.get('facets').tag && facets.defined('tag') && facets.tag.size > 0 %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-tag[% idsuffix %][% facet_prefix %]" aria-expanded="true">
+           [% msg.maketext("Tags") %] 
+        </h4>
+        <ul id="group-tag[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
+[%             FOREACH termitem IN facets.tag ;
+                  LAST IF loop.count > 25 ;
+ %]
+
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').tagstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item" [% IF facets.tag.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+[%             END %]
+[% IF facets.tag.size > 5 %]
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
+[% END %]
+</ul>
+<p/>
+[%         END %]
+<!-- End tag facet -->
+<!-- Begin litlist facet -->
+[%         IF config.get('facets').litlist && facets.defined('litlist') && facets.litlist.size > 0 %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-litlist[% idsuffix %][% facet_prefix %]" aria-expanded="true">
+           [% msg.maketext("Literaturliste") %] 
+        </h4>
+        <ul id="group-litlist[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
+[%             FOREACH termitem IN facets.litlist ;
+                  LAST IF loop.count > 25 ;
+ %]
+
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').litliststring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item" [% IF facets.litlist.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% searchterm |uri %][% END %]" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% searchterm |uri %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+[%             END %]
+[% IF facets.litlist.size > 5 %]
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
+[% END %]
+</ul>
+<p/>
+[%         END %]
+<!-- End litlist facet -->
+
+<!-- Begin person facet -->
+[%         IF config.get('facets').person && facets.defined('person') && facets.person.size > 0 %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-person[% idsuffix %][% facet_prefix %]" aria-expanded="true">
+           [% msg.maketext("Person") %] 
+        </h4>
+        <ul id="group-person[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
+[%             FOREACH termitem IN facets.person ;
+                  LAST IF loop.count > 25 ;
+%]
+
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').personstring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item" [% IF facets.person.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+[%             END %]
+[% IF facets.person.size > 5 %]
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
+[% END %]
+</ul>
+<p/>
+[%         END %]
+<!-- End person facet -->
+
+<!-- Begin language facet -->
+[%         IF config.get('facets').language && facets.defined('language') && facets.language.size > 0 %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-language[% idsuffix %][% facet_prefix %]" aria-expanded="true">
+           [% msg.maketext("Sprache") %] 
+        </h4>
+        <ul id="group-language[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
+[%             FOREACH termitem IN facets.language ;
+                  LAST IF loop.count > 25 ;
+ %]
+
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').languagestring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+
+    spr_mapping = {
+        "ara"      => msg.maketext("Arabisch"),
+        "arm"      => msg.maketext("Armenisch"),
+        "arab."    => msg.maketext("Arabisch"),
+        "ces"      => msg.maketext("Tschechisch"),
+        "chi"      => msg.maketext("Chinesisch"),
+        "cop"      => msg.maketext(""),
+        "cze"      => msg.maketext("Tschechisch"),
+        "de"       => msg.maketext("Deutsch"),
+        "dt."      => msg.maketext("Deutsch"),
+        "dut"      => msg.maketext("Niederländisch"),
+        "dut."     => msg.maketext("Niederländisch"),
+        "ell"      => msg.maketext("Neu-Griechisch"),
+        "en"       => msg.maketext("Englisch"),
+        "eng"      => msg.maketext("Englisch"),
+        "engl."    => msg.maketext("Englisch"),
+        "fin"      => msg.maketext("Finnisch"),
+        "finn."    => msg.maketext("Finnisch"),
+        "fr"       => msg.maketext("Französisch"),
+        "franz."       => msg.maketext("Französisch"),
+        "fre"      => msg.maketext("Französisch"),
+        "ger"      => msg.maketext("Deutsch"),
+        "gre"      => msg.maketext("Neu-Griechisch"),
+        "grc"      => msg.maketext("Alt-Griechisch"),
+        "griech."  => msg.maketext("Griechisch"),
+        "grk"      => msg.maketext("Griechisch"),
+        "he"       => msg.maketext("Hebräisch"),
+        "heb"      => msg.maketext("Hebräisch"),
+        "hun"      => msg.maketext("Ungarisch"),
+        "ice"      => msg.maketext("Isländisch"),
+        "islaend." => msg.maketext("Isländisch"),
+        "ita"      => msg.maketext("Italienisch"),
+        "ital."    => msg.maketext("Italienisch"),
+        "jpn"      => msg.maketext("Japanisch"),
+        "lat"      => msg.maketext("Latein"),
+        "lat."     => msg.maketext("Latein"),
+        "lats"     => msg.maketext("Latein"),
+        "nds"      => msg.maketext("Niederdeutsch"),
+        "neugriech."   => msg.maketext("Neu-Griechisch"),
+        "niederlaend." => msg.maketext("Niederländisch"),
+        "pol"      => msg.maketext("Polnisch"),
+        "rus"      => msg.maketext("Russisch"),
+        "russ."    => msg.maketext("Russisch"),
+        "spa"      => msg.maketext("Spanisch"),
+        "span."    => msg.maketext("Spanisch"),
+        "swe"      => msg.maketext("Schwedisch"),
+        "syc"      => msg.maketext("Alt-Syrisch"),
+        "tschech." => msg.maketext("Tschechisch"),
+        "tur"      => msg.maketext("Türkisch"),
+        "ungar."   => msg.maketext("Ungarisch"),
+	"zxx"      => msg.maketext("kein linguistischer Inhalt"),
+    };
+
+    spr_tmp = termitem.0.split(';');
+    spr = [ ];
+
+    FOREACH thisspr IN spr_tmp ;
+       IF spr_mapping.${thisspr} ;
+          spr.push(spr_mapping.${thisspr});
+       ELSE;
+          spr.push(thisspr);
+       END;
+    END ;
+
+    sprstring = spr.join(';');
+
+-%]
+<li class="ob-facet-item" [% IF facets.language.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %][% IF queryoptions.get_option('searchft') %];searchft=1[% END %][% IF queryoptions.get_option('showft') %];showft=1[% END %]">[% sprstring %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+[%             END %]
+[% IF facets.language.size > 5 %]
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
+[% END %]
+</ul>
+<p/>
+[%        END %]
+<!-- End language facet -->
+
+<!-- Begin corporatebody facet -->
+[%         IF config.get('facets').corporatebody && facets.defined('corporatebody') && facets.corporatebody.size > 0 %]
+        <h4 class="ob-facet-title" data-bs-toggle="collapse" data-bs-target="#group-corporatebody[% idsuffix %][% facet_prefix %]" aria-expanded="true">
+           [% msg.maketext("Institution") %] 
+        </h4>
+        <ul id="group-corporatebody[% idsuffix %][% facet_prefix %]" class="list-group in collapse show">
+[%             FOREACH termitem IN facets.corporatebody ;
+                  LAST IF loop.count > 25 ;
+%]
+
+[%-
+    searchterm    = termitem.0;
+    searchprefix  = config.get('searchfield').corporatebodystring.prefix;
+    filterstring  = "${searchprefix}:${searchterm}";
+-%]
+<li class="ob-facet-item" [% IF facets.corporatebody.size > 5 && loop.count > 5 %]hidden[% END %]>[% IF NOT separate_refine %]<input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;[% END %]<a class="w-100" [% IF offcanvas %]data-bs-toggle="offcanvas"[% END %] hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% path_prefix %]/[% config.get('search_loc') %].include?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" href="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]" hx-push-url="[% path_prefix %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% default_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% termitem.0 %]</a>  <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1.chunk(-3).join('.') %]</span></li>
+[%             END %]
+[% IF facets.corporatebody.size > 5 %]
+<li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>
+<li class="ob-facet-item ob-less_button" hidden><span class="w-100">[% msg.maketext("Weniger") %] <i class="fa fa-arrow-up"></i></span></li>
+[% END %]
+</ul>
+<p/>
+[%         END %]
+<!-- End corporatebody facet -->
+
+</div> <!-- End: ob-facets_all_toggle_do -->
+
+<!-- </div> <!-- End: card-body -->
+<!-- </div> <!-- End: card -->
+
+</form>
+[% ELSE %]
+
+[% PROCESS common/subtemplate name="search_radius" %]
+
+<div class="ob-category_header">[% msg.maketext("Treffermenge eingrenzen") %]</div>
+
+<p>
+[% msg.maketext("Die Trefferliste zu Ihrer Suchanfrage ist so umfangreich, dass eine
+sinnvolle Eingrenzung durch eine Rechercheverfeinerung nicht
+m&ouml;glich ist.") %]
+</p>
+
+<p>
+[% msg.maketext("Versuchen Sie daher Ihre Rechercheanfrage zu pr&auml;zisieren, indem
+Sie diese auf sinntragende Worte reduzieren (z.B. der, die das
+weglassen) und allgemeine Worte (z.B. deutschland oder geschichte)
+durch zus&auml;tzliche Worte weiter eingrenzen.") %]
+</p>
+
+[% END %]
+</div>
+
+<p/>
+
+<p/>
+[% ELSE %]
+
+<div class="ob-category_header">[% msg.maketext("Hinweis") %]</div>
+
+<p>
+[% msg.maketext("Es ist keine Recherche-Eingrenzung möglich.") %]
+</p>
+
+[% END # facets=none%]
+
+[% IF 0 == 1 && searchquery.get_searchfield('freesearch').val && NOT searchquery.get_searchfield('freesearch').val.match(':') %]
+
+
+<div class="ob-category_header">[% msg.maketext("Yewno") %]</div>
+
+<div style="display: flex;flex-direction: column;">
+
+<div id="yewno-facet-widget[% idsuffix %][% facet_prefix %]" style="height:400px;width:259px;"></div> <!-- position this where you want the widget to show up -->
+<script>
+new YewnoDiscoverWidget({
+height: 420,
+width: 259,
+containerElementSelector: "#yewno-facet-widget[% idsuffix %][% facet_prefix %]",
+query: "[% searchquery.get_searchfield('freesearch').val.replace('"',' ') | html %]",
+languages: ["deu"], // available languages eng,zho,deu
+});
+</script>
+
+</div>
+[% END %]
+
+
+[% IF NOT disable_dbis_recommendations && current_tab == 'books' && ( query.param('fs') || query.param('tit') ) # Start Elib %]
+<div class="ob-facets ob-facets_dbinfo">
+
+<!-- Anfang Elib DBIS-Empfehlungen -->
+
+<div class="ob-category_header">[% msg.maketext("Datenbank-Empfehlungen") %]</div>
+
+<!-- Begin Elib DBIS-Empfehlungen -->
+<div id="ob-dbis_recommendations" class="pt-3" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/recommendations.include?l=[% lang %];fs=[% searchquery.get_searchtermstring %]" hx-swap="outerHTML" hx-trigger="load">
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/titles/recommendations.html?l=[% lang %];fs=[% searchquery.get_searchtermstring %]">[% msg.maketext("Weiter zu den Datenbank-Empfehlungen") %]</a>
+</div>
+<!-- Ende Elib DBIS-Empfehlungen -->
+
+<div class="alert alert-info">
+<small>[% msg.maketext("Die Datenbank-Empfehlungen werden Ihnen bereitgestellt durch einen Dienst der")%] <a class="exturl" target="_blank" href="https://www.suub.uni-bremen.de/">E-LIB Bremen</a> (<a class="exturl" target="_blank" href="https://de.wikipedia.org/wiki/E-LIB_Bremen">Wikipedia</a>)
+</small>
+</div>
+
+</div>
+[% END # End Elib %]

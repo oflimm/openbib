@@ -1,0 +1,43 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_navigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Navigations-Menu fuer Mein OpenBib
+#
+#######################################################################
+-%]
+<div class="card">
+<div class="card-header">[% dbinfo.get('dbnames').${layout_param.database}.short %]</div>
+
+<div class="card-body">
+<nav class="navbar bg-light ob-sidebar">
+
+ <ul class="navbar-nav">
+<!--
+[% IF layout_param.active_submenu == "database" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Katalog") %]</strong></li>
+[% ELSE %]
+  <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% layout_param.database %].html?l=[% lang %]">[% msg.maketext("Katalog") %]</a></li>
+[% END %]
+-->
+[% IF layout_param.active_submenu == "all" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Alle Titel") %]</strong></li>
+[% ELSE %]
+  <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% layout_param.database %]/titles.html?l=[% lang %]">[% msg.maketext("Alle Titel") %]</a></li>
+[% END %]
+<!--
+[% IF layout_param.active_submenu == "popular" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Populäre Titel") %]</strong></li>
+[% ELSE %]
+  <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% layout_param.database %]/titles/popular.html?l=[% lang %]">[% msg.maketext("Populäre Titel") %]</a></li>
+[% END %]
+-->
+</ul>
+</nav>
+</div>
+</div>

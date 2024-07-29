@@ -44,8 +44,8 @@
     ezeitungen       = "https://ub.uni-koeln.de/lernen-ausleihen/digitale-services/e-medien/elektronische-zeitungen"
     campuslieferung  = "https://ub.uni-koeln.de/lernen-ausleihen/digitale-services/campuslieferdienst"
     nutzungsordnung  = "https://ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/nutzungsordnungen"
-    testothekformular = "https://ub.uni-koeln.de/sites/UB/Ressourcen/TestothekVerpflichtung_Test_2404.pdf"
-    testothekverbrauch = "https://ub.uni-koeln.de/sites/UB/Ressourcen/TestothekVerpflichtung_VBM_2404.pdf"
+    testothekformular = "https://ub.uni-koeln.de/sites/UB/Ressourcen/Testothek_Verpflichtung_Test_2404.pdf"
+    testothekverbrauch = "https://ub.uni-koeln.de/sites/UB/Ressourcen/Testothek_Verpflichtung_VBM_2404.pdf"
     ausweisportal    = "https://ausweis.ub.uni-koeln.de/"
 
     uzk_rektor       = "https://www.portal.uni-koeln.de/rektor.html"

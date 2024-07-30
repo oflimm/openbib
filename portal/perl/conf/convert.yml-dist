@@ -1764,6 +1764,14 @@ convtab:
             'subjectstring': 1
           facet:
             'subject': 1
+      '0653': # Schlagwort
+        'a':
+          index:
+            'freesearch': 1
+            'subject': 1
+            'subjectstring': 1
+          facet:
+            'subject': 1
       '0655': # Schlagwort
         'a':
           index:

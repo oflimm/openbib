@@ -118,7 +118,7 @@
     'pickup_locations':
       - type: 'LIBRARY'
         id: 'Ausgabe'
-        desc: 'WiSo-Bibliothek: Ausgabe'
+        desc: 'WiSo Library: Ausgabe'
   '38-101-PMA':
     'order': 1
     'loan': 0
@@ -126,7 +126,7 @@
     'pickup_locations':
       - type: 'LIBRARY'
         id: 'Ausgabe'
-        desc: 'WiSo-Bibliothek: Ausgabe'
+        desc: 'WiSo Library: Ausgabe'
   '38-101-SMA':
     'order': 1
     'loan': 0
@@ -134,7 +134,7 @@
     'pickup_locations':
       - type: 'LIBRARY'
         id: 'Ausgabe'
-        desc: 'WiSo-Bibliothek: Ausgabe'
+        desc: 'WiSo Library: Ausgabe'
   '38-101-VFH':
     'order': 0
     'loan': 1
@@ -142,7 +142,7 @@
     'pickup_locations':
       - type: 'LIBRARY'
         id: 'Ausgabe'
-        desc: 'WiSo-Bibliothek: Ausgabe'
+        desc: 'WiSo Library: Ausgabe'
   '38-101-VMA':
     'order': 1
     'loan': 0
@@ -150,7 +150,7 @@
     'pickup_locations':
       - type: 'LIBRARY'
         id: 'Ausgabe'
-        desc: 'WiSo-Bibliothek: Ausgabe'
+        desc: 'WiSo Library: Ausgabe'
   '38-101-WMA':
     'order': 1
     'loan': 0
@@ -158,7 +158,7 @@
     'pickup_locations':
       - type: 'LIBRARY'
         id: 'Ausgabe'
-        desc: 'WiSo-Bibliothek: Ausgabe'
+        desc: 'WiSo Library: Ausgabe'
   '38-101-MAG':
     'order': 1
     'loan': 0

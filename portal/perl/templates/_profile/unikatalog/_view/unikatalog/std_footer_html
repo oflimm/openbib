@@ -76,6 +76,11 @@
 	</nav>
       </div>
     </div>
+[% IF delayed_update %]    
+    <div class="uzk15__grid_100 pb-2 text-white" style="font-size: .8125em;">
+      <i class="fas fa-bolt"></i> [% msg.maketext("Verzögerte Aktualisierung") %]. [% msg.maketext("Stand der Katalogdaten") %]: [% delayed_update %]
+    </div>
+[% END %]    
     <div class="uzk15__grid_100 pb-2">
       <div class="row">
 	<div class="col-md-6">
@@ -142,7 +147,11 @@
 	</div>
       </div>
     </div>
-
+[% IF delayed_update %]    
+    <div class="uzk15__grid_100 pb-2 pt-2 text-white small">
+    <i class="fas fa-bolt"></i> [% msg.maketext("Verzögerte Aktualisierung") %]. [% msg.maketext("Stand der Katalogdaten") %]: [% delayed_update %]
+    </div>
+[% END %]
     <div class="uzk15__grid_100 pb-2 pt-2">
       <div class="row">
 	<div class="col-md-6">

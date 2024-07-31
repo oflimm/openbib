@@ -130,6 +130,18 @@ sub authenticate {
 	database => $dbname,
 	ils => 'alma',
     };
+
+    # Testuser?
+
+    if (defined $config->{testuser}){
+	if ($config->{testuser}{username} eq $username && $config->{testuser}{password} eq $password){
+	    $response_ref->{userinfo}{username}       = $username;
+	    $response_ref->{userinfo}{external_id}    = $config->{testuser}{userid};
+	    $response_ref->{successful} = 1;
+	    return $response_ref;
+	}
+
+    }
     
     my $sisauth_config;
     

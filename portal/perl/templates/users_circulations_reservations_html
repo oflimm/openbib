@@ -39,10 +39,6 @@
 [% msg.maketext("Übersicht Ihrer Vormerkungen. Wir benachrichtigen Sie per E-Mail, sobald eine Vormerkung für Sie bereitliegt.") %]
 </p>
 
-<p>
-[% msg.maketext("Benachrichtigungen per E-Mail: kostenlos<br/>Benachrichtigungen per Brief: Portogebühr für einen Standardbrief") %]
-</p>
-
 [%# USE dumper;dumper.dump(reservations)%]
 <div class="table-responsive">
 <table class="table table-striped ">

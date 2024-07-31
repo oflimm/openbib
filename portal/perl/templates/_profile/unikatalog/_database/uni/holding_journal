@@ -223,12 +223,16 @@
 <emph>[% msg.maketext("Hinweis") %]:</emph> [% this_item.bemerkung %]<br/>
 [% END %]
 [% IF this_item.issues %]
-<emph>[% msg.maketext("Hefte") %]:</emph><br/>
+<a class="btn btn-primary mt-2" data-bs-toggle="collapse" href="#collapseIssues" role="button" aria-expanded="false" aria-controls="collapseIssues">
+    [% msg.maketext("Hefte anzeigen") %]
+</a>
+<div class="collapse mt-2" id="collapseIssues">
    <ul>
 [% FOREACH thisissue IN this_item.issues %]
     <li>[% thisissue.remark %] ([% IF thisissue.availability.match('lent')%][% msg.maketext("noch nicht eingegangen") %][% ELSE %][% msg.maketext("eingegangen") %][% END %])</li>
 [% END %]
    </ul>
+</div>
 [% END %]
 </li>
 [% END %]

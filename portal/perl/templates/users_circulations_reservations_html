@@ -36,7 +36,7 @@
 <h4>[% msg.maketext("Ihre Vormerkungen") %]</h4>
 
 <p>
-[% msg.maketext("Übersicht Ihrer Vormerkungen. Wir benachrichtigen Sie, sobald eine Vormerkung für Sie bereitliegt.") %]
+[% msg.maketext("Übersicht Ihrer Vormerkungen. Wir benachrichtigen Sie per E-Mail, sobald eine Vormerkung für Sie bereitliegt.") %]
 </p>
 
 <p>

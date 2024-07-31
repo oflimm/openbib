@@ -61,11 +61,12 @@ while (<>){
 
     my $exclude_title = 0;
     foreach my $isbn_ref (@{$title_ref->{fields}{'0020'}}){
-	if ($isbn_ref->{subfield} eq "a"){
+	if ($isbn_ref->{subfield} eq "a"){	    
 	    my $isbn = $isbn_ref->{content};
-	    $isbn =~s/^\s+//;
+	    $isbn =~s/^\s+//;	    
 	    $isbn =~s/-//g;
-	    $isbn =~s/^(\S+)\s+/$1/;
+	    $isbn =~s/^([0-9Xx]+)\s+.+$/$1/;
+
 	    if (defined $excluded_isbns{$isbn} && $excluded_isbns{$isbn}){
 		$exclude_title = $isbn;
 		last;

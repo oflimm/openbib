@@ -818,6 +818,10 @@ sub get_loans {
 		if (defined $item_ref->{'item_policy'}){
 		    $this_response_ref->{'policy'} = $item_ref->{'item_policy'}{'description'};
 		}
+
+		if (defined $item_ref->{'process_status'} && $item_ref->{'process_status'} eq "RECALL"){
+		    $this_response_ref->{'recall'} = 1;
+		}
 		
 		# if (defined $item_ref->{LesesaalNr} && $item_ref->{LesesaalNr} >= 0 && $item_ref->{LesesaalTxt} ){
 		#     $this_response_ref->{pickup_location} = {

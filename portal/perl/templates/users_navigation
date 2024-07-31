@@ -145,6 +145,11 @@
 [%   ELSE %]
       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %].html?l=[% lang %]">[% msg.maketext("Gesamtübersicht") %]</a></li>
 [%   END %]
+[%   IF layout_param.active_submenu == "circulations" %]
+      <li class="nav-item">[% msg.maketext("Persönliche Angaben") %]</li>
+[%   ELSE %]
+      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %].html?l=[% lang %]">[% msg.maketext("Persönliche Angaben") %]</a></li>
+[%   END %]
 
       <li class="nav-item">[% msg.maketext("Einzelne Übersichten") %]
         <ul>

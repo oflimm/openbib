@@ -64,9 +64,10 @@ while (<>){
 	if ($isbn_ref->{subfield} eq "a"){
 	    my $isbn = $isbn_ref->{content};
 	    $isbn =~s/^\s+//;
+	    $isbn =~s/-//g;
 	    $isbn =~s/^(\S+)\s+/$1/;
 	    if (defined $excluded_isbns{$isbn} && $excluded_isbns{$isbn}){
-		$exclude_title = 1;
+		$exclude_title = $isbn;
 		last;
 	    }
 	} 

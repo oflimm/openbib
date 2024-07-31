@@ -29,7 +29,6 @@
 <div class="table-responsive">
 <table class="table table-striped ">
 <tbody>
-<tr><th>[% msg.maketext("Anrede") %]</th><td>[% userdata.salutation %]</td></tr>
 <tr><th>[% msg.maketext("Name") %]</th><td>[% userdata.fullname %]</td></tr>
 <tr><th>[% msg.maketext("Geburtsdatum") %]</th><td>[% userdata.birthdate %]</td></tr>
 <tr><th>[% msg.maketext("Anmeldung am") %]</th><td>[% userdata.startdate %]</td></tr>

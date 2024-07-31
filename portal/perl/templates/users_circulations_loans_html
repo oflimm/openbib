@@ -99,6 +99,9 @@
 [% ELSE %]
 [% msg.maketext("Keine Verlängerung möglich") %]
 [% END %]
+[% IF loan.recall %]
+<br/><span style="color:red">[% msg.maketext("Exemplar ist vorgemerkt") %]</span>
+[% END %]
 </td>
 </tr>
 [% END %]

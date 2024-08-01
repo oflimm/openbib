@@ -119,6 +119,7 @@ my %git_links = (
     "$repositoryroot/conv/meta/meta2incr.pl"                => "/opt/openbib/conv/meta2incr.pl",
     "$repositoryroot/conv/meta/meta2mex.pl"                 => "/opt/openbib/conv/meta2mex.pl",
     "$repositoryroot/conv/meta/meta2sql.pl"                 => "/opt/openbib/conv/meta2sql.pl",
+    "$repositoryroot/conv/meta/enrich_lobidgnd.pl"          => "/opt/openbib/conv/enrich_lobidgnd.pl",
     "$repositoryroot/conv/oai/harvestOAI.pl"                => "/opt/openbib/conv/harvestOAI.pl",
     "$repositoryroot/conv/oai/oai2meta.pl"                  => "/opt/openbib/conv/oai2meta.pl",
     "$repositoryroot/conv/olws/olws_updatedb.pl"            => "/opt/openbib/conv/olws_updatedb.pl",

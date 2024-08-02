@@ -402,12 +402,14 @@ Präsenzbestand
 
 [%
 
-   scan_dienst = "campus"; # Default: Campuslieferdienst
+   IF NOT disable_mybib ;
+     scan_dienst = "campus"; # Default: Campuslieferdienst
 
-   IF view == "esa";
-     scan_dienst = "ilias"; # Elektronischer Semesterapparat / ILIAS
+     IF view == "esa";
+       scan_dienst = "ilias"; # Elektronischer Semesterapparat / ILIAS
+     END;
    END;
-
+   
 %]
 
 [%############### ANFANG MEDIENSTATUSAKTIONEN ######### %]

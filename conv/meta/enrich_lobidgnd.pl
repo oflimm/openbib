@@ -177,7 +177,7 @@ while (<IN>){
 
 	    if (defined $gnd_ref->{abbreviation}){
 		foreach my $item (@{$gnd_ref->{abbreviation}}){
-		    push @{$record_ref->{fields}{'0810'}}, {
+		    push @{$record_ref->{fields}{'0881'}}, {
 			content => decode_utf8($item),
 			subfield => "e",
 			mult => $abbreviation_mult++,

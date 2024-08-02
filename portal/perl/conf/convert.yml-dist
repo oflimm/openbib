@@ -1384,11 +1384,29 @@ convtab:
         '':
           index:
             'gnd': 1
+      '0830':         # Verweisform
+        'e':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
     inverted_corporatebody:
       '0010':         # GND
         '':
           index:
             'gnd': 1
+      '0810':         # Verweisform
+        'e':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
+      '0881':         # Abkuerzung der Ansetzung
+        'e':
+          index:
+            'corporatebody': 1
+            'corporatebodystring': 1
+            'freesearch': 1
     inverted_authority_corporatebody:
       '0010':         # GND
         '':
@@ -1462,6 +1480,30 @@ convtab:
         '':
           index:
             'gnd': 1
+      '0810':         # Schlagwort Kategorie
+        'e':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
+      '0830':         # Verweisform
+        'e':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
+      '0850':         # Uebergeordnete Bezeichnung
+        'e':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
+      '0860':         # Related
+        'e':
+          index:
+            'subject': 1
+            'subjectstring': 1
+            'freesearch': 1
     inverted_authority_subject:
       '0010':         # GND
         '':

@@ -619,7 +619,7 @@ while (<DAT>){
 	    
 	    foreach my $subfield_ref (@$subfields_ref){
 		foreach my $subfield_code (keys %$subfield_ref){
-		    next unless ($subfield_code =~m/^(a|b|c|h|z|8)$/);
+		    next unless ($subfield_code =~m/^(a|b|c|h|z|8|9)$/);
 
 		    if ($subfield_code eq "b" && keys %{$single_holding_ref}){ # Beginn neues Holding
 			push @$all_holdings_ref, $single_holding_ref; # fertiges altes holding speichern
@@ -691,6 +691,10 @@ while (<DAT>){
 
 		if ($single_holding_ref->{'z'}){
 		    $content.=" ".$single_holding_ref->{'z'};
+		}
+
+		if ($single_holding_ref->{'9'}){
+		    $content = $single_holding_ref->{'9'}." ".$content;
 		}
 		
 		push @{$holding_ref->{fields}{'1204'}}, {

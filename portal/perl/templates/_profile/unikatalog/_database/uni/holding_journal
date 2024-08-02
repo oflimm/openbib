@@ -27,6 +27,7 @@
       holdingid        = thisholding.${"8"}.first.content;
       bestandsverlauf  = thisholding.${"a"}.first.content;
       intro            = thisholding.${"9"}.first.content;
+      intro            = intro.replace('^- ','');
       
       luecken          = "";
       bemerkung        = "";
@@ -221,7 +222,7 @@
 <ul>
 [%    FOREACH this_item IN this_cluster.items %]
 <li>
-<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %][% IF this_item.intro %] [% this_item.intro %][% END %]</strong><br/>
+<strong>[% IF this_item.intro %][% this_item.intro %] [% END %][% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
 [% IF this_item.standort %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
@@ -268,7 +269,7 @@
 <ul>
 [% FOREACH this_item IN this_cluster.items %]
 <li>
-<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %][% IF this_item.intro %] [% this_item.intro %][% END %]</strong><br/>
+<strong>[% IF this_item.intro %][% this_item.intro %] [% END %][% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
 [% IF this_item.standort %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
@@ -323,7 +324,7 @@
 <ul>
 [% FOREACH this_item IN this_cluster.items %]
 <li>
-<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %][% IF this_item.intro %] [% this_item.intro %][% END %]</strong><br/>
+<strong>[% IF this_item.intro %][% this_item.intro %] [% END %][% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
 [% IF this_item.standort %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>

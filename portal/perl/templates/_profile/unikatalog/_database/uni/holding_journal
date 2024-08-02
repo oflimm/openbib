@@ -26,6 +26,8 @@
     FOREACH thisholding IN holding_fields ;
       holdingid        = thisholding.${"8"}.first.content;
       bestandsverlauf  = thisholding.${"a"}.first.content;
+      intro            = thisholding.${"9"}.first.content;
+      
       luecken          = "";
       bemerkung        = "";
 
@@ -53,6 +55,9 @@
       END;
       IF signatur ;
         holding_fields_per_id.${holdingid}.${"h"} = signatur;
+      END;
+      IF intro ;
+        holding_fields_per_id.${holdingid}.${"9"} = intro;
       END;
       IF standort ;
         IF alma_location_desc.${standort};
@@ -84,6 +89,7 @@
       signatur         = holding_fields_per_id.${holdingid}.${"h"};
       standort         = holding_fields_per_id.${holdingid}.${"c"};
       sigel            = holding_fields_per_id.${holdingid}.${"b"};
+      intro            = holding_fields_per_id.${holdingid}.${"9"};
       bemerkung        = holding_fields_per_id.${holdingid}.${"remark"};
       issues           = holding_fields_per_id.${holdingid}.${"issues"};
       inventarnr       = ""; # thisholding.${"X0005"}.content;
@@ -170,6 +176,7 @@
         standort         = standort
         sigel            = sigel
         inventarnr       = inventarnr
+	intro            = intro
         bemerkung        = bemerkung
         bemerkung2       = bemerkung2
         isil             = isil
@@ -214,7 +221,7 @@
 <ul>
 [%    FOREACH this_item IN this_cluster.items %]
 <li>
-<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
+<strong>[% IF this_item.intro %][% this_item.intro %] [% END %][% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
 [% IF this_item.standort %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
@@ -261,7 +268,7 @@
 <ul>
 [% FOREACH this_item IN this_cluster.items %]
 <li>
-<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
+<strong>[% IF this_item.intro %][% this_item.intro %] [% END %][% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
 [% IF this_item.standort %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
@@ -316,7 +323,7 @@
 <ul>
 [% FOREACH this_item IN this_cluster.items %]
 <li>
-<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
+<strong>[% IF this_item.intro %][% this_item.intro %] [% END %][% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
 [% IF this_item.standort %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>

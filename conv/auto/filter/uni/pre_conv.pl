@@ -6,7 +6,7 @@
 #
 #  Bearbeitung der Titeldaten
 #
-#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2024 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie k"onnen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -61,3 +61,11 @@ system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/gen_local_top
 print "### $pool: Anreicherung der Exemplarinformationen\n";
 
 system("cd $datadir/$pool ; cat meta.holding| $rootdir/filter/$pool/add-navid.pl > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");
+
+print "### $pool: Anreicherung der Normdaten mit Informationen aus lobidgnd\n";
+
+system("cd $datadir/$pool ; /opt/openbib/conv/enrich_lobidgnd.pl --type=person --filename=meta.person > meta.person_enriched ; mv -f meta.person_enriched meta.person");
+
+system("cd $datadir/$pool ; /opt/openbib/conv/enrich_lobidgnd.pl --type=corporatebody --filename=meta.corporatebody > meta.corporatebody_enriched ; mv -f meta.corporatebody_enriched meta.corporatebody");
+
+system("cd $datadir/$pool ; /opt/openbib/conv/enrich_lobidgnd.pl --type=subject --filename=meta.subject > meta.subject_enriched ; mv -f meta.subject_enriched meta.subject");

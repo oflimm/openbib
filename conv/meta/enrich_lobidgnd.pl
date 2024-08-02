@@ -121,8 +121,8 @@ if ($rebuild_db){
 	}
 
 	if (defined $record_ref->{abbreviatedNameForTheCorporateBody}){
-	    foreach my $item_ref (@{$record_ref->{abbreviatedNameForTheCorporateBody}}){
-		push @{$gnd_ref->{abbreviation}}, encode_utf8($item_ref->{label});	    
+	    foreach my $item (@{$record_ref->{abbreviatedNameForTheCorporateBody}}){
+		push @{$gnd_ref->{abbreviation}}, encode_utf8($item);	    
 	    }
 	}
 	

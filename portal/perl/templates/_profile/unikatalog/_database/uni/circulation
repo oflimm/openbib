@@ -222,7 +222,7 @@
 <br/><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% uri_escape(thiscirculation.barcode) %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.include?l=[% lang %];mnr=[% uri_escape(thiscirculation.barcode) %]">Provenienzen</a>
 [% END %]
 
-[% IF 0 == 1 && shelfid && NOT disable_campusgis %]
+[% IF shelfid && config.get('campusgis_testuser').${username} && NOT disable_campusgis %]
 <br/>
 <a target="_blank" class="btn btn-primary mt-2" href="[% campusgis_url %]?lang=de&view=2d&building=107&floor=OG1&shelf=[% shelfid %]"><i class="fas fa-route pe-2"></i> [% msg.maketext("Weg zum Buch") %]</a></a>
 [% END %]

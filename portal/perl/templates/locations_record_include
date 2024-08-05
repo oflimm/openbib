@@ -180,7 +180,7 @@ var occupancyChart = new Chart(occupancy_ctx, {
    END;
 %]
 
-[% IF locationinfo.identifier.match('DE-38-214') %]
+[% IF locationinfo.identifier.match('DE-38-006') %]
 
 [% IF website %]
 <a target="_blank" class="btn btn-primary pe-3" href="[% website %]"><i class="fas fa-globe pe-2"></i> [% msg.maketext("Webseite") %]</a>

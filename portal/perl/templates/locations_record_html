@@ -178,12 +178,12 @@ var occupancyChart = new Chart(occupancy_ctx, {
    END;
 %]
 
-[% IF locationinfo.identifier.match('DE-38-006') %]
+[% IF locationinfo.identifier.match('DE-38-006') && NOT disable_campusgis %]
 
 [% IF website %]
 <a target="_blank" class="btn btn-primary pe-3" href="[% website %]"><i class="fas fa-globe pe-2"></i> [% msg.maketext("Webseite") %]</a>
 [% END %]
-<a target="_blank" class="btn btn-primary" href="https://campusgis2.uni-koeln.de/testphase/?lang=de&view=2d&[% navigation_args.join('&') %]"><i class="fas fa-route pe-2"></i> [% navigation_desc %]</a>
+<a target="_blank" class="btn btn-primary" href="[% campusgis_url %]?lang=de&view=2d&[% navigation_args.join('&') %]"><i class="fas fa-route pe-2"></i> [% navigation_desc %]</a>
 [% END %]
 
 <div class="table-responsive mt-2">

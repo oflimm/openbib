@@ -464,6 +464,7 @@
      current_tab = 'books';   
    END;
 
+   campusgis_url = "https://campusgis2.uni-koeln.de/testphase/";
 
    alma_disable_suggestions     = 0; # msg.maketext("Ab dem 18.12.2023 können keine Anschaffungsvorschläge mehr entgegengenommen werden, dies ist wieder ab dem 08.01.2024 möglich. Wir bitten um Verständnis.") # Keine Anschaffungsvorschlaege
    alma_disable_ill_books       = 0; # Keine Buecherfernleihe
@@ -476,6 +477,6 @@
    disable_mybib                = 0; # Keine Mybib-Anbindung = Deaktivierung ESA und Campuslieferdienst
    disable_dbis_recommendations = 0; # Keine Datenbankempfehlungen via ELIB 
    disable_occupancy            = 0; # Keine Belegungsdaten
-
+   disable_campusgis            = 0; # Keine Navigation zum Buch bzw. zur Bibliothek
    delayed_update               = ""; # Datum der letzten Aktualisierung bei Aktualisierungsproblemen
 -%]

@@ -155,24 +155,21 @@ var occupancyChart = new Chart(occupancy_ctx, {
 [%
 
    navigation_args = [];
-   navigation_desc = "";     
+   navigation_desc = msg.maketext("Weg zur Bibliothek");    
 
    IF locationinfo.fields.${"L0030"}.first.content ;
      gebaeude = locationinfo.fields.${"L0030"}.first.content ;
      navigation_args.push("building=${gebaeude}");
-     navigation_desc = msg.maketext("Navigation zum Gebäude");
    END;
 
    IF 0 == 1 && locationinfo.fields.${"L0031"}.first.content ;
      etage = locationinfo.fields.${"L0031"}.first.content ;
      navigation_args.push("floor=${etage}");
-     navigation_desc = msg.maketext("Navigation zur Etage im Gebäude");     
    END;
 
    IF 0 == 1 && locationinfo.fields.${"L0032"}.first.content ;
      raum = locationinfo.fields.${"L0032"}.first.content ;
      navigation_args.push("room=${raum}");     
-     navigation_desc = msg.maketext("Navigation zum Zimmer im Gebäude");
    END;
 
    IF locationinfo.fields.${"L0090"}.first.content && locationinfo.fields.${"L0090"}.first.content.match('^http') ; ;

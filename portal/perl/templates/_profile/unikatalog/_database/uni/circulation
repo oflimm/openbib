@@ -577,7 +577,7 @@ Präsenzbestand
         subdomain = "avv";
       END;
 
-      IF thiscirculation.department_id.match('38-HWA');
+      IF thiscirculation.department_id.match('^(38-HWA|38-307)$');
         domain = "hwa";
       END;
 

@@ -39,7 +39,9 @@ system("echo \"*:*:*:$config->{'statisticsdbuser'}:$config->{'statisticsdbpasswd
 system("/usr/bin/dropdb -U $config->{'statisticsdbuser'} -h $config->{'statisticsdbhost'} $config->{'statisticsdbname'}");
 system("/usr/bin/createdb -U $config->{'statisticsdbuser'} -h $config->{'statisticsdbhost'} -E UTF-8 -O $config->{'statisticsdbuser'} $config->{'statisticsdbname'}");
 
-# Einladen der Datenbankdefinitionen
+# Einladen der Datenbankdefinitionen (immer partitioniert)
 
 system("/usr/bin/psql -U $config->{'statisticsdbuser'} -h $config->{'statisticsdbhost'} -f '$config->{'dbdesc_dir'}/postgresql/statistics.sql' $config->{'statisticsdbname'}");
 system("/usr/bin/psql -U $config->{'statisticsdbuser'} -h $config->{'statisticsdbhost'} -f '$config->{'dbdesc_dir'}/postgresql/statistics_create_index.sql' $config->{'statisticsdbname'}");
+
+system("/usr/bin/psql -U $config->{'statisticsdbuser'} -h $config->{'statisticsdbhost'} -f '$config->{'dbdesc_dir'}/postgresql/statistics_create_partitions.sql' $config->{'statisticsdbname'}");

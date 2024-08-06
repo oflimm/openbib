@@ -38,7 +38,7 @@ CREATE TABLE titleusage (
  dbname       TEXT NOT NULL,
  titleid           TEXT NOT NULL,
  origin       SMALLINT
-);
+) PARTITION BY RANGE (tstamp);
 
 drop table IF EXISTS eventlog;
 CREATE TABLE eventlog (
@@ -52,7 +52,7 @@ CREATE TABLE eventlog (
 
  type         INT,
  content      TEXT
-);
+) PARTITION BY RANGE (tstamp);
 
 drop table IF EXISTS eventlogjson;
 CREATE TABLE eventlogjson (
@@ -66,7 +66,7 @@ CREATE TABLE eventlogjson (
 
  type         INT,
  content      TEXT
-);
+) PARTITION BY RANGE (tstamp);
 
 drop table IF EXISTS searchterms;
 CREATE TABLE searchterms (
@@ -81,7 +81,7 @@ CREATE TABLE searchterms (
  viewname   TEXT,
  type       INT,
  content    TEXT
-);
+) PARTITION BY RANGE (tstamp);
 
 drop table IF EXISTS searchfields;
 CREATE TABLE searchfields (
@@ -108,7 +108,7 @@ CREATE TABLE searchfields (
  source         BOOL,
  year           BOOL,
  content        BOOL
-);
+) PARTITION BY RANGE (tstamp);
 
 drop table IF EXISTS loans;
 CREATE TABLE loans (
@@ -124,5 +124,5 @@ CREATE TABLE loans (
  isbn          VARCHAR(13),
  dbname        TEXT,
  titleid       TEXT	
-);
+) PARTITION BY RANGE (tstamp);
 

@@ -18,7 +18,7 @@ CREATE INDEX sessioninfo_viewname ON sessioninfo (viewname);
 
 -------------------------------------------------
 
-ALTER TABLE titleusage ADD PRIMARY KEY (id);
+ALTER TABLE titleusage ADD PRIMARY KEY (id,tstamp);
 ALTER TABLE titleusage ADD CONSTRAINT fk_titleusage_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
 CREATE INDEX titleusage_sid ON titleusage (sid);
 CREATE INDEX titleusage_tstamp ON titleusage (tstamp);
@@ -33,7 +33,7 @@ CREATE INDEX titleusage_origin ON titleusage (origin);
 
 -------------------------------------------------
 
-ALTER TABLE eventlog ADD PRIMARY KEY (id);
+ALTER TABLE eventlog ADD PRIMARY KEY (id,tstamp);
 ALTER TABLE eventlog ADD CONSTRAINT fk_eventlog_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
 CREATE INDEX eventlog_sid ON eventlog (sid);
 CREATE INDEX eventlog_tstamp ON eventlog (tstamp);
@@ -45,7 +45,7 @@ CREATE INDEX eventlog_content ON eventlog (content text_pattern_ops);
 
 -------------------------------------------------
 
-ALTER TABLE eventlogjson ADD PRIMARY KEY (id);
+ALTER TABLE eventlogjson ADD PRIMARY KEY (id,tstamp);
 ALTER TABLE eventlogjson ADD CONSTRAINT fk_eventlogjson_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
 CREATE INDEX eventlogjson_sid ON eventlogjson (sid);
 CREATE INDEX eventlogjson_tstamp ON eventlogjson (tstamp);
@@ -56,7 +56,7 @@ CREATE INDEX eventlogjson_type ON eventlogjson (type);
 
 -------------------------------------------------
 
-ALTER TABLE searchterms ADD PRIMARY KEY (id);
+ALTER TABLE searchterms ADD PRIMARY KEY (id,tstamp);
 ALTER TABLE searchterms ADD CONSTRAINT fk_searchterms_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
 CREATE INDEX searchterms_sid ON searchterms (sid);
 CREATE INDEX searchterms_tstamp ON searchterms (tstamp);
@@ -66,7 +66,7 @@ CREATE INDEX searchterms_content ON searchterms (content);
 
 -------------------------------------------------
 
-ALTER TABLE searchfields ADD PRIMARY KEY (id);
+ALTER TABLE searchfields ADD PRIMARY KEY (id,tstamp);
 ALTER TABLE searchfields ADD CONSTRAINT fk_searchfields_session FOREIGN KEY (sid) REFERENCES sessioninfo (id);
 CREATE INDEX searchfields_sid ON searchfields (sid);
 CREATE INDEX searchfields_tstamp ON searchfields (tstamp);
@@ -90,7 +90,7 @@ CREATE INDEX searchfields_year ON searchfields (year);
 
 -------------------------------------------------
 
-ALTER TABLE loans ADD PRIMARY KEY (id);
+ALTER TABLE loans ADD PRIMARY KEY (id,tstamp);
 CREATE INDEX loans_tstamp ON loans (tstamp);
 CREATE INDEX loans_tstamp_year ON loans (tstamp_year);
 CREATE INDEX loans_tstamp_month ON loans (tstamp_month);

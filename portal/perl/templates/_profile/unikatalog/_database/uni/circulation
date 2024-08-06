@@ -568,7 +568,7 @@ Präsenzbestand
 
 [%############### ANFANG CAMPUSLIEFERDIENST ######### %]
 [% ELSIF scan_dienst == "campus" ;%]
-[%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && external_info.external_group.match('^(2)$') && NOT thiscirculation.location_mark.match('^ZBM/') && NOT thiscirculation.storage_id.match('38-HWA-THF') && NOT thiscirculation.availability.match('^(missing)$') %]
+[%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS|38-307)$') && external_info.external_group.match('^(2)$') && NOT thiscirculation.location_mark.match('^ZBM/') && NOT thiscirculation.storage_id.match('38-HWA-THF') && NOT thiscirculation.availability.match('^(missing)$') %]
 [%    
       domain    = "usb";
       subdomain = "";
@@ -585,8 +585,18 @@ Präsenzbestand
         domain = "awm";
       END;
 
+      # Spezifische Regeln fuer die Anzeige des Campuslieferdienstes
+      show_campus = 0;
+
+      IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && thiscirculation.availability.match('^(loan|order|presence)$') ;
+        show_campus = 1;
+      END;
+      IF thiscirculation.department_id.match('^38-307$') && thiscirculation.storage_id.match('^38-307-LS$') && thiscirculation.location_mark.match('^HPLS/B');
+        show_campus = 1;
+      END;
+      
 %]
-[%    IF thiscirculation.availability.match('^(order)$') || (thiscirculation.availability.match('^loan$') && thiscirculation.storage_id.match('^38-SAB$') || ( thiscirculation.storage_id.match('^38-LS$') && NOT thiscirculation.availability.match('^(lent|ordered)$') ) || ( thiscirculation.storage_id.match('^38-LBS$') && NOT thiscirculation.availability.match('^(lent|ordered)$') ) ) %]
+[%    IF show_campus %]
 [%      IF config.get('active_ils') && (NOT user.ID || authenticator.type == 'ils') %]
 <p>
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/campusorders">

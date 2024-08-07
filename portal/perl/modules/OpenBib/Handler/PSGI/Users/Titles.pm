@@ -419,8 +419,10 @@ sub show_record {
 
         my $isbn;
         
-        if ($record->has_field("T0540") && defined $record->get_fields->{T0540}[0]{content}){
-            $isbn = $record->get_fields->{T0540}[0]{content};
+        my $abstract_fields_ref = $record->to_abstract_fields;
+	
+        if (defined $abstract_fields_ref->{isbn} && $abstract_fields_ref->{isbn}){
+            $isbn = $abstract_fields_ref->{isbn};
             $isbn =~s/ //g;
             $isbn =~s/-//g;
             $isbn =~s/X/x/g;
@@ -433,7 +435,7 @@ sub show_record {
                     id       => $titleid,
                     database => $database,
                     isbn     => $isbn,
-		    fields   => $record->get_fields,
+#		    fields   => $abstract_fields_ref,
                 },
                 serialize => 1,
             });

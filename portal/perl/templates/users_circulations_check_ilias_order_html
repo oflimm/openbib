@@ -16,7 +16,6 @@
 [% IF title %]
 <div class="form-floating mb-3">
       <span class="form-control">[% title %]</span>
-      <input type="hidden" name="title"   value="[% title %]" />
       <label for="title">Titel</label>
 </div>
 [% END %]
@@ -24,7 +23,6 @@
 [% IF person %]
 <div class="form-floating mb-3">
       <span class="form-control">[% person %]</span>
-     <input type="hidden" name="author"     value="[% person %]" />
       <label for="person">[% msg.maketext("Verfasser") %]:</label>
 </div>
 [% END %]
@@ -32,7 +30,6 @@
 [% IF corporatebody %]
 <div class="form-floating mb-3">
       <span class="form-control">[% corporatebody %]</span>
-     <input type="hidden" name="corporation"     value="[% corporatebody  %]" />
       <label for="corporation">[% msg.maketext("Körperschaft") %]:</label>
 </div>
 [% END %]
@@ -40,7 +37,6 @@
 [% IF publisher %]
 <div class="form-floating mb-3">
       <span class="form-control">[% publisher %]</span>
-     <input type="hidden" name="publisher"     value="[% publisher  %]" />
       <label for="publisher">[% msg.maketext("Ort/Verlag") %]:</label>
 </div>
 [% END %]
@@ -65,7 +61,6 @@
 [% IF isbn %]
 <div class="form-floating mb-3">
       <span class="form-control">[% isbn %]</span>
-      <input type="hidden" name="isbn" value="[% isbn  %]" />
       <label for="location_mark">[% msg.maketext("ISBN") %]:</label>
 </div>
 [% END %]
@@ -73,7 +68,6 @@
 [% IF issn %]
 <div class="form-floating mb-3">
       <span class="form-control">[% issn %]</span>
-      <input type="hidden" name="isbn" value="[% issn  %]" />
       <label for="location_mark">[% msg.maketext("ISSN") %]:</label>
 </div>
 [% END %]
@@ -81,7 +75,6 @@
 [% IF source %]
 <div class="form-floating mb-3">
       <span class="form-control">[% source %]</span>
-      <input type="hidden" name="source" value="[% source  %]" />
       <label for="source">[% msg.maketext("In") %]:</label>
 </div>
 [% END %]
@@ -132,7 +125,6 @@
 [%   IF year %]
 <div class="form-floating mb-3">
       <span class="form-control">[% year %]</span>
-      <input type="hidden" name="year" value="[% year %]" />
       <label for="year">[% msg.maketext("Erscheinungsjahr") %]:</label>
 </div>
 [%   END %]

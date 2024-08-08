@@ -105,8 +105,6 @@ sub create_record {
     my $subdomain      = $input_data_ref->{'subdomain'};
     my $receipt        = $input_data_ref->{'receipt'};
     my $unit           = $input_data_ref->{'unit'};
-    my $title          = $input_data_ref->{'title'};
-    my $author         = $input_data_ref->{'author'};
     my $volume         = $input_data_ref->{'volume'};
     my $source         = $input_data_ref->{'source'};
     my $articleauthor  = $input_data_ref->{'articleauthor'};
@@ -114,12 +112,7 @@ sub create_record {
     my $issue          = $input_data_ref->{'issue'};
     my $pages          = $input_data_ref->{'pages'};
     my $remark         = $input_data_ref->{'remark'};
-    my $year           = $input_data_ref->{'year'};
     my $numbering      = $input_data_ref->{'numbering'};
-    my $issn           = $input_data_ref->{'issn'};
-    my $isbn           = $input_data_ref->{'isbn'};
-    my $publisher      = $input_data_ref->{'publisher'};
-    my $corporation    = $input_data_ref->{'corporation'};
     my $confirm        = $input_data_ref->{'confirm'};
    
     unless ($config->get('active_ils')){
@@ -158,16 +151,9 @@ sub create_record {
 	my $ttdata={
 	    record         => $record,
 	    database       => $database,
-	    title          => $title,
 	    titleid        => $titleid,
-	    author         => $author,
-	    coporation     => $corporation,
-	    publisher      => $publisher,
-	    year           => $year,
 	    numbering      => $numbering,
 	    label          => $label,
-	    isbn           => $isbn,
-	    issn           => $issn,
 	    articleauthor  => $articleauthor,
 	    articletitle   => $articletitle,
 	    volume         => $volume,
@@ -190,6 +176,26 @@ sub create_record {
     else {
 	$logger->debug("Making ilias order");
 
+	my $fields_ref = $record->to_abstract_fields;
+
+	my $title       = $fields_ref->{title};
+	if ($fields_ref->{titlesup}){
+	    $title = "$title : ".$fields_ref->{titlesup};
+	}
+	my $corporation = join(' ; ',@{$fields_ref->{corp}});
+	my $author      = join(' ; ',@{$fields_ref->{authors}});
+	my $issn        = $fields_ref->{issn};
+	my $isbn        = $fields_ref->{isbn};
+
+	my @placepub = ();
+
+	push @placepub, $fields_ref->{place} if ($fields_ref->{place});
+	push @placepub, $fields_ref->{publisher} if ($fields_ref->{publisher});
+	my $publisher   = join(' : ',@placepub);
+
+	my $source      = $fields_ref->{series};
+	my $year        = $fields_ref->{year};
+	
 	if (!$pages){
 	    return $self->print_warning("Bitte geben Sie die gewünschten Seiten an.");
 	}
@@ -268,11 +274,6 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'scalar',
         },
-        title => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
         label => {
             default  => '',
             encoding => 'utf8',
@@ -308,11 +309,6 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'scalar',
         },
-        source => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
         articleauthor => {
             default  => '',
             encoding => 'utf8',
@@ -338,22 +334,7 @@ sub get_input_definition {
             encoding => 'utf8',
             type     => 'scalar',
         },
-        year => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
         realname => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
-        isbn => {
-            default  => '',
-            encoding => 'utf8',
-            type     => 'scalar',
-        },
-        issn => {
             default  => '',
             encoding => 'utf8',
             type     => 'scalar',

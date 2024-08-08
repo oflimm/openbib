@@ -10,7 +10,7 @@
      <input type="hidden" name="unit"        value="[% unit %]" />
      <input type="hidden" name="titleid"     value="[% titleid %]" />
      <input type="hidden" name="validtarget" value="[% validtarget %]" />
-     <input type="hidden" name="title"       value="[% title %]" />
+     <input type="hidden" name="title"       value="[% title.replace('"','\"') %]" />
 
 <legend class="mt-2">[% msg.maketext("Titelangaben") %]</legend>
 

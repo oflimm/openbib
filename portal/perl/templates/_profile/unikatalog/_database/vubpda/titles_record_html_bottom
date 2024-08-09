@@ -5,7 +5,7 @@
    IF user.ID;
      external_info = user.get_external_info(user.ID);
    END;
-   
+
    price = normdata.${"T4211"}.first.content;
 
 -%]
@@ -13,21 +13,24 @@
 <div class="alert alert-info mb-5">
 [% IF NOT user.ID %]
 <p>
-[% msg.maketext("Dieser Titel ist über den Buchhandel lieferbar: Sie bestellen,  wir bezahlen und liefern! Bitte melden Sie sich mit Ihrer Benutzernummer an.") %]
+[% msg.maketext("Dieses Buch befindet sich noch nicht in unserem Bestand. Sie bestellen, wir bezahlen und liefern, bevorzugt als E-Book.") %]
 </p>
 <p>
-[% msg.maketext("Eine Neuanschaffung ist möglich, wenn Ihr Benutzerausweis mit folgenden Buchstaben beginnet: A, B, C, K, R, S, T, V und W.") %]
+[% msg.maketext("Die Lieferzeit ausländischer Printmedien beträgt durchschnittlich 3 Wochen. Wenn Sie bestellen möchten, melden Sie sich bitte mit Ihrer Bibliotheksausweisnummer an.") %]
 </p>
 [% redirect_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}.html?l=${lang}" %]
  
 <a class="btn btn-primary mt-2 mb-1" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=15;redirect_to=[% redirect_url | uri %]" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];authenticatorid=15;redirect_to=[% redirect_url | uri %]">[% msg.maketext("Anmelden") %]</a> 
+
 [% ELSIF NOT external_info.external_group.match('^[1-6]$') %]
 <p>
 [% msg.maketext("Ihre Benutzerkennung ist nicht dazu berechtigt eine Neunanschaffung über den Buchhandel zu tätigen.") %]
 </p>
-[% ELSIF price && price <= config.get('pda_limit_cent') %]
+[% ELSE %]
 <p>
-[% msg.maketext("Dieses Buch befindet sich noch nicht in unserem Bestand. Sie bestellen, wir bezahlen und liefern, bevorzugt als E-Book.") %]<br/>
+[% msg.maketext("Dieses Buch befindet sich noch nicht in unserem Bestand. Sie bestellen, wir bezahlen und liefern, bevorzugt als E-Book.") %]
+</p>
+<p>
 [% msg.maketext("Die Lieferzeit ausländischer Printmedien beträgt durchschnittlich 3 Wochen.") %]
 </p>
 
@@ -39,9 +42,5 @@
 
    <input type="submit" value="[% msg.maketext("Neuanschaffung") %]" class="btn btn-primary" />
 </form>
-[% ELSE %]
-<p>
-[% msg.maketext("Dieses Buch befindet sich noch nicht in unserem Bestand und kann wegen der hohen Kosten nicht angeschafft werden") %]
-</p>
 [% END %]
 </div>

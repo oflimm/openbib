@@ -22,11 +22,11 @@
 <div class="table-responsive">
 <table class="table table-striped ">
 <thead>
-<tr><th>[% msg.maketext('Id') %]</th><th>[% msg.maketext("Session-ID") %]</th><th>[% msg.maketext("Beginn") %]</th><th>[% msg.maketext("Benutzer") %]</th><th>[% msg.maketext("Initiale Suchen") %]</th></tr>
+<tr><th>[% msg.maketext('Id') %]</th><th>[% msg.maketext("Viewname") %]</th><th>[% msg.maketext("Session-ID") %]</th><th>[% msg.maketext("Beginn") %]</th><th>[% msg.maketext("Benutzer") %]</th><th>[% msg.maketext("Initiale Suchen") %]</th></tr>
 </thead>
 <tbody>
 [% FOREACH this_session IN sessions %]
-<tr><td>[% this_session.id %]</td><td><a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active/id/[% this_session.id %].html?l=[% lang %]">[% this_session.sessionid %]</a></td><td>[% this_session.createtime %]</td><td>[% this_session.username %]</td><td>[% this_session.numqueries %]</td></tr>
+<tr><td>[% this_session.id %]</td><td>[% this_session.viewname %]</td><td><a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/active/id/[% this_session.id %].html?l=[% lang %]">[% this_session.sessionid %]</a></td><td>[% this_session.createtime %]</td><td>[% this_session.username %]</td><td>[% this_session.numqueries %]</td></tr>
 [% END %]
 </tbody>
 </table>

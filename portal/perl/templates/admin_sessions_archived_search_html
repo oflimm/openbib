@@ -19,11 +19,11 @@
 <div class="table-responsive">
 <table class="table table-striped ">
 <thead>
-<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Session-ID") %]</th><th>[% msg.maketext("Beginn") %]</th></tr>
+<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Viewname") %]</th><th>[% msg.maketext("Session-ID") %]</th><th>[% msg.maketext("Beginn") %]</th></tr>
 </thead>
 <tbody>
 [% FOREACH thissession IN sessions %]
-<tr><td>[% thissession.id %]</td><td><a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/archived/id/[% thissession.id %].html?l=[% lang %]">[% thissession.sessionid %]</a></td><td>[% thissession.createtime %]</td></tr>
+<tr><td>[% thissession.id %]</td><td>[% thissession.viewname %]</td><td><a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %]/archived/id/[% thissession.id %].html?l=[% lang %]">[% thissession.sessionid %]</a></td><td>[% thissession.createtime %]</td></tr>
 [% END %]
 </tbody>
 </table>

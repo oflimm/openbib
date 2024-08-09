@@ -1826,6 +1826,7 @@ sub get_info_of_all_active_sessions {
     foreach my $item ($sessioninfos->all){
         my $id              = $item->id;
         my $singlesessionid = $item->sessionid;
+        my $viewname        = $item->viewname;
         my $createtime      = $item->createtime;
         my $username        = $item->username;
         my $numqueries      = $item->queries->count; #$self->get_schema->resultset('Query')->search({ 'sid.sessionid' => $singlesessionid }, { join => 'sid' })->count;
@@ -1836,6 +1837,7 @@ sub get_info_of_all_active_sessions {
 
         push @sessions, {
             id              => $id,
+            viewname        => $viewname,
             sessionid       => $singlesessionid,
             createtime      => $createtime,
             username        => $username,

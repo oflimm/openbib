@@ -1,0 +1,619 @@
+[%#-
+#######################################################################
+#
+# Templatename: titlist_item
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Einzelner Eintrag in einer Liste (Kurztitel)
+#
+#
+# Erhaelt neben Default-Objekten (config, session usw.)
+#
+# record
+# dbinfo 
+#
+#######################################################################
+-%]
+<!-- Anfang einzelner Treffer -->
+[%- PROCESS common/subtemplate name="titles_record_preprocess" -%]
+[%-
+     ebook_i18n      = msg.maketext("E-Book");
+     toc_i18n        = msg.maketext("Inhaltsverzeichnis");
+     popularity_i18n = msg.maketext("Popularität");
+     
+     item   = record.to_custom_field_scheme_1;
+     fields = record.get_fields;
+     
+     listid = record.listid;
+     all_locations = record.get_locations;
+
+     # Filter locations
+     locations = [];
+
+     is_licensed = 0;
+     is_free = 0;
+     
+     FOREACH loc IN all_locations ;
+       IF loc.match('^DE-38$') ;
+          locations.push(loc);
+       ELSIF loc.match('^DE-38-[0-9][0-9][0-9]') ;
+          locations.push(loc);
+         ELSIF loc.match('^freemedia') ;
+          is_free = 1;
+       ELSIF loc.match('^emedien') ;
+          is_licensed = 1;
+       ELSIF NOT loc.match('^DE-38-[a-zA-Z]');   
+            locations.push(loc);
+       END;
+     END;
+
+  # Interimsloesung: Fehlende Volltextlinks aus NZ-Publishing
+
+   nz_fulltext_links_from_fields = 0;
+   
+   IF nz_fulltext_links_from_fields && record.id.match('6441$') && fields.defined('T1945') && NOT fields.defined('T4120') ;
+
+   pakete = [];
+
+   IF item.defined('T0912') || item.defined('T0962');
+      FOREACH thisitem IN item.${'T0912'};
+         IF thisitem.defined('a');
+           pakete.push(thisitem.${'a'});
+	 END;
+      END;
+
+      FOREACH thisitem IN item.${'T0962'};
+         IF thisitem.defined('e');
+           pakete.push(thisitem.${'e'});
+        END;
+      END;
+   END;
+
+   paketstring = "xdfasdfasfd";
+
+   IF pakete ;
+     paketstring = pakete.join('; ');
+   END;
+
+   IF item.${'T1945'}.first.defined('e') ; # Static URL
+      static_url = item.${'T1945'}.first.${'e'};
+      online_access = 'f';
+      online_text = "Volltext";
+
+      IF paketstring.match('(ZDB-2-SWI|ZDB-2-SNA|ZDB-2-STI|ZDB-2-SGR|ZDB-2-SGRSpringer|ZDB-2-SEP|ZDB-2-SBE|ZDB-2-CMS|ZDB-2-PHA|ZDB-2-SMA|ZDB-2-MGE|ZDB-2-SZR|ZDB-2-BUM|ZDB-2-ECF|ZDB-2-SCS|ZDB-2-ESA|ZDB-5-WEB|ZDB-5-WMS|ZDB-5-WMW|ZDB-13-SOC|ZDB-14-DLO|ZDB-18-BEO|ZDB-18-BOH|ZDB-18-BST|ZDB-15-ACM|ZDB-16-Hanser-EBA|hbzebo_ebahanser|ZDB-18-Nomos-NRW|ZDB-18-Nomos-VDI-NRW|hbzebo_nrwnomos|ZDB-149-HCB|ZDB-162-Bloom-EBA|hbz_ebabloomsbury|ZDB-605-Preselect|hbzebo_preselect|ZDB-196-Meiner-EBA|hbzebo_ebameiner|ZDB-23-DGG|ZDB-98-IGB|ZDB-23-DGG-eba|ZDB-54-Duncker-EBA|hbzebo_ebaduncker|ZDB-2-BSP|ZDB-2-SBL|ZDB-2-BUM|ZDB-2-CMS|ZDB-2-SCS|ZDB-2-EES|ZDB-2-ECF|ZDB-2-EDA|ZDB-2-ENE|ZDB-2-ENG|ZDB-2-HTY|ZDB-2-INR|ZDB-2-LCR|ZDB-2-LCM|ZDB-2-SMA|ZDB-2-SME|ZDB-2-PHA|ZDB-2-POS|ZDB-2-CWD|ZDB-2-REP|ZDB-2-SLS|ZDB-41-UTB-EBA|ZDB-7-taylorfra-EBA|ZDB-71-Narr-EBA)');
+        online_access = 'y';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-2-SOB|ZDB-23-GOA)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-185-STD|ZDB-185-SDI)');
+        online_access = 'y';
+	online_text   = 'Dossier im Volltext';
+      ELSIF paketstring.match('(ZDB-101-VTB)');
+        online_access = 'y';
+	online_text   = 'Video';
+      END;
+      
+      fields.${'T4120'} = [{
+	  mult  = 1
+	  subfield = online_access
+	  content = static_url
+      }];
+
+      fields.${'T4400'} = [{
+	  mult  = 1
+	  subfield = ''
+	  content = 'online'
+      }];
+
+   ELSIF item.${'T1945'}.first.defined('a') ; # Dynamic URL rekonstruiert aus a
+      portfolio_id = item.${'T1945'}.first.${'a'};
+      resolver_url = "https://eu04.alma.exlibrisgroup.com/view/uresolver/49HBZ_UBK/openurl?u.ignore_date_coverage=true&portfolio_pid=${portfolio_id}&Force_direct=true";
+      online_access = 'f';
+      online_text = "Volltext";
+
+      IF paketstring.match('(ZDB-2-SWI|ZDB-2-SNA|ZDB-2-STI|ZDB-2-SGR|ZDB-2-SGRSpringer|ZDB-2-SEP|ZDB-2-SBE|ZDB-2-CMS|ZDB-2-PHA|ZDB-2-SMA|ZDB-2-MGE|ZDB-2-SZR|ZDB-2-BUM|ZDB-2-ECF|ZDB-2-SCS|ZDB-2-ESA|ZDB-5-WEB|ZDB-5-WMS|ZDB-5-WMW|ZDB-13-SOC|ZDB-14-DLO|ZDB-18-BEO|ZDB-18-BOH|ZDB-18-BST|ZDB-15-ACM|ZDB-16-Hanser-EBA|hbzebo_ebahanser|ZDB-18-Nomos-NRW|ZDB-18-Nomos-VDI-NRW|hbzebo_nrwnomos|ZDB-149-HCB|ZDB-162-Bloom-EBA|hbz_ebabloomsbury|ZDB-605-Preselect|hbzebo_preselect|ZDB-196-Meiner-EBA|hbzebo_ebameiner|ZDB-23-DGG|ZDB-98-IGB|ZDB-23-DGG-eba|ZDB-54-Duncker-EBA|hbzebo_ebaduncker|ZDB-2-BSP|ZDB-2-SBL|ZDB-2-BUM|ZDB-2-CMS|ZDB-2-SCS|ZDB-2-EES|ZDB-2-ECF|ZDB-2-EDA|ZDB-2-ENE|ZDB-2-ENG|ZDB-2-HTY|ZDB-2-INR|ZDB-2-LCR|ZDB-2-LCM|ZDB-2-SMA|ZDB-2-SME|ZDB-2-PHA|ZDB-2-POS|ZDB-2-CWD|ZDB-2-REP|ZDB-2-SLS|ZDB-41-UTB-EBA|ZDB-7-taylorfra-EBA|ZDB-71-Narr-EBA)');
+        online_access = 'y';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-2-SOB|ZDB-23-GOA)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-185-STD|ZDB-185-SDI)');
+        online_access = 'y';
+	online_text   = 'Dossier im Volltext';
+      ELSIF paketstring.match('(ZDB-101-VTB)');
+        online_access = 'y';
+	online_text   = 'Video';
+      END;
+      
+      fields.${'T4120'} = [{
+	  mult  = 1
+	  subfield = online_access
+	  content = resolver_url
+      }];
+
+      fields.${'T4400'} = [{
+	  mult  = 1
+	  subfield = ''
+	  content = 'online'
+      }];
+
+    END;
+  END;
+
+     # Keine Locations, dann Location aus Katalog
+     # E-Medien gehen vor
+     IF is_free ;
+        locations = ['freemedia'];
+     ELSIF is_licensed ;
+        locations = ['emedien'];
+     END;
+
+     super = "";
+     # 1. Ueberordnung?
+     IF item.${'T5005'}.first.content;
+        super = from_json(item.${'T5005'}.first.content);
+     END;
+
+     # Verfasser konstruieren
+     persons = [] ;
+
+     personslength = 0 ;
+     truncatepers  = 0 ;
+
+     # Personen
+     FOREACH part IN item.${'T0100'} ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         searchterm    = uri_escape(part.${'a'});
+         searchprefix  = config.get('searchfield').personstring.prefix;
+
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         persons.push(part.${'a'});
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+
+     FOREACH part IN item.${'T0700'} ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         searchterm    = uri_escape(part.${'a'});
+         searchprefix  = config.get('searchfield').personstring.prefix;
+
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         persons.push(part.${'a'});
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+
+     # Koerperschaften
+     FOREACH part IN item.${'T0110'}  ;
+       thiscontent = part.${'a'};
+       IF part.${'e'} ;
+          e = part.${'e'} ;
+          thiscontent = "${thiscontent} ${e}" ;
+       END ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         searchterm    = uri_escape(part.${'a'});
+         searchprefix  = config.get('searchfield').personstring.prefix;
+
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         persons.push(part.${'a'});
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+
+     FOREACH part IN item.${'T0111'}  ;
+       thiscontent = part.${'a'};
+       IF part.${'e'} ;
+          e = part.${'e'} ;
+          thiscontent = "${thiscontent} ${e}" ;
+       END ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         searchterm    = uri_escape(part.${'a'});
+         searchprefix  = config.get('searchfield').personstring.prefix;
+
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         persons.push(part.${'a'});
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+
+     FOREACH part IN item.${'T0710'}  ;
+       thiscontent = part.${'a'};
+       IF part.${'e'} ;
+          e = part.${'e'} ;
+          thiscontent = "${thiscontent} ${e}" ;
+       END ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         searchterm    = uri_escape(part.${'a'});
+         searchprefix  = config.get('searchfield').personstring.prefix;
+
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         persons.push(part.${'a'});
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+
+     person = persons.join(' ; ') ;
+     IF truncatepers ;
+       person = "$person [...]" ;
+     END ;
+
+     # Keine Person, dann aus Ueberordnung
+     IF super && NOT person ;
+       FOREACH part IN super.fields.${'0100'} ;
+         thislength = part.content.length ;
+         IF (thislength+personslength) < config.get('maxlength_person') ;
+           searchterm    = uri_escape(part.content);
+           searchprefix  = config.get('searchfield').personstring.prefix;
+
+           globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+           persons.push(part.content);
+           #persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+           personslength = personslength+thislength ;
+         ELSE ;
+           truncatepers = 1 ;
+         END ;
+       END ;
+       FOREACH part IN super.fields.${'0101'}  ;
+         thiscontent = part.content;
+         IF part.supplement ;
+            thiscontent = "${thiscontent} ${part.supplement}" ;
+         END ;
+         thislength = part.content.length ;
+         IF (thislength+personslength) < config.get('maxlength_person') ;
+           searchterm    = uri_escape(part.content);
+           searchprefix  = config.get('searchfield').personstring.prefix;
+
+           globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+           persons.push(part.content);
+           #persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+           personslength = personslength+thislength ;
+         ELSE ;
+           truncatepers = 1 ;
+         END ;
+       END ;
+
+       person = persons.join(' ; ') ;
+       IF truncatepers ;
+         person = "$person [...]" ;
+       END ;
+     END ;
+
+     # Sonst aus Titelfeld 245
+#     IF NOT person && item.${"T0245"}.first.${'c'};
+#       person = item.${"T0245"}.first.${'c'};
+#     END;
+
+     # Titel konstruieren
+     title = item.${"T0245"}.first.${'a'};
+
+     IF item.${"T0245"}.first.${'b'};
+       supplemental_title = item.${"T0245"}.first.${'b'};
+       title = "${title} : ${supplemental_title}";
+     END;
+     
+     # IF item.${'T0246'}.first.${'a'}; # AST
+     #     title = item.${'T0246'}.first.${'a'};
+     # END;
+
+     band        = item.${"T0245"}.first.${'n'};
+     bandtitel   = item.${"T0245"}.first.${'p'};     
+     gesamttitel = item.${"T0490"}.first.${'a'};
+
+     is_schriftenreihe = 0;
+     is_mehrbaendig    = 0;
+
+     IF band;
+       is_mehrbaendig = 1;
+     ELSIF gesamttitel;
+       is_schriftenreihe = 1;
+     END;
+
+     zaehlung = "";
+
+     # Zaehlung Anfang Titel
+     IF is_mehrbaendig;
+       IF band ;
+          zaehlung = band;
+	  IF zaehlung == title ;
+	     title = "";
+	  END;
+
+	  IF bandtitel && title ;	  
+	    title = "${title} / $bandtitel";
+	  ELSIF bandtitel ;
+	    title = "${bandtitel}";	  
+	  END ;
+
+          IF zaehlung == '[...]';
+            zaehlung = "";
+          END;
+
+          IF zaehlung ;
+            title = "${zaehlung}. ${title}";
+	  END;
+       END;     
+     END;
+
+     super_title = "";
+
+     # Uebergeordneter Titel in Klammern (super_title)
+     IF is_schriftenreihe;
+       IF gesamttitel;
+          super_title = gesamttitel;
+	  IF item.${'T0490'}.first.${'v'};
+            zaehlung = item.${'T0490'}.first.${'v'};
+	    super_title = "${super_title} ; ${zaehlung}";
+	  END;
+       ELSIF super;
+         IF super.fields.${'0245'}.first.${'a'} ;
+            super_title   = super.fields.${'0245'}.first.${'a'};
+         ELSIF super.fields.${'0490'}.first.${'a'} ;
+            super_title   = super.fields.${'0490'}.first.${'a'};
+         END;
+       END;
+     ELSIF is_mehrbaendig;
+       IF super;
+         IF super.fields.${'0245'}.first.${'a'} ;
+            super_title   = super.fields.${'0245'}.first.${'a'};
+	 END;
+       END;
+     END;
+
+     IF title && super_title ;
+        title = "${title} (${super_title})";
+     END;
+
+     # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?
+     IF NOT title ;
+       title = "Keine Titelangabe vorhanden";
+     END;
+ 
+     # Auflage konstruieren
+     edition = item.${'T0250'}.first.${'a'};
+
+     # Verlage konstruieren
+     publisher = item.${'T0260'}.first.${'b'};
+
+     IF NOT publisher && item.${'T0264'}.first.${'b'};
+        publisher = item.${'T0264'}.first.${'b'};
+     END;
+     
+     # Ejahr konstruieren
+     yearofpub = item.${'T0264'}.first.${'c'};
+
+     availability = fields.${'T4400'}.first.content;
+
+     # Signaturen konstruieren
+     signaturen = [];
+     FOREACH part IN item.${'X0014'};
+         sig = part.${'a'};
+         signaturen.push("${sig}");
+     END;
+     signatur = signaturen.sort.unique.join(' ; ');
+     isbn     = item.${"T0020"}.first.${'a'};
+     dbdesc   = dbinfo.get('dbnames').${record.database}.full;
+     dburl    = dbinfo.get('urls').${record.database};
+
+
+    titleinfos = [] ;
+
+# Testtitel
+#
+#    item.${'T4120'} = [
+#      {
+#         mult = 1
+#         subfield = 'y'
+#         content = "http://www.ub.uni-koeln.de/usbportal?service=dbinfo&id=5660"
+
+#}
+#    ];
+
+    # E-Book/Inhaltsverzeichnis vorhanden
+    fulltext  = fields.${'T4120'}.first.content ;
+    toc       = fields.${'T4110'}.first.content ;
+
+    # DBIS/EZB? Dann umleiten
+
+    IF fulltext.match('usbportal\?service=dbinfo&.*?id=\d+');
+       matchresult = fulltext.match('usbportal\?service=dbinfo&.*?id=(\d+)');
+       fulltext = "${path_prefix}/databases/id/dbis/titles/id/${matchresult.first}.html?l=${lang}";
+    ELSIF fulltext.match('usbportal\?service=ejinfo&id=\d+');
+       matchresult = fulltext.match('usbportal\?service=ejinfo&id=(zdb:\d+\-?\d)');
+       fulltext = "${path_prefix}/databases/id/ezb/titles/id/${matchresult.first}";
+    ELSIF fulltext.match('frontdoor.phtml\?id=\d+');
+       matchresult = fulltext.match('frontdoor.phtml\?id=(\d+)');
+       fulltext = "${path_prefix}/databases/id/ezb/titles/id/zdb:${matchresult.first}";
+    END;
+
+    fulltext_availability  = "";
+    fulltext_icon = config.get('ezb_unknown_img');
+    fulltext_desc  = "Volltext";
+
+    IF fields.${'T4120'}.first.subfield == "g";
+      fulltext_availability = "lawngreen";
+      fulltext_icon = config.get('ezb_green_img');
+      fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
+      availability = "online";
+    ELSIF fields.${'T4120'}.first.subfield == "y";
+      fulltext_availability = "yellow";
+      fulltext_icon = config.get('ezb_yellow_img');
+      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+      availability = "online";      
+    ELSIF fields.${'T4120'}.first.subfield == "l";
+      fulltext_icon = config.get('ezb_yellow_red_img');
+      fulltext_desc = msg.maketext("Volltext mit eingeschränkten Zugang");;
+      availability = "online";            
+    ELSIF fields.${'T4120'}.first.subfield == "f";
+      fulltext_icon = config.get('ezb_green_yellow_img');
+      fulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
+      availability = "online";      
+    ELSE ;
+      fulltext_icon = config.get('ezb_unknown_img');
+      fulltext_desc = msg.maketext("Unbekannter Zugang");;
+    END;
+
+    IF item.tags ;
+      tags = [];
+      FOREACH tag IN item.tags ;
+         searchterm    = tag.tag;
+         searchprefix  = config.get('searchfield').tag.prefix;
+
+         tags_url = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}" ;
+         tags.push("<a href=\"${tags_url}\">${tag.tag}</a>");
+      END ;
+      titleinfos.push("Tags: ${tags.join(' ')}") ;
+    END ;
+
+#    IF item.popularity ;
+#      titleinfos.push("${popularity_i18n}: ${item.popularity}") ;
+#    END ;
+
+    titleinfo = titleinfos.join(" | ");
+-%]
+    <div class="ob-item d-flex flex-row[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%# USE dumper;dumper.dump(fields)%]
+[% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]
+
+      <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
+[% IF 0 == 1 %]      
+      <div class="ob-thumbnail pt-1 ps-5 pe-5 me-0 d-none d-md-block">
+    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
+    [% coverapi = config.get('covers').vlb %]
+    [%# USE dumper;dumper.dump(coverapi)%]
+    <a href="[% coverapi.credits_url %]" target="_blank"><img src="[% path_prefix %]/[% config.get('connector_cover_loc') %]/vlb/[% isbn %]?size=s" title="[% coverapi.credits_text %]" /></a>[% ELSE %]&nbsp;[% END %]
+      </div>
+[% END %]      
+      <div class="ob-brieftitle ps-4">
+        <div class="ob-titleinfo ps-2 mt-4">
+[% IF NOT hide_hit %]	
+         <span class="ob-person">[% person %]</span>
+	 <strong><span class="ob-title"><a href="[% detail_url %]">[% title %]</a></span></strong>
+[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>
+[% ELSE %]
+         <strong><span class="ob-title">[% hide_hit_msg %]</span></strong>
+[% END %]
+[% IF multiple_dbs == 1 %]
+         <br /><i class="fas fa-map-marker-alt"></i>
+[%-  IF locations.size >= 1 -%]
+[%      IF locations.size == 1 %]
+         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].html?l=[% lang %]">[% locinfo.identifier.${locations.first}.description %]</a>
+[%      ELSIF locations.size > 1 %]
+         [% msg.maketext('Verschiedene Standorte') %]
+[%      END %]
+[%-  ELSE %]
+[%-   IF dburl -%]
+[%-     IF dbinfo.get('locationid').${record.database} %]
+          <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">
+[%-     ELSE -%]
+          <a href="[% dburl %]" target="_blank">
+[%-     END -%]
+[%    END %]
+[%    dbdesc | truncate(config.get('maxlength_dbname')) %][% IF dburl %]</a>[% END %]
+[%   END %]
+&nbsp;[%- IF titleinfo -%][ [% titleinfo %] ][%- END -%]
+[% ELSE %]
+[%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
+[% END %]
+
+[% IF record.get_date %]<br /><i class="far fa-calendar-alt"></i> [% msg.maketext("hinzugefügt") %] [% record.get_date.replace('\.\d+$','') %][% END %]
+
+        </div> <!-- end: titleinfo -->
+        <div class="ob-titlemark ps-2 d-flex d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]
+        </div>
+
+	<div class="ps-2 d-flex">
+          <div class="d-flex ob-titleactions">
+[% IF record.id && record.database %]
+            <div class="pe-1">
+              <a class="btn btn-primary pe-2" href="[% IF NOT hide_detail && NOT hide_hit %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]">[% IF hide_detail %]<i class="fas fa-ban"></i>[% ELSE %]<i class="fas fa-eye"></i>[% END %] <span>Details</span></a>
+            </div>
+[% IF NOT with_cartitems_delete && NOT hide_hit %]
+	    <div class="pe-1">
+              <a  class="btn btn-primary pe-2" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span>[% msg.maketext("Merken") %]</span></a>
+	    </div>
+[% END %]
+
+[% IF fulltext %]
+	    <div class="pe-1">	    
+              <a class="btn btn-primary pe-2" aria-described-by="[% msg.maketext("Volltext aufrufen") %]" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span>[% msg.maketext("Volltext") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% msg.maketext("Volltext-Icon") %]"/></a>
+	    </div>
+[% END %]
+
+[% IF toc %]
+	    <div class="pe-1">	    
+              <a class="btn btn-primary pe-2" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span>[% msg.maketext("Inhaltsverzeichnis") %]</span></a>
+	    </div>
+[% END %]
+
+[% IF 0 == 1 && NOT with_cartitems_delete && NOT hide_hit %]
+	    <div class="pe-1">
+	      <a class="btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><i class="fas fa-share-alt"></i> <span>BibSonomy</span></a>
+	    </div>       
+[% END %]
+
+[% END # id / database%]
+
+
+[% IF tagname %]
+	    <div class="pe-1">	    
+              <a class="btn btn-primary text-nowrap" href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]"><i class="fas fa-search pe-1"></i>[% tagname %]</a>
+	    </div>
+[% END %]
+	
+[% IF user_owns_litlist %]
+	    <div class="pe-1">
+	      <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Titel aus Liste löschen") %]" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><i class="fas fa-trash"></i> <span>[% msg.maketext("Löschen") %]</span></a>
+	    </div>
+[% END %]
+[% IF parameter.private_tags %]
+	    <div class="pe-1">
+	      <a class="ob-collection btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Tag aus Titel entfernen") %]" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.get_encoded_id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><i class="fas fa-trash"></i> <span>[% msg.maketext("Löschen") %]</span></a>
+	    </div>
+[% END %]
+[% IF with_cartitems_delete %]
+	    <div class="pe-1"><a class="btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('cartitems_loc') %]/id/[% record.listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><i class="fas fa-trash"></i> <span class="d-none d-sm-inline">[% msg.maketext("Löschen") %]</span></a>
+	    </div>
+[% END %]
+          </div><!-- end ob-titleactions -->
+[% IF record_exists && record.id && record.database %]	  
+ <div class="ms-auto ob-availability" [% IF availability != "online" %]data-catalog="[% record.database %]" data-id="[% record.get_encoded_id %]"[% END %]>[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 me-1 pe-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="ps-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% ELSIF NOT alma_disable_listitem_status %]<span id="availability_[% record.database %]_[% record.get_encoded_id %]"></span>[% END %]
+	   </div>
+[% END # record_exists %]
+
+	</div><!-- end: flex -->
+	
+    </div><!-- end: ob-brieftitle -->
+</div><!-- end: ob-item -->
+<!-- Ende einzelner Treffer -->

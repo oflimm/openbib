@@ -330,6 +330,7 @@
        desc: 'Kartellrecht'
        is_empty: 1
     'HW':
+       heading: 'Steuerrecht und Finanzen'
        desc: 'Steuerrecht und Finanzen'
     'JA':
        desc: 'Arbeitsrecht u. Beamtenrecht'

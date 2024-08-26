@@ -1,0 +1,122 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+
+[%- PROCESS common/subtemplate name="local_config" -%] 
+
+<style>
+[data-bs-toggle="collapse"] {
+  cursor: pointer;
+}
+
+//@media screen and (min-width:768px) { #ob-sidebar { display: block!important;visibility:visible!important; } }
+
+</style>
+
+<div class="ps-2 mt-2" id="ob-searchresult_tabs"><!-- Begin ob-searchresult_tabs -->
+  
+  <!-- AKTUELL [% current_profile %] - BOOKS [% searchprofileid_of_books %] - ARTICLES [% searchprofileid_of_articles %]  -->
+
+    <div id="spinner" class="d-flex justify-content-center htmx-indicator spinner-large">
+      <img src="/images/openbib/common/logo-usb.png" class="uzk-spinner" alt="[% msg.maketext("Lade-Animation mit USB Logo") %]"/>
+    </div>
+
+<!-- See: https://loading.io/css/ CC0 -->
+    <style>
+
+
+.lds-dual-ring {
+  display: inline-block;
+}
+
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;  
+  border-radius: 50%;
+  border: 6px solid #000;
+  border-color: #000 transparent #000 transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/*
+.spinner-large {
+	 position: absolute !important;
+         width: 100%;
+	 height: 100%;
+}
+*/
+
+.spinner-large {
+	 position: fixed !important;
+	 top: 0px;
+	 width: 100vw!important;
+	 height:100%;
+}
+
+.spinner-small {
+	 position: relative;
+         width: 80px;
+	 height: 80px;
+}
+
+.htmx-indicator {
+         display: block;  
+         background-color: #eee;
+	 z-index: -999 !important;
+
+         opacity:0;
+         transition: opacity 500ms ease-in;
+	
+}
+
+.htmx-request.htmx-indicator{
+        z-index: 10000 !important;
+        opacity:0.8;
+}
+
+@keyframes uzk-spinner {
+    from { transform: rotate(0deg) }
+    to { transform: rotate(360deg) }
+}
+
+.uzk-spinner {
+    opacity: 1;
+    margin-top: 200px;
+    width: 100px;
+    height: 100px;
+    animation-name: uzk-spinner;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    /* linear | ease | ease-in | ease-out | ease-in-out */
+    animation-timing-function: linear;
+}
+
+    </style>
+
+    <div id="ob-searchresult_tab_books" class="row flex-md-row">
+[% PROCESS common/subtemplate name="search_title_combined_include" %]
+    </div>
+
+  
+</div><!-- End ob-searchresult_tabs -->

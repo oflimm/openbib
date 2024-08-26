@@ -17,6 +17,7 @@
    IF qopts.get_option('srt') && NOT qopts.get_option('srt').match('_') && qopts.get_option('srto') ;
      session_sort = "${qopts.get_option('srt')}_${qopts.get_option('srto')}";
    END;
+
 -%]
 
 <div class="jumbotron jumbotron-fluid mb-0 landing-page-img">
@@ -50,13 +51,13 @@
         <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-indicator=".spinner-border" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">
           <i class="fas fa-search-plus"></i> [% msg.maketext("Erweiterte Suche") %]
         </a>
-        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% view %]/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">
+        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% view2db.${view} %]/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">
           <i class="fas fa-list"></i> [% msg.maketext("Register") %]
         </a>
-        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% view %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">
+        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% view2db.${view} %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">
           <i class="fas fa-cloud"></i> [% msg.maketext("Wortwolken") %]
         </a>
-        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% view %]/[% config.get('titles_loc') %].html?l=[% lang %]">
+        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% view2db.${view} %]/[% config.get('titles_loc') %].html?l=[% lang %]">
           <i class="fas fa-th-list"></i> [% msg.maketext("Alle Titel") %]
         </a>
       </div>

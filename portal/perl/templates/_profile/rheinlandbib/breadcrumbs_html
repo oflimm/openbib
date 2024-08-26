@@ -17,8 +17,8 @@
 <div class="ob-breadcrumb bg-white">
 <ol class="list-group list-group-horizontal">
    <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
-   <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% view %]/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">[% msg.maketext("Register") %]</a></li>
-   <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% view %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">[% msg.maketext("Wortwolken") %]</a></li>
+   <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% view2db.${view} %]/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">[% msg.maketext("Register") %]</a></li>
+   <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% view2db.${view} %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">[% msg.maketext("Wortwolken") %]</a></li>
 
 [% IF layout_param.representations %]
 <li class="ob-representation list-group-item ms-auto d-none d-md-block">

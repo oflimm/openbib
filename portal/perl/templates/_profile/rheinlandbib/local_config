@@ -1,10 +1,44 @@
 [%-
 
-
    view2desc = {
+     altenberg = 'Altenberg'
      bruehl = 'Brühl'
+     gaesdonck = 'Gaesdonck'
+     geistingen = 'Geistingen'
+     gleuel = 'Gleuel'
+     grevenbroich = 'Grevenbroich'
+     hennef = 'Hennef'
+     herzogenrath = 'Herzogenrath'
+     juechen = 'Jüchen'
+     kempen = 'Kempen'
+     kevelaer = 'Kevelaer'
+     olgkoeln = 'OLG Köln'
+     koenigswinter = 'Königswinter'
+     moenchengladbach = 'Mönchengladbach'
+     wickrath = 'Wickrath'
+     xanten = 'Xanten'
+     zuelpich = 'Zülpich'
    };
 
+   view2db = {
+     altenberg = 'altenberg'
+     bruehl = 'bruehl'
+     gaesdonck = 'gdonck'
+     geistingen = 'geistingen'
+     gleuel = 'gleuel'
+     grevenbroich = 'gbroich'
+     hennef = 'hennef'
+     herzogenrath = 'herzogenrath'
+     juechen = 'juechen'
+     kempen = 'kempen'
+     kevelaer = 'kevelaer'
+     moenchengladbach = 'franzmg'
+     olgkoeln = 'olgkoeln'
+     koenigswinter = 'kwinter'
+     wickrath = 'wickrath'
+     xanten = 'xanten'
+     zuelpich = 'zuelpich'
+   };
 
    cms_links = {
     anmeldung        = "https://ub.uni-koeln.de/formulare/selbstregistrierung"

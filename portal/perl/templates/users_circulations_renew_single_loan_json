@@ -1,0 +1,30 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_circulations_renew_single_loan_json
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# JSON Status bei erfolgreicher Verlaengerung
+#
+#######################################################################
+-%]
+[%-
+
+ renew_single_loan.loanid = loanid
+ renew_single_loan.userid = userid
+ 
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+     success => 1
+     renew_single_loan = renew_single_loan
+ };
+
+  to_json(this_json_output);
+
+-%]

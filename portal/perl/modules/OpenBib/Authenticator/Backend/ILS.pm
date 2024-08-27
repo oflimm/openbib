@@ -89,7 +89,7 @@ sub authenticate {
         {
             select => ['id', 'login_failure','status'],
             as     => ['thisid','thislogin_failure','thisstatus'],
-	    order_by => ['viewid asc'],
+	    order_by => ['id asc'],
         }
             
     )->first;
@@ -138,26 +138,26 @@ sub authenticate {
     
     $logger->debug("Authentication via ILS successful");
     
-    # Gegebenenfalls Benutzer lokal eintragen
-    $logger->debug("Save new user");
-
     # Eintragen, wenn noch nicht existent
     # OLWS-Kennungen werden NICHT an einen View gebunden, damit mit der gleichen Kennung verschiedene lokale Bibliothekssysteme genutzt werden koennen - spezifisch fuer die Universitaet zu Koeln
-    if (!$user->user_exists_in_view({ username => $username, authenticatorid => $self->get('id'), viewid => undef })) {
+    unless ($thisuser) {
+	# Gegebenenfalls Benutzer lokal eintragen
+	$logger->debug("Save new user");
+	
 	# Neuen Satz eintragen
 	$userid = $user->add({
 	    username        => $username,
 	    hashed_password => undef,
-	    authenticatorid => $self->get('id'),
+	    authenticatorid => $self->{id},
 	    viewid          => undef,
 	    token           => undef,
 			     });
 	
-	$logger->debug("User added with new id $userid");
+	$logger->debug("User $username added to authenticator ".$self->{id}." with new id $userid");
     }
     
     # Benuzerinformationen temporaer eintragen
-    $user->set_private_info($username,$result_ref->{userinfo});
+    $user->set_private_info($userid,$result_ref->{userinfo});
     
     #$logger->debug("Updated private user info");
 

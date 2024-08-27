@@ -122,12 +122,21 @@ sub authenticate {
     # OLWS-Kennungen werden NICHT an einen View gebunden, damit mit der gleichen Kennung verschiedene lokale Bibliothekssysteme genutzt werden koennen - spezifisch fuer die Universitaet zu Koeln
     if (!$user->user_exists_in_view({ username => $username, authenticatorid => $self->get('id'), viewid => undef })) {
 	# Neuen Satz eintragen
-	$userid = $user->add({
+
+	my $userinfo_ref = {
 	    username        => $username,
-	    hashed_password => undef,
 	    authenticatorid => $self->get('id'),
 	    viewid          => undef,
-			     });
+	};
+
+	if ($config->get('cache_external_password_for_ugc_migration')){
+	    $userinfo_ref->{'password'} = $password;
+	}
+	else {
+	    $userinfo_ref->{'hashed_password'} = undef;
+	}
+
+	$userid = $user->add($userinfo_ref);
 	
 	$logger->debug("User added with new id $userid");
     }
@@ -153,7 +162,7 @@ sub authenticate {
     }
     
     # Benuzerinformationen eintragen
-    $user->set_private_info($username,\%userinfo);
+    $user->set_private_info($userid,\%userinfo);
     
     $logger->debug("Updated private user info");
 

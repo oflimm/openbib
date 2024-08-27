@@ -5867,7 +5867,7 @@ sub delete_private_info {
 }
 
 sub set_private_info {
-    my ($self,$username,$userinfo_ref)=@_;
+    my ($self,$userid,$userinfo_ref)=@_;
     
     # Log4perl logger erzeugen
   
@@ -5879,7 +5879,7 @@ sub set_private_info {
     
     $self->get_schema->resultset('Userinfo')->single(
         {
-            id => $self->get_userid_for_username($username),
+            id => $userid,
         }
     )->update(
         {

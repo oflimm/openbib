@@ -796,7 +796,7 @@ FOREACH field IN normdata;
             # Zur Auswertung merken
 	    IF thistitle && thisid && thismark ;
 	      thismark = thismark.replace('^no:','');
-	      thismarks = thismark.split(' : ');
+	      thismarks = thismark.split(' : ').unique;
 	      FOREACH thismark IN thismarks ;
                  binding_units.push({ titlelink = content, titleid = thisid, mediaid = thismark });
               END;

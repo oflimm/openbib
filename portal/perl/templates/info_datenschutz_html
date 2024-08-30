@@ -55,7 +55,7 @@ Web-Server im Backend verteilt, die sie beantworten.</p>
 <h4>Lastverteilung</h4>
 
 <p>Um den Betrieb des Lastverteilers sicher zu stellen, werden in
-seinen Protokolldateien <b>f&uuml;r die Dauer von 7 Tage</b> die von Ihrem
+seinen Protokolldateien <b>f&uuml;r die Dauer von 7 Tagen</b> die von Ihrem
 Webbrowser gelieferten Informationen gespeichert. Durch eine Analyse der Anfragen pro IP-Adresse und der zugeh&ouml;rigen Subnetze werden u.a. Angriffe auf die Recherche-Infrastruktur (z.B. geziele Denial of Service Attacken oder Hackversuche) erkannt und Abwehrma&szlig;nahmen ergriffen.</p>
 
 <p>Konkret werden folgende Informationen für die Dauer

@@ -55,13 +55,10 @@ Web-Server im Backend verteilt, die sie beantworten.</p>
 <h4>Lastverteilung</h4>
 
 <p>Um den Betrieb des Lastverteilers sicher zu stellen, werden in
-seinen Protokolldateien nur dann die von Ihrem Webbrowser gelieferten
-Informationen gespeichert, wenn es zu einem generellen Fehler bei der
-Bearbeitung Ihrer Anfrage in unserer Infrastruktur kommt. <b>Es werden
-ausdr&uuml;cklich <i>keine</i> Daten im normalen Regelbetrieb in
-Protokolldateien des Lastverteilers gespeichert</b>.</p>
+seinen Protokolldateien <b>f&uuml;r die Dauer von 7 Tage</b> die von Ihrem
+Webbrowser gelieferten Informationen gespeichert. Durch eine Analyse der Anfragen pro IP-Adresse und der zugeh&ouml;rigen Subnetze werden u.a. Angriffe auf die Recherche-Infrastruktur (z.B. geziele Denial of Service Attacken oder Hackversuche) erkannt und Abwehrma&szlig;nahmen ergriffen.</p>
 
-<p>Im internen Fehlerfall werden folgende Informationen für die Dauer
+<p>Konkret werden folgende Informationen für die Dauer
 von 7 Tagen gespeichert und danach automatisch gelöscht:</p>
 
 <ul>
@@ -73,18 +70,17 @@ von 7 Tagen gespeichert und danach automatisch gelöscht:</p>
 <li>Zeitdauern der Zugriffe (z.B. 10/0/30/69/109)</li>
 <li>HTTP Status-Code (z.B. 200)</li>
 <li>&Uuml;bertragene Bytes (z.B. 2750)</li>
-<li>Empfangenes und zur&uuml;ckgesendetes Cookie</li>
+<li>Aufgerufener Hostname und User-Agent aus dem Header</li>
 <li>Terminierungsstatus</li>
 <li>Informationen zum Verbundungsstatus (z.B. 1/1/1/1/0)</li>
 <li>Informationen zur Server und Backend Queue (z.B. 0/0)</li>
-<li>Anfrage Header (z.B. {haproxy.1wt.eu}) und Ergebnis Header</li>
 <li>HTTP Anfrage (z.B. "GET /index.html HTTP/1.1")</li>
 </ul>
 
 <p>Rechtsgrundlage für die vorübergehende Speicherung der Daten und
 der Logfiles ist Art. 6 Abs. 1 lit. f DSGVO, denn es besteht ein
 berechtigtes Interesse der Universität zu Köln zur Erkennung und
-Beseitigung von Störungen.</p>
+Beseitigung von Angriffen und Störungen.</p>
 
 <h4>Backend-Webserver</h4>
 

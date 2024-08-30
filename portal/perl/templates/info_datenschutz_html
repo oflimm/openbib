@@ -251,5 +251,6 @@ Mitarbeiter der jeweiligen Bibliothek vor Ort möglich.</p>
 <p>Solange die Kennung eines Nutzers im Bibliothekssystem nicht
 gelöscht wurde, kann sich ein Nutzer - auch nach Löschung seiner Daten
 in der USB Nutzerdatenbank - weiterhin an diesem Portal anmelden. Es
-wird bei der Anmeldung dann automatisch ein neuer Eintrag in der USB
-Nutzerdatenbank mit einer anderen lokalen Nutzer-ID erzeugt.</p>
+wird bei der n&auml;chsten Anmeldung dann automatisch ein neuer Eintrag in der
+Nutzerdatenbank der USB Recherche-Infrastruktur mit einer anderen
+lokalen Nutzer-ID erzeugt.</p>

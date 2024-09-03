@@ -40,17 +40,18 @@ use Getopt::Long;
 use JSON::XS;
 use Encode qw /decode_utf8/;
 
-my ($inputdir,$idmappingfile);
+our ($inputdir,$lang);
 
 &GetOptions(
-	    "inputdir=s"           => \$inputdir,
-	    );
+    "inputdir=s" => \$inputdir,
+    "lang=s"     => \$lang,
+    );
 
 if (!$inputdir){
     print << "HELP";
 kartenkatalog2meta.pl - Aufrufsyntax
 
-    kartenkatalog2meta.pl --inputdir=xxx
+    kartenkatalog2meta.pl --inputdir=xxx --lang=deu+heb
 
     WICHTIG: Es muss der Absolute Pfad als inputdir uebergeben werden beginnend mit /
 HELP
@@ -59,7 +60,7 @@ exit;
 
 my $mediatype_ref = {};
 open (TITLE,     ,"| gzip > meta.title.gz");
-binmode(TITLE);
+$| = 1;
 
 sub process_file {
     return unless ($File::Find::dir=~/normal/);
@@ -80,13 +81,13 @@ sub process_file {
 
     $title_ref->{id} = $id;
 
-    my $cmd = "/usr/bin/tesseract -l deu $File::Find::name stdout|";
+    my $cmd = "/usr/bin/tesseract -l $lang $File::Find::name stdout|";
 
     print "Executing $cmd\n";
 
     my $current_dir = `pwd`;
     
-    open(TESS, "/usr/bin/tesseract $File::Find::name stdout -l deu|");
+    open(TESS, "/usr/bin/tesseract -l $lang $File::Find::name stdout|");
 
     my $ocrtext = "";
 

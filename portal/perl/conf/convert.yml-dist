@@ -1589,26 +1589,40 @@ convtab:
             'freesearch': 1
           facet:
             'litlist': 1
-      '4301':
-        'a': # erfasst
-          index:
-            'language': 1
-            'languagestring': 1
+      '0020':
+        'a': # ISBN, ISBN Sekundaerform      
+          'index':
+            'isbn': 1
             'freesearch': 1
-          facet:
-            'language': 1
-        'e': # angereichert
-          index:
-            'language': 1
-            'languagestring': 1
+          'collapse':
+            'isbn': 1
+        'z': # ISBN falsch      
+          'index':
+            'isbn': 1
             'freesearch': 1
-          facet:
-            'language': 1
+      '0022':
+        'a': # ISSN
+          index:
+            'issn': 1
+            'freesearch': 1
+        'z': # ISSN falsch
+          index:
+            'issn': 1
+            'freesearch': 1
+      '0024':
+        'a': # ISMN ala ISBN
+          index:
+            'isbn': 1
+            'freesearch': 1
       '0035':
         'a': # Andere IDs
           index:
             'id': 1
             'freesearch': 1
+      '0082': # DDC
+        'a':
+          index:
+            'classificationstring': 1
       '0100':
         'a':
           index:
@@ -1617,23 +1631,7 @@ convtab:
             'personstring': 1
           facet:
             'person': 1
-      '0700':
-        'a':
-          index:
-            'freesearch': 1
-            'person': 1
-            'personstring': 1
-          facet:
-            'person': 1
       '0110':
-        'a':
-          index:
-            'freesearch': 1
-            'corporatebody': 1
-            'corporatebodystring': 1
-          facet:
-            'corporatebody': 1
-      '0710':
         'a':
           index:
             'freesearch': 1
@@ -1716,56 +1714,27 @@ convtab:
       '0500': # Angabe zur Quelle
         'a':
           index:
+            'freesearch': 1
             'source': 1
       '0502': # Hochschulschriftenvermerk
         'a':
           index:
             'hss': 1
-      '0020':
-        'a': # ISBN, ISBN Sekundaerform      
-          'index':
-            'isbn': 1
-            'freesearch': 1
-          'collapse':
-            'isbn': 1
-        'z': # ISBN falsch      
-          'index':
-            'isbn': 1
-            'freesearch': 1
-      '0022':
-        'a': # ISSN
+      '0505': # Strukturierte Beschreibung von in Beziehung stehenden Manifestationen
+        't':
           index:
-            'issn': 1
             'freesearch': 1
-        'z': # ISSN falsch
-          index:
-            'issn': 1
-            'freesearch': 1
-      '0024':
-        'a': # ISMN ala ISBN
-          index:
-            'isbn': 1
-            'freesearch': 1
-      '0773': # HST Quelle
-        'a':
-          index:
-            'source': 1
-            'freesearch': 1
-        'w':  # ID der Ueberordnung
-          index:
-            'subid': 1
-      '0830': # Gesamttitel
-        'a':
-          index:
             'title': 1
-            'freesearch': 1
-        'w':  # ID der Ueberordnung
-          index:
-            'subid': 1
-      '0082': # DDC
+      '0520':         # Abstract
         'a':
           index:
-            'classificationstring': 1
+            'content': 1
+            'freesearch': 1
+      '0535': 
+        'g': # Signatur Sekundaerform
+          index:
+            'markstring': 1
+            'mark': 1
       '0600': # Schlagwort
         'a':
           index:
@@ -1838,16 +1807,30 @@ convtab:
             'subjectstring': 1
           facet:
             'subject': 1
-      '0520':         # Abstract
+      '0700':
         'a':
           index:
-            'content': 1
             'freesearch': 1
-      '0535': 
-        'g': # Signatur Sekundaerform
+            'person': 1
+            'personstring': 1
+          facet:
+            'person': 1
+      '0710':
+        'a':
           index:
-            'markstring': 1
-            'mark': 1
+            'freesearch': 1
+            'corporatebody': 1
+            'corporatebodystring': 1
+          facet:
+            'corporatebody': 1
+      '0773': # HST Quelle
+        'a':
+          index:
+            'source': 1
+            'freesearch': 1
+        'w':  # ID der Ueberordnung
+          index:
+            'subid': 1
       '0776':
         'z': # ISBN Sekundaerform
           'index':
@@ -1857,6 +1840,14 @@ convtab:
           'index':
             'issn': 1
             'freesearch': 1
+      '0830': # Gesamttitel
+        'a':
+          index:
+            'title': 1
+            'freesearch': 1
+        'w':  # ID der Ueberordnung
+          index:
+            'subid': 1
       '0852': 
         'h': # Grundsignatur
           index:
@@ -1894,15 +1885,6 @@ convtab:
         'b':
           index:
             'classificationstring': 1
-      '1942': 
-        'a': # GND Anreicherung: Verweisungsform Person
-          index:
-            'person': 1
-            'freesearch': 1
-        'b': # GND Anreicherung: Verweisungsform Koerperschaft
-          index:
-            'corporatebody': 1
-            'freesearch': 1
       '1001': # Alternative IDs
         'z':         # zdbid
           index:
@@ -1925,6 +1907,15 @@ convtab:
         'k':         # KMB
           index:
             'ft1004': 1
+      '1942': 
+        'a': # GND Anreicherung: Verweisungsform Person
+          index:
+            'person': 1
+            'freesearch': 1
+        'b': # GND Anreicherung: Verweisungsform Koerperschaft
+          index:
+            'corporatebody': 1
+            'freesearch': 1
       '4100':         # BK
         '':
           index:
@@ -2024,6 +2015,21 @@ convtab:
             'ft4300': 1
           facet:
             'subject': 1
+      '4301':
+        'a': # erfasst
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
+        'e': # angereichert
+          index:
+            'language': 1
+            'languagestring': 1
+            'freesearch': 1
+          facet:
+            'language': 1
       '4306':         # Provenienzen Sammlung
         'a':
           index:

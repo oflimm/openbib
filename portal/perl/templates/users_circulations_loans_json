@@ -13,6 +13,7 @@
 -%]
 [%-
 
+
  IF loans.error;
   this_json_output = {
      error = loans.error_description
@@ -20,16 +21,41 @@
   };
  ELSE ;
 
+   start_range     = page * 10 - 10 + 1;
+   end_range       = page * 10;
+   IF end_range >= loans.num_total ;
+      end_range       = loans.num_total;
+   END;
+
+   metainformation = {
+      hits        = loans.num_total
+      num         = 10
+      page        = page
+      start_range = start_range
+      end_range   = end_range
+   };
+
+   IF ( page + 1 ) * 10 - loans.num_total <= 10 ;
+     next_page = page + 1;
+     metainformation.next_page = {
+       link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('circulations_loc')}/id/loans.json?l=${lang};page=${next_page}"
+       }
+     };
+   END;
+
    this_json_output = {
      link = {
           rel = 'self'
           href = location
      }
+     meta = metainformation
      items = loans.items
      num_renewables = loans.num_renewables
      num_total = loans.num_total
    };
-
+      
  END;
 
   to_json(this_json_output);

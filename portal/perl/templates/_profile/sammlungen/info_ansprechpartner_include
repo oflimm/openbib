@@ -1,0 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_project_html
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+
+[% config.get_templatetext('info_ansprechpartner',view,lang) %]
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Ansprechpartner") %]</div>
+

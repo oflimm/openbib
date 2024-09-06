@@ -4,113 +4,234 @@ use warnings;
 use strict;
 
 use JSON::XS;
+use List::MoreUtils qw{uniq};
+use OpenBib::Catalog::Subset;
+use MLDBM qw(DB_File Storable);
+use Storable ();
+use DB_File;
 
-my $title_locationid_ref = {};
+unlink "./title_locationid.db";
+unlink "./title_has_parent.db";
 
-print STDERR "### instzs: Analysiere Exemplardaten\n";
+my %title_locationid             = ();
+my %title_locationid_with_parent = ();
+my %title_has_parent             = ();
 
-open(HOLDING,"meta.holding");
+tie %title_locationid,             'MLDBM', "./title_locationid.db"
+    or die "Could not tie title_locationid.\n";
 
-while (<HOLDING>){
-    my $holding_ref = decode_json $_;
+tie %title_has_parent,             'MLDBM', "./title_has_parent.db"
+    or die "Could not tie title_has_parent.\n";
 
-    my $titleid = $holding_ref->{fields}{'0004'}[0]{content};
-    
-    next unless ($titleid);
+print STDERR "### uni Analysiere Titeldaten und setze Standort-Markierungen\n";
 
-    foreach my $location_ref (@{$holding_ref->{fields}{'3330'}}){
-        if ($location_ref->{content} eq "587"){
-            push @{$title_locationid_ref->{$titleid}}, "DE-587";
-        }
-        elsif ($location_ref->{content} eq "101" || $location_ref->{content} eq "103" || $location_ref->{content} eq "105" || $location_ref->{content} eq "106" || $location_ref->{content} eq "120" || $location_ref->{content} eq "121" || $location_ref->{content} eq "128" || $location_ref->{content} eq "146" || $location_ref->{content} eq "157"){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-101";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-        }
-        elsif ($location_ref->{content} eq "123"){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-123";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-VERS";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-        }
-        elsif ($location_ref->{content} eq "132"){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-132";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-        }
-        elsif ($location_ref->{content} eq "418"){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-418";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-        }
-        elsif ($location_ref->{content} eq "426"){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-426";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-ARCH";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-        }        
-        elsif ($location_ref->{content} eq "427"){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-427";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-ARCH";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-        }        
-        elsif ($location_ref->{content} eq "429"){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-429";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-MEKUTH";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-        }
-        elsif ($location_ref->{content} eq "438"){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-438";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-ARCH";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-        }        
-        elsif ($location_ref->{content} eq "448"){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-448";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-MEKUTH";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-        }
-        elsif ($location_ref->{content} eq "450"){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-450";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-ASIEN";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-        }                
-        elsif ($location_ref->{content} eq "459"){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-459";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-ASIEN";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-        }                
-        elsif ($location_ref->{content} eq "38"){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38";
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-USBFB";
-	    foreach my $signatur_ref (@{$holding_ref->{fields}{'0014'}}){
-		if ($signatur_ref->{content} =~m/^EWA-LS\s*:?\s*Z/ || $signatur_ref->{content} =~m/^EWA Z/ || $signatur_ref->{content} =~m/^EWA-LS-Theke Z/ || $signatur_ref->{content} =~m/^HP-LS B/){
-		    push @{$title_locationid_ref->{$titleid}}, "DE-38-HWA";
-		}
-		
-	    }
-        }
-        elsif ($location_ref->{content} =~/^\d\d\d$/){
-            push @{$title_locationid_ref->{$titleid}}, "DE-38-".$location_ref->{content};
-        }
-        else {
-            push @{$title_locationid_ref->{$titleid}}, $location_ref->{content};
-        }
-
-    }
-}
-
-close(HOLDING);
-
-print STDERR "### instzs: Erweitere Titeldaten\n";
+#open(LOGGING,">location.log.new3");
 
 while (<>){
     my $title_ref = decode_json $_;
 
     my $titleid = $title_ref->{id};
+
+    my $element_ref = [];
+
+    # Items vorhanden? Dann analysieren
+    if (defined $title_ref->{fields}{'1944'}){
+	foreach my $location_ref (@{$title_ref->{fields}{'1944'}}){
+	    next unless ($location_ref->{subfield} eq "k");
+	    
+	    if ($location_ref->{content} =~m/^38$/){
+		push @{$element_ref}, "DE-38";
+	    }
+	    elsif ($location_ref->{content} =~m/^(38-MAG|38-AWM)/){
+		push @{$element_ref}, "DE-38";
+	    }
+	    elsif ($location_ref->{content} =~m/^38-HLS/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-HLS";		
+	    }
+	    elsif ($location_ref->{content} =~m/^38-HWA/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-HWA";
+	    }
+	    elsif ($location_ref->{content} =~m/^38-LBS$/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-LBS";
+	    }
+	    elsif ($location_ref->{content} =~m/^38-LS$/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-LS";
+	    }
+	    elsif ($location_ref->{content} =~m/^38-SAB$/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-SAB";
+	    }
+	    elsif ($location_ref->{content} =~m/^(38-\d\d\d)/){
+		push @{$element_ref}, alma2isil($1);
+	    }
+	    elsif ($location_ref->{content} =~m/^KN3-SCHLAD/){
+		push @{$element_ref}, "DE-Kn3-SL";
+		push @{$element_ref}, "DE-38-ZBKUNST";
+	    }
+	    elsif ($location_ref->{content} =~m/^KN3/){
+		push @{$element_ref}, alma2isil("Kn 3");	    
+	    }
+	    elsif ($location_ref->{content}){
+		push @{$element_ref}, "DE-".$location_ref->{content};
+	    }
+	}
+    }
     
-    my %have_locationid = ();
+    # Holdings
+    if (defined $title_ref->{fields}{'1943'}){
+	foreach my $location_ref (@{$title_ref->{fields}{'1943'}}){
+	    next unless ($location_ref->{subfield} eq "b");
+	    
+	    if ($location_ref->{content} =~m/^38$/){
+		push @{$element_ref}, "DE-38";
+	    }
+	    elsif ($location_ref->{content} =~m/^(38-MAG|38-AWM)/){
+		push @{$element_ref}, "DE-38";
+	    }
+	    elsif ($location_ref->{content} =~m/^38-HLS/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-HLS";		
+	    }
+	    elsif ($location_ref->{content} =~m/^38-HWA/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-HWA";
+	    }
+	    elsif ($location_ref->{content} =~m/^38-LBS$/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-LBS";
+	    }
+	    elsif ($location_ref->{content} =~m/^38-LS$/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-LS";
+	    }
+	    elsif ($location_ref->{content} =~m/^38-SAB$/){
+		push @{$element_ref}, "DE-38";
+		push @{$element_ref}, "DE-38-SAB";
+	    }
+	    elsif ($location_ref->{content} =~m/^(38-\d\d\d)/){
+		push @{$element_ref}, alma2isil($1);
+	    }
+	    elsif ($location_ref->{content} =~m/^KN3/){
+		push @{$element_ref}, alma2isil("Kn 3");	    
+	    }
+	    elsif ($location_ref->{content}){
+		push @{$element_ref}, "DE-".$location_ref->{content};
+	    }
+	}
+    }
 
-    foreach my $locationid (@{$title_locationid_ref->{$titleid}}){
-        next if (defined $have_locationid{$locationid});
-        push @{$title_ref->{'locations'}}, $locationid;
+    # Anpassung KMB und ZBKUNST
+    if (defined $title_ref->{fields}{'0980'}){
+        foreach my $item (@{$title_ref->{fields}{'0980'}}){
+	    # Thematische Markierung fuer ZB-Kunst
+	    if ($item->{subfield} eq "a" && $item->{content}=~/^zb-kunst$/){
+		push @{$element_ref}, "DE-38-ZBKUNST";
+	    }
+	    # Schwarze Lade der KMB ueber 980$h	(falls noch nicht ueber 1944$k)
+            if ($item->{subfield} eq "h" && $item->{content} eq "KMBEIG_88"){
+	    	push @{$element_ref}, "DE-Kn3-SL";
+	    	push @{$element_ref}, "DE-38-ZBKUNST";
+            }
+	    # KMB-Daten ohne Buchsaetze anhand 980$f	    
+	    if ($item->{subfield} eq "f" && ($item->{content}=~/^KMBABR_E[BKZ]A?$/ || $item->{content}=~/^KMBABR_yk$/)){
+		push @{$element_ref}, "DE-Kn3";
+		push @{$element_ref}, "DE-38-ZBKUNST";
+	    }
+        }
+    }
+    
+    if (@$element_ref){	
+        my $mult = 1;
+        foreach my $locationid (uniq @{$element_ref}){
+            push @{$title_ref->{'locations'}}, $locationid;
+        }
 
-        $have_locationid{$locationid} = 1;
     }
     
     print encode_json $title_ref, "\n";
 }
+
+#close(LOGGING);
+
+sub alma2isil {
+    my $content = shift;
+
+    my @isils = ();
+    
+    if ($content =~m/^38$/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38";
+    }
+    elsif ($content =~m/38-101/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-101";
+    }
+    elsif ($content =~m/38-123/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-123";
+    }
+    elsif ($content =~m/38-132/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-132";
+    }
+    elsif ($content =~m/^38-418/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-418";
+    }
+    elsif ($content =~m/^38-426/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-426";
+        push @isils, "DE-38-ARCH";
+    }
+    elsif ($content =~m/^38-427/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-427";
+        push @isils, "DE-38-ARCH";
+    }
+    elsif ($content =~m/38-429/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-429";
+        push @isils, "DE-38-MEKUTH";
+    }
+    elsif ($content =~m/38-448/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-448";
+        push @isils, "DE-38-MEKUTH";
+    }
+    elsif ($content =~m/^38-450/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-450";
+        push @isils, "DE-38-ASIEN";
+    }
+    elsif ($content =~m/^38-459/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-459";
+        push @isils, "DE-38-ASIEN";
+    }
+    elsif ($content =~m/38-507/){
+        push @isils, "DE-38-USBFB";
+        push @isils, "DE-38-507";
+    }
+    elsif ($content =~m/^Kn\s*3/){
+        push @isils, "DE-Kn3";
+        push @isils, "DE-38-ZBKUNST";
+    }
+    elsif ($content =~m/^38-(\d\d\d)/){
+        push @isils, "DE-38-$1";
+    }
+    else {
+	$content =~s/ //g;
+        $content =~s/\//-/g;
+        $content = "DE-$content";
+        push @isils, $content;
+    }
+
+#    print STDERR "ZSST ISILs: ",join(';',@isils),"\n" if (@isils);
+    
+    return @isils;
+}
+

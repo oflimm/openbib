@@ -4,9 +4,7 @@
 #
 #  alt_remote.pl
 #
-#  Holen via http und konvertieren in das Meta-Format
-#
-#  Dieses File ist (C) 2003-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -25,36 +23,22 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################   
-
-#####################################################################
-# Einladen der benoetigten Perl-Module 
 #####################################################################
 
-use DBI;
+#####################################################################
+# Einladen der benoetigten Perl-Module
+#####################################################################
+
 use OpenBib::Config;
 
-my $config = new OpenBib::Config();
+my $config = OpenBib::Config->new;
 
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
-my $confdir       = $config->{'base_dir'}."/conf";
-my $wgetexe       = "/usr/bin/wget -v ";
-my $mab2metaexe   = "$konvdir/mab2meta.pl";
 
 my $pool          = $ARGV[0];
 
-my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
+print "### $pool: Extrahiere die Daten aus uni\n";
 
-my $title_url     = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
-my $holding_url   = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->holdingfile;
-
-system("cd $pooldir/$pool; rm *.mab2* meta.* ");
-
-system("$wgetexe -N -P $pooldir/$pool/ $title_url ");
-system("$wgetexe -N -P $pooldir/$pool/ $holding_url ");
-
-system("cd $pooldir/$pool; $mab2metaexe --titlefile=".$dbinfo->titlefile." --holdingfile=".$dbinfo->holdingfile." --configfile=/opt/openbib/conf/$pool.yml");
-system("cd $pooldir/$pool; gzip meta.* ");
-
+system("$rootdir/filter/$pool/gen-subset.pl $pool");

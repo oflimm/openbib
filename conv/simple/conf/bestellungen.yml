@@ -53,7 +53,7 @@ exclude:
      - # ISBN
        field: 'isbn'
        databases:
-          - inst001
+          - uni
        locations:
           - 'DE-38-USBFB'
           - 'usbebooks'

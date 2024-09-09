@@ -325,7 +325,7 @@ END;
 <tr><th class="ob-field">[% msg.maketext("Volltext")%]</th><td>derzeit nicht verf&uuml;gbar (z.B. noch im Erwerbungsvorgang)</td></tr>
 [%- END -%]
 [% IF normdata.${"T0010"}.first.content %]
-<tr><th class="ob-field">KunstBibliothek Köln</th><td><a href="http://www.kubi-koeln.de/portal?query=inst001:[% normdata.${"T0010"}.first.content %]" target="_blank">Zum Titel</a></td></tr>
+<tr><th class="ob-field">KunstBibliothek Köln</th><td><a href="http://www.kubi-koeln.de/portal/search.html?id=[% normdata.${"T0010"}.first.content %];fdb=uni" target="_blank">Zum Titel</a></td></tr>
 [% END %]
 <tr><th class="ob-field">DFG-Viewer</th><td><a href="http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2Fservices.ub.uni-koeln.de%2Fcdm4%2Fmets_gateway.php%3FCISOROOT%3D%2Fkubibooks%26CISOPTR%3D[% record.id %]" target="_blank"><img src="/images/openbib/dfgviewer.png" alt="DFG-Viewer" name="DFG-Viewer" /></a></td></tr>
 </table>

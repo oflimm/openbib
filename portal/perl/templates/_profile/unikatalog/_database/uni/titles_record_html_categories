@@ -1323,7 +1323,7 @@ END;
     FOREACH item IN binding_units ;
        be_circulation = create_title_record({ database = 'uni', id = item.titleid}).load_circulation.get_circulation ;
        FOREACH thiscirc IN be_circulation;
-         IF thiscirc.barcode.match(item.mediaid) ;
+         IF thiscirc.barcode == item.mediaid ;
 	   new_remark = "Exemplar der Bindeeinheit: ${item.titlelink}";
 	   IF thiscirc.remark ;
 	     thiscirc.remark = "${thiscirc.remark}<br/>${new_remark}";

@@ -72,7 +72,7 @@
 
         <li class="nav-item">
 	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('info_loc') %]/rheinischeabteilung.html?l=[% lang %]">
-            <i class="fas fa-list"></i> [% msg.maketext("Bibliotheken") %]
+            <i class="fas fa-bullseye"></i> [% msg.maketext("Bibliotheken") %]
 	    
           </a>
 	</li>

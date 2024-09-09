@@ -71,21 +71,10 @@
       <ul class="list-unstyled components">
 
         <li class="nav-item">
-	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% view2db.${view} %]/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">
-            <i class="fas fa-list"></i> [% msg.maketext("Register") %]
+	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('info_loc') %]/rheinischeabteilung.html?l=[% lang %]">
+            <i class="fas fa-list"></i> [% msg.maketext("Bibliotheken") %]
 	    
           </a>
-	</li>
-        <li class="nav-item">
-	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% view2db.${view} %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">
-            <i class="fas fa-cloud"></i> [% msg.maketext("Wortwolken") %]
-	    
-          </a>
-	</li>
-	<li class="nav-item">
-        <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% view2db.${view} %]/[% config.get('titles_loc') %].html?l=[% lang %]">
-          <i class="fas fa-th-list"></i> [% msg.maketext("Alle Titel") %]
-        </a>
 	</li>
 	
         <li class="nav-item"><a class="nav-link text-black" href="[% path_prefix %]/[% config.get("cartitems_loc") %].html?l=[% lang %]"><i class="far fa-bookmark"></i>  [% msg.maketext("Merkliste") %]</a></li>

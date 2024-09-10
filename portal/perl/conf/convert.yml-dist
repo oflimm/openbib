@@ -1379,6 +1379,11 @@ convtab:
             'person': 1
             'personstring': 1
             'freesearch': 1
+        'e':
+          index:
+            'person': 1
+            'personstring': 1
+            'freesearch': 1
     inverted_person:
       '0010':         # GND
         '':
@@ -1857,6 +1862,16 @@ convtab:
           index:
             'markstring': 1
             'mark': 1
+      '0880': 
+        'a': # Andersschriftliche Darstellung (Ursprungsfeld a)
+          index:
+            'freesearch': 1
+        'b': # Andersschriftliche Darstellung (Ursprungsfeld b)
+          index:
+            'freesearch': 1
+        'c': # Andersschriftliche Darstellung (Ursprungsfeld c)
+          index:
+            'freesearch': 1
       '0980':         # Provenienzen (Sammlungskennzeichnungen, "Koelner Modell")
         's':
           index:

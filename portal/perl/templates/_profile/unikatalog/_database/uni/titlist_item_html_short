@@ -176,6 +176,9 @@
        linked_field      = part.${'6'}.match('^(...)').first;
        linked_field      = "T0${linked_field}";
        original_language = part.${'6'}.match('^.......(....)').first;
+       IF NOT original_language ;
+         original_language = part.${'6'}.match('^.......(..)').first;       
+       END;
    
        subfield_a   = part.${'a'};
        subfield_b   = part.${'b'}; 
@@ -226,7 +229,7 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         IF original_language;
+         IF original_language && original_language.length == 4;
 	    thiscontent = "${original_language} = ${thiscontent}";
 	 END;
 
@@ -252,7 +255,7 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         IF part.${'original_language'};
+         IF original_language && original_language.length == 4;
 	    thiscontent = "${original_language} = ${thiscontent}";
 	 END;
 
@@ -276,14 +279,14 @@
        END ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = uri_escape(part.${'a'});
+         searchterm    = uri_escape(thiscontent);
          searchprefix  = config.get('searchfield').personstring.prefix;
 
          NEXT IF person_done.${searchterm} == 1;
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         IF original_language;
+         IF original_language && original_language.length == 4;
 	    thiscontent = "${original_language} = ${thiscontent}";
 	 END;
 
@@ -306,12 +309,12 @@
        END ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = uri_escape(part.${'a'});
+         searchterm    = uri_escape(thiscontent);
          searchprefix  = config.get('searchfield').personstring.prefix;
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         IF original_language;
+         IF original_language && original_language.length == 4;
 	    thiscontent = "${original_language} = ${thiscontent}";
 	 END;
 
@@ -332,14 +335,18 @@
        END ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = uri_escape(part.${'a'});
+         searchterm    = uri_escape(thiscontent);
          searchprefix  = config.get('searchfield').personstring.prefix;
 
          NEXT IF person_done.${searchterm} == 1;
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push(part.${'a'});
+         IF original_language && original_language.length == 4;
+	    thiscontent = "${original_language} = ${thiscontent}";
+	 END;
+
+         persons.push(thiscontent);
          personslength = personslength+thislength ;
 
          person_done.${searchterm} = 1;
@@ -426,7 +433,9 @@
             original_supplemental_title = original_lang_fields.${original_language}.${"T0245"}.first.${'b'};
             original_title = "${original_title} : ${original_supplemental_title}";
           END;
-	  original_title = "${original_language} =  ${original_title}";
+	  IF original_language && original_language.length == 4;
+	    original_title = "${original_language} =  ${original_title}";
+	  END;
         END;
      END;
 
@@ -519,12 +528,16 @@
         IF original_lang_fields.${original_language}.${'T0260'};
           IF original_lang_fields.${original_language}.${'T0260'}.first.${'b'};
             original_publisher = original_lang_fields.${original_language}.${"T0260"}.first.${'b'};
-            original_publisher = "${original_language} = ${original_publisher}";
+	    IF original_language && original_language.length == 4;
+              original_publisher = "${original_language} = ${original_publisher}";
+	    END;
 	  END;
 	ELSIF original_lang_fields.${original_language}.${'T0264'};
 	  IF original_lang_fields.${original_language}.${'T0264'}.first.${'b'};
             original_publisher = original_lang_fields.${original_language}.${"T0264"}.first.${'b'};
-            original_publisher = "${original_language} = ${original_publisher}";
+            IF original_language && original_language.length == 4;	    
+              original_publisher = "${original_language} = ${original_publisher}";
+	    END;
 	  END;
 	END;
      END;
@@ -541,7 +554,9 @@
         IF original_lang_fields.${original_language}.${'T0264'};
           IF original_lang_fields.${original_language}.${'T0264'}.first.${'c'};
             original_yearofpub = original_lang_fields.${original_language}.${'T0264'}.first.${'c'};
-	    original_yearofpub = "${original_language} = ${original_yearofpub}";
+	    IF original_language && original_language.length == 4;
+	      original_yearofpub = "${original_language} = ${original_yearofpub}";
+	    END;
 	  END;
 	END;
      END;

@@ -166,6 +166,44 @@
         super = from_json(item.${'T5005'}.first.content);
      END;
 
+     # Anderssprachliche Darstellungen zuordnen
+
+     # Processing Anderschriftliche Darstellung aus 880
+
+     original_lang_fields = {};
+
+     FOREACH part IN item.${'T0880'} ;
+       linked_field      = part.${'6'}.match('^(...)').first;
+       linked_field      = "T0${linked_field}";
+       original_language = part.${'6'}.match('^.......(....)').first;
+   
+       subfield_a   = part.${'a'};
+       subfield_b   = part.${'b'}; 
+       subfield_c   = part.${'c'};  
+
+       IF linked_field  ;
+          original_lang_fields.${original_language}.${linked_field}.original_language = original_language;
+       END ;
+   
+       IF linked_field && subfield_a ;
+         original_lang_fields.${original_language}.${linked_field}.a = subfield_a;
+       END;
+
+       IF linked_field && subfield_b ;
+         original_lang_fields.${original_language}.${linked_field}.b = subfield_b;
+       END;
+
+       IF linked_field && subfield_c ;
+         original_lang_fields.${original_language}.${linked_field}.c = subfield_c;
+       END;
+     END;
+
+     FOREACH ori_lang IN original_lang_fields.keys ;
+        FOREACH field_no IN original_lang_fields.${ori_lang}.keys ;     
+          item.${field_no}.push(original_lang_fields.${ori_lang}.${field_no});
+	END;
+     END;
+
      # Verfasser konstruieren
      persons = [] ;
 
@@ -176,16 +214,23 @@
      
      # Personen
      FOREACH part IN item.${'T0100'} ;
-       thislength = part.content.length ;
+       thiscontent        = part.${'a'};
+       original_language  = part.${'original_language'};
+       
+       thislength = thiscontent.length ;
        IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = uri_escape(part.${'a'});
+         searchterm    = uri_escape(thiscontent);
          searchprefix  = config.get('searchfield').personstring.prefix;
 
          NEXT IF person_done.${searchterm} == 1;
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push(part.${'a'});
+         IF original_language;
+	    thiscontent = "${original_language} = ${thiscontent}";
+	 END;
+
+         persons.push(thiscontent);
          personslength = personslength+thislength ;
 
          person_done.${searchterm} = 1;
@@ -195,16 +240,23 @@
      END ;
 
      FOREACH part IN item.${'T0700'} ;
-       thislength = part.content.length ;
+       thiscontent = part.${'a'};
+       original_language  = part.${'original_language'};
+
+       thislength  = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = uri_escape(part.${'a'});
+         searchterm    = uri_escape(thiscontent);
          searchprefix  = config.get('searchfield').personstring.prefix;
 
          NEXT IF person_done.${searchterm} == 1;
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push(part.${'a'});
+         IF part.${'original_language'};
+	    thiscontent = "${original_language} = ${thiscontent}";
+	 END;
+
+         persons.push(thiscontent);
          personslength = personslength+thislength ;
 
          person_done.${searchterm} = 1;
@@ -215,7 +267,9 @@
 
      # Koerperschaften
      FOREACH part IN item.${'T0110'}  ;
-       thiscontent = part.${'a'};
+       thiscontent        = part.${'a'};
+       original_language  = part.${'original_language'};
+       
        IF part.${'e'} ;
           e = part.${'e'} ;
           thiscontent = "${thiscontent} ${e}" ;
@@ -229,7 +283,11 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push(part.${'a'});
+         IF original_language;
+	    thiscontent = "${original_language} = ${thiscontent}";
+	 END;
+
+         persons.push(thiscontent);
          personslength = personslength+thislength ;
 
          person_done.${searchterm} = 1;
@@ -239,7 +297,9 @@
      END ;
 
      FOREACH part IN item.${'T0111'}  ;
-       thiscontent = part.${'a'};
+       thiscontent       = part.${'a'};
+       original_language = part.${'original_language'};
+       
        IF part.${'e'} ;
           e = part.${'e'} ;
           thiscontent = "${thiscontent} ${e}" ;
@@ -251,7 +311,11 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         persons.push(part.${'a'});
+         IF original_language;
+	    thiscontent = "${original_language} = ${thiscontent}";
+	 END;
+
+         persons.push(thiscontent);
          personslength = personslength+thislength ;
 
          person_done.${searchterm} = 1;
@@ -353,6 +417,19 @@
      bandtitel   = item.${"T0245"}.first.${'p'};     
      gesamttitel = item.${"T0490"}.first.${'a'};
 
+     original_title = "";
+
+     FOREACH original_language IN original_lang_fields.keys;
+        IF original_lang_fields.${original_language}.${'T0245'};
+          original_title    = original_lang_fields.${original_language}.${"T0245"}.first.${'a'};
+          IF original_lang_fields.${original_language}.${"T0245"}.first.${'b'};
+            original_supplemental_title = original_lang_fields.${original_language}.${"T0245"}.first.${'b'};
+            original_title = "${original_title} : ${original_supplemental_title}";
+          END;
+	  original_title = "${original_language} =  ${original_title}";
+        END;
+     END;
+
      is_schriftenreihe = 0;
      is_mehrbaendig    = 0;
 
@@ -417,6 +494,10 @@
         title = "${title} (${super_title})";
      END;
 
+     IF original_title ;
+        title = "${title} ; ${original_title}";
+     END;
+
      # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?
      IF NOT title ;
        title = "Keine Titelangabe vorhanden";
@@ -431,9 +512,43 @@
      IF NOT publisher && item.${'T0264'}.first.${'b'};
         publisher = item.${'T0264'}.first.${'b'};
      END;
-     
+
+     original_publisher = "";
+
+     FOREACH original_language IN original_lang_fields.keys;
+        IF original_lang_fields.${original_language}.${'T0260'};
+          IF original_lang_fields.${original_language}.${'T0260'}.first.${'b'};
+            original_publisher = original_lang_fields.${original_language}.${"T0260"}.first.${'b'};
+            original_publisher = "${original_language} = ${original_publisher}";
+	  END;
+	ELSIF original_lang_fields.${original_language}.${'T0264'};
+	  IF original_lang_fields.${original_language}.${'T0264'}.first.${'b'};
+            original_publisher = original_lang_fields.${original_language}.${"T0264"}.first.${'b'};
+            original_publisher = "${original_language} = ${original_publisher}";
+	  END;
+	END;
+     END;
+
+     IF publisher && original_publisher ;
+       publisher = "${publisher} ; ${original_publisher}";
+     END;
+     # USE dumper;dumper.dump(original_lang_fields);
      # Ejahr konstruieren
      yearofpub = item.${'T0264'}.first.${'c'};
+
+     original_yearofpub = "";
+     FOREACH original_language IN original_lang_fields.keys;
+        IF original_lang_fields.${original_language}.${'T0264'};
+          IF original_lang_fields.${original_language}.${'T0264'}.first.${'c'};
+            original_yearofpub = original_lang_fields.${original_language}.${'T0264'}.first.${'c'};
+	    original_yearofpub = "${original_language} = ${original_yearofpub}";
+	  END;
+	END;
+     END;
+
+     IF original_yearofpub ;
+       yearofpub = "${yearofpub} ; ${original_yearofpub}";
+     END;
 
      availability = fields.${'T4400'}.first.content;
      

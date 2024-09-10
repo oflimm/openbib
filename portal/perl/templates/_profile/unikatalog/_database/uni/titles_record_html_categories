@@ -213,7 +213,7 @@ person_done  = {};
 # Lizensierter Volltext? (Ausgabe Zugriffshinweis)
 is_licensed = 0;
 is_oa = 0; 
-#USE dumper;dumper.dump(normdata.${"T5003"});
+#USE dumper;dumper.dump(normdata.${"T0880"});
 
 FOREACH item IN normdata.${'T4120'} ;
    IF item.${'g'} ;
@@ -229,6 +229,42 @@ END;
 is_bindeeinheit = 0;
 
 binding_units = [];
+
+# Processing Anderschriftliche Darstellung aus 880
+
+original_lang_fields = {};
+
+FOREACH item IN normdata.${'T0880'} ;
+   linked_field      = item.${'6'}.match('^(...)').first;
+   original_language = item.${'6'}.match('^.......(....)').first;
+   linked_field      = "T0${linked_field}";
+   
+   subfield_a   = item.${'a'};
+   subfield_b   = item.${'b'}; 
+   subfield_c   = item.${'c'};  
+
+   IF linked_field ;
+     original_lang_fields.${original_language}.${linked_field}.original_language = original_language;
+   END ;
+   
+   IF linked_field && subfield_a ;
+     original_lang_fields.${original_language}.${linked_field}.a = subfield_a;
+   END;
+
+   IF linked_field && subfield_b ;
+     original_lang_fields.${original_language}.${linked_field}.b = subfield_b;
+   END;
+
+   IF linked_field && subfield_c ;
+     original_lang_fields.${original_language}.${linked_field}.c = subfield_c;
+   END;
+END;
+
+FOREACH ori_lang IN original_lang_fields.keys ;
+   FOREACH field_no IN original_lang_fields.${ori_lang}.keys ;     
+     normdata.${field_no}.push(original_lang_fields.${ori_lang}.${field_no});
+   END;
+END;
 
 content_map = {};
 
@@ -326,7 +362,8 @@ FOREACH field IN normdata;
          content = thisfield.${'a'} ;
 	 supplement = thisfield.${'e'} ;
          thisid  = thisfield.${'0'} || thisfield.${'6'};
-
+         original_language = thisfield.${'original_language'};
+	 
          gndid = "";
 	 IF thisid.match('(DE-588)');
 	    gndid = thisid.replace('\(DE-588\)','');
@@ -349,7 +386,12 @@ FOREACH field IN normdata;
          icons     = "<span>${normdataicon}</span>";
 	 
          IF content ;
-           content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
+	   IF original_language ;
+             content   = "${original_language} = ${highlightquery(searchquery,content)} ${supplement}"	;
+	   ELSE ;
+             content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
+	   END;
+	   
            IF NOT content_map.${'Person'} ;
 	     content_map.${'Person'} = [];
 	   END;
@@ -362,6 +404,7 @@ FOREACH field IN normdata;
          content = thisfield.${'a'} ;
 	 supplement = thisfield.${'e'} ;
          thisid  = thisfield.${'0'} || thisfield.${'6'};
+         original_language = thisfield.${'original_language'};
 
          gndid = "";
 	 IF thisid.match('(DE-588)');
@@ -383,7 +426,11 @@ FOREACH field IN normdata;
          icons     = "<span>${normdataicon}</span>";
 	 
          IF content ;
-           content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
+	   IF original_language ;
+             content   = "${original_language} = ${highlightquery(searchquery,content)} ${supplement}"	;
+	   ELSE ;
+             content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a> ${supplement} ${icons}";
+	   END;
 	 
            IF NOT content_map.${'Institution'} ;
 	     content_map.${'Institution'} = [];
@@ -422,6 +469,7 @@ FOREACH field IN normdata;
 	 supplemental_title = "";
 	 published_by       = "";
 	 part_title         = "";
+         original_language  = thisfield.${'original_language'};
 	 
          IF thisfield.${'a'} ;
 	   main_title = thisfield.${'a'};
@@ -454,16 +502,26 @@ FOREACH field IN normdata;
 	 END;
 
          IF main_title ;
-	   content = main_title;
-           content   = "<b>${highlightquery(searchquery,content)}</b>";
-
+	   IF original_language ;
+             content = main_title;
+             content   = "${original_language} = <b>${highlightquery(searchquery,content)}</b>";
+	   ELSE ;
+	     content = main_title;
+             content   = "<b>${highlightquery(searchquery,content)}</b>";
+           END ;
+	   
            IF NOT content_map.${'Titel'} ;
 	     content_map.${'Titel'} = [];
 	   END;
            content_map.${'Titel'}.push(content);
          ELSIF part_title ;
-	   content = part_title;
-           content   = "<b>${highlightquery(searchquery,content)}</b>";
+	   IF original_language ;
+             content = part_title;
+             content   = "${original_language} = <b>${highlightquery(searchquery,content)}</b>";
+	   ELSE ;
+	     content = part_title;
+             content   = "<b>${highlightquery(searchquery,content)}</b>";
+           END ;
 
            IF NOT content_map.${'Titel'} ;
 	     content_map.${'Titel'} = [];
@@ -479,6 +537,9 @@ FOREACH field IN normdata;
 	 END;
 
          IF published_by ;
+	   IF original_language ;
+	     published_by = "${original_language} = ${published_by}";
+	   END;
            IF NOT content_map.${'Verfasserangabe'} ;
 	     content_map.${'Verfasserangabe'} = [];
 	   END;
@@ -505,7 +566,9 @@ FOREACH field IN normdata;
            content_map.${'Ausgabe'}.push(content);
 	 END;
 
-    CASE [ "T0260" "T0264" ]; # 
+    CASE [ "T0260" "T0264" ]; #
+         original_language  = thisfield.${'original_language'};
+    
          ortverlagjahr = [];
 
          IF thisfield.${'a'} ; # Ort
@@ -524,6 +587,10 @@ FOREACH field IN normdata;
 
          ortverlagjahrcontent = ortverlagjahr.join(' ');
 
+         IF original_language ;
+	    ortverlagjahrcontent = "${original_language} = ${ortverlagjahrcontent}";
+	 END;
+	 
          IF ortverlagjahrcontent ;
            IF NOT content_map.${'Ort/Verlag/Jahr'} ;
             content_map.${'Ort/Verlag/Jahr'} = [];
@@ -838,6 +905,8 @@ FOREACH field IN normdata;
     	   END;
            content_map.${'URL'}.push(content);
 	 END;
+
+
 
     CASE "T4101";
          content = thisfield.${'e'} || thisfield.${''};

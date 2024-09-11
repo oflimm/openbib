@@ -33,8 +33,8 @@
 [% END %]
 
 [% IF available_searchfields.year.active %]
-[%- cgiparam      = searchfield.yearstring.prefix;
-    this_searchfield = 'yearstring';
+[%- cgiparam      = searchfield.year.prefix;
+    this_searchfield = 'year';
  -%]
 <div class="form-floating mb-3">
 <input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="4" maxlength="4" />

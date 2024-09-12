@@ -58,12 +58,13 @@ if ($#ARGV < 0){
     print_help();
 }
 
-my ($help,$sigel,$showall,$mode,$enrichnatfile,$bibsort,$marksort,$logfile,$loglevel);
+my ($help,$sigel,$showall,$mode,$enrichnatfile,$bibsort,$marksort,$outputdir,$logfile,$loglevel);
 
 &GetOptions(
 	    "help"     => \$help,
 	    "sigel=s"  => \$sigel,
 	    "mode=s"   => \$mode,
+	    "outputdir=s"  => \$outputdir,
 	    "showall"  => \$showall,
             "bibsort"  => \$bibsort,
             "marksort" => \$marksort,
@@ -82,6 +83,7 @@ if (!$mode){
 
 $logfile=($logfile)?$logfile:'/var/log/openbib/gen_zsstlist.log';
 $loglevel=($loglevel)?$loglevel:'INFO';
+$outputdir=($outputdir)?$outputdir:'/var/www/zeitschriftenlisten';
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=$loglevel, LOGFILE, Screen
@@ -341,7 +343,7 @@ my $template = Template->new({
     }) ],
     #        INCLUDE_PATH   => $config->{tt_include_path},
     #        ABSOLUTE       => 1,
-    OUTPUT_PATH   => '/var/www/zeitschriftenlisten',
+    OUTPUT_PATH   => $outputdir,
     OUTPUT        => "$outputbasename.$mode",
 });
 
@@ -378,7 +380,7 @@ if ($bibsort){
         }) ],
         #        INCLUDE_PATH   => $config->{tt_include_path},
         #        ABSOLUTE       => 1,
-        OUTPUT_PATH   => '/var/www/zeitschriftenlisten',
+        OUTPUT_PATH   => $outputdir,
         OUTPUT        => "$outputbasename.$mode",
     });
     
@@ -415,7 +417,7 @@ if ($marksort){
         }) ],
         #        INCLUDE_PATH   => $config->{tt_include_path},
         #        ABSOLUTE       => 1,
-        OUTPUT_PATH   => '/var/www/zeitschriftenlisten',
+        OUTPUT_PATH   => $outputdir,
         OUTPUT        => "$outputbasename.$mode",
     });
     

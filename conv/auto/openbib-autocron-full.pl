@@ -38,7 +38,7 @@ use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Config;
 
-our ($logfile,$loglevel,$test,$cluster,$maintenance,$updatemaster,$incremental,$genzsst);
+our ($logfile,$loglevel,$test,$cluster,$maintenance,$updatemaster,$incremental,$genzsst,$zsstdir);
 
 &GetOptions(
     "cluster"       => \$cluster,
@@ -48,6 +48,7 @@ our ($logfile,$loglevel,$test,$cluster,$maintenance,$updatemaster,$incremental,$
     "logfile=s"     => \$logfile,
     "loglevel=s"    => \$loglevel,
     "gen-zsst"      => \$genzsst,
+    "zsstdir"       => \$zsstdir,    
     "update-master" => \$updatemaster,
     );
 
@@ -401,7 +402,7 @@ if ($genzsst){
 
     $logger->info("### Generating journal lists");        
     
-    system("/opt/openbib/bin/gen_zsstlist-all.pl > /tmp/gen_zsstlist-all.log 2>&1");
+    system("/opt/openbib/bin/gen_zsstlist-all.pl $zsstdir > /tmp/gen_zsstlist-all.log 2>&1");
 }
     
 $logger->info("### Dumping isbns");

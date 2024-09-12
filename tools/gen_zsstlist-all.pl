@@ -7,7 +7,7 @@
 #  Extrahieren der Zeitschriftenliste eines Instituts anhand aller
 #  im Katalog instzs gefundenen lokalen Sigeln
 #
-#  Dieses File ist (C) 2006-2016 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2024 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -39,6 +39,10 @@ use OpenBib::Config;
 use DBI;
 use YAML;
 
+my $outputdir   = $ARGV[0];
+
+$outputdir=($outputdir)?$outputdir:'/var/www/zeitschriftenlisten';
+
 my $config      = OpenBib::Config->new;
 
 my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=uzkzeitschriften;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
@@ -53,21 +57,19 @@ while (my $result=$request->fetchrow_hashref()){
     next if ($sigel eq "38");
     next unless ($sigel =~m/38-/);
     
-    system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel --mode=tex -bibsort");
-    system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel.tex");
-    system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel-bibsort.tex");
+    system($config->{tool_dir}."/gen_zsstlist.pl --outputdir=$outputdir --sigel=$sigel --mode=tex -bibsort");
+    system("cd $outputdir ; pdflatex --interaction=batchmode $outputdir/zeitschriften-$sigel.tex");
+    system("cd $outputdir ; pdflatex --interaction=batchmode $outputdir/zeitschriften-$sigel-bibsort.tex");
     
-    system($config->{tool_dir}."/gen_zsstlist.pl --sigel=$sigel -showall --enrichnatfile=/opt/openbib/autoconv/pools/uzkzeitschriften/nationallizenzen.csv --mode=tex -bibsort");
-    system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel-all.tex");
-    system("cd /var/www/zeitschriftenlisten ; pdflatex --interaction=batchmode /var/www/zeitschriftenlisten/zeitschriften-$sigel-all-bibsort.tex");
+    system($config->{tool_dir}."/gen_zsstlist.pl --outputdir=$outputdir --sigel=$sigel -showall --enrichnatfile=/opt/openbib/autoconv/pools/uzkzeitschriften/nationallizenzen.csv --mode=tex -bibsort");
+    system("cd $outputdir ; pdflatex --interaction=batchmode $outputdir/zeitschriften-$sigel-all.tex");
+    system("cd $outputdir ; pdflatex --interaction=batchmode $outputdir/zeitschriften-$sigel-all-bibsort.tex");
 
-    system("cd /var/www/zeitschriftenlisten ; rm *.tex *.aux *.loc *.out *.log");
+    system("cd $outputdir ; rm *.tex *.aux *.loc *.out *.log");
 }
 
 sub print_help {
-    print "gen-zsstlist-all.pl - Erzeugen von Zeitschiftenlisten fuer alle Sigel\n\n";
-    print "Optionen: \n";
-    print "  -help                   : Diese Informationsseite\n";
+    print "gen-zsstlist-all.pl OUTPUTDIR - Erzeugen von Zeitschiftenlisten fuer alle Sigel\n\n";
 
     exit;
 }

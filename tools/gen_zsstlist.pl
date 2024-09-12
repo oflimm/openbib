@@ -6,7 +6,7 @@
 #
 #  Extrahieren der Zeitschriftenliste eines Instituts
 #
-#  Dieses File ist (C) 2006-2016 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2024 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -38,6 +38,7 @@ use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Common::Stopwords;
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
+use OpenBib::Config::LocationInfoTable;
 use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
 use OpenBib::Record::Subject;
@@ -214,8 +215,9 @@ if ($logger->is_debug){
     $logger->debug("Bestandsverlaeufe zu ISSNs aus Nationallizenzen". YAML::Dump($issn_nationallizenzen_ref));
 }
 
-my $config      = OpenBib::Config->new;
-my $dbinfotable = OpenBib::Config::DatabaseInfoTable->new;
+my $config       = OpenBib::Config->new;
+my $dbinfotable  = OpenBib::Config::DatabaseInfoTable->new;
+my $locinfotable = OpenBib::Config::LocationInfoTable->new;
 
 my $subset = new OpenBib::Catalog::Subset("uzkzeitschriften","who_cares");
 $subset->identify_by_field_content('holding',[{ field => 3330, content => $sigel }]);
@@ -231,24 +233,32 @@ foreach $titleid (keys %titleids){
     my $record = new OpenBib::Record::Title({database => 'uzkzeitschriften', id => $titleid, config => $config})->load_full_record();
 
     my $sortfield = "";
+
+    my $fields_ref          = $record->get_fields;
+    my $abstract_fields_ref = $record->to_abstract_fields;
     
-    my $urheber = $record->get_field({ field => 'T0200'});
-
-    $urheber = (defined $urheber)?$urheber->[0]{content}:"";
-
-    my $ast = $record->get_field({ field => 'T0310'});
-
-    $ast = (defined $ast)?$ast->[0]{content}:"";
-
+    my $urheber = $abstract_fields_ref->{corp};
+    
+    $urheber = (defined $urheber)?$urheber->[0]:"";
+    
+    my $ast = "";
+    
+    if (defined $fields_ref->{'T0246'}){
+	foreach my $item_ref (@{$fields_ref->{'T0246'}}){
+	    if ($item_ref->{ind} =~m/9$/ && $item_ref->{subfield} eq "a"){
+		$ast = $item_ref->{content};
+		last;
+	    }
+	}
+    }
+    
     if ($ast){
         $ast = OpenBib::Common::Stopwords::strip_first_stopword($ast);
         $sortfield = "$urheber$ast";
     }
     else {
-        my $hst = $record->get_field({ field => 'T0331'});
+        my $hst = $abstract_fields_ref->{title} || "";
         
-        $hst = (defined $hst)?$hst->[0]{content}:"";
-
         $hst = OpenBib::Common::Stopwords::strip_first_stopword($hst);
         $sortfield = "$urheber$hst";
     }
@@ -267,7 +277,7 @@ foreach $titleid (keys %titleids){
     my $is_natlizenz=0;
     # Nationallizenzen anreichern?
     if ($enrichnatfile){
-        my $issns_ref = $record->get_field({ field => 'T0543'});
+        my $issns_ref = $record->get_field({ field => 'T0022', subfield => 'a'});
 
         foreach my $issn_ref (@$issns_ref){
         
@@ -339,6 +349,7 @@ my $template = Template->new({
 my $ttdata = {
     sigel        => $sigel,
     dbinfo       => $dbinfotable,
+    locinfo      => $locinfotable,
     recordlist   => \@sortedrecordlist,
     showall      => $showall,
     gesamtzahl   => $#recordlist+1,

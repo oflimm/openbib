@@ -256,7 +256,7 @@ FOREACH item IN normdata.${'T0880'} ;
    ELSIF original_language.match('\(4');
       original_language = 'Pers';       
    ELSIF original_language.match('\(Q');
-      original_language = 'Cyrs';       
+      original_language = 'Cyrl';       
    ELSIF original_language.match('\(S');
       original_language = 'Grek';       
    END;

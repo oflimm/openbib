@@ -48,7 +48,7 @@ our ($logfile,$loglevel,$test,$cluster,$maintenance,$updatemaster,$incremental,$
     "logfile=s"     => \$logfile,
     "loglevel=s"    => \$loglevel,
     "gen-zsst"      => \$genzsst,
-    "zsstdir"       => \$zsstdir,    
+    "zsstdir=s"     => \$zsstdir,    
     "update-master" => \$updatemaster,
     );
 

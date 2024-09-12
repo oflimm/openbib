@@ -74,9 +74,7 @@
 
 </form>
 
-<!-- <p><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %];authenticatorid=[% available_authenticator_types.${"ils"} %]">[% msg.maketext("»Passwort vergessen?") %]</a></p> -->
-
-<p>[% msg.maketext("Passwort vergessen?") %] [% msg.maketext("Wir setzen es an der Anmeldung in der USB auf Ihr Geburtsdatum zurück.") %]</p>
+<p><a class="exturl" target="_blank" href="https://ausweis.ub.uni-koeln.de/">[% msg.maketext("»Passwort vergessen?") %]</a></p>
 
 <h5>[% msg.maketext("Sie haben noch keinen Bibliotheksausweis?") %]</h5>
 <ul>

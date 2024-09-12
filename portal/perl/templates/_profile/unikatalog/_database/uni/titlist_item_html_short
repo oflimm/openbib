@@ -175,7 +175,7 @@
      FOREACH part IN item.${'T0880'} ;
        linked_field      = part.${'6'}.match('^(...)').first;
        linked_field      = "T0${linked_field}";
-       original_language = part.${'6'}.match('^.......(....)').first;
+       original_language = part.${'6'}.match('^.......([a-zA-Z][a-zA-Z][a-zA-Z][a-zA-Z])').first;
        IF NOT original_language ;
          original_language = part.${'6'}.match('^.......(..)').first;       
        END;
@@ -190,6 +190,10 @@
          original_language = 'Hebr';       
        ELSIF original_language.match('\(3');
          original_language = 'Arab';       
+       ELSIF original_language.match('\(4');
+         original_language = 'Pers';       
+       ELSIF original_language.match('\(Q');
+         original_language = 'Cyrs';       
        ELSIF original_language.match('\(S');
          original_language = 'Grek';       
        END;

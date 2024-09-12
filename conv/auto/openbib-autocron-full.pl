@@ -6,7 +6,7 @@
 #
 #  CRON-Job zum automatischen aktualisieren aller OpenBib-Datenbanken
 #
-#  Dieses File ist (C) 1997-2023 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2024 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -38,7 +38,7 @@ use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Config;
 
-our ($logfile,$loglevel,$test,$cluster,$maintenance,$updatemaster,$incremental);
+our ($logfile,$loglevel,$test,$cluster,$maintenance,$updatemaster,$incremental,$genzsst);
 
 &GetOptions(
     "cluster"       => \$cluster,
@@ -47,6 +47,7 @@ our ($logfile,$loglevel,$test,$cluster,$maintenance,$updatemaster,$incremental);
     "incremental"   => \$incremental,
     "logfile=s"     => \$logfile,
     "loglevel=s"    => \$loglevel,
+    "gen-zsst"      => \$genzsst,
     "update-master" => \$updatemaster,
     );
 
@@ -317,6 +318,7 @@ my $denylist_ref = {
     'usblbs' => 1,
     'usbls' => 1,
     'usbsab' => 1,
+    'uzkzeitschriften' => 1,
     'wiso' => 1,
 };
 
@@ -393,6 +395,15 @@ $logger->info("### Generating joined searchindexes");
 system("/opt/openbib/autoconv/bin/autojoinindex_xapian.pl");
 system("/opt/openbib/autoconv/bin/autojoinindex_elasticsearch.pl");
 
+if ($genzsst){
+    $logger->info("### Generating journal catalog");    
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['uzkzeitschriften'] });
+
+    $logger->info("### Generating journal lists");        
+    
+    system("/opt/openbib/bin/gen_zsstlist-all.pl > /tmp/gen_zsstlist-all.log 2>&1");
+}
+    
 $logger->info("### Dumping isbns");
 
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_usb 2>&1 > /dev/null");
@@ -504,7 +515,7 @@ sub threadB {
     # autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['digisoz','provenienzen','jesuiten','rheinabt', 'usbhwa','usbsab', 'dissertationen','usbphil'] });
 
     autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['usblbs','usbls'] });
-    
+
     ##############################
 
     $logger->info("### Aufgesplittete Sammlungen aus dem USB Katalog");

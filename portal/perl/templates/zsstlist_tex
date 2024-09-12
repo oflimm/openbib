@@ -31,7 +31,14 @@
 \begin{titlepage}
 
 \begin{center}
-[%- beschreibung = filterchars(dbinfo.get('sigel').${sigel}.full) -%]
+[%-
+
+  isil = "DE-${sigel}";
+  base_sigel = sigel.replace('^38-','');
+  
+  beschreibung = filterchars(locinfo.get('identifier').${isil}.description)
+
+-%]
 
 \vspace{2cm}
 
@@ -39,7 +46,7 @@
 
   \vspace{0.5cm}
 
-  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont [% beschreibung %]\\[3mm]Sigel: 38/[% sigel %]}
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{14}{14pt}\selectfont [% beschreibung %]\\[3mm]Sigel: 38/[% base_sigel %]}
 
 \vspace{0.5cm}
 
@@ -174,54 +181,86 @@ nach diesem und erst dann nach Titel sortiert!
 \section*{Aufstellung der Zeitschriften}
 
 [% FOREACH record IN recordlist %]
-[% thistitset = record.get_fields %]
+[% fields = record.to_custom_field_scheme_1 %]
 [% thisholding = record.get_holding %]
 
 %\begin{shadowenv}
 \fbox{ \begin{minipage}{\textwidth}
 
 \begin{tabular}{lp{10cm}}
-[% FOREACH item IN thistitset.${"T0572"} %]
-  \textbf{ZDB-Id} & \textbf{[% filterchars(item.content) %]}\\
+[% FOREACH item IN fields.${"T1001"} %]
+[%   IF item.z %]
+  \textbf{ZDB-Id} & \textbf{[% filterchars(item.z) %]}\\
+[%    LAST %]  
+[%   END %]  
 [% END %]
-[% FOREACH item IN thistitset.${"T0200"} %]
-  Urheber & [% filterchars(item.content) %]\\
+[% FOREACH item IN fields.${"T0110"} %]
+[%   IF item.a %]
+  Urheber/K"orperschaft & [% filterchars(item.a) %]\\
+[%   END %]  
 [% END %]
-[% FOREACH item IN thistitset.${"T0201"} %]
-  K"orperschaft & [% filterchars(item.content) %]\\
+[% FOREACH item IN fields.${"T0710"} %]
+[%   IF item.a %]
+  Urheber/K"orperschaft & [% filterchars(item.a) %]\\
+[%   END %]  
 [% END %]
-[% FOREACH item IN thistitset.${"T0310"} %]
-  AST & [% filterchars(item.content) %]\\
+[% FOREACH item IN fields.${"T0246"} %]
+[%   IF item.ind.match('9$') && item.a %]
+  AST & [% filterchars(item.a) %]\\
+[%   END %]  
 [% END %]
-[% FOREACH item IN thistitset.${"T0331"} %]
-  HST & [% filterchars(item.content) %]\\
+[% FOREACH item IN fields.${"T0245"} %]
+[%   IF item.a %]
+  HST & [% filterchars(item.a) %]\\
+[%   END %]  
 [% END %]
-[% FOREACH item IN thistitset.${"T0335"} %]
-   Zusatz zum HST & [% filterchars(item.content) %]\\
+[% FOREACH item IN fields.${"T0245"} %]
+[%   IF item.b %]
+   Zusatz zum HST & [% filterchars(item.b) %]\\
+[%   END %]
 [% END %]
-[% FOREACH item IN thistitset.${"T0370"} %]
-   WST & [% filterchars(item.content) %]\\
+[% FOREACH item IN fields.${"T0264"} %]
+[%-
+
+         ortverlagjahr = [];
+
+         IF item.${'a'} ; # Ort
+	   ort = item.${'a'};
+	   ortverlagjahr.push("${ort}: ");
+	 END;
+
+         IF item.${'b'} ; # Verlag
+           ortverlagjahr.push(item.${'b'});
+         END;
+
+	 IF item.${'c'} ; # Jahr
+	   jahr = item.${'c'};
+           ortverlagjahr.push("(${jahr})");	 
+	 END;
+
+         ortverlagjahrcontent = ortverlagjahr.join(' ');
+
+         have_issn = {};
+-%]
+[%   IF ortverlagjahrcontent %]
+   Ort/Verlag     & [% filterchars(ortverlagjahrcontent) %]\\
+[%   END %]   
 [% END %]
-[% FOREACH item IN thistitset.${"T0412"} %]
-   Verlag     & [% filterchars(item.content) %]\\
+[% FOREACH item IN fields.${"T0362"} %]
+[%   IF item.a %]
+   Erschverlauf & [% filterchars(item.a) %]\\
+[%   END %]
 [% END %]
-[% FOREACH item IN thistitset.${"T0410"} %]
-   Verlagsort & [% filterchars(item.content) %]\\
+[% FOREACH item IN fields.${"T0022"} %]
+[%   IF item.a && have_issn.${item.a} != 1 %]
+   ISSN & [% filterchars(item.a) %]\\
+[%- have_issn.${item.a} = 1 -%]   
+[%   END %]   
 [% END %]
-[% FOREACH item IN thistitset.${"T0405"} %]
-   Erschverlauf & [% filterchars(item.content) %]\\
-[% END %]
-[% FOREACH item IN thistitset.${"T0543"} %]
-   ISSN & [% filterchars(item.content) %]\\
-[% END %]
-[% FOREACH item IN thistitset.${"T0531"} %]
-   Fr"uher u.d.T. & [% filterchars(item.content) %]\\
-[% END %]
-[% FOREACH item IN thistitset.${"T0532"} %]
-   Teilw. u.d.T. & [% filterchars(item.content) %]\\
-[% END %]
-[% FOREACH item IN thistitset.${"T0533"} %]
-   Sp"ater u.d.T. & [% filterchars(item.content) %]\\
+[% FOREACH item IN fields.${"T0247"} %]
+[%   IF item.a %]
+   Fr"uher u.d.T. & [% filterchars(item.a) %]\\
+[%   END %]   
 [% END %]
 \end{tabular}
 
@@ -233,14 +272,17 @@ nach diesem und erst dann nach Titel sortiert!
 Sigel & Signatur & Standort & Bestand \\
 \hline
 [%   FOREACH item IN thisholding %]
+[%-    library = item.${"X3330"}.content ;
+       library_isil = "DE-${library}";
+       library_desc = locinfo.get('identifier').${library_isel}.description -%]
 [%     IF showall %]
-[%       IF item.${"X3330"}.content == sigel %]
-\textbf{[% filterchars(item.${"X3330"}.content) %]} & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% IF item.${"X1200"}.content %][% filterchars(item.${"X1200"}.content) %] [% END %][% filterchars(item.${"X1204"}.content) %]\\
+[%       IF library == sigel %]
+\textbf{[% filterchars(library) %]} & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% IF item.${"X1200"}.content %][% filterchars(item.${"X1200"}.content) %] [% END %][% filterchars(item.${"X1204"}.content) %]\\
 [%       ELSE %]
-[% filterchars(item.${"X3330"}.content) %] & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% IF item.${"X1200"}.content %][% filterchars(item.${"X1200"}.content) %] [% END %][% filterchars(item.${"X1204"}.content) %]\\
+[% filterchars(library) %] & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% IF item.${"X1200"}.content %][% filterchars(item.${"X1200"}.content) %] [% END %][% filterchars(item.${"X1204"}.content) %]\\
 [%       END %]
 [%     ELSE %]
-[%       IF item.${"X3330"}.content == sigel %]
+[%       IF library == sigel %]
 [% filterchars(item.${"X3330"}.content) %] & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% IF item.${"X1200"}.content %][% filterchars(item.${"X1200"}.content) %] [% END %][% filterchars(item.${"X1204"}.content) %]\\
 [%       END %]
 [%     END %]

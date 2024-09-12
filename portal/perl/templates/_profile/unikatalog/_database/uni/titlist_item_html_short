@@ -179,7 +179,21 @@
        IF NOT original_language ;
          original_language = part.${'6'}.match('^.......(..)').first;       
        END;
-   
+
+       IF original_language.match('\$1');
+         original_language = 'CJK';
+       ELSIF original_language.match('\(N');
+         original_language = 'Cyrl';       
+       ELSIF original_language.match('\(B');
+         original_language = 'Latn';       
+       ELSIF original_language.match('\(2');
+         original_language = 'Hebr';       
+       ELSIF original_language.match('\(3');
+         original_language = 'Arab';       
+       ELSIF original_language.match('\(S');
+         original_language = 'Grek';       
+       END;
+       
        subfield_a   = part.${'a'};
        subfield_b   = part.${'b'}; 
        subfield_c   = part.${'c'};  
@@ -207,6 +221,8 @@
 	END;
      END;
 
+     # USE dumper;dumper.dump(item);
+     
      # Verfasser konstruieren
      persons = [] ;
 
@@ -229,7 +245,7 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         IF original_language && original_language.length == 4;
+         IF original_language;
 	    thiscontent = "${original_language} = ${thiscontent}";
 	 END;
 
@@ -255,7 +271,7 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         IF original_language && original_language.length == 4;
+         IF original_language;
 	    thiscontent = "${original_language} = ${thiscontent}";
 	 END;
 
@@ -286,7 +302,7 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         IF original_language && original_language.length == 4;
+         IF original_language;
 	    thiscontent = "${original_language} = ${thiscontent}";
 	 END;
 
@@ -314,7 +330,7 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         IF original_language && original_language.length == 4;
+         IF original_language;
 	    thiscontent = "${original_language} = ${thiscontent}";
 	 END;
 
@@ -329,6 +345,8 @@
 
      FOREACH part IN item.${'T0710'}  ;
        thiscontent = part.${'a'};
+       original_language = part.${'original_language'};
+       
        IF part.${'e'} ;
           e = part.${'e'} ;
           thiscontent = "${thiscontent} ${e}" ;
@@ -342,7 +360,7 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
-         IF original_language && original_language.length == 4;
+         IF original_language;
 	    thiscontent = "${original_language} = ${thiscontent}";
 	 END;
 
@@ -433,7 +451,7 @@
             original_supplemental_title = original_lang_fields.${original_language}.${"T0245"}.first.${'b'};
             original_title = "${original_title} : ${original_supplemental_title}";
           END;
-	  IF original_language && original_language.length == 4;
+	  IF original_language;
 	    original_title = "${original_language} =  ${original_title}";
 	  END;
         END;
@@ -528,14 +546,14 @@
         IF original_lang_fields.${original_language}.${'T0260'};
           IF original_lang_fields.${original_language}.${'T0260'}.first.${'b'};
             original_publisher = original_lang_fields.${original_language}.${"T0260"}.first.${'b'};
-	    IF original_language && original_language.length == 4;
+	    IF original_language;
               original_publisher = "${original_language} = ${original_publisher}";
 	    END;
 	  END;
 	ELSIF original_lang_fields.${original_language}.${'T0264'};
 	  IF original_lang_fields.${original_language}.${'T0264'}.first.${'b'};
             original_publisher = original_lang_fields.${original_language}.${"T0264"}.first.${'b'};
-            IF original_language && original_language.length == 4;	    
+            IF original_language;	    
               original_publisher = "${original_language} = ${original_publisher}";
 	    END;
 	  END;
@@ -554,8 +572,10 @@
         IF original_lang_fields.${original_language}.${'T0264'};
           IF original_lang_fields.${original_language}.${'T0264'}.first.${'c'};
             original_yearofpub = original_lang_fields.${original_language}.${'T0264'}.first.${'c'};
-	    IF original_language && original_language.length == 4;
+	    IF original_yearofpub != yearofpub;
 	      original_yearofpub = "${original_language} = ${original_yearofpub}";
+	    ELSE ;
+	      original_yearofpub = "";
 	    END;
 	  END;
 	END;

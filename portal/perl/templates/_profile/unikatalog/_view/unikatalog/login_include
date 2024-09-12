@@ -72,7 +72,7 @@
 
 </form>
 
-<p><a class="exturl" target="_blank" href="https://ausweis.ub.uni-koeln.de/">[% msg.maketext("»Passwort vergessen?") %]</a></p>
+<p><a class="exturl" target="_blank" href="https://ausweis.ub.uni-koeln.de/passwort-reset">[% msg.maketext("»Passwort vergessen?") %]</a></p>
 
 <h5>[% msg.maketext("Sie haben noch keinen Bibliotheksausweis?") %]</h5>
 <ul>

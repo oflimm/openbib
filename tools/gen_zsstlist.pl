@@ -243,27 +243,10 @@ foreach $titleid (keys %titleids){
     
     $urheber = (defined $urheber)?$urheber->[0]:"";
     
-    my $ast = "";
+    my $ast = $abstract_fields_ref->{title};
     
-    if (defined $fields_ref->{'T0246'}){
-	foreach my $item_ref (@{$fields_ref->{'T0246'}}){
-	    if ($item_ref->{ind} =~m/9$/ && $item_ref->{subfield} eq "a"){
-		$ast = $item_ref->{content};
-		last;
-	    }
-	}
-    }
-    
-    if ($ast){
-        $ast = OpenBib::Common::Stopwords::strip_first_stopword($ast);
-        $sortfield = "$urheber$ast";
-    }
-    else {
-        my $hst = $abstract_fields_ref->{title} || "";
-        
-        $hst = OpenBib::Common::Stopwords::strip_first_stopword($hst);
-        $sortfield = "$urheber$hst";
-    }
+    $ast = OpenBib::Common::Stopwords::strip_first_stopword($ast);
+    $sortfield = "$urheber$ast";
 
     $record->set_field({ field => 'sortfield', content => $sortfield});
     
@@ -279,14 +262,22 @@ foreach $titleid (keys %titleids){
     my $is_natlizenz=0;
     # Nationallizenzen anreichern?
     if ($enrichnatfile){
-        my $issns_ref = $record->get_field({ field => 'T0022', subfield => 'a'});
+        my @title_issns = ();
 
-        foreach my $issn_ref (@$issns_ref){
+	if (defined $fields_ref->{'T0022'}){
+	    foreach my $item_ref (@{$fields_ref->{'T0022'}}){
+		if ($item_ref->{subfield} eq "a"){
+		    push @title_issns, $item_ref->{content};
+		}
+	    }
+	}
+	
+        foreach my $title_issn (@title_issns){
         
-            if (!$is_natlizenz && defined $issn_nationallizenzen_ref->{$issn_ref->{content}}){
-                $nat_bestandsverlauf = $issn_nationallizenzen_ref->{$issn_ref->{content}};
+            if (!$is_natlizenz && defined $issn_nationallizenzen_ref->{$title_issn}){
+                $nat_bestandsverlauf = $issn_nationallizenzen_ref->{$title_issn};
 
-                $logger->debug("Angereichert: $issn_ref->{content} - $nat_bestandsverlauf");
+                $logger->debug("Angereichert: $title_issn - $nat_bestandsverlauf");
 
                 push @$mexnormdata_ref, {
                     'X3330' => { 'content' => 'Nationallizenzen' },

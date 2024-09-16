@@ -123,14 +123,12 @@
 
 </form>
 
-[% IF NOT alma_disable_circulation %]
 <p><a class="exturl" target="_blank" href="https://ausweis.ub.uni-koeln.de/passwort-reset">[% msg.maketext("»Passwort vergessen?") %]</a></p>
-[% END %]
 
 <h5>[% msg.maketext("Sie haben noch keinen Bibliotheksausweis?") %]</h5>
 <ul>
- <li>[% IF alma_disable_uccard %]Wegen der Umstellung auf das neue Bibliothekssystem Alma ist bis voraussichtlich 6.9.2023 keine Freischaltung Ihrer UCCard möglich. Danach wird sie automatisch freigeschaltet und eine manuelle Freischaltung durch Sie entfällt.[% ELSE %]<a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('uccard_activations_loc') %].html?l=[% lang %]">[% msg.maketext("Möchten Sie als Student:in Ihre UCCard als Bibliotheksausweis freischalten?") %]</a>[% END %]</li>
- <li>[% IF alma_disable_librarycard %]Wegen der Umstellung auf das neue Bibliothekssystem Alma ist bis voraussichtlich 6.9.2023 keine Online-Anmeldung möglich.[% ELSE %]<a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('librarycard_registrations_loc') %].html?l=[% lang %]">[% msg.maketext("Sie sind keine Student:in und möchten online einen Bibliotheksausweis beantragen?") %]</a>[% END %]</li>
+ <li>[% msg.maketext("Als Student:in schalten Sie bitte Ihren digitalen Bibliotheksausweis mit Ihrem Studierenden-Account hier frei") %]: <a class="exturl" target="_blank" href="[% cms_links.ausweisportal %]">[% msg.maketext("Ausweis-Portal der USB") %]</a></li>
+ <li><a class="exturl" href="[% cms_links.anmeldung %]" target="_blank">[% msg.maketext("Sie sind keine Student:in und möchten online einen Bibliotheksausweis beantragen?") %]</a></li>
 </ul>
 
  </div>

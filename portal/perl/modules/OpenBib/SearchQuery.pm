@@ -546,8 +546,9 @@ sub to_cgi_hidden_input {
     my @cgiparams = ();
 
     foreach my $arg_ref ($self->to_cgi_params($arg_ref)){
-        push @cgiparams, "<input type=\"hidden\" name=\"$arg_ref->{param}\" value=\"".decode_utf8(uri_unescape($arg_ref->{val}))."\" />";
-#        push @cgiparams, "<input type=\"hidden\" name=\"$arg_ref->{param}\" value=\"".$arg_ref->{val}."\" />";
+#        push @cgiparams, "<input type=\"hidden\" name=\"$arg_ref->{param}\" value=\"".decode_utf8(uri_unescape($arg_ref->{val}))."\" />";
+        push @cgiparams, "<input type=\"hidden\" name=\"$arg_ref->{param}\" value=\"".uri_unescape($arg_ref->{val})."\" />";
+
     }   
 
     return join("\n",@cgiparams);

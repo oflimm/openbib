@@ -37,8 +37,6 @@
 <div class="tab-content pt-3">
 <div role="tabpanel" class="tab-pane fade-in active p-3" id="ob-login_ils">
 
-<p><b>[% msg.maketext("Nur für bestehende Benutzerausweise vor dem Sommersemester 2024, wenn Sie sich erstmalig anmelden") %]:</b> [% msg.maketext("Das initiale Passwort besteht aus dem Geburtsdatum sechsstellig (TTMMJJ), also z.B. 241201 für den 24.12.2001. Wir empfehlen die Änderung auf ein sicheres Passwort. Für die Ausleih-Automaten benötigen Sie eine gesonderte PIN. Sie besteht initial aus dem Geburtsdatum vierstellig (TTMM). Das Passwort und die Ausleih-PIN können Sie unter „Mein Konto“ (Bibliothekskonto bzw. Gesamtübersicht) ändern.") %]</p>
-
 <form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded">
 
 [% IF redirect_to %]

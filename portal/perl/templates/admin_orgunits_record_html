@@ -29,7 +29,7 @@
 </tr>
 
 <tr>
-<th>Kataloge der Organisationseinheit</th>
+<th>[% msg.maketext("Kataloge der Organisationseinheit") %]</th>
 <td>
 <ul>
 [% FOREACH singledb IN orgunitdbs %]

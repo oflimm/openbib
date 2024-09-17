@@ -33,7 +33,7 @@
 </div>
 
 <div class="mb-3">
-  <label class="form-label" for="views">Einschränkung auf View</label>
+  <label class="form-label" for="views">[% msg.maketext("Einschränkung auf View") %]</label>
   <select class="form-select" id="views" name="views" multiple="multiple" size="20">
 [% FOREACH singleview IN viewinfos %]
 <option value="[% singleview.viewname %]" [% IF selected_views.${singleview.viewname} %]selected="selected"[% END %]>[% singleview.viewname %]: [% singleview.description %]</option>
@@ -44,7 +44,7 @@
 <div class="table-responsive text-nowrap">
 <table id="rights" class="table table-striped ">
 <thead>
-<tr><th>Gültigkeitsbereich</th><th>Erzeugen</th><th>Lesen</th><th>Ändern</th><th>Löschen</th></tr>
+<tr><th>[% msg.maketext("Gültigkeitsbereich") %]</th><th>[% msg.maketext("Erzeugen") %]</th><th>[% msg.maketext("Lesen") %]</th><th>[% msg.maketext("Ändern") %]</th><th>[% msg.maketext("Löschen") %]</th></tr>
 </thead>
 <tbody>
 [% FOREACH scope IN config.get_scopes %]

@@ -62,15 +62,15 @@
 [%- IF searchquery.titlestring.val -%]
 &nbsp;[% searchquery.titlestring.bool %]&nbsp;HSTR: [% searchquery.titlestring.val %] 
 [%- END -%]
-</td><td>(Treffer: [% searchquery.hits %] / Suchprofil: <a class="inturl" href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% searchquery.searchprofile %]">[% searchquery.searchprofile %]</a>)</td></tr>
+</td><td>([% msg.maketext("Treffer") %]: [% searchquery.hits %] / [% msg.maketext("Suchprofil") %]: <a class="inturl" href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% searchquery.searchprofile %]">[% searchquery.searchprofile %]</a>)</td></tr>
 [%    CASE 10 %]
-<tr><td>[% event.tstamp %]</td><td>Einzeltreffer</td><td><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% event.content.database %]/[% config.get('titles_loc') %]/id/[% event.content.id %]">[% event.content.id %] in [% event.content.database %]</a></td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>[% msg.maketext("Einzeltreffer") %]</td><td><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% event.content.database %]/[% config.get('titles_loc') %]/id/[% event.content.id %]">[% event.content.id %] in [% event.content.database %]</a></td><td></td></tr>
 [%    CASE 100 %]
-<tr><td>[% event.tstamp %]</td><td>View</td><td>[% event.content %]</td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>[% msg.maketext("View") %]</td><td>[% event.content %]</td><td></td></tr>
 [%    CASE 101 %]
-<tr><td>[% event.tstamp %]</td><td>Browser</td><td>[% event.content %]</td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>[% msg.maketext("Browser") %]</td><td>[% event.content %]</td><td></td></tr>
 [%    CASE 102 %]
-<tr><td>[% event.tstamp %]</td><td>IP</td><td>[% event.content %]</td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>[% msg.maketext("IP") %]</td><td>[% event.content %]</td><td></td></tr>
 [%    CASE ; %]
 <tr><td>[% event.tstamp %]</td><td>[% event.type %]</td><td>[% event.content %]</td><td></td></tr>
 [%    END %]

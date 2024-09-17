@@ -13,48 +13,48 @@
 -%]
 
 <div class="ob-jumbotron">
-          <h1 class="display-4">Die Web-Administration</h1>
+          <h1 class="display-4">[% msg.maketext("Die Web-Administration") %]</h1>
 
-<h3>Katalog- und Portalmanagement</h3>
+<h3>[% msg.maketext("Katalog- und Portalmanagement") %]</h3>
 
 <p>
-Kataloge werden in Portalen in folgender Reihenfolge definiert
+[% msg.maketext("Kataloge werden in Portalen in folgender Reihenfolge definiert") %]
 </p>
 
 <ol>
-<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %].html?l=[% lang %]">Anlegen des Standortes der Bibliothek anhand der ISIL</a></li>
-<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %].html?l=[% lang %]">Anlegen eines Katalogs der Bibliothek (Datenbank) und Zuordnung des dafür definierten Standortes</a></li>
-<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %].html?l=[% lang %]">Zuordnung des Katalogs zu einer Organisationseinheit in einem Katalog-Profil</a></li>
-<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %].html?l=[% lang %]">Anlegen eines Portals (View) f&uuml;r den Katalog anhand seines Katalog-Profils</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('locations_loc') %].html?l=[% lang %]">[% msg.maketext("Anlegen des Standortes der Bibliothek anhand der ISIL") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %].html?l=[% lang %]">[% msg.maketext("Anlegen eines Katalogs der Bibliothek (Datenbank) und Zuordnung des dafür definierten Standortes") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('profiles_loc') %].html?l=[% lang %]">[% msg.maketext("Zuordnung des Katalogs zu einer Organisationseinheit in einem Katalog-Profil") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('views_loc') %].html?l=[% lang %]">[% msg.maketext("Anlegen eines Portals (View) f&uuml;r den Katalog anhand seines Katalog-Profils") %]</a></li>
 </ol>
 
-<h3>Themengebiete und deren Mapping</h3>
+<h3>[% msg.maketext("Themengebiete und deren Mapping") %]</h3>
 
 <ul>
-<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% confi.get('topics_loc') %].html?l=[% lang %]">Anlegen von Themengebieten f&uuml;r Literaturlisten und Mapping zu BK sowie DBIS/EZB-Notationen</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% confi.get('topics_loc') %].html?l=[% lang %]">[% msg.maketext("Anlegen von Themengebieten f&uuml;r Literaturlisten und Mapping zu BK sowie DBIS/EZB-Notationen") %]</a></li>
 </ul>
 
 
-<h3>Cluster- und Servermanagement</h3>
+<h3>[% msg.maketext("Cluster- und Servermanagement") %]</h3>
 
 <ul>
-<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %].html?l=[% lang %]">Server f&uuml;r die OpenBib-Infrastruktur</a></li>
-<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %].html?l=[% lang %]">Cluster, zu denen die Server zugeordnet werden k&ouml;nnen</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %].html?l=[% lang %]">[% msg.maketext("Server f&uuml;r die OpenBib-Infrastruktur") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %].html?l=[% lang %]">[% msg.maketext("Cluster, zu denen die Server zugeordnet werden k&ouml;nnen") %]</a></li>
 </ul>
 
-<h3>Nutzer und Anmeldung</h3>
+<h3>[% msg.maketext("Nutzer und Anmeldung") %]</h3>
 
 <ul>
-<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %].html?l=[% lang %]">Nutzerverwaltung und -recherche</a></li>
-<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %].html?l=[% lang %]">Anmeldeverfahren (Selbstregistierung, Bibliothekssysteme)</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %].html?l=[% lang %]">[% msg.maketext("Nutzerverwaltung und -recherche") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %].html?l=[% lang %]">[% msg.maketext("Anmeldeverfahren (Selbstregistierung, Bibliothekssysteme)") %]</a></li>
 </ul>
 
-<h3>Betrieb</h3>
+<h3>[% msg.maketext("Betrieb") %]</h3>
 
 <ul>
-<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %].html?l=[% lang %]">Statisik</a></li>
-<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %].html?l=[% lang %]">Sessions</a></li>
-<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">Suchprofile</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('statistics_loc') %].html?l=[% lang %]">[% msg.maketext("Statisik") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('sessions_loc') %].html?l=[% lang %]">[% msg.maketext("Sessions") %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('searchprofiles_loc') %].html?l=[% lang %]">[% msg.maketext("Suchprofile") %]</a></li>
 </ul>
 
 </div>

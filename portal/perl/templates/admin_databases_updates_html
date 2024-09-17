@@ -40,14 +40,14 @@
 
 <p>
 
-<button class="btn btn-primary mb-2" id="imported_titles">Titel</button>
-<button class="btn btn-primary mb-2" id="duration_stage_convert">Konvertierung</button>
-<button class="btn btn-primary mb-2" id="duration_stage_convert_incremental">Konvertierung (inkr.)</button>
-<button class="btn btn-primary mb-2" id="duration_stage_load_db">Einladen SQL</button>
-<button class="btn btn-primary mb-2" id="duration_stage_load_db_incremental">Einladen SQL (inkr.)</button>
-<button class="btn btn-primary mb-2" id="duration_stage_load_index">Indexierung</button>
-<button class="btn btn-primary mb-2" id="duration_stage_load_index_incremental">Indexierung (inkr.)</button>
-<button class="btn btn-primary mb-2" id="duration_stage_update_enrichment">Update Anreicherungs-DB</button>
+<button class="btn btn-primary mb-2" id="imported_titles">[% msg.maketext("Titel") %]</button>
+<button class="btn btn-primary mb-2" id="duration_stage_convert">[% msg.maketext("Konvertierung") %]</button>
+<button class="btn btn-primary mb-2" id="duration_stage_convert_incremental">[% msg.maketext("Konvertierung (inkr.)") %]</button>
+<button class="btn btn-primary mb-2" id="duration_stage_load_db">[% msg.maketext("Einladen SQL") %]</button>
+<button class="btn btn-primary mb-2" id="duration_stage_load_db_incremental">[% msg.maketext("Einladen SQL (inkr.)") %]</button>
+<button class="btn btn-primary mb-2" id="duration_stage_load_index">[% msg.maketext("Indexierung") %]</button>
+<button class="btn btn-primary mb-2" id="duration_stage_load_index_incremental">[% msg.maketext("Indexierung (inkr.)") %]</button>
+<button class="btn btn-primary mb-2" id="duration_stage_update_enrichment">[% msg.maketext("Update Anreicherungs-DB") %]</button>
 </p>
 
 <p class="alert alert-info">
@@ -197,14 +197,14 @@ $(function () {
         grid: { hoverable: true, },
         tooltip: true,
         tooltipOpts: {
-           content: "%x: <b>%y Titel</b>",
+           content: "%x: <b>%y [% msg.maketext("Titel") %]</b>",
            defaultTheme: false,
         },
 
 
     };
     
-    $.plot($("#placeholder"), [{ data: d, label: "Bestandsentwicklung",}], options);
+    $.plot($("#placeholder"), [{ data: d, label: "[% msg.maketext("Bestandsentwicklung") %]",}], options);
 
     $("#imported_titles").click(function () {
 
@@ -225,13 +225,13 @@ $(function () {
            grid: { hoverable: true, },
            tooltip: true,
            tooltipOpts: {
-              content: "%x: <b>%y Titel</b>",
+              content: "%x: <b>%y [% msg.maketext("Titel") %]</b>",
               defaultTheme: false,
            },
 
        };
 
-       $.plot($("#placeholder"), [{ data: d, label: "Bestandsentwicklung",}], options);
+       $.plot($("#placeholder"), [{ data: d, label: "[% msg.maketext("Bestandsentwicklung") %]",}], options);
 
     });
     
@@ -250,7 +250,7 @@ $(function () {
           grid: { hoverable: true, },
           tooltip: true,
           tooltipOpts: {
-             content: "%x: <b>%y Dauer</b>",
+             content: "%x: <b>%y [% msg.maketext("Dauer") %]</b>",
              defaultTheme: false,
           },
       };
@@ -273,7 +273,7 @@ $(function () {
           grid: { hoverable: true, },
           tooltip: true,
           tooltipOpts: {
-             content: "%x: <b>%y Dauer</b>",
+             content: "%x: <b>%y [% msg.maketext("Dauer") %]</b>",
              defaultTheme: false,
           },
       };
@@ -296,7 +296,7 @@ $(function () {
           grid: { hoverable: true, },
           tooltip: true,
           tooltipOpts: {
-             content: "%x: <b>%y Dauer</b>",
+             content: "%x: <b>%y [% msg.maketext("Dauer") %]</b>",
              defaultTheme: false,
           },
       };
@@ -319,7 +319,7 @@ $(function () {
           grid: { hoverable: true, },
           tooltip: true,
           tooltipOpts: {
-             content: "%x: <b>%y Dauer</b>",
+             content: "%x: <b>%y [% msg.maketext("Dauer") %]</b>",
              defaultTheme: false,
           },
       };
@@ -342,7 +342,7 @@ $(function () {
           grid: { hoverable: true, },
           tooltip: true,
           tooltipOpts: {
-             content: "%x: <b>%y Dauer</b>",
+             content: "%x: <b>%y [% msg.maketext("Dauer") %]</b>",
              defaultTheme: false,
           },
       };
@@ -365,7 +365,7 @@ $(function () {
           grid: { hoverable: true, },
           tooltip: true,
           tooltipOpts: {
-             content: "%x: <b>%y Dauer</b>",
+             content: "%x: <b>%y [% msg.maketext("Dauer") %]</b>",
              defaultTheme: false,
           },
       };
@@ -388,7 +388,7 @@ $(function () {
           grid: { hoverable: true, },
           tooltip: true,
           tooltipOpts: {
-             content: "%x: <b>%y Dauer</b>",
+             content: "%x: <b>%y [% msg.maketext("Dauer") %]</b>",
              defaultTheme: false,
           },
       };

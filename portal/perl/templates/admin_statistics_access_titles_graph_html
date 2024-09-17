@@ -36,7 +36,7 @@
 
 [%  IF images.size > 0 %]
 <table class="table">
-<tr><th>Entwicklung der Einzeltrefferaufrufe nach Monaten eines Jahres</th></tr>
+<tr><th>[% msg.maketext("Entwicklung der Einzeltrefferaufrufe nach Monaten eines Jahres") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [%    FOREACH filename IN images %]
 <img src="[% filename %]" alt="[% msg.maketext("Diagramm") %]" />
@@ -67,7 +67,7 @@
 
 [%  IF images.size > 0 %]
 <table class="table">
-<tr><th>Entwicklung der Einzeltrefferaufrufe nach Tagen eines Monats</th></tr>
+<tr><th>[% msg.maketext("Entwicklung der Einzeltrefferaufrufe nach Tagen eines Monats") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [%   FOREACH filename IN images %]
 <img src="[% filename %]" alt="Diagramm" />

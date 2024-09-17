@@ -52,7 +52,7 @@
    serverids = config.get_serverids_of_cluster(clusterinfo.id);
 
 %]
-<h4>Inkonsistenzen zwischen den Servern dieses Clusters</h4>
+<h4>[% msg.maketext("Inkonsistenzen zwischen den Servern dieses Clusters") %]</h4>
 
 <div class="table-responsive text-nowrap">
 <table class="table table-striped ">

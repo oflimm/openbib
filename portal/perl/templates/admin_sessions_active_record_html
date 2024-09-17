@@ -25,7 +25,7 @@
 
 [% PROCESS common/subtemplate name="search_title_field" %] 
 
-<h3>Einzelne Session [% sid %]</h3>
+<h3>[% msg.maketext("Einzelne Session") %] [% sid %]</h3>
 
 [%# USE dumper;dumper.dump(events)%]
 <div class="table-responsive">
@@ -38,7 +38,7 @@
 [%  SWITCH event.type %]
 [%    CASE 1 %]
 [%       thissearchquery = event.content %]
-<tr><td>[% event.tstamp %]</td><td>Recherche</td><td>
+<tr><td>[% event.tstamp %]</td><td>[% msg.maketext("Recherche") %]</td><td>
 [%- used_fields = [] ;
     FOREACH field IN thissearchquery.keys ;
        fieldname    = field_map.${field};
@@ -48,19 +48,19 @@
      END;
 -%]
 <em>[% used_fields.join(' ; ') %]</em></a>
-</td><td>(Treffer: [% thissearchquery.hits %] / Suchprofil: <a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% thissearchquery.searchprofile %]">[% thissearchquery.searchprofile %]</a>)</td></tr>
+</td><td>([% msg.maketext("Treffer") %]: [% thissearchquery.hits %] / Suchprofil: <a href="[% path_prefix %]/[% config.get('searchprofiles_loc') %]/id/[% thissearchquery.searchprofile %]">[% thissearchquery.searchprofile %]</a>)</td></tr>
 [%    CASE 10 %]
-<tr><td>[% event.tstamp %]</td><td>Einzeltreffer</td><td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% event.content.database %]/[% config.get('titles_loc') %]/id/[% event.content.id %]">[% event.content.id %] in [% event.content.database %]</a></td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>[% msg.maketext("Einzeltreffer") %]</td><td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% event.content.database %]/[% config.get('titles_loc') %]/id/[% event.content.id %]">[% event.content.id %] in [% event.content.database %]</a></td><td></td></tr>
 [%    CASE 21 %]
-<tr><td>[% event.tstamp %]</td><td>Such-Backend</td><td>[% event.content %]</td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>[% msg.maketext("Such-Backend") %]</td><td>[% event.content %]</td><td></td></tr>
 [%    CASE 23 %]
-<tr><td>[% event.tstamp %]</td><td>Suchprofil</td><td>[% event.content %]</td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>[% msg.maketext("Suchprofil") %]</td><td>[% event.content %]</td><td></td></tr>
 [%    CASE 100 %]
-<tr><td>[% event.tstamp %]</td><td>View</td><td>[% event.content %]</td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>[% msg.maketext("View") %]</td><td>[% event.content %]</td><td></td></tr>
 [%    CASE 101 %]
-<tr><td>[% event.tstamp %]</td><td>Browser</td><td>[% event.content %]</td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>[% msg.maketext("Browser") %]</td><td>[% event.content %]</td><td></td></tr>
 [%    CASE 102 %]
-<tr><td>[% event.tstamp %]</td><td>IP</td><td>[% event.content %]</td><td></td></tr>
+<tr><td>[% event.tstamp %]</td><td>[% msg.maketext("IP") %]</td><td>[% event.content %]</td><td></td></tr>
 [%    CASE ; %]
 <tr><td>[% event.tstamp %]</td><td>[% event.type %]</td><td>[% event.content %]</td><td></td></tr>
 [%    END %]

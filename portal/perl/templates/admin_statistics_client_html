@@ -36,13 +36,13 @@
 [% IF allcount.number %]
 <div class="table-responsive">
 <table class="table table-striped ">
-<tr><th>Bibliothek</th><td><b>[% ubcount %]</b> </td><td>([% ubcount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
-<tr><th>Universit&auml;t</th><td><b>[% unicount %]</b> </td><td>([% unicount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
-<tr><th>Extern</th><td><b>[% externcount %]</b> </td><td>([% externcount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
+<tr><th>[% msg.maketext("Bibliothek") %]</th><td><b>[% ubcount %]</b> </td><td>([% ubcount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
+<tr><th>[% msg.maketext("Universit&auml;t") %]</th><td><b>[% unicount %]</b> </td><td>([% unicount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
+<tr><th>[% msg.maketext("Extern") %]</th><td><b>[% externcount %]</b> </td><td>([% externcount * 100 / allcount.number | format("%.3f") %]) Prozent </td></tr>
 </table>
 </div>
 [% ELSE %]
-Es liegen keine Daten vor
+[% msg.maketext("Es liegen keine Daten vor") %]
 [% END %]
 
 <p />

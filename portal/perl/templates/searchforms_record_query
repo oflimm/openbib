@@ -181,12 +181,12 @@
  -%]
 <div class="form-floating mb-3">
 <select class="form-select" id="[% cgiparam %]" name="[% cgiparam %]">
-<option value="" selected="selected">Keiner ausgewählt</option>
-<option value="Aufsatz">Aufsatz</option>
-<option value="Digital">Digital</option>
-<option value="Hochschulschrift">Hochschulschrift</option>
-<option value="Online Kurs-Video">Online Kurs-Video</option>
-<option value="Zeitschrift/Serie">Zeitschrift/Serie</option>
+<option value="" selected="selected">[% msg.maketext("Keiner ausgewählt") %]</option>
+<option value="Aufsatz">[% msg.maketext("Aufsatz") %]</option>
+<option value="Digital">[% msg.maketext("Digital") %]</option>
+<option value="Hochschulschrift">[% msg.maketext("Hochschulschrift") %]</option>
+<option value="Online Kurs-Video">[% msg.maketext("Online Kurs-Video") %]</option>
+<option value="Zeitschrift/Serie">[% msg.maketext("Zeitschrift/Serie") %]</option>
 </select>
 <label for="[% cgiparam %]">[% msg.maketext("Typ") %]</label>
 </div>
@@ -224,7 +224,7 @@
  -%]
 <div class="form-floating mb-3">
 <select class="form-select" id="[% cgiparam %]" name="[% cgiparam %]">
-<option value="" selected="selected">Keines ausgewählt</option>
+<option value="" selected="selected">[% msg.maketext("Keines ausgewählt") %]</option>
 [% FOREACH topic IN user.get_topics %]
 <option value="[% topic.id %]">[% topic.name %]</option>
 [% END %]

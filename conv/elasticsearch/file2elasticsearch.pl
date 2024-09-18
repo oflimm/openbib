@@ -168,7 +168,7 @@ my $atime = new Benchmark;
                 my $resulttime = timestr($timeall,"nop");
                 $resulttime    =~s/(\d+\.\d+) .*/$1/;
                 $atime         = new Benchmark;
-                $logger->info("$database: 1000 ($count) Saetze indexiert in $resulttime Sekunden");
+                $logger->info("$database (ES): 1000 ($count) Saetze indexiert in $resulttime Sekunden");
             }
 
             $count++;
@@ -196,7 +196,7 @@ my $timeall    = timediff($btime,$atime);
 my $resulttime = timestr($timeall,"nop");
 $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
-$logger->info("Gesamtzeit: $resulttime Sekunden");
+$logger->info("Gesamtzeit (ES): $resulttime Sekunden");
 
 sub print_help {
     print << "ENDHELP";

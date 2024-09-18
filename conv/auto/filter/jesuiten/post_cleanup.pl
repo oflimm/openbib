@@ -47,7 +47,8 @@ my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->s
 my $filename      = $dbinfo->titlefile;
 
 print "### $pool: Metriken erstellen und cachen\n";
-system("/opt/openbib/bin/gen_metrics.pl --database=jesuiten --type=14 --field=4307");
-system("/opt/openbib/bin/gen_metrics.pl --database=jesuiten --type=14 --field=4308");
-system("/opt/openbib/bin/gen_metrics.pl --database=jesuiten --type=14 --field=470");
-system("/opt/openbib/bin/gen_metrics.pl --database=jesuiten --type=14 --field=471");
+system("/opt/openbib/bin/gen_metrics.pl --database=jesuiten --type=14 --field=4307:a --scheme=marc21");
+system("/opt/openbib/bin/gen_metrics.pl --database=jesuiten --type=14 --field=4308:a --scheme=marc21");
+system("/opt/openbib/bin/gen_metrics.pl --database=jesuiten --type=14 --field=4316:a --scheme=marc21");
+system("/opt/openbib/bin/gen_metrics.pl --database=jesuiten --type=14 --field=264:a --scheme=marc21");
+system("/opt/openbib/bin/gen_metrics.pl --database=jesuiten --type=14 --field=264:b --scheme=marc21");

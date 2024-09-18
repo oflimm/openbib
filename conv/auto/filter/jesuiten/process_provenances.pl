@@ -145,11 +145,22 @@ while (<>){
 		content  => $reference,
 	    } if ($reference);
 
-	    push @{$fields_ref->{'4314'}}, {
-		subfield => 'a',
-		mult     => $mult,
-		content  => $former_mark,
-	    } if ($former_mark);
+	    if ($former_mark){
+		push @{$fields_ref->{'4314'}}, {
+		    subfield => 'a',
+		    mult     => $mult,
+		    content  => $former_mark,
+		};
+
+		# Signaturlose Historische Systematik in 4314$b vereinigen
+		if ($former_mark =~m/^(.+?)\s*\;.+?$/ || $former_mark =~m/^(.+?)\s*[A-Z][A-Z]*?\d+$/){
+		    push @{$fields_ref->{'4314'}}, {
+			content => $1,
+			subfield => 'b',
+			mult => $mult,
+		    };
+		}
+	    }
 
 	    push @{$fields_ref->{'4315'}}, {
 		subfield => 'a',

@@ -36,7 +36,7 @@
        field_description = msg.maketext("Zugangsjahr");
        searchfield = 'ft4316' ;
     ELSIF field == '0041:a' ;
-       field_description = msg.maketext("T${field}");
+       field_description = msg.maketext("Sprache");
        searchfield = 'languagestring' ;
     ELSE ;
        field_description = msg.maketext("T${field}");

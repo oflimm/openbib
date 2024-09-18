@@ -24,25 +24,47 @@
  <ul class="navbar-nav">
 [% IF config.datacache_exists({ id => database, type => 9 }) %]
 [%   IF layout_param.active_submenu == "clouds_year" %]
-  <li class="navbar-item active"><strong>[% msg.maketext("Jahr") %]</strong></li>
+  <li class="navbar-item active"><strong>[% msg.maketext("Erscheinungsjahr") %]</strong></li>
 [%   ELSE %]
-   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
+   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="Jahr">[% msg.maketext("Erscheinungsjahr") %]</a></li>
 [%   END %]
 [% END %]
-[% IF config.datacache_exists({ id => database, type => 6 }) %]
-[%   IF layout_param.active_submenu == "clouds_person" %]
-  <li class="navbar-item active"><strong>[% msg.maketext("Personen") %]</strong></li>
+[% IF config.datacache_exists({ id => "jesuiten-4316", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_yearofaddition" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Zugangsjahr") %]</strong></li>
 [%   ELSE %]
-   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/person.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/yearofaddition.html?l=[% lang %]" title="[% msg.maketext("Zugangsjahr") %]">[% msg.maketext("Zugangsjahr") %]</a></li>
 [%   END %]
 [% END %]
-[% IF config.datacache_exists({ id => database, type => 3 }) %]
-[%   IF layout_param.active_submenu == "clouds_subject" %]
-  <li class="navbar-item active"><strong>[% msg.maketext("Schlagwort") %]</strong></li>
+[% IF config.datacache_exists({ id => "jesuiten-264:a", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_placeofpublication" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Erscheinungsort") %]</strong></li>
 [%   ELSE %]
-   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/placeofpublication.html?l=[% lang %]" title="[% msg.maketext("Erscheinungsort") %]">[% msg.maketext("Erscheinungsort") %]</a></li>
 [%   END %]
-[% END %]
+[% END %]   
+[% IF config.datacache_exists({ id => "jesuiten-264:b", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_publisherprinter" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Verlag/Drucker") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/publisherprinter.html?l=[% lang %]" title="[% msg.maketext("Verlag/Drucker") %]">[% msg.maketext("Verlag/Drucker") %]</a></li>
+[%   END %]
+[% END %]   
+[% IF config.datacache_exists({ id => "jesuiten-4308:a", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_provenanceperson" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Provenienz/Person") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/provenanceperson.html?l=[% lang %]" title="[% msg.maketext("Provenienz/Person") %]">[% msg.maketext("Provenienz/Person") %]</a></li>
+[%   END %]
+[% END %]   
+[% IF config.datacache_exists({ id => "jesuiten-4307:a", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_provenancecorporatebody" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Provenienz/Körperschaft") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/provenancecorporatebody.html?l=[% lang %]" title="[% msg.maketext("Provenienz/Körperschaft") %]">[% msg.maketext("Provenienz/Körperschaft") %]</a></li>
+[%   END %]
+[% END %]   
+
 </ul>
 </nav>
 

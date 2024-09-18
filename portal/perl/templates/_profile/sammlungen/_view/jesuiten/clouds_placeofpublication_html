@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [%
-      funcargs = { id => "jesuiten-0470", type => 14 } ;
+      funcargs = { id => "jesuiten-264:a", type => 14 } ;
       resultlist = config.get_datacache(funcargs);
 %]
 
@@ -24,6 +24,9 @@
 %]
 
 <h3>[% msg.maketext("Erscheinungsorte") %]</h3>
+
+<div class="row">
+<div class="col-md-9">
 
 <div class="card">
 
@@ -53,6 +56,8 @@
    itemcount = thisitem.count;
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
+
+   item      = item.replace('&amp;','&');
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel haben den Erscheinungsort</span><a href="[% path_prefix %]/[% config.get('search_loc') %]?page=1;[% IF default_query_options %][% default_query_options %];[% END %]profile=[% config.get_searchprofile_of_database(database) %];[% searchprefix %]=[% uri_escape(item) %]" class="tag" title="[% itemcount %] Titel haben den Erscheinungsort [% item %]">[% item %]</a></li>
 [% END %]
@@ -62,3 +67,15 @@
 [% END %]
 </div>
 </div>
+
+</div><!-- col-md-9 -->
+
+<div class="col-md-3 d-none d-md-block">
+
+[% PROCESS common/subtemplate name=layout_param.sidebar_template %]
+
+</div><!-- col-md-6 -->
+
+</div>
+
+<button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>

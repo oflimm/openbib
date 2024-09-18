@@ -85,6 +85,9 @@
 [% FOREACH item IN browselist %]
 [%
 
+
+    item      = item.replace('&amp;','&');
+
     itemdesc = item;
     
     IF searchfield == "ft4314" ;

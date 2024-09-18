@@ -1,0 +1,39 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_advance
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Erweiterten Suchmaske
+#
+#######################################################################
+-%]
+[%-
+
+   session_sort = "year_desc";
+   IF qopts.get_option('srt') && NOT qopts.get_option('srt').match('_') && qopts.get_option('srto') ;
+     session_sort = "${qopts.get_option('srt')}_${qopts.get_option('srto')}";
+   END;
+
+-%]
+
+
+[% PROCESS common/subtemplate name="searchforms_suggestions" %]
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+<input type="hidden" name="l"          value="[% lang %]" />
+<input type="hidden" name="num"        value="20" />
+<input type="hidden" name="page"       value="1" />
+
+<input type="hidden" name="srt"        value="[% session_sort %]" />
+<input type="hidden" name="st"         value="2" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+
+[% PROCESS common/subtemplate name="searchforms_record_query" %]
+
+</form>
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Erweiterte Suche") %]</div>

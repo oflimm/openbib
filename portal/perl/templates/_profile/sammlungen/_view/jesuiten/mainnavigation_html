@@ -209,8 +209,8 @@
 [% PROCESS common/subtemplate name="searchforms_suggestions" %]
 
 [% IF NOT suppress_unauthorized && NOT layout_param.without_navigation_search %]
-<div id="ob-mainnavigation_searchbar" class="mb-3">
-<div class="card border-0 sticky-top" style="min-width: 100%!important;">
+<div id="ob-mainnavigation_searchbar" class="mb-3 sticky-top">
+<div class="card border-0" style="min-width: 100%!important;">
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
 

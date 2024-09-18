@@ -144,14 +144,14 @@ if ($scheme && $scheme eq "marc21"){
     $is_person_field_ref = {
 	'0100' => 1,
 	    '0700' => 1,
-	    '4308' => 1,
+#	    '4308' => 1,
     };
     
     $is_corporatebody_field_ref = {
 	'0110' => 1,
 	    '0111' => 1,
 	    '0710' => 1,
-	    '4307' => 1,
+#	    '4307' => 1,
     };
     
     $is_classification_field_ref = {
@@ -1156,7 +1156,7 @@ if ($type == 14 && $field){
     }
     
     foreach my $database (@databases){
-        $logger->info("Generating Type 14 metrics for database $database in field $field");
+        $logger->info("Generating Type 14 metrics for database $database in field $field and subfield $subfield");
 
         my $maxcount=0;
 	my $mincount=999999999;
@@ -1241,7 +1241,7 @@ if ($type == 14 && $field){
 	    };
 
 	    if ($subfield){
-	       $where_ref->{'subfield'} = $subfield;
+	       $where_ref->{'title_fields.subfield'} = $subfield;
 	    }      				  
 
 	    $usage = $catalog->get_schema->resultset('Title')->search_rs( # 
@@ -1255,14 +1255,13 @@ if ($type == 14 && $field){
 		    rows     => $num,
 		}
 		);
-	    
         }
 	
 	if ($usage){
 	    foreach my $item ($usage->all){
 		my $content = $item->get_column('thiscontent');
 		my $count   = $item->get_column('titlecount');
-		
+
 		if ($maxcount < $count){
 		    $maxcount = $count;
 		}
@@ -1276,6 +1275,7 @@ if ($type == 14 && $field){
 		    count => $count,
 		};
 	    }
+
 	}
 
 	$metrics_ref = gen_cloud_class({

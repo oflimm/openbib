@@ -90,9 +90,7 @@
 
     itemdesc = item;
     
-    IF searchfield == "ft4314" ;
-       item = "${item}*";
-    ELSIF searchfield == "languagestring" ;
+    IF searchfield == "languagestring" ;
 
        spr_tmp = item.split(';');
        spr = [ ];

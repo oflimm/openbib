@@ -20,7 +20,7 @@
     ELSIF field == '0264:b' ;
        field_description = msg.maketext("Verlag/Drucker");
        searchfield = 'publisherstring' ;
-    ELSIF field == '0472' ;
+    ELSIF field == '4314:b' ;
        field_description = msg.maketext("Historische Systematik");
        searchfield = 'ft4314' ;
     ELSIF field == '4307:a' ;
@@ -32,7 +32,7 @@
     ELSIF field == '0264:c' ;
        field_description = msg.maketext("Erscheinungsjahr");
        searchfield = 'yearstring' ;
-    ELSIF field == '4316' ;
+    ELSIF field == '4316:a' ;
        field_description = msg.maketext("Zugangsjahr");
        searchfield = 'ft4316' ;
     ELSIF field == '0041:a' ;

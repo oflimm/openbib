@@ -201,15 +201,12 @@
   </div>
 </nav>
 
-    [% IF not suppress_unauthorized %]
-    [% PROCESS common/subtemplate name="breadcrumbs" %] 
-    [% END %]
 </header>
 
 [% PROCESS common/subtemplate name="searchforms_suggestions" %]
 
 [% IF NOT suppress_unauthorized && NOT layout_param.without_navigation_search %]
-<div id="ob-mainnavigation_searchbar" class="mb-3 sticky-top">
+<div id="ob-mainnavigation_searchbar" class="sticky-top">
 <div class="card border-0" style="min-width: 100%!important;">
 
 <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
@@ -254,4 +251,9 @@
 </div><!-- End: sticky-top -->
 </div><!-- End: d-md-none -->
 [% END # End: suppress_unauthorized %]
+
+    [% IF not suppress_unauthorized %]
+    [% PROCESS common/subtemplate name="breadcrumbs" %] 
+    [% END %]
+
     <!-- end: main navigation -->

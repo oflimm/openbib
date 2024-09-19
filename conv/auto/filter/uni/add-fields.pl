@@ -168,6 +168,43 @@ while (<>){
     my $title_ref = decode_json $_;
 
     my $titleid = $title_ref->{id};
+
+    # Anreichern von 1008 $a mit vierstelliger Jahreszahl aus 260/264 $c, wenn 1008 $a nicht mit Jahreszahl besetzt.
+
+    my $year_from_26x = "";
+
+    if (defined $title_ref->{fields}{'0260'}){
+	foreach my $item_ref (@{$title_ref->{fields}{'0260'}}){
+	    if ($item_ref->{subfield} eq 'c' && $item_ref->{content} =~m/(\d\d\d\d)/){
+		$year_from_26x = $1;
+		last;
+	    }
+	}
+    }
+
+    if (!$year_from_26x && defined $title_ref->{fields}{'0264'}){
+	foreach my $item_ref (@{$title_ref->{fields}{'0264'}}){
+	    if ($item_ref->{subfield} eq 'c' && $item_ref->{content} =~m/(\d\d\d\d)/){
+		$year_from_26x = $1;
+		last;
+	    }
+	}
+    }
+
+    if ($year_from_26x && defined $title_ref->{fields}{'1008'}){
+	foreach my $item_ref (@{$title_ref->{fields}{'1008'}}){
+	    if ($item_ref->{subfield} eq 'a' && $item_ref->{content} !~m/\d\d\d\d/){
+		$item_ref->{content} = $year_from_26x;
+	    }
+	}
+    }
+    elsif ($year_from_26x && !defined $title_ref->{fields}{'1008'}){
+	push @{$title_ref->{fields}{'1008'}}, {
+	    mult => 1,
+	    subfield => 'a',
+	    content => $year_from_26x,	    
+	};
+    }
     
     ### KMB-Medientypen zusaetzlich vergeben
 

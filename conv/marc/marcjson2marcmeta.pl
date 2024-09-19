@@ -270,6 +270,31 @@ while (<DAT>){
 		    mult     => 1,
 		};
 
+		# Einzelinhalte aus 008 in 1008 duplizieren
+		if ($field eq '008'){
+		    my $date1 = substr($field_ref->{'008'},7,4);
+		    my $date2 = substr($field_ref->{'008'},11,4);
+		    my $lang  = substr($field_ref->{'008'},35,3);
+		    
+		    push @{$title_ref->{'fields'}{'1008'}}, {
+			subfield => 'a', 
+			content  => $date1,
+			mult     => 1,
+		    };
+		    
+		    push @{$title_ref->{'fields'}{'1008'}}, {
+			subfield => 'b', 
+			content  => $date2,
+			mult     => 1,
+		    };
+
+		    push @{$title_ref->{'fields'}{'1008'}}, {
+			subfield => 'l', 
+			content  => $lang,
+			mult     => 1,
+		    };
+		}
+		
 		next;
 	    }
 	    

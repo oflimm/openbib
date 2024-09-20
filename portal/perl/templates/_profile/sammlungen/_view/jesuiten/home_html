@@ -108,7 +108,7 @@
 	  <p class="card-text">[% msg.maketext("Hier in die Sammlung einsteigen: Register zu verschiedenen Kategorien rund um die Jesuitenbibliothek!") %]</p>
 	</div>
 	<div class="card-footer pb-3">
-	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('titles_loc') %]/fields/id/0100:a.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
 	</div>
       </div>
     </div>

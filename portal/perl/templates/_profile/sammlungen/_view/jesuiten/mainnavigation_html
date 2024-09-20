@@ -71,7 +71,7 @@
       <ul class="list-unstyled components">
 
         <li class="nav-item">
-	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/alekiddr/[% config.get('titles_loc') %]/fields/id/0100.html?l=[% lang %]">
+	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/alekiddr/[% config.get('titles_loc') %]/fields/id/0100:a.html?l=[% lang %]">
             <i class="fas fa-list"></i> [% msg.maketext("Register") %]
 	    
           </a>

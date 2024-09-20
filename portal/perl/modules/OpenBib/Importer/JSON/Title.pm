@@ -1827,36 +1827,59 @@ sub process_marc {
     }
 
     # Jahreszahlen umwandeln
-    if (defined $fields_ref->{'0260'} || defined $fields_ref->{'0264'}) {        
+    if (defined $fields_ref->{'0260'} || defined $fields_ref->{'0264'} || defined $fields_ref->{'1008'}) {        
         my $array_ref=[];
 
         if (exists $self->{storage}{listitemdata_enriched_years}{$id}){
             $array_ref = $self->{storage}{listitemdata_enriched_years}{$id};
         }
 
-	foreach my $field ('0260','0264'){
-	    foreach my $item_ref (@{$fields_ref->{$field}}){
-		if ($item_ref->{subfield} eq "c"){
-		    my $date = $item_ref->{content};
-		    
-		    if ($date =~/^(-?\d+)\s*-\s*(-?\d+)/) {
-			my $startyear = $1;
-			my $endyear   = $2;
+	my $current_year = (localtime)[5] + 1900;
+	my $date1 = 0;
+	my $date2 = 0;
+	
+	foreach my $item_ref (@{$fields_ref->{'1008'}}){
+	    if ($item_ref->{subfield} eq "a"){
+		$date1 = $item_ref->{content};
+	    }
+	    elsif ($item_ref->{subfield} eq "b"){
+		$date2 = $item_ref->{content};
+	    }
+	}
+
+	if ($date1 && $date2 && $date1 < $date2){
+	    $date2 = $current_year if ($date2 eq "9999" || $date2 eq "uuuu");
+
+	    $logger->debug("Expanding year in 008/1008 from $date1 to $date2");
+	    for (my $year=$date1;$year<=$date2; $year++) {
+		$logger->debug("Adding year $year");
+		push @$array_ref, $year;
+	    }
+	}
+	else {
+	    foreach my $field ('0260','0264'){
+		foreach my $item_ref (@{$fields_ref->{$field}}){
+		    if ($item_ref->{subfield} eq "c"){
+			my $date = $item_ref->{content};
 			
-			$logger->debug("Expanding yearstring $date from $startyear to $endyear");
-			for (my $year=$startyear;$year<=$endyear; $year++) {
-			    $logger->debug("Adding year $year");
-			    push @$array_ref, $year;
+			if ($date =~/^(-?\d+)\s*-\s*(-?\d+)/) {
+			    my $startyear = $1;
+			    my $endyear   = $2;
+			    
+			    $logger->debug("Expanding yearstring $date in 26x from $startyear to $endyear");
+			    for (my $year=$startyear;$year<=$endyear; $year++) {
+				$logger->debug("Adding year $year");
+				push @$array_ref, $year;
+			    }
 			}
-		    }
-		    else {
-			$logger->debug("Not expanding $date, just adding year");
-			push @$array_ref, $date;
+			else {
+			    $logger->debug("Not expanding $date, just adding year");
+			    push @$array_ref, $date;
+			}
 		    }
 		}
 	    }
-	}
-        
+        }
         $self->{storage}{listitemdata_enriched_years}{$id}=$array_ref;
     }
 
@@ -2603,8 +2626,8 @@ sub process_marc {
     my $create_tstamp = "1970-01-01 12:00:00";
     
     if (defined $fields_ref->{'0008'} && defined $fields_ref->{'0008'}[0]) {
-	my $date = substr($fields_ref->{'0008'}[0]{content},0,6);
-
+	my $date      = substr($fields_ref->{'0008'}[0]{content},0,6);
+	
 	my ($year,$month,$day) = $date =~m/^(\d\d)(\d\d)(\d\d)$/;
 	if ($day && $month && $year){
 	    $year = ($year < 70)?$year + 2000:$year + 1900;

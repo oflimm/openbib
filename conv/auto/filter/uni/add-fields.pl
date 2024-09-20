@@ -191,14 +191,19 @@ while (<>){
 	}
     }
 
+    my $field_1008_has_a = 0;
+    
     if ($year_from_26x && defined $title_ref->{fields}{'1008'}){
 	foreach my $item_ref (@{$title_ref->{fields}{'1008'}}){
-	    if ($item_ref->{subfield} eq 'a' && $item_ref->{content} !~m/\d\d\d\d/){
-		$item_ref->{content} = $year_from_26x;
+	    if ($item_ref->{subfield} eq 'a'){
+		$field_1008_has_a = 1;
+		if ($item_ref->{content} !~m/\d\d\d\d/){
+		    $item_ref->{content} = $year_from_26x;
+		}
 	    }
 	}
     }
-    elsif ($year_from_26x && !defined $title_ref->{fields}{'1008'}){
+    elsif ($year_from_26x && (!$field_1008_has_a || !defined $title_ref->{fields}{'1008'})){
 	push @{$title_ref->{fields}{'1008'}}, {
 	    mult => 1,
 	    subfield => 'a',

@@ -569,8 +569,12 @@
      END;
      # USE dumper;dumper.dump(original_lang_fields);
      # Ejahr konstruieren
-     yearofpub = item.${'T0264'}.first.${'c'};
+     yearofpub = item.${'T0264'}.first.${'c'} ;
 
+     IF NOT yearofpub && item.${'T0260'}.first.${'c'};
+       yearofpub = item.${'T0260'}.first.${'c'};
+     END;
+     
      original_yearofpub = "";
      FOREACH original_language IN original_lang_fields.keys;
         IF original_lang_fields.${original_language}.${'T0264'};

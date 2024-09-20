@@ -280,13 +280,13 @@ while (<DAT>){
 			subfield => 'a', 
 			content  => $date1,
 			mult     => 1,
-		    };
+		    } if ($date1 =~m/\d\d\d\d/);
 		    
 		    push @{$title_ref->{'fields'}{'1008'}}, {
 			subfield => 'b', 
 			content  => $date2,
 			mult     => 1,
-		    };
+		    } if ($date2 =~m/\d\d\d\d/);
 
 		    push @{$title_ref->{'fields'}{'1008'}}, {
 			subfield => 'l', 

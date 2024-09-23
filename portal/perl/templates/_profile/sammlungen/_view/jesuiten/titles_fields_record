@@ -17,12 +17,9 @@
     ELSIF field == '0751:a' ;
        field_description = msg.maketext("Erscheinungsort");
        searchfield = 'placestring' ;
-    ELSIF field == '0700:a' ;
-       field_description = msg.maketext("Person/Drucker");
-       searchfield = 'personstring' ;
-    ELSIF field == '0710:a' ;
-       field_description = msg.maketext("Körperschaft/Drucker");
-       searchfield = 'corporatebodystring' ;
+    ELSIF field == '1199:a' ;
+       field_description = msg.maketext("Verlag/Drucker");
+       searchfield = 'publisherstring' ;
     ELSIF field == '4314:b' ;
        field_description = msg.maketext("Historische Systematik");
        searchfield = 'ft4314' ;

@@ -237,9 +237,7 @@
   </ul>
 </div>
 [% ELSE %]
-<div class="d-none d-md-block">
 <a target="_blank" class="btn btn-primary mt-2" href="[% campusgis_url %]?lang=de&view=2d&building=107&floor=OG1&shelf=[% shelfid %]"><i class="fas fa-route pe-2"></i> [% msg.maketext("Weg zum Buch") %]</a>
-</div>
 [% END %]
 
 [% END %]

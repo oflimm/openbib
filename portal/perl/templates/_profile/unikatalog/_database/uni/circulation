@@ -231,8 +231,8 @@
   </a>
 
   <ul class="dropdown-menu">
-    <li><a class="dropdown-item" target="_blank" href="[% campusgis_url %]?lang=de&view=2d&building=107&floor=OG1&shelf=[% shelfid %]">Web: CampusGIS</a></li>
-    <li><a class="dropdown-item" target="_blank" href="virtualcampus://katalog.ub.uni-koeln.de/booknavigation?building=107&floor=OG1&shelf=[% shelfid %]">App: VirtualCampus</a></li>
+    <li><a class="dropdown-item" target="_blank" href="[% campusgis_url %]?lang=de&view=2d&building=107&floor=OG1&shelf=[% shelfid %]"><i class="fas fa-globe pe-2"></i> Web: CampusGIS</a></li>
+    <li><a class="dropdown-item" target="_blank" href="virtualcampus://katalog.ub.uni-koeln.de/booknavigation?building=107&floor=OG1&shelf=[% shelfid %]"><i class="fas fa-mobile-alt pe-2" style="margin-left:2px;"></i> App: VirtualCampus</a></li>
   </ul>
 </div>
 <!--

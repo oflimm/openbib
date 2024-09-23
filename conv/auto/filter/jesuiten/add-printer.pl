@@ -22,7 +22,7 @@ while (<>){
 	}
 
 	foreach my $mult (keys %{$field_ref}){
-	    next unless ($field_ref->{$mult}{'4'} eq 'prt' || $field_ref->{$mult}{'4'} eq 'publ');
+	    next unless ($field_ref->{$mult}{'4'} =~m/prt/ || $field_ref->{$mult}{'4'} =~m/pbl/);
 
 	    push @{$title_ref->{fields}{'1199'}}, {
 		mult     => $prt_mult++,

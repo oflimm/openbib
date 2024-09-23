@@ -292,7 +292,7 @@ while (<DAT>){
 			subfield => 'l', 
 			content  => $lang,
 			mult     => 1,
-		    };
+		    } if ($lang =~m/[a-z][a-z][a-z]/);
 		}
 		
 		next;

@@ -225,6 +225,7 @@
 [% IF shelfid && config.get('campusgis_testuser').${username} && NOT disable_campusgis %]
 <br/>
 
+[% IF browser.mobile %]
 <div class="dropdown dropend">
   <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <i class="fas fa-route pe-2"></i> [% msg.maketext("Weg zum Buch") %]
@@ -235,14 +236,12 @@
     <li><a class="dropdown-item" target="_blank" href="virtualcampus://katalog.ub.uni-koeln.de/booknavigation?building=107&floor=OG1&shelf=[% shelfid %]"><i class="fas fa-mobile-alt pe-2" style="margin-left:2px;"></i> App: VirtualCampus</a></li>
   </ul>
 </div>
-<!--
+[% ELSE %]
 <div class="d-none d-md-block">
 <a target="_blank" class="btn btn-primary mt-2" href="[% campusgis_url %]?lang=de&view=2d&building=107&floor=OG1&shelf=[% shelfid %]"><i class="fas fa-route pe-2"></i> [% msg.maketext("Weg zum Buch") %]</a>
 </div>
-<div class="d-block d-md-none">
-<a target="_blank" class="btn btn-primary mt-2" href="virtualcampus://katalog.ub.uni-koeln.de/booknavigation?building=107&floor=OG1&shelf=[% shelfid %]"><i class="fas fa-route pe-2"></i> [% msg.maketext("Weg zum Buch") %]</a>
-</div>
--->
+[% END %]
+
 [% END %]
 </td>
 <td>

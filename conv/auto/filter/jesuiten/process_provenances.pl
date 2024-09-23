@@ -160,6 +160,13 @@ while (<>){
 			mult => $mult,
 		    };
 		}
+		else {
+		    push @{$fields_ref->{'4314'}}, {
+			subfield => 'b',
+			mult     => $mult,
+			content  => $former_mark,
+		    };
+		}
 	    }
 
 	    push @{$fields_ref->{'4315'}}, {

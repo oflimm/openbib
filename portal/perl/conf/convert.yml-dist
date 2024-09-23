@@ -1949,6 +1949,11 @@ convtab:
             'yearstring': 1
           facet:
             'year': 1
+      '1199': # jesuiten: Printer/Verlag aus 700 und 710
+        'a': # EST
+          index:
+            'publisher': 1
+            'publisherstring': 1
       '1942': 
         'a': # GND Anreicherung: Verweisungsform Person
           index:

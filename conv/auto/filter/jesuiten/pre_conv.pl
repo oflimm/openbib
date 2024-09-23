@@ -48,7 +48,7 @@ my $konvdir       = $config->{'conv_dir'};
 
 print "### $pool: Erweiterung um Zugriffsinformation online, Typ Digital und Themengebiet \n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl |  $rootdir/filter/$pool/add-printer.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Erweiterung um Standortinformationen, weiteres Processing - Stage 1\n";
 

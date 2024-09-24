@@ -392,7 +392,7 @@ $(document).ready(function(){
 
 [% provenances = record.get_provenances(msg) %]
 
-[% PROCESS common/subtemplate name="provenances" %]
+[% PROCESS common/subtemplate name="provenances" with_modal=1 %]
 
 </div>
 

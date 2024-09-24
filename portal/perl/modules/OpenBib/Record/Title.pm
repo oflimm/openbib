@@ -4014,6 +4014,8 @@ sub to_custom_field_scheme_1 {
     # Umwandlung des ggf. z.B. bereits mit MARC21 (Sub)Feldern gefuellten Internformats
     # in ein besser in den Templates auswertbares Daten-Schema
     #
+    # Multiple Subfeldinhalte werden mit Leerzeichen zusammengefasst
+    #
     # Beispiel:
 
     # my $example_ref = {
@@ -4065,8 +4067,13 @@ sub to_custom_field_scheme_1 {
 
 		    if (defined $item_ref->{mult} && defined $item_ref->{subfield} && $item_ref->{content}){
 			$item_ref->{content} =~s{\s*[,:./]\s*$}{} if ($fieldname=~m/(T0245|T0250|T0264|T0300)/); # Cleanup MARC21 junk
-			
-			$tmp_scheme_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content};
+
+			if (!defined $tmp_scheme_ref->{$item_ref->{mult}}{$item_ref->{subfield}}){
+			    $tmp_scheme_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content};
+			}
+			else {
+			    $tmp_scheme_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $tmp_scheme_ref->{$item_ref->{mult}}{$item_ref->{subfield}}." ".$item_ref->{content};
+			}
 		    }
 		}
 	    }

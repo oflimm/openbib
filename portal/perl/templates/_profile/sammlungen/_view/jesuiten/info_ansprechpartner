@@ -18,6 +18,8 @@
     };
 -%]
 [%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="info_ansprechpartner_include" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

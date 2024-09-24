@@ -52,4 +52,4 @@ system("/opt/openbib/bin/gen_metrics.pl --database=jesuiten --type=14 --field=43
 system("/opt/openbib/bin/gen_metrics.pl --database=jesuiten --type=14 --field=4314:b --scheme=marc21");
 system("/opt/openbib/bin/gen_metrics.pl --database=jesuiten --type=14 --field=4316:a --scheme=marc21");
 system("/opt/openbib/bin/gen_metrics.pl --database=jesuiten --type=14 --field=264:a --scheme=marc21");
-system("/opt/openbib/bin/gen_metrics.pl --database=jesuiten --type=14 --field=264:b --scheme=marc21");
+system("/opt/openbib/bin/gen_metrics.pl --database=jesuiten --type=14 --field=1199:a --scheme=marc21");

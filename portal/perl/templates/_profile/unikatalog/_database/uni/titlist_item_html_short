@@ -27,7 +27,7 @@
      item   = record.to_custom_field_scheme_1;
      fields = record.get_fields;
 
-     # USE dumper;dumper.dump(item);
+     # USE dumper;dumper.dump(fields);
      
      listid = record.listid;
      all_locations = record.get_locations;
@@ -464,7 +464,7 @@
      is_schriftenreihe = 0;
      is_mehrbaendig    = 0;
 
-     IF band;
+     IF band || bandtitel;
        is_mehrbaendig = 1;
      ELSIF gesamttitel;
        is_schriftenreihe = 1;
@@ -481,7 +481,7 @@
 	  END;
 
 	  IF bandtitel && title ;	  
-	    title = "${title} / $bandtitel";
+	    title = "${title}, $bandtitel";
 	  ELSIF bandtitel ;
 	    title = "${bandtitel}";	  
 	  END ;

@@ -55,8 +55,11 @@ while (<>){
 	foreach my $item_ref (@{$field_scheme_ref->{'0984'}}){
 	    my ($mult) = $item_ref->{'8'} =~m/(\d+)/;	    
 	    my $gnd    = $item_ref->{'0'} || '';
-	    my $name   = $item_ref->{'a'};	    
+	    my $name   = $item_ref->{'a'} || '';	    
 
+	    $name =~s/&amp;lt;/&lt;/g;
+	    $name =~s/&amp;gt;/&gt;/g;
+	    
 	    $gnd =~s/^\(DE-588\)//;
 	    
 	    # Person

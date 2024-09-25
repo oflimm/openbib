@@ -6,7 +6,7 @@
 #
 #  Bearbeitung der Titeldaten
 #
-#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2024 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie k"onnen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -48,19 +48,24 @@ my $konvdir       = $config->{'conv_dir'};
 
 print "### $pool: Erweiterung um Zugriffsinformation online, Typ Digital und Themengebiet \n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/add-fields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
-print "### $pool: Erweiterung um Standortinformationen, weiteres Processing\n";
+print "### $pool: Erweiterung um Standortinformationen, weiteres Processing - Stage 1\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/fix-linkage.pl | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/$pool/process_urls.pl | $rootdir/filter/$pool/process_ids.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/remove_duplicates_in_nz.pl | $rootdir/filter/_common/alma/remove_empty_portfolio.pl | $rootdir/filter/_common/alma/remove_ill.pl | $rootdir/filter/_common/alma/fix-linkage.pl   > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
-#print "### $pool: Entfernen aller nicht GND-Fremdnummern sowie des (DE-588) GND-Prefixes \n";
+print "### $pool: Erweiterung um Standortinformationen, weiteres Processing - Stage 2\n";
 
-#system("cd $datadir/$pool ; cat meta.person | $rootdir/filter/$pool/fix-gnd.pl > meta.person.tmp ; mv -f meta.person.tmp meta.person");
-#system("cd $datadir/$pool ; cat meta.corporatebody | $rootdir/filter/$pool/fix-gnd.pl > meta.corporatebody.tmp ; mv -f meta.corporatebody.tmp meta.corporatebody");
-#system("cd $datadir/$pool ; cat meta.subject | $rootdir/filter/$pool/flag_discriminatory_subjects.pl | $rootdir/filter/$pool/fix-gnd.pl > meta.subject.tmp ; mv -f meta.subject.tmp meta.subject");
-#system("cd $datadir/$pool ; cat meta.classification | $rootdir/filter/$pool/fix-gnd.pl > meta.classification.tmp ; mv -f meta.classification.tmp meta.classification");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/gen_local_topic.pl | $rootdir/filter/_common/alma/process_urls.pl | $rootdir/filter/_common/alma/add-locationid.pl | $rootdir/filter/_common/alma/process_ids.pl | $rootdir/filter/_common/alma/volume2year.pl | $rootdir/filter/_common/alma/process_provenances.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
-#print "### $pool: Korrektur der Exemplarinformationen\n";
+print "### $pool: Anreicherung der Exemplarinformationen\n";
 
-#system("cd $datadir/$pool ; cat meta.holding| $rootdir/filter/$pool/fix-holding.pl > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");
+system("cd $datadir/$pool ; cat meta.holding| $rootdir/filter/_common/alma/add-navid.pl > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");
+
+print "### $pool: Anreicherung der Normdaten mit Informationen aus lobidgnd\n";
+
+system("cd $datadir/$pool ; /opt/openbib/conv/enrich_lobidgnd.pl --type=person --filename=meta.person > meta.person_enriched ; mv -f meta.person_enriched meta.person");
+
+system("cd $datadir/$pool ; /opt/openbib/conv/enrich_lobidgnd.pl --type=corporatebody --filename=meta.corporatebody > meta.corporatebody_enriched ; mv -f meta.corporatebody_enriched meta.corporatebody");
+
+system("cd $datadir/$pool ; /opt/openbib/conv/enrich_lobidgnd.pl --type=subject --filename=meta.subject > meta.subject_enriched ; mv -f meta.subject_enriched meta.subject");

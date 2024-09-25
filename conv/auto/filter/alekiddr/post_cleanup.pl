@@ -47,4 +47,4 @@ my $dbinfo = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 my $filename = $dbinfo->titlefile;
 
 print "### $pool: Metriken erstellen und cachen\n";
-system("/opt/openbib/bin/gen_metrics.pl --database=games --type=14 --field=982:a");
+system("/opt/openbib/bin/gen_metrics.pl --database=alekiddr --type=14 --field=982:a");

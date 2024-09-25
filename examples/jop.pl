@@ -34,4 +34,8 @@ my $hits   = $search->get_resultcount;
 my $result = $search->get_search_resultlist;
 
 print "$hits items found\n";
-print YAML::Dump($result);
+
+foreach my $record (@{$result->to_list}){
+    print YAML::Dump($record->to_hash);
+}
+

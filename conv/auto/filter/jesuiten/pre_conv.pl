@@ -48,7 +48,7 @@ my $konvdir       = $config->{'conv_dir'};
 
 print "### $pool: Erweiterung um Zugriffsinformation online, Typ Digital und Themengebiet \n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/add-fields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/add-fields.pl |  $rootdir/filter/$pool/add-printer.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Erweiterung um Standortinformationen, weiteres Processing - Stage 1\n";
 
@@ -56,7 +56,7 @@ system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/remove
 
 print "### $pool: Erweiterung um Standortinformationen, weiteres Processing - Stage 2\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/gen_local_topic.pl | $rootdir/filter/_common/alma/process_urls.pl | $rootdir/filter/_common/alma/add-locationid.pl | $rootdir/filter/_common/alma/process_ids.pl | $rootdir/filter/_common/alma/volume2year.pl | $rootdir/filter/_common/alma/process_provenances.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/gen_local_topic.pl | $rootdir/filter/_common/alma/process_urls.pl | $rootdir/filter/_common/alma/add-locationid.pl | $rootdir/filter/_common/alma/process_ids.pl | $rootdir/filter/_common/alma/volume2year.pl | $rootdir/filter/_common/alma/process_provenances.pl | $rootdir/filter/$pool/process_collection.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Anreicherung der Exemplarinformationen\n";
 

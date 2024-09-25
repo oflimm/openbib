@@ -13,20 +13,25 @@ while (<>){
 
     my $titleid = $title_ref->{id};
 
-    # Signaturlose Historische Systematik in 0472 vereinigen
+    # Signaturlose Historische Systematik in 4314$b vereinigen
     foreach my $field ('4314'){
 	if (defined $title_ref->{fields}{$field}){
 	    foreach my $item_ref (@{$title_ref->{fields}{$field}}){
 		my $content = $item_ref->{'content'};
+		
 		if ($content =~m/^(.+?)\s*\;.+?$/ || $content =~m/^(.+?)\s*[A-Z][A-Z]*?\d+$/){
-		    push @{$title_ref->{fields}{'0472'}}, {
-			content => $1,
-			subfield => $item_ref->{'subfield'},
-			mult => $item_ref->{'mult'},
+		    push @{$title_ref->{fields}{'4314'}}, {
+			content  => $1,
+			subfield => 'b',
+			mult     => $item_ref->{'mult'},
 		    };
 		}
 		else {
-		    push @{$title_ref->{fields}{'0472'}}, $item_ref;
+		    push @{$title_ref->{fields}{'4314'}}, {
+			content  => $content,
+			subfield => 'b',
+			mult     => $item_ref->{'mult'},
+		    };
 		}
 	    }
 	}

@@ -6,7 +6,7 @@
 #
 #  Bearbeitung der Titeldaten
 #
-#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2024 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie k"onnen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -64,3 +64,11 @@ system("mv -f $rootdir/data/$pool/meta.holding.tmp $rootdir/data/$pool/meta.hold
 print "### $pool: Erweiterung um Standortinformationen, weiteres Processing\n";
 
 system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/fix-linkage.pl | $rootdir/filter/$pool/remove_empty_portfolio.pl | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/$pool/process_urls.pl | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/process_ids.pl | $rootdir/filter/$pool/volume2year.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+
+print "### $pool: Anreicherung der Normdaten mit Informationen aus lobidgnd\n";
+
+system("cd $datadir/$pool ; /opt/openbib/conv/enrich_lobidgnd.pl --type=person --filename=meta.person > meta.person_enriched ; mv -f meta.person_enriched meta.person");
+
+system("cd $datadir/$pool ; /opt/openbib/conv/enrich_lobidgnd.pl --type=corporatebody --filename=meta.corporatebody > meta.corporatebody_enriched ; mv -f meta.corporatebody_enriched meta.corporatebody");
+
+system("cd $datadir/$pool ; /opt/openbib/conv/enrich_lobidgnd.pl --type=subject --filename=meta.subject > meta.subject_enriched ; mv -f meta.subject_enriched meta.subject");

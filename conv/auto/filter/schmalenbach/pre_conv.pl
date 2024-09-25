@@ -6,7 +6,7 @@
 #
 #  Bearbeitung der Titeldaten
 #
-#  Dieses File ist (C) 2005-2011 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2024 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie k"onnen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -48,16 +48,24 @@ my $konvdir       = $config->{'conv_dir'};
 
 print "### $pool: Erweiterung um Zugriffsinformation online, Typ Digital und Themengebiet \n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/add-fields.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Erweiterung um Standortinformationen, weiteres Processing - Stage 1\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/remove_duplicates_in_nz.pl | $rootdir/filter/$pool/remove_empty_portfolio.pl | $rootdir/filter/$pool/remove_ill.pl | $rootdir/filter/$pool/fix-linkage.pl   > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/remove_duplicates_in_nz.pl | $rootdir/filter/_common/alma/remove_empty_portfolio.pl | $rootdir/filter/_common/alma/remove_ill.pl | $rootdir/filter/_common/alma/fix-linkage.pl   > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Erweiterung um Standortinformationen, weiteres Processing - Stage 2\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/$pool/process_urls.pl | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/process_ids.pl | $rootdir/filter/$pool/volume2year.pl | $rootdir/filter/$pool/process_provenances.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/gen_local_topic.pl | $rootdir/filter/_common/alma/process_urls.pl | $rootdir/filter/_common/alma/add-locationid.pl | $rootdir/filter/_common/alma/process_ids.pl | $rootdir/filter/_common/alma/volume2year.pl | $rootdir/filter/_common/alma/process_provenances.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Anreicherung der Exemplarinformationen\n";
 
-system("cd $datadir/$pool ; cat meta.holding| $rootdir/filter/$pool/add-navid.pl > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");
+system("cd $datadir/$pool ; cat meta.holding| $rootdir/filter/_common/alma/add-navid.pl > meta.holding.tmp ; mv -f meta.holding.tmp meta.holding");
+
+print "### $pool: Anreicherung der Normdaten mit Informationen aus lobidgnd\n";
+
+system("cd $datadir/$pool ; /opt/openbib/conv/enrich_lobidgnd.pl --type=person --filename=meta.person > meta.person_enriched ; mv -f meta.person_enriched meta.person");
+
+system("cd $datadir/$pool ; /opt/openbib/conv/enrich_lobidgnd.pl --type=corporatebody --filename=meta.corporatebody > meta.corporatebody_enriched ; mv -f meta.corporatebody_enriched meta.corporatebody");
+
+system("cd $datadir/$pool ; /opt/openbib/conv/enrich_lobidgnd.pl --type=subject --filename=meta.subject > meta.subject_enriched ; mv -f meta.subject_enriched meta.subject");

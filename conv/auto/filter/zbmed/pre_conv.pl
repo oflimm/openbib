@@ -52,14 +52,7 @@ system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl
 
 print "### $pool: Erweiterung um Standortinformationen, weiteres Processing\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/remove_ill.pl | $rootdir/filter/$pool/fix-linkage.pl | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/$pool/process_urls.pl | $rootdir/filter/$pool/process_ids.pl | $rootdir/filter/$pool/volume2year.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
-
-#print "### $pool: Entfernen aller nicht GND-Fremdnummern sowie des (DE-588) GND-Prefixes \n";
-
-#system("cd $datadir/$pool ; cat meta.person | $rootdir/filter/$pool/fix-gnd.pl > meta.person.tmp ; mv -f meta.person.tmp meta.person");
-#system("cd $datadir/$pool ; cat meta.corporatebody | $rootdir/filter/$pool/fix-gnd.pl > meta.corporatebody.tmp ; mv -f meta.corporatebody.tmp meta.corporatebody");
-#system("cd $datadir/$pool ; cat meta.subject | $rootdir/filter/$pool/flag_discriminatory_subjects.pl | $rootdir/filter/$pool/fix-gnd.pl > meta.subject.tmp ; mv -f meta.subject.tmp meta.subject");
-#system("cd $datadir/$pool ; cat meta.classification | $rootdir/filter/$pool/fix-gnd.pl > meta.classification.tmp ; mv -f meta.classification.tmp meta.classification");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/remove_ill.pl | $rootdir/filter/_common/alma/fix-linkage.pl | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/_common/alma/process_urls.pl | $rootdir/filter/$pool/process_ids.pl | $rootdir/filter/_common/alma/volume2year.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Korrektur der Exemplarinformationen\n";
 

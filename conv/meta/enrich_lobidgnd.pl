@@ -40,15 +40,17 @@ use MLDBM qw(DB_File Storable);
 use Storable ();
 use YAML;
 
-my ($gndfile,$filename,$type);
+my ($gndfile,$filename,$type,$dbfile);
 
 &GetOptions(
     "gnd-file=s" => \$gndfile,
+    "db-file=s"  => \$dbfile,    
     "type=s"     => \$type,
     "filename=s" => \$filename,
     );
 
 $gndfile=($gndfile)?$gndfile:"/opt/openbib/autoconv/pools/lobidgnd/gnd.json.gz";
+$dbfile=($dbfile)?$dbfile:"/opt/openbib/autoconv/pools/lobidgnd/gnd.db";
 
 exit unless ($type);
 
@@ -60,7 +62,7 @@ if (!-f "./gnd.db"){
 
 my %gnd = ();
 
-tie %gnd,             'MLDBM', "./gnd.db"
+tie %gnd,             'MLDBM', $dbfile
     or die "Could not tie gnd.\n";
 
 

@@ -56,7 +56,7 @@ exit unless ($type);
 
 my $rebuild_db = 0;
 
-if (!-f "./gnd.db"){
+if (!-f $dbfile){
     $rebuild_db = 1;
 }
 

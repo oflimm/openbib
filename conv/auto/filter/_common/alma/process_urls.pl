@@ -34,7 +34,6 @@ my $yellow_collection_ref = {
 	'ZDB-5-WEB' => 1,
 	'ZDB-5-WMS' => 1,
 	'ZDB-5-WMW' => 1,
-	'ZDB-13-SOC' => 1,
 	'ZDB-14-DLO' => 1,
 	'ZDB-18-BEO' => 1,
 	'ZDB-18-BOH' => 1,
@@ -102,7 +101,9 @@ my $yellow_collection_conditional_ref = {
 
 # Setzen der Zugriffampel 'Gruen' und Beschreibung 'E-Book im Volltext' fuer Links aus diesen Paketen
 my $green_collection_ref = {
-    'ZDB-2-SOB' => 1,
+    'ZDB-13-SOC' => 1,
+	'ZDB-13-SOC-ebook' => 1,
+	'ZDB-2-SOB' => 1,
 	'ZDB-23-GOA' => 1,
 };
 

@@ -10,8 +10,8 @@ use utf8;
 use warnings;
 use strict;
 
-# year 'valid' beginning at 1890
-my $min_year = 1890;
+# year 'valid' beginning at 1700
+my $min_year = 1700;
 
 while (<>){
     my $record_ref = decode_json $_;

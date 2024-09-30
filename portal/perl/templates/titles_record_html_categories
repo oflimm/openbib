@@ -285,7 +285,6 @@ licensed_pakete = [
    'ZDB-5-WEB',
    'ZDB-5-WMS',
    'ZDB-5-WMW',
-   'ZDB-13-SOC',
    'ZDB-14-DLO',
    'ZDB-18-BEO',
    'ZDB-18-BOH',
@@ -332,7 +331,7 @@ licensed_pakete = [
    'ZDB-71-Narr-EBA'
    ];
 
-oa_pakete = ['ZDB-2-SOB','ZDB-23-GOA'];
+oa_pakete = ['ZDB-2-SOB','ZDB-23-GOA','ZDB-13-SOC','ZDB-13-SOC-ebook'];
 
 FOREACH item IN normdata.${'T0078'} ;
   FOREACH paket IN licensed_pakete ;

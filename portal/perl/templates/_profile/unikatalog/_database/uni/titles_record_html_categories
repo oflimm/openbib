@@ -578,8 +578,9 @@ FOREACH field IN normdata;
 
     CASE "T0246"; # Weitere Titel
          content = thisfield.${'a'} ;
-
-         IF content ;
+	 ind     = thisfield.${'ind'} ;
+	 
+         IF content && ind != '10';
            IF NOT content_map.${'Weitere Titel'} ;
 	     content_map.${'Weitere Titel'} = [];
 	   END;

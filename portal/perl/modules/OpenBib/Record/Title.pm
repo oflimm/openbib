@@ -4024,7 +4024,7 @@ sub to_custom_field_scheme_1 {
     # 	    {
     # 		# Mult-Feld
     # 		'mult' => 1, # erster Autor
-
+    #           'ind'  => '11' # Indikator
     # 		    # Subfelder
     # 		    'a' => 'Morgan, John Pierpont',
     # 		    'd' => '1837-1913',
@@ -4033,7 +4033,7 @@ sub to_custom_field_scheme_1 {
     # 	    {
     # 		# Mult-Feld
     # 		'mult' => 2, # Zweiter Autor
-
+    #           'ind'  => '11' # Indikator
     # 		    # Subfelder
     # 		    'a' => 'Adams, Henry',
     # 		    'd' => '1838-1918',
@@ -4068,6 +4068,8 @@ sub to_custom_field_scheme_1 {
 		    if (defined $item_ref->{mult} && defined $item_ref->{subfield} && $item_ref->{content}){
 			$item_ref->{content} =~s{\s*[,:./]\s*$}{} if ($fieldname=~m/(T0245|T0250|T0264|T0300)/); # Cleanup MARC21 junk
 
+			$tmp_scheme_ref->{$item_ref->{mult}}{'ind'} = $item_ref->{ind};
+			
 			if (!defined $tmp_scheme_ref->{$item_ref->{mult}}{$item_ref->{subfield}}){
 			    $tmp_scheme_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content};
 			}

@@ -213,6 +213,7 @@ person_done  = {};
 # Lizensierter Volltext? (Ausgabe Zugriffshinweis)
 is_licensed = 0;
 is_oa = 0; 
+is_national = 0;
 #USE dumper;dumper.dump(normdata.${"T0880"});
 
 FOREACH item IN normdata.${'T4120'} ;
@@ -222,6 +223,9 @@ FOREACH item IN normdata.${'T4120'} ;
       LAST ;
    ELSIF item.${'y'};
       is_licensed = 1;
+      LAST ;
+   ELSIF item.${'n'};
+      is_national = 1;
       LAST ;
    END;
 END;

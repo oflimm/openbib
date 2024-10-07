@@ -1206,6 +1206,10 @@ Mit der Schlagwortliste finden Sie Ihre Campusbibliothek. Die Schlagwörter basi
 <li>[% msg.maketext("Die Authentifizierung von Uniangehörigen erfolgt über Shibboleth und den Identity Provider der Universität. Ein Uni-Account ist dafür zwingend notwendig. Uniangehörige können <b>alle</b> Arbeitsplätze und sonstige Angebote reservieren (ggf. eingeschränkt auf diejenigen Ihrer Fakultät).") %]</li>
 <li>[% msg.maketext("Externe Nutzer melden Sich über SAML und den Identity-Provider der Universitäts- und Stadtbibliothek Köln (USB) an. Sie können nur Angebote in den Räumlichkeiten der USB buchen. Arbeitsplätze und sonstige Angebote in anderen Räumlichkeiten auf dem Campus der Universität zu Köln, z.B. in der WiSO-Fakultät, sind in der Regel nicht buchbar.") %]</li>
 <li>[% msg.maketext("Für das Betreten der Räumlichkeiten der USB <b>benötigen Sie zwingend einen gültigen Nutzerausweis</b> (digital oder Plastikkarte). Zukünftig wird nur noch der digitale Nutzerausweis akzeptiert.") %]</li>
+<li>[% msg.maketext("Sobald Sie Ihren Platz zur gebuchten Zeit eingenommen haben, checken Sie über die Check-in-Mail oder über die Reservierungsseite bei „meine Buchungen“ (Kalender-Icon links oben) ein.") %]</li>
+<li>[% msg.maketext("Verlassen Sie Ihren Platz bzw. den Raum früher als geplant, checken Sie sich bitte aus. Dies geschieht ebenfalls auf der Reservierungsseite bei „meine Buchungen“ (Kalender-Icon).") %]</li>
+<li>[% msg.maketext("SEID FAIR: Nur einen Platz buchen, wenn Sie tatsächlich kommen und den Platz stornieren, wenn Sie nicht kommen. Falls Sie den Arbeitsplatz vorzeitig verlassen, checken Sie sich bitte aus. Diese Plätze stehen dann wieder zur Buchung zur Verfügung. Vielen Dank!") %]</li>
+<li>[% msg.maketext("Nicht wahrgenommene Buchungen - also ohne einen von Ihnen durchgeführten Check-In (s.o.) - verfallen 15 Minuten nach Beginn des Zeitslots.") %]</li>
 </ul>
 
   <div class="row pt-3">

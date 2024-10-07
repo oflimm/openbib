@@ -1203,7 +1203,7 @@ Mit der Schlagwortliste finden Sie Ihre Campusbibliothek. Die Schlagwörter basi
 </p>
 
 <ul>
-<li>[% msg.maketext("Die Authentifizierung von Uniangehörigen erfolgt über Shibboleth und den Identity Provider der Universität. Ein Uni-Account ist dafür zwingend notwendig. Uniangehörige können <b>alle</b> Arbeitsplätze und sonstige Angebote reservieren (ggf. eingeschränkt auf diejenigen Ihrer Fakultät).") %]</li>
+<li>[% msg.maketext("Die Authentifizierung von Uni-Angehörigen erfolgt über Shibboleth und den Identity Provider der Universität. Ein Uni-Account ist dafür zwingend notwendig. Uni-Angehörige können <b>alle</b> Arbeitsplätze und sonstige Angebote reservieren (ggf. eingeschränkt auf diejenigen Ihrer Fakultät).") %]</li>
 <li>[% msg.maketext("Externe Nutzer melden Sich über SAML und den Identity-Provider der Universitäts- und Stadtbibliothek Köln (USB) an. Sie können nur Angebote in den Räumlichkeiten der USB buchen. Arbeitsplätze und sonstige Angebote in anderen Räumlichkeiten auf dem Campus der Universität zu Köln, z.B. in der WiSO-Fakultät, sind in der Regel nicht buchbar.") %]</li>
 <li>[% msg.maketext("Für das Betreten der Räumlichkeiten der USB <b>benötigen Sie zwingend einen gültigen Nutzerausweis</b> (digital oder Plastikkarte). Zukünftig wird nur noch der digitale Nutzerausweis akzeptiert.") %]</li>
 <li>[% msg.maketext("Sobald Sie Ihren Platz zur gebuchten Zeit eingenommen haben, checken Sie über die Check-in-Mail oder über die Reservierungsseite bei „meine Buchungen“ (Kalender-Icon links oben) ein.") %]</li>
@@ -1215,7 +1215,7 @@ Mit der Schlagwortliste finden Sie Ihre Campusbibliothek. Die Schlagwörter basi
   <div class="row pt-3">
     <div class="col-md-6 ps-3 pe-1 pb-2">
      <a class="btn btn-primary p-4 fs-4" target="_blank"href="https://auth.anny.eu/start-session?entityId=https%3A%2F%2Fidp.rrz.uni-koeln.de%2Fidp%2Fshibboleth">
-<i class="fas fa-user-graduate pe-2"></i> [% msg.maketext("Anmeldung Uniangehörige") %]</a>
+<i class="fas fa-user-graduate pe-2"></i> [% msg.maketext("Anmeldung Uni-Angehörige") %]</a>
     </div>  
     <div class="col-md-6 pb-2">
      <a class="btn btn-primary p-4 fs-4" target="_blank" href="https://auth.anny.eu/start-session?entityId=https%3A%2F%2Fsisauth.ub.uni-koeln.de%2Fsaml-idp"><i class="fas fa-user-alt pe-2"></i> [% msg.maketext("Anmeldung Externe") %]</a>

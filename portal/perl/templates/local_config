@@ -478,5 +478,6 @@
    disable_dbis_recommendations = 0; # Keine Datenbankempfehlungen via ELIB 
    disable_occupancy            = 0; # Keine Belegungsdaten
    disable_campusgis            = 0; # Keine Navigation zum Buch bzw. zur Bibliothek
+   disable_anny                 = 1; # Keine Verlinkung des Buchungssystems anny
    delayed_update               = ""; # Datum der letzten Aktualisierung bei Aktualisierungsproblemen
 -%]

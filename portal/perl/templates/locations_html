@@ -97,6 +97,9 @@ for (var i = 0; i < libraries.length; i++) {
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-locations_by_faculty">[% msg.maketext("Bibliotheken nach Fakultät") %]</a></li>
 <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-locations_a_to_z">[% msg.maketext("Bibliotheken von A-Z") %]</a></li>
+[% IF NOT disable_anny %]
+<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-locations_reservation">[% msg.maketext("Reservierung Arbeitsplätze &amp; Mehr") %]</a></li>
+[% END %]
 </ul>
 
 <div class="tab-content pt-3 mb-2">
@@ -1184,6 +1187,40 @@ Mit der Schlagwortliste finden Sie Ihre Campusbibliothek. Die Schlagwörter basi
 </div><!-- End: tabpanel-->
 <!-- Ende zweiter Tab: Bibliotheken A-Z -->
 
-</div>
+[% IF NOT disable_anny %]
+<div role="tabpanel" class="tab-pane fade-in p-1" id="ob-locations_reservation">
 
+<p>
+[% msg.maketext("Für die Reservierung von Arbeitsplätzen, Räumen, Kursen und Schulungen nutzt die Universität zu Köln das cloud-basierte Buchungssystem anny.") %]
+</p>
+
+<p>
+[% msg.maketext("Entsprechend Ihres Status als Angehöriger der Universität zu Köln (Student, Mitarbeiter) oder als externer Nutzer der Universitäts- und Stadtbibliothek Köln (Bürger, Studierende aus anderen Hochschulen) müssen Sie sich jeweils an einem eigenen Authentifizierungssystem bei anny anmelden.") %]
+</p>
+
+<p>
+[% msg.maketext("Bitte beachten Sie:") %]
+</p>
+
+<ul>
+<li>[% msg.maketext("Die Authentifizierung von Uniangehörigen erfolgt über Shibboleth und den Identity Provider der Universität. Ein Uni-Account ist dafür zwingend notwendig. Uniangehörige können <b>alle</b> Arbeitsplätze und sonstige Angebote reservieren (ggf. eingeschränkt auf diejenigen Ihrer Fakultät).") %]</li>
+<li>[% msg.maketext("Externe Nutzer melden Sich über SAML und den Identity-Provider der Universitäts- und Stadtbibliothek Köln (USB) an. Sie können nur Angebote in den Räumlichkeiten der USB buchen. Arbeitsplätze und sonstige Angebote in anderen Räumlichkeiten auf dem Campus der Universität zu Köln, z.B. in der WiSO-Fakultät, sind in der Regel nicht buchbar.") %]</li>
+<li>[% msg.maketext("Für das Betreten der Räumlichkeiten der USB <b>benötigen Sie zwingend einen gültigen Nutzerausweis</b> (digital oder Plastikkarte). Zukünftig wird nur noch der digitale Nutzerausweis akzeptiert.") %]</li>
+</ul>
+
+  <div class="row pt-3">
+    <div class="col-md-6 ps-3 pe-1 pb-2">
+     <a class="btn btn-primary p-4 fs-4" target="_blank"href="https://auth.anny.eu/start-session?entityId=https%3A%2F%2Fidp.rrz.uni-koeln.de%2Fidp%2Fshibboleth">
+<i class="fas fa-user-graduate pe-2"></i> [% msg.maketext("Anmeldung Uniangehörige") %]</a>
+    </div>  
+    <div class="col-md-6 pb-2">
+     <a class="btn btn-primary p-4 fs-4" target="_blank" href="https://auth.anny.eu/start-session?entityId=https%3A%2F%2Fsisauth.ub.uni-koeln.de%2Fsaml-idp"><i class="fas fa-user-alt pe-2"></i> [% msg.maketext("Anmeldung Externe") %]</a>
+    </div>
+  </div>
+
+</div>
+<!-- Ende dritter Tab: Reservierungssystem -->
+[% END %]
+
+</div>
 </div>

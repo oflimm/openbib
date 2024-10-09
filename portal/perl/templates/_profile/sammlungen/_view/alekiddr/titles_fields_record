@@ -5,7 +5,7 @@
       field = "${field}:${subfield}";
     END;
     
-    IF field == '0100' ;
+    IF field == '0100:a' ;
        field_description = msg.maketext("Personen");
        searchfield = 'personstring' ;
     ELSIF field == '0982:a' ;

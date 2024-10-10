@@ -199,7 +199,7 @@ if ($use_api){
 }
 
 if ($use_join) {
-    system("cd $filterdir/$pool/_common/alma ; ./join_ubk.sh");
+    system("cd $filterdir/_common/alma ; ./join_ubk.sh");
 }
 
 system("cd $pooldir/$pool ; rm meta.* ");

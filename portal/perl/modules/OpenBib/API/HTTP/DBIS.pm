@@ -196,9 +196,11 @@ sub get_titles_record {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
+    my $dbis_base = $config->get('dbis_baseurl');
+    
     my $record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
     
-    my $url="http://rzblx10.uni-regensburg.de/dbinfo/detail.php?colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&lett=f&titel_id=$id&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
+    my $url = $dbis_base."detail.php?colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&lett=f&titel_id=$id&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
 
     my $memc_key = "dbis:title:$url";
 
@@ -425,8 +427,10 @@ sub get_classifications {
 
     my $config = $self->get_config;
     my $ua     = $self->get_client;
+
+    my $dbis_base = $config->get('dbis_baseurl');
     
-    my $url="http://rzblx10.uni-regensburg.de/dbinfo/fachliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{bibid}&lett=l&lang=$self->{lang}&xmloutput=1";
+    my $url=$dbis_base."fachliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{bibid}&lett=l&lang=$self->{lang}&xmloutput=1";
 
     my $classifications_ref = [];
 
@@ -546,7 +550,9 @@ sub search {
 
     $self->parse_query($searchquery);
 
-    my $url="http://rzblx10.uni-regensburg.de/dbinfo/dbliste.php?bib_id=$self->{bibid}&colors=$self->{colors}&ocolors=$self->{ocolors}&lett=k&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=$self->{lang}&xmloutput=1";
+    my $dbis_base = $config->get('dbis_baseurl');
+
+    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&colors=$self->{colors}&ocolors=$self->{ocolors}&lett=k&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=$self->{lang}&xmloutput=1";
 
     my $memc_key = "dbis:search:$url";
 
@@ -697,8 +703,10 @@ sub get_popular_records {
 
     my $config = $self->get_config;
     my $ua     = $self->get_client;
+
+    my $dbis_base = $config->get('dbis_baseurl');
     
-    my $url="http://rzblx10.uni-regensburg.de/dbinfo/dbliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{bibid}&lett=f&gebiete=$gebiet&xmloutput=1";
+    my $url=$dbis_base."dbliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{bibid}&lett=f&gebiete=$gebiet&xmloutput=1";
 
     my $recordlist = new OpenBib::RecordList::Title;
 

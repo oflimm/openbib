@@ -506,7 +506,7 @@ sub threadB {
 
     $logger->info("### Master: Alma Uni Katalog");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, purgefirst => 1, sync => 1, databases => ['uni'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, purgefirst => 1, sync => 1, reducemem => 1, databases => ['uni'] });
 #    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, databases => ['inst001'] });
     
     ##############################
@@ -690,6 +690,9 @@ sub autoconvert {
     my $nosearchengine  = exists $arg_ref->{nosearchengine}
         ? $arg_ref->{nosearchengine}        : 0;
 
+    my $reducemem       = exists $arg_ref->{reducemem}
+        ? $arg_ref->{reducemem}             : 0;
+    
     my $purgefirst      = exists $arg_ref->{purgefirst}
         ? $arg_ref->{purgefirst}            : 0;
     
@@ -702,6 +705,7 @@ sub autoconvert {
     push @ac_cmd, "-incremental" if ($incremental);
     push @ac_cmd, "-update-master" if ($updatemaster);
     push @ac_cmd, "-no-searchengine" if ($nosearchengine);
+    push @ac_cmd, "-reduce-mem" if ($reducemem);
     push @ac_cmd, "-purge-first" if ($purgefirst);
 
     my $ac_cmd_base = join(' ',@ac_cmd);

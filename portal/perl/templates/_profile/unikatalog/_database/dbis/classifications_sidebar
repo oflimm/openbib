@@ -2,6 +2,16 @@
   IF container.get('classifications_dbis') ;
     classifications =  container.get('classifications_dbis');
   END;
+  
+  denylist_cln = {
+    '39' = 1 # Sport
+    '27' = 1 # Militaerwissenschaft
+    '23' = 1 # Maschinenbau
+    '11' = 1 # Elektrotechnik
+    '1' = 1 # Agrar
+    '7' = 1 # Architektur
+  };
+
 -%]
 
 <div class="card mb-3">
@@ -93,6 +103,7 @@
 <div class="form-floating mb-3">
   <select class="form-select" id="cln[% sidebar_suffix %]" name="cln"><option value="" [% IF classification_name == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>
 [%- FOREACH classification IN classifications -%]
+[%    NEXT IF denylist_cln.${classification.name} %]
 <option value="[% classification.name %]" [% IF classification_name == classification.name %]selected="selected"[% END %]>[% classification.desc | truncate(25) %]</option>
 [%- END -%]
   </select>
@@ -144,6 +155,8 @@
 [% FOREACH classification IN classifications ;
    searchterm    = classification.name;
    searchprefix  = config.get('searchfield').classification.prefix;
+
+   NEXT IF denylist_cln.${searchterm};
  %]
 <li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% IF classification_name == classification.name %]<b>[% classification.desc %]</b>[% ELSE %][% classification.desc %][% END %]</a><!-- ([% classification.count %])--></li>
 [% END %]

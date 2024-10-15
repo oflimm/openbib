@@ -3,6 +3,27 @@
     classifications =  container.get('classifications_dbis');
   END;
 -%]
+
+<div class="card mb-3">
+
+<div class="card-header">[% msg.maketext("Eingeschränkte Funktionalität") %]</div>
+<div class="card-body">
+<p>Wegen einer Schnittstellenänderung von DBIS im Zuge eines Relaunchs funktionieren bisherige Anfragen nicht mehr korrekt oder liefern unvollständige Informationen.</p>
+
+<p>Aktuell hat das folgende Auswirkungen:</p>
+
+<ul>
+<li>Die Suche funktioniert nicht. Es werden immer alle Datenbanken als Suchergebnis geliefert</li>
+<li>In den Trefferlisten wird kein Zugriffsstatus sowie keine Zugriffsampel ausgegeben werden</li>
+</ul>
+
+<p>Wir hoffen, dass DBIS die Probleme bald korrigiert</p>
+
+<p class="fs-5">Nutzen Sie bitte alternativ <a class="exturl" href="[% config.get('dbis_exturl') %]" target="_blank">DBIS</a> direkt.</p>
+
+</div>
+</div>
+
 <div class="card">
 
 <div class="card-header">[% msg.maketext("Suche nach Datenbanken") %]</div>

@@ -196,11 +196,11 @@ sub get_titles_record {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $dbis_base = $config->get('dbis_baseurl');
+    my $dbis_base = $config->get('dbis_baseurl')."dbinfo/";
     
     my $record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
     
-    my $url = $dbis_base."detail.php?colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&lett=f&titel_id=$id&bibid=".((defined $self->{bibid})?$self->{bibid}:"")."&lang=".((defined $self->{lang})?$self->{lang}:"")."&xmloutput=1";
+    my $url = $dbis_base."detail.php?colors=".((defined $self->{colors})?$self->{colors}:"")."&ocolors=".((defined $self->{ocolors})?$self->{ocolors}:"")."&lett=f&titel_id=$id&bib_id=".((defined $self->{bibid})?$self->{bibid}:"")."&xmloutput=1";
 
     my $memc_key = "dbis:title:$url";
 
@@ -237,8 +237,11 @@ sub get_titles_record {
 	return $record;
     }
 
+    my $xmlresponse = $response->content;
+    $xmlresponse =~s/^.*?<\?xml/<\?xml/ms;
+    
     my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response->content);
+    my $tree   = $parser->parse_string($xmlresponse);
     my $root   = $tree->getDocumentElement;
 
     my $access_info_ref = {};
@@ -259,15 +262,16 @@ sub get_titles_record {
     # 'r': Kein Zugriff (red)
     
     my $type_mapping_ref = {
-	'access_0'    => 'g', # green
-	'access_2'    => 'y', # yellow
-	'access_3'    => 'y', # yellow
-	'access_5'    => 'l', # yellow red
-	'access_500'  => 'n', # national license
+	    'access_2'    => 'y', # yellow
+	    'access_3'    => 'y', # yellow
+	    'access_5'    => 'l', # yellow red
+	     ''              => 'g', # green	    
+	    'Online Uninetz' => 'y',
+	    'Nationallizenz' => 'n', # national license
     };
     
-    my $access_type = $type_mapping_ref->{$access_info_ref->{id}};
-    
+    my $access_type = $type_mapping_ref->{$access_info_ref->{desc}};
+
     my $db_type_ref = [];
     my @db_type_nodes = $root->findnodes('/dbis_page/details/db_type_infos/db_type_info');
     my $mult = 1;
@@ -428,9 +432,9 @@ sub get_classifications {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $dbis_base = $config->get('dbis_baseurl');
+    my $dbis_base = $config->get('dbis_baseurl')."dbinfo/";
     
-    my $url=$dbis_base."fachliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{bibid}&lett=l&lang=$self->{lang}&xmloutput=1";
+    my $url=$dbis_base."fachliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{bibid}&lett=l&xmloutput=1";
 
     my $classifications_ref = [];
 
@@ -471,9 +475,11 @@ sub get_classifications {
 #    my $response = $ua->get($url)->decoded_content(charset => 'utf8');
 
     $logger->debug("Response: $response");
+
+    my $xmlcontent = $response->content;    
     
     my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response->content);
+    my $tree   = $parser->parse_string($xmlcontent);
     my $root   = $tree->getDocumentElement;
 
     my $maxcount=0;
@@ -485,7 +491,7 @@ sub get_classifications {
         $singleclassification_ref->{name}    = $classification_node->findvalue('@notation');
         $singleclassification_ref->{count}   = $classification_node->findvalue('@number');
         #$singleclassification_ref->{lett}    = $classification_node->findvalue('@lett');
-        $singleclassification_ref->{desc}    = decode_utf8($classification_node->textContent());
+        $singleclassification_ref->{desc}    = $classification_node->textContent();
 
         if ($maxcount < $singleclassification_ref->{count}){
             $maxcount = $singleclassification_ref->{count};
@@ -550,9 +556,9 @@ sub search {
 
     $self->parse_query($searchquery);
 
-    my $dbis_base = $config->get('dbis_baseurl');
+    my $dbis_base = $config->get('dbis_baseurl')."dbinfo/";
 
-    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&colors=$self->{colors}&ocolors=$self->{ocolors}&lett=k&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=$self->{lang}&xmloutput=1";
+    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&colors=$self->{colors}&ocolors=$self->{ocolors}&lett=k&".$self->querystring."&hits_per_page=$num&offset=$offset&xmloutput=1";
 
     my $memc_key = "dbis:search:$url";
 
@@ -704,7 +710,7 @@ sub get_popular_records {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $dbis_base = $config->get('dbis_baseurl');
+    my $dbis_base = $config->get('dbis_baseurl')."dbinfo/";
     
     my $url=$dbis_base."dbliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{bibid}&lett=f&gebiete=$gebiet&xmloutput=1";
 
@@ -987,10 +993,10 @@ sub parse_query {
     }
     
     if (defined $searchquery->get_searchfield('classification')->{val} && $searchquery->get_searchfield('classification')->{val}){
-        push @searchstrings, "gebiete[]=".$searchquery->get_searchfield('classification')->{val};
+        push @searchstrings, "gebiete=".$searchquery->get_searchfield('classification')->{val};
     }
 #    else {
-#        push @searchstrings, "gebiete[]=all";
+#        push @searchstrings, "gebiete=all";
 #    }
 
     if (defined $searchquery->get_searchfield('mediatype')->{val} && $searchquery->get_searchfield('mediatype')->{val}){

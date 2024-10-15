@@ -223,6 +223,7 @@
       </div>
      </a>
     </div>  
+[% IF NOT ezb_outage %]    
     <div class="col-md-3 ps-3 pe-1 pb-2">
      <a class="text-white" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/classifications.html?l=[% lang %]">
       <div class="card mt-2 h-100 ob-shortlink">
@@ -230,6 +231,14 @@
       </div>
      </a>
     </div>
+[% ELSE %]
+    <div class="col-md-3 ps-3 pe-1 pb-2">
+      <div class="card mt-2 h-100 ob-shortlink">
+	<div class="card-body pt-3 text-center fs-4">[% msg.maketext("E-Zeitschriften") %]&nbsp;<span style="font-size:0.8em">[% ezb_outage %]</span></div>
+      </div>
+    </div>
+[% END %]
+[% IF NOT dbis_outage %]    
     <div class="col-md-3 ps-3 pe-1 pb-2">
      <a class="text-white" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/classifications.html?l=[% lang %]">
       <div class="card mt-2 h-100 ob-shortlink">
@@ -237,6 +246,13 @@
       </div>
      </a>
     </div>
+[% ELSE %]     
+    <div class="col-md-3 ps-3 pe-1 pb-2">
+      <div class="card mt-2 h-100 ob-shortlink">
+	<div class="card-body pt-3 text-center fs-4">[% msg.maketext("Datenbanken") %]&nbsp;<span style="font-size:0.8em">[% dbis_outage %]</span></div>
+      </div>
+    </div>
+[% END %]     
     <div class="col-md-3 ps-3 pe-1 pb-2">
      <a class="text-white" href="[% path_prefix %]/[% config.get('locations_loc') %].html?l=[% lang %]">
       <div class="card mt-2 h-100 ob-shortlink">

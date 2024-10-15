@@ -479,5 +479,7 @@
    disable_occupancy            = 0; # Keine Belegungsdaten
    disable_campusgis            = 0; # Keine Navigation zum Buch bzw. zur Bibliothek
    disable_anny                 = 1; # Keine Verlinkung des Buchungssystems anny
+   dbis_outage                  = msg.maketext("Störung");
+   ezb_outage                   = ""; # msg.maketext("Störung");
    delayed_update               = ""; # Datum der letzten Aktualisierung bei Aktualisierungsproblemen
 -%]

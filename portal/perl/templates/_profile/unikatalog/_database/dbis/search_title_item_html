@@ -121,6 +121,8 @@
     fulltext_icon = config.get('dbis_green_yellow_red_img');
     fulltext_desc  = "Unbekannter Zugriff";
 
+    dont_show = 0;
+    
     IF access == "g" ;
       fulltext_availability = "lawngreen";
       fulltext_icon = config.get('dbis_green_img');
@@ -132,9 +134,11 @@
     ELSIF access == "n";
       fulltext_icon = config.get('dbis_de_img');
       fulltext_desc = msg.maketext("Nationallizenz");
+    ELSE;
+      dont_show = 1;
     END;
 -%]
-<li class="list-group-item"><img src="[% fulltext_icon %]" alt="Zugriff: [% fulltext_desc %]"/><span class="ms-3"><a href="[% detail_url %]">[% title %]</a></span></li>
+<li class="list-group-item">[% IF NOT dont_show %]<img src="[% fulltext_icon %]" alt="Zugriff: [% fulltext_desc %]"/>[% END %]<span class="ms-3"><a href="[% detail_url %]">[% title %]</a></span></li>
 [% END %]
 </ul>
 </div>

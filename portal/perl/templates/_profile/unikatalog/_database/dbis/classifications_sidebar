@@ -14,10 +14,11 @@
 
 <ul>
 <li>Die Suche funktioniert nicht. Es werden immer alle Datenbanken als Suchergebnis geliefert</li>
+<li>In den Fächerlisten kann die Zahl der enthaltenen Datenbanken nicht ausgegeben werden</li>
 <li>In den Trefferlisten kann kein Zugriffsstatus sowie keine Zugriffsampel ausgegeben werden</li>
 </ul>
 
-<p>Wir hoffen, dass DBIS die Probleme bald korrigiert</p>
+<p>Wir hoffen, dass DBIS die Probleme bald korrigiert.</p>
 
 <p class="fs-5">Nutzen Sie bitte alternativ <a class="exturl" href="[% config.get('dbis_exturl') %]" target="_blank">DBIS</a> direkt.</p>
 

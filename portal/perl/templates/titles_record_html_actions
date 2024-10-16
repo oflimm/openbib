@@ -481,8 +481,7 @@ $(document).on("click", "#ob-record_title_history .ob-less_button", function () 
     <p/>
     <ul class="list-group" id="ob-record_title_history">
 [% FOREACH recent_record IN recent_titles.get_records %]
-[%- record_fields = recent_record.get_fields -%]
-[%# USE dumper;dumper.dump(record_fields)%]
+[%- record_fields = recent_record.load_brief_record.to_abstract_fields -%]
 [%# Personen/Koerperschaften konstruieren %]
 [%-
 
@@ -492,53 +491,37 @@ $(document).on("click", "#ob-record_title_history .ob-less_button", function () 
      personslength = 0 ;
      truncatepers  = 0 ;
 
-     FOREACH part IN record_fields.${'T0100'} ;
-       thislength = part.content.length ;
+     FOREACH content IN record_fields.${'authors'} ;
+       thislength = content.length ;
        IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = uri_escape(part.content);
+         searchterm    = uri_escape(content);
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         persons.push(part.content);
+         persons.push(content);
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
        END ;
      END ;
-     FOREACH part IN record_fields.${'T0101'}  ;
-       thiscontent = part.content;
-       IF part.supplement ;
-          thiscontent = "${thiscontent} ${part.supplement}" ;
-       END ;
-       thislength = part.content.length ;
+     FOREACH content IN record_fields.${'corp'}  ;
+       thislength = content.length ;
        IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = uri_escape(part.content);
+         searchterm    = uri_escape(content);
          searchprefix  = config.get('searchfield').personstring.prefix;
 
-         persons.push(part.content);
+         persons.push(content);
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
        END ;
      END ;
-     FOREACH part IN record_fields.${'T0200'}  ;
+     FOREACH content IN record_fields.${'creator'}  ;
        thislength = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = uri_escape(part.content);
+         searchterm    = uri_escape(content);
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
-         persons.push(part.content);
-         personslength = personslength+thislength ;
-       ELSE ;
-         truncatepers = 1 ;
-       END ;
-     END ;
-     FOREACH part IN record_fields.${'T0201'}  ;
-       thislength = part.content.length ;
-       IF (thislength+personslength) < config.get('maxlength_person') ;
-         searchterm    = uri_escape(part.content);
-         searchprefix  = config.get('searchfield').corporatebodystring.prefix;
-
-         persons.push(part.content);
+         persons.push(content);
          personslength = personslength+thislength ;
        ELSE ;
          truncatepers = 1 ;
@@ -550,73 +533,30 @@ $(document).on("click", "#ob-record_title_history .ob-less_button", function () 
      END ;
 
      # Titel konstruieren
-     title = record_fields.${'T0331'}.first.content;
-     IF record_fields.${'T0310'}.first.content;
-         title = record_fields.${'T0310'}.first.content;
-     END;
+     title = record_fields.title;
 
      # Mit Unterreihe
-     IF record_fields.${'T0360'}.first.content ;
-         unterreihe = record_fields.${'T0360'}.first.content;
+     IF record_fields.titlesup ;
+         unterreihe = record_fields.titlesup ;
 	 IF NOT title.match(" / ${unterreihe}");
             title = "${title} / ${unterreihe}";
 	 END;
      END;
 
-     is_schriftenreihe = 0;
-     is_mehrbaendig    = 0;
-
-     IF record_fields.${'T0089'}.first.content;
-       is_mehrbaendig = 1;
-     ELSIF record_fields.${'T0451'}.first.content;
-       is_schriftenreihe = 1;
-     END;
-
-     zaehlung = "";
+     zaehlung = record_fields.series_volume;
      
      # Zaehlung Anfang Titel
-     IF is_mehrbaendig;
-       IF record_fields.${'T0090'}.first.content;
-          zaehlung = record_fields.${'T0090'}.first.content;
-	  IF zaehlung == title ;
-	     title = "";
-	  END;
-          title = "${zaehlung}. ${title}";
-       ELSIF record_fields.${'T0089'}.first.content;
-          zaehlung = record_fields.${'T0089'}.first.content;
-	  IF zaehlung == title ;
-	     title = "";
-	  END;
-          title = "${zaehlung}. ${title}";
-       END;     
+     IF zaehlung;
+        title = "${zaehlung}. ${title}";
      END;
      
      # Verlage konstruieren
-     publisher = record_fields.${'T0412'}.first.content;
+     publisher = record_fields.publisher;
 
      # Ejahr konstruieren
-     yearofpub = record_fields.${'T0425'}.first.content;
+     yearofpub = record_fields.year;
 
-     super_title = "";
-
-     # Uebergeordneter Titel in Klammern (super_title)
-     IF is_schriftenreihe;
-       IF record_fields.${'T0451'}.first.content;
-          super_title = record_fields.${'T0451'}.first.content;
-       ELSIF super;
-         IF super.fields.${'0331'} ;
-            super_title   = super.fields.${'0331'}.first.content;
-         ELSIF super.fields.${'0451'} ;
-            super_title   = super.fields.${'0451'}.first.content;
-         END;
-       END;
-     ELSIF is_mehrbaendig;
-       IF super;
-         IF super.fields.${'0331'} ;
-            super_title   = super.fields.${'0331'}.first.content;
-	 END;
-       END;
-     END;
+     super_title = record_fields.series ;
 
      IF title && super_title ;
         title = "${title} (${super_title})";

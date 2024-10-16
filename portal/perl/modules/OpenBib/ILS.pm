@@ -316,6 +316,9 @@ sub make_pda_order {
         
     my $userid          = exists $arg_ref->{userid}
         ? $arg_ref->{userid}          : undef;
+
+    my $external_userid = exists $arg_ref->{external_userid}
+        ? $arg_ref->{external_userid}          : undef;
     
     my $username        = exists $arg_ref->{username}
         ? $arg_ref->{username}        : undef;
@@ -350,7 +353,7 @@ sub make_pda_order {
 
     my $pda_id = $database.":".$katkey;
     
-    my @args = ($title, $pda_id, $author, $corporation, $publisher, $year, $isbn, $price, $classification, $userid, $username, $reservation, $receipt, $email);
+    my @args = ($title, $pda_id, $author, $corporation, $publisher, $year, $isbn, $price, $classification, $userid, $username, $reservation, $receipt, $email, $external_userid);
 	    
     my $uri = "urn:/PDA";
 	        

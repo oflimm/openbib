@@ -203,7 +203,7 @@ sub create_record {
 	}
 	
 	# Production
-	my $response_make_pda_order_ref = $ils->make_pda_order({ title => $title, titleid => $titleid, database => $database, author => $author, corporation => $corporation, publisher => $publisher, year => $year, isbn => $isbn, price => $price, classification => $classification, userid => $userinfo_ref->{username}, username => $userinfo_ref->{fullname}, reservation => $reservation, receipt => $receipt, email => $userinfo_ref->{email}});
+	my $response_make_pda_order_ref = $ils->make_pda_order({ title => $title, titleid => $titleid, database => $database, author => $author, corporation => $corporation, publisher => $publisher, year => $year, isbn => $isbn, price => $price, classification => $classification, userid => $userinfo_ref->{username}, external_userid => $userinfo_ref->{external_id}, username => $userinfo_ref->{fullname}, reservation => $reservation, receipt => $receipt, email => $userinfo_ref->{email}});
 
 	# Test
 	# my $response_make_pda_order_ref = {

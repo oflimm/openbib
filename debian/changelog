@@ -1,6 +1,6 @@
-openbib (2.0-pre1) unstable; urgency=low
+openbib-infrastructure (3.2bookworm) bookworm; urgency=low
 
   * Initial Release.
 
- -- Oliver Flimm <flimm@openbib.org>  Mon,  8 Feb 2006 20:28:59 +0200
+ -- Oliver Flimm <flimm@openbib.org>  Mon, 27 Nov 2023 11:33:23 +0200
 

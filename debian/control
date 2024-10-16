@@ -1,16 +1,16 @@
-Source: openbib
+Source: openbib-infrastructure
 Section: web
 Priority: optional
 Maintainer: Oliver Flimm <flimm@openbib.org>
 Build-Depends: debhelper (>= 4.0.0)
 Standards-Version: 3.6.1
 
-Package: openbib
+Package: openbib-infrastructure
 Architecture: all
-Depends: ${perl:Depends}, ${misc:Depends}, debconf, apache-perl, mysql-server-4.1, libtemplate-perl, libapache-request-perl, libapache-reload-perl, libwww-perl, libdbi-perl, libdbd-mysql-perl, liblog-log4perl-perl, libipc-shareable-perl, libmime-lite-perl, libemail-valid-perl, libyaml-perl, libclass-std-perl, libconfig-std-perl, libversion-perl, libgtop-perl, libapache-gtoplimit-perl, libsoap-lite-perl, libdate-manip-perl, libmldbm-perl, libxml-rss-perl, libxml-twig-perl, liboai-perl
-Description: open source bibliographic multi-catalogue search-portal
+Depends: debconf, starman,  mmv, yaz, jq, sudo, rsync, libplack-perl, postgresql-15, postgresql-client-15, libtemplate-perl, libwww-perl, libdbi-perl, libdbd-mysql-perl, libdbd-pg-perl, liblog-log4perl-perl, libipc-shareable-perl, liblog-dispatch-perl, libmime-lite-perl, libemail-valid-perl, libyaml-perl, libjson-xs-perl, libberkeleydb-perl, libyaml-syck-perl, libsoap-lite-perl, libdate-manip-perl, libmldbm-perl, libxml-rss-perl, libxml-twig-perl, libhttp-oai-perl, libtext-aspell-perl, aspell-en, aspell-de, liblocale-maketext-lexicon-perl, libbusiness-isbn-data-perl, libbusiness-isbn-perl, libgd-graph3d-perl, libxml-dom-perl, libxml-libxml-perl, libxml-writer-perl, libhtml-tiny-perl, libcaptcha-recaptcha-perl, libmarc-record-perl, libnet-z3950-zoom-perl, libstring-tokenizer-perl, libwebservice-solr-perl, libcatmandu-perl, libcatmandu-mab2-perl, libcatmandu-marc-perl, libcatmandu-solr-perl, libweb-scraper-perl, libpica-record-perl, libdata-validate-uri-perl, libdata-validate-ip-perl, libxapian30, xapian-doc, xapian-tools, xapian-examples, libxapian-dev, libsearch-xapian-perl, git, liblist-moreutils-perl, libtext-csv-perl, libdata-validate-domain-perl, libnet-netmask-perl, libhtml-treebuilder-xpath-perl, libtest-base-perl, libhtml-selector-xpath-perl, libuniversal-require-perl, libdata-page-perl, libdata-pageset-perl, libcgi-application-perl, libcgi-application-basic-plugin-bundle-perl, libhtml-generateutil-perl, libexception-class-perl, libexception-class-trycatch-perl, memcached, libcache-memcached-perl, libmemcached-libmemcached-perl, libcache-memcached-libmemcached-perl, libdbix-class-perl, libdbix-class-schema-loader-perl, libdbix-contextualfetch-perl, libtest-differences-perl, libany-uri-escape-perl, libsearch-elasticsearch-perl, libelasticsearch-searchbuilder-perl, libtext-csv-xs-perl, libgd-barcode-perl, libxml-sax-expatxs-perl, libhttp-oai-perl, libmarc-charset-perl, libhttp-browserdetect-perl, liblingua-identify-cld-perl, libplack-middleware-sizelimit-perl, libprocess-sizelimit-core-perl, libsearch-tools-perl, libnet-ldap-perl, libcache-memcached-fast-perl, liblinux-pid-perl, libplack-middleware-deflater-perl, nutcracker, libsession-token-perl, libcompress-lz4-perl, libhtml-strip-perl, libhtml-escape-perl, libwww-curl-perl, libmojolicious-perl, libparallel-forkmanager-perl, libmediawiki-api-perl, libmp3-tag-perl, libmab2-perl, libmail-mbox-messageparser-perl, libparallel-forkmanager-perl, libcompress-lz4-perl, libhtml-escape-perl, libhtml-strip-perl, libwww-curl-perl, libemail-stuffer-perl, libmediawiki-api-perl, libmarc-file-marc21-perl
+Description: Meta-package for necessary OpenBib infrastructure
  Build a search-portal (virtual OPAC) consisting of multiple catalogues
- using different (integrated) library systems. Currently the following
+ using different (integrated) library systems. Currently several
  origin catalogues are supported: Sisis, Lidos, Filemaker, OAI among
  others. The meta-data format is German MAB2-oriented (Maschinelles
  Austauschformat fuer Bibliotheken) but the database-scheme isn't

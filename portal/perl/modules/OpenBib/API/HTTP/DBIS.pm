@@ -126,7 +126,7 @@ sub new {
         $access_green    = ($colors_mask  & 0b000001)?1:0;
         $access_yellow   = ($colors_mask  & 0b101100)?1:0;
     }
-    # Eins von colors oder ocolors ist besetzt (oder auch keines)
+    # Eins von colors oder ocolors ist besetzt (oder auch beides)
     else {
         $logger->debug("Using CGI values for color and ocolor");
         $logger->debug("access_red: $access_red - access_national: $access_national - access_green: $access_green - access_yellow: $access_yellow");
@@ -175,7 +175,7 @@ sub new {
     $self->{bibid}           = $bibid;
     $self->{lang}            = $lang if ($lang);
     $self->{colors}          = $colors if ($colors);
-    $self->{ocolors}         = $colors if ($ocolors);
+    $self->{ocolors}         = $ocolors if ($ocolors);
     
     return $self;
 }

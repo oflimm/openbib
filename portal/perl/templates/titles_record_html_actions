@@ -474,6 +474,7 @@ $(document).on("click", "#ob-record_title_history .ob-less_button", function () 
 </script>
 [% END %]
 
+[% IF 0 == 1 %]
 <div class="ob-session_history"><!-- Begin Historie -->
   <h5 class="ps-3">[% msg.maketext("Diese Titel interessierten Sie bereits") %]</h5>
 
@@ -580,6 +581,8 @@ title %]</span></strong></a>, <span class="ob-publisher">[% publisher %]</span> 
 
 <!-- </div><!-- End ob-record_title_history_toggle_do -->
 </div><!-- End Session-Historie -->
+[% END %]
+
 [% END %]
 
 

@@ -43,6 +43,7 @@ use Lingua::Identify::CLD;
 use Log::Log4perl qw(get_logger :levels);
 use MIME::Base64 ();
 use MLDBM qw(DB_File Storable);
+use DBM_Filter;
 use Storable ();
 
 use OpenBib::Catalog::Factory;
@@ -152,36 +153,56 @@ my %titleid_exists             = ();
 
 if ($reducemem) {
     $logger->info("### $database: Reducing memory usage");
-    tie %indexed_person,        'MLDBM', "./indexed_person.db"
+    my $db_indexed_person = tie %indexed_person,        'MLDBM', "./indexed_person.db"
         or die "Could not tie indexed_person.\n";
 
-    tie %indexed_corporatebody,        'MLDBM', "./indexed_corporatebody.db"
+    $db_indexed_person->{DB}->Filter_Push('utf8');
+    
+    my $db_indexed_corporatebody = tie %indexed_corporatebody,        'MLDBM', "./indexed_corporatebody.db"
         or die "Could not tie indexed_corporatebody.\n";
 
-    tie %indexed_subject,        'MLDBM', "./indexed_subject.db"
+    $db_indexed_corporatebody->{DB}->Filter_Push('utf8');
+    
+    my $db_indexed_subject = tie %indexed_subject,        'MLDBM', "./indexed_subject.db"
         or die "Could not tie indexed_subject.\n";
 
-    tie %indexed_classification,        'MLDBM', "./indexed_classification.db"
+    $db_indexed_subject->{DB}->Filter_Push('utf8');
+    
+    my $db_indexed_classification = tie %indexed_classification,        'MLDBM', "./indexed_classification.db"
         or die "Could not tie indexed_classification.\n";
 
-    tie %indexed_holding,        'MLDBM', "./indexed_holding.db"
+    $db_indexed_classification->{DB}->Filter_Push('utf8');
+    
+    my $db_indexed_holding = tie %indexed_holding,        'MLDBM', "./indexed_holding.db"
         or die "Could not tie indexed_holding.\n";
 
-    tie %listitemdata_person,        'MLDBM', "./listitemdata_person.db"
+    $db_indexed_holding->{DB}->Filter_Push('utf8');
+    
+    my $db_listitemdata_person = tie %listitemdata_person,        'MLDBM', "./listitemdata_person.db"
         or die "Could not tie listitemdata_person.\n";
 
-    tie %listitemdata_corporatebody,        'MLDBM', "./listitemdata_corporatebody.db"
+    $db_listitemdata_person->{DB}->Filter_Push('utf8');
+    
+    my $db_listitemdata_corporatebody = tie %listitemdata_corporatebody,        'MLDBM', "./listitemdata_corporatebody.db"
         or die "Could not tie listitemdata_corporatebody.\n";
 
-    tie %listitemdata_classification,        'MLDBM', "./listitemdata_classification.db"
+    $db_listitemdata_corporatebody->{DB}->Filter_Push('utf8');
+    
+    my $db_listitemdata_classification = tie %listitemdata_classification,        'MLDBM', "./listitemdata_classification.db"
         or die "Could not tie listitemdata_classification.\n";
- 
-    tie %listitemdata_subject,        'MLDBM', "./listitemdata_subject.db"
+
+    $db_listitemdata_classification->{DB}->Filter_Push('utf8');
+    
+    my $db_listitemdata_subject = tie %listitemdata_subject,        'MLDBM', "./listitemdata_subject.db"
         or die "Could not tie listitemdata_subject.\n";
 
-    tie %listitemdata_holding,        'MLDBM', "./listitemdata_holding.db"
+    $db_listitemdata_subject->{DB}->Filter_Push('utf8');
+    
+    my $db_listitemdata_holding = tie %listitemdata_holding,        'MLDBM', "./listitemdata_holding.db"
         or die "Could not tie listitemdata_holding.\n";
 
+    $db_listitemdata_holding->{DB}->Filter_Push('utf8');
+    
     #    tie %listitemdata_popularity,        'MLDBM', "./listitemdata_popularity.db"
     #        or die "Could not tie listitemdata_popularity.\n";
 
@@ -191,14 +212,20 @@ if ($reducemem) {
     #    tie %listitemdata_litlists,        'MLDBM', "./listitemdata_litlists.db"
     #        or die "Could not tie listitemdata_litlists.\n";
 
-    tie %listitemdata_enriched_years,      'MLDBM', "./listitemdata_enriched_years.db"
+    my $db_listitemdata_enriched_years = tie %listitemdata_enriched_years,      'MLDBM', "./listitemdata_enriched_years.db"
         or die "Could not tie listitemdata_enriched_years.\n";
 
-    tie %listitemdata_superid,    "MLDBM", "./listitemdata_superid.db"
+    $db_listitemdata_enriched_years->{DB}->Filter_Push('utf8');
+    
+    my $db_listitemdata_superid = tie %listitemdata_superid,    "MLDBM", "./listitemdata_superid.db"
         or die "Could not tie listitemdata_superid.\n";
 
-    tie %titleid_exists,    "MLDBM", "./titleid_exists.db"
+    $db_listitemdata_superid->{DB}->Filter_Push('utf8');
+    
+    my $db_titleid_exists = tie %titleid_exists,    "MLDBM", "./titleid_exists.db"
         or die "Could not tie titleid_exists.\n";
+
+    $db_titleid_exists->{DB}->Filter_Push('utf8');
 }
 
 if ($scheme){

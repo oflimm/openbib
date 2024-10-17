@@ -49,22 +49,23 @@ use OpenBib::Catalog;
 use OpenBib::Catalog::Factory;
 use OpenBib::Index::Factory;
 
-my ($database,$sync,$scheme,$help,$keepfiles,$purgefirst,$sb,$logfile,$loglevel,$updatemaster,$incremental,$reducemem,$searchengineonly,$nosearchengine);
+my ($database,$sync,$scheme,$help,$keepfiles,$purgefirst,$sb,$logfile,$loglevel,$updatemaster,$incremental,$reducemem,$noenrichment,$searchengineonly,$nosearchengine);
 
-&GetOptions("database=s"      => \$database,
-            "logfile=s"       => \$logfile,
-            "loglevel=s"      => \$loglevel,
-	    "sync"            => \$sync,
-            "keep-files"      => \$keepfiles,
-            "purge-first"     => \$purgefirst,
-            "update-master"   => \$updatemaster,
-            "incremental"     => \$incremental,
-            "reduce-mem"      => \$reducemem,
-            "scheme=s"        => \$scheme,
-            "no-searchengine"    => \$nosearchengine,	    
-            "searchengine-only"  => \$searchengineonly,
-	    "search-backend=s" => \$sb,
-	    "help"            => \$help
+&GetOptions("database=s"        => \$database,
+            "logfile=s"         => \$logfile,
+            "loglevel=s"        => \$loglevel,
+	    "sync"              => \$sync,
+            "keep-files"        => \$keepfiles,
+            "purge-first"       => \$purgefirst,
+            "update-master"     => \$updatemaster,
+            "incremental"       => \$incremental,
+            "reduce-mem"        => \$reducemem,
+            "scheme=s"          => \$scheme,
+	    'no-enrichment'     => \$noenrichment,
+            "no-searchengine"   => \$nosearchengine,	    
+            "searchengine-only" => \$searchengineonly,
+	    "search-backend=s"  => \$sb,
+	    "help"              => \$help
 	    );
 
 if ($help){
@@ -282,7 +283,7 @@ my $postgresdbh = DBI->connect("DBI:Pg:dbname=$config->{pgdbname};host=$config->
         $logger->info("### $database: Verwende Plugin alt_enrich.pl");
         system("$config->{autoconv_dir}/filter/$database/alt_enrich.pl $database");
     }
-    else {
+    elsif (!$noenrichment) {
 
         my $cmd = "$enrichmetaexe --loglevel=$loglevel --database=$database --filename=meta.title";
 

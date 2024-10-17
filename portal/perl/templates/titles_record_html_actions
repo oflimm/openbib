@@ -474,7 +474,7 @@ $(document).on("click", "#ob-record_title_history .ob-less_button", function () 
 </script>
 [% END %]
 
-[% IF 0 == 1 %]
+[% IF NOT disable_title_history %]
 <div class="ob-session_history"><!-- Begin Historie -->
   <h5 class="ps-3">[% msg.maketext("Diese Titel interessierten Sie bereits") %]</h5>
 
@@ -539,9 +539,7 @@ $(document).on("click", "#ob-record_title_history .ob-less_button", function () 
      # Mit Unterreihe
      IF record_fields.titlesup ;
          unterreihe = record_fields.titlesup ;
-	 IF NOT title.match(" / ${unterreihe}");
-            title = "${title} / ${unterreihe}";
-	 END;
+         title = "${title} / ${unterreihe}";
      END;
 
      zaehlung = record_fields.series_volume;

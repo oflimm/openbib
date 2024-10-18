@@ -14,6 +14,7 @@
 
 -%]
 
+[% IF 1 == 1 || dbis_alert %]
 <div class="card mb-3">
 
 <div class="card-header">[% msg.maketext("Eingeschränkte Funktionalität") %]</div>
@@ -23,9 +24,9 @@
 <p>Aktuell hat das folgende Auswirkungen:</p>
 
 <ul>
-<li>Die Suche funktioniert nicht. Es werden immer alle Datenbanken als Suchergebnis geliefert.</li>
 <li>In den Fächerlisten kann die Zahl der enthaltenen Datenbanken nicht ausgegeben werden. Deshalb werden auch die Wortwolken falsch dargestellt.</li>
 <li>In den Trefferlisten kann kein Zugriffsstatus (Ampel) sowie kein Zugriffs-URL ausgegeben werden.</li>
+<li>Die Trefferlisten sind nicht alphabetisch sortiert und es können Mehrfacheinträge vorkommen.</li>
 </ul>
 
 <p>Wir hoffen, dass DBIS die Probleme bald korrigiert.</p>
@@ -34,6 +35,8 @@
 
 </div>
 </div>
+
+[% END %]
 
 <div class="card">
 

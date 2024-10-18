@@ -424,7 +424,7 @@
 
 [% IF NOT hide_hit %]	
          <span class="ob-person">[% person %]</span>
-	 <!-- <img src="[% fulltext_icon %]" /> --> <strong><span class="ob-title"><a href="[% detail_url %]">[% title %]</a></span></strong>
+	 <img src="[% fulltext_icon %]" /> <strong><span class="ob-title"><a href="[% detail_url %]">[% title %]</a></span></strong>
 [%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%][% IF publisher %], <span class="ob-publisher">[% publisher %]</span>[% END %] <span class="ob-yearofpub">[% yearofpub %]</span>
 [% ELSE %]
          <strong><span class="ob-title">[% hide_hit_msg %]</span></strong>
@@ -481,7 +481,7 @@
 	    </div>
 [% END %]
 
-[% IF 0 == 1 && fulltext %]
+[% IF fulltext %]
 	    <div class="pe-1 pb-1">	    
               <a class="btn btn-primary pe-2" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
 	    </div>

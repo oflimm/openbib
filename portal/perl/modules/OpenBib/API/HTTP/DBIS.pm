@@ -619,7 +619,7 @@ sub search {
     $db_group_ref->{group_order} = [];
 
     my $search_count = 0;
-    foreach my $dbs_node ($root->findnodes('/dbis_page/list_dbs/dbs')) {
+    foreach my $dbs_node ($root->findnodes('/dbis_page/list_dbs/dbs[not(@top_db)]')) {
         $search_count = $dbs_node->findvalue('@db_count');
         my $i=0;
         foreach my $db_node ($dbs_node->findnodes('db')) {

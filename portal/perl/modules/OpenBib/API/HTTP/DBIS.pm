@@ -262,15 +262,14 @@ sub get_titles_record {
     # 'r': Kein Zugriff (red)
     
     my $type_mapping_ref = {
-	    'access_2'    => 'y', # yellow
-	    'access_3'    => 'y', # yellow
-	    'access_5'    => 'l', # yellow red
-	     ''              => 'g', # green	    
-	    'Online Uninetz' => 'y',
-	    'Nationallizenz' => 'n', # national license
+        'access_0'    => 'g', # green
+        'access_2'    => 'y', # yellow
+        'access_3'    => 'y', # yellow
+        'access_5'    => 'l', # yellow red
+        'access_500'  => 'n', # national license
     };
     
-    my $access_type = $type_mapping_ref->{$access_info_ref->{desc}};
+    my $access_type = $type_mapping_ref->{$access_info_ref->{id}};
 
     my $db_type_ref = [];
     my @db_type_nodes = $root->findnodes('/dbis_page/details/db_type_infos/db_type_info');
@@ -558,7 +557,7 @@ sub search {
 
     my $dbis_base = $config->get('dbis_baseurl')."dbinfo/";
 
-    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&colors=$self->{colors}&ocolors=$self->{ocolors}&lett=k&".$self->querystring."&hits_per_page=$num&offset=$offset&xmloutput=1";
+    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&colors=$self->{colors}&ocolors=$self->{ocolors}&lett=k&".$self->querystring."&hits_per_page=$num&offset=$offset&sort=alph&xmloutput=1";
 
     my $memc_key = "dbis:search:$url";
 
@@ -712,7 +711,7 @@ sub get_popular_records {
 
     my $dbis_base = $config->get('dbis_baseurl')."dbinfo/";
     
-    my $url=$dbis_base."dbliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{bibid}&lett=f&gebiete=$gebiet&xmloutput=1";
+    my $url=$dbis_base."dbliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{bibid}&lett=f&gebiete=$gebiet&sort=alph&xmloutput=1";
 
     my $recordlist = new OpenBib::RecordList::Title;
 

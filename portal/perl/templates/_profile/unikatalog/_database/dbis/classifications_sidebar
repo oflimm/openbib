@@ -14,18 +14,18 @@
 
 -%]
 
-[% IF dbis_alert %]
+[% IF 1 == 1 || dbis_alert %]
 <div class="card mb-3">
 
 <div class="card-header">[% msg.maketext("Eingeschränkte Funktionalität") %]</div>
 <div class="card-body">
-<p>Wegen einer Schnittstellenänderung von DBIS im Zuge eines Relaunchs funktionieren bisherige Anfragen nicht mehr korrekt oder liefern unvollständige Informationen.</p>
+<p>Wegen einer Schnittstellenänderung von DBIS im Zuge eines Relaunchs funktionieren bisherige API-Anfragen von uns nicht mehr korrekt oder liefern unvollständige Informationen.</p>
 
 <p>Aktuell hat das folgende Auswirkungen:</p>
 
 <ul>
+<li>Bei der Suche nach Datenbanken haben Eingrenzungmöglichkeiten nach Zugriff (Ampeln) aktuell keine Auswirkungen ebenso wie die weiteren Recherchefelder jenseits der freien Suche.</li>
 <li>In den Fächerlisten kann die Zahl der enthaltenen Datenbanken nicht ausgegeben werden. Deshalb werden auch die Wortwolken falsch dargestellt.</li>
-<li>In den Trefferlisten kann kein Zugriffsstatus (Ampel) sowie kein Zugriffs-URL ausgegeben werden.</li>
 <li>Die Trefferlisten sind nicht alphabetisch sortiert und es können Mehrfacheinträge vorkommen.</li>
 </ul>
 

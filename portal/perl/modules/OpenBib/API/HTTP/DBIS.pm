@@ -621,11 +621,12 @@ sub search {
     my $search_count = 0;
     foreach my $dbs_node ($root->findnodes('/dbis_page/list_dbs/dbs[not(@top_db)]')) {
         $search_count = $dbs_node->findvalue('@db_count');
+	$logger->debug("DBIS searchcount is $search_count");
         my $i=0;
         foreach my $db_node ($dbs_node->findnodes('db')) {
             $i++;
             # DBIS-Suche verfuegt ueber kein Paging
-            next if ($i <= $offset || $i > $page*$num);
+#            next if ($i <= $offset || $i > $page*$num);
             
             my $single_db_ref = {};
 

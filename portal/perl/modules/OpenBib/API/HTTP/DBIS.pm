@@ -196,7 +196,7 @@ sub get_titles_record {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $dbis_base = $config->get('dbis_baseurl')."dbinfo/";
+    my $dbis_base = $config->get('dbis_baseurl');
     
     my $record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
     
@@ -431,7 +431,7 @@ sub get_classifications {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $dbis_base = $config->get('dbis_baseurl')."dbinfo/";
+    my $dbis_base = $config->get('dbis_baseurl');
     
     my $url=$dbis_base."fachliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{bibid}&lett=l&xmloutput=1";
 
@@ -555,7 +555,7 @@ sub search {
 
     $self->parse_query($searchquery);
 
-    my $dbis_base = $config->get('dbis_baseurl')."dbinfo/";
+    my $dbis_base = $config->get('dbis_baseurl');
 
     my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&colors=$self->{colors}&ocolors=$self->{ocolors}&lett=k&".$self->querystring."&hits_per_page=$num&offset=$offset&sort=alph&xmloutput=1";
 
@@ -709,7 +709,7 @@ sub get_popular_records {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $dbis_base = $config->get('dbis_baseurl')."dbinfo/";
+    my $dbis_base = $config->get('dbis_baseurl');
     
     my $url=$dbis_base."dbliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{bibid}&lett=f&gebiete=$gebiet&sort=alph&xmloutput=1";
 

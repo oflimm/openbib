@@ -2229,6 +2229,7 @@ sub to_endnote {
 
     if (defined $fields_ref->{'urls'}){
 	foreach my $url_ref (@{$fields_ref->{'urls'}}){
+	    next unless (defined $url_ref->{'url'});
 	    my $content = '%U '.$url_ref->{'url'};
 	    if ($url_ref->{'desc'}){
 		$content.=" (".$url_ref->{desc}.")";
@@ -3941,7 +3942,7 @@ sub to_abstract_fields_marc21 {
 	    }
 	    
 	    push @$urls_ref, {
-		url => $part_ref->{content},
+		url => $part_ref->{u},
 		desc => $thisdesc,
 	    };
         }

@@ -2305,6 +2305,8 @@ sub update_sis {
     
     unless ($uid || $new_data){
 	my $error_message = $msg->maketext("Fehlende oder falsche Parameter.");
+
+	$logger->info("User $username: ".$error_message);
 	
 	$response_ref = {
 	    timestamp   => $self->get_timestamp,
@@ -2318,6 +2320,8 @@ sub update_sis {
     if ($type eq "password"){	
 	if (!$old_data){
 	    my $error_message = $msg->maketext("Fehlende oder falsche Parameter.");
+
+	    $logger->info("User $username: ".$error_message);
 	    
 	    $response_ref = {
 		timestamp   => $self->get_timestamp,
@@ -2332,6 +2336,8 @@ sub update_sis {
 
 	if (!defined $authresult_ref->{successful} || !$authresult_ref->{successful}){
 	    my $error_message = $msg->maketext("Falsche Eingabe des aktuellen Passworts.");
+
+	    $logger->info("User $username: ".$error_message);
 	    
 	    $response_ref = {
 		timestamp   => $self->get_timestamp,
@@ -2453,6 +2459,8 @@ sub update_sis {
 
 		my $success_message = $msg->maketext("Kontoinformationen erfolgreich aktualisiert.");
 
+		$logger->info("User $username: ".$success_message);
+		
 		$response_ref = {
 		    "successful" => 1,
 			"message" => $success_message,
@@ -2463,6 +2471,8 @@ sub update_sis {
 	}
     }
 
+    $logger->info("User $username: Unbekannter Fehler");
+    
     $response_ref = {
 	"code" => 405,
 	    "error" => "unknown error",

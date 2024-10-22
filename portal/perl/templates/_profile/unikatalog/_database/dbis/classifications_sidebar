@@ -14,7 +14,7 @@
 
 -%]
 
-[% IF 1 == 1 || dbis_alert %]
+[% IF dbis_alert %]
 <div class="card mb-3">
 
 <div class="card-header">[% msg.maketext("Eingeschränkte Funktionalität") %]</div>

@@ -1513,7 +1513,7 @@ sub get_mediastatus {
 		    $this_circ_conf = $circ_config->{$department_id}{$storage_id};
 		}
 		else {
-		    $logger->error("Unknown status for department $department_id and storage $storage_id");
+		    $logger->debug("Unknown status for department $department_id and storage $storage_id");
 		}
 
 		my $circulation_desk = 0; # Lesesaalausleihe

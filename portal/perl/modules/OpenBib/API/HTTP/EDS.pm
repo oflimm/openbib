@@ -1168,8 +1168,6 @@ sub get_authtoken {
     
     my $memc_key = "eds:authtoken:$database";
 
-    $logger->debug("Memc: ".$config->{memcached});
-    
     if ($config->{memc}){
         my $authtoken = $config->{memc}->get($memc_key);
 
@@ -1217,9 +1215,10 @@ sub get_sessiontoken {
 	$logger->debug("No sessionid to get sessiontoken");
     }
     
-    my $memc_key = "eds:sessiontoken:".$self->{sessionID};
-
     if ($config->{memc} && defined $self->{sessionID}){
+
+	my $memc_key = "eds:sessiontoken:".$self->{sessionID};
+
         my $sessiontoken = $config->{memc}->get($memc_key);
 
 	if ($sessiontoken){
@@ -1336,8 +1335,6 @@ sub _create_sessiontoken {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $memc_key = "eds:sessiontoken:".$self->{sessionID};
-
     $config->connectMemcached;
     
     my $guest = 'n';
@@ -1378,7 +1375,9 @@ sub _create_sessiontoken {
 	}
 	
 	if ($json_result_ref->{SessionToken}){
-	    if ($config->{memc}){
+	    if ($config->{memc} && defined $self->{sessionID}){
+		my $memc_key = "eds:sessiontoken:".$self->{sessionID};
+
 		$config->{memc}->set($memc_key,$json_result_ref->{SessionToken},$self->{memcached_expiration}{'eds:sessiontoken'});
 
 		if ($logger->is_debug){

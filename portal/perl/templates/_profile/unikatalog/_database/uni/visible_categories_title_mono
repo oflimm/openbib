@@ -45,7 +45,7 @@
                 'URL', # msg.maketext("URL") EDVurl
                 'T2663', # msg.maketext("T2663") USB URLInfo
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung
-                'T5005', # msg.maketext("T5005") Uebergeordn. Werke
+                #'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 ]
 

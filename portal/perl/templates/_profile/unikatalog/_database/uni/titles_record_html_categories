@@ -292,6 +292,53 @@ FOREACH ori_lang IN original_lang_fields.keys ;
    END;
 END;
 
+
+# Cleanup Gesamttitel in 490, 773(5005) und 830
+
+filter_content_490  = {};
+filter_titleid_5005 = {};
+
+FOREACH field_830 IN normdata.${'T0830'};
+  FOREACH field_490 IN normdata.${'T0490'};
+     IF field_490.${'a'} == field_830.${'a'};
+       content = field_490.${'a'} ;
+       filter_content_490.${content} = 1;
+     END;
+  END;
+
+  FOREACH field_5005 IN normdata.${'T5005'};
+      thiscontent   = field_5005.${'e'};
+      super         = from_json(thiscontent);
+      super_titleid = super.id;
+
+     IF super_titleid == field_830.${'w'};
+       filter_titleid_5005.${super_titleid} = 1;
+     END;
+  END;
+END;
+
+new_490  = [];
+new_5005 = [];
+
+FOREACH field_490 IN normdata.${'T0490'};
+  content = field_490.${'a'} ;
+  NEXT IF filter_content_490.${content};
+
+  new_490.push(field_490);
+END;
+
+FOREACH field_5005 IN normdata.${'T5005'};
+    thiscontent   = field_5005.${'e'};
+    super         = from_json(thiscontent);
+    super_titleid = super.id;
+
+    NEXT IF filter_titleid_5005.${super_titleid};
+    new_5005.push(field_5005);
+END;
+
+normdata.${'T0490'} = new_490 ;
+normdata.${'T5005'} = new_5005 ;
+
 content_map = {};
 
 FOREACH field IN normdata;
@@ -1229,39 +1276,39 @@ FOREACH field IN singular_normdata;
 	    END;
          END;
 
-         fulltext_availability  = "";
-         fulltext_icon = config.get('ezb_unknown_img');
-         fulltext_desc  = "Volltext";
+         thisfulltext_availability  = "";
+         thisfulltext_icon = config.get('ezb_unknown_img');
+         thisfulltext_desc  = "Volltext";
 
          IF item.subfield == "g";
-           fulltext_availability = "lawngreen";
-           fulltext_icon = config.get('ezb_green_img');
-           fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
+           thisfulltext_availability = "lawngreen";
+           thisfulltext_icon = config.get('ezb_green_img');
+           thisfulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
          ELSIF item.subfield == "y";
-           fulltext_availability = "yellow";
-           fulltext_icon = config.get('ezb_yellow_img');
-           fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+           thisfulltext_availability = "yellow";
+           thisfulltext_icon = config.get('ezb_yellow_img');
+           thisfulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
          ELSIF item.subfield == "l";
-           fulltext_availability = "yellowred";	 
-           fulltext_icon = config.get('ezb_yellow_red_img');
-           fulltext_desc = msg.maketext("Volltext mit eingeschränkten Zugang");;
+           thisfulltext_availability = "yellowred";	 
+           thisfulltext_icon = config.get('ezb_yellow_red_img');
+           thisfulltext_desc = msg.maketext("Volltext mit eingeschränkten Zugang");;
          ELSIF item.subfield == "f";
-           fulltext_availability = "greenyellow";	 
-           fulltext_icon = config.get('ezb_green_yellow_img');
-           fulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
+           thisfulltext_availability = "greenyellow";	 
+           thisfulltext_icon = config.get('ezb_green_yellow_img');
+           thisfulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
          ELSIF item.subfield == "n";
-           fulltext_availability = "de";	 
-           fulltext_icon = config.get('dbis_de_img');
-           fulltext_desc = msg.maketext("Volltext über Nationallizenz");;
+           thisfulltext_availability = "de";	 
+           thisfulltext_icon = config.get('dbis_de_img');
+           thisfulltext_desc = msg.maketext("Volltext über Nationallizenz");;
          END;
 
-	 ampel =  "<img src=\"${fulltext_icon}\" alt=\"${fulltext_desc}\" />" ;
+	 ampel =  "<img src=\"${thisfulltext_icon}\" alt=\"${thisfulltext_desc}\" />" ;
 
          IF content ;	 
             content   = "<a href=\"${content}\" class=\"ext\" target=\"_blank\">${thiscontent}</a>";
          END ;
 
-         IF fulltext_availability ;
+         IF thisfulltext_availability ;
             content = "${content} ${ampel}";
 	 END;
 	 

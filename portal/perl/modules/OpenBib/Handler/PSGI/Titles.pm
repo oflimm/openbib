@@ -1109,7 +1109,7 @@ sub sort_circulation {
         
     my @sorted = map { $_->[0] }
     sort { $a->[1] cmp $b->[1] }
-    map { [$_, sprintf("%03d:%s:%s:%s",$_->{department_id},$_->{department},$_->{storage},$_->{location_mark})] }
+    map { [$_, sprintf("%s:%s:%s:%s",$_->{department_id},$_->{department},$_->{storage},$_->{location_mark})] }
     @{$array_ref};
         
     return \@sorted;

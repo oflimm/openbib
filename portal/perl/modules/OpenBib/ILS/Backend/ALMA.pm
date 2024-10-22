@@ -199,11 +199,11 @@ sub authenticate {
     }
     
     my $match_user = $sisauth_config->{match_user};
-    my $base_dn    = $sisauth_config->{base_dn};
+    my $basedn     = $sisauth_config->{basedn};
     
     $match_user=~s/USER_NAME/$username/;
     
-    $logger->debug("Checking $match_user in LDAP-Tree at base_dn $base_dn ");
+    $logger->debug("Checking $match_user in LDAP-Tree at basedn $basedn ");
     
     my $proxy_msg = $ldaps->bind(
 	$sisauth_config->{proxy_binddn}, 
@@ -477,11 +477,11 @@ sub get_userdata {
     }
     
     my $match_user = $sisauth_config->{match_user};
-    my $base_dn    = $sisauth_config->{base_dn};
+    my $basedn     = $sisauth_config->{basedn};
     
     $match_user=~s/USER_NAME/$username/;
     
-    $logger->debug("Checking $match_user in LDAP-Tree at base_dn $base_dn ");
+    $logger->debug("Checking $match_user in LDAP-Tree at basedn $basedn ");
     
     my $proxy_msg = $ldaps->bind(
 	$sisauth_config->{proxy_binddn}, 

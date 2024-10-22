@@ -62,7 +62,7 @@
                 'E4110', # msg.maketext("E4110") Inhaltsverzeichnis
                 'E4120', # msg.maketext("E4120") Ebook-URL		
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung
-                #'T5005', # msg.maketext("T5005") Uebergeordn. Werke
+                'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 ]
 

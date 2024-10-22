@@ -91,7 +91,7 @@ sub authenticate {
     
     if ($thisuser){
 	my $login_failure = $thisuser->get_column('thislogin_failure');
-	my $status        = $thisuser->get_column('thisstatus');
+	my $status        = $thisuser->get_column('thisstatus') || '';
         $userid           = $thisuser->get_column('thisid');
         $logger->debug("Got Userid $userid with login failure $login_failure and status $status");
 

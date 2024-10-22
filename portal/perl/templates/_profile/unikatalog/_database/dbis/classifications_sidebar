@@ -8,6 +8,7 @@
     '27' = 1 # Militaerwissenschaft
     '23' = 1 # Maschinenbau
     '11' = 1 # Elektrotechnik
+    '42' = 1 # Werkstoffwissenschaften
     '1' = 1 # Agrar
     '7' = 1 # Architektur
   };

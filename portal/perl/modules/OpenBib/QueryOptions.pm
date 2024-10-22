@@ -75,7 +75,7 @@ sub new {
     }
     
     # Initializierung mit Defaults
-#    $self->initialize_defaults;
+    $self->initialize_defaults;
     
     # Queryoptions zur Session einladen, falls Session existiert
     $self->load_from_session;
@@ -87,10 +87,10 @@ sub new {
     # Entsprechende Optionen wieder zurueck in die Session schreiben
     $self->dump_into_session;
 
-    $logger->debug("srt Option: ".$self->{option}->{'srt'});
-    
     # Wenn srto in srt enthalten, dann aufteilen
-    if ($self->{option}{'srt'} =~m/^([^_]+)_([^_]+)$/){
+    if (defined $self->{option}->{'srt'} && $self->{option}{'srt'} =~m/^([^_]+)_([^_]+)$/){
+	$logger->debug("srt Option: ".$self->{option}->{'srt'});
+    	
         $self->{option}{'srt'} =escape_html($1);
         $self->{option}{'srto'}=escape_html($2);
         $logger->debug("srt Option split: srt = $1, srto = $2");

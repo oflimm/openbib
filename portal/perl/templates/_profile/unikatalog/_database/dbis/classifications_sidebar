@@ -13,6 +13,8 @@
     '7' = 1 # Architektur
   };
 
+  with_status = 0;
+  
 -%]
 
 [% IF dbis_alert %]
@@ -87,6 +89,7 @@
 
 </div>
 
+[% IF with_status %]
 <div class="form-check mt-2">
   <input class="form-check-input" id="access_green[% sidebar_suffix %]" type="checkbox" title="[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]" name="access_green" value="1" checked="checked" />
   <label class="form-check-label" for="access_green[% sidebar_suffix %]"><img src="[% config.get('dbis_green_img') %]" alt="green"/>&nbsp;[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</label>
@@ -101,6 +104,7 @@
   <input class="form-check-input" id="access_national[% sidebar_suffix %]" type="checkbox" title="[% msg.maketext("deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)") %]" name="access_national" value="1" checked="checked" />
   <label class="form-check-label" for="access_national[% sidebar_suffix %]"><img src="[% config.get('dbis_de_img') %]" alt="Nationallizenzen"/>&nbsp;[% msg.maketext("deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)") %]</label>
 </div>
+[% END %]
 
 <div class="form-floating mb-3">
   <select class="form-select" id="cln[% sidebar_suffix %]" name="cln"><option value="" [% IF classification_name == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>

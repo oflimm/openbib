@@ -19,9 +19,12 @@
     '27' = 1 # Militaerwissenschaft
     '23' = 1 # Maschinenbau
     '11' = 1 # Elektrotechnik
+    '42' = 1 # Werkstoffwissenschaften
     '1' = 1 # Agrar
     '7' = 1 # Architektur
   };
+
+  with_cloud = 0;
 
 -%]
 
@@ -39,7 +42,9 @@
 
 <ul class="nav nav-tabs" role="tablist">
 <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-dbis_list">[% msg.maketext("Liste") %]</a></li>
+[% IF with_cloud %]
 <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-dbis_cloud">[% msg.maketext("Wolke") %]</a></li>
+[% END %]
 </ul>
 
 <div class="tab-content pt-3 mb-2">
@@ -58,6 +63,7 @@
 </ul>
 </div>
 
+[% IF with_cloud %]
 <div role="tabpanel" class="tab-pane fade-in" id="ob-dbis_cloud">
 
 <!-- Beginn Tag-Cloud -->
@@ -88,6 +94,7 @@
 <!-- Ende Tag-Cloud -->
 
 </div>
+[% END %]
 
 </div><!-- End: Tabcontent -->
 
@@ -96,4 +103,4 @@
       </div>
     </div>
 
-<a class="btn btn-primary mt-3 mb-3" href="https://dbis.ur.de/dbinfo/fachliste.php?bib_id=usb_k&colors=63&ocolors=40&lett=l" target="_blank"><i class="fas fa-globe me-2"></i> [% msg.maketext("Direkt in DBIS recherchieren") %]</a>
+<a class="btn btn-primary mt-3 mb-3" href="https://dbis.ur.de/USBK" target="_blank"><i class="fas fa-globe me-2"></i> [% msg.maketext("Direkt in DBIS recherchieren") %]</a>

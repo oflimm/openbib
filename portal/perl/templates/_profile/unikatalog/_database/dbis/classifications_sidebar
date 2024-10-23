@@ -25,7 +25,7 @@
 <p>Aktuell hat das folgende Auswirkungen:</p>
 
 <ul>
-<li>Bei der Suche nach Datenbanken haben Eingrenzungen nach Zugriff (Ampeln) oder Datenbank-Typ aktuell keine Auswirkungen.</li>
+<li>Bei der Suche nach Datenbanken haben Eingrenzungen nach Zugriff (Ampeln) aktuell keine Auswirkungen.</li>
 <li>In den Fächerlisten kann die Zahl der enthaltenen Datenbanken nicht ausgegeben werden. Deshalb werden auch die Wortwolken falsch dargestellt.</li>
 </ul>
 

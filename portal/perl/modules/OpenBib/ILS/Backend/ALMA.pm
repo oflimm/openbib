@@ -1612,9 +1612,9 @@ sub get_mediastatus {
 		    }
 
 		    # Vormerk-Rang wird von Alma nicht geliefert
-		    if ($circ_ref->{VormerkAnzahl} >= 0){
-			$this_unavailable_ref->{queue} = $circ_ref->{VormerkAnzahl} ;
-		    }
+		    # if (defined $circ_ref->{VormerkAnzahl} && $circ_ref->{VormerkAnzahl} >= 0){
+		    # 	$this_unavailable_ref->{queue} = $circ_ref->{VormerkAnzahl} ;
+		    # }
 
 		    $this_unavailable_ref->{queue} = "Unbekannt";
 		    
@@ -1738,7 +1738,7 @@ sub check_alma_request {
         ? $arg_ref->{titleid}        : undef;
 
     my $type            = exists $arg_ref->{type}     # Typ (voll/teilqualifizierte Vormerkung) by_title/by_holding
-        ? $arg_ref->{type}           : undef;
+        ? $arg_ref->{type}           : '';
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -2206,6 +2206,11 @@ sub get_alma_request {
 		    $this_response_ref->{endtime}   = $item_ref->{'expiry_date'};
 		}
 
+		if ($logger->is_debug){
+		    $logger->debug("starttime: ".$this_response_ref->{starttime});
+		    $logger->debug("endtime: ".$this_response_ref->{endtime});
+		}
+		
 		# Nur Datum des Zeitstempels
 		$this_response_ref->{starttime} =~s/(\d\d\d\d-\d\d-\d\d).*/$1/;
 		$this_response_ref->{endtime}   =~s/(\d\d\d\d-\d\d-\d\d).*/$1/;

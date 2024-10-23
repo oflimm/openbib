@@ -189,6 +189,11 @@ sub extract_locationid {
 	    if ($item->{subfield} eq "a" && $item->{content}=~/^zb-kunst$/){
 		push @{$element_ref}, "DE-38-ZBKUNST";
 	    }
+	    # Markierung fuer Kn3 und damit ZB-Kunst
+	    if ($item->{subfield} eq "a" && $item->{content}=~/^DE-Kn3$/){
+		push @{$element_ref}, "DE-Kn3";
+		push @{$element_ref}, "DE-38-ZBKUNST";
+	    }
 	    # Schwarze Lade der KMB ueber 980$h	(falls noch nicht ueber 1944$k)
             if ($item->{subfield} eq "h" && $item->{content} eq "KMBEIG_88"){
 	    	push @{$element_ref}, "DE-Kn3-SL";

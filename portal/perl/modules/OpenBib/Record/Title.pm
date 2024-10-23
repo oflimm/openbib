@@ -2693,6 +2693,7 @@ sub to_harvard_citation {
 	    $citation.="Anonymus.";
     }
 
+    if (defined $fields_ref->{type}){
     if ($fields_ref->{type} =~m/(book|periodical)/ ){
 	if ($fields_ref->{availability} eq "online"){
 	    if ($fields_ref->{year}){
@@ -2869,7 +2870,7 @@ sub to_harvard_citation {
 	    }
 	}
     }
-
+    }
     if ($no_html){
 	my $hs = HTML::Strip->new();
 	
@@ -2918,132 +2919,134 @@ sub to_mla_citation {
     }
 
     $citation.="." if ($citation);
-    
-    if ($fields_ref->{type} =~m/(book|periodical)/ ){
-	if ($fields_ref->{title}){
-	    my $title = $fields_ref->{title};
-	    #$title=~s/([\w']+)/\u\L$1/g;
-	    if ($citation){
-		$citation.=" ";
+
+    if (defined $fields_ref->{type}){
+	if ($fields_ref->{type} =~m/(book|periodical)/ ){
+	    if ($fields_ref->{title}){
+		my $title = $fields_ref->{title};
+		#$title=~s/([\w']+)/\u\L$1/g;
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="<i>$title</i>.";
 	    }
-	    $citation.="<i>$title</i>.";
-	}
-	if ($fields_ref->{series}){
-	    if ($citation){
-		$citation.=" ";
+	    if ($fields_ref->{series}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{series};
+		if ($fields_ref->{publisher} || $fields_ref->{year} || $fields_ref->{edition} || $fields_ref->{availability} eq "online"){
+		    $citation.=",";
+		}
 	    }
-	    $citation.=$fields_ref->{series};
-	    if ($fields_ref->{publisher} || $fields_ref->{year} || $fields_ref->{edition} || $fields_ref->{availability} eq "online"){
-		$citation.=",";
+	    if ($fields_ref->{edition}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{edition};
+		if ($fields_ref->{publisher} || $fields_ref->{year}){
+		    $citation.=",";
+		}
 	    }
-	}
-	if ($fields_ref->{edition}){
-	    if ($citation){
-		$citation.=" ";
+	    if ($fields_ref->{availability} eq "online"){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="e-book";
+		if ($fields_ref->{year} || $fields_ref->{publisher}){
+		    $citation.=",";
+		}
 	    }
-	    $citation.=$fields_ref->{edition};
-	    if ($fields_ref->{publisher} || $fields_ref->{year}){
-		$citation.=",";
+	    
+	    if ($fields_ref->{publisher}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{publisher};
+		if ($fields_ref->{year}){
+		    $citation.=",";
+		}
 	    }
-	}
-	if ($fields_ref->{availability} eq "online"){
-	    if ($citation){
-		$citation.=" ";
-	    }
-	    $citation.="e-book";
-	    if ($fields_ref->{year} || $fields_ref->{publisher}){
-		$citation.=",";
-	    }
-	}
-	
-	if ($fields_ref->{publisher}){
-	    if ($citation){
-		$citation.=" ";
-	    }
-	    $citation.=$fields_ref->{publisher};
 	    if ($fields_ref->{year}){
-		$citation.=",";
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{year}.".";
 	    }
 	}
-	if ($fields_ref->{year}){
-	    if ($citation){
-		$citation.=" ";
+	elsif ($fields_ref->{type} eq "article"){
+	    if ($fields_ref->{title}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="\"".$fields_ref->{title}."\".";
 	    }
-	    $citation.=$fields_ref->{year}.".";
-	}
-    }
-    elsif ($fields_ref->{type} eq "article"){
-	if ($fields_ref->{title}){
-	    if ($citation){
-		$citation.=" ";
+	    if ($fields_ref->{source_journal}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="<i>".$fields_ref->{source_journal}."</i>";
+		if ($fields_ref->{source_volume} || $fields_ref->{source_issue} || $fields_ref->{year} || $fields_ref->{source_pages}){
+		    $citation.=",";
+		}
 	    }
-	    $citation.="\"".$fields_ref->{title}."\".";
-	}
-	if ($fields_ref->{source_journal}){
-	    if ($citation){
-		$citation.=" ";
+	    if ($fields_ref->{source_volume}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="vol. ".$fields_ref->{source_volume};
+		if ($fields_ref->{source_issue} || $fields_ref->{year} || $fields_ref->{source_pages}){
+		    $citation.=",";
+		}
 	    }
-	    $citation.="<i>".$fields_ref->{source_journal}."</i>";
-	    if ($fields_ref->{source_volume} || $fields_ref->{source_issue} || $fields_ref->{year} || $fields_ref->{source_pages}){
-		$citation.=",";
+	    if ($fields_ref->{source_issue}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="no. ".$fields_ref->{source_issue};
+		if ($fields_ref->{year} || $fields_ref->{source_pages}){
+		    $citation.=",";
+		}
 	    }
-	}
-	if ($fields_ref->{source_volume}){
-	    if ($citation){
-		$citation.=" ";
+	    if ($fields_ref->{year}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{year};
+		if ($fields_ref->{source_pages}){
+		    $citation.=",";
+		}
 	    }
-	    $citation.="vol. ".$fields_ref->{source_volume};
-	    if ($fields_ref->{source_issue} || $fields_ref->{year} || $fields_ref->{source_pages}){
-		$citation.=",";
-	    }
-	}
-	if ($fields_ref->{source_issue}){
-	    if ($citation){
-		$citation.=" ";
-	    }
-	    $citation.="no. ".$fields_ref->{source_issue};
-	    if ($fields_ref->{year} || $fields_ref->{source_pages}){
-		$citation.=",";
-	    }
-	}
-	if ($fields_ref->{year}){
-	    if ($citation){
-		$citation.=" ";
-	    }
-	    $citation.=$fields_ref->{year};
 	    if ($fields_ref->{source_pages}){
-		$citation.=",";
-	    }
-	}
-	if ($fields_ref->{source_pages}){
-	    if ($citation){
-		$citation.=" ";
-	    }
-	    $citation.=$fields_ref->{source_pages};
-	}
-
-	if ($citation){
-	    $citation.=".";
-	}
-	
-	if ($fields_ref->{availability} eq "online"){
-	    if ($fields_ref->{onlineurl}){
 		if ($citation){
 		    $citation.=" ";
 		}
-		$citation.=$fields_ref->{onlineurl};
+		$citation.=$fields_ref->{source_pages};
 	    }
-	    elsif ($fields_ref->{doi}){
-		if ($citation){
-		    $citation.=" ";
-		}
-		$citation.=$fields_ref->{doi};
-	    }
-
+	    
 	    if ($citation){
 		$citation.=".";
 	    }
-	}    
+	    
+	    if ($fields_ref->{availability} eq "online"){
+		if ($fields_ref->{onlineurl}){
+		    if ($citation){
+			$citation.=" ";
+		    }
+		    $citation.=$fields_ref->{onlineurl};
+		}
+		elsif ($fields_ref->{doi}){
+		    if ($citation){
+			$citation.=" ";
+		    }
+		    $citation.=$fields_ref->{doi};
+		}
+		
+		if ($citation){
+		    $citation.=".";
+		}
+	    }
+	}
     }
 
     if ($no_html){
@@ -3096,126 +3099,128 @@ sub to_apa_citation {
     }
 
     $citation.="." if ($citation);
-    
-    if ($fields_ref->{type} =~m/(book|periodical)/ ){
-	if ($fields_ref->{year}){
-	    if ($citation){
-		$citation.=" ";
-	    }
-	    $citation.="(".$fields_ref->{year}.").";
-	}
-	if ($fields_ref->{title}){
-	    my $title = $fields_ref->{title};
-	    #$title=~s/([\w']+)/\u\L$1/g;
-	    if ($citation){
-		$citation.=" ";
-	    }
-	    $citation.="<i>$title</i>";
 
-	    if ($fields_ref->{edition}){
+    if (defined $fields_ref->{type}){
+	if ($fields_ref->{type} =~m/(book|periodical)/ ){
+	    if ($fields_ref->{year}){
 		if ($citation){
 		    $citation.=" ";
 		}
-		$citation.="(".$fields_ref->{edition}.")";
+		$citation.="(".$fields_ref->{year}.").";
+	    }
+	    if ($fields_ref->{title}){
+		my $title = $fields_ref->{title};
+		#$title=~s/([\w']+)/\u\L$1/g;
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="<i>$title</i>";
+
+		if ($fields_ref->{edition}){
+		    if ($citation){
+			$citation.=" ";
+		    }
+		    $citation.="(".$fields_ref->{edition}.")";
+		}
+
+		$citation.=".";
 	    }
 
-	    $citation.=".";
-	}
-
-	if ($fields_ref->{place}){
-	    if ($citation){
-		$citation.=" ";
+	    if ($fields_ref->{place}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{place};
+		
+		if ($fields_ref->{publisher}){
+		    $citation.=":";
+		}
 	    }
-	    $citation.=$fields_ref->{place};
-	    
 	    if ($fields_ref->{publisher}){
-		$citation.=":";
-	    }
-	}
-	if ($fields_ref->{publisher}){
-	    if ($citation){
-		$citation.=" ";
-	    }
-	    $citation.=$fields_ref->{publisher}.".";
-	}
-	
-	if ($fields_ref->{availability} eq "online"){
-	    if ($fields_ref->{onlineurl}){
 		if ($citation){
 		    $citation.=" ";
 		}
-		$citation.="Retrieved from ".$fields_ref->{onlineurl};
+		$citation.=$fields_ref->{publisher}.".";
 	    }
-	    elsif ($fields_ref->{doi}){
+	    
+	    if ($fields_ref->{availability} eq "online"){
+		if ($fields_ref->{onlineurl}){
+		    if ($citation){
+			$citation.=" ";
+		    }
+		    $citation.="Retrieved from ".$fields_ref->{onlineurl};
+		}
+		elsif ($fields_ref->{doi}){
+		    if ($citation){
+			$citation.=" ";
+		    }
+		    $citation.=$fields_ref->{doi};
+		}
+	    }	
+	}
+	elsif ($fields_ref->{type} eq "article"){
+	    if ($fields_ref->{year}){
 		if ($citation){
 		    $citation.=" ";
 		}
-		$citation.=$fields_ref->{doi};
+		$citation.="(".$fields_ref->{year}.").";
 	    }
-	}	
-    }
-    elsif ($fields_ref->{type} eq "article"){
-	if ($fields_ref->{year}){
-	    if ($citation){
-		$citation.=" ";
+	    if ($fields_ref->{title}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{title}.".";
 	    }
-	    $citation.="(".$fields_ref->{year}.").";
-	}
-	if ($fields_ref->{title}){
-	    if ($citation){
-		$citation.=" ";
+	    if ($fields_ref->{source_journal}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.="<i>".$fields_ref->{source_journal}."</i>";
+		if ($fields_ref->{source_volume} || $fields_ref->{source_issue} || $fields_ref->{year} || $fields_ref->{source_pages}){
+		    $citation.=",";
+		}
 	    }
-	    $citation.=$fields_ref->{title}.".";
-	}
-	if ($fields_ref->{source_journal}){
-	    if ($citation){
-		$citation.=" ";
+	    if ($fields_ref->{source_volume}){
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{source_volume};
+		if (!$fields_ref->{source_issue} && $fields_ref->{source_pages}){
+		    $citation.=",";
+		}
 	    }
-	    $citation.="<i>".$fields_ref->{source_journal}."</i>";
-	    if ($fields_ref->{source_volume} || $fields_ref->{source_issue} || $fields_ref->{year} || $fields_ref->{source_pages}){
-		$citation.=",";
+	    if ($fields_ref->{source_issue}){
+		$citation.="(".$fields_ref->{source_issue}.")";
+		if ($fields_ref->{source_pages}){
+		    $citation.=",";
+		}
 	    }
-	}
-	if ($fields_ref->{source_volume}){
-	    if ($citation){
-		$citation.=" ";
-	    }
-	    $citation.=$fields_ref->{source_volume};
-	    if (!$fields_ref->{source_issue} && $fields_ref->{source_pages}){
-		$citation.=",";
-	    }
-	}
-	if ($fields_ref->{source_issue}){
-	    $citation.="(".$fields_ref->{source_issue}.")";
 	    if ($fields_ref->{source_pages}){
-		$citation.=",";
+		if ($citation){
+		    $citation.=" ";
+		}
+		$citation.=$fields_ref->{source_pages};
 	    }
-	}
-	if ($fields_ref->{source_pages}){
-	    if ($citation){
-		$citation.=" ";
-	    }
-	    $citation.=$fields_ref->{source_pages};
-	}
 
-	if ($citation){
-	    $citation.=".";
+	    if ($citation){
+		$citation.=".";
+	    }
+	    
+	    if ($fields_ref->{availability} eq "online"){
+		if ($fields_ref->{onlineurl}){
+		    if ($citation){
+			$citation.=" ";
+		    }
+		    $citation.="Retrieved from ".$fields_ref->{onlineurl};
+		}
+		elsif ($fields_ref->{doi}){
+		    if ($citation){
+			$citation.=" ";
+		    }
+		    $citation.=$fields_ref->{doi};
+		}
+	    }    
 	}
-	
-	if ($fields_ref->{availability} eq "online"){
-	    if ($fields_ref->{onlineurl}){
-		if ($citation){
-		    $citation.=" ";
-		}
-		$citation.="Retrieved from ".$fields_ref->{onlineurl};
-	    }
-	    elsif ($fields_ref->{doi}){
-		if ($citation){
-		    $citation.=" ";
-		}
-		$citation.=$fields_ref->{doi};
-	    }
-	}    
     }
 
     if ($no_html){

@@ -28,6 +28,7 @@
 </thead>
 <tbody>
 [%# USE dumper;dumper.dump(circulation) %]
+[%# USE dumper;dumper.dump(holding) %]
 [%-
 
    circ_config = config.load_alma_circulation_config;
@@ -38,6 +39,16 @@
 
    IF user.ID;
      external_info = user.get_external_info(user.ID);
+   END;
+
+   # Get storage_location_id for location mark
+   mark_shelfid_map = {};
+   FOREACH thisholding IN holding;
+     IF thisholding.${"X0050"} && thisholding.${"X0014"};
+       shelf_id  = thisholding.${"X0050"}.content;
+       this_mark = thisholding.${"X0014"}.content;
+       mark_shelfid_map.${this_mark} = shelf_id;
+     END;
    END;
 
    # First pass
@@ -58,7 +69,16 @@
      department_id = thiscirculation.department_id;
      storage       = thiscirculation.storage;
      storage_id    = thiscirculation.storage_id;
-     
+
+     shelfid       = "";
+
+     IF department_id == "38" && storage_id == "38-SAB";
+        this_mark = thiscirculation.location_mark;
+        IF mark_shelfid_map.${this_mark};
+	  shelfid = mark_shelfid_map.${this_mark};
+	END;
+     END;
+
      standort = department ;
 
      IF storage ;
@@ -200,6 +220,26 @@
 
 [% IF have_provenance_for.defined(thiscirculation.barcode) %]
 <br/><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% uri_escape(thiscirculation.barcode) %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.include?l=[% lang %];mnr=[% uri_escape(thiscirculation.barcode) %]">Provenienzen</a>
+[% END %]
+
+[% IF shelfid && config.get('campusgis_testuser').${username} && NOT disable_campusgis %]
+<br/>
+
+[% IF browser.mobile %]
+<div class="dropdown dropend">
+  <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <i class="fas fa-route pe-2"></i> [% msg.maketext("Weg zum Buch") %]
+  </a>
+
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" target="_blank" href="[% campusgis_url %]?lang=de&view=2d&building=107&floor=OG1&shelf=[% shelfid %]"><i class="fas fa-globe pe-2"></i> Web: CampusGIS</a></li>
+    <li><a class="dropdown-item" target="_blank" href="virtualcampus://katalog.ub.uni-koeln.de/booknavigation?building=107&floor=OG1&shelf=[% shelfid %]"><i class="fas fa-mobile-alt pe-2" style="margin-left:2px;"></i> App: VirtualCampus</a></li>
+  </ul>
+</div>
+[% ELSE %]
+<a target="_blank" class="btn btn-primary mt-2" href="[% campusgis_url %]?lang=de&view=2d&building=107&floor=OG1&shelf=[% shelfid %]"><i class="fas fa-route pe-2"></i> [% msg.maketext("Weg zum Buch") %]</a>
+[% END %]
+
 [% END %]
 </td>
 <td>
@@ -402,12 +442,14 @@ Präsenzbestand
 
 [%
 
-   scan_dienst = "campus"; # Default: Campuslieferdienst
+   IF NOT disable_mybib ;
+     scan_dienst = "campus"; # Default: Campuslieferdienst
 
-   IF view == "esa";
-     scan_dienst = "ilias"; # Elektronischer Semesterapparat / ILIAS
+     IF view == "esa";
+       scan_dienst = "ilias"; # Elektronischer Semesterapparat / ILIAS
+     END;
    END;
-
+   
 %]
 
 [%############### ANFANG MEDIENSTATUSAKTIONEN ######### %]
@@ -528,7 +570,7 @@ Präsenzbestand
 
 [%############### ANFANG KMB ######### %]
 [% IF thiscirculation.department_id == 'KN3' # KMB: Bestellbutton mit Sprung ins KuBi-Portal bzw. zur Bestellmaske, z.B. ID=inst001:7140497 %]
-[%   IF NOT thiscirculation.storage_id.match('(KN3-RHBILD|KN3-SCHLAD|KN3-MAK|KN3-WRMGRA)$') && NOT thiscirculation.availability.match('missing') && NOT thiscirculation.remark.match('vermisst') && NOT thiscirculation.unavailability_info.first.expected.match('acquisition') && NOT thiscirculation.barcode.match('DummyBarcodeOrders') # Bestellfunktionen fuer KMB-Bestand im MAKK, WRM (Graphische Sammlung) und DSL usw. unterdruecken. Nur KMB selbst %]
+[%   IF NOT thiscirculation.storage_id.match('(KN3-RHBILD|KN3-SCHLAD|KN3-MAK|KN3-WRMGRA)$') && NOT thiscirculation.availability.match('missing') && NOT thiscirculation.remark.match('vermisst') && NOT thiscirculation.unavailability_info.first.expected.match('acquisition') && NOT thiscirculation.barcode.match('DummyBarcodeOrders') && NOT thiscirculation.location_mark.match('KMB/2023.*') # Bestellfunktionen fuer KMB-Bestand im MAKK, WRM (Graphische Sammlung) und DSL usw. unterdruecken. Nur KMB selbst %]
 [%#     IF config.get('active_ils') %]
 <p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];dbname=[% database %];location=[% thiscirculation.storage_id %];realm=kmb">[% msg.maketext("In den KMB Lesesaal bestellen") %]</a></p> 
 <p>
@@ -540,10 +582,9 @@ Präsenzbestand
 [%############### ENDE KMB ######### %]
 
 [%############### ANFANG CAMPUSLIEFERDIENST ######### %]
-[% ELSIF scan_dienst == "campus" %]
-[%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && external_info.external_group.match('^(2)$') && NOT thiscirculation.location_mark.match('^ZBM/') && NOT thiscirculation.storage_id.match('38-HWA-THF') %]
+[% ELSIF scan_dienst == "campus" ;%]
+[%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS|38-307)$') && external_info.external_group.match('^(2)$') && NOT thiscirculation.location_mark.match('^ZBM/') && NOT thiscirculation.storage_id.match('38-HWA-THF') && NOT thiscirculation.availability.match('^(missing)$') %]
 [%    
-
       domain    = "usb";
       subdomain = "";
 
@@ -551,7 +592,7 @@ Präsenzbestand
         subdomain = "avv";
       END;
 
-      IF thiscirculation.department_id.match('38-HWA');
+      IF thiscirculation.department_id.match('^(38-HWA|38-307)$');
         domain = "hwa";
       END;
 
@@ -559,8 +600,18 @@ Präsenzbestand
         domain = "awm";
       END;
 
+      # Spezifische Regeln fuer die Anzeige des Campuslieferdienstes
+      show_campus = 0;
+
+      IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && thiscirculation.availability.match('^(loan|order|presence)$') ;
+        show_campus = 1;
+      END;
+      IF thiscirculation.department_id.match('^38-307$') && thiscirculation.storage_id.match('^38-307-LS$') && thiscirculation.location_mark.match('^HPLS/B');
+        show_campus = 1;
+      END;
+      
 %]
-[%    IF thiscirculation.availability.match('^(order)$') || (thiscirculation.availability.match('^loan$') && thiscirculation.storage_id.match('^38-SAB$') || thiscirculation.storage_id.match('^38-LS$') || thiscirculation.storage_id.match('^38-LBS$') ) %]
+[%    IF show_campus %]
 [%      IF config.get('active_ils') && (NOT user.ID || authenticator.type == 'ils') %]
 <p>
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/campusorders">

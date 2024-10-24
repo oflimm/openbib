@@ -14,21 +14,36 @@
 #######################################################################
 -%]
 [%-
-    holding_fields = record.to_custom_field_scheme_1.${'T1943'};
+    holding_fields = record.to_custom_field_scheme_2.${'T1943'};
     
     #USE dumper;dumper.dump(circulation);
+    # USE dumper;dumper.dump(holding_fields);
     # Preprocessing
     
     # Zusammenfassung von Feldern ueber Holdingid in $8
     holding_fields_per_id = {};
     
     FOREACH thisholding IN holding_fields ;
-      holdingid        = thisholding.${"8"};
-      bestandsverlauf  = thisholding.${"a"};
-      luecken          = thisholding.${"z"};
-      signatur         = thisholding.${"h"};
-      standort         = thisholding.${"c"};
-      bibliothek       = thisholding.${"b"};
+      holdingid        = thisholding.${"8"}.first.content;
+      bestandsverlauf  = thisholding.${"a"}.first.content;
+      intro            = thisholding.${"9"}.first.content;
+      intro            = intro.replace('^- ','');
+      
+      luecken          = "";
+      bemerkung        = "";
+
+      FOREACH thissubfield IN thisholding.${"z"};
+         IF thissubfield.ind == ' 0';
+            bemerkung  = thissubfield.content ;
+         END;
+         IF thissubfield.ind == '30';
+            luecken    = thissubfield.content ;
+         END;
+      END;
+
+      signatur         = thisholding.${"h"}.first.content;
+      standort         = thisholding.${"c"}.first.content;
+      bibliothek       = thisholding.${"b"}.first.content;
 
       IF bestandsverlauf ;
         holding_fields_per_id.${holdingid}.${"a"} = bestandsverlauf;
@@ -36,8 +51,14 @@
       IF luecken ;
         holding_fields_per_id.${holdingid}.${"z"} = luecken;
       END;
+      IF bemerkung ;
+        holding_fields_per_id.${holdingid}.${"remark"} = bemerkung;
+      END;
       IF signatur ;
         holding_fields_per_id.${holdingid}.${"h"} = signatur;
+      END;
+      IF intro ;
+        holding_fields_per_id.${holdingid}.${"9"} = intro;
       END;
       IF standort ;
         IF alma_location_desc.${standort};
@@ -69,11 +90,13 @@
       signatur         = holding_fields_per_id.${holdingid}.${"h"};
       standort         = holding_fields_per_id.${holdingid}.${"c"};
       sigel            = holding_fields_per_id.${holdingid}.${"b"};
+      intro            = holding_fields_per_id.${holdingid}.${"9"};
+      bemerkung        = holding_fields_per_id.${holdingid}.${"remark"};
       issues           = holding_fields_per_id.${holdingid}.${"issues"};
       inventarnr       = ""; # thisholding.${"X0005"}.content;
       bibliothek       = ""; # thisholding.${"X4000"}.content;
       bibliothek_url   = ""; # thisholding.${"X4001"}.content;
-      bemerkung        = ""; # thisholding.${"X1203"}.content;
+      # bemerkung        = ""; # thisholding.${"X1203"}.content;
       bemerkung2       = ""; #thisholding.${"X1200"}.content;
 
       isil      = "";
@@ -154,6 +177,7 @@
         standort         = standort
         sigel            = sigel
         inventarnr       = inventarnr
+	intro            = intro
         bemerkung        = bemerkung
         bemerkung2       = bemerkung2
         isil             = isil
@@ -198,7 +222,7 @@
 <ul>
 [%    FOREACH this_item IN this_cluster.items %]
 <li>
-<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
+<strong>[% IF this_item.intro %][% this_item.intro %] [% END %][% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
 [% IF this_item.standort %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
@@ -207,12 +231,16 @@
 <emph>[% msg.maketext("Hinweis") %]:</emph> [% this_item.bemerkung %]<br/>
 [% END %]
 [% IF this_item.issues %]
-<emph>[% msg.maketext("Hefte") %]:</emph><br/>
+<a class="btn btn-primary mt-2" data-bs-toggle="collapse" href="#collapseIssues" role="button" aria-expanded="false" aria-controls="collapseIssues">
+    [% msg.maketext("Hefte anzeigen") %]
+</a>
+<div class="collapse mt-2" id="collapseIssues">
    <ul>
 [% FOREACH thisissue IN this_item.issues %]
     <li>[% thisissue.remark %] ([% IF thisissue.availability.match('lent')%][% msg.maketext("noch nicht eingegangen") %][% ELSE %][% msg.maketext("eingegangen") %][% END %])</li>
 [% END %]
    </ul>
+</div>
 [% END %]
 </li>
 [% END %]
@@ -241,7 +269,7 @@
 <ul>
 [% FOREACH this_item IN this_cluster.items %]
 <li>
-<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
+<strong>[% IF this_item.intro %][% this_item.intro %] [% END %][% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
 [% IF this_item.standort %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
@@ -296,13 +324,21 @@
 <ul>
 [% FOREACH this_item IN this_cluster.items %]
 <li>
-<strong>[% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
+<strong>[% IF this_item.intro %][% this_item.intro %] [% END %][% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
 <emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
 [% IF this_item.standort %]
 <emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
 [% END %]
 [% IF this_item.bemerkung %]
 <emph>[% msg.maketext("Hinweis") %]:</emph> [% this_item.bemerkung %]<br/>
+[% END %]
+[% IF this_item.issues %]
+<emph>[% msg.maketext("Hefte") %]:</emph><br/>
+   <ul>
+[% FOREACH thisissue IN this_item.issues %]
+    <li>[% thisissue.remark %] ([% IF thisissue.availability.match('lent')%][% msg.maketext("noch nicht eingegangen") %][% ELSE %][% msg.maketext("eingegangen") %][% END %])</li>
+[% END %]
+   </ul>
 [% END %]
 </li>
 [% END %]

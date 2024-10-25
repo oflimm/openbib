@@ -24,13 +24,6 @@
 <div class="card-body">
 <p>Wegen einer Schnittstellenänderung von DBIS im Zuge eines Relaunchs funktionieren bisherige API-Anfragen von uns nicht mehr korrekt oder liefern unvollständige Informationen.</p>
 
-<p>Aktuell hat das folgende Auswirkungen:</p>
-
-<ul>
-<li>Bei der Suche nach Datenbanken haben Eingrenzungen nach Zugriff (Ampeln) aktuell keine Auswirkungen.</li>
-<li>In den Fächerlisten kann die Zahl der enthaltenen Datenbanken nicht ausgegeben werden. Deshalb werden auch die Wortwolken falsch dargestellt.</li>
-</ul>
-
 <p>Wir hoffen, dass DBIS die Probleme bald korrigiert.</p>
 
 <p class="fs-5">Nutzen Sie bitte alternativ <a class="exturl" href="[% config.get('dbis_exturl') %]" target="_blank">DBIS</a> direkt.</p>

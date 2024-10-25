@@ -531,6 +531,7 @@ sub search {
     my $logger = get_logger();
 
     my $config = $self->get_config;
+    my $ua     = $self->get_client;
 
     my $searchquery  = $self->get_searchquery;
     my $queryoptions = $self->get_queryoptions;
@@ -579,18 +580,29 @@ sub search {
 	    return $self; 
 	}
     }
-
     
     my $titles_ref = [];
     
     $logger->debug("Request: $url");
 
-    my $response = $self->{client}->get($url)->decoded_content(charset => 'latin1');
+    my $request = HTTP::Request->new('GET' => $url);
+    
+    my $response = $ua->request($request);
 
-    $logger->debug("Response: $response");
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->content);
+    }
+    
+    if (!$response->is_success) {
+	$logger->info($response->code . ' - ' . $response->message);
+	return;
+    }
+
+    my $xmlresponse = $response->content;
+    $xmlresponse =~s/^.*?<\?xml/<\?xml/ms;
     
     my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response);
+    my $tree   = $parser->parse_string($xmlresponse);
     my $root   = $tree->getDocumentElement;
 
     my $access_info_ref = {};

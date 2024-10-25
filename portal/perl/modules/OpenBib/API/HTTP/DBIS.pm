@@ -471,14 +471,11 @@ sub get_classifications {
 	return;
     }
 
-#    my $response = $ua->get($url)->decoded_content(charset => 'utf8');
-
-    $logger->debug("Response: $response");
-
-    my $xmlcontent = $response->content;    
+    my $xmlresponse = $response->content;
+    $xmlresponse =~s/^.*?<\?xml/<\?xml/ms;
     
     my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($xmlcontent);
+    my $tree   = $parser->parse_string($xmlresponse);
     my $root   = $tree->getDocumentElement;
 
     my $maxcount=0;
@@ -763,12 +760,11 @@ sub get_popular_records {
 	return;
     }
 
-#    my $response = $ua->get($url)->decoded_content(charset => 'utf8');
-
-    $logger->debug("Response: $response");
+    my $xmlresponse = $response->content;
+    $xmlresponse =~s/^.*?<\?xml/<\?xml/ms;
     
     my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response->content);
+    my $tree   = $parser->parse_string($xmlresponse);
     my $root   = $tree->getDocumentElement;
 
     my $access_info_ref = {};

@@ -595,7 +595,7 @@ sub search {
 	return;
     }
 
-    my $xmlresponse = $response->content;
+    my $xmlresponse = $response->decoded_content(charset => 'latin1');
     $xmlresponse =~s/^.*?<\?xml/<\?xml/ms;
     
     my $parser = XML::LibXML->new();

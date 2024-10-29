@@ -5251,10 +5251,8 @@
 ../templates/_profile/sammlungen/_view/jesuiten/mainnavigation_html
 ../templates/_profile/sammlungen/_view/jesuiten/pagination
 ../templates/_profile/sammlungen/_view/jesuiten/search_facet
-../templates/_profile/sammlungen/_view/jesuiten/searchforms_record_advanced
 ../templates/_profile/sammlungen/_view/jesuiten/searchforms_record_query
 ../templates/_profile/sammlungen/_view/jesuiten/search_more_tips
-../templates/_profile/sammlungen/_view/jesuiten/search_title_combined_html
 ../templates/_profile/sammlungen/_view/jesuiten/search_title_combined_include
 ../templates/_profile/sammlungen/_view/jesuiten/search_title_end_html
 ../templates/_profile/sammlungen/_view/jesuiten/search_title_start_html

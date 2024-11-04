@@ -447,7 +447,7 @@
      gesamttitel = item.${"T0490"}.first.${'a'};
 
      # Ggf. vorhandenes Semikolon entfernen
-     gesamttitiel = gesamttitel.replace(' ;$','');
+     gesamttitel = gesamttitel.replace(' ;$','');
 
      original_title = "";
 
@@ -505,6 +505,7 @@
      IF is_schriftenreihe;
        IF gesamttitel;
           super_title = gesamttitel;
+
 	  IF item.${'T0490'}.first.${'v'};
             zaehlung = item.${'T0490'}.first.${'v'};
 	    super_title = "${super_title} ; ${zaehlung}";

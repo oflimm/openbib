@@ -1,0 +1,33 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_images
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe des "Bilder"-Bereichs fuer einen
+# einzelnen Titelsatz
+#
+#######################################################################
+-%]
+<p>
+<a class="img-fluid" href="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% record.id %]/landschaft_web.jpg"><img src="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% record.id %]/landschaft_web_200x.jpg" title=""/></a>
+</p>
+
+<p>
+<a class="inturl" href="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% record.id %]/landschaft_web.jpg"><span style="font-size:0.7em">Als JPG-Datei (Vorschau)</span></a>
+</p>
+<p>
+<a class="inturl" href="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% record.id %]/landschaft.tif"><span style="font-size:0.7em">Als Tiff-Datei (Original)</span></a>
+</p>
+
+[% IF cgiapp.is_authenticated('admin') || cgiapp.is_authenticated('librarian') %]
+<p>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %];flush_cache=1" >[% msg.maketext("Titel ohne Cache") %]</a>
+</p>
+<p>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/searchindex.html?l=[% lang %]" >[% msg.maketext("Zum Suchindex") %]</a>
+</p>
+[% END %]

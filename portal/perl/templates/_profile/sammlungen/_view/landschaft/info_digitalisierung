@@ -1,0 +1,25 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+
+      'main_template' = 'info_digitalisierung_html'
+
+      'active_menu' = 'info'
+      'active_submenu' = 'sammlung'
+
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Digitalisierung')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

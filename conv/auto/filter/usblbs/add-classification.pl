@@ -36,7 +36,7 @@ while (<HOLDING>){
 
     next unless ($titleid && $signatur);
 
-    if ($signatur =~m/^([A-Z][A-Z])\d+?\#$/){
+    if ($signatur =~m/^([A-Z][A-Z])\d+?[a-z]*\#$/){
 	my $group = $1;
 	if (defined $lookup_ref->{$group} && $lookup_ref->{$group}){
 	    $title_group_ref->{$titleid} = $group;

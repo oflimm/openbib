@@ -19,8 +19,8 @@ while (<>){
 	foreach my $item_ref (@{$index_ref->{'record'}{'X0014'}}){
 	    my $signatur = $item_ref->{content};
 
-	    if ($signatur =~m/^([A-Z][A-Z])(\d+?)\#$/){ 
-		$signatur = sprintf "%s%04d",$1,$2;
+	    if ($signatur =~m/^([A-Z][A-Z])(\d+?)([a-z]*)\#$/){ 
+		$signatur = sprintf "%s%04d%s",$1,$2,$3;
 		push @signaturen, $signatur;
 	    }
 	}
@@ -48,7 +48,7 @@ while (<>){
 	    foreach my $item_ref (@{$index_ref->{'index'}{'markstring'}{$weight}}){
 		my $signatur = $item_ref->[1] if ($item_ref->[0] eq "X0014");
 
-		if ($signatur =~m/^[A-Z][A-Z]\d+?\#$/){ 
+		if ($signatur =~m/^[A-Z][A-Z]\d+?[a-z]*\#$/){ 
 		    
 		    push @signaturen, $item_ref;
 		}

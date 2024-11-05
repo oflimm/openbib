@@ -599,6 +599,12 @@
      signaturen = [];
      FOREACH part IN item.${'X0014'};
          sig = part.${'a'};
+	 
+         # Vornullung entfernen
+         IF sig.match('^[A-Z][A-Z]0+');
+	   sig = sig.replace('^([A-Z][A-Z])0+','$1'); 
+	 END;
+
          signaturen.push("${sig}");
      END;
      signatur = signaturen.sort.unique.join(' ; ');

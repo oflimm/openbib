@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [%
-      funcargs = { id => database, type => 5 } ;
+      funcargs = { id => database, type => 4 } ;
       resultlist = config.get_datacache(funcargs);
 %]
 

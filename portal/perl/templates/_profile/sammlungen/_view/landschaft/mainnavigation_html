@@ -89,7 +89,7 @@
 	</li>
 	<li class="nav-item">
         <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/landschaft/[% config.get('titles_loc') %].html?l=[% lang %]">
-          <i class="fas fa-th-list"></i> [% msg.maketext("Alle Bilder") %]
+          <i class="fas fa-th-list"></i> [% msg.maketext("Alle Digitalisate") %]
         </a>
 	</li>
 	

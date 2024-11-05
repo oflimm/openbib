@@ -60,8 +60,8 @@
         <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/landschaft/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">
           <i class="fas fa-cloud"></i> [% msg.maketext("Wortwolken") %]
         </a>
-        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/landschaft/[% config.get('titles_loc') %].html?l=[% lang %]">
-          <i class="fas fa-th-list"></i> [% msg.maketext("Alle Titel") %]
+        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/landschaft/[% config.get('titles_loc') %].html?srt=title_asc;l=[% lang %]">
+          <i class="fas fa-th-list"></i> [% msg.maketext("Alle Digitalisate") %]
         </a>
       </div>
     </div>

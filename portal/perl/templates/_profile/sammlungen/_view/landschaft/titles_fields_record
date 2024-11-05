@@ -3,16 +3,16 @@
 
     IF field == '0101' ;
        field_description = msg.maketext("Personen");
-       searchfield = 'ft0101' ;
+       searchfield = 'personstring' ;
     ELSIF field == '0200' ;
        field_description = msg.maketext("Topogr. Schlagwort");
-       searchfield = 'ft0200' ;
+       searchfield = 'corporatebodystring' ;
     ELSIF field == '0700' ;
        field_description = msg.maketext("1. Ikonogr. Schlagwort");
-       searchfield = 'ft0700' ;
+       searchfield = 'classificationstring' ;
     ELSIF field == '0710' ;
        field_description = msg.maketext("2. Ikonogr. Schlagwort");
-       searchfield = 'ft0710' ;
+       searchfield = 'subjectstring' ;
     ELSE ;
        field_description = msg.maketext("T${field}");
     END ;

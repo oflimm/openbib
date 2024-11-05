@@ -93,7 +93,7 @@
         </a>
 	</li>
 	
-        <li class="nav-item"><a class="nav-link text-black" href="[% path_prefix %]/[% config.get("cartitems_loc") %].html?l=[% lang %]"><i class="far fa-bookmark"></i>  [% msg.maketext("Merkliste") %]</a></li>
+<!--        <li class="nav-item"><a class="nav-link text-black" href="[% path_prefix %]/[% config.get("cartitems_loc") %].html?l=[% lang %]"><i class="far fa-bookmark"></i>  [% msg.maketext("Merkliste") %]</a></li> -->
 
      [% lang_desc = {
        'en' = "English"
@@ -142,7 +142,7 @@
  
   <span class="navbar-brand">
    <a class="text-white" href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">
-     <img src="/images/openbib/common/logo-usb-40px.png" class="img-fluid d-sm-inline pe-3"  />[% msg.maketext("Landschaftsbilder") %]
+     <img src="/images/openbib/views/landschaft/logo-landschaft-40px.png" class="img-fluid d-sm-inline pe-3"  />[% msg.maketext("Landschaftsbilder") %]
    </a>
   </span>
 
@@ -153,7 +153,7 @@
 <!--    <a class="navbar-brand" href="#">Hidden brand</a> -->
 
     <ul id="ob-header_navbarmenu" class="nav navbar-nav flex-row justify-content-between ms-auto me-3 text-white">
-           <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li>
+<!--           <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li> -->
 
 [%     IF config.get_viewauthenticators(view) %]
     [%  IF username %]

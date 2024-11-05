@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 [%
-      funcargs = { id => "${database}-4101", type => 14 } ;
+      funcargs = { id => database, type => 5 } ;
       resultlist = config.get_datacache(funcargs);
 %]
 
@@ -23,7 +23,7 @@
   END ;
 %]
 
-<h3>[% msg.maketext("Systematiken") %]</h3>
+<h3>[% msg.maketext("1. Ikonogr. Schlagwort") %]</h3>
 
 <div class="row">
 <div class="col-md-9">

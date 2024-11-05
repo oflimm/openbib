@@ -43,11 +43,18 @@
    <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/corporatebody.html?l=[% lang %]" title="[% msg.maketext("Topogr. Schlagwort") %]">[% msg.maketext("Topogr. Schlagwort") %]</a></li>
 [%   END %]
 [% END %]
+[% IF config.datacache_exists({ id => database, type => 4 }) %]
+[%   IF layout_param.active_submenu == "clouds_classification" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("1. Ikonogr. Schlagwort") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/classification.html?l=[% lang %]" title="[% msg.maketext("1. Ikonogr. Schlagwort") %]">[% msg.maketext("1. Ikonogr. Schlagwort") %]</a></li>
+[%   END %]
+[% END %]
 [% IF config.datacache_exists({ id => database, type => 3 }) %]
 [%   IF layout_param.active_submenu == "clouds_subject" %]
-  <li class="navbar-item active"><strong>[% msg.maketext("Ikonogr. Schlagwort") %]</strong></li>
+  <li class="navbar-item active"><strong>[% msg.maketext("2. Ikonogr. Schlagwort") %]</strong></li>
 [%   ELSE %]
-   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]" title="[% msg.maketext("Ikonogr. Schlagwort") %]">[% msg.maketext("Ikonogr. Schlagwort") %]</a></li>
+   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]" title="[% msg.maketext("2. Ikonogr. Schlagwort") %]">[% msg.maketext("2. Ikonogr. Schlagwort") %]</a></li>
 [%   END %]
 [% END %]
 </ul>

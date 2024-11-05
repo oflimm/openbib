@@ -8,7 +8,7 @@
       'sidebar_button_in_main_template' = 1 # Sidebar im Desktop anzeige, Mobil via Button
 
       'active_menu' = 'cloud'
-      'active_submenu' = 'clouds_subject'      
+      'active_submenu' = 'clouds_classification'      
       
       'breadcrumb' = [
           {
@@ -20,7 +20,7 @@
 	     url  = "#",
 	  },
 	  {
-	     desc = msg.maketext('Klassifikationen')
+	     desc = msg.maketext('1. Ikonogr. Schlagwort')
 	     url  = '#'
 	     current = 1
 	  }

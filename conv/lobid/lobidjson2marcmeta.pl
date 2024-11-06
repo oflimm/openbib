@@ -42,12 +42,13 @@ use OpenBib::Config;
 use OpenBib::Conv::Common::Util;
 use OpenBib::Catalog::Factory;
 
-my ($logfile,$loglevel,$inputfile);
+my ($logfile,$loglevel,$inputfile,$onlyisil);
 
 &GetOptions(
-	    "inputfile=s"             => \$inputfile,
-            "logfile=s"               => \$logfile,
-            "loglevel=s"              => \$loglevel,
+    "inputfile=s"             => \$inputfile,
+    "only-isil=s"             => \$onlyisil,
+    "logfile=s"               => \$logfile,
+    "loglevel=s"              => \$loglevel,
 	    );
 
 if (!$inputfile){
@@ -859,7 +860,7 @@ while (my $jsonline = <$input_io>){
 	    
 	    if (defined $holding_ref->{id}){
 		my $this_holdingid;
-		($this_holdingid) = $holding_ref->{id} =~m{http://lobid.org/items/(.+?)#\!$};
+		($this_holdingid) = $holding_ref->{id} =~m{http://lobid.org/items/\d+:[^:]+?:(\d+?)#\!$};
 		if ($this_holdingid){
 		    $holding_id=$this_holdingid;
 		}		
@@ -886,6 +887,10 @@ while (my $jsonline = <$input_io>){
 	    
 	    if (defined $held_by_ref && defined $held_by_ref->{isil}){
 		$isil = $held_by_ref->{isil};
+	    }
+
+	    if ($isil && $onlyisil && $isil ne $onlyisil){
+		next;
 	    }
 	    
 	    if ($call_number || $isil){

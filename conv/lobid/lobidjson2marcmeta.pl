@@ -906,6 +906,12 @@ while (my $jsonline = <$input_io>){
 		    content  => $call_number,
 		} if ($call_number);
 
+		push @{$item_ref->{fields}{'0016'}}, {
+		    mult     => 1,
+		    subfield => '',
+		    content  => $library_code,
+		} if (defined $library_code);
+		
 		push @{$item_ref->{fields}{'3330'}}, {
 		    mult     => 1,
 		    subfield => '',
@@ -917,12 +923,6 @@ while (my $jsonline = <$input_io>){
 		    subfield => '',
 		    content  => $location_code,
 		} if (defined $location_code);
-
-		push @{$item_ref->{fields}{'0035'}}, {
-		    mult     => 1,
-		    subfield => '',
-		    content  => $library_code,
-		} if (defined $library_code);
 		
 	    }
         

@@ -175,36 +175,6 @@
       - type: 'LIBRARY'
         id: 'Ausgabe'
         desc: 'Gemeinsame Fachbibliothek VWL: Ausgabe'
-'38-106':
-  '38-106-MAG':
-    'order': 1
-    'loan': 0
-    'reservation': 1
-    'pickup_locations':
-      - type: 'LIBRARY'
-        id: 'Ausgabe'
-        desc: 'Gemeinsame Fachbibliothek BWL: Ausgabe'
-  '38-106-AWM':
-    'order': 1
-    'loan': 0
-    'reservation': 1
-    'pickup_locations':
-      - type: 'LIBRARY'
-        id: 'Ausgabe'
-        desc: 'Gemeinsame Fachbibliothek BWL: Ausgabe'
-  '38-106-FHM':
-    'order': 0
-    'loan': 1
-    'reservation': 1
-'38-132':
-  '38-132-BIB':
-    'order': 1
-    'loan': 0
-    'reservation': 1
-    'pickup_locations':
-      - type: 'LIBRARY'
-        id: 'Ausgabe'
-        desc: 'Gemeinsame Fachbibliothek Soziologie: Ausgabe'
 '38-307':
   '38-307-FHM':
     'order': 0

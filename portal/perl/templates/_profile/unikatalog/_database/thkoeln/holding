@@ -1,0 +1,128 @@
+[%#-
+#######################################################################
+#
+# Templatename: holdings
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Exemplar-Informationen aus den bibliograph. Daten
+#
+# Besonderheit USB-Katalog: holdings werden nur bei Medien ohne Buchdatensaetze ausgegeben, also bei Zeitschriften
+#                           oder digitalen Medien
+#
+#######################################################################
+-%]
+[%-
+
+    holding_categories = [
+                'X0004', # msg.maketext("X0004") # Titel-ID
+                'X0005', # msg.maketext("X0005") # Inventarnummer
+                'X0010', # msg.maketext("X0010") # Mediennummer
+                'X0014', # msg.maketext("X0014") # Signatur
+                'X0016', # msg.maketext("X0016") # Standort
+                'X1204', # msg.maketext("X1204") # Bestandsverlauf
+                'X3330', # msg.maketext("X3330") # Sigel
+                'X4000', # msg.maketext("X4000") # Bibliothek
+                'X4001', # msg.maketext("X4001") # Bibliotheks-Infoseite
+    ];
+
+    abstract_fields = record.to_abstract_fields;
+
+    title    = abstract_fields.title ;
+
+    IF title && abstract_fields.titlesup ;
+      title = "${title} : ${abstract_fields.titlesup}";
+    END;
+
+-%]
+
+[%   IF holding.size > 0 %]
+
+<div class="table-responsive">
+<table class="table table-striped">
+<thead>
+<tr><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th><th>[% msg.maketext("Standort") %]</th><th>[% msg.maketext("Signatur") %]</th></tr>
+</thead>
+<tbody>
+[%  FOREACH thisholding IN holding %]
+<tr><td><strong>
+[%-
+
+isil      = thisholding.${"X3330"}.content;
+isil_desc = "";
+
+standort = thisholding.${"X0016"}.content;
+
+IF standort.match('SUED');
+  standort = "Campus S&uuml;dstadt";
+ELSIF standort.match('DEUTZ');
+  standort = "Campus Deutz";     
+ELSIF standort.match('GUM');
+  standort = "Campus Gummersbach";     
+ELSIF standort.match('LEV');
+  standort = "Campus Leverkusen";     
+ELSIF standort.match('RES_SHARE');
+  standort = "Fernleihe - kein Zugriff";     
+END;
+
+IF isil;
+  isil_desc = locinfo.identifier.${isil}.description;
+END;
+
+# Fix Callnumber
+locationcode = thisholding.${'X0024'}.content ;
+
+IF thisholding.${"X0014"}.content.match("^${locationcode}");
+  thisholding.${"X0014"}.content = thisholding.${"X0014"}.content.replace("^${locationcode}","");
+END;
+
+-%]
+
+[%-  IF isil_desc -%]
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% isil %].html?l=[% lang %]">[% isil_desc %]</a>
+[%-  ELSIF thisholding.${"X4000"}.content && thisholding.${"X4001"}.content -%]
+[%-    IF dbinfo.get('locationid').${record.database} %]
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">
+[%-    ELSE -%]
+<a href="[% thisholding.${"X4001"}.content %]" target="_blank">
+[%-    END -%]
+[%     thisholding.${"X4000"}.content.full %]</a>
+[%-  ELSE -%]
+[% thisholding.${"X4000"}.content.full %]
+[%-  END -%]
+</strong>
+</td>
+<td><a href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% isil_desc | uri %] :: [% standort | uri %] :: [% thisholding.${"X0014"}.content | uri %]" title="Titel :: Bibliothek :: Standort :: Signatur" data-bs-toggle="modal" data-bs-target="#qrcodeModal" data-bs-modaltitle="QR-Code" data-bs-modalurl="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% isil_desc| uri %] :: [% standort | uri %] :: [% thisholding.${"X0014"}.content | uri %]"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
+
+<td>[% standort %]</td>
+
+<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong></td></tr>
+[% END %]
+</tbody>
+</table>
+</div>
+
+
+[%   ELSIF record_exists %]
+<div class="table-responsive">
+<table class="table table-striped table-hover">
+<thead>
+<tr><th>[% msg.maketext("Bibliothek") %]</th><th>QR-Code</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>
+[%-    IF dbinfo.get('locationid').${record.database} %]
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">[% dbinfo.get('dbnames').${database}.short %]</a>
+[%-    ELSE -%]
+[% dbinfo.get('dbnames').${database}.short %]
+[%-    END -%]
+</strong>
+</td>
+<td><a class="ob-qrcode_preview" onclick="return false;" href="[% path_prefix %]/[% config.get('connector_qrcode_loc') %]?text=[% title | truncate(60) | uri %] :: [% dbinfo.get('dbnames').${database}.short | uri %]" title="Titel :: Bibliothek"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+[%   END # End: holding %]

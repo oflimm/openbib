@@ -42,11 +42,12 @@ use OpenBib::Config;
 use OpenBib::Conv::Common::Util;
 use OpenBib::Catalog::Factory;
 
-my ($logfile,$loglevel,$inputfile,$onlyisil);
+my ($logfile,$loglevel,$inputfile,$onlyisil,$withoutdigital);
 
 &GetOptions(
     "inputfile=s"             => \$inputfile,
     "only-isil=s"             => \$onlyisil,
+    "without-digital"         => \$withoutdigital,
     "logfile=s"               => \$logfile,
     "loglevel=s"              => \$loglevel,
 	    );
@@ -648,7 +649,7 @@ while (my $jsonline = <$input_io>){
 	    mult     => 1,
 	    subfield => 'b',
 	    content => join(" ; ",@{$record_ref->{otherTitleInformation}}),
-	}
+	};
     }
     
     ### extent -> 0433/300$a Kollation    
@@ -657,7 +658,9 @@ while (my $jsonline = <$input_io>){
 	    mult     => 1,
 	    subfield => 'a',
 	    content => $record_ref->{extent},
-	}
+	};
+
+	next if ($withoutdigital && $record_ref->{extent} =~m/online resource/);
     }
 
     # language -> 0015/040$b Sprache
@@ -669,7 +672,7 @@ while (my $jsonline = <$input_io>){
 		    mult     => $lang_mult++,
 		    subfield => 'b',
 		    content => $1,
-		}
+		};
 	    }
 	}
     }
@@ -856,6 +859,8 @@ while (my $jsonline = <$input_io>){
     if (defined $record_ref->{hasItem}){
 	foreach my $holding_ref (@{$record_ref->{hasItem}}){
 
+	    next if ($withoutdigital && defined $holding_ref->{type} && grep(/DigitalDocument/,@{$holding_ref->{type}}));
+	    
 	    my $holding_id;
 	    
 	    if (defined $holding_ref->{id}){

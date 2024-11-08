@@ -627,7 +627,7 @@ FOREACH field IN normdata;
            content_map.${'Verfasserangabe'}.push(published_by);
 	 END;
 
-    CASE "T0246"; # Weitere Titel
+    CASE [ "T0246" "T0249" ]; # Weitere Titel
          content = thisfield.${'a'} ;
 	 ind     = thisfield.${'ind'} ;
 	 
@@ -793,6 +793,17 @@ FOREACH field IN normdata;
 	      content_map.${'Hochschulschrift'} = [];
 	   END;
            content_map.${'Hochschulschrift'}.push(content);
+	 END;
+
+    CASE [ "T0505" ];    
+         content = thisfield.${'t'};
+       	 ind     = thisfield.${'ind'} ;
+	 
+         IF content && ind == "80";
+           IF NOT content_map.${'Enthaltener Titel'} ;
+	      content_map.${'Enthaltener Titel'} = [];
+	   END;
+           content_map.${'Enthaltener Titel'}.push(content);
 	 END;
 
     CASE "T0515";    
@@ -1172,7 +1183,7 @@ FOREACH field IN singular_normdata;
        END;
 
      CASE [ "T0982" ];
-       IF item.subfield == 'a';
+       IF item.subfield.match('(a|b|c)');
          content = item.content;
 	 
          searchterm    = uri_escape(content);
@@ -1322,10 +1333,11 @@ FOREACH field IN singular_normdata;
 END;
 
 display_types = {
-   'URL'             => 'list',
-   'Schlagwort'       => 'list',
-   'Hinweis'          => 'list',
-   'Sammlungs-Portal' => 'list',      
+   'URL'               => 'list',
+   'Schlagwort'        => 'list',
+   'Hinweis'           => 'list',
+   'Enthaltener Titel' => 'list',
+   'Sammlungs-Portal'  => 'list',      
 };
 
 # USE dumper;dumper.dump(content_map);dumper.dump(singular_normdata);dumper.dump(record_type);

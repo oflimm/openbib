@@ -705,22 +705,30 @@ while (my $jsonline = <$input_io>){
     if (defined $record_ref->{isPartOf}){
 	my $super_mult = 1;
 	foreach my $part_ref (@{$record_ref->{isPartOf}}){
+	    if (defined $part_ref->{numbering}){
+		push @{$title_ref->{fields}{'0830'}}, {
+		    mult     => $super_mult,
+		    subfield => 'n',
+		    content => $part_ref->{numbering},
+		};
+	    }
+	    
 	    if (defined $part_ref->{hasSuperordinate}){
 		foreach my $super_ref (@{$part_ref->{hasSuperordinate}}){
-		    push @{$title_ref->{fields}{'0490'}}, {
+		    push @{$title_ref->{fields}{'0830'}}, {
 			mult     => $super_mult,
-			subfield => 'a',
+			subfield => 't',
 			content => $super_ref->{label},
-		    };
+		    } if (defined $super_ref->{label});
 
 		    if (defined $super_ref->{id}){
 			my $super_titleid;
 			($super_titleid) = $super_ref->{id} =~m{http://lobid.org/resources/(.+?)#\!$};
-			
+
 			if ($super_titleid){
-			    push @{$title_ref->{fields}{'0490'}}, {
-				mult     => $super_mult,
-				subfield => '6', # linkage
+			    push @{$title_ref->{fields}{'0830'}}, {
+				mult     => "(DE-605)".$super_mult,
+				subfield => 'w', # linkage
 				content => $super_titleid,
 			    };
 			}
@@ -728,13 +736,6 @@ while (my $jsonline = <$input_io>){
 		    
 		    last; # Nur erste Ueberordnung wg. Zuordnungsproblematik zur Volume-Angabe
 		}
-	    }
-	    if (defined $part_ref->{numbering}){
-		    push @{$title_ref->{fields}{'0490'}}, {
-			mult     => $super_mult,
-			subfield => 'v',
-			content => $part_ref->{numbering},
-		    };
 	    }
 	    $super_mult++;	    
 	}

@@ -48,4 +48,4 @@ my $pool          = $ARGV[0];
 my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
 system("cd $pooldir/$pool; rm meta.*");
-system("cd $pooldir/$pool; $lobid2marcmetaexe --only-isil=DE-832 --inputfile=pool.json.gz ; gzip meta.*");
+system("cd $pooldir/$pool; $lobid2marcmetaexe --only-isil=DE-832 -without-digital --inputfile=pool.json.gz ; gzip meta.*");

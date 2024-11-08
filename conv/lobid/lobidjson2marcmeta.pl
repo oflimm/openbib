@@ -150,6 +150,12 @@ while (my $jsonline = <$input_io>){
 
     # Hbzid?
     if (defined $record_ref->{hbzId}){
+	push @{$title_ref->{fields}{'0035'}}, {
+	    content    => "(DE-605)".$record_ref->{hbzId},
+	    mult       => 1,
+	    subfield   => 'a',
+	};
+
 	push @{$title_ref->{fields}{'1001'}}, {
 	    content    => $record_ref->{hbzId},
 	    mult       => 1,
@@ -727,9 +733,9 @@ while (my $jsonline = <$input_io>){
 
 			if ($super_titleid){
 			    push @{$title_ref->{fields}{'0830'}}, {
-				mult     => "(DE-605)".$super_mult,
+				mult     => $super_mult,
 				subfield => 'w', # linkage
-				content => $super_titleid,
+				content => "(DE-605)".$super_titleid,
 			    };
 			}
 		    }

@@ -14,6 +14,7 @@
 #
 #######################################################################
 -%]
+[%# USE dumper;dumper.dump(holding) %]
 [%
   have_standort = 0;
   FOREACH thisholding IN holding ;
@@ -144,7 +145,7 @@ END;
    END;
 
 -%]
-<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong>[% IF barcode %]<br/>(Barcode: [% barcode %])[% END %]</td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]     
+<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong>[% IF barcode %]<br/>(Barcode: [% barcode %])[% END %][% IF thisholding.${"X0014"}.content.match('^Köln [01]') %]<br/><b>[% msg.maketext("derzeit nicht verfügbar") %]</b>[% END %]</td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]     
 [% IF NOT normdata.${"T5002"}.first.content && thisholding.${"X0014"}.content.match('^ZTG') %]
 <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
 [% END %]

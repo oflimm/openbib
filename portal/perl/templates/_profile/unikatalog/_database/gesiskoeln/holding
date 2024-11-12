@@ -33,22 +33,7 @@
 
 [%   IF holding.size > 0 %]
 
-[%-
-    is_journal = 0;
-
-    FOREACH thisholding IN holding ;
-      IF thisholding.defined('X1204') && thisholding.${"X1204"}.content != "-"; # Bestandsverlauf
-        is_journal = 1;
-      END;
-    END;
--%]
-
-
-[%     IF is_journal %]
-[%       PROCESS common/subtemplate name="holding_journal" %]
-[%     ELSE %]
-[%       PROCESS common/subtemplate name="holding_default" %]
-[%     END %]
+[%     PROCESS common/subtemplate name="holding_default" %]
 
 [%   ELSIF record_exists %]
 <div class="table-responsive">

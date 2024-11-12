@@ -17,12 +17,41 @@
 [%# USE dumper;dumper.dump(holding) %]
 [%
   have_standort = 0;
+  multiple_holdings = 0;
+  IF holding.size > 1 ;
+    multiple_holdings = 1;
+  END;
+  
   FOREACH thisholding IN holding ;
      standort         = thisholding.${"X0016"}.content;
      IF standort && standort != '-' ;
         have_standort = 1;
      END;
   END;
+
+  # Gesis verwendet neben 952 alternativ auch 902 fuer Holdings. Damit ggf. Doppelung, die auszuschliessen ist
+  
+  IF multiple_holdings ;
+    new_holding = [];
+    FOREACH thisholding IN holding ;
+     standort = thisholding.${"X0016"}.content;
+     NEXT IF standort != 'GESIS';
+     new_holding.push(thisholding);
+    END;
+    holding = new_holding;
+  END;
+
+  is_sonderstandort = 0;
+
+  IF normdata.${"T0903"};
+    FOREACH item IN normdata.${"T0903"};
+      IF item.${'a'} && item.${'a'}.match('Sonder');
+         is_sonderstandort = 1;
+      END;
+    END;
+
+  END;
+  # USE dumper;dumper.dump(normdata);
 %]
 
 <div class="table-responsive">
@@ -145,7 +174,7 @@ END;
    END;
 
 -%]
-<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong>[% IF barcode %]<br/>(Barcode: [% barcode %])[% END %][% IF thisholding.${"X0014"}.content.match('^Köln [01]') %]<br/><b>[% msg.maketext("derzeit nicht verfügbar") %]</b>[% END %]</td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]     
+<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong>[% IF barcode %]<br/>(Barcode: [% barcode %])[% END %][% IF thisholding.${"X0014"}.content.match('^Köln [01]') && NOT is_sonderstandort %]<br/><b>[% msg.maketext("derzeit nicht verfügbar") %]</b>[% END %]</td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]     
 [% IF NOT normdata.${"T5002"}.first.content && thisholding.${"X0014"}.content.match('^ZTG') %]
 <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
 [% END %]

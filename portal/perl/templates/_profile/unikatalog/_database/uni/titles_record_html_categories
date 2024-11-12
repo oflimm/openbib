@@ -1248,6 +1248,20 @@ FOREACH field IN singular_normdata;
 	 END;
        END; # End subfield 'b'
 
+    CASE "T0989";
+       IF item.subfield == 'a';    
+         content = item.content;
+
+         content = content.replace('ExtBem1','Externe Bemerkung');
+         content = content.replace('ExtBem2','Externe Bemerkung');
+	 
+         IF content ;
+           IF NOT content_map.${'Hinweis'} ;
+	      content_map.${'Hinweis'} = [];
+	   END;
+           content_map.${'Hinweis'}.push(content);
+	 END;
+       END;
 
     CASE [ "T0662" ];
          content       = item.content;

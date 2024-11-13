@@ -3309,6 +3309,7 @@
    representations:
      - none
      - html
+     - json
    runmode: 'renew_single_loan'
    args:
      'restrict_db_to_view': 0

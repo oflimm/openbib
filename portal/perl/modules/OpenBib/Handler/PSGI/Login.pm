@@ -515,7 +515,7 @@ sub get_error_message {
 
 	-7 => $msg->maketext("Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"),
 
-        -8 => $msg->maketext("Die Anmeldung mit Ihrer angegebenen Benutzerkennung und Passwort ist zu oft fehlgeschlagen. Die Kennung ist gesperrt. Wenn Sie Ihr Passwort vergessen haben, dann lassen Sie es bitte in der USB auf Ihr Geburtsdatum zuruecksetzen."),
+        -8 => $msg->maketext("Die Anmeldung mit Ihrer angegebenen Benutzerkennung und Passwort ist zu oft fehlgeschlagen. Die Kennung ist gesperrt. <a target=\"_blank\" href=\"https://ausweis.ub.uni-koeln.de/\">Passwort vergessen?</a>"),
 
         -9 => $msg->maketext("Die eingegebene Benutzernummer ist ungültig. Benutzernummern bestehen aus Großbuchstaben, Zahlen und #, z.B. A123456789#B."),
 	

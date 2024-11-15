@@ -98,7 +98,14 @@ END;
 
 <td>[% standort %]</td>
 
-<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong></td></tr>
+<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong>
+[% IF thisholding.${"X0014"}.content && thisholding.${"X0014"}.content != '-' && normdata.${"T0035"}.first.${"a"} %]
+<p>
+<a class="btn btn-primary mt-2" target="_blank" href="https://thb-koeln.digibib.net/search/katalog/record/[% normdata.${"T0035"}.first.${"a"} %]"><i class="fas fa-arrow-right"></i> TH Katalog</a>
+</p>
+[% END %]
+</td>
+</tr>
 [% END %]
 </tbody>
 </table>

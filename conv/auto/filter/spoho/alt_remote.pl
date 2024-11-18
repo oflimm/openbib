@@ -4,7 +4,7 @@
 #
 #  alt_remote.pl
 #
-#  Holen via http und konvertieren in das Meta-Format
+#  Holen via oai und konvertieren in das Meta-Format
 #
 #  Dieses File ist (C) 2003-2011 Oliver Flimm <flimm@openbib.org>
 #
@@ -39,24 +39,13 @@ my $config = new OpenBib::Config();
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
-my $confdir       = $config->{'base_dir'}."/conf";
-my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-my $aleph2metaexe = "$konvdir/alephseq2meta.pl";
+
+my $harvestoaiexe     = "$config->{'conv_dir'}/harvestOAI.pl";
+my $lobid2marcmetaexe = "$config->{'conv_dir'}/lobidjson2marcmeta.pl";
 
 my $pool          = $ARGV[0];
 
 my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-my $titlefile     = $dbinfo->titlefile;
-
-my $url           = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
-
-my $httpauthstring="";
-if ($dbinfo->protocol eq "http" && $dbinfo->remoteuser ne "" && $dbinfo->remotepassword ne ""){
-    $httpauthstring=" --http-user=".$dbinfo->remoteuser." --http-password=".$dbinfo->remotepassword;
-}
-
-print "### $pool: Datenabzug via http von $url\n";
-system("cd $pooldir/$pool ; rm meta.* ; rm $titlefile");
-system("$wgetexe $httpauthstring -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
-system("cd $pooldir/$pool; zcat $titlefile > pool.dat ; $aleph2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/spoho.yml; gzip meta.* ; rm pool.dat");
+system("cd $pooldir/$pool; rm meta.*");
+system("cd $pooldir/$pool; $lobid2marcmetaexe --only-isil=DE-832 -without-digital --inputfile=pool.json.gz ; gzip meta.*");

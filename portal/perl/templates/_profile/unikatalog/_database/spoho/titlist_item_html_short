@@ -418,7 +418,7 @@
      signaturen = [];
      FOREACH part IN item.${'X0014'};
          sig = part.${'a'};
-	 sig = sig.replace('^[1-9][0-9]','');
+
          signaturen.push("${sig}");
      END;
      signatur = signaturen.sort.unique.join(' ; ');

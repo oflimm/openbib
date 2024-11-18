@@ -615,7 +615,7 @@ while (my $jsonline = <$input_io>){
 		    
 		    push @{$title_ref->{fields}{$new_category}}, {
 			content    => $item_ref->{label},
-			mult       => $subject_mult,
+		mult       => $subject_mult,
 			subfield   => 'a',
 			id         => $subject_id,
 			supplement => '',
@@ -747,10 +747,10 @@ while (my $jsonline = <$input_io>){
 	}
     }
     
-    # hasVersion -> 0662/856$u URL
-    if (defined $record_ref->{hasVersion}){
+    # description -> 0662/856$u URL
+    if (defined $record_ref->{description}){
 	my $url_mult = 1;
-	foreach my $url_ref (@{$record_ref->{has_version}}){
+	foreach my $url_ref (@{$record_ref->{description}}){
 	    push @{$title_ref->{fields}{'0856'}}, { # URL
 		mult     => $url_mult,
 		subfield => 'u',
@@ -759,7 +759,7 @@ while (my $jsonline = <$input_io>){
 	    push @{$title_ref->{fields}{'0856'}}, { # URL Description
 		mult     => $url_mult,
 		subfield => '3',
-		content => $url_ref->{id},
+		content => $url_ref->{label},
 	    };
 	    $url_mult++;
 	}
@@ -781,11 +781,11 @@ while (my $jsonline = <$input_io>){
     # fulltextOnline -> 4120 Volltext-URL
     if (defined $record_ref->{fulltextOnline}){
 	my $fulltext_mult = 1;
-	foreach my $fulltexturl (@{$record_ref->{fulltextOnline}}){
+	foreach my $fulltexturl_ref (@{$record_ref->{fulltextOnline}}){
 	    push @{$title_ref->{fields}{'4120'}}, {
 		mult     => $fulltext_mult++,
 		subfield => '',
-		content => $fulltexturl,
+		content => $fulltexturl_ref->{id},
 	    };
 	}
     }

@@ -22,6 +22,5 @@
 -%]
 <!-- Anfang Umschlagbilder -->
 <p>
-<center><a href="[% object_url %]" target="_blank">   [% IF thumbnail_url %]<img src="[% thumbnail_url %]" title="Thumbnail des Objekts" /></a>[% ELSE %]&nbsp;[% END %]
-</a>
+[% IF thumbnail_url %]<center><a href="[% object_url %]" target="_blank"><img src="[% thumbnail_url %]" title="Thumbnail des Objekts" /></a></center>[% ELSE %]&nbsp;[% END %]
 <p/>

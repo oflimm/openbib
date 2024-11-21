@@ -213,7 +213,7 @@
     <div class="ob-item[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
       <div class="ob-numbering">[% start_range+loop.count - 1 %]</div>
       <div class="ob-thumbnail">
-   [% IF item.${'T2662'}.first.content ;  item.${'T2662'}.first.content =  item.${'T2662'}.first.content.replace('http://www.ub.uni-koeln.de','https://services.ub.uni-koeln.de') %]<img style="height: auto;" src="[% item.${'T2662'}.first.content %]" title="Thumbnail des Objekts" /></a>[% ELSE %]&nbsp;[% END %]
+   [% IF item.${'T2662'}.first.content ;  item.${'T2662'}.first.content =  item.${'T2662'}.first.content.replace('http://www.ub.uni-koeln.de','https://services.ub.uni-koeln.de') %]<img style="height: 80px;" src="[% item.${'T2662'}.first.content %]" title="Thumbnail des Objekts" /></a>[% ELSE %]&nbsp;[% END %]
       </div>
       <div class="ob-brieftitle">
 [%# USE dumper;dumper.dump(item) %]

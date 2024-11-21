@@ -14,10 +14,10 @@
 #
 #######################################################################
 
- object_url = item.${'T0662'}.first.content ;
+ object_url = normdata.${'T0662'}.first.content ;
  object_url = object_url.replace('http://www.ub.uni-koeln.de','https://services.ub.uni-koeln.de') ;
 
- thumbnail_url = item.${'T2662'}.first.content ;
+ thumbnail_url = normdata.${'T2662'}.first.content ;
  thumbnail_url = thumbnail_url.replace('http://www.ub.uni-koeln.de','https://services.ub.uni-koeln.de') ;
 -%]
 <!-- Anfang Umschlagbilder -->

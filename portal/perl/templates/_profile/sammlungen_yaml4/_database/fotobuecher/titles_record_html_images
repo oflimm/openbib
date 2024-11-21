@@ -13,6 +13,10 @@
 # Anpassung: Integration der Bilder von ContentDM entsprechend Migrationsinformationen
 #
 #######################################################################
+
+ item.${'T0662'}.first.content =  item.${'T0662'}.first.content.replace('http://www.ub.uni-koeln.de','https://services.ub.uni-koeln.de') ;
+
+ item.${'T2662'}.first.content =  item.${'T2662'}.first.content.replace('http://www.ub.uni-koeln.de','https://services.ub.uni-koeln.de') ;
 -%]
 <!-- Anfang Umschlagbilder -->
 <p>

@@ -1,0 +1,21 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_images
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe des "Bilder"-Bereichs fuer einen
+# einzelnen Titelsatz
+#
+# Anpassung: Integration der Bilder von ContentDM entsprechend Migrationsinformationen
+#
+#######################################################################
+-%]
+<!-- Anfang Umschlagbilder -->
+<p>
+<center><a href="[% normdata.${'T4120'}.first.content %]" target="_blank">   [% IF normdata.${'T2662'}.first.content %]<img src="[% normdata.${'T2662'}.first.content %]" title="Thumbnail des Objekts" /></a>[% ELSE %]&nbsp;[% END %]
+</a>
+<p/>

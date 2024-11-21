@@ -14,12 +14,14 @@
 #
 #######################################################################
 
- item.${'T0662'}.first.content =  item.${'T0662'}.first.content.replace('http://www.ub.uni-koeln.de','https://services.ub.uni-koeln.de') ;
+ object_url = item.${'T0662'}.first.content ;
+ object_url = object_url.replace('http://www.ub.uni-koeln.de','https://services.ub.uni-koeln.de') ;
 
- item.${'T2662'}.first.content =  item.${'T2662'}.first.content.replace('http://www.ub.uni-koeln.de','https://services.ub.uni-koeln.de') ;
+ thumbnail_url = item.${'T2662'}.first.content ;
+ thumbnail_url = thumbnail_url.replace('http://www.ub.uni-koeln.de','https://services.ub.uni-koeln.de') ;
 -%]
 <!-- Anfang Umschlagbilder -->
 <p>
-<center><a href="[% normdata.${'T0662'}.first.content %]" target="_blank">   [% IF normdata.${'T2662'}.first.content %]<img src="[% normdata.${'T2662'}.first.content %]" title="Thumbnail des Objekts" /></a>[% ELSE %]&nbsp;[% END %]
+<center><a href="[% object_url %]" target="_blank">   [% IF thumbnail_url %]<img src="[% thumbnail_url %]" title="Thumbnail des Objekts" /></a>[% ELSE %]&nbsp;[% END %]
 </a>
 <p/>

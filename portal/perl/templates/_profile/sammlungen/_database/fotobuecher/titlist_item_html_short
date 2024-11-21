@@ -400,14 +400,9 @@
     <div class="ob-item d-flex flex-row[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
     
       <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
-[% IF 0 == 1 %]      
       <div class="ob-thumbnail pt-1 ps-5 pe-5 me-0 d-none d-md-block">
-    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
-    [% coverapi = config.get('covers').vlb %]
-    [%# USE dumper;dumper.dump(coverapi)%]
-    <a href="[% coverapi.credits_url %]" target="_blank"><img src="[% path_prefix %]/[% config.get('connector_cover_loc') %]/vlb/[% isbn %]?size=s" title="[% coverapi.credits_text %]" alt="Cover-Scan"/></a>[% ELSE %]&nbsp;[% END %]
+   [% IF item.${'T2662'}.first.content %]<img src="[% item.${'T2662'}.first.content %]" title="Thumbnail des Objekts" /></a>[% ELSE %]&nbsp;[% END %]
       </div>
-[% END %]      
       <div class="ob-brieftitle ps-4">
 [%# USE dumper;dumper.dump(dbinfo) %]
         <div class="ob-titleinfo ps-2 mt-4">

@@ -68,7 +68,7 @@
 
 <div class="tab-content pt-3">
 [% IF is_printjournal > 0 %]
-<div role="tabpanel" class="tab-pane fade-in active pb-3" id="ob-holding_info"><!-- Begin Bestand -->
+<div role="tabpanel" class="tab-pane fade-in active pb-3" id="ob-holding_info"><!-- Begin Journal-Bestand -->
 [% PROCESS common/subtemplate name="holding_journal" %]
 [% ELSIF circulation.size > 0 %]
 <div role="tabpanel" class="tab-pane fade-in active pb-3" id="ob-circulation_info"><!-- Begin Circulation -->

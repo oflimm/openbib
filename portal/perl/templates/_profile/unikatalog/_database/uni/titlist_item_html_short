@@ -660,6 +660,10 @@
       fulltext_icon = config.get('ezb_green_yellow_img');
       fulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
       availability = "online";      
+    ELSIF fields.${'T4120'}.first.subfield == "n";
+      fulltext_icon = config.get('dbis_de_img');
+      fulltext_desc = msg.maketext("Volltext über Nationallizenz");
+      availability = "online";      
     ELSE ;
       fulltext_icon = config.get('ezb_unknown_img');
       fulltext_desc = msg.maketext("Unbekannter Zugang");;

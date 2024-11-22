@@ -650,6 +650,11 @@ my $purge_year = 0;
 
 $isil = ($isil)?$isil:'DE-38';
 
+# JSON-Daten kommen per API via cdm_ctl.pl aus CDM
+#
+# /opt/openbib/bin/cdm_ctl.pl --do=list_items --collection=inkunabeln --outputfile=inkunabeln.json
+# /opt/openbib/bin/cdm_ctl.pl --do=list_items --collection=inkunabeln_tmp --outputfile=inkunabeln_tmp.json
+
 $logger->info("### JSON-Titeldaten aus $filename verarbeiten");
 
 open(IN , $filename )     || die "IN konnte nicht geoeffnet werden";

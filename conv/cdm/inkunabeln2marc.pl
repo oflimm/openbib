@@ -650,7 +650,7 @@ my $purge_year = 0;
 
 $isil = ($isil)?$isil:'DE-38';
 
-$logger->info("### Pass 3: Titeldaten verarbeiten");
+$logger->info("### JSON-Titeldaten aus $filename verarbeiten");
 
 open(IN , $filename )     || die "IN konnte nicht geoeffnet werden";
 
@@ -978,6 +978,7 @@ while (my $json=<IN>){
 	
 	push @{$output_fields_ref->{'700'}}, $new_field if ($new_field);
     }
+
     
     if (defined $fields_ref->{daranb}){ # Daran 1. Verfasser
 	# Erste in 700 1#
@@ -1514,7 +1515,7 @@ close(OUT);
 
 sub print_help {
     print << "ENDHELP";
-meta2marc.pl - Erzeugung einer MARC21 Datei aus den Import-Dateien im MAB2 Metaformat
+inkunabeln2marc.pl - Erzeugung einer MARC21 Datei aus der JSON-API Export-Datei
 
    Optionen:
    -help                 : Diese Informationsseite

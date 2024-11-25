@@ -305,7 +305,7 @@ sub output {
 	}
     }
     else {
-	open(OUTPUT,">:utf8",$outputfile);
+	open(OUTPUT,">:raw",$outputfile);
 	
 	$logger->info($description);
 

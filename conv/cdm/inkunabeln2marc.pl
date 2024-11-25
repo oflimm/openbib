@@ -956,98 +956,71 @@ while (my $json=<IN>){
 	push @{$output_fields_ref->{'700'}}, $new_field if ($new_field);
     }
 
-    if (defined $fields_ref->{daran}){ # Daran
+    if (defined $fields_ref->{daran} || defined $fields_ref->{daranb} || defined $fields_ref->{darana}){ # Daran 
 	# Erste in 700 12
 
 	my @subfields = ();
 
+	my $daran = $fields_ref->{'daran'}[0]{content} || '';
+	my $darana = $fields_ref->{'darana'}[0]{content} || '';	
+	my $daranb = $fields_ref->{'daranb'}[0]{content} || '';
+
 	# Ansetzungsform
-	push (@subfields,'a', cleanup($fields_ref->{'daran'}[0]{content}));
-	push (@subfields,'t', cleanup($fields_ref->{'daran'}[0]{content}));
+	if ($daranb){ # Daran 1. Verfasser
+	    push (@subfields,'a', cleanup($daranb));
+	    push (@subfields,'t', cleanup($daran)) if ($daran);
+
+	    # GND
+	    if (defined $fields_ref->{'darinc'}){
+		push (@subfields,'0', "(DE-588)".$fields_ref->{'darinc'}[0]{content});
+	    }
+
+	    my $new_field = MARC::Field->new('700', '1',  '2', @subfields);
 	
-	my $new_field = MARC::Field->new('700', '1',  '2', @subfields);
+	    push @{$output_fields_ref->{'700'}}, $new_field if ($new_field);
+	}
+
+	if ($darana){ # Daran 2. Verfasser
+	    push (@subfields,'a', cleanup($daranb));
+	    push (@subfields,'t', cleanup($daran)) if ($daran);
+
+	    # GND
+	    if (defined $fields_ref->{'darinf'}){
+		push (@subfields,'0', "(DE-588)".$fields_ref->{'darinf'}[0]{content});
+	    }
+	    
+	    my $new_field = MARC::Field->new('700', '1',  '2', @subfields);
 	
-	push @{$output_fields_ref->{'700'}}, $new_field if ($new_field);
+	    push @{$output_fields_ref->{'700'}}, $new_field if ($new_field);
+	}
+	
     }
 
-    if (defined $fields_ref->{darin}){ # Darin
+    if (defined $fields_ref->{darin} || defined $fields_ref->{darina}){ # Darin 
 	# Erste in 700 12
 
 	my @subfields = ();
 
-	# Ansetzungsform
-	push (@subfields,'a', cleanup($fields_ref->{'darin'}[0]{content}));
-	push (@subfields,'t', cleanup($fields_ref->{'darin'}[0]{content}));
-	
-	my $new_field = MARC::Field->new('700', '1',  '2', @subfields);
-	
-	push @{$output_fields_ref->{'700'}}, $new_field if ($new_field);
-    }
+	my $darin = $fields_ref->{'darin'}[0]{content} || '';
+	my $darina = $fields_ref->{'darina'}[0]{content} || '';	
 
+	# Ansetzungsform
+	if ($darina){ # Darin 1. Verfasser
+	    push (@subfields,'a', cleanup($darina));
+	    push (@subfields,'t', cleanup($darin)) if ($darin);
+
+	    # GND
+	    if (defined $fields_ref->{'darinc'}){
+		push (@subfields,'0', "(DE-588)".$fields_ref->{'darinc'}[0]{content});
+	    }
+
+	    my $new_field = MARC::Field->new('700', '1',  '2', @subfields);
+	
+	    push @{$output_fields_ref->{'700'}}, $new_field if ($new_field);
+	}
+	
+    }
     
-    if (defined $fields_ref->{daranb}){ # Daran 1. Verfasser
-	# Erste in 700 1#
-
-	my @subfields = ();
-
-	# Ansetzungsform
-	push (@subfields,'a', cleanup($fields_ref->{'daranb'}[0]{content}));
-
-	# GND
-	if (defined $fields_ref->{'darane'}){
-	    push (@subfields,'0', "(DE-588)".$fields_ref->{'darane'}[0]{content});
-	}
-
-	# Relationship
-	push (@subfields,'4', "aut");
-	
-	my $new_field = MARC::Field->new('700', '1',  ' ', @subfields);
-	
-	push @{$output_fields_ref->{'700'}}, $new_field if ($new_field);
-    }
-
-    if (defined $fields_ref->{darana}){ # Daran 2. Verfasser
-	# Erste in 700 1#
-
-	my @subfields = ();
-
-	# Ansetzungsform
-	push (@subfields,'a', cleanup($fields_ref->{'darana'}[0]{content}));
-
-	# GND
-	if (defined $fields_ref->{'daranf'}){
-	    push (@subfields,'0', "(DE-588)".$fields_ref->{'daranf'}[0]{content});
-	}
-
-	# Relationship
-	push (@subfields,'4', "aut");
-	
-	my $new_field = MARC::Field->new('700', '1',  ' ', @subfields);
-	
-	push @{$output_fields_ref->{'700'}}, $new_field if ($new_field);
-    }
-
-    if (defined $fields_ref->{darina}){ # Darin 1. Verfasser
-	# Erste in 700 1#
-
-	my @subfields = ();
-
-	# Ansetzungsform
-	push (@subfields,'a', cleanup($fields_ref->{'darina'}[0]{content}));
-
-	# GND
-	if (defined $fields_ref->{'darinc'}){
-	    push (@subfields,'0', "(DE-588)".$fields_ref->{'darinc'}[0]{content});
-	}
-
-	# Relationship
-	push (@subfields,'4', "aut");
-	
-	my $new_field = MARC::Field->new('700', '1',  ' ', @subfields);
-	
-	push @{$output_fields_ref->{'700'}}, $new_field if ($new_field);
-    }
-
     if (defined $fields_ref->{drucko}){ # Druckort
 	# Druckort in 264 #1
 	# Druckort in 751 ##

@@ -55,17 +55,8 @@ convtab:
         from_field: 'ersche' 
         subfield: 'a' # place of production, publication, distribution, manufacture
       -
-        from_field: 'druckv' 
-        subfield: 'a' # place of production, publication, distribution, manufacture
-      -
-        from_field: 'druckv' 
-        subfield: 'b' # place of production, publication, distribution, manufacture
-      -
         from_field: 'verlag' 
         subfield: 'b' # place of production, publication, distribution, manufacture
-      -
-        from_field: 'druckv' 
-        subfield: 'c' # place of production, publication, distribution, manufacture
       -
         from_field: 'drucke' 
         subfield: 'b' # name of producer, publisher, distributor, manufacturer
@@ -92,6 +83,9 @@ convtab:
       -
         from_field: 'quelle'		
         subfield: 'a'
+      -
+        from_field: 'druckv' 
+        subfield: 'a' # place of production, publication, distribution, manufacture
     '510_4_ ':
       -
         from_field: 'istc'		

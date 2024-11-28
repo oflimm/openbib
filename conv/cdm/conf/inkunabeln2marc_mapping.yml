@@ -86,6 +86,22 @@ convtab:
       -
         from_field: 'druckv' 
         subfield: 'a' # place of production, publication, distribution, manufacture
+    '501_ _ ':
+      -
+        from_field: 'angeb1'		
+        subfield: 'a'
+      -
+        from_field: 'angeb2'		
+        subfield: 'a'
+      -
+        from_field: 'angeb3'		
+        subfield: 'a'
+      -
+        from_field: 'angeb4'		
+        subfield: 'a'
+      -
+        from_field: 'angeb5'		
+        subfield: 'a'
     '510_4_ ':
       -
         from_field: 'istc'		

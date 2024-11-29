@@ -122,10 +122,6 @@ convtab:
       -
         from_field: 'proven'		
         subfield: 'a'
-    '700_1_2':
-      -
-        from_field: 'enthlt'		
-        subfield: 'a'
     '590_ _ ': # Bemerkung = lokale Fussnote
       -
         from_field: 'refere'		

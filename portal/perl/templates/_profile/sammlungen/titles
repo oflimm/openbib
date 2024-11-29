@@ -7,7 +7,7 @@
       'page_title' = "Titel des Katalogs '${katalogname}' anzeigen"
 
       'main_template' = 'titles_html'
-      'sidebar_template'= 'titles_navigation'
+      #'sidebar_template'= 'titles_navigation'
 
       'database' = database
 

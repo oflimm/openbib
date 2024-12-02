@@ -1100,6 +1100,8 @@ FOREACH field IN normdata;
          # USE dumper;dumper.dump(super);
          super_titleid = super.id;
 
+         NEXT IF NOT super_titleid ;
+	 
          super_title   = "";
 
          FOREACH superfields IN super.fields.${'0245'} ;

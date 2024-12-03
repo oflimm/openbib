@@ -15,12 +15,11 @@ use DB_File;
 
 unlink "./title_locationid.db";
 unlink "./medianumber_locationid.db";
-unlink "./title_has_parent.db";
+unlink "./title_has_children.db";
 
 our %title_locationid             = ();
 our %medianumber_locationid       = ();
-our %title_locationid_with_parent = ();
-our %title_has_parent             = ();
+our %title_has_children              = ();
 
 tie %title_locationid,             'MLDBM', "./title_locationid.db"
     or die "Could not tie title_locationid.\n";
@@ -28,8 +27,8 @@ tie %title_locationid,             'MLDBM', "./title_locationid.db"
 tie %medianumber_locationid,       'MLDBM', "./medianumber_locationid.db"
     or die "Could not tie medianumber_locationid.\n";
 
-tie %title_has_parent,             'MLDBM', "./title_has_parent.db"
-    or die "Could not tie title_has_parent.\n";
+tie %title_has_children,             'MLDBM', "./title_has_children.db"
+    or die "Could not tie title_has_children.\n";
 
 print STDERR "### uni Analysiere Mediennummern mit ihren Standorten fuer Bindeeinheiten \n";
 
@@ -40,9 +39,15 @@ while (<TITLE>){
     my $title_ref = decode_json $_;
 
     store_locationid_of_medianumber($title_ref);
+    store_hierarchy($title_ref);
+    
+    # Locations zur Titelid merken
+    $title_locationid{$title_ref->{id}} = extract_locationid($title_ref);
 }
 
 close(TITLE);
+
+#print STDERR YAML::Dump(\%title_has_children),"\n";
 
 print STDERR "### uni Analysiere Titeldaten und setze Standort-Markierungen\n";
 
@@ -53,8 +58,24 @@ while (<>){
 
     my $locations_ref             = extract_locationid($title_ref);
     my $bindingunit_locations_ref = extract_locationids_of_bindingunits($title_ref);
+    my $locations_of_children_ref = [];
 
+    # Titel hat selbst keine Locations. Dann aus Kindern bestimmen
+    unless (@$locations_ref){
+	my $titleids_of_children_ref = extract_titleids_of_children($titleid);
+
+	# Locations zu den Titelids bestimmen
+	my @new_locations = ();	
+	foreach my $titleid (uniq @{$titleids_of_children_ref}){
+	    push @{$locations_of_children_ref}, uniq @{$title_locationid{$titleid}} if (defined $title_locationid{$titleid});
+	}
+    }
+
+    # Konnten Locations aus Bindeeinheiten bestimmt werden?
     push @{$locations_ref}, @{$bindingunit_locations_ref} if (@{$bindingunit_locations_ref});
+
+    # Konnten Locations aus den abhaengigen Kind-Titeln bestimmt werden?
+    push @{$locations_ref}, @{$locations_of_children_ref} if (@{$locations_of_children_ref});
     
     if (@$locations_ref){	
         my $mult = 1;
@@ -63,8 +84,51 @@ while (<>){
         }
 
     }
-    
+
     print encode_json $title_ref, "\n";
+}
+
+sub extract_titleids_of_children {
+    my $parentid        = shift;
+    
+    # Keine Kinder? Dann exit
+    return [] unless (defined $title_has_children{$parentid});
+
+    my $childrenids_ref           = [];
+    my $grandchildrenids_ref      = [];
+    my $grandgrandchildrenids_ref = [];    
+
+    # 1. Kinder
+    if (defined $title_has_children{$parentid}){
+	foreach my $childrenid (uniq keys %{$title_has_children{$parentid}}){
+	    push @{$childrenids_ref}, $childrenid;
+	}
+    }
+    
+    # 2. Enkelkinder
+    foreach my $childrenid (uniq @{$childrenids_ref}){
+	if (defined $title_has_children{$childrenid}){
+	    foreach my $grandchildrenid (uniq keys %{$title_has_children{$childrenid}}){
+		push @{$grandchildrenids_ref}, $grandchildrenid;
+	    }
+	}
+    }
+
+    # 3. Ur-Enkelkinder
+    foreach my $grandchildrenid (uniq @{$grandchildrenids_ref}){
+	if (defined $title_has_children{$grandchildrenid}){
+	    foreach my $grandgrandchildrenid (uniq keys %{$title_has_children{$grandchildrenid}}){
+		push @{$grandgrandchildrenids_ref}, $grandgrandchildrenid;
+	    }
+	}
+    }
+
+    push @{$childrenids_ref}, @{$grandchildrenids_ref};
+    push @{$childrenids_ref}, @{$grandgrandchildrenids_ref};
+    
+    @{$childrenids_ref} = uniq @{$childrenids_ref};
+    
+    return $childrenids_ref;
 }
 
 sub extract_locationids_of_bindingunits {
@@ -108,6 +172,36 @@ sub extract_locationids_of_bindingunits {
     }
 
     return $locationids_ref;
+}
+
+sub store_hierarchy {
+    my $title_ref = shift;
+
+    my $childid = $title_ref->{id};
+
+    foreach my $field ('0773','0830'){
+	if (defined $title_ref->{fields}{$field}){
+	    foreach my $item_ref (@{$title_ref->{fields}{$field}}){
+		if ($item_ref->{'subfield'} eq "w"){
+		    my $parentid = $item_ref->{'content'};
+		    
+		    # MMSIDs als parentid wollen wir, alles andere ignorieren
+		    next unless ($parentid =~m/^\d+$/);
+
+		    my $title_children_ref = {};
+		    if (defined $title_has_children{$parentid}){
+			$title_children_ref = $title_has_children{$parentid};
+		    }
+
+		    $title_children_ref->{$childid} = 1;
+
+		    $title_has_children{$parentid} = $title_children_ref;
+		}
+	    }
+	}
+    }
+
+    return;
 }
 
 sub store_locationid_of_medianumber {

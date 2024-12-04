@@ -20,6 +20,7 @@
                 'T0089', # msg.maketext("T0089") Bandangabe  
                 'Originaltitel', # msg.maketext("Originaltitel") EST 
                 'Weitere Titel', # msg.maketext("Weitere Titel") WST
+                'Enthaltener Titel', # msg.maketext("Enthaltener Titel") 505 80 $t
                 'T0341', # msg.maketext("T0341") PSTVorlage
                 'Person', # msg.maketext("Person") Verfasser
                 'Institution', # msg.maketext("Institution") Koerperschaft
@@ -46,14 +47,15 @@
                 'ISSN', # msg.maketext("ISSN") ISSN
                 'T0652', # msg.maketext("T0652") EDV Material
                 'T0655', # msg.maketext("T0655") EDV Adress
-                'Gesamttitel', # msg.maketext("Gesamttitel") GesTit Vorl
+                'Gesamttitel', # msg.maketext("Gesamttitel") GesTit Vorl 830
+                'Überordnung', # msg.maketext("Überordnung") Ueberordnung 773
                 'T0590', # msg.maketext("T0590") HSTQuelle
                 'URL', # msg.maketext("URL") EDVurl
                 'T1664', # msg.maketext("T1664") Provenienz
                 'T2662', # msg.maketext("T2662") USB EDVurl
                 'T2663', # msg.maketext("T2663") USB URLInfo
                 #'T5100', # msg.maketext("T5100") Allg. Zaehlung
-                'T5005', # msg.maketext("T5005") Uebergeordn. Werke
+#                'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 ]
 

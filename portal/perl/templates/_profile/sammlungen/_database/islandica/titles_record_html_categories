@@ -296,7 +296,7 @@ END;
 # Cleanup Gesamttitel in 490, 773(5005) und 830
 
 filter_content_490  = {};
-filter_titleid_5005 = {};
+#filter_titleid_5005 = {};
 
 FOREACH field_830 IN normdata.${'T0830'};
   FOREACH field_490 IN normdata.${'T0490'};
@@ -306,15 +306,15 @@ FOREACH field_830 IN normdata.${'T0830'};
      END;
   END;
 
-  FOREACH field_5005 IN normdata.${'T5005'};
-      thiscontent   = field_5005.${'e'};
-      super         = from_json(thiscontent);
-      super_titleid = super.id;
+  # FOREACH field_5005 IN normdata.${'T5005'};
+  #     thiscontent   = field_5005.${'e'};
+  #     super         = from_json(thiscontent);
+  #     super_titleid = super.id;
 
-     IF super_titleid == field_830.${'w'};
-       filter_titleid_5005.${super_titleid} = 1;
-     END;
-  END;
+  #    IF super_titleid == field_830.${'w'};
+  #      filter_titleid_5005.${super_titleid} = 1;
+  #    END;
+  # END;
 END;
 
 new_490  = [];
@@ -327,14 +327,14 @@ FOREACH field_490 IN normdata.${'T0490'};
   new_490.push(field_490);
 END;
 
-FOREACH field_5005 IN normdata.${'T5005'};
-    thiscontent   = field_5005.${'e'};
-    super         = from_json(thiscontent);
-    super_titleid = super.id;
+# FOREACH field_5005 IN normdata.${'T5005'};
+#     thiscontent   = field_5005.${'e'};
+#     super         = from_json(thiscontent);
+#     super_titleid = super.id;
 
-    NEXT IF filter_titleid_5005.${super_titleid};
-    new_5005.push(field_5005);
-END;
+#     NEXT IF filter_titleid_5005.${super_titleid};
+#     new_5005.push(field_5005);
+# END;
 
 normdata.${'T0490'} = new_490 ;
 normdata.${'T5005'} = new_5005 ;
@@ -627,7 +627,7 @@ FOREACH field IN normdata;
            content_map.${'Verfasserangabe'}.push(published_by);
 	 END;
 
-    CASE "T0246"; # Weitere Titel
+    CASE [ "T0246" "T0249" ]; # Weitere Titel
          content = thisfield.${'a'} ;
 	 ind     = thisfield.${'ind'} ;
 	 
@@ -795,6 +795,17 @@ FOREACH field IN normdata;
            content_map.${'Hochschulschrift'}.push(content);
 	 END;
 
+    CASE [ "T0505" ];    
+         content = thisfield.${'t'};
+       	 ind     = thisfield.${'ind'} ;
+	 
+         IF content && ind == "80";
+           IF NOT content_map.${'Enthaltener Titel'} ;
+	      content_map.${'Enthaltener Titel'} = [];
+	   END;
+           content_map.${'Enthaltener Titel'}.push(content);
+	 END;
+
     CASE "T0515";    
          content = thisfield.${'a'};
 
@@ -942,7 +953,8 @@ FOREACH field IN normdata;
          content   = "";
 	 
          # ggf. verlinken
-         IF thisinfo == 'AngebundenAn' && thistitle && thisid.match('^[0-9]+$') ;
+         IF thisinfo == 'AngebundenAn' ;
+	  IF thistitle && thisid.match('^[0-9]+$') ;
             localurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${thisid}.html?l=${lang}";
 
 	    content = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
@@ -956,15 +968,35 @@ FOREACH field IN normdata;
               END;
 	    END;
 
+            IF content ;
+  	      is_bindeeinheit = 1;
+              IF NOT content_map.${'Zur Bindeeinheit'} ;
+	         content_map.${'Zur Bindeeinheit'} = [];
+	      END;
+              content_map.${'Zur Bindeeinheit'}.push(content);
+	    END;
+          END;
+	 # Wenn keine Bindeeeinheit
+         ELSE ;
+	  IF thisid.match('^[0-9]+$') ;
+            localurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${thisid}.html?l=${lang}";
+
+            IF NOT thistitle;
+	      thistitle = msg.maketext("Zeige Überordnung");	      
+	    END;
+	    
+ 	    content = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+            	   
+
+            IF content ;
+              IF NOT content_map.${'Gesamttitel'} ;
+	         content_map.${'Überordnung'} = [];
+	      END;
+              content_map.${'Überordnung'}.push(content);
+	    END;
+          END;
 	 END;
 
-         IF content ;
-	   is_bindeeinheit = 1;
-           IF NOT content_map.${'Zur Bindeeinheit'} ;
-	      content_map.${'Zur Bindeeinheit'} = [];
-	   END;
-           content_map.${'Zur Bindeeinheit'}.push(content);
-	 END;
 
     CASE "T0856";
          IF NOT normdata.defined('T4662');
@@ -1089,6 +1121,8 @@ FOREACH field IN normdata;
          # USE dumper;dumper.dump(super);
          super_titleid = super.id;
 
+         NEXT IF NOT super_titleid ;
+	 
          super_title   = "";
 
          FOREACH superfields IN super.fields.${'0245'} ;
@@ -1172,7 +1206,7 @@ FOREACH field IN singular_normdata;
        END;
 
      CASE [ "T0982" ];
-       IF item.subfield == 'a';
+       IF item.subfield.match('(a|b|c)');
          content = item.content;
 	 
          searchterm    = uri_escape(content);
@@ -1237,6 +1271,20 @@ FOREACH field IN singular_normdata;
 	 END;
        END; # End subfield 'b'
 
+    CASE "T0989";
+       IF item.subfield == 'a';    
+         content = item.content;
+
+         content = content.replace('ExtBem1','Externe Bemerkung');
+         content = content.replace('ExtBem2','Externe Bemerkung');
+	 
+         IF content ;
+           IF NOT content_map.${'Hinweis'} ;
+	      content_map.${'Hinweis'} = [];
+	   END;
+           content_map.${'Hinweis'}.push(content);
+	 END;
+       END;
 
     CASE [ "T0662" ];
          content       = item.content;
@@ -1322,10 +1370,11 @@ FOREACH field IN singular_normdata;
 END;
 
 display_types = {
-   'URL'             => 'list',
-   'Schlagwort'       => 'list',
-   'Hinweis'          => 'list',
-   'Sammlungs-Portal' => 'list',      
+   'URL'               => 'list',
+   'Schlagwort'        => 'list',
+   'Hinweis'           => 'list',
+   'Enthaltener Titel' => 'list',
+   'Sammlungs-Portal'  => 'list',      
 };
 
 # USE dumper;dumper.dump(content_map);dumper.dump(singular_normdata);dumper.dump(record_type);

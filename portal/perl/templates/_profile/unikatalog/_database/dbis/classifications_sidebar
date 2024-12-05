@@ -97,6 +97,10 @@
   <input class="form-check-input" id="access_national[% sidebar_suffix %]" type="checkbox" title="[% msg.maketext("deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)") %]" name="access_national" value="1" checked="checked" />
   <label class="form-check-label" for="access_national[% sidebar_suffix %]"><img src="[% config.get('dbis_de_img') %]" alt="Nationallizenzen"/>&nbsp;[% msg.maketext("deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)") %]</label>
 </div>
+[% ELSE %]
+<input type="hidden" name="access_green" value="1"/>
+<input type="hidden" name="access_yellow" value="1"/>
+<input type="hidden" name="access_national" value="1"/>
 [% END %]
 
 <div class="form-floating mb-3">

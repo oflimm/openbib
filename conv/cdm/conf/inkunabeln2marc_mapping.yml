@@ -73,6 +73,10 @@ convtab:
       -
         from_field: 'formaa'		
         subfield: 'c'
+    '490_1_ ':
+      -
+        from_field: 'berord'		
+        subfield: 'a'
     '500_ _ ':
       -
         from_field: 'bemerk'		

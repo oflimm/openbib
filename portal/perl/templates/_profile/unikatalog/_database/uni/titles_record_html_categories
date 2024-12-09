@@ -989,7 +989,7 @@ FOREACH field IN normdata;
             	   
 
             IF content ;
-              IF NOT content_map.${'Gesamttitel'} ;
+              IF NOT content_map.${'Überordnung'} ;
 	         content_map.${'Überordnung'} = [];
 	      END;
               content_map.${'Überordnung'}.push(content);

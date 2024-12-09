@@ -51,4 +51,6 @@ my $bcp2metaexe   = "$konvdir/bcp2meta.pl";
 
 print "### $pool: Korrektur Verknuepfungs-IDs\n";
 
-system("cd $rootdir/data/$pool ; cat meta.title | $rootdir/filter/_common/alma/fix-linkage.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $rootdir/data/$pool ; cat meta.title | $rootdir/filter/$pool/remove_digital.pl | $rootdir/filter/_common/alma/fix-linkage.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+
+

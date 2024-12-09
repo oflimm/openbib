@@ -24,6 +24,9 @@
                 <a class="navbar-brand" href="https://www.ub.uni-koeln.de/" title="Universitäts- und Stadtbibliothek Köln" target="_blank">
                     <img src="/images/openbib/common/USB_logo_1500_transparent.png"  height="50" class="d-inline-block align-top" alt="USB Logo">
                 </a>
+                <a class="navbar-brand" href="https://www.dfg.de" title="Deutsche Forschungsgemeinschaft" target="_blank">
+                    <img src="/images/openbib/common/dfg-icon.png"  height="50" class="d-inline-block align-top" alt="">
+                </a>
                 <a class="navbar-brand" href="https://www.uni-koeln.de/" title="Universität zu Köln" target="_blank">
                     <img src="/images/openbib/common/013_Unisiegel_plus_Schriftzug_DE.jpg"  height="50" class="d-inline-block align-top" alt="UzK Logo">
                 </a> 

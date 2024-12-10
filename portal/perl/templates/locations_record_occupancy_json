@@ -8,6 +8,7 @@ this_json_output.link = {
 };
 
 this_json_output.id = locationinfo.identifier ;
+this_json_output.current_occupancy = locationinfo.occupancy.last;
 
 to_json(this_json_output) ;
 

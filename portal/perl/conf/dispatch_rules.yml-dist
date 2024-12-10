@@ -1708,6 +1708,15 @@
    module: 'OpenBib::Handler::PSGI::Locations'
    rule: '/portal/:view/locations/id/:locationid[get]'
    runmode: 'show_record'
+- # admin_loc/locations_loc: Record show
+   module: 'OpenBib::Handler::PSGI::Locations::Occupancy'
+   rule: '/portal/:view/locations/id/:locationid/occupancy[get]'
+   runmode: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - include
 - # users/locations_loc:
    scope: 'admin_locations'
    module: 'OpenBib::Handler::PSGI::Admin::Locations'

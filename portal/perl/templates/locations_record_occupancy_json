@@ -1,0 +1,14 @@
+[%-
+
+this_json_output = locationinfo;
+
+this_json_output.link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${locationinfo.identifier}/occupancy.json?l=${lang}"
+};
+
+this_json_output.id = locationinfo.identifier ;
+
+to_json(this_json_output) ;
+
+-%]

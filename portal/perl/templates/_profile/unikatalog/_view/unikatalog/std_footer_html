@@ -52,9 +52,11 @@
 	    <li>
 	      <a target="_blank" href="[% path_prefix %]/[% config.get('info_loc') %]/internetquellen.html?l=[% lang %]" target="_blank" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/internetquellen.include?l=[% lang %]">[% msg.maketext("Weitere Recherchemöglichkeiten") %]</a>
 	    </li>
+[% IF NOT alma_disable_suggestions %]	    
 	    <li>
 	      <a target="_blank" href="[% path_prefix %]/info/anschaffung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/anschaffung.include?l=[% lang %]">[% msg.maketext("Bücher zum Kauf vorschlagen") %]</a>
 	    </li>
+[% END %]	    
 	  </ul>
 	</nav>
 	<nav class="uzk15__footercolumn">

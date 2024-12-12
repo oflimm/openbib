@@ -5,14 +5,17 @@
 uniqueidfield: 'cdmid'
 
 category_split_chars:
-  'place': '\s+und\s+'
-  'creator': '\s+und\s+'
+#  'place': '\s+;\s+'
+  'creator': '\s+;\s+'
+  'contributor': '\s+;\s+'
+#  'publisher': '\s+;\s+'
   'keywords': ',\s+'
   
 # Personen
 pers:
   'creator': '0100'      # Verfasser
   'contributor': '0101'  # Person
+#  'publisher': '0101'  # Herausgeber
   
 # Koerperschaften
 corp:
@@ -37,7 +40,7 @@ title:
   'halftitle': '0451' # GT
   'illustrations': '0433'
   'relation': '0508'
-  'viewerURL': '0662'
+  'viewerURL': '4120'
   'thumbnailURL': '2662'
 
 # Exemplare

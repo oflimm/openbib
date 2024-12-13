@@ -433,7 +433,10 @@ FOREACH field IN normdata;
 
     CASE [ "T0100" "T0700" ];
          content = thisfield.${'a'} ;
-	 supplement = thisfield.${'e'} ;
+         number  = thisfield.${'b'} || '';
+	 supplement_person = thisfield.${'c'} || '';
+	 supplement = thisfield.${'e'} || '' ;
+	 
          thisid  = thisfield.${'0'} || thisfield.${'6'};
          original_language = thisfield.${'original_language'};
 	 
@@ -441,10 +444,23 @@ FOREACH field IN normdata;
 	 IF thisid.match('(DE-588)');
 	    gndid = thisid.replace('\(DE-588\)','');
 	 END;
-	 
-         searchterm    = uri_escape(content);
-         searchprefix  = config.get('searchfield').person.prefix;
 
+         IF number;
+            supplement = "${supplement} ${number}";
+	 END;
+
+         IF supplement_person ;
+	    supplement = "${supplement} ${supplement_person}";
+	 END;
+
+         IF gndid ;
+           searchterm    = gndid;
+           searchprefix  = config.get('searchfield').gnd.prefix;
+	 ELSE ;
+           searchterm    = uri_escape(content);
+           searchprefix  = config.get('searchfield').person.prefix;
+         END;
+	 
          NEXT IF person_done.${searchterm} == 1;
 	 
          resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/lobidgnd/${config.get('titles_loc')}/id/${gndid}";
@@ -838,6 +854,8 @@ FOREACH field IN normdata;
 
     CASE [ "T0600" "T0610" "T0648" "T0650" "T0651" "T0655" "T0688" "T0689" ];    
          content = thisfield.${'a'};
+         number  = thisfield.${'b'} || '';
+	 supplement_person = thisfield.${'c'} || '';
 	 work    = thisfield.${'t'};
          thisid  = thisfield.${'0'};
 
@@ -847,14 +865,27 @@ FOREACH field IN normdata;
 	 END;
 
          supplement = "";
-	 
-         IF content && work ;
-	    supplement = ": ${work}";
+
+         IF number;
+            supplement = "${supplement} ${number}";
 	 END;
 
-         searchterm    = uri_escape(content);
-         searchprefix  = config.get('searchfield').subjectstring.prefix;
+         IF supplement_person ;
+	    supplement = "${supplement} ${supplement_person}";
+	 END;
+	 
+         IF content && work ;
+	    supplement = "${supplement}: ${work}";
+	 END;
 
+         IF gndid ;
+           searchterm    = gndid;
+           searchprefix  = config.get('searchfield').gnd.prefix;
+	 ELSE ;
+           searchterm    = uri_escape(content);
+           searchprefix  = config.get('searchfield').subjectstring.prefix;
+         END;
+	 
          NEXT IF rswkswt_done.${searchterm} == 1;
 	 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/lobidgnd/${config.get('titles_loc')}/id/${gndid}";

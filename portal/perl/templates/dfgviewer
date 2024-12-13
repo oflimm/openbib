@@ -9,6 +9,7 @@ collection2owner_siteurl = {
   inkunabeln  = "https://inkunabeln.ub.uni-koeln.de/"
   inkunab_neu = "https://inkunabeln.ub.uni-koeln.de/"
   zas         = "https://zeitungsausschnitte.ub.uni-koeln.de/"  
+  fotobuecher = "https://fotobuecher.khi.phil-fak.uni-koeln.de/"  
 };
 
 IF collection2owner_siteurl.${collection} ;
@@ -174,6 +175,39 @@ ELSIF collection == 'portrait';
 
  order_id = 1;
  FOREACH page IN record.structure.page ;
+    desc = page.pagetitle;
+    cdmid = page.pageptr ;
+  
+    min     = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
+    thumb   = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_thumb.jpg";
+    default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.png";
+
+    # Upgrade urls to https
+    thisimage = {
+      id       = cdmid
+      order_id = order_id
+      thumb    = thumb
+      min      = min
+      default  = default
+      desc     = desc
+    };
+
+    images.push(thisimage);
+    order_id = order_id + 1;
+ END ;
+ELSIF collection == 'fotobuecher';
+ title     = fields.${'title'}.first.content;  
+ name      = fields.${'creato'}.first.content;
+ mark      = fields.${'signat'}.first.content;
+ date      = fields.${'date'}.first.content;
+ year      = date.match('(\d\d\d\d)').first;
+ reference_url = "https://fotobuecher.khi.phil-fak.uni-koeln.de/";
+ presentation_url = "https://fotobuecher.khi.phil-fak.uni-koeln.de/";
+ type      = "monograph";
+ genre     = "Book";
+
+ order_id = 1;
+ FOREACH page IN record.structure.node.node ;
     desc = page.pagetitle;
     cdmid = page.pageptr ;
   

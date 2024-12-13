@@ -150,7 +150,10 @@ while (<HOLDING>){
 
 	    # KMB Systematik
 
-	    if ($item->{content} =~m{KMB/[=+!]*([A-Za-z]+ +\d+)}){
+	    if ($item->{content} =~m{KMB/[=+!]*(K [A-Za-z]+)}){
+		$kmbsystematik{$titleid} = $1;
+	    }
+	    elsif ($item->{content} =~m{KMB/[=+!]*([A-Za-z]+ +\d+)}){
 		$kmbsystematik{$titleid} = $1;
 	    }
 	    elsif ($item->{content} =~m{KMB/[=+!]*([A-Za-z]+)}){

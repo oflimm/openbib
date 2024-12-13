@@ -212,7 +212,9 @@ ELSIF collection == 'fotobuecher';
   FOREACH thispage IN page ;  
     desc = thispage.pagetitle;
     cdmid = thispage.pageptr ;
-  
+
+    NEXT IF NOT cdmid;
+    
     min     = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
     thumb   = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_thumb.jpg";
     default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.jpg";

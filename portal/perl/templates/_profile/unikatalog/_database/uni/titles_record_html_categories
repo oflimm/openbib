@@ -453,7 +453,7 @@ FOREACH field IN normdata;
 	    supplement = "${supplement} ${supplement_person}";
 	 END;
 
-         IF gndid ;
+         IF gndid && (number || supplement_person);
            searchterm    = gndid;
            searchprefix  = config.get('searchfield').gnd.prefix;
 	 ELSE ;
@@ -878,7 +878,7 @@ FOREACH field IN normdata;
 	    supplement = "${supplement}: ${work}";
 	 END;
 
-         IF gndid ;
+         IF gndid && (number || supplement_person);
            searchterm    = gndid;
            searchprefix  = config.get('searchfield').gnd.prefix;
 	 ELSE ;

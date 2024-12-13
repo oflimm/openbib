@@ -239,7 +239,19 @@
      FOREACH part IN item.${'T0100'} ;
        thiscontent        = part.${'a'};
        original_language  = part.${'original_language'};
-       
+       thisnumber         = part.${'b'};
+       thissupplement_person = part.${'c'};
+
+       supplement         = "";
+
+       IF thisnumber;
+           supplement = "${supplement} ${thisnumber}";
+       END;
+
+       IF thissupplement_person ;
+           supplement = "${supplement} ${thissupplement_person}";
+       END;
+
        thislength = thiscontent.length ;
        IF (thislength+personslength) < config.get('maxlength_person') ;
          searchterm    = uri_escape(thiscontent);
@@ -249,6 +261,10 @@
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
 
+         IF supplement ;
+	    thiscontent = "${thiscontent} ${supplement}";
+	 END;
+	 
          IF original_language;
 	    thiscontent = "${original_language} = ${thiscontent}";
 	 END;
@@ -265,6 +281,18 @@
      FOREACH part IN item.${'T0700'} ;
        thiscontent = part.${'a'};
        original_language  = part.${'original_language'};
+       thisnumber         = part.${'b'};
+       thissupplement_person = part.${'c'};
+
+       supplement         = "";
+
+       IF thisnumber;
+           supplement = "${supplement} ${thisnumber}";
+       END;
+
+       IF thissupplement_person ;
+           supplement = "${supplement} ${thissupplement_person}";
+       END;
 
        thislength  = part.content.length ;
        IF (thislength+personslength) < config.get('maxlength_person') ;
@@ -274,6 +302,10 @@
          NEXT IF person_done.${searchterm} == 1;
 
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         IF supplement ;
+	    thiscontent = "${thiscontent} ${supplement}";
+	 END;
 
          IF original_language;
 	    thiscontent = "${original_language} = ${thiscontent}";

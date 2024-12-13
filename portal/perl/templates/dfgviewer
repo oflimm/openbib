@@ -207,13 +207,15 @@ ELSIF collection == 'fotobuecher';
  genre     = "Book";
 
  order_id = 1;
- FOREACH page IN record.structure.node.node ;
-    desc = page.pagetitle;
-    cdmid = page.pageptr ;
+ FOREACH item IN record.structure.node.node ;
+  page = item.page.list ;
+  FOREACH thispage IN page ;  
+    desc = thispage.pagetitle;
+    cdmid = thispage.pageptr ;
   
     min     = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
     thumb   = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_thumb.jpg";
-    default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.png";
+    default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.jpg";
 
     # Upgrade urls to https
     thisimage = {
@@ -227,6 +229,7 @@ ELSIF collection == 'fotobuecher';
 
     images.push(thisimage);
     order_id = order_id + 1;
+  END;
  END ;
 ELSIF collection == 'digitalis';
  title     = fields.${'title'}.first.content;  

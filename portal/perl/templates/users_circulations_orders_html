@@ -44,7 +44,7 @@
 <div class="table-responsive">
 <table class="table table-striped ">
 <thead>
-<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]</th><th>[% msg.maketext("Abholort") %]</th><th>[% msg.maketext("Bestelldatum") %]</th><th>[% msg.maketext("Aktion") %]</th></tr>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]/[% msg.maketext("Mediennummer") %]</th><th>[% msg.maketext("Abholort") %]</th><th>[% msg.maketext("Bestelldatum") %]</th><th>[% msg.maketext("Aktion") %]</th></tr>
 </thead>
 <tbody>
 [%- FOREACH order = orders.items ;

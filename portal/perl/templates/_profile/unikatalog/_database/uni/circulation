@@ -638,7 +638,7 @@ Präsenzbestand
 [%############### ANFANG ILIAS ######### %]
 [% ELSIF scan_dienst == "ilias" %]
 [%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && valid_ilias_session %]
-[%    IF thiscirculation.availability.match('^(order|loan)$') %]
+[%    IF thiscirculation.availability.match('^(order|loan|presence)$') %]
 [%      IF config.get('active_ils') %]
 <p/>
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/ilias/[% config.get('circulations_loc') %]/id/iliasorders">

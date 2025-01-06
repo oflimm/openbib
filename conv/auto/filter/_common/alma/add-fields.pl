@@ -8,8 +8,6 @@ use Storable ();
 use DB_File;
 use List::MoreUtils qw/ uniq /;
 
-#open(CHANGED,">./changed.json");
-
 open(HOLDING,"./meta.holding");
 
 my $ausstellungskatalog_regexp_ref = [
@@ -81,9 +79,9 @@ unlink "./kunstmessekatalog.db";
 unlink "./kmbsystematik.db";
 
 my %ausstellungskatalog = ();
-my %sammlungskatalog = ();
-my %kunstmessekatalog = ();
-my %kmbsystematik = ();
+my %sammlungskatalog    = ();
+my %kunstmessekatalog   = ();
+my %kmbsystematik       = ();
 
 tie %ausstellungskatalog,             'MLDBM', "./ausstellungskatalog.db"
     or die "Could not tie ausstellungskatalog.\n";
@@ -121,36 +119,33 @@ while (<HOLDING>){
 	    # Ausstellungskatalog??
 
 	    foreach my $regexp (@$ausstellungskatalog_regexp_ref){
-		# print STDERR "Matching ".$item->{content}." with ".$regexp."\n";
 		if ($item->{content} =~m{$regexp}){
 		    $ausstellungskatalog{$titleid} = 1;
-		    #print "Matched ",$item->{content},"\n";
 		}
 	    }
 
 	    # Sammlungskatalog??
 
 	    foreach my $regexp (@$sammlungskatalog_regexp_ref){
-		# print STDERR "Matching ".$item->{content}." with ".$regexp."\n";
 		if ($item->{content} =~m{$regexp}){
 		    $sammlungskatalog{$titleid} = 1;
-		    #print "Matched ",$item->{content},"\n";
 		}
 	    }
 
 	    # Kunstmessekatalog??
 
 	    foreach my $regexp (@$kunstmessekatalog_regexp_ref){
-		# print STDERR "Matching ".$item->{content}." with ".$regexp."\n";
 		if ($item->{content} =~m{$regexp}){
 		    $kunstmessekatalog{$titleid} = 1;
-		    #print "Matched ",$item->{content},"\n";
 		}
 	    }
 
 	    # KMB Systematik
 
-	    if ($item->{content} =~m{KMB/[=+!]*(K [A-Za-z]+)}){
+	    if ($item->{content} =~m{KMB/[=+!]*(K [A-Za-z]+ [0-7])}){
+		$kmbsystematik{$titleid} = $1;
+	    }
+	    elsif ($item->{content} =~m{KMB/[=+!]*(K [A-Za-z]+)}){
 		$kmbsystematik{$titleid} = $1;
 	    }
 	    elsif ($item->{content} =~m{KMB/[=+!]*([A-Za-z]+ +\d+)}){
@@ -161,8 +156,6 @@ while (<HOLDING>){
 	    }
         }	
     }
-
-
 }
 
 close(HOLDING);
@@ -397,11 +390,6 @@ while (<>){
 	}
     }
 
-    # if ($is_bild || $is_auktionskatalog || $is_dossier || $is_kuenstlerbuch){
-    # 	print CHANGED encode_json $title_ref, "\n";
-
-    # }
-
     my @bks  = (); # Fuer 4100    
     my @rvks = (); # Fuer 4101
     my @ddcs = (); # Fuer 4102
@@ -588,4 +576,3 @@ while (<>){
    
     print encode_json $title_ref, "\n";
 }
-#close(CHANGED);

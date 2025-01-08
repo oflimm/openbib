@@ -47,14 +47,14 @@ while (<TITLE>){
 
 close(TITLE);
 
-print STDERR "### uni: Verknuepfungs-ID in 773\$w und 830\$w von Fremd-ID auf MMSID aendern\n";
+print STDERR "### uni: Verknuepfungs-ID in 773\$w, 776\$w und 830\$w von Fremd-ID auf MMSID aendern\n";
 
 while (<>){
     my $title_ref = decode_json $_;
 
     my $titleid = $title_ref->{id};
 
-    foreach my $field ('0773','0830'){
+    foreach my $field ('0773','0776','0830'){
 	if (defined $title_ref->{fields}{$field}){
 	    foreach my $item_ref (@{$title_ref->{fields}{$field}}){
 		if ($item_ref->{'subfield'} eq "w"){

@@ -22,38 +22,32 @@
 [% END %]
 
 [%- reviews = user.get_reviews_of_tit({ titleid => record.id, dbname => record.database }); %]
-[%-
-
-    fields = record.to_custom_field_scheme_1;
-    
-    issn                 = ""; # Todo fields.${"T0022"}.first.${"a"} ;
+[%- issn              = normdata.${"T0543"}.first.content ;
     IF issn ;
        journaltocs_feed  = "http://www.journaltocs.ac.uk/api/journals/${issn}?output=articles";
     END ;
-
-    is_printjournal = 0;
-
-    IF fields.${"T0035"} ;
-      FOREACH this_field IN fields.${"T0035"};
-         IF this_field.${"a"}.match("DE-600");
-	   is_printjournal = 1;
-	 END;
-      END;
-
-    END;
-   #USE dumper;dumper.dump(fields);
-
 -%]
+[% iiif_doi = "";
+
+   link_url = singular_normdata.${"T4120"}.first.content;
+
+   IF link_url.match('digital.ub.uni-koeln.de');
+      iiif_doi = link_url.split('/').last;
+   END;
+%]
+
 <div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
 [%# USE dumper;dumper.dump(holding)%]
 
 <ul class="nav nav-tabs">
-[%   IF is_printjournal > 0 %]
-<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
-[%   ELSIF circulation.size > 0 %]
+[%   IF circulation.size > 0 %]
 <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
 [%   ELSIF holding.size > 0 %]
 <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
+[%   END %]
+
+[%   IF iiif_doi %]
+<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#ob-iiif_viewer">[% msg.maketext("Digitalisat") %]</a></li>
 [%   END %]
 
 [%   IF journaltocs_feed %]
@@ -67,10 +61,7 @@
 </ul>
 
 <div class="tab-content pt-3">
-[% IF is_printjournal > 0 %]
-<div role="tabpanel" class="tab-pane fade-in active pb-3" id="ob-holding_info"><!-- Begin Bestand -->
-[% PROCESS common/subtemplate name="holding_journal" %]
-[% ELSIF circulation.size > 0 %]
+[% IF circulation.size > 0 %]
 <div role="tabpanel" class="tab-pane fade-in active pb-3" id="ob-circulation_info"><!-- Begin Circulation -->
 [% PROCESS common/subtemplate name="circulation" %]
 </div><!-- End Circulation -->
@@ -78,6 +69,55 @@
 <div role="tabpanel" class="tab-pane fade-in active pb-3" id="ob-holding_info"><!-- Begin Bestand -->
 [% PROCESS common/subtemplate name="holding" %]
 </div><!-- End Bestand -->
+[% END %]
+
+[% IF iiif_doi %]
+<div role="tabpanel" class="tab-pane fade-in pb-3" id="ob-iiif_viewer"><!-- Begin IIIF Viewer -->
+
+ <script src="/js/tify-0.31.0/tify.js"></script>
+ <link rel="stylesheet" href="/css/tify-0.31.0/tify.css"/>
+
+ <style>
+ .tify-header {
+    color: #fff;
+    background: #3e566c;
+ }
+
+ .tify-page-select-list, .tify-page-select-filter {
+    color: #000;
+ }
+
+ .tify .tify-header-button:hover,.tify .tify-header-button:focus,.tify .tify-header-active:active {
+      color: #fff;
+      background: #3e566c;
+  }
+
+ .tify .tify-page-select-button:hover,.tify .tify-page-select-button:focus,.tify .tify-page-select-button:active {
+      color: #fff;
+      background: #3e566c;
+  }
+
+ </style>
+
+ <div id="tify" style="height: 800px;"></div>
+
+<script>
+new Tify({
+  language: '[% lang %]',
+  container: '#tify',
+  manifestUrl: 'https://api-digital.ub.uni-koeln.de/iiif/presentation/[% iiif_doi %]/manifest',
+})
+</script>
+
+</div><!-- End IIIF Mirador -->
+[% END %]
+
+[% IF iframe && iiif_doi %]
+<div role="tabpanel" class="tab-pane fade-in pb-3" id="ob-iiif_viewer"><!-- Begin IIIF Mirador -->
+
+<iframe style="width:100%; height:80em;" src="[% fulltext %]" ></iframe>
+
+</div><!-- End IIIF Mirador -->
 [% END %]
 
 [% IF journaltocs_feed %]

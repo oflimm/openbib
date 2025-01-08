@@ -1,0 +1,79 @@
+[%#-
+#######################################################################
+#
+# Templatename: subnavigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu fuer Tabs
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+<div class="card">
+<div class="card-header">[% msg.maketext("&Uuml;bersichten") %]</div>
+<div class="card-body">
+ <nav class="navbar bg-light">
+ <ul class="navbar-nav">
+[% IF config.datacache_exists({ id => database, type => 9 }) %]
+[%   IF layout_param.active_submenu == "clouds_year" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Jahr") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
+[%   END %]
+[% END %]
+[% IF config.datacache_exists({ id => database, type => 6 }) %]
+[%   IF layout_param.active_submenu == "clouds_person" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Personen") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/person.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
+[%   END %]
+[% END %]
+[% IF 0 == 1 && config.datacache_exists({ id => database, type => 5 }) %]
+[%   IF layout_param.active_submenu == "clouds_corporatebody" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("K&ouml;rperschaften") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/corporatebody.html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
+[%   END %]
+[% END %]
+[% IF config.datacache_exists({ id => "${database}-689:a", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_subject" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Schlagwort") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/subject.html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
+[%   END %]
+[% END %]
+[% IF config.datacache_exists({ id => "${database}-4101", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_classification" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Systematiken") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/classification.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
+[%   END %]
+[% END %]
+</ul>
+</nav>
+
+<!-- 
+[% IF layout_param.active_submenu == 'clouds_choice' %]
+<p/>
+
+<div class="alert alert-info">
+[% msg.maketext("W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine
+<b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten
+Normdaten-Eintr&auml;ge f&uuml;r Schlagworte,
+Systematiken/Notationen, K&ouml;rperschaften/Institutionen sowie Personen</b> in der Form einer
+Wortwolke ([_1]&nbsp;[_2]) zu erhalten. Je mehr Titel mit
+einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der zugehörige Normdaten-Eintrag dargestellt.","<img src=\"${config.get_icon('wikipedia',view,sysprofile)}\" alt=\"Mashup mit
+Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_blank\">engl. tag cloud</a>") %]
+</div>
+[% END %]
+-->
+</div>
+</div>

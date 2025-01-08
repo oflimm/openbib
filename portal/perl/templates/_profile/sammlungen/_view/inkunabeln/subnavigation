@@ -1,0 +1,100 @@
+[%#-
+#######################################################################
+#
+# Templatename: subnavigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu fuer Tabs
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+[% IF layout_param.active_menu == "searchform" %]
+<div class="card">
+<div class="card-header">[% msg.maketext("Recherche") %]</div>
+<div class="card-body">
+
+<nav class="navbar bg-light ob-sidebar">
+ <ul class="navbar-nav">
+[% IF layout_param.active_submenu == "searchform_advanced" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Erweiterte Suche") %]</strong></li>
+[% ELSE %]
+  <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a></li>
+[% END %]
+[% IF layout_param.active_submenu == "searchform_authority" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Normdaten") %]</strong></li>
+[% ELSE %]
+  <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/authority.html?l=[% lang %]">[% msg.maketext("Normdaten") %]</a></li>
+[% END %]
+</ul>
+</nav>
+</div>
+</div>
+[% END %] 
+[% IF layout_param.active_menu == "register" %]
+<div class="card">
+<div class="card-header">[% msg.maketext("Register") %]</div>
+<div class="card-body">
+<nav class="navbar bg-light ob-sidebar">
+
+ <ul class="navbar-nav">
+  <li class="navbar-item[% IF layout_param.active_submenu == "register_T0100" %] active[% END %]"> <a class="[% IF layout_param.active_submenu == "register_T0100" %]active [% END %]navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles/fields/id/0100.html?l=[% lang %]">[% msg.maketext('Verfasser') %]</a></li>
+<!--  
+  <li class="navbar-item[% IF layout_param.active_submenu == "register_T0200" %] active[% END %]"> <a class="navbar-link[% IF layout_param.active_submenu == "register_T0200" %] active" [% END %]" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles/fields/id/0200.html?l=[% lang %]">[% msg.maketext('Körperschaft') %]</a></li>
+  <li class="navbar-item[% IF layout_param.active_submenu == "register_T0710" %] active[% END %]"> <a class="navbar-link[% IF layout_param.active_submenu == "register_T0710" %] active" [% END %]" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles/fields/id/0710.html?l=[% lang %]">[% msg.maketext('Schlagwort') %]</a></li>
+  <li class="navbar-item[% IF layout_param.active_submenu == "register_T0700" %] active[% END %]"> <a class="navbar-link[% IF layout_param.active_submenu == "register_T0700" %] active" [% END %]" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/titles/fields/id/0700.html?l=[% lang %]">[% msg.maketext('Systematik') %]</a></li>
+  -->
+ </ul>
+</nav>
+</div>
+</div>
+[% END %]
+[% IF layout_param.active_menu == "cloud" %]
+<div class="card">
+<div class="card-header">[% msg.maketext("&Uuml;bersichten") %]</div>
+<div class="card-body">
+
+<nav class="navbar bg-light ob-sidebar">
+
+ <ul class="navbar-nav">
+[% IF layout_param.active_submenu == "clouds_choice" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Katalogauswahl") %]</strong></li>
+[% ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('clouds_loc') %].html?l=[% lang %]" title="Katalogauswahl">[% msg.maketext("Katalogauswahl") %]</a></li>
+[% END %]
+[% IF layout_param.active_submenu == "clouds_year" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Jahr") %]</strong></li>
+[% ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/year/database/richter.html?l=[% lang %]" title="Jahr">[% msg.maketext("Jahr") %]</a></li>
+[% END %]
+[% IF layout_param.active_submenu == "clouds_person" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Personen") %]</strong></li>
+[% ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/person/database/richter.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
+[% END %]
+[% IF layout_param.active_submenu == "clouds_corporatebody" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("K&ouml;rperschaften") %]</strong></li>
+[% ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/corporatebody/database/richter.html?l=[% lang %]" title="K&ouml;rperschaften">[% msg.maketext("K&ouml;rperschaften") %]</a></li>
+[% END %]
+[% IF layout_param.active_submenu == "clouds_subject" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Schlagwort") %]</strong></li>
+[% ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/subject/database/richter.html?l=[% lang %]" title="Schlagwort">[% msg.maketext("Schlagwort") %]</a></li>
+[% END %]
+[% IF layout_param.active_submenu == "clouds_classification" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Systematik") %]</strong></li>
+[% ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('clouds_loc') %]/type/classification/database/richter.html?l=[% lang %]" title="Systematik">[% msg.maketext("Systematik") %]</a></li>
+[% END %]
+ </ul>
+</nav>
+[% END %]

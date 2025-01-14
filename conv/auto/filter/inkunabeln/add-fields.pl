@@ -34,8 +34,8 @@ while (<>){
 
     if (defined $cdm2doi_ref->{$collection} && defined $cdm2doi_ref->{$collection}{$cdmid}){
 
-	my $doi =  $cdm2doi_ref->{$collection}{$cdmid};
-
+	my $doi_id = $cdm2doi_ref->{$collection}{$cdmid};
+        my $doi    = "10.58016/".$doi_id;
 	# DOI setzen
 	push @{$title_ref->{fields}{'0024'}}, {
 	    mult     => 1,
@@ -52,7 +52,7 @@ while (<>){
 	};
 
 	# Volltextlink setzen
-	my $url = "https://digital.ub.uni-koeln.de/view/$doi";
+	my $url = "https://digital.ub.uni-koeln.de/view/$doi_id";
 	
 	push @{$title_ref->{fields}{'4120'}}, {
 	    mult     => 1,

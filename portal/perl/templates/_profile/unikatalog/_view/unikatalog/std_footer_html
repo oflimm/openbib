@@ -199,14 +199,6 @@
 	    <span class="uzk15__invisible">Facebook</span>
 	  </a>
 	  
-	  <a href="https://twitter.com/unibibkoeln" target="_blank"> 
-	    <span class="uzk15__icon uzk15__icon-twitter"> 
-	      <svg class="uzk15__svg-twitter">
-		<use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#twitter" />
-	      </svg>
-	    </span>
-	    <span class="uzk15__invisible">Twitter</span>
-	  </a>
 	  <a href="http://www.youtube.com/user/usbkoeln" target="_blank"> 
 	    <span class="uzk15__icon uzk15__icon-youtube"> 
 	      <svg class="uzk15__svg-youtube">
@@ -480,16 +472,7 @@ $(document).ready(function(){
 	  </span>
 	  <span class="uzk15__invisible">Facebook</span>
 	</a>
-	
-	<a target="_blank" href="https://twitter.com/UniCologne"> 
-	  <span class="uzk15__icon uzk15__icon-twitter"> 
-	    <svg class="uzk15__svg-twitter">
-              <use xlink:href="/images/openbib/uzk15/svg/dist/svg-sprite.min.svg#twitter" />
-	    </svg>
-	  </span>
-	  <span class="uzk15__invisible">Twitter</span>
-	</a>
-	
+		
 	<a target="_blank" href="http://www.xing.com/net/universitaetzukoeln/"> 
 	  <span class="uzk15__icon uzk15__icon-xing"> 
 	    <svg class="uzk15__svg-xing">

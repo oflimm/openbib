@@ -1739,6 +1739,17 @@ convtab:
         'a':
           index:
             'hss': 1
+        'b':
+          index:
+            'hss': 1
+        'c':
+          index:
+            'hss': 1
+        'd':
+          index:
+            'hss': 1
+            'year': 1
+            'yearstring': 1
       '0505': # Strukturierte Beschreibung von in Beziehung stehenden Manifestationen
         't':
           index:

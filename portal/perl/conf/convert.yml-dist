@@ -1875,6 +1875,18 @@ convtab:
           'index':
             'issn': 1
             'freesearch': 1
+      '0780':
+        't': # Titel (ggf. mit Person) des unmittelbaren Vorgaengers
+          'index':
+            'title': 1
+            'person': 1
+            'freesearch': 1
+      '0785':
+        't': # Titel (ggf. mit Person) des unmittelbaren Nachfolgers
+          'index':
+            'title': 1
+            'person': 1
+            'freesearch': 1
       '0830': # Gesamttitel
         'a':
           index:

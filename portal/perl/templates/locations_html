@@ -561,6 +561,7 @@ for (var i = 0; i < libraries.length; i++) {
     </div>
   </div><!-- End Card -->
 
+[% IF with_extern %]
 <!-- Begin: Extern -->
 
   <div class="card">
@@ -620,6 +621,7 @@ for (var i = 0; i < libraries.length; i++) {
       </div>
     </div>
   </div><!-- End Card -->
+[% END %]
 
 </div><!-- End faculties -->
 

@@ -1060,6 +1060,9 @@ sub get_sequencestat_of_event {
     my $day          = exists $arg_ref->{day}
         ? $arg_ref->{day}                : undef;
 
+    my $viewname     = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}           : undef;
+
     my $refresh      = exists $arg_ref->{refresh}
         ? $arg_ref->{refresh}            : 0;
     
@@ -1114,6 +1117,10 @@ sub get_sequencestat_of_event {
         $where_ref->{content} = { $contentop => $content };
     } 
 
+    if ($viewname){
+        $where_ref->{'sid.viewname'} = $viewname;
+    }
+
     my $resultset = (exists $config->{eventlogjson_type}{$type})?'Eventlogjson':'Eventlog';
     
     my ($thisday, $thismonth, $thisyear) = (localtime)[3,4,5];
@@ -1150,6 +1157,10 @@ sub get_sequencestat_of_event {
             select => [ 'tstamp_month', { count => 'tstamp' } ],
             as     => ['x_value','y_value'],
         };
+
+        if ($viewname){
+ 	   $attribute_ref->{'join'} = ['sid'];
+	}
     }
     # Tagesstatistik fuer Monat $month
     elsif ($subtype eq 'daily'){
@@ -1161,8 +1172,10 @@ sub get_sequencestat_of_event {
           $month_next_year  = $year+1;      
         }
 
-        my $tstamp_from = sprintf "%d-%02d-%02d 00:00:00", $year,$month;
-        my $tstamp_to = sprintf "%d-%02d-%02d 23:59:59", $month_next_year,$month_next_month;
+        my $tstamp_from = sprintf "%d-%02d-01 00:00:00", $year,$month;
+        my $tstamp_to = sprintf "%d-%02d-01 23:59:59", $month_next_year,$month_next_month;
+
+	$logger->debug("Selecting daily range from $tstamp_from to $tstamp_to");
 
         # DBI: "select day(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and month(tstamp) = ? and YEAR(tstamp) = ? group by day(tstamp)";
         push @$where_lhsql_ref, \[ 'tstamp < ?', [ plain_value => $tstamp_to ] ];     
@@ -1173,6 +1186,10 @@ sub get_sequencestat_of_event {
             select => [ 'tstamp_day', { count => 'tstamp' } ],
             as     => ['x_value','y_value'],
         };
+
+        if ($viewname){
+ 	   $attribute_ref->{'join'} = ['sid'];
+	}
     }
     # Stundenstatistik fuer Tag $day
     elsif ($subtype eq 'hourly'){
@@ -1187,6 +1204,10 @@ sub get_sequencestat_of_event {
             select => [ { hour => 'tstamp'}, { count => 'tstamp' } ],
             as     => ['x_value','y_value'],
         };
+
+        if ($viewname){
+ 	   $attribute_ref->{'join'} = ['sid'];
+	}
     }
 
     my $stats = $self->get_schema->resultset($resultset)->search(

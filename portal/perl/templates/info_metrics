@@ -12,7 +12,7 @@
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Struktur des Bestands')
+	     desc = msg.maketext('Nutzung des Portals')
 	     url  = '#'
 	     current = 1
 	  }

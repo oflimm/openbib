@@ -97,6 +97,10 @@
       background: #3e566c;
   }
 
+  .tify-header-popup .tify-header-button, .tify-header-popup .tify-header-button:hover, .tify-header-popup .tify-header-button:focus, .tify-header-popup .tify-header-button:active {
+      color: #000;
+  }
+
  </style>
 
  <div id="tify" style="height: 800px;"></div>

@@ -45,7 +45,7 @@
                 'T0595', # msg.maketext("T0595") ErschJahr Quelle
 #                'T0434', # msg.maketext("T0434") Ill_Angabe
                 'ISSN', # msg.maketext("ISSN") ISSN
-                'T0552', # msg.maketext("T0552") Identifier/DOI
+                'DOI', # msg.maketext("DOI") Identifier/DOI
                 'T0413', # msg.maketext("T0413") Drucker
 #                'T0035', # msg.maketext("T0035") ErschLand
                 'T0435', # msg.maketext("T0435") Format

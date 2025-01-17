@@ -44,6 +44,7 @@
                 'ISBN', # msg.maketext("ISBN") T020/9
                 'T0553', # msg.maketext("T0553") ArtikelNr. als 13-stellige ISBN
                 'ISSN', # msg.maketext("ISSN") ISSN
+                'DOI', # msg.maketext("DOI") Identifier/DOI
                 'T0652', # msg.maketext("T0652") EDV Material
                 'T0655', # msg.maketext("T0655") EDV Adress
                 'Gesamttitel', # msg.maketext("Gesamttitel") GesTit Vorl

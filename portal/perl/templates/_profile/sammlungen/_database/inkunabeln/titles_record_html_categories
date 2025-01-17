@@ -280,6 +280,24 @@ FOREACH field IN normdata;
            content_map.${'ISSN'}.push(content);
 	 END;
 
+    CASE "T0024";
+    
+         thisid_type = thisfield.${'2'};
+         thisid      = thisfield.${'a'};
+
+         content = "";
+	 
+         IF thisid_type == 'doi';
+	   content = thisid;
+         END;
+	 
+         IF content ;
+           IF NOT content_map.${'DOI'} ;
+	      content_map.${'DOI'} = [];
+	   END;
+           content_map.${'DOI'}.push(content);
+	 END;
+
     CASE "T0041"; # Sprache
          content = thisfield.${'a'} ;
 

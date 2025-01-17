@@ -11,67 +11,62 @@
 #
 #######################################################################
 -%]
+[%
+
+  USE date ; # Seconds since epoch
+  thisyear      = date.format(date.now, format => '%Y');
+  thismonth     = date.format(date.now, format => '%m');
+  thismonth_desc= date.format(date.now, format => '%B');
+  thisday       = date.format(date.now, format => '%d');
+  lastyear      = thisyear - 1;
+ 
+  refresh       = 0;
+  
+  lastyear_sessions  = statistics.get_sequencestat_of_event({ type => 100 , subtype => 'monthly', content => view, year => lastyear, refresh => refresh }) ;
+
+  thisyear_sessions  = statistics.get_sequencestat_of_event({ type => 100 , subtype => 'monthly', content => view, year => thisyear, refresh => refresh }) ;
+
+  thismonth_sessions  = statistics.get_sequencestat_of_event({ type => 100 , subtype => 'daily', content => view, year => thisyear, month => thismonth, refresh => refresh }) ;
+
+  lastyear_queries  = statistics.get_sequencestat_of_event({ type => 1 , subtype => 'monthly', viewname => view, year => lastyear, refresh => refresh }) ;
+
+  thisyear_queries  = statistics.get_sequencestat_of_event({ type => 1 , subtype => 'monthly', viewname => view, year => thisyear, refresh => refresh }) ;
+
+  thismonth_queries = statistics.get_sequencestat_of_event({ type => 1 , subtype => 'daily', viewname => view, year => thisyear, month => thismonth, refresh => refresh }) ;
+
+  IF thisyear_sessions.x_values.last < $thismonth ;
+    refresh = 1;
+    thisyear_sessions  = statistics.get_sequencestat_of_event({ type => 100 , subtype => 'monthly', content => view, year => thisyear, refresh => refresh }) ;
+  END;
+
+  IF thismonth_sessions.x_values.last < $thisday ;
+    refresh = 1;
+    thismonth_sessions  = statistics.get_sequencestat_of_event({ type => 100 , subtype => 'daily', content => view, year => thisyear, month => thismonth, refresh => refresh }) ;
+  END;
+
+%]
 
           <div class="row">
-            <div class="col-md-6 mt-2">
+
+            <div class="col-md-4 mt-2">
 
 <div class="card h-100">
-<div class="card-header"><h4>[% msg.maketext("Typ") %]</h4></div>
+<div class="card-header"><h4>[% msg.maketext("Sessions pro Tag im laufenden Monat") %] [% thismonth_desc %]</h4></div>
 
 <div class="card-body">
 
-[%
-      type_funcargs = { id => 'POOL-0800', type => 14 } ;
-      type_resultlist = config.get_datacache(type_funcargs);
-
-      typecount = {};
-      FOREACH type_thisitem IN type_resultlist;
-        item      = type_thisitem.item;
-        itemcount = type_thisitem.count;
-        typecount.${item} = itemcount;
-      END;
-
-      type_labels = [];
-      type_itemcounts = [];
-      FOREACH type_label IN typecount.keys.sort ;
-        type_labels.push("'${type_label}'");
-	type_itemcounts.push(typecount.${type_label});
-
-      END;
-%]
-
-<canvas id="typeChart" width="400" height="400"></canvas>
+<canvas id="sessionChart_thismonth" width="400" height="400"></canvas>
 <script>
-var type_ctx = document.getElementById('typeChart');
+var type_ctx = document.getElementById('sessionChart_thismonth');
 var typeChart = new Chart(type_ctx, {
-    type: 'doughnut',
+    type: 'bar',
     data: {    
-        labels: [[% type_labels.join(',') %]],
+        labels: [[% thismonth_sessions.x_values.join(',') %]],
         datasets: [{
-            label: 'Zahl der Briefe',
-            data: [[% type_itemcounts.join(',') %]],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(77, 166, 255, 0.5)',
-                'rgba(218, 165, 32, 0.5)',
-                'rgba(175, 0, 42, 0.5)'		
-	    ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(77, 166, 255, 1)',
-                'rgba(218, 165, 32, 1)',
-                'rgba(175, 0, 42, 1)'		
-	    ],
+            label: 'Sessions pro Tag [% thismonth_desc %]',
+            data: [[% thismonth_sessions.y_values.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
             borderWidth: 1
         }]
     },
@@ -83,9 +78,14 @@ var typeChart = new Chart(type_ctx, {
                 top: 0,
                 bottom: 100
             }
+        },
+	scales: {
+     	   yAxes: [{
+               ticks: {
+                    beginAtZero: true
+               }	    
+           }]  
         }
-
-	
     }
 });
 </script>
@@ -95,128 +95,27 @@ var typeChart = new Chart(type_ctx, {
 </div>
 
             </div>
-            <div class="col-md-6 mt-2">
+
+
+            <div class="col-md-4 mt-2">
 
 <div class="card h-100">
-<div class="card-header"><h4>[% msg.maketext("Jahresangaben") %]</h4></div>
+<div class="card-header"><h4>[% msg.maketext("Sessions im laufenden Jahr") %] [% thisyear %]</h4></div>
 
 <div class="card-body">
 
-[%
-      year_funcargs = { id => 'POOL-0425', type => 14 } ;
-      year_resultlist = config.get_datacache(year_funcargs);
-
-      yearcount = {};
-      FOREACH year_thisitem IN year_resultlist;
-        item      = year_thisitem.item;
-        itemcount = year_thisitem.count;
-        yearcount.${item} = itemcount;
-      END;
-
-      year_labels = [];
-      year_itemcounts = [];
-      FOREACH year_label IN yearcount.keys.sort ;
-        year_labels.push("'${year_label}'");
-	year_itemcounts.push(yearcount.${year_label});
-
-      END;
-%]
-
-<canvas id="yearChart" width="400" height="400"></canvas>
+<canvas id="sessionChart_thisyear" width="400" height="400"></canvas>
 <script>
-var ctx = document.getElementById('yearChart');
-var myChart = new Chart(ctx, {
+var type_ctx = document.getElementById('sessionChart_thisyear');
+var typeChart = new Chart(type_ctx, {
     type: 'bar',
     data: {    
-        labels: [[% year_labels.join(',') %]],
+        labels: [[% thisyear_sessions.x_values.join(',') %]],
         datasets: [{
-            label: 'Zahl der Briefe',
-            data: [[% year_itemcounts.join(',') %]],
+            label: 'Sessions pro Monat',
+            data: [[% thisyear_sessions.y_values.join(',') %]],
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    }
-});
-</script>
-
-</div>
-</div>
-
-                    </div>
-                    </div>
-
-
-
-          <div class="row">
-            <div class="col-md-6 mt-2">
-
-<div class="card h-100">
-<div class="card-header"><h4>[% msg.maketext("Orte / Doughnut") %]</h4></div>
-
-<div class="card-body">
-
-[%
-      placedoughnut_funcargs = { id => 'POOL-0410', type => 14 } ;
-      placedoughnut_resultlist = config.get_datacache(placedoughnut_funcargs);
-
-      placedoughnutcount = {};
-      FOREACH placedoughnut_thisitem IN placedoughnut_resultlist;
-        item      = placedoughnut_thisitem.item.replace('\'',' ');
-        itemcount = placedoughnut_thisitem.count;
-        placedoughnutcount.${item} = itemcount;
-      END;
-
-      placedoughnut_labels = [];
-      placedoughnut_itemcounts = [];
-      FOREACH placedoughnut_label IN placedoughnutcount.keys.sort ;
-        placedoughnut_labels.push("'${placedoughnut_label}'");
-	placedoughnut_itemcounts.push(placedoughnutcount.${placedoughnut_label});
-
-      END;
-%]
-
-<canvas id="placedoughnutChart" width="400" height="400"></canvas>
-<script>
-var placedoughnut_ctx = document.getElementById('placedoughnutChart');
-var placedoughnutChart = new Chart(placedoughnut_ctx, {
-    type: 'doughnut',
-    data: {    
-        labels: [[% placedoughnut_labels.join(',') %]],
-        datasets: [{
-            label: 'Zahl der Briefe',
-            data: [[% placedoughnut_itemcounts.join(',') %]],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(77, 166, 255, 0.5)',
-                'rgba(218, 165, 32, 0.5)',
-                'rgba(175, 0, 42, 0.5)'		
-	    ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)',
-                'rgba(77, 166, 255, 1)',
-                'rgba(218, 165, 32, 1)',
-                'rgba(175, 0, 42, 1)'		
-	    ],
             borderWidth: 1
         }]
     },
@@ -228,9 +127,62 @@ var placedoughnutChart = new Chart(placedoughnut_ctx, {
                 top: 0,
                 bottom: 100
             }
-        }
+        },
+	scales: {
+     	   yAxes: [{
+               ticks: {
+                    beginAtZero: true
+               }	    
+           }]  
+        }	
+    }
+});
+</script>
 
-	
+
+</div>
+</div>
+
+                    </div>
+
+            <div class="col-md-4 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Sessions im Vorjahr") %] [% lastyear %]</h4></div>
+
+<div class="card-body">
+
+<canvas id="sessionChart_lastyear" width="400" height="400"></canvas>
+<script>
+var type_ctx = document.getElementById('sessionChart_lastyear');
+var typeChart = new Chart(type_ctx, {
+    type: 'bar',
+    data: {    
+        labels: [[% lastyear_sessions.x_values.join(',') %]],
+        datasets: [{
+            label: 'Sessions pro Monat',
+            data: [[% lastyear_sessions.y_values.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+	layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 100
+            }
+        },
+	scales: {
+     	   yAxes: [{
+               ticks: {
+                    beginAtZero: true
+               }	    
+           }]  
+        }
     }
 });
 </script>
@@ -240,63 +192,157 @@ var placedoughnutChart = new Chart(placedoughnut_ctx, {
 </div>
 
             </div>
-            <div class="col-md-6 mt-2">
+
+         </div>
+
+
+          <div class="row pb-3">
+
+            <div class="col-md-4 mt-2">
 
 <div class="card h-100">
-<div class="card-header"><h4>[% msg.maketext("Orte / Bars") %]</h4></div>
+<div class="card-header"><h4>[% msg.maketext("Suchanfragen im laufenden Monat") %] [% thismonth_desc %]</h4></div>
 
 <div class="card-body">
 
-[%
-      place_funcargs = { id => 'POOL-0410', type => 14 } ;
-      place_resultlist = config.get_datacache(place_funcargs);
-
-      placecount = {};
-      FOREACH place_thisitem IN place_resultlist;
-        item      = place_thisitem.item;
-        itemcount = place_thisitem.count;
-        placecount.${item} = itemcount;
-      END;
-
-      place_labels = [];
-      place_itemcounts = [];
-      FOREACH place_label IN placecount.keys.sort ;
-        place_labels.push("'${place_label}'");
-	place_itemcounts.push(placecount.${place_label});
-
-      END;
-%]
-
-<canvas id="placeChart" width="400" height="400"></canvas>
+<canvas id="searchChart_thismonth" width="400" height="400"></canvas>
 <script>
-var ctx = document.getElementById('placeChart');
-var myChart = new Chart(ctx, {
+var type_ctx = document.getElementById('searchChart_thismonth');
+var typeChart = new Chart(type_ctx, {
     type: 'bar',
     data: {    
-        labels: [[% place_labels.join(',') %]],
+        labels: [[% thismonth_queries.x_values.join(',') %]],
         datasets: [{
-            label: 'Zahl der Briefe',
-            data: [[% place_itemcounts.join(',') %]],
+            label: 'Suchanfragen pro Tag',
+            data: [[% thismonth_queries.y_values.join(',') %]],
             backgroundColor: 'rgba(54, 162, 235, 0.2)',
             borderColor: 'rgba(54, 162, 235, 1)',
             borderWidth: 1
         }]
     },
     options: {
-        scales: {
-            yAxes: [{
-                ticks: {
+	layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 100
+            }
+        },
+	scales: {
+     	   yAxes: [{
+               ticks: {
                     beginAtZero: true
-                }
-            }]
+               }	    
+           }]  
         }
     }
 });
 </script>
 
+
+</div>
+</div>
+
+            </div>
+
+
+            <div class="col-md-4 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Suchanfragen im laufenden Jahr") %] [% thisyear %]</h4></div>
+
+<div class="card-body">
+
+<canvas id="searchChart_thisyear" width="400" height="400"></canvas>
+<script>
+var type_ctx = document.getElementById('searchChart_thisyear');
+var typeChart = new Chart(type_ctx, {
+    type: 'bar',
+    data: {    
+        labels: [[% thisyear_queries.x_values.join(',') %]],
+        datasets: [{
+            label: 'Suchanfragen pro Monat',
+            data: [[% thisyear_queries.y_values.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+	layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 100
+            }
+        },
+	scales: {
+     	   yAxes: [{
+               ticks: {
+                    beginAtZero: true
+               }	    
+           }]  
+        }
+    }
+});
+</script>
+
+
 </div>
 </div>
 
                     </div>
-                    </div>
+
+            <div class="col-md-4 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Suchanfragen im Vorjahr") %] [% lastyear %]</h4></div>
+
+<div class="card-body">
+
+<canvas id="searchChart_lastyear" width="400" height="400"></canvas>
+<script>
+var type_ctx = document.getElementById('searchChart_lastyear');
+var typeChart = new Chart(type_ctx, {
+    type: 'bar',
+    data: {    
+        labels: [[% lastyear_queries.x_values.join(',') %]],
+        datasets: [{
+            label: 'Suchanfragen pro Monat',
+            data: [[% lastyear_queries.y_values.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+	layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 100
+            }
+        },
+	scales: {
+     	   yAxes: [{
+               ticks: {
+                    beginAtZero: true
+               }	    
+           }]  
+        }
+    }
+});
+</script>
+
+
+</div>
+</div>
+
+            </div>
+
+         </div>
+
 		    

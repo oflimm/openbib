@@ -37,6 +37,7 @@ use Benchmark ':hireswallclock';
 use DBI;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Getopt::Long;
+use POSIX qw(strftime);
 use Unicode::Collate;
 use YAML;
 
@@ -172,47 +173,12 @@ if ($scheme && $scheme eq "marc21"){
     };
 }
 
-# Typ 17 => Besetzungszahlen der Merklisten 
-if ($type == 17){
-    
-    my $metrics_ref=[];
+# Datumsangaben
 
-    my $histogram_ref = {};
-    
-    my $cartitemusage = $config->get_schema->resultset('UserCartitem')->search_rs(
-	{
-	},
-	{
-	    select   => [{'count' => 'me.userid'}],
-	    as       => ['cartitemcount'],
-	    group_by => ['me.userid'],
-	    join     => ['cartitemid'],
-            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-	}
-	);
-    
-    while (my $thiscount = $cartitemusage->next()){
-	my $count    = $thiscount->{'cartitemcount'};
-	
-	my $current_count = (defined $histogram_ref->{$count})?$histogram_ref->{$count}:0;
-
-	$current_count++;
-	$histogram_ref->{$count} = $current_count;
-    }
-
-    foreach my $count (sort { $a <=> $b }  keys %$histogram_ref){
-	push @$metrics_ref, {
-	    cartitemcount  => $count,
-	    usercount => $histogram_ref->{$count},
-	};
-    }
-    
-    $config->set_datacache({
-	type => 17,
-	id   => 'cartitems',
-	data => $metrics_ref,
-			    });
-}
+my $current_year  = strftime "%Y", localtime;
+my $last_year     = $current_year - 1;
+my $current_month = strftime "%m", localtime;
+my $today         = strftime "%d", localtime;
 
 # Typ 1 => Meistaufgerufene Titel pro Datenbank
 if ($type == 1){
@@ -1416,6 +1382,206 @@ if ($type == 16){
 
 }
 
+# Typ 17 => Besetzungszahlen der Merklisten 
+if ($type == 17){
+    
+    my $metrics_ref=[];
+
+    my $histogram_ref = {};
+    
+    my $cartitemusage = $config->get_schema->resultset('UserCartitem')->search_rs(
+	{
+	},
+	{
+	    select   => [{'count' => 'me.userid'}],
+	    as       => ['cartitemcount'],
+	    group_by => ['me.userid'],
+	    join     => ['cartitemid'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+	}
+	);
+    
+    while (my $thiscount = $cartitemusage->next()){
+	my $count    = $thiscount->{'cartitemcount'};
+	
+	my $current_count = (defined $histogram_ref->{$count})?$histogram_ref->{$count}:0;
+
+	$current_count++;
+	$histogram_ref->{$count} = $current_count;
+    }
+
+    foreach my $count (sort { $a <=> $b }  keys %$histogram_ref){
+	push @$metrics_ref, {
+	    cartitemcount  => $count,
+	    usercount => $histogram_ref->{$count},
+	};
+    }
+    
+    $config->set_datacache({
+	type => 17,
+	id   => 'cartitems',
+	data => $metrics_ref,
+			    });
+}
+
+# Typ 18 => Sessions pro View aktuelles Jahr (monatlich, taeglich)
+if ($type == 18){
+    my @views = ();
+
+    if ($view){
+        push @views, $view;
+    }
+    else {
+        @views=$config->get_active_views();
+    }
+
+    foreach my $view (@views){
+        $logger->info("Generating Type $type metrics for view $view");
+
+	# monthly
+	my $metrics_ref = $statistics->get_sequencestat_of_event({ type => 100 , subtype => 'monthly', content => $view, year => $current_year, refresh => 1 }) ;
+
+        if ($logger->is_debug){
+            $logger->debug("Monthly $current_year ".YAML::Dump($metrics_ref));
+        }
+
+	# daily
+	$metrics_ref = $statistics->get_sequencestat_of_event({ type => 100 , subtype => 'monthly', content => $view, year => $current_year, month => $current_month, refresh => 1 }) ;
+
+        if ($logger->is_debug){
+            $logger->debug("Daily $current_month/$current_year ".YAML::Dump($metrics_ref));
+        }
+    }
+}
+
+# Typ 19 => Sessions pro View vergangenes Jahr (monatlich)
+if ($type == 19){
+    my @views = ();
+
+    if ($view){
+        push @views, $view;
+    }
+    else {
+        @views=$config->get_active_views();
+    }
+
+    foreach my $view (@views){
+        $logger->info("Generating Type $type metrics for view $view");
+
+	# monthly
+	my $metrics_ref = $statistics->get_sequencestat_of_event({ type => 100 , subtype => 'monthly', content => $view, year => $last_year, refresh => 1 }) ;
+
+        if ($logger->is_debug){
+            $logger->debug("Monthly $last_year ".YAML::Dump($metrics_ref));
+        }
+    }
+}
+
+# Typ 20 => Suchanfragen pro View aktuelles Jahr (monatlich, taeglich)
+if ($type == 20){
+    my @views = ();
+
+    if ($view){
+        push @views, $view;
+    }
+    else {
+        @views=$config->get_active_views();
+    }
+
+    foreach my $view (@views){
+        $logger->info("Generating Type $type metrics for view $view");
+
+	# monthly
+	my $metrics_ref = $statistics->get_sequencestat_of_event({ type => 1 , subtype => 'monthly', content => $view, year => $current_year, refresh => 1 }) ;
+
+        if ($logger->is_debug){
+            $logger->debug("Monthly $current_year ".YAML::Dump($metrics_ref));
+        }
+
+	# daily
+	$metrics_ref = $statistics->get_sequencestat_of_event({ type => 1 , subtype => 'monthly', content => $view, year => $current_year, month => $current_month, refresh => 1 }) ;
+
+        if ($logger->is_debug){
+            $logger->debug("Daily $current_month/$current_year ".YAML::Dump($metrics_ref));
+        }
+    }
+}
+
+# Typ 21 => Suchanfragen pro View vergangenes Jahr (monatlich)
+if ($type == 21){
+    my @views = ();
+
+    if ($view){
+        push @views, $view;
+    }
+    else {
+        @views=$config->get_active_views();
+    }
+
+    foreach my $view (@views){
+        $logger->info("Generating Type $type metrics for view $view");
+
+	# monthly
+	my $metrics_ref = $statistics->get_sequencestat_of_event({ type => 1 , subtype => 'monthly', content => $view, year => $last_year, refresh => 1 }) ;
+
+        if ($logger->is_debug){
+            $logger->debug("Monthly $last_year ".YAML::Dump($metrics_ref));
+        }
+    }
+}
+
+# Typ 22 => Trefferaufrufe pro View aktuelles Jahr (monatlich, taeglich)
+if ($type == 22){
+    my @views = ();
+
+    if ($view){
+        push @views, $view;
+    }
+    else {
+        @views=$config->get_active_views();
+    }
+
+    foreach my $view (@views){
+        $logger->info("Generating Type $type metrics for view $view");
+
+	# monthly
+	my $metrics_ref = $statistics->get_sequencestat_of_event({ type => 1 , subtype => 'monthly', content => $view, year => $current_year, refresh => 1 }) ;
+
+        if ($logger->is_debug){
+            $logger->debug("Monthly $current_year ".YAML::Dump($metrics_ref));
+        }
+
+	# daily
+	$metrics_ref = $statistics->get_sequencestat_of_event({ type => 1 , subtype => 'monthly', content => $view, year => $current_year, month => $current_month, refresh => 1 }) ;
+
+        if ($logger->is_debug){
+            $logger->debug("Daily $current_month/$current_year ".YAML::Dump($metrics_ref));
+        }
+    }
+}
+
+# Typ 23 => Trefferaufrufe pro View vergangenes Jahr (monatlich)
+if ($type == 23){
+    my @views = ();
+
+    if ($view){
+        push @views, $view;
+    }
+    else {
+        @views=$config->get_active_views();
+    }
+
+    foreach my $view (@views){
+        $logger->info("Generating Type $type metrics for view $view");
+
+	# monthly
+	my $metrics_ref = $statistics->get_sequencestat_of_event({ type => 1 , subtype => 'monthly', content => $view, year => $last_year, refresh => 1 }) ;
+
+        if ($logger->is_debug){
+            $logger->debug("Monthly $last_year ".YAML::Dump($metrics_ref));
+        }
+    }
+}
 
 sub gen_cloud_class {
     my ($arg_ref) = @_;
@@ -1506,6 +1672,12 @@ gen_metrics.pl - Erzeugen und Cachen von Metriken aus Katalog- oder Statistik-Da
   15 => Besetzungszahlen der Titel in der USB LS-Systematik
   16 => Besetzungszahlen der Titel in der USB LBS-Systematik
   17 => Besetzungszahlen der Merklisten
+  18 => Sessions pro View aktuelles Jahr (monatlich, taeglich)
+  19 => Sessions pro View vergangenes Jahr (monatlich)
+  20 => Suchanfragen pro View aktuelles Jahr (monatlich, taeglich)
+  21 => Suchanfragen pro View vergangenes Jahr (monatlich)
+  22 => Trefferaufrufe pro View aktuelles Jahr (monatlich, taeglich)
+  23 => Trefferaufrufe pro View vergangenes Jahr (monatlich)
 ENDHELP
     exit;
 }

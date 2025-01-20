@@ -87,7 +87,7 @@ my $session = OpenBib::Session->new;
 # Verbindung zur SQL-Datenbank herstellen
 
 my $thistimedate   = Date::Manip::ParseDate("now");
-my $expiretimedate = Date::Manip::DateCalc($thistimedate,"-24hours");
+my $expiretimedate = Date::Manip::DateCalc($thistimedate,"-6hours");
 
 $expiretimedate = Date::Manip::UnixDate($expiretimedate,"%Y-%m-%d %H:%M:%S");
 

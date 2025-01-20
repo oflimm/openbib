@@ -362,4 +362,154 @@ var typeChart = new Chart(type_ctx, {
 
          </div>
 
+          <div class="row pb-3">
+
+            <div class="col-md-4 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Titelaufrufe im laufenden Monat") %] [% thismonth_desc %]</h4></div>
+
+<div class="card-body">
+
+<canvas id="titlesChart_thismonth" width="400" height="400"></canvas>
+<script>
+var type_ctx = document.getElementById('titlesChart_thismonth');
+var typeChart = new Chart(type_ctx, {
+    type: 'bar',
+    data: {    
+        labels: [[% thismonth_titles.x_values.join(',') %]],
+        datasets: [{
+            label: 'Titelaufrufe pro Tag [% thismonth_desc %]',
+            data: [[% thismonth_titles.y_values.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+	layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 100
+            }
+        },
+	scales: {
+     	   yAxes: [{
+               ticks: {
+                    beginAtZero: true
+               }	    
+           }]  
+        }
+    }
+});
+</script>
+
+
+</div>
+</div>
+
+            </div>
+
+
+            <div class="col-md-4 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Titelaufrufe im laufenden Jahr") %] [% thisyear %]</h4></div>
+
+<div class="card-body">
+
+<canvas id="titlesChart_thisyear" width="400" height="400"></canvas>
+<script>
+var type_ctx = document.getElementById('titlesChart_thisyear');
+var typeChart = new Chart(type_ctx, {
+    type: 'bar',
+    data: {    
+        labels: [[% thisyear_titles.x_values.join(',') %]],
+        datasets: [{
+            label: 'Titelaufrufe pro Monat',
+            data: [[% thisyear_titles.y_values.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+	layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 100
+            }
+        },
+	scales: {
+     	   yAxes: [{
+               ticks: {
+                    beginAtZero: true
+               }	    
+           }]  
+        }	
+    }
+});
+</script>
+
+
+</div>
+</div>
+
+                    </div>
+
+            <div class="col-md-4 mt-2">
+
+<div class="card h-100">
+<div class="card-header"><h4>[% msg.maketext("Titelaufrufe im Vorjahr") %] [% lastyear %]</h4></div>
+
+<div class="card-body">
+
+<canvas id="titlesChart_lastyear" width="400" height="400"></canvas>
+<script>
+var type_ctx = document.getElementById('titlesChart_lastyear');
+var typeChart = new Chart(type_ctx, {
+    type: 'bar',
+    data: {    
+        labels: [[% lastyear_titles.x_values.join(',') %]],
+        datasets: [{
+            label: 'Titelaufrufe pro Monat',
+            data: [[% lastyear_titles.y_values.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+	layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 100
+            }
+        },
+	scales: {
+     	   yAxes: [{
+               ticks: {
+                    beginAtZero: true
+               }	    
+           }]  
+        }
+    }
+});
+</script>
+
+
+</div>
+</div>
+
+            </div>
+
+         </div>
+
+
 		    

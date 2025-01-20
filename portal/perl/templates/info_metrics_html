@@ -34,14 +34,31 @@
 
   thismonth_queries = statistics.get_sequencestat_of_event({ type => 1 , subtype => 'daily', viewname => view, year => thisyear, month => thismonth, refresh => refresh }) ;
 
-  IF thisyear_sessions.x_values.last < $thismonth ;
+  lastyear_titles  = statistics.get_sequencestat_of_event({ type => 10 , subtype => 'monthly', viewname => view, year => lastyear, refresh => refresh }) ;
+
+  thisyear_titles  = statistics.get_sequencestat_of_event({ type => 10 , subtype => 'monthly', viewname => view, year => thisyear, refresh => refresh }) ;
+
+  thismonth_titles = statistics.get_sequencestat_of_event({ type => 10 , subtype => 'daily', viewname => view, year => thisyear, month => thismonth, refresh => refresh }) ;
+
+  # Aktuell deaktiviert
+  IF 0 == 1 && thisyear_sessions.x_values.last < $thismonth ;
     refresh = 1;
     thisyear_sessions  = statistics.get_sequencestat_of_event({ type => 100 , subtype => 'monthly', content => view, year => thisyear, refresh => refresh }) ;
   END;
 
-  IF thismonth_sessions.x_values.last < $thisday ;
+  IF 0 == 1 && thismonth_sessions.x_values.last < $thisday ;
     refresh = 1;
     thismonth_sessions  = statistics.get_sequencestat_of_event({ type => 100 , subtype => 'daily', content => view, year => thisyear, month => thismonth, refresh => refresh }) ;
+  END;
+
+  IF 0 == 1 && thismonth_queries.x_values.last < $thisday ;
+    refresh = 1;
+    thismonth_queries  = statistics.get_sequencestat_of_event({ type => 1 , subtype => 'daily', content => view, year => thisyear, month => thismonth, refresh => refresh }) ;
+  END;
+
+  IF 0 == 1 && thismonth_titles.x_values.last < $thisday ;
+    refresh = 1;
+    thismonth_titles  = statistics.get_sequencestat_of_event({ type => 10 , subtype => 'daily', content => view, year => thisyear, month => thismonth, refresh => refresh }) ;
   END;
 
 %]
@@ -51,7 +68,7 @@
             <div class="col-md-4 mt-2">
 
 <div class="card h-100">
-<div class="card-header"><h4>[% msg.maketext("Sessions pro Tag im laufenden Monat") %] [% thismonth_desc %]</h4></div>
+<div class="card-header"><h4>[% msg.maketext("Sessions im laufenden Monat") %] [% thismonth_desc %]</h4></div>
 
 <div class="card-body">
 

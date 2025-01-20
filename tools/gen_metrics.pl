@@ -1446,7 +1446,7 @@ if ($type == 18){
         }
 
 	# daily
-	$metrics_ref = $statistics->get_sequencestat_of_event({ type => 100 , subtype => 'monthly', content => $view, year => $current_year, month => $current_month, refresh => 1 }) ;
+	$metrics_ref = $statistics->get_sequencestat_of_event({ type => 100 , subtype => 'daily', content => $view, year => $current_year, month => $current_month, refresh => 1 }) ;
 
         if ($logger->is_debug){
             $logger->debug("Daily $current_month/$current_year ".YAML::Dump($metrics_ref));
@@ -1499,7 +1499,7 @@ if ($type == 20){
         }
 
 	# daily
-	$metrics_ref = $statistics->get_sequencestat_of_event({ type => 1 , subtype => 'monthly', content => $view, year => $current_year, month => $current_month, refresh => 1 }) ;
+	$metrics_ref = $statistics->get_sequencestat_of_event({ type => 1 , subtype => 'daily', content => $view, year => $current_year, month => $current_month, refresh => 1 }) ;
 
         if ($logger->is_debug){
             $logger->debug("Daily $current_month/$current_year ".YAML::Dump($metrics_ref));
@@ -1552,7 +1552,7 @@ if ($type == 22){
         }
 
 	# daily
-	$metrics_ref = $statistics->get_sequencestat_of_event({ type => 10 , subtype => 'monthly', content => $view, year => $current_year, month => $current_month, refresh => 1 }) ;
+	$metrics_ref = $statistics->get_sequencestat_of_event({ type => 10 , subtype => 'daily', content => $view, year => $current_year, month => $current_month, refresh => 1 }) ;
 
         if ($logger->is_debug){
             $logger->debug("Daily $current_month/$current_year ".YAML::Dump($metrics_ref));
@@ -1650,6 +1650,8 @@ gen_metrics.pl - Erzeugen und Cachen von Metriken aus Katalog- oder Statistik-Da
    Optionen:
    -help                 : Diese Informationsseite
    --database=...        : Einzelner Katalog
+   --view=...            : Einzelner View
+   --profile=...         : Einzelnes Profile
    --logfile=...         : Alternatives Logfile
    --type=...            : Metrik-Typ
 

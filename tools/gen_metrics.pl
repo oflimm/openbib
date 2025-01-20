@@ -691,7 +691,7 @@ if ($type == 8){
         @views=$config->get_active_views();
     }
 
-    foreach my $view (@views){
+    foreach my $view (sort @views){
         $logger->info("Generating Type 8 metrics for view $view");
 
 	my $cat2type_ref = {
@@ -874,7 +874,7 @@ if ($type == 10){
         @views=$config->get_active_views();
     }
 
-    foreach my $view (@views){
+    foreach my $view (sort @views){
         $logger->info("Generating Type 10 metrics for view $view");
 
         my @databases = $config->get_dbs_of_view($view);
@@ -931,7 +931,7 @@ if ($type == 11){
         @views=$config->get_active_views();
     }
 
-    foreach my $view (@views){
+    foreach my $view (sort @views){
 #        next if ($view eq "kug");
         $logger->info("Generating Type 11 metrics for view $view");
 
@@ -1435,7 +1435,7 @@ if ($type == 18){
         @views=$config->get_active_views();
     }
 
-    foreach my $view (@views){
+    foreach my $view (sort @views){
         $logger->info("Generating Type $type metrics for view $view");
 
 	# monthly
@@ -1465,7 +1465,7 @@ if ($type == 19){
         @views=$config->get_active_views();
     }
 
-    foreach my $view (@views){
+    foreach my $view (sort @views){
         $logger->info("Generating Type $type metrics for view $view");
 
 	# monthly
@@ -1488,7 +1488,7 @@ if ($type == 20){
         @views=$config->get_active_views();
     }
 
-    foreach my $view (@views){
+    foreach my $view (sort @views){
         $logger->info("Generating Type $type metrics for view $view");
 
 	# monthly
@@ -1518,7 +1518,7 @@ if ($type == 21){
         @views=$config->get_active_views();
     }
 
-    foreach my $view (@views){
+    foreach my $view (sort @views){
         $logger->info("Generating Type $type metrics for view $view");
 
 	# monthly
@@ -1541,7 +1541,7 @@ if ($type == 22){
         @views=$config->get_active_views();
     }
 
-    foreach my $view (@views){
+    foreach my $view (sort @views){
         $logger->info("Generating Type $type metrics for view $view");
 
 	# monthly
@@ -1571,7 +1571,7 @@ if ($type == 23){
         @views=$config->get_active_views();
     }
 
-    foreach my $view (@views){
+    foreach my $view (sort @views){
         $logger->info("Generating Type $type metrics for view $view");
 
 	# monthly

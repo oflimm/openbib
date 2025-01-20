@@ -1545,14 +1545,14 @@ if ($type == 22){
         $logger->info("Generating Type $type metrics for view $view");
 
 	# monthly
-	my $metrics_ref = $statistics->get_sequencestat_of_event({ type => 1 , subtype => 'monthly', content => $view, year => $current_year, refresh => 1 }) ;
+	my $metrics_ref = $statistics->get_sequencestat_of_event({ type => 10 , subtype => 'monthly', content => $view, year => $current_year, refresh => 1 }) ;
 
         if ($logger->is_debug){
             $logger->debug("Monthly $current_year ".YAML::Dump($metrics_ref));
         }
 
 	# daily
-	$metrics_ref = $statistics->get_sequencestat_of_event({ type => 1 , subtype => 'monthly', content => $view, year => $current_year, month => $current_month, refresh => 1 }) ;
+	$metrics_ref = $statistics->get_sequencestat_of_event({ type => 10 , subtype => 'monthly', content => $view, year => $current_year, month => $current_month, refresh => 1 }) ;
 
         if ($logger->is_debug){
             $logger->debug("Daily $current_month/$current_year ".YAML::Dump($metrics_ref));
@@ -1575,7 +1575,7 @@ if ($type == 23){
         $logger->info("Generating Type $type metrics for view $view");
 
 	# monthly
-	my $metrics_ref = $statistics->get_sequencestat_of_event({ type => 1 , subtype => 'monthly', content => $view, year => $last_year, refresh => 1 }) ;
+	my $metrics_ref = $statistics->get_sequencestat_of_event({ type => 10 , subtype => 'monthly', content => $view, year => $last_year, refresh => 1 }) ;
 
         if ($logger->is_debug){
             $logger->debug("Monthly $last_year ".YAML::Dump($metrics_ref));

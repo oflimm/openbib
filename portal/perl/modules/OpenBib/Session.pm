@@ -32,6 +32,7 @@ use utf8;
 
 use CGI::Cookie;
 use Cache::Memcached::Fast;
+use Date::Manip;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Benchmark ':hireswallclock';
 use Digest::MD5;
@@ -208,8 +209,12 @@ sub _init_new_session {
         # Wenn wir nichts gefunden haben, dann ist alles ok.
         if ($anzahl == 0 ) {
             $havenewsessionID=1;
-      
-            my $createtime = POSIX::strftime('%Y-%m-%d% %H:%M:%S', localtime());
+
+	    my $createtime = Date::Manip::ParseDate("now");
+            my $expiretime = Date::Manip::DateCalc($createtime,$config->{default_session_expiration});
+
+	    $createtime = Date::Manip::UnixDate($createtime,"%Y-%m-%d %H:%M:%S");
+	    $expiretime = Date::Manip::UnixDate($expiretime,"%Y-%m-%d %H:%M:%S");
 
             my $queryoptions = OpenBib::QueryOptions->get_session_defaults;
 
@@ -217,6 +222,7 @@ sub _init_new_session {
                 {
                     sessionid    => $sessionID,
                     createtime   => $createtime,
+                    expiretime   => $expiretime,
                     queryoptions => encode_json($queryoptions),
                     viewname     => $self->{view},
                     searchform   => 'simple',
@@ -322,6 +328,45 @@ sub is_valid {
     }
 
     return 0;
+}
+
+sub is_expired {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+    
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} });
+
+    my $is_expired = 0;
+    
+    if ($sessioninfo){	
+	my $expiretstamp = $sessioninfo->first->get_column('expiretime');
+	
+	if ($expiretstamp){
+	    my $current_time    = Date::Manip::ParseDate("now");
+	    my $expiration_time = Date::Manip::ParseDate($expiretstamp);
+
+	    my $createtime = Date::Manip::UnixDate($current_time,"%Y-%m-%d %H:%M:%S");
+	    
+	}
+    }
+    
+    if ($config->{benchmark}) {
+	$btime=new Benchmark;
+	$timeall=timediff($btime,$atime);
+	$logger->info("Total time for validity check is ".timestr($timeall));
+    }
+    
+    return $is_expired;
 }
 
 sub get_profile {

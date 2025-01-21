@@ -107,6 +107,7 @@ ALTER TABLE updatelog ADD CONSTRAINT fk_updatelog_databaseinfo FOREIGN KEY (dbid
 ALTER TABLE sessioninfo ADD PRIMARY KEY (id);
 CREATE INDEX sessioninfo_sessionid ON sessioninfo (sessionid);
 CREATE INDEX sessioninfo_createtime ON sessioninfo (createtime);
+CREATE INDEX sessioninfo_expiretime ON sessioninfo (expiretime);
 CREATE INDEX sessioninfo_username ON sessioninfo (username);
 CREATE INDEX sessioninfo_viewname ON sessioninfo (viewname);
 

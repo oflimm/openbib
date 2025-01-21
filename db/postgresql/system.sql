@@ -254,6 +254,7 @@ CREATE TABLE sessioninfo (
  id             BIGSERIAL,
  sessionid      TEXT        NOT NULL,
  createtime     TIMESTAMP,
+ expiretime     TIMESTAMP, 
  lastresultset  TEXT,
  username       TEXT,
 

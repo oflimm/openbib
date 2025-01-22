@@ -180,6 +180,7 @@ sub authenticate {
     my $authenticatorid  = $input_data_ref->{authenticatorid};
     my $username         = $input_data_ref->{username};
     my $password         = $input_data_ref->{password};
+    my $expire           = $input_data_ref->{expire};    
 
     # CGI-only Parameters for html-representation
     my $code        = ($query->param('code'))?$query->param('code'):'1';
@@ -351,8 +352,15 @@ sub authenticate {
 	    userid           => $userid,
 	    authenticatorid  => $authenticatorid,
 			       });
+
+	# Expiration setzen
+
+	$expire = $config->get('default_session_expiration') unless ($expire);
+
+	my $new_expiration = $session->set_expiration($expire);
 	
 	$result_ref->{sessionID} = $session->{ID};
+	$result_ref->{expire}    = $new_expiration;
 	
 	# Falls noch keins da ist, eintragen
 	if (!$user->searchfields_exist($userid)) {
@@ -546,6 +554,12 @@ sub get_input_definition {
             type     => 'scalar',
         },
         password => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+	# See Date::Manip
+        expire => { 
             default  => '',
             encoding => 'none',
             type     => 'scalar',

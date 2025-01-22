@@ -344,22 +344,15 @@ sub is_expired {
         $atime=new Benchmark;
     }
 
-    my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} });
+    my $current_time = Date::Manip::ParseDate("now");
+    $current_time = Date::Manip::UnixDate($current_time,"%Y-%m-%d %H:%M:%S");
 
-    my $is_expired = 0;
-    
-    if ($sessioninfo){	
-	my $expiretstamp = $sessioninfo->first->get_column('expiretime');
-	
-	if ($expiretstamp){
-	    my $current_time    = Date::Manip::ParseDate("now");
-	    my $expiration_time = Date::Manip::ParseDate($expiretstamp);
+    my $is_expired = $self->get_schema->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID}, 'expiretime' => { '<' => $current_time } })->count;
 
-	    my $createtime = Date::Manip::UnixDate($current_time,"%Y-%m-%d %H:%M:%S");
-	    
-	}
+    if ($logger->is_debug){
+        $logger->debug("Session ".$self->{ID}." expired? $is_expired");
     }
-    
+   
     if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
@@ -504,6 +497,40 @@ sub set_profile {
     }
 
     return;
+}
+
+sub set_expiration {
+    my ($self,$expire)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $sessioninfo = $self->get_schema->resultset('Sessioninfo')->search_rs({ sessionid => $self->{ID} });
+
+    my $config = $self->get_config;
+
+    my $expiretime;
+    
+    if ($sessioninfo){
+	eval {
+	    $expire = $config->{default_session_expiration} unless ($expire);
+	    
+	    my $createtime = Date::Manip::ParseDate("now");
+	    
+            $expiretime = Date::Manip::DateCalc($createtime,$expire);
+	    
+	    $expiretime = Date::Manip::UnixDate($expiretime,"%Y-%m-%d %H:%M:%S");
+	    
+	    $sessioninfo->update({ expiretime => $expiretime });
+	};
+
+	if ($@){
+	    $logger->error($@);
+	    return;
+	}
+    }
+
+    return $expiretime;
 }
 
 sub get_resultlists_offsets {

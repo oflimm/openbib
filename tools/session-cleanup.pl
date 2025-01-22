@@ -86,24 +86,27 @@ my $session = OpenBib::Session->new;
 #####################################################################
 # Verbindung zur SQL-Datenbank herstellen
 
-my $thistimedate   = Date::Manip::ParseDate("now");
-my $expiretimedate = Date::Manip::DateCalc($thistimedate,"-6hours");
+my $current_time   = Date::Manip::ParseDate("now");
 
-$expiretimedate = Date::Manip::UnixDate($expiretimedate,"%Y-%m-%d %H:%M:%S");
+$current_time = Date::Manip::UnixDate($current_time,"%Y-%m-%d %H:%M:%S");
 
-my $where_ref = {
+# Default: Abgelaufene Session
+my $where_ref =  { 
+    expiretime => { '<' => $current_time },
 };
 
 my $options_ref = {
-    group_by => ['id','createtime'],
-    order_by => ['createtime asc'],
+    group_by => ['id','expiretime'],
+    order_by => ['expiretime asc'],
 };
-    
-if ($limit){
-    $options_ref->{rows} = $limit;
-}
 
+# Alternativ: Zeitspanne der Session-Erzeugung
 if ($from && $to){
+    $options_ref = {
+	group_by => ['id','createtime'],
+	order_by => ['createtime asc'],
+    };
+    
     $where_ref = {
 	-and => [
 	     createtime => { '<' => $to },
@@ -111,10 +114,9 @@ if ($from && $to){
 	    ],
     };
 }
-else {
-    $where_ref = { 
-	createtime => { '<' => $expiretimedate },
-    };
+
+if ($limit){
+    $options_ref->{rows} = $limit;
 }
 
 my $open_sessions = $session->get_schema->resultset('Sessioninfo')->search(
@@ -150,14 +152,23 @@ foreach my $sessioninfo ($open_sessions->all){
 }
 
 sub print_help {
-    print "session-cleanup.pl - Schliessen abgelaufener Sessions und Uebertragung in Statistik-DB\n\n";
-    print "Optionen: \n";
-    print "  -help                    : Diese Informationsseite\n";
-    print "  --loglevel=DEBUG         : Loglevel [DEBUG|INFO|ERROR]\n";
-    print "  --logfile=...            : Log-Datei\n";
-    print "  --limit=...              : Maximale Zahl an zu schliessenden Sessions\n";
-    print "  --from=...               : Von Datum (Format: yyyy-mm-dd hh:mm:ss), nur zusammen mit --to\n";
-    print "  --to=...                 : Bis Datum (Format: yyyy-mm-dd hh:mm:ss), nur zusammen mit --from\n";    
+    print << "ENDHELP";
+session-cleanup.pl - Schliessen abgelaufener Sessions und Uebertragung in Statistik-DB
+
+Optionen:
+  -help                    : Diese Informationsseite
+  --loglevel=DEBUG         : Loglevel [DEBUG|INFO|ERROR]
+  --logfile=...            : Log-Datei
+  --limit=...              : Maximale Zahl an zu schliessenden Sessions
+  --from=...               : Von Erzeugungs-Datum (Format: yyyy-mm-dd hh:mm:ss), nur zusammen mit --to
+  --to=...                 : Bis Erzeugungs-Datum (Format: yyyy-mm-dd hh:mm:ss), nur zusammen mit --from
+
+Wichtig: from/to beziehen sich gezielt auf das Erzeugungs-Datum der Session.
+
+Das Standardverhalten ist das Schliessen von Sessions bei ueberschrittenem Ablaufdatum.
+ENDHELP
+
+
     exit;
 }
 

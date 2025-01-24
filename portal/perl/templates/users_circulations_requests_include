@@ -19,13 +19,6 @@
 <p>
 [% requests.error_description %]
 </p>
-
- <div class="d-flex flex-wrap ob-fulltitle_actions mt-4">
-   <div class="pe-1 pb-3">
-         <a  class="btn btn-primary text-nowrap" aria-described-by="[% msg.maketext("Zurück") %]" href="javascript:history.back()" title="[% msg.maketext("Zurück") %]"><i class="fas fa-arrow-circle-left"></i> <span>[% msg.maketext("Zurück") %]</span></a>
-   </div>
-
- </div>   
 </div>
 [% ELSE %]
 [% IF requests.no_requests || requests.items.size == 0 %]
@@ -33,8 +26,6 @@
 <h1 class="display-4">[% msg.maketext("Sie haben derzeit keine offenen Aufträge.") %]</h1>
 </div>
 [% ELSE  %]
-<h4>[% msg.maketext("Ihre offenen Aufträge") %]</h4>
-
 <p>
 [% msg.maketext("Liste Ihrer offenen Aufträge (ohne Aufsatzbestellungen).") %]
 </p>
@@ -115,3 +106,4 @@
 
 [% END %]
 [% END # no error%]
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Ihre offenen Aufträge") %]</div>

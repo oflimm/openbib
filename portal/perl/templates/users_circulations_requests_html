@@ -1,0 +1,117 @@
+[%#-
+#######################################################################
+#
+# Templatename: circulation_requests
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller offenen Auftraege
+#
+#######################################################################
+-%]
+
+[% IF requests.error %]
+<div class="alert alert-info">
+<h4>[% msg.maketext("Probleme mit der Kopplung zum Bibliothekssystem") %]</h4>
+
+<p>
+[% requests.error_description %]
+</p>
+
+ <div class="d-flex flex-wrap ob-fulltitle_actions mt-4">
+   <div class="pe-1 pb-3">
+         <a  class="btn btn-primary text-nowrap" aria-described-by="[% msg.maketext("Zurück") %]" href="javascript:history.back()" title="[% msg.maketext("Zurück") %]"><i class="fas fa-arrow-circle-left"></i> <span>[% msg.maketext("Zurück") %]</span></a>
+   </div>
+
+ </div>   
+</div>
+[% ELSE %]
+[% IF requests.no_requests || requests.items.size == 0 %]
+<div class="ob-jumbotron">
+<h1 class="display-4">[% msg.maketext("Sie haben derzeit keine offenen Aufträge.") %]</h1>
+</div>
+[% ELSE  %]
+<h4>[% msg.maketext("Offene Aufträge") %]</h4>
+
+<p>
+[% msg.maketext("Liste Ihrer offenen Aufträge (ohne Aufsatzbestellungen).") %]
+</p>
+
+[%# USE dumper;dumper.dump(requests) %]
+
+<div class="table-responsive">
+<table class="table table-striped ">
+<thead>
+<tr><th>[% msg.maketext("Titelangaben") %]</th><th>[% msg.maketext("Signatur") %]/[% msg.maketext("Mediennummer") %]</th><th>[% msg.maketext("Abholort") %]</th><th>[% msg.maketext("Auftragsdatum") %]</th><th>[% msg.maketext("Aktion") %]</th></tr>
+</thead>
+<tbody>
+[%- FOREACH request = requests.items ;
+      is_ill = 0;
+      IF request.ill_status;
+         is_ill = 1;
+      END;
+      is_reservation = 0;
+      is_order       = 1;
+      IF request.queue ;
+         is_reservation = 1;
+         is_order       = 0;
+      END;
+-%]
+<tr>
+<td>
+  <i>[% request.about %]</i>
+[% IF request.info || is_ill %] 
+<br/> ([% msg.maketext("Status") %]: [% IF is_ill %] [% request.ill_status.about %] <a class="exturl" target="_blank" href="https://usb-koeln.digibib.net/account/ill/books/requestlist"><i class="fas fa-arrow-right pe-2"></i>[% msg.maketext("Zum Fernleihkonto") %]</a>[% ELSIF request.info %] [% request.info %] [% IF request.status.match('abholbar') %]. [% msg.maketext("Leihfristende") %]: [% request.endtime %][% END %][% END %])
+[% END %]
+[% IF is_order %]
+<br/>
+<b><i class="fas fa-cogs"></i> [% msg.maketext("Bestellung") %]</b>
+[% ELSIF is_reservation %]
+<br/>
+<b><i class="fas fa-hourglass-start"></i> [% msg.maketext("Vormerkung") %]</b> ([% request.queue %]. [% msg.maketext("Position in der Warteschlange") %])
+[% END %]
+</td>
+<td>
+[%#- Die Signatur wird nur dann ausgeben, falls sie nicht Teil der Mediennummer ist -%]
+[% IF request.label && request.requestid && NOT request.requestid.match(request.label) %]
+[% request.label %][% IF request.item %]&nbsp;/&nbsp;[% request.item %][% END %]
+[% ELSIF request.label %]
+[% request.label %]
+[% END %]
+</td>
+<td>[% request.pickup_location.about %]
+[% IF request.status == 'IN_PROCESS' %]
+<p><span style="color: red;"><i class="fas fa-walking"></i> [% msg.maketext("In Bearbeitung") %]</span></p>
+[% ELSIF request.status == 'ON_HOLD_SHELF' %]
+<p><span style="color: green;"><i class="fas fa-walking"></i> [% msg.maketext("Abholbereit") %]</span></p>
+[% END %]
+</td>
+<td>[% request.starttime %]</td>
+<td>
+[%
+
+  unitname = request.department.about;
+
+  IF request.pickup_location.about.match('Universitäts- und Stadtbibliothek Köln');
+    unitname = "${unitname} / Abholregale";
+  ELSE ;
+    unitname = "${unitname} / ${request.pickup_location.about}";
+  END;
+
+%]
+[% IF is_ill %]
+[% msg.maketext("Fernleihbestellung nicht stornierbar!") %]
+[% ELSE %]
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/[% IF is_order %]orders[% ELSE %]reservations[% END %]?_method=DELETE;confirm=1;requestid=[% request.requestid %];unit=[% request.department.id %];unitname=[% unitname | uri %];titleid=[% request.edition %];holdingid=[% request.label | uri %];date=[% request.starttime |uri %];validtarget=[% database %]" title="Auftrag l&ouml;schen" class="btn btn-primary">[% msg.maketext("Stornieren") %]</a>
+[% END %]
+</td>
+</tr>
+[% END %]
+</tbody>
+</table>
+</div>
+
+[% END %]
+[% END # no error%]

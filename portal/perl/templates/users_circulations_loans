@@ -15,7 +15,7 @@
 	  },
 	  {
 	     desc = username
-	     url  = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/preferences.html?l=${lang}"
+	     url  = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/circulations.html?l=${lang}"
 	  },
 	  {
 	     desc = msg.maketext('Ausgeliehene Medien')

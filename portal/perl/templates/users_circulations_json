@@ -42,6 +42,9 @@
          name        = ils_groupid
 	 description = ils_group
        }
+       num_loans     = account.num_loans
+       num_requests  = account.num_requests
+       amount_fees   = account.amount_fees
      }
      startdate    = userdata.startdate
      enddate      = userdata.enddate

@@ -3245,6 +3245,18 @@
    args:
      'restrict_db_to_view': 0
 - # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Requests'
+   rule: '/portal/:view/users/id/:userid/circulations/id/requests[get]'
+   runmode: 'show_collection'
+   representations:
+     - none
+     - html
+     - include
+     - json
+     - rdf
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Orders'
    rule: '/portal/:view/users/id/:userid/circulations/id/orders[get]'
    runmode: 'show_collection'
@@ -3323,6 +3335,12 @@
    args:
      'restrict_db_to_view': 0
 - # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Requests'
+   rule: '/portal/:view/users/id/:userid/circulations/id/requests[post]'
+   runmode: 'create_record'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
    module: 'OpenBib::Handler::PSGI::Users::Circulations::Orders'
    rule: '/portal/:view/users/id/:userid/circulations/id/orders[post]'
    runmode: 'create_record'
@@ -3344,6 +3362,12 @@
    module: 'OpenBib::Handler::PSGI::Users::Circulations::PdaOrders'
    rule: '/portal/:view/users/id/:userid/circulations/id/pdaorders[post]'
    runmode: 'create_record'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Requests'
+   rule: '/portal/:view/users/id/:userid/circulations/id/requests[delete]'
+   runmode: 'delete_record'
    args:
      'restrict_db_to_view': 0
 - # users/circulations_loc:

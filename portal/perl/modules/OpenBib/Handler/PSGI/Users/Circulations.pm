@@ -551,7 +551,7 @@ sub renew_single_loan {
 	}
 	else {
 	    $logger->error("Renew single loan for user $loginname ($userid) and holdingid $holdingid failed: unknown reason");
-	    return $msg->maketext("Eine Verlängerung durch Sie ist leider nicht möglich");
+	    return $self->print_warning($msg->maketext("Eine Verlängerung durch Sie ist leider nicht möglich"));
 	}
     }
     elsif ($response_renew_single_loan_ref->{successful}){
@@ -564,8 +564,7 @@ sub renew_single_loan {
 	    renew_single_loan   => $response_renew_single_loan_ref,
 	};
 	
-	return $self->print_page($config->{tt_users_circulations_renew_single_loan_tname},$ttdata);
-	
+	return $self->print_page($config->{tt_users_circulations_renew_single_loan_tname},$ttdata);	
     }
     else {
 	if ($logger->is_fatal){

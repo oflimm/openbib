@@ -72,7 +72,7 @@
 [% IF order.status == 'IN_PROCESS' %]
 <p><span style="color: red;"><i class="fas fa-hourglass-start"></i> [% msg.maketext("In Bearbeitung") %]</span></p>
 [% ELSIF order.status == 'ON_HOLD_SHELF' %]
-<p><span style="color: green;"><i class="fas fa-hourglass-end"></i> [% msg.maketext("Abholbereit") %]</span></p>
+<p><span style="color: green;"><i class="fas fa-walking"></i> [% msg.maketext("Abholbereit") %]</span></p>
 [% END %]
 </td>
 <td>[% order.starttime %]</td>

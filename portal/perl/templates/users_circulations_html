@@ -103,11 +103,11 @@
 [% END %]
 
 
-<p>[% msg.maketext("Übersicht über Ihre Ausleihen, Bestellungen und Vormerkungen.") %]</p>
+<p>[% msg.maketext("Übersicht über Ihre Ausleihen und offenen Aufträge (Bestellungen, Vormerkungen).") %]</p>
 
 <ul>
 <li><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.include?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a>: [% account.num_loans %]</li>
-<li>[% msg.maketext("Offene Aufträge") %]: [% account.num_requests %] (<a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders.include?l=[% lang %]">[% msg.maketext("Bestellungen") %]</a>, <a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations.include?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a>)</li>
+<li><a class="inturl" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/requests.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/requests.include?l=[% lang %]">[% msg.maketext("Offene Aufträge") %]</a>: [% account.num_requests %]</li>
 </ul>
 
 </div>

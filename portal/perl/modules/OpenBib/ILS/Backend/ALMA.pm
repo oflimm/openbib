@@ -2279,7 +2279,7 @@ sub get_alma_request {
 		    $this_response_ref->{debug} = $item_ref;
 		}
 		
-		if (defined $item_ref->{'managed_by_library'} && defined $item_ref->{'managed_by_library_code'}){
+		if (defined $item_ref->{'managed_by_library'} && defined $item_ref->{'managed_by_library_code'} && $item_ref->{'managed_by_library'} && $item_ref->{'managed_by_library_code'}){
 		    $this_response_ref->{'department'} = {
 			id => $item_ref->{'managed_by_library_code'},
 			about => $item_ref->{'managed_by_library'},

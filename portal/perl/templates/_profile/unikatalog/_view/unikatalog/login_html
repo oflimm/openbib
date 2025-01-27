@@ -27,7 +27,7 @@
   #USE dumper;dumper.dump(available_authenticators);dumper.dump(available_authenticator_types);
 %]
 
- 	 <div class="alert alert-info">[% msg.maktext("Zur Nutzung der Bibliothek (Ausleihen, Vormerken, etc.) müssen Sie sich mit Ihrem Benutzerausweis anmelden.") %]</div>
+ 	 <div class="alert alert-info">[% msg.maketext("Zur Nutzung der Bibliothek (Ausleihen, Vormerken, etc.) müssen Sie sich mit Ihrem Benutzerausweis anmelden.") %]</div>
 
 	 <div id="login_targets">
 

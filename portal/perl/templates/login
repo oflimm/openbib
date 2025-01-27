@@ -19,6 +19,8 @@
     suppress_unauthorized = 1;
     layout_param = {
 
+      'page_title' = msg.maketext("Mein Konto - Anmelden")
+      
       'main_template' = 'login_html'
 
       'active_menu' = 'login'

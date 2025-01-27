@@ -380,20 +380,77 @@ sub get_items {
 }
 
 # Accountinformationen (Anzahl Ausleihen, Vormerkungen, Bestellungen, Gebuehren)
+# Achtung: Vormerkungen und Bestellungen sind in Alma 'requests' und werden in einer Zahl zusammengefasst!
 sub get_accountinfo {
     my ($self,$username) = @_;
 
-    # In Alma nicht vorhanden und Modellierung mit einzelnen Requests
-    # (get_loans, get_reservations, get_orders) wegen des concurrent
-    # request API-Limits kritisch
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
+    my $config      = $self->get_config;
+    my $database    = $self->get_database;
+    my $ua          = $self->get_client;
+    my $circ_config = $self->get_circulation_config;
     my $msg         = $self->get_msg;
+    my $lang        = $self->get('lang');
     
-    my $response_ref = {
-	"code" => 400,
-	    "error" => "error",
-	    "error_description" => "Das Bibliothekssystem Alma bietet keine Abfrage der Zahl an Bestellungen, Vormerkungen und Ausleihen in einer Abfrage an",
-    };
+    my $response_ref = {};
+
+    $username = $self->get_externalid_of_user($username);
+    
+    unless ($username){
+	$response_ref = {
+	    timestamp   => $self->get_timestamp,
+	    error => 'error',
+	    error_description       => "missing or wrong parameters",
+	};
+	
+	return $response_ref;
+    }
+    
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    my $locinfotable  = OpenBib::Config::LocationInfoTable->new;
+
+    # Ausleihinformationen der Exemplare
+    {
+	my $json_result_ref = {};
+
+	$logger->debug("Getting Account info via ALMA API");
+	
+	my $api_key = $config->get('alma')->{'api_key'};
+	
+	my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username?user_id_type=all_unique&view=full&expand=loans,requests,fees&lang=$lang&apikey=$api_key";
+	
+	my $api_result_ref = $self->send_alma_api_call({ method => 'GET', url => $url });
+
+	# Preprocessed response? Return it
+	if (defined $api_result_ref->{'response'}){
+	    return $api_result_ref->{'response'}
+	}
+
+	# Result data? Use it for further processing
+	if (defined $api_result_ref->{'data'}){
+	    $json_result_ref = $api_result_ref->{'data'};
+	}
+
+	# Processing data
+
+	$response_ref->{'fullname'}     = $json_result_ref->{full_name} || '';
+
+	$response_ref->{'num_loans'}    = (defined $json_result_ref->{'loans'})?$json_result_ref->{'loans'}{'value'}:0;
+	$response_ref->{'num_requests'} = (defined $json_result_ref->{'requests'})?$json_result_ref->{'requests'}{'value'}:0;
+	$response_ref->{'amount_fees'}  = (defined $json_result_ref->{'fees'})?$json_result_ref->{'fees'}{'value'}:0;
+
+	if (defined $json_result_ref->{user_identifier}){
+	    foreach my $identifier_ref (@{$json_result_ref->{user_identifier}}){
+		$response_ref->{'username'} = $identifier_ref->{value} if ($identifier_ref->{id_type}{value} eq "BARCODE");
+	    }
+	}
+    }
+    
+    if ($logger->is_debug){    
+	$logger->debug("Loan: ".YAML::Dump($response_ref));
+    }
     
     return $response_ref;
 }
@@ -589,6 +646,15 @@ sub get_zfl_orders {
     # Ersetzt durch und integriert in Fernleihportal des hbz    
 
     return $response_ref;
+}
+
+sub get_requests {
+    my ($self,$username) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    return $self->get_alma_request($username,'native');
 }
 
 sub get_orders {
@@ -887,6 +953,37 @@ sub get_loans {
     return $response_ref;
 }
 
+sub make_request {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $arg_ref->{alma_request_type} = "native";
+    
+    return $self->make_alma_request($arg_ref);
+}
+
+sub cancel_request {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->cancel_order_by_api($arg_ref);        
+};
+
+sub cancel_request_by_api {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    $arg_ref->{alma_request_type} = "native";
+    
+    return $self->cancel_alma_request($arg_ref);    
+}
+
 sub make_reservation {
     my ($self,$arg_ref) = @_;
 
@@ -1149,7 +1246,7 @@ sub cancel_alma_request {
 	return $response_ref;
     }
 
-    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new; # 
 
     my $json_result_ref = {};
 
@@ -1696,6 +1793,17 @@ sub get_mediastatus {
     return $response_ref;
 }
 
+sub check_request {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $arg_ref->{alma_request_type} = "native";
+    
+    return $self->check_alma_request($arg_ref);
+}
+
 sub check_order {
     my ($self,$arg_ref) = @_;
 
@@ -1940,7 +2048,7 @@ sub make_alma_request {
     my $pickup_location   = exists $arg_ref->{pickup_location} # Ausgabeort
         ? $arg_ref->{pickup_location}       : undef;
 
-    my $alma_request_type = exists $arg_ref->{alma_request_type} # Request Type: order | reservation
+    my $alma_request_type = exists $arg_ref->{alma_request_type} # Request Type: order | reservation | native
         ? $arg_ref->{alma_request_type}     : undef;
     
     # Log4perl logger erzeugen
@@ -2048,6 +2156,9 @@ sub make_alma_request {
 	    if ($alma_request_type eq "reservation"){
 		$success_message = $msg->maketext("Das Exemplar wurde vorgemerkt.");
 	    }
+	    elsif ($alma_request_type eq "native"){
+		$success_message = $msg->maketext("Der Auftrag für das Exemplar wurde erfolgreich entgegen genommen.");
+	    }
 	    
 	    $response_ref = {
 		"successful" => 1,
@@ -2111,7 +2222,7 @@ sub get_alma_request {
 
     my $items_ref = [];
 
-    # Ausleihinformationen der Exemplare
+    # Bestell/Vormerkungsinformationen der Exemplare
     {
 	my $json_result_ref = {};
 
@@ -2262,10 +2373,16 @@ sub get_alma_request {
 		if (defined $this_response_ref->{queue} && $this_response_ref->{queue} && !defined $this_response_ref->{'ill_status'}){
 		    $is_reservation = 1 
 		}
-		
-		if ($request_type eq "reservation" && $is_reservation){
+
+		# Alma-typisch einheitliche requests
+		if ($request_type eq "native"){
 		    push @{$response_ref->{items}}, $this_response_ref;
 		}
+		# Alternativ klassische Aufteilung der Alma-Requests in Vormerkungen ...
+		elsif ($request_type eq "reservation" && $is_reservation){
+		    push @{$response_ref->{items}}, $this_response_ref;
+		}
+		# ... und Bestellungen
 		elsif ($request_type eq "order" && !$is_reservation) {
 		    push @{$response_ref->{items}}, $this_response_ref;		    
 		}

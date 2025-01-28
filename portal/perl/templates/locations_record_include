@@ -276,9 +276,9 @@ no_journals = {
               };
 
 IF NOT no_journals.exists("${sigel}") ;
-   locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriftenliste dieser Bibliothek als <a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-${sigel}-all.pdf\">e-Book</a>" } ];
+   locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriftenliste dieser Bibliothek als <a class=\"exturl\" href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-${sigel}-all.pdf\">e-Book</a>" } ];
 ELSIF sigel == '141';
-   locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriftenliste dieser Bibliothek als <a href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-587-all.pdf\">e-Book</a>" } ];
+   locationinfo.fields.${"Zeitschriften"} = [ { content = "Zeitschriftenliste dieser Bibliothek als <a class=\"exturl\" href=\"http://unikatalog.ub.uni-koeln.de/zeitschriftenlisten/zeitschriften-587-all.pdf\">e-Book</a>" } ];
 END ;
 
 IF sigel != 'ARTES' ;
@@ -293,7 +293,7 @@ FOREACH category IN categories;
     IF category == "L0090";
       thiscontent = locationinfo.fields.${"L0090"}.first.content;
       IF thiscontent.match('^http');
-        thiscontent = "<a href=\"${thiscontent}\" target=\"_blank\">${thiscontent}</a>";
+        thiscontent = "<a class=\"exturl\" href=\"${thiscontent}\" target=\"_blank\">${thiscontent}</a>";
 	locationinfo.fields.${"L0090"}.first.content = thiscontent;
       END;
     END;

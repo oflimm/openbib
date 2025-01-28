@@ -188,6 +188,13 @@
       <div class="uzk15__columnlist uzk15__box">
 	<h2 class="uzk15__smallerheadlines">[% msg.maketext("Social-Media-Kanäle der Universitäts- und Stadtbibliothek  Köln") %]</h2> 
 	<div class="uzk15__socialmedia">
+	  <a href="https://openbiblio.social/@unibibkoeln" class="uzk15__mastodon" target="_blank"> 
+	    <span class="uzk15__sozpartner"> 
+	      <img src="/images/openbib/uzk15/logo_mastodon.png" alt="Logo Mastodon"/>
+	    </span>
+	    <span class="uzk15__invisible">Mastodon</span>
+	  </a>
+	
 	  <a href="https://www.facebook.com/usbkoeln" target="_blank">
 	    <span class="uzk15__icon uzk15__icon-facebook"> 
 	      <svg class="uzk15__svg-facebook">
@@ -204,12 +211,6 @@
 	      </svg>
 	    </span>
 	    <span class="uzk15__invisible">Youtube</span>
-	  </a>
-	  <a href="https://openbiblio.social/@unibibkoeln" class="uzk15__mastodon" target="_blank"> 
-	    <span class="uzk15__sozpartner"> 
-	      <img src="/images/openbib/uzk15/logo_mastodon.png" alt="Logo Mastodon"/>
-	    </span>
-	    <span class="uzk15__invisible">Mastodon</span>
 	  </a>
 	</div>
 	<nav class="uzk15__footercolumn">

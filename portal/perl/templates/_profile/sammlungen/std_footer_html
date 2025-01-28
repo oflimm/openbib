@@ -13,7 +13,7 @@
 -%]
 <!-- begin: footer -->
 
-[% footer_type = "uzk" # info | usb | uzk %]
+[% footer_type = "usb" # info | usb | uzk %]
 
 [% IF NOT hide_foot_banner %]
 <footer class="uzk15__mainfooter" role="contentinfo">
@@ -76,6 +76,11 @@
 	</nav>
       </div>
     </div>
+[% IF delayed_update %]    
+    <div class="uzk15__grid_100 pb-2 text-white" style="font-size: .8125em;">
+      <i class="fas fa-bolt"></i> [% msg.maketext("Verzögerte Aktualisierung") %]. [% msg.maketext("Stand der Katalogdaten") %]: [% delayed_update %]
+    </div>
+[% END %]    
     <div class="uzk15__grid_100 pb-2">
       <div class="row">
 	<div class="col-md-6">
@@ -142,7 +147,11 @@
 	</div>
       </div>
     </div>
-
+[% IF delayed_update %]    
+    <div class="uzk15__grid_100 pb-2 text-white" style="font-size: .8125em;">
+      <i class="fas fa-bolt"></i> [% msg.maketext("Verzögerte Aktualisierung") %]. [% msg.maketext("Stand der Katalogdaten") %]: [% delayed_update %]
+    </div>
+[% END %]    
     <div class="uzk15__grid_100 pb-2 pt-2">
       <div class="row">
 	<div class="col-md-6">
@@ -179,6 +188,13 @@
       <div class="uzk15__columnlist uzk15__box">
 	<h2 class="uzk15__smallerheadlines">[% msg.maketext("Social-Media-Kanäle der Universitäts- und Stadtbibliothek  Köln") %]</h2> 
 	<div class="uzk15__socialmedia">
+	  <a href="https://openbiblio.social/@unibibkoeln" class="uzk15__mastodon" target="_blank"> 
+	    <span class="uzk15__sozpartner"> 
+	      <img src="/images/openbib/uzk15/logo_mastodon.png" alt="Logo Mastodon"/>
+	    </span>
+	    <span class="uzk15__invisible">Mastodon</span>
+	  </a>
+	
 	  <a href="https://www.facebook.com/usbkoeln" target="_blank">
 	    <span class="uzk15__icon uzk15__icon-facebook"> 
 	      <svg class="uzk15__svg-facebook">
@@ -195,12 +211,6 @@
 	      </svg>
 	    </span>
 	    <span class="uzk15__invisible">Youtube</span>
-	  </a>
-	  <a href="https://openbiblio.social/@unibibkoeln" class="uzk15__mastodon" target="_blank"> 
-	    <span class="uzk15__sozpartner"> 
-	      <img src="/images/openbib/uzk15/logo_mastodon.png" alt="Logo Mastodon"/>
-	    </span>
-	    <span class="uzk15__invisible">Mastodon</span>
 	  </a>
 	</div>
 	<nav class="uzk15__footercolumn">
@@ -461,7 +471,7 @@ $(document).ready(function(){
 	  </span>
 	  <span class="uzk15__invisible">Facebook</span>
 	</a>
-	
+		
 	<a target="_blank" href="http://www.xing.com/net/universitaetzukoeln/"> 
 	  <span class="uzk15__icon uzk15__icon-xing"> 
 	    <svg class="uzk15__svg-xing">
@@ -533,6 +543,11 @@ $(document).ready(function(){
     </div>
   </div>
 
+[% IF delayed_update %]    
+    <div class="uzk15__grid_100 pb-2 text-white" style="font-size: .8125em;">
+      <i class="fas fa-bolt"></i> [% msg.maketext("Verzögerte Aktualisierung") %]. [% msg.maketext("Stand der Katalogdaten") %]: [% delayed_update %]
+    </div>
+[% END %]    
     <div class="uzk15__grid_100 pb-2">
       <div class="row">
 	<div class="col-md-6">

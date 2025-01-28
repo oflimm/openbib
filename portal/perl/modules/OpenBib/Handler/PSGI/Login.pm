@@ -523,7 +523,7 @@ sub get_error_message {
 
 	-7 => $msg->maketext("Bitte melden Sie sich mit Ihrer registrierten E-Mail-Adresse an"),
 
-        -8 => $msg->maketext("Die Anmeldung mit Ihrer angegebenen Benutzerkennung und Passwort ist zu oft fehlgeschlagen. Die Kennung ist gesperrt. Bitte wenden Sie sich an die Auskunft in der USB, um sie zu entsperren. Danach können Sie sich im Ausweisportal (https://ausweis.ub.uni-koeln.de/) ein neues Passwort setzen."),
+        -8 => $msg->maketext("Die Anmeldung mit Ihrer angegebenen Benutzerkennung und Passwort ist zu oft fehlgeschlagen. Die Kennung ist gesperrt. Bitte wenden Sie sich an an den Schalter \"Bibliotheksausweise und Fernleihrückgabe\" in der USB, um sie zu entsperren. Danach können Sie sich im Ausweisportal (https://ausweis.ub.uni-koeln.de/) ein neues Passwort setzen."),
 
         -9 => $msg->maketext("Die eingegebene Benutzernummer ist ungültig. Benutzernummern bestehen aus Großbuchstaben, Zahlen und #, z.B. A123456789#B."),
 	

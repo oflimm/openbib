@@ -1,0 +1,230 @@
+[%-
+
+     record.to_isbd;
+-%]     
+[%-
+
+    is_journal = 0;
+
+    FOREACH thisholding IN holding ;
+      IF thisholding.defined('X1204') && thisholding.${"X1204"}.content != "-"; # Bestandsverlauf
+        is_journal = 1;
+      END;
+    END;
+
+    IF is_journal;
+    
+    holding_fields = record.to_custom_field_scheme_1.${'T1943'};
+
+    #USE dumper;dumper.dump(circulation);
+    # Preprocessing
+    
+    # Zusammenfassung von Feldern ueber Holdingid in $8
+    holding_fields_per_id = {};
+    
+    FOREACH thisholding IN holding_fields ;
+      holdingid        = thisholding.${"8"};
+      bestandsverlauf  = thisholding.${"a"};
+      luecken          = thisholding.${"z"};
+      signatur         = thisholding.${"h"};
+      standort         = thisholding.${"c"};
+      bibliothek       = thisholding.${"b"};
+
+      IF bestandsverlauf ;
+        holding_fields_per_id.${holdingid}.${"a"} = bestandsverlauf;
+      END ;
+      IF luecken ;
+        holding_fields_per_id.${holdingid}.${"z"} = luecken;
+      END;
+      IF signatur ;
+        holding_fields_per_id.${holdingid}.${"h"} = signatur;
+      END;
+      IF standort ;
+        IF alma_location_desc.${standort};
+	  standort = alma_location_desc.${standort};
+	END ;
+        holding_fields_per_id.${holdingid}.${"c"} = standort;
+      END;
+      IF bibliothek ;
+        holding_fields_per_id.${holdingid}.${"b"} = bibliothek;
+      END;
+    END;
+
+    # Anreichern mit Heften aus Items via API
+
+    FOREACH thisissue IN circulation;
+       holdingid = thisissue.${"holdingid"}.match('^(\d+)').first;
+       IF NOT holding_fields_per_id.${holdingid}.issues;
+          holding_fields_per_id.${holdingid}.issues = [];	  
+       END;
+       holding_fields_per_id.${holdingid}.issues.push(thisissue);         
+    END;
+
+    processed_holding_by_sigel = {};
+
+    # USE dumper;dumper.dump(holding_fields_per_id);
+    FOREACH holdingid IN holding_fields_per_id.keys ;
+      bestandsverlauf  = holding_fields_per_id.${holdingid}.${"a"};
+      luecken          = holding_fields_per_id.${holdingid}.${"z"};
+      signatur         = holding_fields_per_id.${holdingid}.${"h"};
+      standort         = holding_fields_per_id.${holdingid}.${"c"};
+      sigel            = holding_fields_per_id.${holdingid}.${"b"};
+      issues           = holding_fields_per_id.${holdingid}.${"issues"};
+      inventarnr       = ""; # thisholding.${"X0005"}.content;
+      bibliothek       = ""; # thisholding.${"X4000"}.content;
+      bibliothek_url   = ""; # thisholding.${"X4001"}.content;
+      bemerkung        = ""; # thisholding.${"X1203"}.content;
+      bemerkung2       = ""; #thisholding.${"X1200"}.content;
+
+      isil      = "";
+      isil_desc = "";
+      
+      IF sigel.match('^38/[0-9][0-9][0-9]$');	  
+         isil = "DE-38-${sigel.replace('38/','')}";
+      ELSIF sigel.match('^[0-9][0-9][0-9]$');	  
+         isil = "DE-38-${sigel}";
+      ELSIF sigel.match('^Kn 3$');	  
+         isil = "DE-Kn3";
+      ELSE ;
+         isil = "DE-${sigel}";
+      END ;
+
+      title    = normset.${"T0331"}.first.content ;
+      IF  normset.${"T0310"}.first.content ;
+        title = normset.${"T0310"}.first.content ;
+      END ;
+
+      IF sigel.match('^38$');
+        IF signatur.match('^FHM ') ;
+          standort = "USB-Freihandmagazin (1. OG)";
+        ELSIF signatur.match('^EWA Z') ;
+          standort = "HWA-Magazin, Gronewaldstr. 2<br/>(Kopierausleihe über die LS-Theke möglich)";
+          isil = "DE-38-HWA";
+	  sigel = 'HWA';
+        ELSIF signatur.match('^EWA-LS-Theke') ;
+          standort = "Lesesaal Humanwissenschaft, LS-Theke, Gronewaldstr. 2";
+          isil = "DE-38-HWA";    
+	  sigel = 'HWA';
+        ELSIF signatur.match('^(EWA-LS|EWALS) ') ;
+          standort = "Lesesaal Humanwissenschaft, Gronewaldstr. 2";
+          isil = "DE-38-HWA";    
+	  sigel = 'HWA';
+        ELSIF signatur.match('^(HP|HP-LS) ') || signatur.match('^HP-LS ') ;
+          standort = "Lesesaal Heilpädagogik, Frangenheimstr. 4";
+        ELSIF signatur.match('^LS ') ;
+          standort = "USB-Lesesaal (1. OG)";
+        ELSIF signatur.match('^(KS V|KS/V)') ;
+          standort = "USB-Magazin (Ausleihe nur in den Lesesaal), Bitte füllen Sie einen konventionellen Bestellschein aus (erhältlich an der Auskunft und der Lesesaal-Theke im 1. OG)";
+        ELSIF signatur.match('^KS ') ;
+          standort = "USB-Katalogsaal (2. OG)";
+        ELSIF signatur.match('^B ') ;
+          standort = "ausgelagerter Bestand. Lieferzeit ca. 14. Tage (ausleihbar nach Bestellung)";
+        ELSIF signatur.match('^ZTG') ;
+          standort = "Zeitungsbestand. USB-Magazin<br/>Bitte füllen Sie einen konventionellen Bestellschein aus (erhältlich an der Auskunft und der Lesesaal-Theke im 1. OG)";
+       ELSIF NOT signatur.match('\s') ;
+          standort = "USB-Magazin";
+       END; # End: Standort nach Signaturanfang
+    END; # End: Spezialbehandlung USB
+
+    IF isil;
+      isil_desc = locinfo.identifier.${isil}.description;
+    END;
+
+    provenances = record.get_provenances_of_media(signatur);
+    
+    # ZBM-Meldung kurzern
+    # IF bemerkung.match('vormals 38M; Bestände zur Zeit nicht einsehbar oder bestellbar') ;
+    #  bemerkung = "Bestände zur Zeit nicht verfügbar";
+    # END;
+
+    IF NOT processed_holding_by_sigel.defined(sigel);
+      processed_holding_by_sigel.${sigel} = {
+        isil             = isil
+        isil_desc        = isil_desc
+        bibliothek       = bibliothek
+        bibliothek_url   = bibliothek_url       
+        title            = title
+      };
+    END;
+    
+    this_iteminfo = {
+      bestandsverlauf  = bestandsverlauf
+      luecken          = luecken
+      signatur         = signatur
+      standort         = standort
+      sigel            = sigel
+      inventarnr       = inventarnr
+      bemerkung        = bemerkung
+      bemerkung2       = bemerkung2
+      isil             = isil
+      isil_desc        = isil_desc
+      issues           = issues
+    };
+
+    IF NOT processed_holding_by_sigel.${sigel}.defined('items');
+      processed_holding_by_sigel.${sigel}.${'items'} = [];
+    END;
+
+    processed_holding_by_sigel.${sigel}.${'items'}.push(this_iteminfo);
+
+  END; # End: holding-Schleife
+  USE dumper;dumper.dump(processed_holding_by_sigel);
+-%]
+[%-  FOREACH this_sigel IN processed_holding_by_sigel.keys.sort -%]
+[%-   this_cluster = processed_holding_by_sigel.${this_sigel}; -%]
+[% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% this_cluster.isil_desc %]
+[% IF this_cluster.standort -%]
+[% msg.maketext("Standort             ") %] [% loop.count %] : [% this_cluster.standort %]
+[% END -%]
+[% IF this_cluster.signatur -%]
+[% msg.maketext("Lokale Signatur      ") %] [% loop.count %] : [% this_cluster.signatur %]
+[% END -%]
+[% IF this_cluster.inventarnr -%]
+[% msg.maketext("Inventarnummer       ") %] [% loop.count %] : [% this_cluster.inventarnr %]
+[%- END %]
+[% IF this_cluster.bestandsverlauf -%]
+[% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% this_cluster.bestandsverlauf %]
+[% END -%]
+[%- END -%]
+[% ELSE # is_journal %]
+[%- IF items.size > 0 -%]
+[%- FOREACH mex IN items -%]
+[%-
+     #USE dumper;dumper.dump(items);
+
+     # Bestimmung department_url
+     library_isil = "";
+     library_id = mex.${"X3330"}.content;
+     IF library_id.match('^(38|38-HLS)$');
+       library_isil = "DE-38";
+     ELSIF library_id.match('^38-HWA$') ;
+       library_isil = "DE-38-HWA";     
+     ELSIF library_id.match('^38-[0-9][0-9][0-9]');
+       kuerzel = library_id.match("^38-([0-9][0-9][0-9])").first ;
+       IF kuerzel ;
+          library_isil = "DE-38-${kuerzel}";
+       END ;
+     END ;
+
+    IF library_isil;
+      isil_desc = locinfo.identifier.${library_isil}.description;
+    ELSE;
+      isil_desc = mex.${"X4000"}.content.full;
+    END;
+
+    standort = mex.${"X0016"}.content;
+
+    IF standort.match('-BIB$');
+      standort = "Bibliothek";
+    ELSIF standort.match('-MAG$');
+      standort = "Magazin";
+    END;
+-%]
+[% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% isil_desc %]
+[% msg.maketext("Standort             ") %] [% loop.count %] : [% standort %]
+[% msg.maketext("Lokale Signatur      ") %] [% loop.count %] : [% mex.${"X0014"}.content %]
+[% msg.maketext("Inventarnummer       ") %] [% loop.count %] : [% mex.${"X0005"}.content %]
+[% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% mex.${"X1204"}.content %]
+[% END %]
+[%- END -%]
+[% END %]

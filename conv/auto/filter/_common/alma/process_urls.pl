@@ -711,6 +711,8 @@ while (<>){
 		my $mult = $mult_ref->{'4662'}++;
 		my $ind  = $url_info_ref->{$umult}{'ind'};
 
+                my $public_note = $url_info_ref->{$umult}{'z'};
+		
 		# Korrektur USB-Permalink
 		$url =~s{https?://www.ub.uni-koeln.de/permalink}{https://services.ub.uni-koeln.de/permalink};
 		
@@ -732,10 +734,14 @@ while (<>){
 		    };
 		}
 		# Lokale Digitalisate
-		elsif ($url =~m/^https?:\/\/www\.ub\.uni\-koeln\.de\/permalink/){
+		elsif ($url =~m/^https?:\/\/services\.ub\.uni\-koeln\.de\/permalink/){
+		    my $access = 'f';  # fulltext = green or yellow. Es gibt auch gelbe Objekte ID=6612903
+
+		    $access = 'g' if ($public_note =~m/(kostenfrei|kostenlos)/i);
+		    
 		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
-			subfield => 'f', # fulltext = green or yellow. Es gibt auch gelbe Objekte ID=6612903
+			subfield => $access,
 			content  => $url,
 		    };
 		    

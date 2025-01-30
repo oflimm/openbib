@@ -79,7 +79,7 @@ system("$wgetexe -P $pooldir/$pool/ $url   > /dev/null 2>&1 ");
 system("cd $pooldir/$pool ; rm meta.* ");
 
 print "### $pool: Umwandlung von $filename in MARC-in-JSON via yaz-marcdump\n";
-system("cd $pooldir/$pool; yaz-marcdump -o json $filename |sed -e 's/<\!-- .* -->//g' | jq -S -c . > ${filename}.processed");
+system("cd $pooldir/$pool; yaz-marcdump -i marcxml -o json $filename |sed -e 's/<\!-- .* -->//g' | jq -S -c . > ${filename}.processed");
 
 print "### $pool: Konvertierung von $filename\n";
 system("cd $pooldir/$pool; $marcjson2marcmetaexe --database=$pool -reduce-mem --inputfile=${filename}.processed ; gzip meta.*");

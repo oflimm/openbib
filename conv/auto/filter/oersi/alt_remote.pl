@@ -76,7 +76,7 @@ print "### $pool: Datenabzug von $url\n";
 
 system("$wgetexe -P $pooldir/$pool/ $url   > /dev/null 2>&1 ");
 
-system("cd $pooldir/$pool ; rm meta.* ");
+system("cd $pooldir/$pool ; rm meta.* *.xml");
 
 print "### $pool: Umwandlung von $filename in MARC-in-JSON via yaz-marcdump\n";
 system("cd $pooldir/$pool; yaz-marcdump -i marcxml -o json $filename |sed -e 's/<\!-- .* -->//g' | jq -S -c . > ${filename}.processed");

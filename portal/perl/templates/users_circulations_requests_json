@@ -1,0 +1,40 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_authenticators
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste der Anmeldeziele.
+#
+#######################################################################
+-%]
+[%-
+
+ FOREACH request = requests.items ;
+   request.is_ill = 0;
+   IF request.ill_status;
+      request.is_ill = 1;
+   END;
+   request.is_reservation = 0;
+   request.is_order       = 1;
+   IF request.queue ;
+      request.is_reservation = 1;
+      request.is_order       = 0;
+   END;
+ END;
+ 
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+     items = requests.items
+     num_total = requests.items.size
+ };
+
+ to_json(this_json_output);
+
+-%]

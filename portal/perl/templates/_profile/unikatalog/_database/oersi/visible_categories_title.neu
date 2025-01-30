@@ -1,0 +1,16 @@
+		'Band',  # msg.maketext("Band") Bandangabe
+                'Titel', # msg.maketext("Titel") HST
+                'Person', # msg.maketext("Person") Verfasser
+                'Institution', # msg.maketext("Institution") Koerperschaft
+                'Ausgabe', # msg.maketext("Ausgabe") Auflage T250a
+                'Ort/Verlag/Jahr', # msg.maketext("Ort/Verlag/Jahr") T260a/b/c
+                'Umfang', # msg.maketext("Umfang") T300a/b
+                'ISBN', # msg.maketext("ISBN") T020/9
+                'ISSN', # msg.maketext("ISSN") ISSN
+                'URL', # msg.maketext("URL") EDVurl
+                'Verfasserangabe', # msg.maketext("Verfasserangabe") Vorl. Verfasser/Koerperschaft
+                'Sprache', # msg.maketext("Sprache") T041a
+                'Zusammenfassung', # msg.maketext("Zusammenfassung") Abstract
+                'Schlagwort', # msg.maketext("Schlagwort") Schlagwort
+                'Klassifikation', # msg.maketext("Klassifikation") Notation
+                'Hinweis', # msg.maketext("Hinweis") Bemerkung

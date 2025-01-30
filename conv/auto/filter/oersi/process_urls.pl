@@ -8,7 +8,7 @@ use utf8;
 use warnings;
 use strict;
 
-my $default_access = 'y';
+my $default_access = 'g';
 
 while (<>){
     my $record_ref = decode_json $_;
@@ -64,7 +64,7 @@ while (<>){
 		my $note     = $url_info_ref->{$umult}{'z'};
 		my $material = $url_info_ref->{$umult}{'3'};
 
-		my $description = "E-Book im Volltext";
+		my $description = "Open Educational Resource";
 
 		my $mult = $mult_ref->{'4662'}++;
 

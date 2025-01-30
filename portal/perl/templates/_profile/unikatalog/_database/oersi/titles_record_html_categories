@@ -1056,7 +1056,10 @@ FOREACH field IN singular_normdata;
          thiscontent   = "" ;
 	 ampel         = "";
 
-         NEXT IF content.match('oersi');
+         IF content.match('oersi.org') && ! content.match('oersi.org\/resources\/');
+	    content = content.replace('oersi.org/resources','oersi.org/resources/');
+	 END;
+	 
 	 
          FOREACH thisitem IN singular_normdata.${"T0663"} ;
            IF thisitem.mult == thismult ;

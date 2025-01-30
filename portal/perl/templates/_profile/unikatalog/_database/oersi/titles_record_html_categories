@@ -791,13 +791,19 @@ FOREACH field IN normdata;
 	   ELSE;
       	     content = url;
     	   END;
-	 
+           	  
     	   content   = "<a href=\"${url}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";         
 
-           IF NOT content_map.${'URL'} ;
-    	     content_map.${'URL'} = [];
-    	   END;
-           content_map.${'URL'}.push(content);
+           IF url.match('oersi.org');
+	     content = "";
+	   END;
+
+           IF content ;
+             IF NOT content_map.${'URL'} ;
+               content_map.${'URL'} = [];
+    	     END;
+             content_map.${'URL'}.push(content);
+	   END;
 	 END;
 
     CASE "T4101";
@@ -1050,6 +1056,8 @@ FOREACH field IN singular_normdata;
          thiscontent   = "" ;
 	 ampel         = "";
 
+         NEXT IF content.match('oersi');
+	 
          FOREACH thisitem IN singular_normdata.${"T0663"} ;
            IF thisitem.mult == thismult ;
               thiscontent = thisitem.content ;

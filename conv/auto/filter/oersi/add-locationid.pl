@@ -12,7 +12,7 @@ while (<>){
 
     push @{$title_ref->{'locations'}}, "freemedia";    
     push @{$title_ref->{'locations'}}, "emedien";
-    push @{$title_ref->{'locations'}}, "usbebooks";
+    push @{$title_ref->{'locations'}}, "oer";
     
     print encode_json $title_ref, "\n";
 }

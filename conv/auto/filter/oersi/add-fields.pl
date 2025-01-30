@@ -64,6 +64,11 @@ while (<>){
             subfield => '',
             content  => "Digital",
         },
+        {
+            mult     => 2,
+            subfield => '',
+            content  => "Open Educational Resource",
+        },
     ];
 
     print encode_json $title_ref, "\n";

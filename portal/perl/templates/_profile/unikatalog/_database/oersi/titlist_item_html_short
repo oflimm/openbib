@@ -37,6 +37,7 @@
 
      is_licensed = 0;
      is_free = 0;
+     is_oer = 0;
      
      FOREACH loc IN all_locations ;
        IF loc.match('^DE-38$') ;
@@ -47,6 +48,8 @@
           is_free = 1;
        ELSIF loc.match('^emedien') ;
           is_licensed = 1;
+       ELSIF loc.match('^oer') ;
+          is_oer = 1;
        ELSIF NOT loc.match('^DE-38-[a-zA-Z]');   
             locations.push(loc);
        END;
@@ -154,7 +157,9 @@
 
      # Keine Locations, dann Location aus Katalog
      # E-Medien gehen vor
-     IF is_free ;
+     IF is_oer ;
+        locations = ['oer'];
+     ELSIF is_free ;
         locations = ['freemedia'];
      ELSIF is_licensed ;
         locations = ['emedien'];

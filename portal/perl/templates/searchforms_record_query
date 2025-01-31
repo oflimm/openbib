@@ -186,7 +186,6 @@
 <option value="Open Educational Resource">[% msg.maketext("Open Educational Resource") %]</option>
 <option value="Zeitschrift/Serie">[% msg.maketext("Zeitschrift/Serie") %]</optio<option value="Aufsatz">[% msg.maketext("Aufsatz") %]</option>
 <option value="Hochschulschrift">[% msg.maketext("Hochschulschrift") %]</option>
-n>
 </select>
 <label for="[% cgiparam %]">[% msg.maketext("Typ") %]</label>
 </div>

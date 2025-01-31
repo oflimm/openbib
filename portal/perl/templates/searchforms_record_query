@@ -182,11 +182,11 @@
 <div class="form-floating mb-3">
 <select class="form-select" id="[% cgiparam %]" name="[% cgiparam %]">
 <option value="" selected="selected">[% msg.maketext("Keiner ausgewählt") %]</option>
-<option value="Aufsatz">[% msg.maketext("Aufsatz") %]</option>
 <option value="Digital">[% msg.maketext("Digital") %]</option>
+<option value="Open Educational Resource">[% msg.maketext("Open Educational Resource") %]</option>
+<option value="Zeitschrift/Serie">[% msg.maketext("Zeitschrift/Serie") %]</optio<option value="Aufsatz">[% msg.maketext("Aufsatz") %]</option>
 <option value="Hochschulschrift">[% msg.maketext("Hochschulschrift") %]</option>
-<option value="Online Kurs-Video">[% msg.maketext("Online Kurs-Video") %]</option>
-<option value="Zeitschrift/Serie">[% msg.maketext("Zeitschrift/Serie") %]</option>
+n>
 </select>
 <label for="[% cgiparam %]">[% msg.maketext("Typ") %]</label>
 </div>

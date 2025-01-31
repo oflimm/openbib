@@ -710,28 +710,9 @@
 [% ELSE %]
          <strong><span class="ob-title">[% hide_hit_msg %]</span></strong>
 [% END %]
-[% IF multiple_dbs == 1 %]
          <br /><i class="fas fa-map-marker-alt"></i>
-[%-  IF locations.size >= 1 -%]
-[%      IF locations.size == 1 %]
-         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].include?l=[% lang %]">[% locinfo.identifier.${locations.first}.description %]</a>
-[%      ELSIF locations.size > 1 %]
-         [% msg.maketext('Verschiedene Standorte') %]
-[%      END %]
-[%-  ELSE %]
-[%-   IF dburl -%]
-[%-     IF dbinfo.get('locationid').${record.database} %]
-          <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">
-[%-     ELSE -%]
-          <a href="[% dburl %]" target="_blank">
-[%-     END -%]
-[%    END %]
-[%    dbdesc | truncate(config.get('maxlength_dbname')) %][% IF dburl %]</a>[% END %]
-[%   END %]
+         <a href="https://oersi.org/" target="_blank">[% msg.maketext("Open Educational Resource") %]</a>
 &nbsp;[%- IF titleinfo -%][ [% titleinfo %] ][%- END -%]
-[% ELSE %]
-[%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
-[% END %]
 
 [% IF record.get_date %]<br /><i class="far fa-calendar-alt"></i> [% msg.maketext("hinzugefügt") %] [% record.get_date.replace('\.\d+$','') %][% END %]
 

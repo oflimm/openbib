@@ -70,368 +70,6 @@ use Scalar::Util;
 
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 
-# Reihenfolgen der Abarbeitung
-#
-# 1) cgiapp_init   : Content-Negotiation
-# 2) cgiapp_prerun : Benoetigte Informationen fuer die Handler sammeln und anbieten
-
-sub cgiapp_init {
-    my $self = shift;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    $logger->debug("Entering cgiapp_init");
-
-
-    my $r            = $self->param('r');
-    my $view         = $self->param('view');
-
-    my $config       = OpenBib::Config->new;
-        
-    $self->param('config',$config);
-    
-    my ($atime,$btime,$timeall)=(0,0,0);
-
-    if ($config->{benchmark}) {
-        $atime=new Benchmark;
-    }
-
-    if (!defined $r){
-        $logger->error("No Request");
-    }
-
-    my $remote_ip = $r->remote_host || '';
-    
-    my $forwarded_for = $r->header('X-Forwarded-For') || '';
-    my $xclientip     = $r->header('X-Client-IP')     || '';
-
-    if ($logger->is_info){
-	$logger->info("X-Forwarded-For: $forwarded_for");
-	$logger->info("X-Client-IP: $xclientip");
-    }
-    
-    if (defined $xclientip && $xclientip =~ /([^,\s]+)$/) {
-        $remote_ip = $1;
-    }
-
-    $self->param('remote_ip',$remote_ip);
-    $self->param('servername',$r->get_server_name);
-    
-    my $sessionID    = $r->cookies->{sessionID} || '';
-
-    my $session      = OpenBib::Session->new({ sessionID => $sessionID , view => $view, config => $config });
-
-    $self->param('session',$session);
-
-    $logger->debug("Got sessionID $sessionID and effecitve sessionID is $session->{ID}");
-
-    # Neuer Cookie?, dann senden
-    if ($sessionID ne $session->{ID}){
-        $self->set_cookie('sessionID',$session->{ID}) ;
-    }
-
-    my $normalizer   = OpenBib::Normalizer->new();
-    $self->param('normalizer',$normalizer);
-    
-    my $user         = OpenBib::User->new({sessionID => $session->{ID}, config => $config});
-    $self->param('user',$user);
-    
-    my $statistics   = OpenBib::Statistics->new();
-    $self->param('statistics',$statistics);
-
-    my $dbinfo       = OpenBib::Config::DatabaseInfoTable->new;
-    $self->param('dbinfo',$dbinfo);
-
-    my $locinfo      = OpenBib::Config::LocationInfoTable->new;
-    $self->param('locinfo',$locinfo);
-
-    my $useragent    = $r->user_agent;
-    $self->param('useragent',$useragent);
-    
-    my $browser      = HTTP::BrowserDetect->new($useragent);
-    $self->param('browser',$browser);
-
-    my $queryoptions = OpenBib::QueryOptions->new({ query => $r, session => $session });
-
-    $self->param('qopts',$queryoptions);
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 1 is ".timestr($timeall));
-    }
-
-    $logger->debug("This request: SessionID: $session->{ID}");
-
-    if (defined $user->{ID}){
-        $logger->debug("This request: User? $user->{ID}");
-    }
-    
-    # Bestimmung diverser Parameter aus dem URI
-    # Setzt: location,path,path_prefix,uri,scheme
-    $self->process_uri;
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 2 is ".timestr($timeall));
-    }
-
-    # Setzen von content_type/representation, wenn konkrete Repraesentation ausgewaehlt wurde
-    $self->set_content_type_from_uri;
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 3 is ".timestr($timeall));
-    }
-
-    # content_type, representation und lang durch content-Negotiation bestimmen
-    # und ggf. zum konkreten Repraesenations-URI redirecten
-    # Setzt: content_type,represenation,lang
-    $self->negotiate_content;
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 4 is ".timestr($timeall));
-    }
-    
-    # Ggf Personalisiere URI
-    $self->personalize_uri;
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 5 is ".timestr($timeall));
-    }
-
-    # Bearbeitung HTTP Basic Authentication als Shortcut
-    # Setzt ggf: basic_auth_failure (auf 1)
-    $self->check_http_basic_authentication;
-
-    # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l' oder cookie
-    $self->alter_negotiated_language;
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 7 is ".timestr($timeall));
-    }
-    
-    # Ab jetzt ist in $self->param('user') entweder
-    # ggf. authentifizierte User - egal ob per Web oder REST
-
-    # Jetzt Zugriffsberechtigung des Users bei Views ueberpruefen, die
-    # ein Login zwingend verlangen
-
-    # my $viewinfo = $config->get_viewinfo->single({ viewname => $view });
-    
-    # if ($viewinfo && $viewinfo->force_login){
-    # 	my $user_shall_access = 0;
-
-    # 	my $user = $self->param('user');
-	
-    # 	if ($user->{ID}){
-    # 	    my $viewroles_ref      = {};
-    # 	    foreach my $rolename ($config->get_viewroles($view)){
-    # 		$viewroles_ref->{$rolename} = 1;
-    # 	    }
-	    
-    # 	    foreach my $userrole (keys %{$user->get_roles_of_user($user->{ID})}){
-    # 		if ($viewroles_ref->{$userrole}){
-    # 		    $user_shall_access = 1;
-    # 		}
-    # 	    }
-    # 	}
-	
-    #    if (!$user_shall_access){
-    
-    $user = $self->param('user');
-
-    if ($logger->is_info){
-	my $path   = $self->param('path');
-	my $scheme = $self->param('scheme');
-	$logger->info("Remote IP set to $remote_ip for scheme $scheme and path $path");
-    }
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($self->param('lang')) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    $self->param('msg',$msg);
-
-    if (!$user->can_access_view($view,$remote_ip)){
-	my @always_allowed_paths = (
-	    $self->param('path_prefix')."/".$config->get('login_loc'),
-	    $self->param('path_prefix')."/".$config->get('logout_loc'),
-	    $self->param('path_prefix')."/".$config->get('info_loc')."/impressum",
-	    $self->param('path_prefix')."/".$config->get('info_loc')."/datenschutz",		
-	    $self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('registrations_loc'),
-	    $self->param('path_prefix')."/".$config->get('users_loc')."/".$config->get('passwords_loc'),
-	    );
-	
-	my $do_dispatch = 1;
-	
-	foreach my $allowed_path (@always_allowed_paths){
-	    if ($self->param('url') =~ m/$allowed_path/){
-		$do_dispatch = 0;
-	    }
-	}
-	
-	# Trennung der Zugangskontrolle zwischen API und Endnutzern
-	if ($self->param('representation') eq "html"){
-	    my $scheme = ($config->get('use_https'))?'https':$self->param('scheme');
-	    
-	    my $redirect_to = $scheme."://".$self->param('servername').$self->param('url');
-	    
-	    my $dispatch_url = $scheme."://".$self->param('servername').$self->param('path_prefix')."/".$config->get('login_loc')."?l=".$self->param('lang').";redirect_to=".uri_escape($redirect_to);
-	    
-	    $logger->debug("force_login URLs: $redirect_to - ".$self->param('url')." - ".$dispatch_url);
-	    
-	    if ($do_dispatch){
-		$self->param('dispatch_url',$dispatch_url);
-	    }
-	}
-	else {
-	    if ($do_dispatch){
-		$self->param('default_runmode','show_warning');
-		$self->param('warning_message',$msg->maketext("Zugriff verweigert."));
-	    }
-	}
-    }
-    
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for stage 6 is ".timestr($timeall));
-    }
-    
-    if (defined $user->{ID}){
-        $logger->debug("This request after initialization: User? $user->{ID}");
-    }
-
-    if (defined $session->{ID}){
-        $logger->debug("This request after initialization: SessionID: $session->{ID}");
-    }
-    else {
-        $logger->error("No SessionID after initialization");
-    }
-
-    # Session abgelaufen?
-    $session->is_expired;
-    if (0 == 1 && $session->is_expired){
-	if ($self->param('representation') eq "html"){
-
-	    my $scheme = ($config->get('use_https'))?'https':$self->param('scheme');
-	    
-	    my $dispatch_url = $scheme."://".$self->param('servername').$self->param('path_prefix')."/".$config->get('logout_loc').".html?l=".$self->param('lang').";expired=1";
-	    
-	    $logger->debug("Session expired. Force logout: ".$self->param('url')." - ".$dispatch_url);
-	    
-	    $self->param('dispatch_url',$dispatch_url);
-	}
-	else {
-	    $self->param('default_runmode','show_warning');
-	    $self->param('warning_message',$msg->maketext("Sitzung abgelaufen."));
-	}
-    }
-    
-    $logger->debug("Main objects initialized");        
-    
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for cgiapp_init is ".timestr($timeall));
-    }
-
-    # Neue Session und alle relevanten Informationen bestimmt (z.B. representation), dann loggen
-    $session->log_new_session_once({ r => $r, representation => $self->param('representation') });
-
-    # # Katalogeingrenzung auf view pruefen
-    # if ($self->param('restrict_db_to_view')){
-    # 	my $database = $self->param('database');
-	
-    # 	unless ($config->database_defined_in_view({ database => $database, view => $view })){
-    # 	    if (!$user->is_admin){
-    # 		$logger->debug("Zugriff auf Katalog $database in view $view verweigert.");
-    # 		$self->param('default_runmode','show_warning');
-    # 		$self->param('warning_message',$msg->maketext("Zugriff auf Katalog $database verweigert."));
-    # 	    }
-    # 	}
-    # }
-    
-    return;
-}
-
-sub cgiapp_prerun {
-   my $self    = shift;
-   my $runmode = shift;
-
-   # Log4perl logger erzeugen
-   my $logger = get_logger();
-
-   $logger->debug("Entering cgiapp_prerun");
-
-   my $r            = $self->param('r');
-   my $user         = $self->param('user');
-   my $config       = $self->param('config');
-   
-   {
-       # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-       # zu verwenden
-       
-       my $method          = ($r->param('_method'))?escape_html($r->param('_method')):'';
-       my $confirm         = ($r->param('confirm'))?escape_html($r->param('confirm')):0;
-       
-       if ($method eq "DELETE" || $r->method eq "DELETE"){
-           $logger->debug("Deletion shortcut");
-           
-           if ($confirm){
-               $self->prerun_mode('confirm_delete_record');
-           }
-           else {
-               $self->prerun_mode('delete_record');
-           }
-       }
-   }
-
-   {
-       # Wenn dispatch_url, dann Runmode dispatch_to_representation mit externem Redirect
-       if ($self->param('dispatch_url')){
-           $self->prerun_mode('dispatch_to_representation');
-       }
-       
-   }
-
-   {
-       # Wenn default_runmode gesetzt, dann ausschliesslich in diesen wechseln
-       if ($self->param('default_runmode')){
-
-	   # Zum default_runmode muss eine Methode in
-	   # diesem Modul definiert sein, denn default_runmodes werden immer in
-	   # OpenBib::Handler::PSGI definiert!
-
-	   if (OpenBib::Handler::PSGI->can($self->param('default_runmode'))){
-	       $self->run_modes(
-		   $self->param('default_runmode')  => $self->param('default_runmode'),
-		   );
-	       $self->prerun_mode($self->param('default_runmode'));
-	   }
-	   else {
-	       $logger->error("Invalid default runmode ".$self->param('default_runmode'));
-	   }
-       }
-   }
-   
-   
-#   if ($config->get('cookies_everywhere') || $self->param('send_new_cookie')){
-       # Cookie-Header ausgeben
-       $self->finalize_cookies;
-#   }
-   
-   $logger->debug("Exit cgiapp_prerun");
-}
 
 sub cgiapp_get_query {
 	my $self = shift;
@@ -464,247 +102,7 @@ sub set_paging {
     return;
 }
 
-sub negotiate_content {
-    my $self = shift;
 
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $r       = $self->param('r');
-    my $view    = $self->param('view');
-    my $config  = $self->param('config');
-    my $session = $self->param('session');
-    
-    if ($logger->is_debug){
-	$logger->debug("r-Method: ".$r->method);
-    }
-    
-    if (!$self->param('disable_content_negotiation')){
-        $logger->debug("Doing content negotiation");
-
-        # Wird keine konkrete Reprasentation angesprochen, dann
-        # - Typ verhandeln
-        # - Sprache verhandeln
-        if ($r->method eq "GET"){
-            if (!$self->param('representation') && !$self->param('content_type')){
-
-                $logger->debug("No specific representation given - negotiating content and language");
-
-                $logger->debug("Path: ".$self->param('path'));
-                
-                $self->negotiate_type;
-                
-                # Pfade sind immer mit base_loc und view
-                #my $baseloc    = $config->get('base_loc');
-                #$path =~s{^$baseloc/[^/]+}{$path_prefix};
-
-                # Zusaetzlich auch Sprache verhandeln
-                my $args="";
-                if (!$r->param('l')){
-                    if ($session->{lang}){
-                        $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
-                        $self->param('lang',$self->cleanup_lang($session->{lang}));
-                    }
-		    elsif ($r->cookies->{lang}){
-                        $self->param('lang',$r->cookies->{lang});
-		    }
-                    else {
-                        $self->negotiate_language;
-                    }
-                    
-                    $args="?l=".$self->param('lang');
-                    if ($self->to_cgi_querystring()){
-                        $args="$args;".$self->to_cgi_querystring();
-                    }
-                }
-                else {
-                    $args="?".$self->to_cgi_querystring();
-                }
-
-                my $path = "";
-
-                $self->param('path',$self->param('path').".".$self->param('representation'));
-
-                my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path').$args;
-
-                $self->param('dispatch_url',$dispatch_url);
-                
-                $logger->debug("Negotiating type -> Dispatching to $dispatch_url");
-
-                return;
-            }
-
-            # Wenn eine konkrete Repraesentation angesprochen wird, jedoch ohne Sprach-Parameter,
-            # dann muss dieser verhandelt werden.
-            if (!$r->param('l') ){
-                $logger->debug("Specific representation given, but without language - negotiating");
-                
-                # Pfade sind immer mit base_loc und view
-                #my $baseloc    = $config->get('base_loc');
-                #$path =~s{^$baseloc/[^/]+}{$path_prefix};
-                
-                if ($session->{lang}){
-                    $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
-                    $self->param('lang',$self->cleanup_lang($session->{lang}));
-                }
-                else {
-                    $self->negotiate_language;
-                }
-                
-                my $args = "?l=".$self->param('lang');
-                
-                $args=$args.";".$self->to_cgi_querystring() if ($self->to_cgi_querystring());
-
-                my $dispatch_url = $self->param('scheme')."://".$self->param('servername').$self->param('path').$args;
-            
-                $logger->debug("Negotiated language -> Dispatching to $dispatch_url");
-
-                $self->param('dispatch_url',$dispatch_url);
-
-                return ;
-            }
-        }
-        # CUD-operations always use the resource-URI, so no redirect neccessary
-        elsif ($r->method eq "POST" || $r->method eq "PUT" || $r->method eq "DELETE"){
-            $self->negotiate_type;
-            $self->negotiate_language;
-        }
-        else {
-            $logger->debug("No additional negotiation necessary");
-            $logger->debug("Current URL is ".$self->param('path')." with args ".$self->to_cgi_querystring());
-        }
-    }
-    else {
-	# Respektiere und verarbeite ggf. mitgegebene Repraesentation fuer API-Zugriff
-	my $content_type = $r->header('Content-Type') || '';
-	
-	if ($config->{content_type_map}{$content_type}){
-            $self->param('content_type',$content_type);
-            $self->param('representation',$config->{content_type_map}->{$content_type});
-        }
-    }
-
-    if ($logger->is_debug && defined $self->param('representation')){
-	$logger->debug("Leaving with representation ".$self->param('representation'));
-    }
-    else {
-	$logger->debug("Leaving without representation");
-    }
-    
-    return;
-}
-
-sub alter_negotiated_language {
-    my $self = shift;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r       = $self->param('r');
-    my $session = $self->param('session');
-
-    # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l'
-    if ($r->param('l')){
-        $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$r->param('l'));
-        $self->param('lang',$self->cleanup_lang($r->param('l')));
-        
-        # Setzen als Cookie
-        $self->set_cookie('lang',$self->param('lang'));
-    }
-    # alterantiv Korrektur der ausgehandelten Sprache wenn durch cookie festgelegt
-    elsif ($session->{lang}){
-        $logger->debug("Korrektur der ausgehandelten Sprache durch Cookie: ".$session->{lang});
-        $self->param('lang',$self->cleanup_lang($session->{lang}));
-    }
-
-    return;
-}
-
-sub process_uri {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $r          = $self->param('r');
-    my $config     = $self->param('config');
-    my $view       = $self->param('view');
-    my $servername = $self->param('servername');
-
-    my $path_prefix          = $config->get('base_loc');
-    my $complete_path_prefix = "$path_prefix/$view";
-    
-    # Letztes Pfad-Element bestimmen
-    my $uri    = $r->request_uri;
-    my $path   = $r->path;
-    my $scheme = $r->scheme || 'http';
-#    my $args   = $r->escaped_args;
-    my $args   = $self->to_cgi_querystring;
-
-    my $forwarded_proto = $r->header('X-Forwarded-Proto');
-
-    $logger->debug("X-Forwarded-Proto: $forwarded_proto") if (defined $forwarded_proto);
-
-    if (defined $forwarded_proto && $forwarded_proto=~/^https/){
-	$scheme = "https";
-    }
-
-    # use-https overrides everything
-    $scheme = ($config->get('use_https'))?'https':$scheme;
-    
-    my ($location_uri,$last_uri_element) = $path =~m/^(.+?)\/([^\/]+)$/;
- 
-    if ($logger->is_debug && defined $path && defined $last_uri_element && defined $r->escaped_args){
-	$logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$r->escaped_args);
-    }
-    
-    if (! $config->strip_view_from_uri($view)){
-        $path_prefix = $complete_path_prefix;
-    }
-    else {
-        $path =~s/^(\/[^\/]+)\/[^\/]+(\/.+)$/$1$2/;
-	$location_uri =~s/^(\/[^\/]+)\/[^\/]+(\/.+)$/$1$2/;
-    }
-
-    my $suffixes = join '|', keys %{$config->{content_type_map_rev}};
-    my $regexp = "^(.+?)\.($suffixes)\$";
-    
-    $logger->debug("Suffixes: $suffixes");
-    $logger->debug("Scheme: $scheme");
-    $logger->debug("Path: $path");
-    $logger->debug("Location_uri: $location_uri");
-    
-
-    my $id;
-
-    if ($last_uri_element){
-#    my ($id) = $last_uri_element =~m/^(.+?)\.($suffixes)$/;
-	($id) = $last_uri_element =~m/^(.+?)\.($suffixes)$/;
-    }
-    
-    $logger->debug("ID: $id") if ($id);
-    
-    if ($id){
-        $location_uri.="/$id";
-    }
-    elsif ($last_uri_element) {
-        $location_uri.="/$last_uri_element";
-    }
-
-    my $location = "$scheme://$servername$location_uri";
-    if ($args){
-        $location.="?$args";
-    }
-
-    $self->param('location',$location);
-    $self->param('path_prefix',$path_prefix);
-    $self->param('path',$path);
-    $self->param('scheme',$scheme);
-
-    my $url = $r->request_uri;
-    
-    $self->param('url',$url);
-}
 
 sub personalize_uri {
     my $self = shift;
@@ -799,129 +197,7 @@ sub personalize_uri {
     return;
 }
 
-sub set_content_type_from_uri {
-    my $self = shift;
-    my $uri  = shift || $self->param('path');
 
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = $self->param('config');
-
-    my $suffixes = join '|', keys %{$config->{content_type_map_rev}};
-
-    my ($representation) = $uri =~m/^.*?\/[^\/]*?\.($suffixes)$/;
-
-    if (defined $representation){
-        $logger->debug("Setting type from URI $uri. Got Represenation $representation");
-    }
-    
-    # Korrektur des ausgehandelten Typs bei direkter Auswahl einer bestimmten Repraesentation
-    if (defined $representation && $config->{content_type_map_rev}{$representation}){
-        $self->param('content_type',$config->{content_type_map_rev}{$representation});
-        $self->param('representation',$representation);
-    }
-    
-    return;
-}
-
-sub negotiate_type {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-
-    
-    my $content_type = $r->header('Content-Type') || '';
-    my $accept       = $r->header('Accept') || '';
-    my @accepted_types = ();
-
-    foreach my $item (split '\s*,\s*', $accept){
-        $item=~s/;.+$//;
-        push @accepted_types, $item;
-    }
-
-    if ($content_type){
-        if ($logger->is_debug){
-            $logger->debug("Content-Type: |$content_type|");
-            #$logger->debug(YAML::Dump($config->{content_type_map}));
-        }
-        
-        if ($config->{content_type_map}{$content_type}){
-            $self->param('content_type',$content_type);
-            $self->param('representation',$config->{content_type_map}->{$content_type});
-        }
-        $logger->debug("content_type: ".$self->param('content_type')." - representation: ".$self->param('representation')) if (defined $self->param('content_type') && defined $self->param('represenation'));
-    }
-    elsif (@accepted_types){
-        #if ($logger->is_debug){
-        #    $logger->debug("Accept: $accept - Types: ".YAML::Dump(\@accepted_types));
-        #}
-    
-        foreach my $information_type (@accepted_types){
-            if ($config->{content_type_map}{$information_type}){
-                $logger->debug("Negotiated Type: $information_type - Suffix: ".$config->{content_type_map}->{$information_type});
-                $self->param('content_type',$information_type);
-                $self->param('representation',$config->{content_type_map}->{$information_type});
-                last;
-            }
-        }
-
-        if ($logger->is_debug){
-            $logger->debug("content_type: ".$self->param('content_type')) if ($self->param('content_type'));
-            $logger->debug("representation: ".$self->param('representation')) if ($self->param('representation'));
-        }
-    }
-
-    # Korrektur bei mobilen Endgeraeten, wenn die Repraesentation in portal.yml definiert ist
-    if (defined $config->{enable_mobile}{$self->param('view')} && $self->param('representation') eq "html" && $self->param('browser')->mobile() ){
-        $self->param('content_type','text/html');
-        $self->param('representation','mobile');
-    }
-    
-    if (!$self->param('content_type') && !$self->param('representation') ){
-        $logger->debug("Default Type: text/html - Suffix: html");
-        $self->param('content_type','text/html');
-        $self->param('representation','html');
-    }
-
-    return;
-}
-
-sub negotiate_language {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    
-    my $lang           = $r->header('Accept-Language') || '';
-    my @accepted_languages  = map { ($_)=$_=~/^(..)/} map { (split ";", $_)[0] } split /\*s,\*s/, $lang;
-    
-    #if ($logger->is_debug){
-    #    $logger->debug("Accept-Language: $lang - Languages: ".YAML::Dump(\@accepted_languages));
-    #}
-    
-    foreach my $language (@{$config->{lang}}){
-        if (any { $_ eq $language } @accepted_languages) {
-            $logger->debug("Negotiated Language: $language");
-            $self->param('lang',$language);
-            last;
-        }
-    }
-
-    if (!$self->param('lang')){
-        $logger->debug("Default Language: de");
-        $self->param('lang','de');
-    }
-
-    return;
-}
 
 sub is_authenticated {
     my $self   = shift;
@@ -1041,23 +317,23 @@ sub print_page {
     my $view           = $self->param('view')           || '';
     
     # Shared Args
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $lang           = $self->param('lang');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $servername     = $self->param('servername');
-    my $path_prefix    = $self->param('path_prefix');
-    my $path           = $self->param('path');
-    my $representation = $self->param('representation') || 'html';
-    my $status         = $self->param('status') || 200;
-    my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
-    my $location       = $self->param('location');
-    my $url            = $self->param('url');
+    my $r              = $self->stash('r');
+    my $config         = $self->stash('config');
+    my $session        = $self->stash('session');
+    my $user           = $self->stash('user');
+    my $msg            = $self->stash('msg');
+    my $lang           = $self->stash('lang');
+    my $queryoptions   = $self->stash('qopts');
+    my $stylesheet     = $self->stash('stylesheet');
+    my $useragent      = $self->stash('useragent');
+    my $servername     = $self->stash('servername');
+    my $path_prefix    = $self->stash('path_prefix');
+    my $path           = $self->stash('path');
+    my $representation = $self->stash('representation') || 'html';
+    my $status         = $self->stash('status') || 200;
+    my $content_type   = $self->stash('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
+    my $location       = $self->stash('location');
+    my $url            = $self->stash('url');
 
     $logger->debug("Entering print_page with template $templatename");
         
@@ -1085,9 +361,24 @@ sub print_page {
     });
 
     $logger->debug("Using database/view specific Template $templatename");
+    
+    # Location- und Content-Location-Header setzen    
+   # $self->header_type('header');
+    $self->header_add('Status' => $status) if ($status);
+    $self->header_add('Content-Type' => $content_type) if ($content_type);
+    $self->header_add('Content-Location' => $location) if ($location);
+
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time until stage 2 is ".timestr($timeall));
+    }
 
     my $content = "";
 
+    $ttdata->{representation} = "html";
+    
     eval {
         my $template = Template->new({ 
             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -1117,64 +408,39 @@ sub print_page {
     if ($@){
         $logger->fatal($@." url: $url");
     }
-
-
-    $logger->debug("Template processed");
     
-    # Location- und Content-Location-Header setzen    
-    $self->header_type('header');
-    $self->header_add('Status' => $status) if ($status);
-    $self->header_add('Content-Type' => $content_type) if ($content_type);
-    $self->header_add('Content-Location' => $location) if ($location);
+    $self->render(text => $content);
 
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time until stage 2 is ".timestr($timeall));
-    }
-
-    eval {
-        # PSGI-Spezifikation erwartet UTF8 bytestream
-        $content = encode_utf8($content);
-    };
-
-    if ($@){
-        $logger->fatal($@);
-    }
-
-    $logger->debug("Template-Output: ".$content);
-    
-    return \$content;
+    $logger->debug("Template processed with content $content");
 }
 
 sub add_default_ttdata {
     my ($self,$ttdata) = @_; 
 
-    my $r              = $self->param('r');
-    my $view           = $self->param('view');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $statistics     = $self->param('statistics');
-    my $msg            = $self->param('msg');
-    my $lang           = $self->param('lang');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $browser        = $self->param('browser');
-    my $servername     = $self->param('servername');
-    my $dbinfo         = $self->param('dbinfo');
-    my $locinfo        = $self->param('locinfo');
-    my $path_prefix    = $self->param('path_prefix');
-    my $path           = $self->param('path');
-    my $url            = $self->param('url');
-    my $location       = $self->param('location');
-    my $scheme         = $self->param('scheme');
-    my $remote_ip      = $self->param('remote_ip');
-    my $representation = $self->param('representation') || 'html';
-    my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
-    my $query          = $self->query();
+    my $r              = $self->stash('r');
+    my $view           = $self->stash('view');
+    my $config         = $self->stash('config');
+    my $session        = $self->stash('session');
+    my $user           = $self->stash('user');
+    my $statistics     = $self->stash('statistics');
+    my $msg            = $self->stash('msg');
+    my $lang           = $self->stash('lang');
+    my $queryoptions   = $self->stash('qopts');
+    my $stylesheet     = $self->stash('stylesheet');
+    my $useragent      = $self->stash('useragent');
+    my $browser        = $self->stash('browser');
+    my $servername     = $self->stash('servername');
+    my $dbinfo         = $self->stash('dbinfo');
+    my $locinfo        = $self->stash('locinfo');
+    my $path_prefix    = $self->stash('path_prefix');
+    my $path           = $self->stash('path');
+    my $url            = $self->stash('url');
+    my $location       = $self->stash('location');
+    my $scheme         = $self->stash('scheme');
+    my $remote_ip      = $self->stash('remote_ip');
+    my $representation = $self->stash('representation') || 'html';
+    my $content_type   = $self->stash('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
+    my $query          = $self->req->params;
     my $container      = OpenBib::Container->instance;
     
     # View- und Datenbank-spezifisches Templating
@@ -1322,7 +588,11 @@ sub add_default_ttdata {
         my ($arg_ref) = @_;
         return OpenBib::RecordList::Title->new($arg_ref);
     };
-    
+
+    foreach my $key (keys %$ttdata){
+	$self->stash($key,$ttdata->{$key});
+    }
+
     return $ttdata;
 }
 
@@ -1565,7 +835,7 @@ sub to_cgi_params {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config       = $self->param('config');
+    my $config       = $self->stash('config');
     
     $logger->debug("Modify Query");
     
@@ -1591,10 +861,10 @@ sub to_cgi_params {
     
     my @cgiparams = ();
 
-    my $r            = $self->param('r');
+    my $r            = $self->stash('r');
 
-    if ($r->parameters){
-        foreach my $param (keys %{$r->parameters}){
+    if ($r->query_params){
+        foreach my $param (@{$r->query_params->names}){
 	    unless ($param =~m/^[a-z0-9A-Z_[\]]+$/){
 	     	$logger->debug("Rejecting param $param - not valid");
 	     	next;
@@ -1622,7 +892,7 @@ sub to_cgi_params {
 		};
 	    }
             elsif (! exists $exclude_ref->{$param}){
-                my @values = $r->param($param);
+                my @values = @{$r->every_param($param)};
                 if (@values){
                     foreach my $value (@values){
 
@@ -1642,7 +912,7 @@ sub to_cgi_params {
                     }
                 }
                 else {
-		    my $value = $r->param($param);
+		    my $value = $r->param($param);		    
 		    
 		    if ($param eq "l"){
 			$value = $self->cleanup_lang($value);
@@ -2188,56 +1458,6 @@ sub set_cookieXX {
     return;
 }
 
-sub set_cookie {
-    my ($self,$name,$value)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = $self->param('config');
-    my $servername = $self->param('servername');
-
-    # Strip port from servername
-    $servername =~s/:\d+$//;
-    
-    if (!($name || $value)){
-        $logger->debug("Invalid cookie parameters for cookie: $name / value: $value");
-        return;
-    }   
-
-    my $cookie_jar_ref = (defined $self->param('cookie_jar'))?$self->param('cookie_jar'):[];
-
-    $logger->debug("Adding cookie $name to $value for domain $servername");
-    
-    my $cookie = CGI::Cookie->new(
-        -name     => $name,
-        -value    => $value,
-        -expires  => '+24h',
-        -path     => $config->{base_loc},
-	-domain   => $servername,
-	-httponly => 1,
-	-samesite => "Strict",
-    );
-    
-    push @$cookie_jar_ref, $cookie;
-    
-    $self->param('cookie_jar',$cookie_jar_ref);
-    
-    return;
-}
-
-sub finalize_cookies {
-    my ($self)=@_;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    if (defined $self->param('cookie_jar')){
-        $self->header_add('Set-Cookie', $self->param('cookie_jar'));
-    }
-    
-    return;
-}
 
 # return a 2 element array modeling the first PSGI redirect values: status code and arrayref of header pairs
 sub _send_psgi_headersXX {
@@ -2389,19 +1609,6 @@ sub encode_id {
     return uri_escape_utf8($id);
 }
 
-sub cleanup_lang {
-    my ($self,$lang)=@_;
-
-    my $config = $self->param('config');
-
-    my $is_valid_ref = {};
-    
-    foreach my $lang (@{$config->{lang}}){
-	$is_valid_ref->{$lang} = 1;
-    }
-
-    return (defined $is_valid_ref->{$lang} && $is_valid_ref->{$lang})?$lang:'de';
-}
 
 sub check_online_media {
     my ($self,$arg_ref)=@_;
@@ -2535,5 +1742,15 @@ sub verify_gpg_data {
     return $sig;
 }
 
+sub header_add {
+    my ($self,$header,$value) = @_;
+    if ($header =~/status/i){
+	$self->res->headers->status($value);
+    }
+    else {
+	$self->res->headers->header($header, $value);
+    }
+    return;
+}
 
 1;

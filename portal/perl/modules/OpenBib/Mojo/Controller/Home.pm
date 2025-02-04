@@ -54,19 +54,19 @@ sub show ($self) {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
+    my $view           = $self->stash('view')           || '';
 
     # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
+#    my $query          = $self->query();
+    my $r              = $self->stash('r');
+    my $config         = $self->stash('config');
+    my $session        = $self->stash('session');
+    my $user           = $self->stash('user');
+    my $msg            = $self->stash('msg');
+    my $queryoptions   = $self->stash('qopts');
+    my $stylesheet     = $self->stash('stylesheet');
+    my $useragent      = $self->stash('useragent');
+    my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
   
@@ -76,9 +76,17 @@ sub show ($self) {
     my $viewstartpage = $self->strip_suffix($config->get_startpage_of_view($view));
 
     $logger->debug("Alternative Interne Startseite: $viewstartpage");
+
+    # TT-Data erzeugen
+    my $ttdata={
+    };
+    
+    $self->print_page($config->{'tt_home_tname'},$ttdata);
+
+    return;
     
     if ($viewstartpage){
-        my $redirecturl = $viewstartpage.".".$self->param('representation')."?l=".$self->param('lang');
+        my $redirecturl = $viewstartpage.".".$self->stash('representation')."?l=".$self->stash('lang');
 
         $logger->info("Redirecting to $redirecturl");
 
@@ -89,7 +97,7 @@ sub show ($self) {
         my $ttdata={
         };
         
-        return $self->print_page($config->{'tt_home_tname'},$ttdata);
+        $self->print_page($config->{'tt_home_tname'},$ttdata);
     }
 }
 

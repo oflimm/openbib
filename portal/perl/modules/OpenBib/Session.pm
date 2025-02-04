@@ -96,6 +96,8 @@ sub new {
     
     $logger->debug("Entering Session->new");
 
+    $logger->debug("Got sessionID ".YAML::Dump($sessionID));
+
     if ($config->{benchmark}) {
 		$btime=new Benchmark;
 		$timeall=timediff($btime,$atime);
@@ -154,9 +156,11 @@ sub new {
         $timeall=timediff($btime,$atime);
         $logger->info("Total time for stage 2 is ".timestr($timeall));
     }
-    
-    #$logger->debug("Session-Object created: ".YAML::Dump($self));
 
+    if ($logger->is_debug){
+	$logger->debug("Session-Object created: ".YAML::Dump($self));
+    }
+    
     return $self;
 }
 

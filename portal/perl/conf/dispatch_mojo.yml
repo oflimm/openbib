@@ -1,0 +1,11 @@
+- # Resource: home_loc
+   rule: '/portal/:view/home'
+   method: 'GET'
+   controller: 'Home'
+   action: 'show'
+   representations:
+     - ''
+     - html
+     - mobile
+   args:
+      users_loc: 'home'        

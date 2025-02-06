@@ -1,0 +1,19 @@
+[%-
+ 
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+     is_order = 1
+     success => 1     
+     msg = cancel_order.message
+     record = {
+        title  = cancel_order.title
+	author = cancel_order.author
+     }     
+ };
+
+ to_json(this_json_output);
+ 
+-%]

@@ -113,9 +113,9 @@ sub show_graph {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $year       = $query->stash('year')       || '';
-    my $month      = $query->stash('month')      || '';
-    my $day        = $query->stash('month')      || '';
+    my $year       = $r->param('year')       || '';
+    my $month      = $r->param('month')      || '';
+    my $day        = $r->param('month')      || '';
     
     if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();
@@ -166,9 +166,9 @@ sub show_statistics {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $year       = $query->stash('year')       || '';
-    my $month      = $query->stash('month')      || '';
-    my $day        = $query->stash('day')        || '';
+    my $year       = $r->param('year')       || '';
+    my $month      = $r->param('month')      || '';
+    my $day        = $r->param('day')        || '';
 
     if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();

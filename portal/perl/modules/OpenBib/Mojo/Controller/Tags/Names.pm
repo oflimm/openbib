@@ -168,30 +168,30 @@ sub show_record {
     my $useragent      = $self->stash('useragent');
 
     # CGI Args
-    my $method         = $query->stash('_method')     || '';
+    my $method         = $r->param('_method')     || '';
     
-    $titleid           = $query->stash('titleid')             || '';
-    my $dbname          = $query->stash('dbname')             || '';
-    my $titisbn        = $query->stash('titisbn')           || '';
-    my $tags           = decode_utf8($query->stash('tags')) || '';
-    my $type           = $query->stash('type')              || 1;
+    $titleid           = $r->param('titleid')             || '';
+    my $dbname          = $r->param('dbname')             || '';
+    my $titisbn        = $r->param('titisbn')           || '';
+    my $tags           = decode_utf8($r->param('tags')) || '';
+    my $type           = $r->param('type')              || 1;
 
-    my $oldtag         = $query->stash('oldtag')            || '';
-    my $newtag         = $query->stash('newtag')            || '';
+    my $oldtag         = $r->param('oldtag')            || '';
+    my $newtag         = $r->param('newtag')            || '';
     
     # Actions
-    my $format         = $query->stash('format')            || 'cloud';
-    my $private_tags   = $query->stash('private_tags')      || 0;
-    my $searchtitoftag = $query->stash('searchtitoftag')    || '';
-    my $edit_usertags  = $query->stash('edit_usertags')     || '';
-    my $show_usertags  = $query->stash('show_usertags')     || '';
+    my $format         = $r->param('format')            || 'cloud';
+    my $private_tags   = $r->param('private_tags')      || 0;
+    my $searchtitoftag = $r->param('searchtitoftag')    || '';
+    my $edit_usertags  = $r->param('edit_usertags')     || '';
+    my $show_usertags  = $r->param('show_usertags')     || '';
 
-    my $queryid        = $query->stash('queryid')           || '';
+    my $queryid        = $r->param('queryid')           || '';
 
-    my $do_add         = $query->stash('do_add')            || '';
-    my $do_edit        = $query->stash('do_edit')           || '';
-    my $do_change      = $query->stash('do_change')         || '';
-    my $do_del         = $query->stash('do_del')            || '';
+    my $do_add         = $r->param('do_add')            || '';
+    my $do_edit        = $r->param('do_edit')           || '';
+    my $do_change      = $r->param('do_change')         || '';
+    my $do_del         = $r->param('do_del')            || '';
     
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
@@ -312,33 +312,33 @@ sub show_collection_form {
     # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
     #####################################################################
 
-    my $offset         = $query->stash('offset')      || 0;
-    my $hitrange       = $query->stash('num')    || 50;
-    my $database       = $query->stash('db')    || '';
-    my $sorttype       = $query->stash('srt')    || "person";
-    my $sortorder      = $query->stash('srto')   || "asc";
-    my $titleid          = $query->stash('titleid')       || '';
-    my $dbname          = $query->stash('dbname')       || '';
-    my $titisbn        = $query->stash('titisbn')     || '';
-    my $tags           = decode_utf8($query->stash('tags'))        || '';
-    my $type           = $query->stash('type')        || 1;
+    my $offset         = $r->param('offset')      || 0;
+    my $hitrange       = $r->param('num')    || 50;
+    my $database       = $r->param('db')    || '';
+    my $sorttype       = $r->param('srt')    || "person";
+    my $sortorder      = $r->param('srto')   || "asc";
+    my $titleid          = $r->param('titleid')       || '';
+    my $dbname          = $r->param('dbname')       || '';
+    my $titisbn        = $r->param('titisbn')     || '';
+    my $tags           = decode_utf8($r->param('tags'))        || '';
+    my $type           = $r->param('type')        || 1;
 
-    my $oldtag         = $query->stash('oldtag')      || '';
-    my $newtag         = $query->stash('newtag')      || '';
+    my $oldtag         = $r->param('oldtag')      || '';
+    my $newtag         = $r->param('newtag')      || '';
     
     # Actions
-    my $format         = $query->stash('format')      || 'cloud';
-    my $private_tags   = $query->stash('private_tags')   || 0;
-    my $searchtitoftag = $query->stash('searchtitoftag') || '';
-    my $edit_usertags  = $query->stash('edit_usertags')  || '';
-    my $show_usertags  = $query->stash('show_usertags')  || '';
+    my $format         = $r->param('format')      || 'cloud';
+    my $private_tags   = $r->param('private_tags')   || 0;
+    my $searchtitoftag = $r->param('searchtitoftag') || '';
+    my $edit_usertags  = $r->param('edit_usertags')  || '';
+    my $show_usertags  = $r->param('show_usertags')  || '';
 
-    my $queryid        = $query->stash('queryid')     || '';
+    my $queryid        = $r->param('queryid')     || '';
 
-    my $do_add         = $query->stash('do_add')      || '';
-    my $do_edit        = $query->stash('do_edit')     || '';
-    my $do_change      = $query->stash('do_change')   || '';
-    my $do_del         = $query->stash('do_del')      || '';
+    my $do_add         = $r->param('do_add')      || '';
+    my $do_edit        = $r->param('do_edit')     || '';
+    my $do_change      = $r->param('do_change')   || '';
+    my $do_del         = $r->param('do_del')      || '';
     
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
@@ -399,7 +399,7 @@ sub create_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $method         = $query->stash('_method')     || '';
+    my $method         = $r->param('_method')     || '';
     
     if (! $user->{ID} | $user->{ID} ne $userid){
         if ($self->stash('representation') eq "html"){
@@ -513,33 +513,33 @@ sub update_record {
     # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
     #####################################################################
 
-    my $offset         = $query->stash('offset')      || 0;
-    my $hitrange       = $query->stash('num')    || 50;
-    my $database       = $query->stash('db')    || '';
-    my $sorttype       = $query->stash('srt')    || "person";
-    my $sortorder      = $query->stash('srto')   || "asc";
-    my $titleid          = $query->stash('titleid')       || '';
-    my $dbname          = $query->stash('dbname')       || '';
-    my $titisbn        = $query->stash('titisbn')     || '';
-    my $tags           = decode_utf8($query->stash('tags'))        || '';
-    my $type           = $query->stash('type')        || 1;
+    my $offset         = $r->param('offset')      || 0;
+    my $hitrange       = $r->param('num')    || 50;
+    my $database       = $r->param('db')    || '';
+    my $sorttype       = $r->param('srt')    || "person";
+    my $sortorder      = $r->param('srto')   || "asc";
+    my $titleid          = $r->param('titleid')       || '';
+    my $dbname          = $r->param('dbname')       || '';
+    my $titisbn        = $r->param('titisbn')     || '';
+    my $tags           = decode_utf8($r->param('tags'))        || '';
+    my $type           = $r->param('type')        || 1;
 
-    my $oldtag         = $query->stash('oldtag')      || '';
-    my $newtag         = $query->stash('newtag')      || '';
+    my $oldtag         = $r->param('oldtag')      || '';
+    my $newtag         = $r->param('newtag')      || '';
     
     # Actions
-    my $format         = $query->stash('format')      || 'cloud';
-    my $private_tags   = $query->stash('private_tags')   || 0;
-    my $searchtitoftag = $query->stash('searchtitoftag') || '';
-    my $edit_usertags  = $query->stash('edit_usertags')  || '';
-    my $show_usertags  = $query->stash('show_usertags')  || '';
+    my $format         = $r->param('format')      || 'cloud';
+    my $private_tags   = $r->param('private_tags')   || 0;
+    my $searchtitoftag = $r->param('searchtitoftag') || '';
+    my $edit_usertags  = $r->param('edit_usertags')  || '';
+    my $show_usertags  = $r->param('show_usertags')  || '';
 
-    my $queryid        = $query->stash('queryid')     || '';
+    my $queryid        = $r->param('queryid')     || '';
 
-    my $do_add         = $query->stash('do_add')      || '';
-    my $do_edit        = $query->stash('do_edit')     || '';
-    my $do_change      = $query->stash('do_change')   || '';
-    my $do_del         = $query->stash('do_del')      || '';
+    my $do_add         = $r->param('do_add')      || '';
+    my $do_edit        = $r->param('do_edit')     || '';
+    my $do_change      = $r->param('do_change')   || '';
+    my $do_del         = $r->param('do_del')      || '';
     
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########

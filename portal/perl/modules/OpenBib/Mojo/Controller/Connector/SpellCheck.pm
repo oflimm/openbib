@@ -69,7 +69,7 @@ sub show {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $word = $query->stash('q') || '';
+    my $word = $r->param('q') || '';
 
     return if (!$word || $word=~/\d/);
     

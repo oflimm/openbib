@@ -69,8 +69,8 @@ sub show {
     my $servername     = $self->stash('servername');
     
     # CGI Args
-    my $url  = uri_unescape($query->stash('url'));
-    my $type = $query->stash('type');
+    my $url  = uri_unescape($r->param('url'));
+    my $type = $r->param('type');
 
     my $referer = $r->referer;
 

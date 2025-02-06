@@ -69,7 +69,7 @@ sub authenticate {
 
     # Shared Args
 
-    my $suppressresponsecodes = $query->stash('suppress-response-codes')    || '';
+    my $suppressresponsecodes = $r->param('suppress-response-codes')    || '';
     
     my $valid_services_ref = {
 	login  => 1,
@@ -115,7 +115,7 @@ sub core_get_services {
 
     # Shared Args
 
-    my $suppressresponsecodes = $query->stash('suppress-response-codes')    || '';
+    my $suppressresponsecodes = $r->param('suppress-response-codes')    || '';
 
     my $valid_services_ref = {
 	items         => 1,
@@ -162,7 +162,7 @@ sub core_post_services {
 
     # Shared Args
 
-    my $suppressresponsecodes = $query->stash('suppress-response-codes')    || '';
+    my $suppressresponsecodes = $r->param('suppress-response-codes')    || '';
 
     my $valid_services_ref = {
 	request  => 1,
@@ -215,7 +215,7 @@ sub patron {
 
    
     # CGI Args
-    my $suppressresponsecodes = $query->stash('suppress-response-codes')    || '';
+    my $suppressresponsecodes = $r->param('suppress-response-codes')    || '';
 
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
 
@@ -336,8 +336,8 @@ sub logout {
     my $lang           = $self->stash('lang');
 
     # CGI Args
-    my $username       = $query->stash('patron')        || '';
-    my $suppressresponsecodes = $query->stash('suppress-response-codes')    || '';
+    my $username       = $r->param('patron')        || '';
+    my $suppressresponsecodes = $r->param('suppress-response-codes')    || '';
 
     # Richtigen Content-Type setzen
     $self->stash('content_type','application/json');
@@ -402,11 +402,11 @@ sub login {
     my $lang        = $self->stash('lang');
 
     # CGI Args
-    my $username    = $query->stash('username')      || '';
-    my $password    = $query->stash('password')      || '';
-    my $granttype   = $query->stash('grant_type')    || 'password';
+    my $username    = $r->param('username')      || '';
+    my $password    = $r->param('password')      || '';
+    my $granttype   = $r->param('grant_type')    || 'password';
 
-    my $suppressresponsecodes = $query->stash('suppress-response-codes')    || '';
+    my $suppressresponsecodes = $r->param('suppress-response-codes')    || '';
 
     # Richtigen Content-Type setzen
     $self->stash('content_type','application/json');
@@ -609,7 +609,7 @@ sub items {
     my $servername     = $self->stash('servername');
 
     # CGI Args
-    my $suppressresponsecodes = $query->stash('suppress-response-codes')    || '';
+    my $suppressresponsecodes = $r->param('suppress-response-codes')    || '';
 
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
     
@@ -701,7 +701,7 @@ sub fees {  # to be implemented
     my $servername     = $self->stash('servername');
 
     # CGI Args
-    my $suppressresponsecodes = $query->stash('suppress-response-codes')    || '';
+    my $suppressresponsecodes = $r->param('suppress-response-codes')    || '';
 
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
     

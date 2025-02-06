@@ -88,7 +88,7 @@ sub show_collection {
     my $useragent      = $self->stash('useragent');
     my $path_prefix    = $self->stash('path_prefix');
 
-    my $provenanceid   = ($query->stash('mnr'))?escape_html(decode_utf8(uri_unescape($query->param('mnr')))):"";
+    my $provenanceid   = ($r->param('mnr'))?escape_html(decode_utf8(uri_unescape($r->param('mnr')))):"";
     
     return unless ($database && $titleid);
 

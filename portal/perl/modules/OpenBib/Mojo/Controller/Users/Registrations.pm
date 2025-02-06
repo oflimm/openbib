@@ -72,13 +72,13 @@ sub show {
     my $path_prefix    = $self->stash('path_prefix');
     
     # CGI Args
-    my $action              = ($query->stash('action'))?$query->param('action'):'none';
-    my $targetid            = ($query->stash('targetid'))?$query->param('targetid'):'none';
-    my $username            = ($query->stash('username'))?$query->param('username'):'';
-    my $password1           = ($query->stash('password1'))?$query->param('password1'):'';
-    my $password2           = ($query->stash('password2'))?$query->param('password2'):'';
-    my $recaptcha_challenge = $query->stash('recaptcha_challenge_field');
-    my $recaptcha_response  = $query->stash('recaptcha_response_field');
+    my $action              = ($r->param('action'))?$r->param('action'):'none';
+    my $targetid            = ($r->param('targetid'))?$r->param('targetid'):'none';
+    my $username            = ($r->param('username'))?$r->param('username'):'';
+    my $password1           = ($r->param('password1'))?$r->param('password1'):'';
+    my $password2           = ($r->param('password2'))?$r->param('password2'):'';
+    my $recaptcha_challenge = $r->param('recaptcha_challenge_field');
+    my $recaptcha_response  = $r->param('recaptcha_response_field');
 
     
     my $recaptcha = Captcha::reCAPTCHA->new;

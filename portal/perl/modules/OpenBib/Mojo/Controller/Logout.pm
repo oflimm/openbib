@@ -70,7 +70,7 @@ sub show {
 
     $logger->debug("Deleting Cookie with SessionID $session->{ID}");
 
-    my $purge_private_userinfo = $query->stash('purge_private_userinfo');
+    my $purge_private_userinfo = $r->param('purge_private_userinfo');
     
     my $cookie = CGI::Cookie->new($r,
                                       -name    => "sessionID",

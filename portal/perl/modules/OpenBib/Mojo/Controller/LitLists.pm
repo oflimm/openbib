@@ -129,7 +129,7 @@ sub show_collection_recent {
     my $useragent      = $self->stash('useragent');
 
     # CGI Args
-    my $hitrange       = $query->stash('num')    || 50;
+    my $hitrange       = $r->param('num')    || 50;
 
     my $topics_ref         = $user->get_topics;
     my $public_litlists_ref  = $user->get_recent_litlists({ count => $hitrange, view => $view });
@@ -196,7 +196,7 @@ sub show_collection_by_single_topic_recent {
     my $useragent      = $self->stash('useragent');
 
     # CGI Args
-    my $hitrange       = $query->stash('num')    || 50;
+    my $hitrange       = $r->param('num')    || 50;
 
     my $topics_ref           = $user->get_topics;
     my $public_litlists_ref  = $user->get_recent_litlists({ topicid => $topicid, count => $hitrange, view => $view });
@@ -278,24 +278,24 @@ sub show_collection_by_single_userxxx {
     my $useragent      = $self->stash('useragent');
     
     # CGI Args
-    my $titleid          = $query->stash('titleid')       || '';
-    my $dbname          = $query->stash('dbname')       || '';
-    my $title          = decode_utf8($query->stash('title'))        || '';
-    my $type           = $query->stash('type')        || 1;
-    my $lecture        = $query->stash('lecture')     || 0;
-    my $format         = $query->stash('format')      || 'HTML';
-    my $show           = $query->stash('show')        || 'short';
-    my $do_addentry    = $query->stash('do_addentry')    || '';
-    my $do_showlitlist = $query->stash('do_showlitlist') || '';
-    my $do_changelist  = $query->stash('do_changelist')  || '';
-    my $do_change      = $query->stash('do_change')      || '';
-    my $do_delentry    = $query->stash('do_delentry')    || '';
-    my $do_addlist     = $query->stash('do_addlist')     || '';
-    my $do_dellist     = $query->stash('do_dellist')     || '';
-    my $sorttype       = $query->stash('srt')    || "person";
-    my $sortorder      = $query->stash('srto')   || "asc";
-    my @topicids     = ($query->stash('topicids'))?$query->param('topicids'):();
-    my $topicid      = $query->stash('topicid')   || undef;
+    my $titleid          = $r->param('titleid')       || '';
+    my $dbname          = $r->param('dbname')       || '';
+    my $title          = decode_utf8($r->param('title'))        || '';
+    my $type           = $r->param('type')        || 1;
+    my $lecture        = $r->param('lecture')     || 0;
+    my $format         = $r->param('format')      || 'HTML';
+    my $show           = $r->param('show')        || 'short';
+    my $do_addentry    = $r->param('do_addentry')    || '';
+    my $do_showlitlist = $r->param('do_showlitlist') || '';
+    my $do_changelist  = $r->param('do_changelist')  || '';
+    my $do_change      = $r->param('do_change')      || '';
+    my $do_delentry    = $r->param('do_delentry')    || '';
+    my $do_addlist     = $r->param('do_addlist')     || '';
+    my $do_dellist     = $r->param('do_dellist')     || '';
+    my $sorttype       = $r->param('srt')    || "person";
+    my $sortorder      = $r->param('srto')   || "asc";
+    my @topicids     = ($r->param('topicids'))?$r->param('topicids'):();
+    my $topicid      = $r->param('topicid')   || undef;
 
     my $topics_ref   = $user->get_topics;
     
@@ -390,24 +390,24 @@ sub show_collection_by_single_user {
     my $useragent      = $self->stash('useragent');
     
     # CGI Args
-    my $titleid          = $query->stash('titleid')       || '';
-    my $dbname          = $query->stash('dbname')       || '';
-    my $title          = decode_utf8($query->stash('title'))        || '';
-    my $type           = $query->stash('type')        || 1;
-    my $lecture        = $query->stash('lecture')     || 0;
-    my $format         = $query->stash('format')      || 'HTML';
-    my $show           = $query->stash('show')        || 'short';
-    my $do_addentry    = $query->stash('do_addentry')    || '';
-    my $do_showlitlist = $query->stash('do_showlitlist') || '';
-    my $do_changelist  = $query->stash('do_changelist')  || '';
-    my $do_change      = $query->stash('do_change')      || '';
-    my $do_delentry    = $query->stash('do_delentry')    || '';
-    my $do_addlist     = $query->stash('do_addlist')     || '';
-    my $do_dellist     = $query->stash('do_dellist')     || '';
-    my $sorttype       = $query->stash('srt')    || "person";
-    my $sortorder      = $query->stash('srto')   || "asc";
-    my @topicids     = ($query->stash('topicids'))?$query->param('topicids'):();
-    my $topicid      = $query->stash('topicid')   || undef;
+    my $titleid          = $r->param('titleid')       || '';
+    my $dbname          = $r->param('dbname')       || '';
+    my $title          = decode_utf8($r->param('title'))        || '';
+    my $type           = $r->param('type')        || 1;
+    my $lecture        = $r->param('lecture')     || 0;
+    my $format         = $r->param('format')      || 'HTML';
+    my $show           = $r->param('show')        || 'short';
+    my $do_addentry    = $r->param('do_addentry')    || '';
+    my $do_showlitlist = $r->param('do_showlitlist') || '';
+    my $do_changelist  = $r->param('do_changelist')  || '';
+    my $do_change      = $r->param('do_change')      || '';
+    my $do_delentry    = $r->param('do_delentry')    || '';
+    my $do_addlist     = $r->param('do_addlist')     || '';
+    my $do_dellist     = $r->param('do_dellist')     || '';
+    my $sorttype       = $r->param('srt')    || "person";
+    my $sortorder      = $r->param('srto')   || "asc";
+    my @topicids     = ($r->param('topicids'))?$r->param('topicids'):();
+    my $topicid      = $r->param('topicid')   || undef;
 
     
     my $topics_ref   = $user->get_topics;
@@ -521,17 +521,17 @@ sub show_record {
     my $path_prefix    = $self->stash('path_prefix');
     
     # CGI Args
-    my $method         = $query->stash('_method')     || '';
-    my $titleid          = $query->stash('titleid')       || '';
-    my $dbname          = $query->stash('dbname')       || '';
-    my $title          = decode_utf8($query->stash('title'))        || '';
-    my $type           = $query->stash('type')        || 1;
-    my $lecture        = $query->stash('lecture')     || 0;
-    my $format         = $query->stash('format')      || 'short';
-    my $sorttype       = $query->stash('srt')    || "person";
-    my $sortorder      = $query->stash('srto')   || "asc";
-    my @topicids     = ($query->stash('topicids'))?$query->param('topicids'):();
-    my $topicid      = $query->stash('topicid')   || undef;
+    my $method         = $r->param('_method')     || '';
+    my $titleid          = $r->param('titleid')       || '';
+    my $dbname          = $r->param('dbname')       || '';
+    my $title          = decode_utf8($r->param('title'))        || '';
+    my $type           = $r->param('type')        || 1;
+    my $lecture        = $r->param('lecture')     || 0;
+    my $format         = $r->param('format')      || 'short';
+    my $sorttype       = $r->param('srt')    || "person";
+    my $sortorder      = $r->param('srto')   || "asc";
+    my @topicids     = ($r->param('topicids'))?$r->param('topicids'):();
+    my $topicid      = $r->param('topicid')   || undef;
 
     my $topics_ref   = $user->get_topics;
 
@@ -630,7 +630,7 @@ sub print_record {
     my $path_prefix    = $self->stash('path_prefix');
     
     # CGI Args
-    my $format                  = $query->stash('format')                || '';
+    my $format                  = $r->param('format')                || '';
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
@@ -706,7 +706,7 @@ sub save_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $format                  = $query->stash('format')                || '';
+    my $format                  = $r->param('format')                || '';
 
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist

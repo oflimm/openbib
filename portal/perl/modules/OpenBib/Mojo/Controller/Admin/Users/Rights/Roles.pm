@@ -77,7 +77,7 @@ sub update_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my @roles           = ($query->stash('roles'))?$query->param('roles'):();
+    my @roles           = ($r->param('roles'))?$r->param('roles'):();
 
     if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();

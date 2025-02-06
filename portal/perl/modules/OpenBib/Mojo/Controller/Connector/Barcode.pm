@@ -64,7 +64,7 @@ sub show {
     my $r          = $self->stash('r');
 
     # CGI Args
-    my $text       = $query->stash('text')      || '';
+    my $text       = $r->param('text')      || '';
 
     $text = uri_unescape($text) if ($text);
 

@@ -76,12 +76,12 @@ sub show_via_sql {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $base       = $query->stash('base')       || undef;
-    my $location   = decode_utf8($query->stash('location'))   || undef;
-    my $range_start= $query->stash('start')      || undef;
-    my $range_end  = $query->stash('end')        || undef;
-    my $title      = decode_utf8($query->stash('title'))      || '';
-    my $database   = $query->stash('database')   || '';
+    my $base       = $r->param('base')       || undef;
+    my $location   = decode_utf8($r->param('location'))   || undef;
+    my $range_start= $r->param('start')      || undef;
+    my $range_end  = $r->param('end')        || undef;
+    my $title      = decode_utf8($r->param('title'))      || '';
+    my $database   = $r->param('database')   || '';
 
     return 200 unless (defined $base); # ok
 
@@ -278,12 +278,12 @@ sub show_via_searchengine {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $base       = $query->stash('base')       || undef;
-    my $location   = decode_utf8($query->stash('location'))   || undef;
-    my $range_start= $query->stash('start')      || undef;
-    my $range_end  = $query->stash('end')        || undef;
-    my $title      = decode_utf8($query->stash('title'))      || '';
-    my $database   = $query->stash('database')   || '';
+    my $base       = $r->param('base')       || undef;
+    my $location   = decode_utf8($r->param('location'))   || undef;
+    my $range_start= $r->param('start')      || undef;
+    my $range_end  = $r->param('end')        || undef;
+    my $title      = decode_utf8($r->param('title'))      || '';
+    my $database   = $r->param('database')   || '';
 
     return 200 unless (defined $base); # ok
 

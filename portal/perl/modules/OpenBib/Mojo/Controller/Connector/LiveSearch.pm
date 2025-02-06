@@ -78,9 +78,9 @@ sub show {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $word  = $query->stash('q')     || '';
-    my $type  = $query->stash('type')  || '';
-    my $exact = $query->stash('exact') || '';
+    my $word  = $r->param('q')     || '';
+    my $type  = $r->param('type')  || '';
+    my $exact = $r->param('exact') || '';
     
     if (!$word || $word=~/\d/){
         $self->header_add('Status',200); # ok

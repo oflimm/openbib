@@ -82,8 +82,8 @@ sub show_collection {
     my $useragent      = $self->stash('useragent');
 
     # CGI Args
-    my $sorttype       = $query->stash('srt')    || "tstamp";
-    my $sortorder      = $query->stash('srto')   || "desc";
+    my $sorttype       = $r->param('srt')    || "tstamp";
+    my $sortorder      = $r->param('srto')   || "desc";
 
     if ($logger->is_debug){
 	$logger->debug("A Litlist QueryOptions-Object with options ".YAML::Syck::Dump($queryoptions->get_options));
@@ -121,7 +121,7 @@ sub show_record {
     my $useragent      = $self->stash('useragent');
     
     # CGI Args
-    my $method         = $query->stash('_method')     || '';
+    my $method         = $r->param('_method')     || '';
 
     my $litlist_is_public = $user->litlist_is_public({litlistid => $litlistid});
     my $user_owns_litlist = ($user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid}))?1:0;

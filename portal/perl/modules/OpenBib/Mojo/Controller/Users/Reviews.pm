@@ -128,20 +128,20 @@ sub update_record {
     my $useragent      = $self->stash('useragent');
 
     # CGI Args
-    my $offset         = $query->stash('offset')      || 0;
-    my $hitrange       = $query->stash('hitrange')    || 50;
-    my $queryid        = $query->stash('queryid')     || '';
-    my $database       = $query->stash('db')    || '';
-    my $sorttype       = $query->stash('srt')    || "person";
-    my $sortorder      = $query->stash('srto')   || "asc";
-    $reviewid          = $query->stash('reviewid')    || '';
-    my $titleid        = $query->stash('titleid')       || '';
-    my $dbname         = $query->stash('dbname')       || '';
-    my $titisbn        = $query->stash('titisbn')     || '';
-    my $title          = decode_utf8($query->stash('title'))    || '';
-    my $review         = decode_utf8($query->stash('review'))   || '';
-    my $nickname       = decode_utf8($query->stash('nickname')) || '';
-    my $rating         = $query->stash('rating')      || 0;
+    my $offset         = $r->param('offset')      || 0;
+    my $hitrange       = $r->param('hitrange')    || 50;
+    my $queryid        = $r->param('queryid')     || '';
+    my $database       = $r->param('db')    || '';
+    my $sorttype       = $r->param('srt')    || "person";
+    my $sortorder      = $r->param('srto')   || "asc";
+    $reviewid          = $r->param('reviewid')    || '';
+    my $titleid        = $r->param('titleid')       || '';
+    my $dbname         = $r->param('dbname')       || '';
+    my $titisbn        = $r->param('titisbn')     || '';
+    my $title          = decode_utf8($r->param('title'))    || '';
+    my $review         = decode_utf8($r->param('review'))   || '';
+    my $nickname       = decode_utf8($r->param('nickname')) || '';
+    my $rating         = $r->param('rating')      || 0;
 
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
@@ -244,19 +244,19 @@ sub show_record_form {
     # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
     #####################################################################
 
-    my $offset         = $query->stash('offset')      || 0;
-    my $hitrange       = $query->stash('hitrange')    || 50;
-    my $queryid        = $query->stash('queryid')     || '';
-    my $database       = $query->stash('db')    || '';
-    my $sorttype       = $query->stash('srt')    || "person";
-    my $sortorder      = $query->stash('srto')   || "asc";
-    my $titleid          = $query->stash('titleid')       || '';
-    my $dbname          = $query->stash('dbname')       || '';
-    my $titisbn        = $query->stash('titisbn')     || '';
-    my $title          = decode_utf8($query->stash('title'))    || '';
-    my $review         = decode_utf8($query->stash('review'))   || '';
-    my $nickname       = decode_utf8($query->stash('nickname')) || '';
-    my $rating         = $query->stash('rating')      || 0;
+    my $offset         = $r->param('offset')      || 0;
+    my $hitrange       = $r->param('hitrange')    || 50;
+    my $queryid        = $r->param('queryid')     || '';
+    my $database       = $r->param('db')    || '';
+    my $sorttype       = $r->param('srt')    || "person";
+    my $sortorder      = $r->param('srto')   || "asc";
+    my $titleid          = $r->param('titleid')       || '';
+    my $dbname          = $r->param('dbname')       || '';
+    my $titisbn        = $r->param('titisbn')     || '';
+    my $title          = decode_utf8($r->param('title'))    || '';
+    my $review         = decode_utf8($r->param('review'))   || '';
+    my $nickname       = decode_utf8($r->param('nickname')) || '';
+    my $rating         = $r->param('rating')      || 0;
 
     if (!$session->is_valid()){
         return $self->print_warning($msg->maketext("Ungültige Session"));

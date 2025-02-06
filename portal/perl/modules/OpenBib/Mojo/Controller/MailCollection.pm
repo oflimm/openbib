@@ -75,12 +75,12 @@ sub show {
     my $path_prefix    = $self->stash('path_prefix');
     
     # CGI Args
-    my $email     = ($query->stash('email'))?$query->param('email'):'';
-    my $subject   = ($query->stash('subject'))?$query->param('subject'):'Ihre Merkliste';
-    my $singleidn = $query->stash('singleidn');
-    my $mail      = $query->stash('mail');
-    my $database  = $query->stash('db');
-    my $type      = $query->stash('type')||'HTML';
+    my $email     = ($r->param('email'))?$r->param('email'):'';
+    my $subject   = ($r->param('subject'))?$r->param('subject'):'Ihre Merkliste';
+    my $singleidn = $r->param('singleidn');
+    my $mail      = $r->param('mail');
+    my $database  = $r->param('db');
+    my $type      = $r->param('type')||'HTML';
 
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist

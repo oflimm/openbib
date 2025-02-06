@@ -190,7 +190,7 @@ sub show_record_form {
     my $msg            = $self->stash('msg');
 
     # CGI Args
-    my $numrev         = $query->stash('numrev');
+    my $numrev         = $r->param('numrev');
     
     if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();

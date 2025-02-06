@@ -71,12 +71,12 @@ sub show {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $type           = $query->stash('type')            || 'swt'; # oder tit
-    my $id             = $query->stash('id')              || '';
-    my $content        = $query->stash('content')         || '';
-    my $isbn           = $query->stash('isbn')            || '';
-    my $database       = $query->stash('db')        || '';
-    my $format         = $query->stash('format')          || 'ajax';
+    my $type           = $r->param('type')            || 'swt'; # oder tit
+    my $id             = $r->param('id')              || '';
+    my $content        = $r->param('content')         || '';
+    my $isbn           = $r->param('isbn')            || '';
+    my $database       = $r->param('db')        || '';
+    my $format         = $r->param('format')          || 'ajax';
 
     if (!$database || !$type){
         return $self->print_warning($msg->maketext("Fehler."));

@@ -201,7 +201,7 @@ sub show_collection {
     my $dbinfotable    = $self->stash('dbinfo');
     
     # CGI Args
-    my $sb        = $query->stash('sb')        || $config->{default_local_search_backend};
+    my $sb        = $r->param('sb')        || $config->{default_local_search_backend};
 
     # Katalog aktiv bzw. in View?
     unless ($config->database_defined_in_view({ database => $database, view => $view }) && $config->db_is_active($database)){
@@ -295,11 +295,11 @@ sub show_record {
     my $dbinfotable    = $self->stash('dbinfo');
 
     # CGI Args
-    my $stid          = $query->stash('stid')              || '';
-    my $callback      = $query->stash('callback')  || '';
-    my $queryid       = $query->stash('queryid')   || '';
-    my $format        = $query->stash('format')    || 'full';
-    my $no_log        = $query->stash('no_log')    || '';
+    my $stid          = $r->param('stid')              || '';
+    my $callback      = $r->param('callback')  || '';
+    my $queryid       = $r->param('queryid')   || '';
+    my $format        = $r->param('format')    || 'full';
+    my $no_log        = $r->param('no_log')    || '';
 
     # Katalog aktiv bzw. in View?
     unless ($config->database_defined_in_view({ database => $database, view => $view }) && $config->db_is_active($database)){
@@ -375,7 +375,7 @@ sub show_record {
         my $litlists_ref = $user->get_litlists_of_tit({titleid => $titleid, dbname => $database, view => $view});
 
         # Anreicherung mit OLWS-Daten
-        if (defined $query->stash('olws') && $query->param('olws') eq "Viewer"){
+        if (defined $r->param('olws') && $r->param('olws') eq "Viewer"){
             if (defined $circinfotable->get($database) && defined $circinfotable->get($database)->{circcheckurl}){
                 $logger->debug("Endpoint: ".$circinfotable->get($database)->{circcheckurl});
                 my $soapresult;
@@ -628,11 +628,11 @@ sub show_record_fields {
     my $dbinfotable    = $self->stash('dbinfo');
 
     # CGI Args
-    my $stid          = $query->stash('stid')              || '';
-    my $callback      = $query->stash('callback')  || '';
-    my $queryid       = $query->stash('queryid')   || '';
-    my $format        = $query->stash('format')    || 'full';
-    my $no_log        = $query->stash('no_log')    || '';
+    my $stid          = $r->param('stid')              || '';
+    my $callback      = $r->param('callback')  || '';
+    my $queryid       = $r->param('queryid')   || '';
+    my $format        = $r->param('format')    || 'full';
+    my $no_log        = $r->param('no_log')    || '';
         
     if ($userid && !$self->is_authenticated('user',$userid)){
         $logger->debug("Testing authorization for given userid $userid");
@@ -809,11 +809,11 @@ sub show_record_holdings {
     my $dbinfotable    = $self->stash('dbinfo');
 
     # CGI Args
-    my $stid          = $query->stash('stid')              || '';
-    my $callback      = $query->stash('callback')  || '';
-    my $queryid       = $query->stash('queryid')   || '';
-    my $format        = $query->stash('format')    || 'full';
-    my $no_log        = $query->stash('no_log')    || '';
+    my $stid          = $r->param('stid')              || '';
+    my $callback      = $r->param('callback')  || '';
+    my $queryid       = $r->param('queryid')   || '';
+    my $format        = $r->param('format')    || 'full';
+    my $no_log        = $r->param('no_log')    || '';
 
 
     my ($atime,$btime,$timeall)=(0,0,0);

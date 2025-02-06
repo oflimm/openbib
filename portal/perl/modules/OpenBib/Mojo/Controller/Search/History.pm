@@ -77,16 +77,16 @@ sub show {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args  
-    my $sorttype     = ($query->stash('srt'))?$query->param('srt'):"person";
-    my $sortall      = ($query->stash('sortall'))?$query->param('sortall'):'0';
-    my $sortorder    = ($query->stash('srto'))?$query->param('srto'):'asc';
-    my $queryid      = $query->stash('queryid')      || '';
-    my $offset       = (defined $query->stash('offset'))?$query->param('offset'):0;
+    my $sorttype     = ($r->param('srt'))?$r->param('srt'):"person";
+    my $sortall      = ($r->param('sortall'))?$r->param('sortall'):'0';
+    my $sortorder    = ($r->param('srto'))?$r->param('srto'):'asc';
+    my $queryid      = $r->param('queryid')      || '';
+    my $offset       = (defined $r->param('offset'))?$r->param('offset'):0;
     ($offset)=$offset=~/^(-?\d+)$/; # offset muss numerisch sein (SQL-Injection)
-    my $hitrange     = $query->stash('num')          || 50;
+    my $hitrange     = $r->param('num')          || 50;
     ($hitrange)=$hitrange=~/^(-?\d+)$/; # hitrange muss numerisch sein (SQL-Injection)
 
-    my $database     = $query->stash('db')     || '';
+    my $database     = $r->param('db')     || '';
 
     my @queryids     = ();
     my @querystrings = ();

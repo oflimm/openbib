@@ -77,7 +77,7 @@ sub process_vlb {
         $client_ip=$1;
     }
 
-    my $size         = $query->stash('size')              || 's';
+    my $size         = $r->param('size')              || 's';
 
     my $redirect_url = "/images/openbib/no_img.png";
 

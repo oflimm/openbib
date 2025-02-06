@@ -66,11 +66,11 @@ sub show_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $stid          = $query->stash('stid')     || '';
-    my $callback      = $query->stash('callback') || '';
-    my $lang          = $query->stash('lang')     || $queryoptions->get_option('l') || 'de';
-    my $format        = $query->stash('format')   || 'full';
-    my $no_log        = $query->stash('no_log')  || '';
+    my $stid          = $r->param('stid')     || '';
+    my $callback      = $r->param('callback') || '';
+    my $lang          = $r->param('lang')     || $queryoptions->get_option('l') || 'de';
+    my $format        = $r->param('format')   || 'full';
+    my $no_log        = $r->param('no_log')  || '';
 
     if ($database && $classificationid ){ # Valide Informationen etc.
         $logger->debug("ID: $classificationid - DB: $database");
@@ -133,9 +133,9 @@ sub show_collection {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $callback      = $query->stash('callback') || '';
-    my $lang          = $query->stash('lang')     || $queryoptions->get_option('l') || 'de';
-    my $no_log        = $query->stash('no_log')   || '';
+    my $callback      = $r->param('callback') || '';
+    my $lang          = $r->param('lang')     || $queryoptions->get_option('l') || 'de';
+    my $no_log        = $r->param('no_log')   || '';
 
 
     if ($database){ # Valide Informationen etc.
@@ -187,14 +187,14 @@ sub show_collection_ezb {
     my $path_prefix    = $self->stash('path_prefix');
     
     # CGI Args
-    my $type           = decode_utf8($query->stash('type'))     || 'cloud';
-    my $access_green   = decode_utf8($query->stash('access_green'))     || 0;
-    my $access_yellow  = decode_utf8($query->stash('access_yellow'))    || 0;
-    my $access_red     = decode_utf8($query->stash('access_red'))       || 0;
-    my $id             = decode_utf8($query->stash('id'))       || undef;
-    my $sc             = decode_utf8($query->stash('sc'))       || '';
-    my $lc             = decode_utf8($query->stash('lc'))       || '';
-    my $sindex         = decode_utf8($query->stash('sindex'))   || 0;
+    my $type           = decode_utf8($r->param('type'))     || 'cloud';
+    my $access_green   = decode_utf8($r->param('access_green'))     || 0;
+    my $access_yellow  = decode_utf8($r->param('access_yellow'))    || 0;
+    my $access_red     = decode_utf8($r->param('access_red'))       || 0;
+    my $id             = decode_utf8($r->param('id'))       || undef;
+    my $sc             = decode_utf8($r->param('sc'))       || '';
+    my $lc             = decode_utf8($r->param('lc'))       || '';
+    my $sindex         = decode_utf8($r->param('sindex'))   || 0;
     
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
@@ -263,14 +263,14 @@ sub show_collectionxxx {
     my $path_prefix    = $self->stash('path_prefix');
     
     # CGI Args
-    my $type           = decode_utf8($query->stash('type'))     || 'cloud';
-    my $access_green   = decode_utf8($query->stash('access_green'))     || 0;
-    my $access_yellow  = decode_utf8($query->stash('access_yellow'))    || 0;
-    my $access_red     = decode_utf8($query->stash('access_red'))       || 0;
-    my $id             = decode_utf8($query->stash('id'))       || undef;
-    my $sc             = decode_utf8($query->stash('sc'))       || '';
-    my $lc             = decode_utf8($query->stash('lc'))       || '';
-    my $sindex         = decode_utf8($query->stash('sindex'))   || 0;
+    my $type           = decode_utf8($r->param('type'))     || 'cloud';
+    my $access_green   = decode_utf8($r->param('access_green'))     || 0;
+    my $access_yellow  = decode_utf8($r->param('access_yellow'))    || 0;
+    my $access_red     = decode_utf8($r->param('access_red'))       || 0;
+    my $id             = decode_utf8($r->param('id'))       || undef;
+    my $sc             = decode_utf8($r->param('sc'))       || '';
+    my $lc             = decode_utf8($r->param('lc'))       || '';
+    my $sindex         = decode_utf8($r->param('sindex'))   || 0;
     
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
@@ -339,18 +339,18 @@ sub show_collection_dbis {
     my $path_prefix    = $self->stash('path_prefix');
     
     # CGI Args
-    my $type           = decode_utf8($query->stash('type'))     || 'cloud';
+    my $type           = decode_utf8($r->param('type'))     || 'cloud';
 
-    my $access_green   = decode_utf8($query->stash('access_green'))     || 0;
-    my $access_yellow  = decode_utf8($query->stash('access_yellow'))    || 0;
-    my $access_red     = decode_utf8($query->stash('access_red'))       || 0;
-    my $access_de      = decode_utf8($query->stash('access_de'))        || 0;
-    my $id             = decode_utf8($query->stash('id'))       || undef;
-    my $lett           = decode_utf8($query->stash('lett'))     || '';
+    my $access_green   = decode_utf8($r->param('access_green'))     || 0;
+    my $access_yellow  = decode_utf8($r->param('access_yellow'))    || 0;
+    my $access_red     = decode_utf8($r->param('access_red'))       || 0;
+    my $access_de      = decode_utf8($r->param('access_de'))        || 0;
+    my $id             = decode_utf8($r->param('id'))       || undef;
+    my $lett           = decode_utf8($r->param('lett'))     || '';
 
-    my $sc             = decode_utf8($query->stash('sc'))       || '';
-    my $lc             = decode_utf8($query->stash('lc'))       || '';
-    my $sindex         = decode_utf8($query->stash('sindex'))   || 0;
+    my $sc             = decode_utf8($r->param('sc'))       || '';
+    my $lc             = decode_utf8($r->param('lc'))       || '';
+    my $sindex         = decode_utf8($r->param('sindex'))   || 0;
     
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########

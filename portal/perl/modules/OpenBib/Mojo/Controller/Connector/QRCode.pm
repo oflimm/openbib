@@ -63,8 +63,8 @@ sub show {
     my $r          = $self->stash('r');
 
     # CGI Args
-    my $text       = $query->stash('text')      || '';
-    my $size       = $query->stash('size')      || 365; # maximale Pixelzahl pro Dimension
+    my $text       = $r->param('text')      || '';
+    my $size       = $r->param('size')      || 365; # maximale Pixelzahl pro Dimension
     
     my $lt         = length($text); # Binary corresp. http://www.denso-wave.com/qrcode/vertable1-e.html
 

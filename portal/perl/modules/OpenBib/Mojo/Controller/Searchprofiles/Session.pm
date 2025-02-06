@@ -68,21 +68,21 @@ sub show_collection {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my @databases = ($query->stash('db'))?$query->param('db'):();
-    my $singleidn = $query->stash('singleidn') || '';
-    my $action    = ($query->stash('action'))?$query->param('action'):'';
-    my $do_choose = $query->stash('do_choose') || '';
-    my $verf      = $query->stash('verf')      || '';
-    my $hst       = $query->stash('hst')       || '';
-    my $swt       = $query->stash('swt')       || '';
-    my $kor       = $query->stash('kor')       || '';
-    my $sign      = $query->stash('sign')      || '';
-    my $isbn      = $query->stash('isbn')      || '';
-    my $issn      = $query->stash('issn')      || '';
-    my $notation  = $query->stash('notation')  || '';
-    my $ejahr     = $query->stash('ejahr')     || '';
-    my $queryid   = $query->stash('queryid')   || '';
-    my $maxcolumn = $query->stash('maxcolumn') || $config->{databasechoice_maxcolumn};
+    my @databases = ($r->param('db'))?$r->param('db'):();
+    my $singleidn = $r->param('singleidn') || '';
+    my $action    = ($r->param('action'))?$r->param('action'):'';
+    my $do_choose = $r->param('do_choose') || '';
+    my $verf      = $r->param('verf')      || '';
+    my $hst       = $r->param('hst')       || '';
+    my $swt       = $r->param('swt')       || '';
+    my $kor       = $r->param('kor')       || '';
+    my $sign      = $r->param('sign')      || '';
+    my $isbn      = $r->param('isbn')      || '';
+    my $issn      = $r->param('issn')      || '';
+    my $notation  = $r->param('notation')  || '';
+    my $ejahr     = $r->param('ejahr')     || '';
+    my $queryid   = $r->param('queryid')   || '';
+    my $maxcolumn = $r->param('maxcolumn') || $config->{databasechoice_maxcolumn};
   
     my %checkeddb;
 
@@ -137,7 +137,7 @@ sub update_collection {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my @databases = ($query->stash('db'))?$query->param('db'):();
+    my @databases = ($r->param('db'))?$r->param('db'):();
   
     # Wenn es eine neue Auswahl gibt, dann wird diese eingetragen
     my $profileid = $session->set_dbchoice(\@databases);

@@ -268,8 +268,8 @@ sub show_archived_search {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $fromdate        = $query->stash('fromdate') || '';
-    my $todate          = $query->stash('todate')   || '';
+    my $fromdate        = $r->param('fromdate') || '';
+    my $todate          = $r->param('todate')   || '';
 
     if (!$self->authorization_successful('right_read')){
         return $self->print_authorization_error();

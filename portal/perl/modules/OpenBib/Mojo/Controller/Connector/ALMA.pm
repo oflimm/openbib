@@ -115,7 +115,7 @@ sub challenge {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $challenge_secret = $query->stash('challenge')     || '';
+    my $challenge_secret = $r->param('challenge')     || '';
 
     unless ( $challenge_secret ) {
 	$logger->error("No Challenge secret given");

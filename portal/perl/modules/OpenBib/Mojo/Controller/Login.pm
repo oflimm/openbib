@@ -86,11 +86,11 @@ sub show_form {
     my $password         = $input_data_ref->{password};
 
     # CGI-only Parameters for html-representation
-    my $action      = ($query->stash('action'))?$query->param('action'):'none';
-    my $code        = ($query->stash('code'))?$query->param('code'):'1';
-    my $validtarget = ($query->stash('validtarget'))?$query->param('validtarget'):'none';
-    my $type        = ($query->stash('type'))?$query->param('type'):'';
-    my $redirect_to = $query->stash('redirect_to'); # || "$path_prefix/$config->{searchform_loc}?l=$lang";
+    my $action      = ($r->param('action'))?$r->param('action'):'none';
+    my $code        = ($r->param('code'))?$r->param('code'):'1';
+    my $validtarget = ($r->param('validtarget'))?$r->param('validtarget'):'none';
+    my $type        = ($r->param('type'))?$r->param('type'):'';
+    my $redirect_to = $r->param('redirect_to'); # || "$path_prefix/$config->{searchform_loc}?l=$lang";
 
     
     # Wenn die Session schon authentifiziert ist, dann wird
@@ -164,10 +164,10 @@ sub authenticate {
     my $expire           = $input_data_ref->{expire};    
 
     # CGI-only Parameters for html-representation
-    my $code        = ($query->stash('code'))?$query->param('code'):'1';
-    my $validtarget = ($query->stash('validtarget'))?$query->param('validtarget'):'none';
-    my $type        = ($query->stash('type'))?$query->param('type'):'';
-    my $redirect_to = uri_unescape($query->stash('redirect_to'));
+    my $code        = ($r->param('code'))?$r->param('code'):'1';
+    my $validtarget = ($r->param('validtarget'))?$r->param('validtarget'):'none';
+    my $type        = ($r->param('type'))?$r->param('type'):'';
+    my $redirect_to = uri_unescape($r->param('redirect_to'));
 
     my $redirecturl = "";
 
@@ -459,12 +459,12 @@ sub failure {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $code      = ($query->stash('code'))?$query->param('code'):'1';
-    my $authenticatorid  = ($query->stash('authenticatorid'))?$query->param('authenticatorid'):'none';
-    my $validtarget = ($query->stash('validtarget'))?$query->param('validtarget'):'none';
-    my $type      = ($query->stash('type'))?$query->param('type'):'';
-    my $username = ($query->stash('username'))?$query->param('username'):'';
-    my $password  = decode_utf8($query->stash('password')) || $query->param('password') || '';
+    my $code      = ($r->param('code'))?$r->param('code'):'1';
+    my $authenticatorid  = ($r->param('authenticatorid'))?$r->param('authenticatorid'):'none';
+    my $validtarget = ($r->param('validtarget'))?$r->param('validtarget'):'none';
+    my $type      = ($r->param('type'))?$r->param('type'):'';
+    my $username = ($r->param('username'))?$r->param('username'):'';
+    my $password  = decode_utf8($r->param('password')) || $r->param('password') || '';
 
     # Wenn die Session schon authentifiziert ist, dann wird
     # wird in die Benutzereinstellungen gesprungen

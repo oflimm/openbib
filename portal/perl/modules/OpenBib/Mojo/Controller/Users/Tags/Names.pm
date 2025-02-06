@@ -108,7 +108,7 @@ sub show_collection {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $format         = $query->stash('format')      || 'cloud';
+    my $format         = $r->param('format')      || 'cloud';
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
@@ -179,11 +179,11 @@ sub show_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $method         = $query->stash('_method') || '';
-    my $database       = $query->stash('db')     || '';
-    my $sorttype       = $query->stash('srt')    || "person";
-    my $sortorder      = $query->stash('srto')   || "asc";
-    my $format         = $query->stash('format') || 'cloud';
+    my $method         = $r->param('_method') || '';
+    my $database       = $r->param('db')     || '';
+    my $sorttype       = $r->param('srt')    || "person";
+    my $sortorder      = $r->param('srto')   || "asc";
+    my $format         = $r->param('format') || 'cloud';
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
@@ -348,7 +348,7 @@ sub create_record {
     my $queryoptions   = $self->stash('qopts');
     my $path_prefix    = $self->stash('path_prefix');
 
-    my $method         = $query->stash('_method') || '';
+    my $method         = $r->param('_method') || '';
 
     if (! $user->{ID} | $user->{ID} ne $userid){
         if ($self->stash('representation') eq "html"){

@@ -175,7 +175,7 @@ sub mail_collection {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $format                  = $query->stash('format')                || '';
+    my $format                  = $r->param('format')                || '';
 
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
@@ -247,12 +247,12 @@ sub mail_collection_send {
     my $path_prefix    = $self->stash('path_prefix');
    
     # CGI Args
-    my $email     = ($query->stash('email'))?$query->param('email'):'';
-    my $subject   = ($query->stash('subject'))?$query->param('subject'):'Ihre Merkliste';
-    $id           = $query->stash('id');
-    my $mail      = $query->stash('mail');
-    $database     = $query->stash('db');
-    my $format    = $query->stash('format')||'full';
+    my $email     = ($r->param('email'))?$r->param('email'):'';
+    my $subject   = ($r->param('subject'))?$r->param('subject'):'Ihre Merkliste';
+    $id           = $r->param('id');
+    my $mail      = $r->param('mail');
+    $database     = $r->param('db');
+    my $format    = $r->param('format')||'full';
 
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist

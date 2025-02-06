@@ -72,8 +72,8 @@ sub show_record {
     my $useragent      = $self->stash('useragent');    
     
     # CGI Args
-    my $format         = $query->stash('format')         || '';
-    my $id             = $query->stash('id')             || '';
+    my $format         = $r->param('format')         || '';
+    my $id             = $r->param('id')             || '';
     
     my $statistics  = new OpenBib::Statistics();
     my $utils       = new OpenBib::Template::Utilities;

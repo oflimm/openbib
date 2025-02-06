@@ -80,13 +80,13 @@ sub show_collection {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $method                  = $query->stash('_method')                 || '';
-    my $dbname                  = $query->stash('dbname')                  || '';
-    my $titleid                 = $query->stash('titleid')                 || '';
-    my $action                  = $query->stash('action')                  || 'show';
-    my $show                    = $query->stash('show')                    || 'short';
-    my $type                    = $query->stash('type')                    || 'HTML';
-    my $format                  = $query->stash('format')                  || 'short';
+    my $method                  = $r->param('_method')                 || '';
+    my $dbname                  = $r->param('dbname')                  || '';
+    my $titleid                 = $r->param('titleid')                 || '';
+    my $action                  = $r->param('action')                  || 'show';
+    my $show                    = $r->param('show')                    || 'short';
+    my $type                    = $r->param('type')                    || 'HTML';
+    my $format                  = $r->param('format')                  || 'short';
     
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
@@ -162,23 +162,23 @@ sub show_collection_count {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $database                = $query->stash('db')                || '';
-    my $singleidn               = $query->stash('singleidn')               || '';
-    my $litlistid               = $query->stash('litlistid')               || '';
-    my $do_collection_delentry  = $query->stash('do_collection_delentry')  || '';
-    my $do_collection_showcount = $query->stash('do_collection_showcount') || '';
-    my $do_litlist_addentry     = $query->stash('do_litlist_addentry')     || '';
-    my $do_addlitlist           = $query->stash('do_addlitlist')           || '';
-    my $do_addtags              = $query->stash('do_addtags')              || '';
-    my $title                   = $query->stash('title')                   || '';
-    my $action                  = $query->stash('action')                  || 'show';
-    my $show                    = $query->stash('show')                    || 'short';
-    my $type                    = $query->stash('type')                    || 'HTML';
-    my $tags                    = $query->stash('tags')                    || '';
-    my $tags_type               = $query->stash('tags_type')               || 1;
-    my $littype                 = $query->stash('littype')                 || 1;
+    my $database                = $r->param('db')                || '';
+    my $singleidn               = $r->param('singleidn')               || '';
+    my $litlistid               = $r->param('litlistid')               || '';
+    my $do_collection_delentry  = $r->param('do_collection_delentry')  || '';
+    my $do_collection_showcount = $r->param('do_collection_showcount') || '';
+    my $do_litlist_addentry     = $r->param('do_litlist_addentry')     || '';
+    my $do_addlitlist           = $r->param('do_addlitlist')           || '';
+    my $do_addtags              = $r->param('do_addtags')              || '';
+    my $title                   = $r->param('title')                   || '';
+    my $action                  = $r->param('action')                  || 'show';
+    my $show                    = $r->param('show')                    || 'short';
+    my $type                    = $r->param('type')                    || 'HTML';
+    my $tags                    = $r->param('tags')                    || '';
+    my $tags_type               = $r->param('tags_type')               || 1;
+    my $littype                 = $r->param('littype')                 || 1;
 
-    my $format                  = $query->stash('format')                  || 'short';
+    my $format                  = $r->param('format')                  || 'short';
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
@@ -223,7 +223,7 @@ sub show_record {
     my $useragent      = $self->stash('useragent');
     
     # CGI Args
-    my $method         = $query->stash('_method')     || '';
+    my $method         = $r->param('_method')     || '';
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
@@ -268,17 +268,17 @@ sub create_record {
     my $location       = $self->stash('location');
 
     # CGI Args
-    my $do_cartitems_save       = $query->stash('do_cartitems_save')     || '';
-    my $do_cartitems_delentry   = $query->stash('do_cartitems_delentry') || '';
-    my $do_litlists_addentry    = $query->stash('do_litlists_addentry')  || '';
-    my $do_addlitlist           = $query->stash('do_addlitlist')         || '';
-    my $do_addtags              = $query->stash('do_addtags')            || '';
+    my $do_cartitems_save       = $r->param('do_cartitems_save')     || '';
+    my $do_cartitems_delentry   = $r->param('do_cartitems_delentry') || '';
+    my $do_litlists_addentry    = $r->param('do_litlists_addentry')  || '';
+    my $do_addlitlist           = $r->param('do_addlitlist')         || '';
+    my $do_addtags              = $r->param('do_addtags')            || '';
 
-    my $tags                    = $query->stash('tags')                  || '';
-    my $tags_type               = $query->stash('tags_type')             || 1;
-    my $litlistid               = $query->stash('litlistid')             || '';
-    my $title                   = $query->stash('title')                 || '';
-    my $littype                 = $query->stash('littype')               || 1;
+    my $tags                    = $r->param('tags')                  || '';
+    my $tags_type               = $r->param('tags_type')             || 1;
+    my $litlistid               = $r->param('litlistid')             || '';
+    my $title                   = $r->param('title')                 || '';
+    my $littype                 = $r->param('littype')               || 1;
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
@@ -291,8 +291,8 @@ sub create_record {
     elsif ($do_cartitems_delentry || $do_litlists_addentry || $do_addlitlist || $do_addtags ) {
 
         # Shortcut: Delete multiple items via POST
-        if ($query->stash('do_cartitems_delentry')) {
-            foreach my $listid ($query->stash('id')) {
+        if ($r->param('do_cartitems_delentry')) {
+            foreach my $listid ($r->param('id')) {
                 $self->delete_item_from_collection($listid);
             }
             
@@ -317,7 +317,7 @@ sub create_record {
         if ($do_litlists_addentry) {
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid, view => $view});
             
-            foreach my $listid ($query->stash('id')) {
+            foreach my $listid ($r->param('id')) {
                 my $record = $self->get_single_item_in_collection($listid);
                 
                 if ($record && $litlist_properties_ref->{userid} eq $user->{ID}) {
@@ -340,7 +340,7 @@ sub create_record {
 
             $logger->debug("Created new Litlist with id $new_litlistid");
             
-            foreach my $listid ($query->stash('id')) {
+            foreach my $listid ($r->param('id')) {
                 my $record = $self->get_single_item_in_collection($listid);
 
                 $logger->debug("Record properties Id: $record->{id} database: $record->{database}");
@@ -366,8 +366,8 @@ sub create_record {
             if ($user->{ID}){
                 my $username = $user->get_username;
                 
-                if ($query->stash('id')){
-                    foreach my $listid ($query->stash('id')) {
+                if ($r->param('id')){
+                    foreach my $listid ($r->param('id')) {
                         my $record = $self->get_single_item_in_collection($listid);
                         
                         if ($record){
@@ -541,7 +541,7 @@ sub print_collection {
     my $path_prefix    = $self->stash('path_prefix');
     
     # CGI Args
-    my $format                  = $query->stash('format')                || '';
+    my $format                  = $r->param('format')                || '';
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
@@ -610,7 +610,7 @@ sub save_collection {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $format                  = $query->stash('format')                || '';
+    my $format                  = $r->param('format')                || '';
 
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist

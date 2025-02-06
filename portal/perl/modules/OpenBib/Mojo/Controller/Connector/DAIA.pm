@@ -77,13 +77,13 @@ sub show {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $id          = $query->stash('id')        || '';
-    my $format      = $query->stash('format')    || '';
-    my $callback    = $query->stash('callback')  || '';
-    my $patron      = $query->stash('patron')    || '';
-    my $patrontype  = $query->stash('patron-type')    || '';
-    my $accesstoken = $query->stash('access_token')    || '';
-    my $suppressresponsecodes = $query->stash('suppress-response-codes')    || '';
+    my $id          = $r->param('id')        || '';
+    my $format      = $r->param('format')    || '';
+    my $callback    = $r->param('callback')  || '';
+    my $patron      = $r->param('patron')    || '';
+    my $patrontype  = $r->param('patron-type')    || '';
+    my $accesstoken = $r->param('access_token')    || '';
+    my $suppressresponsecodes = $r->param('suppress-response-codes')    || '';
 
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->new;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;

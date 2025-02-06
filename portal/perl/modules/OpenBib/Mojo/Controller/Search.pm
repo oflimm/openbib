@@ -169,11 +169,11 @@ sub show_search_header {
     my $writer         = $self->stash('writer');
     
     # CGI Args
-    my $sb        = $query->stash('sb') || $config->get_searchengine_of_view($view) || $config->{default_local_search_backend};
+    my $sb        = $r->param('sb') || $config->get_searchengine_of_view($view) || $config->{default_local_search_backend};
 
     $logger->debug("Using searchengine $sb");
     
-    my $trefferliste  = $query->stash('trefferliste')  || '';
+    my $trefferliste  = $r->param('trefferliste')  || '';
 
     my $container = OpenBib::Container->instance;
     $container->register('query',$query);
@@ -326,7 +326,7 @@ sub show_search_result {
 
     
     # Alternativ: getrennte Suche uber alle Kataloge
-    if (defined $query->stash('sm') && $query->param('sm') eq "seq"){
+    if (defined $r->param('sm') && $r->param('sm') eq "seq"){
         # BEGIN Anfrage an Datenbanken schicken und Ergebnisse einsammeln
         #
 
@@ -480,30 +480,30 @@ sub show_index {
     my $representation = $self->stash('representation') || '';
 
     # CGI Args
-    my @databases     = ($query->stash('db'))?$query->param('db'):();
-    my $hitrange      = ($query->stash('num' ))?$query->param('num'):50;
-    my $page          = ($query->stash('page' ))?$query->param('page'):1;
-    my $sorttype      = ($query->stash('srt' ))?$query->param('srt'):"person";
-    my $sortorder     = ($query->stash('srto'))?$query->param('srto'):'asc';
-    my $defaultop     = ($query->stash('dop'))?$query->param('dop'):'and';
+    my @databases     = ($r->param('db'))?$r->param('db'):();
+    my $hitrange      = ($r->param('num' ))?$r->param('num'):50;
+    my $page          = ($r->param('page' ))?$r->param('page'):1;
+    my $sorttype      = ($r->param('srt' ))?$r->param('srt'):"person";
+    my $sortorder     = ($r->param('srto'))?$r->param('srto'):'asc';
+    my $defaultop     = ($r->param('dop'))?$r->param('dop'):'and';
 
-    my $sortall       = ($query->stash('sortall'))?$query->param('sortall'):'0';
+    my $sortall       = ($r->param('sortall'))?$r->param('sortall'):'0';
 
     # Index zusammen mit Eingabefelder 
-    my $verfindex     = $query->stash('verfindex')     || '';
-    my $korindex      = $query->stash('korindex')      || '';
-    my $swtindex      = $query->stash('swtindex')      || '';
-    my $notindex      = $query->stash('notindex')      || '';
+    my $verfindex     = $r->param('verfindex')     || '';
+    my $korindex      = $r->param('korindex')      || '';
+    my $swtindex      = $r->param('swtindex')      || '';
+    my $notindex      = $r->param('notindex')      || '';
 
     # oder Index als separate Funktion
-    my $indextype    = $query->stash('indextype')     || ''; # (verfindex, korindex, swtindex oder notindex)
-    my $indexterm    = $query->stash('indexterm')     || '';
-    my $searchindex  = $query->stash('searchindex')     || '';
+    my $indextype    = $r->param('indextype')     || ''; # (verfindex, korindex, swtindex oder notindex)
+    my $indexterm    = $r->param('indexterm')     || '';
+    my $searchindex  = $r->param('searchindex')     || '';
     
-    my $profile       = $query->stash('profile')        || '';
-    my $trefferliste  = $query->stash('trefferliste')  || '';
-    my $st            = $query->stash('st')            || '';    # Search type (1=simple,2=complex)    
-    my $drilldown     = $query->stash('dd')            || 0;     # Drill-Down?
+    my $profile       = $r->param('profile')        || '';
+    my $trefferliste  = $r->param('trefferliste')  || '';
+    my $st            = $r->param('st')            || '';    # Search type (1=simple,2=complex)    
+    my $drilldown     = $r->param('dd')            || 0;     # Drill-Down?
 
     my $spelling_suggestion_ref = ($user->is_authenticated)?$user->get_spelling_suggestion():{};
 
@@ -817,20 +817,20 @@ sub xxxget_modified_querystring {
     
     my @cgiparams = ();
     
-    foreach my $param (keys %{$query->stash}){
+    foreach my $param (keys %{$r->param}){
         $logger->debug("Processing $param");
         if (exists $arg_ref->{change}{$param}){
             push @cgiparams, "$param=".$arg_ref->{change}->{$param};
         }
         elsif (! exists $exclude_ref->{$param}){
-            my @values = $query->stash($param);
+            my @values = $r->param($param);
             if (@values){
                 foreach my $value (@values){
                     push @cgiparams, "$param=$value";
                 }
             }
             else {
-                push @cgiparams, "$param=".$query->stash($param);
+                push @cgiparams, "$param=".$r->param($param);
             }
         }
     }

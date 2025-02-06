@@ -77,7 +77,7 @@ sub update_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $newview        = ($query->stash('view'))?$query->param('view'):'';
+    my $newview        = ($r->param('view'))?$r->param('view'):'';
 
     if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();

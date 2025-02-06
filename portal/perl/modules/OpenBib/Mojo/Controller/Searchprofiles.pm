@@ -54,7 +54,7 @@ sub show_collection {
     my $config         = $self->stash('config');
 
     # CGI Args
-    my $year           = $query->stash('year');
+    my $year           = $r->param('year');
 
     my $statistics  = new OpenBib::Statistics();
 

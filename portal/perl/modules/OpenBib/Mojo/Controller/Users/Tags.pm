@@ -170,10 +170,10 @@ sub show_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $database       = $query->stash('db')     || '';
-    my $sorttype       = $query->stash('srt')    || "person";
-    my $sortorder      = $query->stash('srto')   || "asc";
-    my $format         = $query->stash('format') || 'cloud';
+    my $database       = $r->param('db')     || '';
+    my $sorttype       = $r->param('srt')    || "person";
+    my $sortorder      = $r->param('srto')   || "asc";
+    my $format         = $r->param('format') || 'cloud';
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
@@ -322,8 +322,8 @@ sub create_record {
     $user->add_tags($input_data_ref);
     
     if ($self->stash('representation') eq "html"){
-        if ($query->stash('redirect_to')){
-            my $new_location = uri_unescape($query->stash('redirect_to'));
+        if ($r->param('redirect_to')){
+            my $new_location = uri_unescape($r->param('redirect_to'));
             return $self->redirect($new_location,303);
         }
         else {
@@ -368,8 +368,8 @@ sub delete_record {
     }
 
     if ($self->stash('representation') eq "html"){
-        if ($query->stash('redirect_to')){
-            my $new_location = $query->stash('redirect_to');
+        if ($r->param('redirect_to')){
+            my $new_location = $r->param('redirect_to');
 
             # TODO: Get?
             $self->header_add('Content-Type','text/html');

@@ -147,13 +147,13 @@ sub create_record {
     my $path_prefix    = $self->stash('path_prefix');
     
     # Aktive Aenderungen des Nutzerkontos
-    my $validtarget     = ($query->stash('validtarget'    ))?$query->param('validtarget'):undef;
-    my $holdingid       = ($query->stash('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
-    my $pickup_location = ($query->stash('pickup_location') || $query->param('pickup_location') >= 0)?$query->param('pickup_location'):undef;
-    my $unit            = ($query->stash('unit'           ) >= 0)?$query->param('unit'):0;
-    my $storage         = ($query->stash('storage'        ))?$query->param('storage'):undef;
-    my $titleid         = ($query->stash('titleid'        ))?$query->param('titleid'):undef;
-    my $limitation      = ($query->stash('limitation'     ))?$query->param('limitation'):undef;
+    my $validtarget     = ($r->param('validtarget'    ))?$r->param('validtarget'):undef;
+    my $holdingid       = ($r->param('holdingid'      ))?$r->param('holdingid'):undef; # Mediennummer
+    my $pickup_location = ($r->param('pickup_location') || $r->param('pickup_location') >= 0)?$r->param('pickup_location'):undef;
+    my $unit            = ($r->param('unit'           ) >= 0)?$r->param('unit'):0;
+    my $storage         = ($r->param('storage'        ))?$r->param('storage'):undef;
+    my $titleid         = ($r->param('titleid'        ))?$r->param('titleid'):undef;
+    my $limitation      = ($r->param('limitation'     ))?$r->param('limitation'):undef;
 
     $holdingid = uri_unescape($holdingid) if ($holdingid);
 
@@ -291,19 +291,19 @@ sub delete_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $authenticatorid = ($query->stash('authenticatorid'))?$query->param('authenticatorid'):undef;
+    my $authenticatorid = ($r->param('authenticatorid'))?$r->param('authenticatorid'):undef;
     # Aktive Aenderungen des Nutzerkontos
-    my $validtarget     = ($query->stash('validtarget'    ))?$query->param('validtarget'):undef;
-    my $holdingid       = ($query->stash('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
-    my $requestid       = ($query->stash('requestid'      ))?$query->param('requestid'):''; # Requestid (fuer Alma)
-    my $unit            = ($query->stash('unit'           ) >= 0)?$query->param('unit'):0;
-    my $unitname        = ($query->stash('unitname'       ))?$query->param('unitname'):undef;
-    my $titleid         = ($query->stash('titleid'        ))?$query->param('titleid'):undef;
-    my $title           = ($query->stash('title'          ))?$query->param('title'):undef;
-    my $author          = ($query->stash('author'         ))?$query->param('author'):undef;
-    my $date            = ($query->stash('date'           ))?$query->param('date'):undef;
-    my $receipt         = ($query->stash('receipt'        ))?$query->param('receipt'):undef;
-    my $remark          = ($query->stash('remark'         ))?$query->param('remark'):undef;
+    my $validtarget     = ($r->param('validtarget'    ))?$r->param('validtarget'):undef;
+    my $holdingid       = ($r->param('holdingid'      ))?$r->param('holdingid'):undef; # Mediennummer
+    my $requestid       = ($r->param('requestid'      ))?$r->param('requestid'):''; # Requestid (fuer Alma)
+    my $unit            = ($r->param('unit'           ) >= 0)?$r->param('unit'):0;
+    my $unitname        = ($r->param('unitname'       ))?$r->param('unitname'):undef;
+    my $titleid         = ($r->param('titleid'        ))?$r->param('titleid'):undef;
+    my $title           = ($r->param('title'          ))?$r->param('title'):undef;
+    my $author          = ($r->param('author'         ))?$r->param('author'):undef;
+    my $date            = ($r->param('date'           ))?$r->param('date'):undef;
+    my $receipt         = ($r->param('receipt'        ))?$r->param('receipt'):undef;
+    my $remark          = ($r->param('remark'         ))?$r->param('remark'):undef;
 
     $unitname  = uri_unescape($unitname) if ($unitname);    
     $title     = uri_unescape($title) if ($title);    
@@ -448,15 +448,15 @@ sub confirm_delete_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $authenticatorid = ($query->stash('authenticatorid'))?$query->param('authenticatorid'):undef;
+    my $authenticatorid = ($r->param('authenticatorid'))?$r->param('authenticatorid'):undef;
     # Aktive Aenderungen des Nutzerkontos
-    my $validtarget     = ($query->stash('validtarget'    ))?$query->param('validtarget'):undef;
-    my $holdingid       = ($query->stash('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
-    my $requestid       = ($query->stash('requestid'      ))?$query->param('requestid'):undef; # Requestid (fuer Alma)
-    my $titleid         = ($query->stash('titleid'        ))?$query->param('titleid'):undef; # Katkey
-    my $date            = ($query->stash('date'           ))?$query->param('date'):''; # Bestelldatum
-    my $unitname        = ($query->stash('unitname'       ))?$query->param('unitname'):''; 
-    my $unit            = ($query->stash('unit'           ) >= 0)?$query->param('unit'):0;
+    my $validtarget     = ($r->param('validtarget'    ))?$r->param('validtarget'):undef;
+    my $holdingid       = ($r->param('holdingid'      ))?$r->param('holdingid'):undef; # Mediennummer
+    my $requestid       = ($r->param('requestid'      ))?$r->param('requestid'):undef; # Requestid (fuer Alma)
+    my $titleid         = ($r->param('titleid'        ))?$r->param('titleid'):undef; # Katkey
+    my $date            = ($r->param('date'           ))?$r->param('date'):''; # Bestelldatum
+    my $unitname        = ($r->param('unitname'       ))?$r->param('unitname'):''; 
+    my $unit            = ($r->param('unit'           ) >= 0)?$r->param('unit'):0;
 
     $unitname  = uri_unescape($unitname) if ($unitname);    
     $holdingid = uri_unescape($holdingid) if ($holdingid);

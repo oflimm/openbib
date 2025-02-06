@@ -198,7 +198,7 @@ sub update_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my @locations  = ($query->stash('location'))?$query->param('location'):();
+    my @locations  = ($r->param('location'))?$r->param('location'):();
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();

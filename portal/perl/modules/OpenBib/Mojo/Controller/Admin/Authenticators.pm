@@ -238,8 +238,8 @@ sub update_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $method          = decode_utf8($query->stash('_method')) || '';
-    my $confirm         = $query->stash('confirm') || 0;
+    my $method          = decode_utf8($r->param('_method')) || '';
+    my $confirm         = $r->param('confirm') || 0;
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();

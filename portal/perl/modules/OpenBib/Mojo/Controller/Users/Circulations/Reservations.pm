@@ -148,19 +148,19 @@ sub create_record {
     my $path_prefix    = $self->stash('path_prefix');
     
     # CGI Args
-    my $authenticatorid = ($query->stash('authenticatorid'))?$query->param('authenticatorid'):undef;
+    my $authenticatorid = ($r->param('authenticatorid'))?$r->param('authenticatorid'):undef;
     # Aktive Aenderungen des Nutzerkontos
-    my $validtarget     = ($query->stash('validtarget'    ))?$query->param('validtarget'):undef;
-    my $holdingid       = ($query->stash('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
-    my $titleid         = ($query->stash('titleid'        ))?$query->param('titleid'):undef; # Katkey
-    my $num_holdings_in_unit = ($query->stash('num_holdings_in_unit'))?$query->param('num_holdings_in_unit'):undef; # Anzahl Exemplare in dieser Zweigstelle
+    my $validtarget     = ($r->param('validtarget'    ))?$r->param('validtarget'):undef;
+    my $holdingid       = ($r->param('holdingid'      ))?$r->param('holdingid'):undef; # Mediennummer
+    my $titleid         = ($r->param('titleid'        ))?$r->param('titleid'):undef; # Katkey
+    my $num_holdings_in_unit = ($r->param('num_holdings_in_unit'))?$r->param('num_holdings_in_unit'):undef; # Anzahl Exemplare in dieser Zweigstelle
     
-    my $pickup_location = ($query->stash('pickup_location') >= 0)?$query->param('pickup_location'):undef;
-    my $unit            = ($query->stash('unit'           ) >= 0)?$query->param('unit'):0;
-    my $storage         = ($query->stash('storage'        ))?$query->param('storage'):undef;
-    my $limitation      = ($query->stash('limitation'     ))?$query->param('limitation'):undef;
+    my $pickup_location = ($r->param('pickup_location') >= 0)?$r->param('pickup_location'):undef;
+    my $unit            = ($r->param('unit'           ) >= 0)?$r->param('unit'):0;
+    my $storage         = ($r->param('storage'        ))?$r->param('storage'):undef;
+    my $limitation      = ($r->param('limitation'     ))?$r->param('limitation'):undef;
 
-    my $type            = ($query->stash('type'           ))?$query->param('type'):'';
+    my $type            = ($r->param('type'           ))?$r->param('type'):'';
 
     $holdingid = uri_unescape($holdingid) if ($holdingid);    
     
@@ -285,12 +285,12 @@ sub delete_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $authenticatorid = ($query->stash('authenticatorid'))?$query->param('authenticatorid'):undef;
+    my $authenticatorid = ($r->param('authenticatorid'))?$r->param('authenticatorid'):undef;
     # Aktive Aenderungen des Nutzerkontos
-    my $validtarget     = ($query->stash('validtarget'    ))?$query->param('validtarget'):undef;
-    my $requestid       = ($query->stash('requestid'      ))?$query->param('requestid'):undef; # Requestid (fuer Alma)
-    my $holdingid       = ($query->stash('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
-    my $unit            = ($query->stash('unit'           ) >= 0)?$query->param('unit'):0;
+    my $validtarget     = ($r->param('validtarget'    ))?$r->param('validtarget'):undef;
+    my $requestid       = ($r->param('requestid'      ))?$r->param('requestid'):undef; # Requestid (fuer Alma)
+    my $holdingid       = ($r->param('holdingid'      ))?$r->param('holdingid'):undef; # Mediennummer
+    my $unit            = ($r->param('unit'           ) >= 0)?$r->param('unit'):0;
 
     $holdingid = uri_unescape($holdingid) if ($holdingid);        
     

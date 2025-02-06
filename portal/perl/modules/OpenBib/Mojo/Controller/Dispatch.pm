@@ -57,13 +57,13 @@ sub as_psgi {
     #$logger->debug("Query: ".ref($query));
 
     # set method for http-tunnel based on _method-CGI-Parameter
-    if ($query->stash('_method')){
-        $args{args_to_new}->{PARAMS}->{method} = $query->stash('_method');
+    if ($r->param('_method')){
+        $args{args_to_new}->{PARAMS}->{method} = $r->param('_method');
 
-        $query->env->{REQUEST_METHOD} = $query->stash('_method');
+        $query->env->{REQUEST_METHOD} = $r->param('_method');
         
         #if ($logger->is_debug){
-        #    $logger->debug("Changed method to tunneled ".$query->stash('_method'));
+        #    $logger->debug("Changed method to tunneled ".$r->param('_method'));
         #}
     }
     
@@ -103,10 +103,10 @@ sub as_psgi {
 #     my $query = Apache2::Request->new($r);
     
 #     # set method for http-tunnel based on _method-CGI-Parameter
-#     if ($query->stash('_method')){
-#         $r->method($query->stash('_method'));
+#     if ($r->param('_method')){
+#         $r->method($r->param('_method'));
 #         if ($logger->is_debug){
-#             $logger->debug("Changed method to tunneled ".$query->stash('_method'));
+#             $logger->debug("Changed method to tunneled ".$r->param('_method'));
 #         }
 #     }
     

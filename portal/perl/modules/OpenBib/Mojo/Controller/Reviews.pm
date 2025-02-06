@@ -78,27 +78,27 @@ sub show_collection_by_isbn_negotiate {
     # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
     #####################################################################
 
-    my $offset         = $query->stash('offset')      || 0;
-    my $hitrange       = $query->stash('hitrange')    || 50;
-    my $queryid        = $query->stash('queryid')     || '';
-    my $database       = $query->stash('db')    || '';
-    my $sorttype       = $query->stash('srt')    || "person";
-    my $sortorder      = $query->stash('srto')   || "asc";
-    my $reviewid       = $query->stash('reviewid')    || '';
-    my $titleid          = $query->stash('titleid')       || '';
-    my $dbname          = $query->stash('dbname')       || '';
-    my $titisbn        = $query->stash('titisbn')     || '';
-    my $title          = decode_utf8($query->stash('title'))    || '';
-    my $review         = decode_utf8($query->stash('review'))   || '';
-    my $nickname       = decode_utf8($query->stash('nickname')) || '';
-    my $rating         = $query->stash('rating')      || 0;
+    my $offset         = $r->param('offset')      || 0;
+    my $hitrange       = $r->param('hitrange')    || 50;
+    my $queryid        = $r->param('queryid')     || '';
+    my $database       = $r->param('db')    || '';
+    my $sorttype       = $r->param('srt')    || "person";
+    my $sortorder      = $r->param('srto')   || "asc";
+    my $reviewid       = $r->param('reviewid')    || '';
+    my $titleid          = $r->param('titleid')       || '';
+    my $dbname          = $r->param('dbname')       || '';
+    my $titisbn        = $r->param('titisbn')     || '';
+    my $title          = decode_utf8($r->param('title'))    || '';
+    my $review         = decode_utf8($r->param('review'))   || '';
+    my $nickname       = decode_utf8($r->param('nickname')) || '';
+    my $rating         = $r->param('rating')      || 0;
 
-    my $do_show        = $query->stash('do_show')     || '';
-    my $do_add         = $query->stash('do_add')      || '';
-    my $do_change      = $query->stash('do_change')   || '';
-    my $do_edit        = $query->stash('do_edit')     || '';
-    my $do_del         = $query->stash('do_del')      || '';
-    my $do_vote        = $query->stash('do_vote')      || '';
+    my $do_show        = $r->param('do_show')     || '';
+    my $do_add         = $r->param('do_add')      || '';
+    my $do_change      = $r->param('do_change')   || '';
+    my $do_edit        = $r->param('do_edit')     || '';
+    my $do_del         = $r->param('do_del')      || '';
+    my $do_vote        = $r->param('do_vote')      || '';
     
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########

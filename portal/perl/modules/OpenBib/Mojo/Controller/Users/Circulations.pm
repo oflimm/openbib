@@ -472,9 +472,9 @@ sub renew_single_loan {
     my $servername     = $self->stash('servername');
 
     # CGI Args
-    my $holdingid       = ($query->stash('holdingid'      ))?$query->param('holdingid'):undef; # Mediennummer
-    my $loanid          = ($query->stash('loanid'         ))?$query->param('loanid'):undef; # Loanid (fuer Alma)
-    my $unit            = ($query->stash('unit'           ) >= 0)?$query->param('unit'):0; # Zweigstelle
+    my $holdingid       = ($r->param('holdingid'      ))?$r->param('holdingid'):undef; # Mediennummer
+    my $loanid          = ($r->param('loanid'         ))?$r->param('loanid'):undef; # Loanid (fuer Alma)
+    my $unit            = ($r->param('unit'           ) >= 0)?$r->param('unit'):0; # Zweigstelle
 
     $holdingid = uri_unescape($holdingid) if ($holdingid);
     

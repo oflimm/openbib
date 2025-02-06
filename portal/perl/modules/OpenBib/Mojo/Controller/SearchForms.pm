@@ -75,8 +75,8 @@ sub show {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my @databases  = ($query->stash('db'))?$query->param('db'):();
-    my $queryid     = $query->stash('queryid') || '';
+    my @databases  = ($r->param('db'))?$r->param('db'):();
+    my $queryid     = $r->param('queryid') || '';
 
     
     my $statistics  = new OpenBib::Statistics();

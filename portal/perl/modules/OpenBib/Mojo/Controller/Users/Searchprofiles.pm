@@ -264,8 +264,8 @@ sub update_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my @databases  = ($query->stash('db'))?$query->param('db'):();
-    my $profilename = $query->stash('profilename') || '';
+    my @databases  = ($r->param('db'))?$r->param('db'):();
+    my $profilename = $r->param('profilename') || '';
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();
@@ -305,8 +305,8 @@ sub create_record {
     my $location       = $self->stash('location');
 
     # CGI Args
-    my @databases   = ($query->stash('db'))?$query->param('db'):();
-    my $profilename = $query->stash('profilename') || '';
+    my @databases   = ($r->param('db'))?$r->param('db'):();
+    my $profilename = $r->param('profilename') || '';
 
     if (!$self->authorization_successful){
         return $self->print_authorization_error();

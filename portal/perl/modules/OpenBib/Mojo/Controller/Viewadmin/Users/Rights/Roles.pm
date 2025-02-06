@@ -77,7 +77,7 @@ sub update_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my @roles           = ($query->stash('roles'))?$query->param('roles'):();
+    my @roles           = ($r->param('roles'))?$r->param('roles'):();
 
     # Acting user in View?
     if (!$user->user_exists_in_view({ viewname => $view, userid => $user->{ID}})){

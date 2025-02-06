@@ -63,11 +63,11 @@ sub show_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $stid          = $query->stash('stid')     || '';
-    my $callback      = $query->stash('callback') || '';
-    my $lang          = $query->stash('lang')     || $queryoptions->get_option('l') || 'de';
-    my $format        = $query->stash('format')   || 'full';
-    my $no_log         = $query->stash('no_log')  || '';
+    my $stid          = $r->param('stid')     || '';
+    my $callback      = $r->param('callback') || '';
+    my $lang          = $r->param('lang')     || $queryoptions->get_option('l') || 'de';
+    my $format        = $r->param('format')   || 'full';
+    my $no_log         = $r->param('no_log')  || '';
 
     if ($database && $personid ){ # Valide Informationen etc.
         $logger->debug("ID: $personid - DB: $database");

@@ -368,7 +368,7 @@ sub process_wikipedia {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $lang           = $query->stash('lang') || 'de';
+    my $lang           = $r->param('lang') || 'de';
 
     my $client_ip="";
     if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {

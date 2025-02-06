@@ -154,10 +154,10 @@ sub show_record {
     ##          >0  - gibt die maximale Zahl an
     ##          <=0 - gibt immer alle Treffer aus
   
-    my $hitrange=($query->stash('num'))?$query->param('num'):20;
+    my $hitrange=($r->param('num'))?$r->param('num'):20;
     ($hitrange)=$hitrange=~/^(-?\d+)$/; # hitrange muss numerisch sein (SQL-Injection)
 
-    my $page=($query->stash('page'))?$query->param('page'):1;
+    my $page=($r->param('page'))?$r->param('page'):1;
     ($page)=$page=~/^(-?\d+)$/; # page muss numerisch sein (SQL-Injection)
 
     #####################################################################
@@ -169,16 +169,16 @@ sub show_record {
     #####################################################################
     ## Initialsearch:
   
-    my $browsecontent     = $query->stash('browsecontent')     || '';
+    my $browsecontent     = $r->param('browsecontent')     || '';
 
-    my $olws              = $query->stash('olws')              || 0;
-    my $olws_action       = $query->stash('olws_action')       || '';
-    my $collection        = $query->stash('collection')        || '';
+    my $olws              = $r->param('olws')              || 0;
+    my $olws_action       = $r->param('olws_action')       || '';
+    my $collection        = $r->param('collection')        || '';
 
-    my $no_log            = $query->stash('no_log')            || '';
+    my $no_log            = $r->param('no_log')            || '';
 
     # Sub-Template ID
-    my $stid              = $query->stash('stid')              || '';
+    my $stid              = $r->param('stid')              || '';
 
 
     my $database_in_view = 0;

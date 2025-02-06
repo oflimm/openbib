@@ -75,10 +75,10 @@ sub show {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $id         = $query->stash('id')        || '';
-    my $format     = $query->stash('format')    || '';
-    my $callback   = $query->stash('callback')  || '';
-    my $lang       = $query->stash('lang')      || 'de';
+    my $id         = $r->param('id')        || '';
+    my $format     = $r->param('format')    || '';
+    my $callback   = $r->param('callback')  || '';
+    my $lang       = $r->param('lang')      || 'de';
 
     my $identifier =  new SeeAlso::Identifier($id);
 

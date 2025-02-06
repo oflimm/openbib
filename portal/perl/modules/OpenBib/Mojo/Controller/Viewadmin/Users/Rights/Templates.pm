@@ -77,7 +77,7 @@ sub update_record {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my @templates      = ($query->stash('templates'))?$query->param('templates'):();
+    my @templates      = ($r->param('templates'))?$r->param('templates'):();
 
     # Acting user in View?
     if (!$user->user_exists_in_view({ viewname => $view, userid => $user->{ID}})){

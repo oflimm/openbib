@@ -72,7 +72,7 @@ sub show_collection {
     my $path_prefix    = $self->stash('path_prefix');
     
     # CGI Args
-    my $format         = $query->stash('format')         || '';
+    my $format         = $r->param('format')         || '';
     
     my $statistics  = new OpenBib::Statistics();
     my $utils       = new OpenBib::Template::Utilities;
@@ -113,7 +113,7 @@ sub show_collection_databases {
     my $path_prefix    = $self->stash('path_prefix');
     
     # CGI Args
-    my $format         = $query->stash('format')         || '';
+    my $format         = $r->param('format')         || '';
     
     my $statistics  = new OpenBib::Statistics();
     my $utils       = new OpenBib::Template::Utilities;
@@ -155,7 +155,7 @@ sub show_collection_databases_record {
     my $path_prefix    = $self->stash('path_prefix');
     
     # CGI Args
-    my $format         = $query->stash('format')         || '';
+    my $format         = $r->param('format')         || '';
     
     my $statistics  = new OpenBib::Statistics();
     my $utils       = new OpenBib::Template::Utilities;
@@ -199,7 +199,7 @@ sub show_record {
     my $path_prefix    = $self->stash('path_prefix');
     
     # CGI Args
-    my $format         = $query->stash('format')         || '';
+    my $format         = $r->param('format')         || '';
     
     my $statistics  = new OpenBib::Statistics();
     my $utils       = new OpenBib::Template::Utilities;

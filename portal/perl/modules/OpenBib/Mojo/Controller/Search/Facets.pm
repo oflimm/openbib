@@ -156,7 +156,7 @@ sub show {
     $self->stash('facets',$facets_ref);
     $self->stash('hits',$searcher->get_resultcount);
 
-    my $ttdate = {};
+    my $ttdata = {};
     
     return $self->print_page($config->{tt_search_separate_facets_tname},$ttdata);
 }

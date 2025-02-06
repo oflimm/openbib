@@ -4,8 +4,4063 @@
    controller: 'Home'
    action: 'show'
    representations:
-     - ''
+     - html
+   args:
+      users_loc: 'home'        
+- # review_loc:
+   controller: 'Reviews'
+   rule: '/portal/:view/reviews/isbn/:isbn'
+   method: 'GET'
+   action: 'show_collection_by_isbn'
+
+- # index_loc:
+   controller: 'Search'
+   rule: '/portal/:view/index/:type/*'
+   action: 'index'
+
+# Charakteristik
+# - ausschliesslich oeffentliche Repraesentation [get]
+# - ein kanonischer Resource-URI [get]
+# - Verlinkung auf nutzerspezifische Repreaesentation anderer
+#   Resourcen ueber deren Resource-URL, der entsprechend weiterleitet
+
+#####################################################################
+# Recherche-Resource/Repraesentation
+
+- # Resource: search_loc
+   controller: 'Search'
+   rule: '/portal/:view/search'
+   representations:
+     - none
+     - html
+     - include
+     - json
+     - rdf
+     - rss
+     - mobile
+   action: 'show_search'
+- # Resource: search_loc
+   controller: 'Availability::Search'
+   rule: '/portal/:view/availability/search'
+   representations:
+     - none
+     - html
+     - include
+     - json
+     - rdf
+     - rss
+     - mobile
+   action: 'show_search'
+- # Resource: search_loc
+   controller: 'Authority::Search'
+   rule: '/portal/:view/authority/search'
+   representations:
+     - none
+     - html
+     - json
+     - txt
+     - rss
+     - mobile
+   action: 'show_search'
+- # Resource: search_loc
+   controller: 'Search::History'
+   rule: '/portal/:view/search/history'
+   method: 'GET'
+   representations:
+     - none
+     - include
+     - html
+   action: 'show'
+- # Resource: search_loc
+   controller: 'Search::SeparateFacets'
+   rule: '/portal/:view/search/facets'
+   method: 'GET'
+   representations:
+     - none
+     - include
+     - json
+     - html
+   action: 'show'
+
+#####################################################################
+# Titel-Resource/Repraesentation
+- # users/titles_loc: only public
+   controller: 'Titles'
+   rule: '/portal/:view/databases/id/:database/titles'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - include
+     - rdf
+   args:
+     'restrict_db_to_view': 1
+- # users/titles_loc: only public
+   controller: 'Titles'
+   rule: '/portal/:view/databases/titles/popular'
+   method: 'GET'
+   action: 'show_popular'
+   representations:
+     - none
+     - html
+     - json
+     - include
+     - rdf
+- # users/titles_loc: only public
+   controller: 'Titles'
+   rule: '/portal/:view/databases/id/dbis/titles/recommendations'
+   method: 'GET'
+   action: 'show_dbis_recommendations'
+   representations:
+     - none
+     - html
+     - json
+     - include
+- # users/titles_loc: only public
+   controller: 'Titles'
+   rule: '/portal/:view/databases/id/:database/titles/popular'
+   method: 'GET'
+   action: 'show_popular'
+   representations:
+     - none
+     - html
+     - json
+     - include
+     - rdf
+   args:
+     'restrict_db_to_view': 1
+- # users/titles_loc: only public
+   controller: 'Titles'
+   rule: '/portal/:view/databases/id/:database/titles/recent'
+   method: 'GET'
+   action: 'show_recent'
+   representations:
+     - none
+     - html
+     - json
+     - rss
+     - include
+     - rdf
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/titles_loc: Record show
+   controller: 'Titles::Fields'
+   rule: '/portal/:view/databases/id/:database/titles/fields'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/titles_loc: Record show
+   controller: 'Titles::Fields'
+   rule: '/portal/:view/databases/id/:database/titles/fields/id/:fieldid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/titles_loc: Record show
+   controller: 'Titles'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
+- # users_loc/titles_loc: Circulation
+   controller: 'Titles'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid/circulation'
+   method: 'GET'
+   action: 'show_record_circulation'
+   representations:
+     - none
+     - html
+     - include
+     - json
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/titles_loc: Fields
+   controller: 'Titles'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid/fields'
+   method: 'GET'
+   action: 'show_record_fields'
+   representations:
+     - none
+     - html
+     - include
+     - json
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/titles_loc: Holdings
+   controller: 'Titles'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid/holdings'
+   method: 'GET'
+   action: 'show_record_holdings'
+   representations:
+     - none
+     - html
+     - include
+     - json
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/holdings_loc: Record show
+   controller: 'Holdings::Fields'
+   rule: '/portal/:view/databases/id/:database/holdings/fields'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/holdings_loc: Record show
+   controller: 'Holdings::Fields'
+   rule: '/portal/:view/databases/id/:database/holdings/fields/id/:fieldid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/titles_loc: Record show related_records (wikipedia)
+   controller: 'Titles'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid/related_records'
+   method: 'GET'
+   action: 'show_record_related_records'
+   representations:
+     - none
+     - html
+     - include
+     - json
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/titles_loc: Record show similar_records (belonging to same work, eg. other editions)
+   controller: 'Titles'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid/similar_records'
+   method: 'GET'
+   action: 'show_record_similar_records'
+   representations:
+     - none
+     - html
+     - include
+     - json
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/titles_loc: Record show same records in other databases
+   controller: 'Titles'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid/same_records'
+   method: 'GET'
+   action: 'show_record_same_records'
+   representations:
+     - none
+     - html
+     - include
+     - json
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/titles_loc: Record show
+   controller: 'CartItems'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid/save'
+   method: 'GET'
+   action: 'save_collection'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
+- # users_loc/titles_loc: Record show
+   controller: 'CartItems'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid/mail'
+   method: 'GET'
+   action: 'mail_collection'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
+- # users_loc/titles_loc: Record show
+   controller: 'CartItems'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid/print'
+   method: 'GET'
+   action: 'print_collection'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
+
+- # users_loc/titles_loc: Record show
+   controller: 'Titles'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid/availability'
+   method: 'GET'
+   action: 'show_availability'
+   args:
+     'restrict_db_to_view': 1
+     disable_content_negotiation: 1
+- # users/titles_loc:
+   controller: 'Titles'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/availability'
+   method: 'GET'
+   action: 'show_availability'
+   args:
+     'restrict_db_to_view': 1
+     disable_content_negotiation: 1
+- # users/titles_loc:
+   controller: 'Titles::Provenances'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid/provenances'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - include
+     - json
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users/titles_loc:
+   controller: 'Titles::Provenances'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/provenances'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - include
+     - json
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/titles_loc: Record redirect to bibsonomy
+   controller: 'Titles'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid/to_bibsonomy'
+   method: 'GET'
+   action: 'redirect_to_bibsonomy'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users/titles_loc:
+   controller: 'Users::Titles'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/titles_loc: Fields
+   controller: 'Titles'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid/fields'
+   method: 'GET'
+   action: 'show_record_fields'
+   representations:
+     - none
+     - html
+     - include
+     - json
+   args:
+     'restrict_db_to_view': 1
+- # users/titles_loc:
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/save'
+   method: 'GET'
+   action: 'save_collection'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users/titles_loc:
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/mail'
+   method: 'GET'
+   action: 'mail_collection'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users/titles_loc:
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/mail'
+   method: 'POST'
+   action: 'mail_collection_send'
+   args:
+     'restrict_db_to_view': 1
+- # users/titles_loc:
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/print'
+   method: 'GET'
+   action: 'print_collection'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users/titles_loc:
+   controller: 'Users::Titles'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/searchindex'
+   method: 'GET'
+   action: 'show_record_searchindex'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+     'restrict_db_to_view': 1
+- # users/titles_loc:
+   controller: 'Users::Titles'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid/searchindex'
+   method: 'GET'
+   action: 'show_record_searchindex'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+     'restrict_db_to_view': 1
+- # users/titles_loc:
+   controller: 'Users::Titles'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users/titles_loc:
+   controller: 'Users::Titles'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/titles/edit'
+   method: 'GET'
+   action: 'show_collection_form'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/titles_loc: Update Record
+   controller: 'Users::Titles'
+   rule: '/portal/:view/databases/id/:database/titles'
+   method: 'POST'
+   action: 'create_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/titles_loc: Update Record
+   controller: 'Users::Titles'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid'
+   method: 'POST'
+   action: 'update_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/titles_loc: Update Record
+   controller: 'Users::Titles'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid'
+   method: 'PUT'
+   action: 'update_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/titles_loc: Delete Record
+   controller: 'Users::Titles'
+   rule: '/portal/:view/databases/id/:database/titles/id/:titleid'
+   method: 'DELETE'
+   action: 'delete_record'
+   args:
+     'restrict_db_to_view': 1
+
+#####################################################################
+# Browse-Resource/Repraesentation
+
+- # Resource: browse_loc
+   controller: 'Browse'
+   rule: '/portal/:view/browse'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - mobile
+   action: 'show_collection'
+- # Resource: browse_loc
+   controller: 'Browse::Topics'
+   rule: '/portal/:view/browse/topics'
+   method: 'GET'
+   representations:
+     - none
+     - include
+     - html
+   action: 'show_collection'
+- # Resource: browse_loc
+   controller: 'Browse::Topics'
+   rule: '/portal/:view/browse/topics/id/:topicid'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_record'
+- # Resource: browse_loc
+   controller: 'Browse::LBS'
+   rule: '/portal/:view/browse/lbs'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_collection'
+- # Resource: browse_loc
+   controller: 'Browse::LBS'
+   rule: '/portal/:view/browse/lbs/id/:lbsid'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_record'
+- # Resource: browse_loc
+   controller: 'Browse::LS'
+   rule: '/portal/:view/browse/ls'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_collection'
+- # Resource: browse_loc
+   controller: 'Browse::LS'
+   rule: '/portal/:view/browse/ls/id/:lsid'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_record'
+- # Resource: browse_loc
+   controller: 'Browse::BK'
+   rule: '/portal/:view/browse/bks'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_collection'
+- # Resource: browse_loc
+   controller: 'Browse::BK'
+   rule: '/portal/:view/browse/bks/id/:bkid'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_record'
+- # Resource: browse_loc
+   controller: 'Browse::BK'
+   rule: '/portal/:view/browse/bks/id/:tlbkid/id/:bkid'
+   method: 'GET'
+   action: 'show_record_databases'
+- # Resource: browse_loc
+   controller: 'Browse::KMB'
+   rule: '/portal/:view/browse/kmb'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_collection'
+- # Resource: browse_loc
+   controller: 'Browse::KMB'
+   rule: '/portal/:view/browse/kmb/id/:sysid'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_record'
+- # Resource: browse_loc
+   controller: 'Browse::RVK'
+   rule: '/portal/:view/browse/rvk'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_collection'
+- # Resource: browse_loc
+   controller: 'Browse::RVK'
+   rule: '/portal/:view/browse/rvk/id/:sysid'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_record'
+
+#####################################################################
+# Informations-Resource/Repraesentation
+
+- # info_loc:
+   controller: 'Info'
+   rule: '/portal/:view/info/:stid'
+   action: 'show_record'
+
+#####################################################################
+# Redirect-Resource/Repraesentation
+
+- # redirect_loc:
+   controller: 'Redirect'
+   rule: '/portal/:view/redirect'
+   action: 'show'
+   args:
+      disable_content_negotiation: 1
+
+#####################################################################
+# RSS-Feed Informations-Resource/Repraesentation
+
+- # rssfeeds_loc:
+   controller: 'RSSFeeds'
+   rule: '/portal/:view/rssfeeds'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   action: 'show_collection'
+
+#####################################################################
+# Searchforms-Resource/Repraesentation
+
+- # searchforms_loc:
+   controller: 'SearchForms'
+   rule: '/portal/:view/searchforms/id/:type'
+   method: 'GET'
+   action: 'show'
+- # searchforms_loc:
+   controller: 'SearchForms'
+   rule: '/portal/:view/searchforms/session'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_session'
+
+#####################################################################
+# UCCardActivations-Resource/Repraesentation
+
+- # registrations_loc:
+   controller: 'Users::UCCardActivations'
+   rule: '/portal/:view/users/uccard_activations'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show'
+- # registrations_loc:
+   controller: 'Users::UCCardActivations'
+   rule: '/portal/:view/users/uccard_login'
+   method: 'POST'
+   action: 'authenticate'
+
+- # registrations_loc:
+   controller: 'Users::UCCardActivations'
+   rule: '/portal/:view/users/uccard_activations'
+   method: 'POST'
+   action: 'activate'
+
+#####################################################################
+# LibraryCardRegistrations-Resource/Repraesentation
+
+- # registrations_loc:
+   controller: 'Users::LibraryCardRegistrations'
+   rule: '/portal/:view/users/librarycard_registrations'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show'
+- # registrations_loc:
+   controller: 'Users::LibraryCardRegistrations'
+   rule: '/portal/:view/users/librarycard_registrations'
+   method: 'POST'
+   action: 'register'
+
+#####################################################################
+# Registrations-Resource/Repraesentation
+
+- # registrations_loc:
+   controller: 'Users::Registrations'
+   rule: '/portal/:view/users/registrations'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show'
+- # registrations_loc:
+   controller: 'Users::Registrations'
+   rule: '/portal/:view/users/registrations'
+   method: 'POST'
+   action: 'mail_confirmation'
+- # registrations_loc:
+   controller: 'Users::Registrations'
+   rule: '/portal/:view/users/registrations/id/:registrationid'
+   method: 'GET'
+   action: 'register'
+
+#####################################################################
+# Passwort-Resource/Repraesentation
+
+- # passwords_loc:
+   controller: 'Users::Passwords'
+   rule: '/portal/:view/users/passwords'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_collection'
+- # passwords_loc:
+   controller: 'Users::Passwords'
+   rule: '/portal/:view/users/passwords/tokens'
+   method: 'POST'
+   action: 'create_token'
+- # passwords_loc:
+   controller: 'Users::Passwords'
+   rule: '/portal/:view/users/passwords/tokens/id/:tokenid'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+   action: 'verify_token'
+- # passwords_loc:
+   controller: 'Users::Passwords'
+   rule: '/portal/:view/users/passwords'
+   method: 'POST'
+   action: 'create_record'
+
+# Charakteristik
+# - ausschliesslich oeffentliche Resource ohne zugehoerige Repraesentation [get]
+
+#####################################################################
+# Suchaktivitaet
+
+- # serveractive_loc:
+   controller: 'ServerActive'
+   rule: '/portal/:view/server_is_active'
+   action: 'show'
+   args:
+      disable_content_negotiation: 1
+
+#####################################################################
+# Konnektoren
+
+- # connector_alma_loc: 
+   controller: 'Connector::ALMA'
+   rule: '/portal/:view/connector/alma'
+   method: 'GET'
+   action: 'challenge'
+   args:
+      disable_content_negotiation: 1
+- # connector_alma_loc: 
+   controller: 'Connector::ALMA'
+   rule: '/portal/:view/connector/alma'
+   method: 'POST'
+   action: 'create_record'
+   args:
+      disable_content_negotiation: 1
+- # connector_availabilityimage_loc: 
+   controller: 'Connector::AvailabilityImage'
+   rule: '/portal/:view/connector/availabilityimage/:rm/:id'
+   action: 'gbs'
+   args:
+      disable_content_negotiation: 1
+- # connector_availability_loc:
+   controller: 'Connector::Availability'
+   rule: '/portal/:view/connector/availability/:id'
+   action: 'show_collection'
+   args:
+      disable_content_negotiation: 1
+- # connector_availability_loc:
+   controller: 'Connector::Availability'
+   rule: '/portal/:view/connector/availability/:rm/:id'
+   action: 'isbn'
+   args:
+      disable_content_negotiation: 1
+- # connector_cover_loc: 
+   controller: 'Connector::Cover'
+   rule: '/portal/:view/connector/cover/:rm/:id'
+   action: 'vlb'
+   args:
+      disable_content_negotiation: 1
+- # connector_daia_loc:
+   controller: 'Connector::DAIA'
+   rule: '/portal/:view/connector/daia'
+   action: 'show'
+   args:
+      disable_content_negotiation: 1
+- # connector_paia_loc:
+   controller: 'Databases::PAIA'
+   rule: '/portal/:view/databases/id/:database/paia/auth/:serviceid'
+   method: 'POST'
+   action: 'authenticate'
+   args:
+     'restrict_db_to_view': 1
+     disable_content_negotiation: 1
+- # connector_paia_loc:
+   controller: 'Databases::PAIA'
+   rule: '/portal/:view/databases/id/:database/paia/core/:userid'
+   method: 'GET'
+   action: 'patron'
+   args:
+     'restrict_db_to_view': 1
+     disable_content_negotiation: 1
+- # connector_paia_loc:
+   controller: 'Databases::PAIA'
+   rule: '/portal/:view/databases/id/:database/paia/core/:userid[patch]'
+   action: 'update_patron'
+   args:
+     'restrict_db_to_view': 1
+     disable_content_negotiation: 1
+- # connector_paia_loc:
+   controller: 'Databases::PAIA'
+   rule: '/portal/:view/databases/id/:database/paia/core/:userid/:serviceid'
+   method: 'GET'
+   action: 'core_get_services'
+   args:
+     'restrict_db_to_view': 1
+     disable_content_negotiation: 1
+- # connector_paia_loc:
+   controller: 'Databases::PAIA'
+   rule: '/portal/:view/databases/id/:database/paia/core/:userid/:serviceid'
+   method: 'POST'
+   action: 'core_post_services'
+   args:
+     'restrict_db_to_view': 1
+     disable_content_negotiation: 1
+- # connector_livesearch_loc:
+   controller: 'Connector::LiveSearch'
+   rule: '/portal/:view/connector/livesearch'
+   action: 'show'
+   args:
+      disable_content_negotiation: 1
+- # connector_locationmark_loc:
+   controller: 'Connector::LocationMark'
+   rule: '/portal/:view/connector/locationmark'
+   representations:
+     - none
+     - html
+     - json
+     - include
+   action: 'show'
+- # connector_locationmark_loc:
+   controller: 'Connector::LocationMark'
+   rule: '/portal/:view/connector/sykasignatur'
+   representations:
+     - none
+     - html
+     - json
+     - include
+   action: 'show'
+- # connector_openurl_loc: 
+   controller: 'Connector::OpenURL'
+   rule: '/portal/:view/connector/openurl'
+   action: 'show'
+   args:
+      disable_content_negotiation: 1
+# Legacy URI - Ab v2.4 kann jeder URL direkt gebookmarkt werden
+# Die Rueckwaertskompatabilitaet wird durch URL-Rewriting und 301er
+# Redirects direkt im Apache gewaehrleistet
+- # connector_barcode_loc:
+   controller: 'Connector::Barcode'
+   rule: '/portal/:view/connector/barcode'
+   action: 'show'
+   args:
+      disable_content_negotiation: 1
+- # connector_qrcode_loc:
+   controller: 'Connector::QRCode'
+   rule: '/portal/:view/connector/qrcode'
+   action: 'show'
+   args:
+      disable_content_negotiation: 1
+- # connector_rss_loc:
+   controller: 'Connector::RSS'
+   rule: '/portal/:view/connector/rss/:type/:subtype?/*'
+   action: 'show'
+   args:
+      disable_content_negotiation: 1
+- # connector_seealso_loc:
+   controller: 'Connector::SeeAlso'
+   rule: '/portal/:view/connector/seealso/:serviceid'
+   action: 'show'
+   args:
+      disable_content_negotiation: 1
+- # connector_similarpersons_loc:
+   controller: 'Connector::SimilarPersons'
+   rule: '/portal/:view/connector/similarpersons'
+   action: 'show'
+- # connector_similarpersons_loc:
+   controller: 'Connector::SimilarPersons'
+   rule: '/portal/:view/connector/similarpersons.html'
+   action: 'show'
+- # connector_similarpersons_loc:
+   controller: 'Connector::SimilarPersons'
+   rule: '/portal/:view/connector/similarpersons.include'
+   action: 'show'
+- # connector_similarsubjects_loc:
+   controller: 'Connector::SimilarSubjects'
+   rule: '/portal/:view/connector/similarsubjects'
+   action: 'show'
+- # connector_similarsubjects_loc:
+   controller: 'Connector::SimilarSubjects'
+   rule: '/portal/:view/connector/similarsubjects.html'
+   action: 'show'
+- # connector_similarsubjects_loc:
+   controller: 'Connector::SimilarSubjects'
+   rule: '/portal/:view/connector/similarsubjects.include'
+   action: 'show'
+- # connector_spellcheck_loc:
+   controller: 'Connector::SpellCheck'
+   rule: '/portal/:view/connector/spellcheck'
+   action: 'show'
+   args:
+      disable_content_negotiation: 1
+- # connector_unapi_loc:
+   controller: 'Connector::UnAPI'
+   rule: '/portal/:view/connector/unapi'
+   action: 'show'
+   args:
+      disable_content_negotiation: 1
+
+# Charakteristik
+# - oeffentliche und user Repraesentation [get]
+# - ein kanonischer Resource-URI [get]
+# - Automatische Weiterleitung von [get] auf ggf. nutzerspezifische Repreaesentation
+
+#####################################################################
+# Startseiten-Resource/Repraesentation
+- # Resource: home_loc
+   controller: 'Home'
+   rule: '/portal/:view/home'
+   method: 'GET'
+   representations:
+     - none
      - html
      - mobile
    args:
       users_loc: 'home'        
+   action: 'show'
+- # Resource: users_loc/home_loc
+   controller: 'Home'
+   rule: '/portal/:view/users/id/:userid/home'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - mobile
+   action: 'show'
+
+# Charakteristik
+# - verschiedene oeffentliche und user Repraesentation [get]
+# - ein kanonischer Resource-URI [post,put,delete]
+# - *keine* automatische Weiterleitung
+
+#####################################################################
+# Literaturlisten-Resource/Repraesentation
+
+- # Resource: litlists_loc: Alle oeffentliche Literaturlisten
+   controller: 'LitLists'
+   rule: '/portal/:view/litlists'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - include
+     - rdf
+   action: 'show_collection'
+
+- # Resource: litlists_loc: Alle zuletzt angelegten oeffentliche Literaturlisten
+   controller: 'LitLists'
+   rule: '/portal/:view/litlists/recent'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rss
+     - include
+     - rdf
+   action: 'show_collection_recent'
+
+- # Resource: litlists_loc: Themengebiete, nach denen alle oeffentlichen Literaturlisten
+  # kategorisiert sind
+   controller: 'LitLists'
+   rule: '/portal/:view/litlists/topics'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   action: 'show_collection_by_topic'
+
+- # Resource: litlists_loc: oeffentlichen Literaturlisten zu einem Topic
+  # kategorisiert sind
+   controller: 'LitLists'
+   rule: '/portal/:view/litlists/topics/id/:topicid'
+   method: 'GET'
+   action: 'show_collection_by_single_topic'
+
+- # Resource: litlists_loc: zu letzt angelegte oeffentliche Literaturlisten zu einem Topic
+   controller: 'LitLists'
+   rule: '/portal/:view/litlists/topics/id/:topicid/recent'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rss
+     - include
+     - rdf
+   action: 'show_collection_by_single_topic_recent'
+
+- # Resource: litlists_loc: oeffentlichen Literaturlisten von einem User
+   controller: 'LitLists'
+   rule: '/portal/:view/litlists/users/id/:userid'
+   method: 'GET'
+   action: 'show_collection_by_single_user'
+
+- # Resource: users_loc/litlists_loc: Anzeige einer Literaturliste (oeffentlich/privat)
+   controller: 'LitLists'
+   rule: '/portal/:view/litlists/id/:litlistid'
+   method: 'GET'
+   action: 'show_record'
+
+- # users/litlists_loc:
+   controller: 'LitLists'
+   rule: '/portal/:view/litlists/id/:litlistid/save'
+   method: 'GET'
+   action: 'save_record'
+   representations:
+     - none
+     - html
+   args:
+      users_loc: 'litlists'
+- # users/litlists_loc:
+   controller: 'Users::LitLists'
+   rule: '/portal/:view/litlists/id/:litlistid/mail'
+   method: 'GET'
+   action: 'mail_record'
+   representations:
+     - none
+     - html
+   args:
+      users_loc: 'litlists'
+- # users/litlists_loc:
+   controller: 'LitLists'
+   rule: '/portal/:view/litlists/id/:litlistid/print'
+   method: 'GET'
+   action: 'print_record'
+   representations:
+     - none
+     - html
+   args:
+      users_loc: 'litlists'
+
+- # users/litlists_loc:
+   controller: 'LitLists'
+   rule: '/portal/:view/users/id/:userid/litlists/id/:litlistid/print'
+   method: 'GET'
+   action: 'print_record'
+   representations:
+     - none
+     - html
+- # users/litlists_loc:
+   controller: 'LitLists'
+   rule: '/portal/:view/users/id/:userid/litlists/id/:litlistid/save'
+   method: 'GET'
+   action: 'save_record'
+   representations:
+     - none
+     - html
+
+- # users_loc/litlists_loc: Update Record
+   controller: 'Users::LitLists'
+   rule: '/portal/:view/litlists/id/:litlistid/mail'
+   method: 'POST'
+   action: 'mail_record_send'
+- # users_loc/litlists_loc: Update Record
+   controller: 'Users::LitLists'
+   rule: '/portal/:view/users/id/:userid/litlists/id/:litlistid/mail'
+   method: 'POST'
+   action: 'mail_record_send'
+
+- # Resource: users_loc/litlists_loc: Anzeige einer Literaturliste (oeffentlich/privat)
+   controller: 'Users::LitLists'
+   rule: '/portal/:view/users/id/:userid/litlists/id/:litlistid'
+   method: 'GET'
+   action: 'show_record'
+
+- # Resource: users_loc/litlists_loc: Create Record
+   controller: 'Users::LitLists'
+   rule: '/portal/:view/litlists'
+   method: 'POST'
+   action: 'create_record'
+- # Resource: litlists_loc: Update Record
+   controller: 'Users::LitLists'
+   rule: '/portal/:view/litlists/id/:litlistid'
+   method: 'POST'
+   action: 'update_record'
+- # Resource: litlists_loc: Update Record
+   controller: 'Users::LitLists'
+   rule: '/portal/:view/litlists/id/:litlistid'
+   method: 'PUT'
+   action: 'update_record'
+- # Resource: litlists_loc: Delete Record
+   controller: 'Users::LitLists'
+   rule: '/portal/:view/litlists/id/:litlistid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+- # Resource: users_loc/litlists_loc: Show Items ?entfernen?
+   controller: 'Users::LitLists::Item'
+   rule: '/portal/:view/litlists/id/:litlistid/items'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+   action: 'show_collection'
+
+- # Resource: users_loc/litlists_loc: Show Single Item ?entfernen?
+   controller: 'Users::LitLists::Item'
+   rule: '/portal/:view/litlists/id/:litlistid/items/id/:itemid'
+   method: 'GET'
+   action: 'show_record'
+
+- # Resource: users_loc/litlists_loc: Create Item
+   controller: 'Users::LitLists::Item'
+   rule: '/portal/:view/litlists/id/:litlistid/items'
+   method: 'POST'
+   action: 'create_record'
+- # Resource: litlists_loc: Update Item
+   controller: 'Users::LitLists::Item'
+   rule: '/portal/:view/litlists/id/:litlistid/items/id/:itemid'
+   method: 'POST'
+   action: 'update_record'
+- # Resource: litlists_loc: Update Item
+   controller: 'Users::LitLists::Item'
+   rule: '/portal/:view/litlists/id/:litlistid/items/id/:itemid'
+   method: 'PUT'
+   action: 'update_record'
+- # Resource: litlists_loc: Delete Item
+   controller: 'Users::LitLists::Item'
+   rule: '/portal/:view/litlists/id/:litlistid/items/id/:itemid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+# Anzeige privater Listen ueber separaten user_loc
+
+- # Resource: users/litlists_loc: Resource-Finder-URL
+   controller: 'Users::LitLists'
+   rule: '/portal/:view/users/me/litlists'
+   method: 'GET'
+   action: 'dispatch_to_user'
+   args:
+      disable_content_negotiation: 1
+
+- # Resource: users_loc/litlists_loc: Anzeige aller eigenen Literaturlisten
+   controller: 'Users::LitLists'
+   rule: '/portal/:view/users/id/:userid/litlists'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   action: 'show_collection'
+
+- # Resource: users_loc/litlists_loc: Edit einer eigenen Literaturliste
+   controller: 'Users::LitLists'
+   rule: '/portal/:view/users/id/:userid/litlists/id/:litlistid/edit'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_record_form'
+
+
+#####################################################################
+# Tags-Resource/Repraesentation
+
+- # Resource: tags_loc: Alle oeffentliche Tags
+   controller: 'Tags'
+   rule: '/portal/:view/tags'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - include
+     - rdf
+   action: 'show_collection'
+
+- # Resource: tags_loc: Alle zuletzt angelegten oeffentliche Tags
+   controller: 'Tags'
+   rule: '/portal/:view/tags/recent'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rss
+     - include
+     - rdf
+   action: 'show_collection_recent'
+
+- # Resource: tags_loc: Alle zuletzt angelegten oeffentliche Tags nach Namen
+   controller: 'Tags::Names'
+   rule: '/portal/:view/tags/names/recent'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rss
+     - include
+     - rdf
+   action: 'show_collection_recent'
+
+- # Resource: users_loc/tags_loc: Anzeige eines Tags (oeffentlich)
+   controller: 'Users::Tags'
+   rule: '/portal/:view/tags/id/:tagid'
+   method: 'GET'
+   action: 'show_record'
+- # Resource: users_loc/tags_loc: Anzeige aller Tags nach Tagnamen (oeffentlich)
+   controller: 'Tags::Names'
+   rule: '/portal/:view/tags/names'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+   action: 'show_collection'
+- # Resource: users_loc/tags_loc: Anzeige aller Tags nach einem konkreten Tagnamen (oeffentlich)
+  # = Effektiv: Titelliste
+   controller: 'Tags::Names'
+   rule: '/portal/:view/tags/names/id/:tagname'
+   method: 'GET'
+   action: 'show_record'
+
+- # Resource: users_loc/tags_loc: Create Record
+   controller: 'Users::Tags'
+   rule: '/portal/:view/tags'
+   method: 'POST'
+   action: 'create_record'
+- # Resource: tags_loc: Delete Record
+   controller: 'Users::Tags'
+   rule: '/portal/:view/tags/id/:tagid'
+   method: 'DELETE'
+   action: 'delete_record'
+- # Resource: tags_loc: Update Record
+   controller: 'Users::Tags::Names'
+   rule: '/portal/:view/tags/names/id/:tagname'
+   method: 'POST'
+   action: 'update_record'
+- # Resource: tags_loc: Update Record
+   controller: 'Users::Tags::Names'
+   rule: '/portal/:view/tags/names/id/:tagname'
+   method: 'PUT'
+   action: 'update_record'
+
+# Anzeige privater Listen ueber separaten user_loc
+
+- # users/tags_loc: Resource-Finder-URL
+   controller: 'Users::Tags'
+   rule: '/portal/:view/users/me/tags'
+   method: 'GET'
+   action: 'dispatch_to_user'
+   args:
+      disable_content_negotiation: 1
+
+- # Resource: users_loc/tags_loc: Anzeige aller eigenen Tags
+   controller: 'Users::Tags'
+   rule: '/portal/:view/users/id/:userid/tags'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   action: 'show_collection'
+- # Resource: users_loc/tags_loc: Anzeige eines Tags (privat)
+   controller: 'Users::Tags'
+   rule: '/portal/:view/users/id/:userid/tags/id/:tagid'
+   method: 'GET'
+   action: 'show_record'
+
+- # users/tags_names_loc: Resource-Finder-URL
+   controller: 'Users::Tags::Names'
+   rule: '/portal/:view/users/me/tags/names'
+   method: 'GET'
+   action: 'dispatch_to_user'
+   args:
+      disable_content_negotiation: 1
+
+- # Resource: users_loc/tags_loc: Anzeige aller eigenen Tags nach Tagnamen
+   controller: 'Users::Tags::Names'
+   rule: '/portal/:view/users/id/:userid/tags/names'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   action: 'show_collection'
+- # Resource: users_loc/tags_loc: Anzeige aller eigenen Tags zu einem konkreten Tagnamen
+  # = Effentiv: Titelliste
+   controller: 'Users::Tags::Names'
+   rule: '/portal/:view/users/id/:userid/tags/names/id/:tagname'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   action: 'show_record'
+
+- # Resource: users_loc/tags_loc: Edit eines eigenen Tags
+   controller: 'Users::Tags::Names'
+   rule: '/portal/:view/users/id/:userid/tags/names/id/:tagname/edit'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_record_form'
+
+#####################################################################
+# Reviews-Resource/Repraesentation
+
+- # Resource: reviews_loc: Alle Reviews
+   controller: 'Reviews'
+   rule: '/portal/:view/reviews'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - include
+     - rdf
+   action: 'show_collection'
+
+- # Resource: users_loc/reviews_loc: Anzeige eines Reviews
+   controller: 'Reviews'
+   rule: '/portal/:view/reviews/id/:reviewid'
+   method: 'GET'
+   action: 'show_record'
+
+- # Resource: users_loc/reviews_loc: Anzeige aller eigenen Reviews
+   controller: 'Users::Reviews'
+   rule: '/portal/:view/users/id/:userid/reviews'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - include
+     - rdf
+   action: 'show_collection'
+
+- # Resource: users_loc/reviews_loc: Anzeige eines eigenen Reviews
+   controller: 'Users::Reviews'
+   rule: '/portal/:view/users/id/:userid/reviews/id/:reviewid'
+   method: 'GET'
+   action: 'show_record'
+
+- # Resource: users_loc/reviews_loc: Bearbeiten eines eigenen Reviews
+   controller: 'Users::Reviews'
+   rule: '/portal/:view/users/id/:userid/reviews/id/:reviewid/edit'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_record_form'
+
+- # Resource: users_loc/reviews_loc: Create Record
+   controller: 'Users::Reviews'
+   rule: '/portal/:view/reviews'
+   method: 'POST'
+   action: 'create_record'
+- # Resource: reviews_loc: Update Record
+   controller: 'Users::Reviews'
+   rule: '/portal/:view/reviews/id/:reviewid'
+   method: 'POST'
+   action: 'update_record'
+- # Resource: reviews_loc: Update Record
+   controller: 'Users::Reviews'
+   rule: '/portal/:view/reviews/id/:reviewid'
+   method: 'PUT'
+   action: 'update_record'
+- # Resource: reviews_loc: Delete Record
+   controller: 'Users::Reviews'
+   rule: '/portal/:view/reviews/id/:reviewid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+  # Voting
+
+- # Resource: reviews_loc: Update Record
+   controller: 'Users::Reviews::Votes'
+   rule: '/portal/:view/reviews/id/:reviewid/votes'
+   method: 'POST'
+   action: 'update_record'
+- # Resource: reviews_loc: Update Record
+   controller: 'Users::Reviews::Votes'
+   rule: '/portal/:view/reviews/id/:reviewid/votes'
+   method: 'PUT'
+   action: 'update_record'
+
+# Charakteristik
+# - reduzierte oeffentliche und volle admin Repraesentation [get]
+# - ein kanonischer Resource-URI [get,post,put,delete]
+# - ??Automatische Weiterleitung von [get] auf ggf. nutzerspezifische Repreaesentation
+
+#####################################################################
+# Admin-Resource/Repraesentation
+- # Resource: admin_loc
+   scope: 'admin'
+   controller: 'Admin'
+   rule: '/portal/:view/admin'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   action: 'show_collection'
+
+#####################################################################
+# Clusters-Resource/Repraesentation
+- # Resource: clusters_loc
+   controller: 'Clusters'
+   rule: '/portal/:view/clusters'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+      admin_loc: 'clusters'        
+   action: 'show_collection'
+- # Resource: clusters_loc Record show
+   controller: 'Clusters'
+   rule: '/portal/:view/clusters/id/:clusterid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+      admin_loc: 'clusters'        
+- # Repraesentation: admin_loc/clusters_loc
+   scope: 'admin_clusters'
+   controller: 'Admin::Clusters'
+   rule: '/portal/:view/admin/clusters'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # Repraesentation: admin_loc/clusters_loc
+   scope: 'admin_clusters'
+   controller: 'Admin::Clusters'
+   rule: '/portal/:view/admin/clusters/id/:clusterid'
+   method: 'GET'
+   action: 'show_record'
+- # Repraesentation: admin_loc/clusters_loc: Record show form
+   scope: 'admin_clusters'
+   controller: 'Admin::Clusters'
+   rule: '/portal/:view/admin/clusters/id/:clusterid/edit'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_record_form'
+- # Resource: admin_loc/clusters_loc: Create Record
+   scope: 'admin_clusters'
+   controller: 'Admin::Clusters'
+   rule: '/portal/:view/clusters'
+   method: 'POST'
+   action: 'create_record'
+- # Resource: clusters_loc: Update Record
+   scope: 'admin_clusters'
+   controller: 'Admin::Clusters'
+   rule: '/portal/:view/clusters/id/:clusterid'
+   method: 'POST'
+   action: 'update_record'
+- # Resource: clusters_loc: Update Record
+   scope: 'admin_clusters'
+   controller: 'Admin::Clusters'
+   rule: '/portal/:view/clusters/id/:clusterid'
+   method: 'PUT'
+   action: 'update_record'
+- # Resource: clusters_loc: Delete Record
+   scope: 'admin_clusters'
+   controller: 'Admin::Clusters'
+   rule: '/portal/:view/clusters/id/:clusterid'
+   method: 'DELETE'
+   action: 'delete_record'
+- # Repraesentation: admin_loc/clusters_loc: Record show consistency across servers
+   scope: 'admin_clusters'
+   controller: 'Admin::Clusters'
+   rule: '/portal/:view/admin/clusters/id/:clusterid/consistency'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_record_consistency'
+
+#####################################################################
+# Servers-Resource/Repraesentation
+- # users/servers_loc:
+   controller: 'Servers'
+   rule: '/portal/:view/servers'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+      admin_loc: 'servers'
+- # admin_loc/servers_loc: Record show
+   controller: 'Servers'
+   rule: '/portal/:view/servers/id/:serverid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+      admin_loc: 'servers'
+- # users/servers_loc:
+   scope: 'admin_servers'
+   controller: 'Admin::Servers'
+   rule: '/portal/:view/admin/servers'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/servers_loc: Record show
+   scope: 'admin_servers'
+   controller: 'Admin::Servers'
+   rule: '/portal/:view/admin/servers/id/:serverid'
+   method: 'GET'
+   action: 'show_record'
+- # admin_loc/servers_loc: Record show form
+   scope: 'admin_servers'
+   controller: 'Admin::Servers'
+   rule: '/portal/:view/admin/servers/id/:serverid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin_loc/servers_loc: Update Record
+   scope: 'admin_servers'
+   controller: 'Admin::Servers'
+   rule: '/portal/:view/servers'
+   method: 'POST'
+   action: 'create_record'
+- # admin_loc/servers_loc: Update Record
+   scope: 'admin_servers'
+   controller: 'Admin::Servers'
+   rule: '/portal/:view/servers/id/:serverid'
+   method: 'POST'
+   action: 'update_record'
+- # admin_loc/servers_loc: Update Record
+   scope: 'admin_servers'
+   controller: 'Admin::Servers'
+   rule: '/portal/:view/servers/id/:serverid'
+   method: 'PUT'
+   action: 'update_record'
+- # admin_loc/servers_loc: Delete Record
+   scope: 'admin_servers'
+   controller: 'Admin::Servers'
+   rule: '/portal/:view/servers/id/:serverid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+# Servers Updates-Resource/Repraesentation
+- # users/servers_loc:
+   scope: 'admin_servers'
+   controller: 'Admin::Servers::Updates'
+   rule: '/portal/:view/admin/servers/id/:serverid/updates'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - csv
+
+#####################################################################
+# Databases-Resource/Repraesentation
+- # users/databases_loc:
+   controller: 'Databases'
+   rule: '/portal/:view/databases'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+      admin_loc: 'databases'
+- # users/databases_loc:
+   controller: 'Databases'
+   rule: '/portal/:view/databases/popular'
+   method: 'GET'
+   action: 'show_popular'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/databases_loc: Record show
+   controller: 'Databases'
+   rule: '/portal/:view/databases/id/:databaseid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+     'restrict_db_to_view': 1
+     admin_loc: 'databases'
+- # users/databases_loc:
+   scope: 'admin_databases'
+   controller: 'Admin::Databases'
+   rule: '/portal/:view/admin/databases'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/databases_loc: Record show
+   scope: 'admin_databases'
+   controller: 'Admin::Databases'
+   rule: '/portal/:view/admin/databases/id/:databaseid'
+   method: 'GET'
+   action: 'show_record'
+- # admin_loc/databases_loc: Record show form
+   scope: 'admin_databases'
+   controller: 'Admin::Databases'
+   rule: '/portal/:view/admin/databases/id/:databaseid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin_loc/databases_loc: Update Record
+   scope: 'admin_databases'
+   controller: 'Admin::Databases'
+   rule: '/portal/:view/databases'
+   method: 'POST'
+   action: 'create_record'
+- # admin_loc/databases_loc: Update Record
+   scope: 'admin_databases'
+   controller: 'Admin::Databases'
+   rule: '/portal/:view/databases/id/:databaseid'
+   method: 'POST'
+   action: 'update_record'
+- # admin_loc/databases_loc: Update Record
+   scope: 'admin_databases'
+   controller: 'Admin::Databases'
+   rule: '/portal/:view/databases/id/:databaseid'
+   method: 'PUT'
+   action: 'update_record'
+- # admin_loc/databases_loc: Delete Record
+   scope: 'admin_databases'
+   controller: 'Admin::Databases'
+   rule: '/portal/:view/databases/id/:databaseid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+# Databases RSS-Resource/Repraesentation
+- # databases_loc:
+   controller: 'Databases::RSS'
+   rule: '/portal/:view/databases/id/:databaseid/rss'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+     'restrict_db_to_view': 1
+     admin_loc: 'databases'
+- # databases_loc: Record show
+   controller: 'Databases::RSS'
+   rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+     'restrict_db_to_view': 1
+     admin_loc: 'databases'
+- # users/databases_loc:
+   scope: 'admin_databases'
+   controller: 'Admin::Databases::RSS'
+   rule: '/portal/:view/admin/databases/id/:databaseid/rss'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/databases_loc: Record show
+   scope: 'admin_databases'
+   controller: 'Admin::Databases::RSS'
+   rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid'
+   method: 'GET'
+   action: 'show_record'
+- # admin_loc/databases_loc: Record show form
+   scope: 'admin_databases'
+   controller: 'Admin::Databases::RSS'
+   rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin_loc/databases_loc: Update Record
+   scope: 'admin_databases'
+   controller: 'Admin::Databases::RSS'
+   rule: '/portal/:view/databases/id/:databaseid/rss'
+   method: 'POST'
+   action: 'create_record'
+- # admin_loc/databases_loc: Update Record
+   scope: 'admin_databases'
+   controller: 'Admin::Databases::RSS'
+   rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid'
+   method: 'POST'
+   action: 'update_record'
+- # admin_loc/databases_loc: Update Record
+   scope: 'admin_databases'
+   controller: 'Admin::Databases::RSS'
+   rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid'
+   method: 'PUT'
+   action: 'update_record'
+- # admin_loc/databases_loc: Delete Record
+   scope: 'admin_databases'
+   controller: 'Admin::Databases::RSS'
+   rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid'
+   method: 'DELETE'
+   action: 'delete_record'
+- # admin_loc/databases_loc: Delete Record
+   scope: 'admin_databases'
+   controller: 'Admin::Databases::RSS'
+   rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+# Databases Updates-Resource/Repraesentation
+- # users/databases_loc:
+   scope: 'admin_databases'
+   controller: 'Admin::Databases::Updates'
+   rule: '/portal/:view/admin/databases/id/:databaseid/updates'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - csv
+
+#####################################################################
+# Standortgruppierung/Templates-Resource/Repraesentation
+- # users/templates_loc:
+   controller: 'Templates'
+   rule: '/portal/:view/templates'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+      admin_loc: 'templates'
+- # admin_loc/templates_loc: Record show
+   controller: 'Templates'
+   rule: '/portal/:view/templates/id/:templateid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+      admin_loc: 'templates'
+- # Resource: users_loc/templates_loc: Anzeige aller eigenen aenderbaren Template-Inhalten
+   controller: 'Users::Templates'
+   rule: '/portal/:view/users/id/:userid/templates'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   action: 'show_collection'
+- # admin_loc/templates_loc: Record show form
+   controller: 'Users::Templates'
+   rule: '/portal/:view/users/id/:userid/templates/id/:templateid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # users/templates_loc:
+   scope: 'admin_templates'
+   controller: 'Admin::Templates'
+   rule: '/portal/:view/admin/templates'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - csv
+- # admin_loc/templates_loc: Show Record 
+   scope: 'admin_templates'
+   controller: 'Admin::Templates'
+   rule: '/portal/:view/admin/templates/id/:templateid'
+   method: 'GET'
+   action: 'show_record'
+- # admin_loc/templates_loc: Record show form
+   scope: 'admin_templates'
+   controller: 'Admin::Templates'
+   rule: '/portal/:view/admin/templates/id/:templateid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin_loc/templates_loc: Create Record
+   scope: 'admin_templates'
+   controller: 'Admin::Templates'
+   rule: '/portal/:view/templates'
+   method: 'POST'
+   action: 'create_record'
+- # admin_loc/templates_loc: Delete Record
+   scope: 'admin_templates'
+   controller: 'Admin::Templates'
+   rule: '/portal/:view/templates/id/:templateid'
+   method: 'DELETE'
+   action: 'delete_record'
+- # admin_loc/templates_loc: Update Record
+   controller: 'Users::Templates'
+   rule: '/portal/:view/templates/id/:templateid'
+   method: 'POST'
+   action: 'update_record'
+- # admin_loc/templates_loc: Update Record
+   controller: 'Users::Templates'
+   rule: '/portal/:view/templates/id/:templateid'
+   method: 'PUT'
+   action: 'update_record'
+
+- # admin_loc/templates_loc: Revisions
+   controller: 'Templates::Revisions'
+   rule: '/portal/:view/templates/id/:templateid/revisions'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+- # admin_loc/templates_loc: Revisions
+   controller: 'Templates::Revisions'
+   rule: '/portal/:view/templates/id/:templateid/revisions/id/:revisionid'
+   method: 'GET'
+   action: 'show_record'
+   representations:
+     - none
+     - html
+     - json
+- # admin_loc/templates_loc: Revisions
+   controller: 'Users::Templates::Revisions'
+   rule: '/portal/:view/templates/id/:templateid/revisions/id/:revisionid'
+   method: 'PUT'
+   action: 'revert_record'
+
+- # admin_loc/templates_loc: Revisions
+   controller: 'Users::Templates::Revisions'
+   rule: '/portal/:view/templates/id/:templateid/revisions/id/:revisionid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+# Standortgruppierung/Locations-Resource/Repraesentation
+- # users/locations_loc:
+   controller: 'Locations'
+   rule: '/portal/:view/locations'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - include
+     - json
+     - csv
+- # admin_loc/locations_loc: Record show
+   controller: 'Locations'
+   rule: '/portal/:view/locations/id/:locationid'
+   method: 'GET'
+   action: 'show_record'
+- # admin_loc/locations_loc: Record show
+   controller: 'Locations::Occupancy'
+   rule: '/portal/:view/locations/id/:locationid/occupancy'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - include
+- # users/locations_loc:
+   scope: 'admin_locations'
+   controller: 'Admin::Locations'
+   rule: '/portal/:view/admin/locations'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - csv
+- # admin_loc/locations_loc: Record show
+   scope: 'admin_locations'
+   controller: 'Admin::Locations'
+   rule: '/portal/:view/admin/locations/id/:locationid'
+   method: 'GET'
+   action: 'show_record'
+- # admin_loc/locations_loc: Record show form
+   scope: 'admin_locations'
+   controller: 'Admin::Locations'
+   rule: '/portal/:view/admin/locations/id/:locationid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin_loc/locations_loc: Update Record
+   scope: 'admin_locations'
+   controller: 'Admin::Locations'
+   rule: '/portal/:view/locations'
+   method: 'POST'
+   action: 'create_record'
+- # admin_loc/locations_loc: Update Record
+   scope: 'admin_locations'
+   controller: 'Admin::Locations'
+   rule: '/portal/:view/locations/id/:locationid'
+   method: 'POST'
+   action: 'update_record'
+- # admin_loc/locations_loc: Update Record
+   scope: 'admin_locations'
+   controller: 'Admin::Locations'
+   rule: '/portal/:view/locations/id/:locationid'
+   method: 'PUT'
+   action: 'update_record'
+- # admin_loc/locations_loc: Delete Record
+   scope: 'admin_locations'
+   controller: 'Admin::Locations'
+   rule: '/portal/:view/locations/id/:locationid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+# Katalogprofile-Resource/Repraesentation
+- # users/profiles_loc:
+   controller: 'Profiles'
+   rule: '/portal/:view/profiles'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+      admin_loc: 'profiles'
+- # admin_loc/profiles_loc: Record show
+   controller: 'Profiles'
+   rule: '/portal/:view/profiles/id/:profileid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+      admin_loc: 'profiles'
+- # users/profiles_loc:
+   scope: 'admin_profiles'
+   controller: 'Admin::Profiles'
+   rule: '/portal/:view/admin/profiles'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/profiles_loc: Record show
+   scope: 'admin_profiles'
+   controller: 'Admin::Profiles'
+   rule: '/portal/:view/admin/profiles/id/:profileid'
+   method: 'GET'
+   action: 'show_record'
+- # admin_loc/profiles_loc: Record show form
+   scope: 'admin_profiles'
+   controller: 'Admin::Profiles'
+   rule: '/portal/:view/admin/profiles/id/:profileid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin_loc/profiles_loc: Update Record
+   scope: 'admin_profiles'
+   controller: 'Admin::Profiles'
+   rule: '/portal/:view/profiles'
+   method: 'POST'
+   action: 'create_record'
+- # admin_loc/profiles_loc: Update Record
+   scope: 'admin_profiles'
+   controller: 'Admin::Profiles'
+   rule: '/portal/:view/profiles/id/:profileid'
+   method: 'POST'
+   action: 'update_record'
+- # admin_loc/profiles_loc: Update Record
+   scope: 'admin_profiles'
+   controller: 'Admin::Profiles'
+   rule: '/portal/:view/profiles/id/:profileid'
+   method: 'PUT'
+   action: 'update_record'
+- # admin_loc/profiles_loc: Delete Record
+   scope: 'admin_profiles'
+   controller: 'Admin::Profiles'
+   rule: '/portal/:view/profiles/id/:profileid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+# Organisationseinheiten-Resource/Repraesentation
+- # users/profiles_loc:
+   controller: 'OrganizationalUnits'
+   rule: '/portal/:view/profiles/id/:profileid/orgunits'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+      admin_loc: 'profiles'
+- # admin_loc/profiles_loc: Record show
+   controller: 'OrganizationalUnits'
+   rule: '/portal/:view/profiles/id/:profileid/orgunits/id/:orgunitid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+      admin_loc: 'profiles'
+- # users/profiles_loc:
+   scope: 'admin_profiles'
+   controller: 'Admin::OrganizationalUnits'
+   rule: '/portal/:view/admin/profiles/id/:profileid/orgunits'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/profiles_loc: Record show
+   scope: 'admin_profiles'
+   controller: 'Admin::OrganizationalUnits'
+   rule: '/portal/:view/admin/profiles/id/:profileid/orgunits/id/:orgunitid'
+   method: 'GET'
+   action: 'show_record'
+- # admin_loc/profiles_loc: Record show form
+   scope: 'admin_profiles'
+   controller: 'Admin::OrganizationalUnits'
+   rule: '/portal/:view/admin/profiles/id/:profileid/orgunits/id/:orgunitid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin_loc/profiles_loc: Update Record
+   scope: 'admin_profiles'
+   controller: 'Admin::OrganizationalUnits'
+   rule: '/portal/:view/profiles/id/:profileid/orgunits'
+   method: 'POST'
+   action: 'create_record'
+- # admin_loc/profiles_loc: Update Record
+   scope: 'admin_profiles'
+   controller: 'Admin::OrganizationalUnits'
+   rule: '/portal/:view/profiles/id/:profileid/orgunits/id/:orgunitid'
+   method: 'POST'
+   action: 'update_record'
+- # admin_loc/profiles_loc: Update Record
+   scope: 'admin_profiles'
+   controller: 'Admin::OrganizationalUnits'
+   rule: '/portal/:view/profiles/id/:profileid/orgunits/id/:orgunitid'
+   method: 'PUT'
+   action: 'update_record'
+- # admin_loc/profiles_loc: Delete Record
+   scope: 'admin_profiles'
+   controller: 'Admin::OrganizationalUnits'
+   rule: '/portal/:view/profiles/id/:profileid/orgunits/id/:orgunitid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+# Katalogsichten/Views-Resource/Repraesentation
+- # users/views_loc:
+   controller: 'Views'
+   rule: '/portal/:view/views'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+      admin_loc: 'views'
+- # admin_loc/views_loc: Record show
+   controller: 'Views'
+   rule: '/portal/:view/views/id/:viewid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+      admin_loc: 'views'
+- # users/views_loc:
+   scope: 'admin_views'
+   controller: 'Admin::Views'
+   rule: '/portal/:view/admin/views'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/views_loc: Record show
+   scope: 'admin_views'
+   controller: 'Admin::Views'
+   rule: '/portal/:view/admin/views/id/:viewid'
+   method: 'GET'
+   action: 'show_record'
+- # admin_loc/views_loc: Record show form
+   scope: 'admin_views'
+   controller: 'Admin::Views'
+   rule: '/portal/:view/admin/views/id/:viewid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin_loc/views_loc: Update Record
+   scope: 'admin_views'
+   controller: 'Admin::Views'
+   rule: '/portal/:view/views'
+   method: 'POST'
+   action: 'create_record'
+- # admin_loc/views_loc: Update Record
+   scope: 'admin_views'
+   controller: 'Admin::Views'
+   rule: '/portal/:view/views/id/:viewid'
+   method: 'POST'
+   action: 'update_record'
+- # admin_loc/views_loc: Update Record
+   scope: 'admin_views'
+   controller: 'Admin::Views'
+   rule: '/portal/:view/views/id/:viewid'
+   method: 'PUT'
+   action: 'update_record'
+- # admin_loc/views_loc: Delete Record
+   scope: 'admin_views'
+   controller: 'Admin::Views'
+   rule: '/portal/:view/views/id/:viewid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+# Katalogsichten/Views RSS-Resource/Repraesentation
+- # views_loc:
+   controller: 'Views::RSS'
+   rule: '/portal/:view/views/id/:viewid/rss'
+   method: 'GET'
+   action: 'show_record'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+      admin_loc: 'views'
+- # users/views_loc:
+   scope: 'admin_views'
+   controller: 'Admin::Views::RSS'
+   rule: '/portal/:view/admin/views/id/:viewid/rss'
+   method: 'GET'
+   action: 'show_record'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/views_loc: Record show form
+   scope: 'admin_views'
+   controller: 'Admin::Views::RSS'
+   rule: '/portal/:view/admin/views/id/:viewid/rss/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin_loc/views_loc: Update Record
+   scope: 'admin_views'
+   controller: 'Admin::Views::RSS'
+   rule: '/portal/:view/views/id/:viewid/rss'
+   method: 'POST'
+   action: 'create_record'
+- # admin_loc/views_loc: Update Record
+   scope: 'admin_views'
+   controller: 'Admin::Views::RSS'
+   rule: '/portal/:view/views/id/:viewid/rss'
+   method: 'POST'
+   action: 'update_record'
+- # admin_loc/views_loc: Update Record
+   scope: 'admin_views'
+   controller: 'Admin::Views::RSS'
+   rule: '/portal/:view/views/id/:viewid/rss'
+   method: 'PUT'
+   action: 'update_record'
+
+#####################################################################
+# Searchprofiles-Resource/Repraesentation
+- # users/searchprofiles_loc:
+   controller: 'Searchprofiles'
+   rule: '/portal/:view/searchprofiles'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+      admin_loc: 'searchprofiles'
+- # admin_loc/searchprofiles_loc: Record show
+   controller: 'Searchprofiles'
+   rule: '/portal/:view/searchprofiles/id/:searchprofileid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+      admin_loc: 'searchprofiles'
+- # users/searchprofiles_loc:
+   scope: 'admin_searchprofiles'
+   controller: 'Admin::Searchprofiles'
+   rule: '/portal/:view/admin/searchprofiles'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/searchprofiles_loc: Record show
+   scope: 'admin_searchprofiles'
+   controller: 'Admin::Searchprofiles'
+   rule: '/portal/:view/admin/searchprofiles/id/:searchprofileid'
+   method: 'GET'
+   action: 'show_record'
+
+#####################################################################
+# Sessions-Resource/Repraesentation
+# Sessioninformationen nie als oeffentlich einsehbare Resource
+- # users/sessions_loc: Search Results
+   scope: 'admin_sessions'
+   controller: 'Admin::Sessions'
+   rule: '/portal/:view/admin/sessions/archived/search'
+   method: 'GET'
+   action: 'show_archived_search'
+   representations:
+     - none
+     - html
+     - json
+- # users/sessions_loc: Search Results
+   scope: 'admin_sessions'
+   controller: 'Admin::Sessions'
+   rule: '/portal/:view/admin/sessions/archived/search/form'
+   method: 'GET'
+   action: 'show_archived_search_form'
+   representations:
+     - none
+     - html
+- # users/sessions_loc: Search Results
+   scope: 'admin_sessions'
+   controller: 'Admin::Sessions'
+   rule: '/portal/:view/admin/sessions/active'
+   method: 'GET'
+   action: 'show_active_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/sessions_loc: Record show
+   scope: 'admin_sessions'
+   controller: 'Admin::Sessions'
+   rule: '/portal/:view/admin/sessions/active/id/:sessionid'
+   method: 'GET'
+   action: 'show_active_record'
+- # admin_loc/sessions_loc: Record show
+   scope: 'admin_sessions'
+   controller: 'Admin::Sessions'
+   rule: '/portal/:view/admin/sessions/archived/id/:sessionid'
+   method: 'GET'
+   action: 'show_archived_record'
+
+#####################################################################
+# Statistik-Resource/Repraesentation
+- # users/statistics_loc:
+   scope: 'admin_statistics'
+   controller: 'Admin::Statistics'
+   rule: '/portal/:view/admin/statistics'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/statistics_loc: Record show
+   scope: 'admin_statistics'
+   controller: 'Admin::Statistics'
+   rule: '/portal/:view/admin/statistics/id/:statisticsid'
+   method: 'GET'
+   action: 'show_statistics'
+- # admin_loc/statistics_loc: Record show
+   scope: 'admin_statistics'
+   controller: 'Admin::Statistics'
+   rule: '/portal/:view/admin/statistics/id/:statisticsid/subid/:statisticsid2'
+   method: 'GET'
+   action: 'show_statistics'
+- # admin_loc/statistics_loc: Record show
+   scope: 'admin_statistics'
+   controller: 'Admin::Statistics'
+   rule: '/portal/:view/admin/statistics/id/:statisticsid/subid/:statisticsid2/graph'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - include
+   action: 'show_graph'
+
+#####################################################################
+# Roles-Resource/Repraesentation
+- # users/roles_loc:
+   controller: 'Roles'
+   rule: '/portal/:view/roles'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+      admin_loc: 'roles'
+- # admin_loc/roles_loc: Record show
+   controller: 'Roles'
+   rule: '/portal/:view/roles/id/:roleid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+      admin_loc: 'roles'
+- # users/roles_loc:
+   scope: 'admin_roles'
+   controller: 'Admin::Roles'
+   rule: '/portal/:view/admin/roles'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/roles_loc: Record show
+   scope: 'admin_roles'
+   controller: 'Admin::Roles'
+   rule: '/portal/:view/admin/roles/id/:roleid'
+   method: 'GET'
+   action: 'show_record'
+- # admin_loc/roles_loc: Record show form
+   scope: 'admin_roles'
+   controller: 'Admin::Roles'
+   rule: '/portal/:view/admin/roles/id/:roleid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin_loc/roles_loc: Update Record
+   scope: 'admin_roles'
+   controller: 'Admin::Roles'
+   rule: '/portal/:view/roles'
+   method: 'POST'
+   action: 'create_record'
+- # admin_loc/roles_loc: Update Record
+   scope: 'admin_roles'
+   controller: 'Admin::Roles'
+   rule: '/portal/:view/roles/id/:roleid'
+   method: 'POST'
+   action: 'update_record'
+- # admin_loc/roles_loc: Update Record
+   scope: 'admin_roles'
+   controller: 'Admin::Roles'
+   rule: '/portal/:view/roles/id/:roleid'
+   method: 'PUT'
+   action: 'update_record'
+- # admin_loc/roles_loc: Delete Record
+   scope: 'admin_roles'
+   controller: 'Admin::Roles'
+   rule: '/portal/:view/roles/id/:roleid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+#  Viewadmin
+#####################################################################
+
+#####################################################################
+# Admin-Resource/Repraesentation
+- # Resource: admin_loc
+   scope: 'viewadmin'
+   controller: 'Viewadmin'
+   rule: '/portal/:view/viewadmin'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   action: 'show_collection'
+
+#####################################################################
+# Katalogsichten/Views-Resource/Repraesentation
+- # admin_loc/views_loc: Record show
+   scope: 'viewadmin_views'
+   controller: 'ViewAdmin::Views'
+   rule: '/portal/:view/viewadmin/views/id/:viewid'
+   method: 'GET'
+   action: 'show_record'
+- # admin_loc/views_loc: Record show
+   scope: 'viewadmin_views'
+   controller: 'Viewadmin::Views'
+   rule: '/portal/:view/viewadmin/views/id/:viewid'
+   method: 'GET'
+   action: 'show_record'
+- # admin_loc/views_loc: Record show form
+   scope: 'viewadmin_views'
+   controller: 'Viewadmin::Views'
+   rule: '/portal/:view/viewadmin/views/id/:viewid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin_loc/views_loc: Update Record
+   scope: 'viewadmin_views'
+   controller: 'Viewadmin::Views'
+   rule: '/portal/:view/viewadviews/id/:viewid'
+   method: 'POST'
+   action: 'update_record'
+- # admin_loc/views_loc: Update Record
+   scope: 'viewadmin_views'
+   controller: 'Viewadmin::Views'
+   rule: '/portal/:view/viewadmin/views/id/:viewid'
+   method: 'PUT'
+   action: 'update_record'
+
+#####################################################################
+# Roles-Resource/Repraesentation
+
+- # users/roles_loc:
+   scope: 'viewadmin_roles'
+   controller: 'Viewadmin::Roles'
+   rule: '/portal/:view/viewadmin/roles'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/roles_loc: Record show
+   scope: 'viewadmin_roles'
+   controller: 'Viewadmin::Roles'
+   rule: '/portal/:view/viewadmin/roles/id/:roleid'
+   method: 'GET'
+   action: 'show_record'
+- # admin_loc/roles_loc: Record show form
+   scope: 'viewadmin_roles'
+   controller: 'Viewadmin::Roles'
+   rule: '/portal/:view/viewadmin/roles/id/:roleid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin_loc/roles_loc: Update Record
+   scope: 'viewadmin_roles'
+   controller: 'Viewadmin::Roles'
+   rule: '/portal/:view/viewadmin/roles'
+   method: 'POST'
+   action: 'create_record'
+- # admin_loc/roles_loc: Update Record
+   scope: 'viewadmin_roles'
+   controller: 'Viewadmin::Roles'
+   rule: '/portal/:view/viewadmin/roles/id/:roleid'
+   method: 'POST'
+   action: 'update_record'
+- # admin_loc/roles_loc: Update Record
+   scope: 'viewadmin_roles'
+   controller: 'Viewadmin::Roles'
+   rule: '/portal/:view/viewadmin/roles/id/:roleid'
+   method: 'PUT'
+   action: 'update_record'
+- # admin_loc/roles_loc: Delete Record
+   scope: 'viewadmin_roles'
+   controller: 'Viewadmin::Roles'
+   rule: '/portal/:view/viewadmin/roles/id/:roleid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+# Users-Resource/Repraesentation
+- # Resource: admin_loc/users_loc
+   scope: 'viewadmin_users'
+   controller: 'Viewadmin::Users'
+   rule: '/portal/:view/viewadmin/users'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   action: 'show_collection'
+- # Resource: admin_loc/users_loc
+   scope: 'viewadmin_users'
+   controller: 'Viewadmin::Users'
+   rule: '/portal/:view/viewadmin/users/search/form'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_search_form'
+- # Resource: admin_loc/users_loc
+   scope: 'viewadmin_users'
+   controller: 'Viewadmin::Users'
+   rule: '/portal/:view/viewadmin/users/search'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   action: 'show_search'
+
+#####################################################################
+# Admin User Rights Roles-Resource/Repraesentation
+- # viewadmin users:
+   scope: 'viewadmin_users'
+   controller: 'Viewadmin::Users'
+   rule: '/portal/:view/viewadmin/users/id/:userid'
+   method: 'GET'
+   action: 'show_record'
+- # viewadmin users:
+   scope: 'viewadmin_users'
+   controller: 'Viewadmin::Users'
+   rule: '/portal/:view/viewadmin/users/id/:userid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # viewadmin users: Update
+   scope: 'viewadmin_users'
+   controller: 'Viewadmin::Users'
+   rule: '/portal/:view/viewadmin/users/id/:userid'
+   method: 'POST'
+   action: 'update_record'
+- # users_loc/roles_loc: Update
+   scope: 'viewadmin_users'
+   controller: 'Viewadmin::Users::Rights::Roles'
+   rule: '/portal/:view/viewadmin/users/id/:userid/rights/roles'
+   method: 'POST'
+   action: 'update_record'
+- # users_loc/roles_loc: Update
+   scope: 'viewadmin_users'
+   controller: 'Viewadmin::Users::Rights::Roles'
+   rule: '/portal/:view/viewadmin/users/id/:userid/rights/roles'
+   method: 'PUT'
+   action: 'update_record'
+
+- # users_loc/templates_loc: Update
+   scope: 'viewadmin_users'
+   controller: 'Viewadmin::Users::Rights::Templates'
+   rule: '/portal/:view/viewadmin/users/id/:userid/rights/templates'
+   method: 'POST'
+   action: 'update_record'
+- # users_loc/templates_loc: Update
+   scope: 'viewadmin_users'
+   controller: 'Viewadmin::Users::Rights::Templates'
+   rule: '/portal/:view/viewadmin/users/id/:userid/rights/templates'
+   method: 'PUT'
+   action: 'update_record'
+
+#####################################################################
+# Users-Resource/Repraesentation
+- # Resource: admin_loc/users_loc
+   scope: 'admin_users'
+   controller: 'Admin::Users'
+   rule: '/portal/:view/admin/users'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   action: 'show_collection'
+- # Resource: admin_loc/users_loc
+   scope: 'admin_users'
+   controller: 'Admin::Users'
+   rule: '/portal/:view/admin/users/search/form'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_search_form'
+- # Resource: admin_loc/users_loc
+   scope: 'admin_users'
+   controller: 'Admin::Users'
+   rule: '/portal/:view/admin/users/search'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   action: 'show_search'
+- # Resource: admin_loc/user_loc
+   scope: 'admin_users'
+   controller: 'Admin::Users'
+   rule: '/portal/:view/admin/users'
+   method: 'POST'
+   action: 'create_record'
+
+#####################################################################
+# Admin User-Migrations-Resource/Repraesentation
+
+- # admin_loc/users_loc/migration_loc:
+   scope: 'admin_users'
+   controller: 'Admin::Users::Migration'
+   rule: '/portal/:view/admin/users/migration'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+- # user_loc:
+   scope: 'admin_users'
+   controller: 'Admin::Users::Migration'
+   rule: '/portal/:view/admin/users/migration'
+   method: 'POST'
+   action: 'migrate_ugc'
+- # user_loc:
+   scope: 'admin_users'
+   controller: 'Admin::Users::Migration'
+   rule: '/portal/:view/admin/users/migration'
+   method: 'PUT'
+   action: 'migrate_ugc'
+
+#####################################################################
+# Authenticators-Resource/Repraesentation
+- # Resource: authenticators_loc
+   controller: 'Authenticators'
+   rule: '/portal/:view/authenticators'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+      admin_loc: 'authenticators'        
+   action: 'show_collection'
+- # Resource: authenticators_loc Record show
+   controller: 'Authenticators'
+   rule: '/portal/:view/authenticators/id/:authenticatorid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+      admin_loc: 'authenticators'        
+- # Repraesentation: admin_loc/authenticators_loc
+   scope: 'admin_authenticators'
+   controller: 'Admin::Authenticators'
+   rule: '/portal/:view/admin/authenticators'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # Repraesentation: admin_loc/authenticators_loc
+   scope: 'admin_authenticators'
+   controller: 'Admin::Authenticators'
+   rule: '/portal/:view/admin/authenticators/id/:authenticatorid'
+   method: 'GET'
+   action: 'show_record'
+- # Repraesentation: admin_loc/authenticators_loc: Record show form
+   scope: 'admin_authenticators'
+   controller: 'Admin::Authenticators'
+   rule: '/portal/:view/admin/authenticators/id/:authenticatorid/edit'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'show_record_form'
+- # Resource: admin_loc/authenticators_loc: Create Record
+   scope: 'admin_authenticators'
+   controller: 'Admin::Authenticators'
+   rule: '/portal/:view/authenticators'
+   method: 'POST'
+   action: 'create_record'
+- # Resource: authenticators_loc: Update Record
+   scope: 'admin_authenticators'
+   controller: 'Admin::Authenticators'
+   rule: '/portal/:view/authenticators/id/:authenticatorid'
+   method: 'POST'
+   action: 'update_record'
+- # Resource: authenticators_loc: Update Record
+   scope: 'admin_authenticators'
+   controller: 'Admin::Authenticators'
+   rule: '/portal/:view/authenticators/id/:authenticatorid'
+   method: 'PUT'
+   action: 'update_record'
+- # Resource: authenticators_loc: Delete Record
+   scope: 'admin_authenticators'
+   controller: 'Admin::Authenticators'
+   rule: '/portal/:view/authenticators/id/:authenticatorid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+# Topics-Resource/Repraesentation
+- # users/topics_loc:
+   controller: 'Topics'
+   rule: '/portal/:view/topics'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+      admin_loc: 'topics'
+- # admin_loc/topics_loc: Record show
+   controller: 'Topics'
+   rule: '/portal/:view/topics/id/:topicid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+      admin_loc: 'topics'
+- # users/topics_loc:
+   scope: 'admin_topics'
+   controller: 'Admin::Topics'
+   rule: '/portal/:view/admin/topics'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/topics_loc: Record show
+   scope: 'admin_topics'
+   controller: 'Admin::Topics'
+   rule: '/portal/:view/admin/topics/id/:topicid'
+   method: 'GET'
+   action: 'show_record'
+- # admin_loc/topics_loc: Record show form
+   scope: 'admin_topics'
+   controller: 'Admin::Topics'
+   rule: '/portal/:view/admin/topics/id/:topicid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin_loc/topics_loc: Create Record
+   scope: 'admin_topics'
+   controller: 'Admin::Topics'
+   rule: '/portal/:view/topics'
+   method: 'POST'
+   action: 'create_record'
+- # admin_loc/topics_loc: Update Record
+   scope: 'admin_topics'
+   controller: 'Admin::Topics'
+   rule: '/portal/:view/topics/id/:topicid'
+   method: 'POST'
+   action: 'update_record'
+- # admin_loc/topics_loc: Update Record
+   scope: 'admin_topics'
+   controller: 'Admin::Topics'
+   rule: '/portal/:view/topics/id/:topicid'
+   method: 'PUT'
+   action: 'update_record'
+- # admin_loc/topics_loc: Delete Record
+   scope: 'admin_topics'
+   controller: 'Admin::Topics'
+   rule: '/portal/:view/topics/id/:topicid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+# Topics-Mappings-Resource/Repraesentation
+- # users/topics_loc:
+   controller: 'Topics::Mappings'
+   rule: '/portal/:view/topics/id/:topicid/mappings'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+      admin_loc: 'topics'
+- # admin_loc/topics_loc: Record show
+   controller: 'Topics::Mappings'
+   rule: '/portal/:view/topics/id/:topicid/mappings/id/:mappingid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+      admin_loc: 'topics'
+- # users/topics_loc:
+   scope: 'admin_topics'
+   controller: 'Admin::Topics::Mappings'
+   rule: '/portal/:view/admin/topics/id/:topicid/mappings'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # admin_loc/topics_loc: Record show
+   scope: 'admin_topics'
+   controller: 'Admin::Topics::Mappings'
+   rule: '/portal/:view/admin/topics/id/:topicid/mappings/id/:mappingid'
+   method: 'GET'
+   action: 'show_record'
+- # admin_loc/topics_loc: Update Record
+   scope: 'admin_topics'
+   controller: 'Admin::Topics::Mappings'
+   rule: '/portal/:view/topics/id/:topicid/mappings/id/:mappingid'
+   method: 'POST'
+   action: 'update_record'
+- # admin_loc/topics_loc: Update Record
+   scope: 'admin_topics'
+   controller: 'Admin::Topics::Mappings'
+   rule: '/portal/:view/topics/id/:topicid/mappings/id/:mappingid'
+   method: 'PUT'
+   action: 'update_record'
+ 
+#####################################################################
+# Alle anderen Normdaten sind bis jetzt nicht Nutzerabhaengig,
+# koennten es aber spaeter einmal werden. Daher vereinheitlichtes URI
+# Schema wie bei den Titeln
+
+#####################################################################
+# Persons-Resource/Repraesentation
+- # users_loc/persons_loc: Record show
+   controller: 'Persons'
+   rule: '/portal/:view/databases/id/:database/persons/id/:personid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
+- # users_loc/persons_loc: Record show
+   controller: 'Persons::Titles'
+   rule: '/portal/:view/databases/id/:database/persons/id/:personid/titles/recent'
+   method: 'GET'
+   action: 'show_recent'
+   representations:
+     - none
+     - rss
+   args:
+     'restrict_db_to_view': 1
+- # users/persons_loc:
+   controller: 'Persons'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/persons/id/:personid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+     'restrict_db_to_view': 1
+- # users/persons_loc: TODO
+   controller: 'Persons'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/persons/id/:personid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users/persons_loc: TODO
+   controller: 'Persons'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/persons/edit'
+   method: 'GET'
+   action: 'show_collection_form'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/persons_loc: Update Record TODO
+   controller: 'Persons'
+   rule: '/portal/:view/databases/id/:database/persons'
+   method: 'POST'
+   action: 'create_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/persons_loc: Update Record TODO
+   controller: 'Persons'
+   rule: '/portal/:view/databases/id/:database/persons/id/:personid'
+   method: 'POST'
+   action: 'update_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/persons_loc: Update Record TODO
+   controller: 'Persons'
+   rule: '/portal/:view/databases/id/:database/persons/id/:personid'
+   method: 'PUT'
+   action: 'update_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/persons_loc: Delete Record TODO
+   controller: 'Persons'
+   rule: '/portal/:view/databases/id/:database/persons/id/:personid'
+   method: 'DELETE'
+   action: 'delete_record'
+   args:
+     'restrict_db_to_view': 1
+
+#####################################################################
+# Corporatebodies-Resource/Repraesentation
+- # users_loc/corporatebodies_loc: Record show
+   controller: 'CorporateBodies'
+   rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
+- # users_loc/corporatebodies_loc: Record show
+   controller: 'CorporateBodies::Titles'
+   rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid/titles/recent'
+   method: 'GET'
+   action: 'show_recent'
+   representations:
+     - none
+     - rss
+   args:
+     'restrict_db_to_view': 1
+- # users/corporatebodies_loc:
+   controller: 'CorporateBodies'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/corporatebodies/id/:corporatebodyid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+     'restrict_db_to_view': 1
+- # users/corporatebodies_loc: TODO
+   controller: 'CorporateBodies'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/corporatebodies/id/:corporatebodyid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users/corporatebodies_loc: TODO
+   controller: 'CorporateBodies'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/corporatebodies/edit'
+   method: 'GET'
+   action: 'show_collection_form'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/corporatebodies_loc: Update Record TODO
+   controller: 'CorporateBodies'
+   rule: '/portal/:view/databases/id/:database/corporatebodies'
+   method: 'POST'
+   action: 'create_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/corporatebodies_loc: Update Record TODO
+   controller: 'CorporateBodies'
+   rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid'
+   method: 'POST'
+   action: 'update_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/corporatebodies_loc: Update Record TODO
+   controller: 'CorporateBodies'
+   rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid'
+   method: 'PUT'
+   action: 'update_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/corporatebodies_loc: Delete Record TODO
+   controller: 'CorporateBodies'
+   rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+# Subjects-Resource/Repraesentation
+- # users_loc/subjects_loc: Collection show
+   controller: 'Subjects'
+   rule: '/portal/:view/databases/id/:database/subjects'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - include
+     - rdf
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/subjects_loc: Record show
+   controller: 'Subjects'
+   rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
+- # users_loc/subjects_loc: Record show
+   controller: 'Subjects::Titles'
+   rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid/titles/recent'
+   method: 'GET'
+   action: 'show_recent'
+   representations:
+     - none
+     - rss
+   args:
+     'restrict_db_to_view': 1
+- # users/subjects_loc:
+   controller: 'Subjects'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/subjects/id/:subjectid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+     'restrict_db_to_view': 1
+- # users/subjects_loc: TODO
+   controller: 'Subjects'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/subjects/id/:subjectid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users/subjects_loc: TODO
+   controller: 'Subjects'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/subjects/edit'
+   method: 'GET'
+   action: 'show_collection_form'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/subjects_loc: Update Record TODO
+   controller: 'Subjects'
+   rule: '/portal/:view/databases/id/:database/subjects'
+   method: 'POST'
+   action: 'create_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/subjects_loc: Update Record TODO
+   controller: 'Subjects'
+   rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid'
+   method: 'POST'
+   action: 'update_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/subjects_loc: Update Record TODO
+   controller: 'Subjects'
+   rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid'
+   method: 'PUT'
+   action: 'update_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/subjects_loc: Delete Record TODO
+   controller: 'Subjects'
+   rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid'
+   method: 'DELETE'
+   action: 'delete_record'
+   args:
+     'restrict_db_to_view': 1
+
+#####################################################################
+# Classifications-Resource/Repraesentation
+- # users_loc/classifications_loc: Collection show
+   controller: 'Classifications'
+   rule: '/portal/:view/databases/id/:database/classifications'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - include
+     - rdf
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/classifications_loc: Record show
+   controller: 'Classifications'
+   rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+     'restrict_db_to_view': 1
+     users_loc: 'databases'
+- # users_loc/classifications_loc: Record show
+   controller: 'Classifications::Titles'
+   rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid/titles/recent'
+   method: 'GET'
+   action: 'show_recent'
+   representations:
+     - none
+     - rss
+   args:
+     'restrict_db_to_view': 1
+- # users/classifications_loc:
+   controller: 'Classifications'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/classifications/id/:classificationid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+     'restrict_db_to_view': 1
+- # users/classifications_loc: TODO
+   controller: 'Classifications'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/classifications/id/:classificationid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users/classifications_loc: TODO
+   controller: 'Classifications'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/classifications/edit'
+   method: 'GET'
+   action: 'show_collection_form'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/classifications_loc: Update Record TODO
+   controller: 'Classifications'
+   rule: '/portal/:view/databases/id/:database/classifications'
+   method: 'POST'
+   action: 'create_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/classifications_loc: Update Record TODO
+   controller: 'Classifications'
+   rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid'
+   method: 'POST'
+   action: 'update_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/classifications_loc: Update Record TODO
+   controller: 'Classifications'
+   rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid'
+   method: 'PUT'
+   action: 'update_record'
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/classifications_loc: Delete Record TODO
+   controller: 'Classifications'
+   rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid'
+   method: 'DELETE'
+   action: 'delete_record'
+   args:
+     'restrict_db_to_view': 1
+
+#####################################################################
+# CartItems-Resource/Repraesentation
+- # users/cartitems_loc:
+   controller: 'CartItems'
+   rule: '/portal/:view/cartitems'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - include
+     - json
+     - rdf
+   args:
+      users_loc: 'cartitems'
+- # users/cartitems_loc:
+   controller: 'CartItems'
+   rule: '/portal/:view/cartitems/count'
+   method: 'GET'
+   action: 'show_collection_count'
+   representations:
+     - none
+     - html
+   args:
+      users_loc: 'cartitems'
+- # users/cartitems_loc:
+   controller: 'CartItems'
+   rule: '/portal/:view/cartitems/save'
+   method: 'GET'
+   action: 'save_collection'
+   representations:
+     - none
+     - html
+   args:
+      users_loc: 'cartitems'
+- # users/cartitems_loc:
+   controller: 'CartItems'
+   rule: '/portal/:view/cartitems/mail'
+   method: 'GET'
+   action: 'mail_collection'
+   representations:
+     - none
+     - html
+   args:
+      users_loc: 'cartitems'
+- # users/cartitems_loc:
+   controller: 'CartItems'
+   rule: '/portal/:view/cartitems/print'
+   method: 'GET'
+   action: 'print_collection'
+   representations:
+     - none
+     - html
+   args:
+      users_loc: 'cartitems'
+- # users_loc/cartitems_loc: Record show
+   controller: 'CartItems'
+   rule: '/portal/:view/cartitems/id/:itemid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+      users_loc: 'cartitems'
+- # users/cartitems_loc:
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:id/cartitems'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - include
+     - json
+     - rdf
+- # users/cartitems_loc:
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:id/cartitems/count'
+   method: 'GET'
+   action: 'show_collection_count'
+   representations:
+     - none
+     - html
+- # users/cartitems_loc:
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:id/cartitems/save'
+   method: 'GET'
+   action: 'save_collection'
+   representations:
+     - none
+     - html
+- # users/cartitems_loc:
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:id/cartitems/mail'
+   method: 'GET'
+   action: 'mail_collection'
+   representations:
+     - none
+     - html
+- # users/cartitems_loc:
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:id/cartitems/print'
+   method: 'GET'
+   action: 'print_collection'
+   representations:
+     - none
+     - html
+- # users_loc/cartitems_loc: Record show
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:id/cartitems/id/:itemid'
+   method: 'GET'
+   action: 'show_record'
+- # users_loc/cartitems_loc: Record show form
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:id/cartitems/id/:itemid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # users_loc/cartitems_loc: Update Record
+   send_new_cookie: 1
+   controller: 'CartItems'
+   rule: '/portal/:view/cartitems'
+   method: 'POST'
+   action: 'create_record'
+   args:
+      users_loc: 'cartitems'
+- # users_loc/cartitems_loc: Update Record
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:userid/cartitems'
+   method: 'POST'
+   action: 'create_record'
+- # users_loc/cartitems_loc: Update Record
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:userid/cartitems/mail'
+   method: 'POST'
+   action: 'mail_collection_send'
+- # users_loc/cartitems_loc: Update Record
+   controller: 'CartItems'
+   rule: '/portal/:view/cartitems/id/:itemid'
+   method: 'POST'
+   action: 'update_record'
+- # users_loc/cartitems_loc: Update Record
+   controller: 'CartItems'
+   rule: '/portal/:view/cartitems/id/:itemid'
+   method: 'PUT'
+   action: 'update_record'
+- # users_loc/cartitems_loc: Update Record
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:userid/cartitems/id/:itemid'
+   method: 'POST'
+   action: 'update_record'
+- # users_loc/cartitems_loc: Update Record
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:userid/cartitems/id/:itemid'
+   method: 'PUT'
+   action: 'update_record'
+- # users_loc/cartitems_loc: Delete Record
+   controller: 'CartItems'
+   rule: '/portal/:view/cartitems/id/:itemid'
+   method: 'DELETE'
+   action: 'delete_record'
+   args:
+      users_loc: 'cartitems'
+- # users_loc/cartitems_loc: Delete Record
+   controller: 'Users::CartItems'
+   rule: '/portal/:view/users/id/:userid/cartitems/id/:itemid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+######################################################################
+# Session/User Searchprofiles-Resource/Repraesentation
+- # searchprofiles_loc:
+   controller: 'Searchprofiles::Session'
+   rule: '/portal/:view/searchprofiles/session'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # searchprofiles_loc: Update Record
+   controller: 'Searchprofiles::Session'
+   rule: '/portal/:view/searchprofiles/session'
+   method: 'POST'
+   action: 'update_collection'
+
+- # users/searchprofiles_loc: Resource-Finder-URL
+   controller: 'Users::Searchprofiles'
+   rule: '/portal/:view/users/me/searchprofiles'
+   method: 'GET'
+   action: 'dispatch_to_user'
+   args:
+      disable_content_negotiation: 1
+
+- # users/searchprofiles_loc:
+   controller: 'Users::Searchprofiles'
+   rule: '/portal/:view/users/id/:userid/searchprofiles'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # users_loc/searchprofiles_loc: Record show
+   controller: 'Users::Searchprofiles'
+   rule: '/portal/:view/users/id/:userid/searchprofiles/id/:searchprofileid'
+   method: 'GET'
+   action: 'show_record'
+- # users_loc/searchprofiles_loc: Record show form
+   controller: 'Users::Searchprofiles'
+   rule: '/portal/:view/users/id/:userid/searchprofiles/id/:searchprofileid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # users_loc/searchprofiles_loc: Create Record
+   controller: 'Users::Searchprofiles'
+   rule: '/portal/:view/users/id/:userid/searchprofiles'
+   method: 'POST'
+   action: 'create_record'
+- # users_loc/searchprofiles_loc: Update Record
+   controller: 'Users::Searchprofiles'
+   rule: '/portal/:view/users/id/:userid/searchprofiles/id/:searchprofileid'
+   method: 'POST'
+   action: 'update_record'
+- # users_loc/searchprofiles_loc: Update Record
+   controller: 'Users::Searchprofiles'
+   rule: '/portal/:view/users/id/:userid/searchprofiles/id/:searchprofileid'
+   method: 'PUT'
+   action: 'update_record'
+- # users_loc/searchprofiles_loc: Delete Record
+   controller: 'Users::Searchprofiles'
+   rule: '/portal/:view/users/id/:userid/searchprofiles/id/:searchprofileid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+######################################################################
+# Session/User Searchlocations-Resource/Repraesentation
+
+- # users/searchlocations_loc: Resource-Finder-URL
+   controller: 'Users::Searchlocations'
+   rule: '/portal/:view/users/me/searchlocations'
+   method: 'GET'
+   action: 'dispatch_to_user'
+   args:
+      disable_content_negotiation: 1
+
+- # users/searchlocations_loc: Record show
+   controller: 'Users::Searchlocations'
+   rule: '/portal/:view/users/id/:userid/searchprofiles'
+   method: 'GET'
+   action: 'show_record'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # users_loc/searchlocations_loc: Record show form
+   controller: 'Users::Searchlocations'
+   rule: '/portal/:view/users/id/:userid/searchlocations/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # users_loc/searchlocations_loc: Update Record
+   controller: 'Users::Searchlocations'
+   rule: '/portal/:view/users/id/:userid/searchlocations'
+   method: 'POST'
+   action: 'update_record'
+- # users_loc/searchlocations_loc: Update Record
+   controller: 'Users::Searchlocations'
+   rule: '/portal/:view/users/id/:userid/searchlocations'
+   method: 'PUT'
+   action: 'update_record'
+- # users_loc/searchprofiles_loc: Delete Record
+   controller: 'Users::Searchlocations'
+   rule: '/portal/:view/users/id/:userid/searchlocations'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+# UserPreferences-Resource/Repraesentation
+
+- # users/preferences_loc: Resource-Finder-URL
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/me/preferences'
+   method: 'GET'
+   action: 'dispatch_to_user'
+   args:
+      disable_content_negotiation: 1
+
+- # users/preferences_loc:
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # users_loc/preferences_loc: Update
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/searchfields'
+   method: 'POST'
+   action: 'update_searchfields'
+- # users_loc/preferences_loc: Update
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/searchfields'
+   method: 'PUT'
+   action: 'update_searchfields'
+- # users_loc/preferences_loc: Update
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/bibsonomy'
+   method: 'POST'
+   action: 'update_bibsonomy'
+- # users_loc/preferences_loc: Update
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/bibsonomy'
+   method: 'PUT'
+   action: 'update_bibsonomy'
+- # users_loc/preferences_loc: Update
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/bibsonomysync'
+   method: 'POST'
+   action: 'update_bibsonomysync'
+- # users_loc/preferences_loc: Update
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/bibsonomysync'
+   method: 'PUT'
+   action: 'update_bibsonomysync'
+- # users_loc/preferences_loc: Update
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/searchform'
+   method: 'POST'
+   action: 'update_searchform'
+- # users_loc/preferences_loc: Update
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/searchform'
+   method: 'PUT'
+   action: 'update_searchform'
+- # users_loc/preferences_loc: Update
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/password'
+   method: 'POST'
+   action: 'update_password'
+- # users_loc/preferences_loc: Update
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/password'
+   method: 'PUT'
+   action: 'update_password'
+- # users_loc/preferences_loc: Update
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/spelling'
+   method: 'POST'
+   action: 'update_spelling'
+- # users_loc/preferences_loc: Update
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/spelling'
+   method: 'PUT'
+   action: 'update_spelling'
+- # users_loc/preferences_loc: Update
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/livesearch'
+   method: 'POST'
+   action: 'update_livesearch'
+- # users_loc/preferences_loc: Update
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/livesearch'
+   method: 'PUT'
+   action: 'update_livesearch'
+- # user_loc:
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/autocompletion'
+   method: 'POST'
+   action: 'update_autocompletion'
+- # user_loc:
+   controller: 'Users::Preferences'
+   rule: '/portal/:view/users/id/:userid/preferences/autocompletion'
+   method: 'PUT'
+   action: 'update_autocompletion'
+
+#####################################################################
+# User Migration-Resource/Repraesentation
+
+- # users/migration_loc:
+   controller: 'Users::Migration'
+   rule: '/portal/:view/users/id/:userid/migration'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+- # user_loc:
+   controller: 'Users::Migration'
+   rule: '/portal/:view/users/id/:userid/migration'
+   method: 'POST'
+   action: 'migrate_ugc'
+- # user_loc:
+   controller: 'Users::Migration'
+   rule: '/portal/:view/users/id/:userid/migration'
+   method: 'PUT'
+   action: 'migrate_ugc'
+
+#####################################################################
+# User Circulation-Resource/Repraesentation
+- # users_loc/circulations_loc: Update Passwords/E-Mail/Phone
+   controller: 'Users::Circulations'
+   rule: '/portal/:view/users/id/:userid/circulations'
+   method: 'POST'
+   action: 'update_ilsaccount'
+- # users_loc/circulations_loc: Update Passwords/E-Mail/Phone
+   controller: 'Users::Circulations'
+   rule: '/portal/:view/users/id/:userid/circulations'
+   method: 'PUT'
+   action: 'update_ilsaccount'
+- # users/circulations_loc:
+   controller: 'Users::Circulations'
+   rule: '/portal/:view/users/id/:userid/circulations'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Loans'
+   rule: '/portal/:view/users/id/:userid/circulations/id/loans'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - include
+     - json
+     - rdf
+     - ics
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Requests'
+   rule: '/portal/:view/users/id/:userid/circulations/id/requests'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - include
+     - json
+     - rdf
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Orders'
+   rule: '/portal/:view/users/id/:userid/circulations/id/orders'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - include
+     - json
+     - rdf
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Reservations'
+   rule: '/portal/:view/users/id/:userid/circulations/id/reservations'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - include
+     - json
+     - rdf
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Fees'
+   rule: '/portal/:view/users/id/:userid/circulations/id/fees'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - include
+     - json
+     - rdf
+   args:
+     'restrict_db_to_view': 0
+# - # users/circulations_loc:
+#    controller: 'Users::Circulations'
+#    rule: '/portal/:view/users/id/:userid/circulations/id/:circulationid'
+#    action: 'show_record'
+
+- # users/circulations_loc: Resource-Finder-URL
+   controller: 'Users::Circulations::Mail'
+   rule: '/portal/:view/users/me/circulations/id/mail/:mailtype'
+   method: 'GET'
+   action: 'dispatch_to_user'
+   args:
+      disable_content_negotiation: 1
+
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Mail'
+   rule: '/portal/:view/users/id/:userid/circulations/id/mail/:mailtype'
+   method: 'GET'
+   action: 'show_form'
+   representations:
+     - none
+     - html
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Mail'
+   rule: '/portal/:view/users/id/:userid/circulations/id/mail/:mailtype'
+   method: 'POST'
+   action: 'mail_form'
+- # users/circulations_loc:
+   controller: 'Users::Circulations'
+   rule: '/portal/:view/users/id/:userid/circulations/renew_loans'
+   method: 'GET'
+   representations:
+     - none
+     - html
+   action: 'renew_loans'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations'
+   rule: '/portal/:view/users/id/:userid/circulations/renew_single_loan'
+   method: 'GET'
+   representations:
+     - none
+     - html
+     - json
+   action: 'renew_single_loan'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Requests'
+   rule: '/portal/:view/users/id/:userid/circulations/id/requests'
+   method: 'POST'
+   action: 'create_record'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Orders'
+   rule: '/portal/:view/users/id/:userid/circulations/id/orders'
+   method: 'POST'
+   action: 'create_record'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::CampusOrders'
+   rule: '/portal/:view/users/id/:userid/circulations/id/campusorders'
+   method: 'POST'
+   action: 'create_record'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::IliasOrders'
+   rule: '/portal/:view/users/id/ilias/circulations/id/iliasorders'
+   method: 'POST'
+   action: 'create_record'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::PdaOrders'
+   rule: '/portal/:view/users/id/:userid/circulations/id/pdaorders'
+   method: 'POST'
+   action: 'create_record'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Requests'
+   rule: '/portal/:view/users/id/:userid/circulations/id/requests'
+   method: 'DELETE'
+   action: 'delete_record'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Orders'
+   rule: '/portal/:view/users/id/:userid/circulations/id/orders'
+   method: 'DELETE'
+   action: 'delete_record'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Suggestions'
+   rule: '/portal/:view/users/id/:userid/circulations/id/suggestions'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Suggestions'
+   rule: '/portal/:view/users/id/:userid/circulations/id/suggestions'
+   method: 'POST'
+   action: 'create_record'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Reservations'
+   rule: '/portal/:view/users/id/:userid/circulations/id/reservations'
+   method: 'POST'
+   action: 'create_record'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Reservations'
+   rule: '/portal/:view/users/id/:userid/circulations/id/reservations'
+   method: 'DELETE'
+   action: 'delete_record'
+   args:
+     'restrict_db_to_view': 0
+
+#####################################################################
+# Admin User Rights Roles-Resource/Repraesentation
+- # admin users:
+   scope: 'admin_users'
+   controller: 'Admin::Users'
+   rule: '/portal/:view/admin/users/id/:userid'
+   method: 'GET'
+   action: 'show_record'
+- # admin users:
+   scope: 'admin_users'
+   controller: 'Admin::Users'
+   rule: '/portal/:view/admin/users/id/:userid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # admin users:
+   scope: 'admin_users'
+   controller: 'Admin::Users'
+   rule: '/portal/:view/admin/users/id/:userid'
+   method: 'PUT'
+   action: 'update_record'
+- # admin users:
+   scope: 'admin_users'
+   controller: 'Admin::Users'
+   rule: '/portal/:view/admin/users/id/:userid'
+   method: 'POST'
+   action: 'update_record'
+- # admin users:
+   scope: 'admin_users'
+   controller: 'Admin::Users'
+   rule: '/portal/:view/admin/users/id/:userid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+# Admin User Rights Roles-Resource/Repraesentation
+- # admin users/roles_loc:
+   scope: 'admin_users'
+   controller: 'Admin::Users::Rights::Roles'
+   rule: '/portal/:view/admin/users/id/:userid/rights/roles'
+   method: 'GET'
+   action: 'show_record'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # users_loc/roles_loc: Update
+   scope: 'admin_users'
+   controller: 'Admin::Users::Rights::Roles'
+   rule: '/portal/:view/admin/users/id/:userid/rights/roles'
+   method: 'POST'
+   action: 'update_record'
+- # users_loc/roles_loc: Update
+   scope: 'admin_users'
+   controller: 'Admin::Users::Rights::Roles'
+   rule: '/portal/:view/admin/users/id/:userid/rights/roles'
+   method: 'PUT'
+   action: 'update_record'
+
+#####################################################################
+# Admin User Rights Templates-Resource/Repraesentation
+- # admin users/templates_loc:
+   scope: 'admin_users'
+   controller: 'Admin::Users::Rights::Templates'
+   rule: '/portal/:view/admin/users/id/:userid/rights/templates'
+   method: 'GET'
+   action: 'show_record'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # users_loc/templates_loc: Update
+   scope: 'admin_users'
+   controller: 'Admin::Users::Rights::Templates'
+   rule: '/portal/:view/admin/users/id/:userid/rights/templates'
+   method: 'POST'
+   action: 'update_record'
+- # users_loc/templates_loc: Update
+   scope: 'admin_users'
+   controller: 'Admin::Users::Rights::Templates'
+   rule: '/portal/:view/admin/users/id/:userid/rights/templates'
+   method: 'PUT'
+   action: 'update_record'
+
+#####################################################################
+# Admin User Rights Viewzuordnung (obsolete)
+- # users_loc/views_loc: Update
+   scope: 'admin_users'
+   controller: 'Admin::Users::Rights::Views'
+   rule: '/portal/:view/admin/users/id/:userid/rights/views'
+   method: 'POST'
+   action: 'update_record'
+- # users_loc/views_loc: Update
+   scope: 'admin_users'
+   controller: 'Admin::Users::Rights::Views'
+   rule: '/portal/:view/admin/users/id/:userid/rights/views'
+   method: 'PUT'
+   action: 'update_record'
+
+#####################################################################
+# User (Account)-Resource/Repraesentation
+- # users_loc: Update
+   controller: 'Users'
+   rule: '/portal/:view/users/id/:userid'
+   method: 'GET'
+   action: 'show_record'
+- # users_loc: Update
+   controller: 'Users'
+   rule: '/portal/:view/users/id/:userid/edit'
+   method: 'GET'
+   action: 'show_record_form'
+   representations:
+     - none
+     - html
+- # users_loc: Update
+   controller: 'Users'
+   rule: '/portal/:view/users'
+   method: 'POST'
+   action: 'create_record'
+- # users_loc: Update
+   controller: 'Users'
+   rule: '/portal/:view/users/id/:userid'
+   method: 'POST'
+   action: 'update_record'
+- # users_loc: Update
+   controller: 'Users'
+   rule: '/portal/:view/users/id/:userid'
+   method: 'PUT'
+   action: 'update_record'
+- # users_loc: Update
+   controller: 'Users'
+   rule: '/portal/:view/users/id/:userid'
+   method: 'DELETE'
+   action: 'delete_record'
+
+#####################################################################
+# Login/Logout-Resource/Repraesentation
+- # login_loc:
+   controller: 'Login'
+   rule: '/portal/:view/login'
+   method: 'GET'
+   action: 'show_form'
+   representations:
+     - none
+     - include
+     - html
+- # login_loc:
+   send_new_cookie: 1
+   controller: 'Login'
+   rule: '/portal/:view/login'
+   method: 'POST'
+   action: 'authenticate'
+- # login_loc:
+   controller: 'Login'
+   rule: '/portal/:view/login/failure'
+   action: 'failure'
+   representations:
+     - none
+     - html
+- # logout_loc:
+   controller: 'Logout'
+   rule: '/portal/:view/logout'
+   method: 'GET'
+   action: 'show'
+   representations:
+     - none
+     - html
+     - json
+
+#####################################################################
+# Clouds-Resource/Repraesentation
+- # clouds_loc:
+   controller: 'Clouds'
+   rule: '/portal/:view/clouds'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # clouds_loc:
+   controller: 'Clouds'
+   rule: '/portal/:view/databases/clouds'
+   method: 'GET'
+   action: 'show_collection_databases'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+- # clouds_loc:
+   controller: 'Clouds'
+   rule: '/portal/:view/databases/id/:database/clouds'
+   method: 'GET'
+   action: 'show_collection_databases_record'
+   representations:
+     - none
+     - html
+     - json
+     - rdf
+   args:
+     'restrict_db_to_view': 1
+- # users_loc/clouds_loc: Record show
+   controller: 'Clouds'
+   rule: '/portal/:view/clouds/id/:cloudid'
+   method: 'GET'
+   action: 'show_record'
+- # users_loc/clouds_loc: Record show
+   controller: 'Clouds'
+   rule: '/portal/:view/databases/id/:database/clouds/id/:cloudid'
+   method: 'GET'
+   action: 'show_record'
+   args:
+     'restrict_db_to_view': 1

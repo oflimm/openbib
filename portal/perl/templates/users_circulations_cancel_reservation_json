@@ -1,0 +1,19 @@
+[%-
+ 
+ this_json_output = {
+     link = {
+          rel = 'self'
+          href = location
+     }
+     is_reservation = 1
+     success => 1     
+     msg = cancel_reservation.message
+     record = {
+        title  = cancel_reservation.title
+	author = cancel_reservation.author
+     }     
+ };
+
+ to_json(this_json_output);
+ 
+-%]

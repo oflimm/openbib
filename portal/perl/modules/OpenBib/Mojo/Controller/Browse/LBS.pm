@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Mojo::Controller::Home
+#  OpenBib::Mojo::Controller::Browse::LBS.pm
 #
-#  Dieses File ist (C) 2001-2014 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2022 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,34 +27,27 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Mojo::Controller::Home;
+package OpenBib::Mojo::Controller::Browse::LBS;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use DBI;
-use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
-use POSIX;
-use URI::Escape;
+use Encode qw/decode_utf8 encode_utf8/;
 
-use OpenBib::Common::Util();
-use OpenBib::Config();
-use OpenBib::L10N;
-use OpenBib::QueryOptions;
-use OpenBib::Session;
-
+use OpenBib::Statistics;
 use Mojo::Base 'OpenBib::Mojo::Controller', -signatures;
 
-sub show ($self) {
+sub show_collection {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
+    my $view           = $self->param('view');
 
     # Shared Args
     my $r              = $self->stash('r');
@@ -67,37 +60,47 @@ sub show ($self) {
     my $useragent      = $self->stash('useragent');
     my $path_prefix    = $self->stash('path_prefix');
 
-    # CGI Args
-  
-    $logger->debug("Home-sID: $session->{ID}");
-    $logger->debug("Path-Prefix: ".$path_prefix);
+    my $statistics  = new OpenBib::Statistics();
+    
+    # TT-Data erzeugen
+    my $ttdata={
+        statistics => $statistics,
+    };
+    
+    return $self->print_page($config->{'tt_browse_lbs_tname'},$ttdata);
+}
 
-    my $viewstartpage = $self->strip_suffix($config->get_startpage_of_view($view));
+sub show_record {
+    my $self = shift;
 
-    $logger->debug("Alternative Interne Startseite: $viewstartpage");
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $lbsid          = $self->strip_suffix($self->param('lbsid'));
+
+    # Shared Args
+    my $r              = $self->stash('r');
+    my $config         = $self->stash('config');
+    my $session        = $self->stash('session');
+    my $user           = $self->stash('user');
+    my $msg            = $self->stash('msg');
+    my $queryoptions   = $self->stash('qopts');
+    my $stylesheet     = $self->stash('stylesheet');
+    my $useragent      = $self->stash('useragent');
+    my $path_prefix    = $self->stash('path_prefix');
+
+    my $statistics  = new OpenBib::Statistics();
 
     # TT-Data erzeugen
     my $ttdata={
+        statistics => $statistics,
+        
+        lbsid => $lbsid,
     };
     
-    $self->print_page($config->{'tt_home_tname'},$ttdata);
-
-    return;
-    
-    if ($viewstartpage){
-        my $redirecturl = $viewstartpage.".".$self->stash('representation')."?l=".$self->stash('lang');
-
-        $logger->info("Redirecting to $redirecturl");
-
-        return $self->redirect($redirecturl);
-    }
-    else {
-        # TT-Data erzeugen
-        my $ttdata={
-        };
-        
-        $self->print_page($config->{'tt_home_tname'},$ttdata);
-    }
+    return $self->print_page($config->{'tt_browse_lbs_record_tname'},$ttdata);
 }
 
 1;

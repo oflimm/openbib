@@ -1,8 +1,10 @@
 #####################################################################
 #
-#  OpenBib::Mojo::Controller::Home
+#  OpenBib::Mojo::Controller::Titles::Provenances.pm
 #
-#  Dieses File ist (C) 2001-2014 Oliver Flimm <flimm@openbib.org>
+#  Provenienzen eines Titels
+#
+#  Copyright 2015 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,77 +29,89 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Mojo::Controller::Home;
+package OpenBib::Mojo::Controller::Titles::Provenances;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use DBI;
+use Benchmark ':hireswallclock';
 use Encode qw(decode_utf8);
+use DBI;
+use HTML::Escape qw/escape_html/;
 use Log::Log4perl qw(get_logger :levels);
+use Data::Pageset;
 use POSIX;
+use Template;
 use URI::Escape;
 
-use OpenBib::Common::Util();
-use OpenBib::Config();
+use OpenBib::Search::Util;
+use OpenBib::Common::Util;
+use OpenBib::Config;
+use OpenBib::Config::CirculationInfoTable;
+use OpenBib::Config::DatabaseInfoTable;
+use OpenBib::Conv::Config;
+use OpenBib::Schema::Catalog;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
+use OpenBib::Record::Title;
+use OpenBib::Record::Person;
+use OpenBib::Record::CorporateBody;
+use OpenBib::Record::Subject;
+use OpenBib::Record::Classification;
+use OpenBib::RecordList::Title;
+use OpenBib::SearchQuery;
 use OpenBib::Session;
 
 use Mojo::Base 'OpenBib::Mojo::Controller', -signatures;
 
-sub show ($self) {
+sub show_collection {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
+    
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $titleid        = uri_unescape($self->param('titleid'));
 
     # Shared Args
     my $r              = $self->stash('r');
-    my $config         = $self->stash('config');
+    my $config         = $self->stash('config');    
     my $session        = $self->stash('session');
     my $user           = $self->stash('user');
     my $msg            = $self->stash('msg');
     my $queryoptions   = $self->stash('qopts');
-    my $stylesheet     = $self->stash('stylesheet');
+    my $stylesheet     = $self->stash('stylesheet');    
     my $useragent      = $self->stash('useragent');
     my $path_prefix    = $self->stash('path_prefix');
 
-    # CGI Args
-  
-    $logger->debug("Home-sID: $session->{ID}");
-    $logger->debug("Path-Prefix: ".$path_prefix);
-
-    my $viewstartpage = $self->strip_suffix($config->get_startpage_of_view($view));
-
-    $logger->debug("Alternative Interne Startseite: $viewstartpage");
-
-    # TT-Data erzeugen
-    my $ttdata={
-    };
+    my $provenanceid   = ($query->stash('mnr'))?escape_html(decode_utf8(uri_unescape($query->param('mnr')))):"";
     
-    $self->print_page($config->{'tt_home_tname'},$ttdata);
+    return unless ($database && $titleid);
 
-    return;
-    
-    if ($viewstartpage){
-        my $redirecturl = $viewstartpage.".".$self->stash('representation')."?l=".$self->stash('lang');
+    my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config })->load_full_record;
 
-        $logger->info("Redirecting to $redirecturl");
+    my $provenances_ref;
 
-        return $self->redirect($redirecturl);
+    if ($provenanceid){
+        $provenances_ref = $record->get_provenances_of_media($provenanceid,$msg);
     }
     else {
-        # TT-Data erzeugen
-        my $ttdata={
-        };
-        
-        $self->print_page($config->{'tt_home_tname'},$ttdata);
+        $provenances_ref = $record->get_provenances($msg);
     }
+    
+    my $ttdata = {
+        database     => $database,
+        provenanceid => $provenanceid,
+        titleid      => $titleid,
+        record       => $record,
+        provenances  => $provenances_ref,
+    };
+    
+    return $self->print_page($config->{"tt_titles_record_provenances_tname"},$ttdata);
 }
 
 1;

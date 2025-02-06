@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Mojo::Controller::Home
+#  OpenBib::Mojo::Controller::Searchprofiles.pm
 #
-#  Dieses File ist (C) 2001-2014 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2011-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,34 +27,54 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Mojo::Controller::Home;
+package OpenBib::Mojo::Controller::Searchprofiles;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use DBI;
-use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
-use POSIX;
-use URI::Escape;
 
-use OpenBib::Common::Util();
-use OpenBib::Config();
-use OpenBib::L10N;
-use OpenBib::QueryOptions;
-use OpenBib::Session;
+use OpenBib::Record::Title;
+use OpenBib::Template::Utilities;
 
 use Mojo::Base 'OpenBib::Mojo::Controller', -signatures;
 
-sub show ($self) {
+sub show_collection {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
+    my $view           = $self->param('view');
+
+    # Shared Args
+    my $config         = $self->stash('config');
+
+    # CGI Args
+    my $year           = $query->stash('year');
+
+    my $statistics  = new OpenBib::Statistics();
+
+    my $ttdata={
+        statistics => $statistics,
+        year       => $year,
+    };
+    
+    return $self->print_page($config->{tt_searchprofiles_tname},$ttdata);
+}
+
+sub show_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view            = $self->param('view');
+    my $searchprofileid = $self->strip_suffix($self->param('searchprofileid'));
 
     # Shared Args
     my $r              = $self->stash('r');
@@ -62,42 +82,25 @@ sub show ($self) {
     my $session        = $self->stash('session');
     my $user           = $self->stash('user');
     my $msg            = $self->stash('msg');
+    my $lang            = $self->stash('lang');
     my $queryoptions   = $self->stash('qopts');
     my $stylesheet     = $self->stash('stylesheet');
     my $useragent      = $self->stash('useragent');
-    my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-  
-    $logger->debug("Home-sID: $session->{ID}");
-    $logger->debug("Path-Prefix: ".$path_prefix);
 
-    my $viewstartpage = $self->strip_suffix($config->get_startpage_of_view($view));
+    my @databases     = $config->get_databases_of_searchprofile($searchprofileid);
 
-    $logger->debug("Alternative Interne Startseite: $viewstartpage");
-
+    my $searchprofile = $config->get_searchprofile->single({ id => $searchprofileid});
+    
     # TT-Data erzeugen
     my $ttdata={
+        searchprofileid   => $searchprofileid,
+        searchprofile     => $searchprofile,
+        databases         => \@databases,
     };
-    
-    $self->print_page($config->{'tt_home_tname'},$ttdata);
 
-    return;
-    
-    if ($viewstartpage){
-        my $redirecturl = $viewstartpage.".".$self->stash('representation')."?l=".$self->stash('lang');
-
-        $logger->info("Redirecting to $redirecturl");
-
-        return $self->redirect($redirecturl);
-    }
-    else {
-        # TT-Data erzeugen
-        my $ttdata={
-        };
-        
-        $self->print_page($config->{'tt_home_tname'},$ttdata);
-    }
+    return $self->print_page($config->{tt_searchprofiles_record_tname},$ttdata);
 }
 
 1;

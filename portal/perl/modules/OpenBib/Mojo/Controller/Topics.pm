@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Mojo::Controller::Home
+#  OpenBib::Mojo::Controller::Topics
 #
-#  Dieses File ist (C) 2001-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,77 +27,82 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Mojo::Controller::Home;
+package OpenBib::Mojo::Controller::Topics;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
-use Encode qw(decode_utf8);
+use Digest::MD5;
+use Encode qw/decode_utf8 encode_utf8/;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
-use URI::Escape;
+use SOAP::Lite;
+use Template;
 
-use OpenBib::Common::Util();
-use OpenBib::Config();
+use OpenBib::Common::Util;
+use OpenBib::Config;
+use OpenBib::Catalog::Factory;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
+use OpenBib::Statistics;
+use OpenBib::User;
 
 use Mojo::Base 'OpenBib::Mojo::Controller', -signatures;
 
-sub show ($self) {
+sub show_collection {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
+    my $view           = $self->param('view');
 
     # Shared Args
-    my $r              = $self->stash('r');
     my $config         = $self->stash('config');
-    my $session        = $self->stash('session');
     my $user           = $self->stash('user');
-    my $msg            = $self->stash('msg');
-    my $queryoptions   = $self->stash('qopts');
-    my $stylesheet     = $self->stash('stylesheet');
-    my $useragent      = $self->stash('useragent');
-    my $path_prefix    = $self->stash('path_prefix');
 
-    # CGI Args
-  
-    $logger->debug("Home-sID: $session->{ID}");
-    $logger->debug("Path-Prefix: ".$path_prefix);
-
-    my $viewstartpage = $self->strip_suffix($config->get_startpage_of_view($view));
-
-    $logger->debug("Alternative Interne Startseite: $viewstartpage");
-
-    # TT-Data erzeugen
+    my $topics_ref = $user->get_topics;
+    
     my $ttdata={
+        topics   => $topics_ref,
     };
     
-    $self->print_page($config->{'tt_home_tname'},$ttdata);
-
-    return;
-    
-    if ($viewstartpage){
-        my $redirecturl = $viewstartpage.".".$self->stash('representation')."?l=".$self->stash('lang');
-
-        $logger->info("Redirecting to $redirecturl");
-
-        return $self->redirect($redirecturl);
-    }
-    else {
-        # TT-Data erzeugen
-        my $ttdata={
-        };
-        
-        $self->print_page($config->{'tt_home_tname'},$ttdata);
-    }
+    return $self->print_page($config->{tt_topics_tname},$ttdata);
 }
 
+sub show_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view           = $self->param('view');
+    my $topicid        = $self->strip_suffix($self->param('topicid'));
+
+    # Shared Args
+    my $config         = $self->stash('config');
+    my $user           = $self->stash('user');
+
+    my $topic_ref = $user->get_topic({ id => $topicid});
+    my $ezb         = OpenBib::Catalog::Factory->create_catalog({database => 'ezb' });;
+    my $dbis        = OpenBib::Catalog::Factory->create_catalog({database => 'dbis' });
+    
+    my $ttdata={
+        topic    => $topic_ref,
+        ezb        => $ezb,
+        dbis       => $dbis,
+    };
+    
+    return $self->print_page($config->{tt_topics_record_tname},$ttdata);
+}
+
+
+    
 1;

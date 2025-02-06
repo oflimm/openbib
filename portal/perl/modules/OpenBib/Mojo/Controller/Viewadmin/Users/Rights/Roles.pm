@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Mojo::Controller::Home
+#  OpenBib::Mojo::Controller::Viewadmin::Users::Rights::Roles
 #
-#  Dieses File ist (C) 2001-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2020 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,34 +27,43 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Mojo::Controller::Home;
+package OpenBib::Mojo::Controller::Viewadmin::Users::Rights::Roles;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
-use Encode qw(decode_utf8);
+use Digest::MD5;
+use Encode qw/decode_utf8 encode_utf8/;
+use JSON::XS;
+use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
-use URI::Escape;
+use Template;
 
-use OpenBib::Common::Util();
-use OpenBib::Config();
+use OpenBib::Common::Util;
+use OpenBib::Config;
+use OpenBib::Schema::System;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
+use OpenBib::Statistics;
+use OpenBib::User;
 
-use Mojo::Base 'OpenBib::Mojo::Controller', -signatures;
+use base 'OpenBib::Mojo::Controller::Admin';
 
-sub show ($self) {
+sub update_record {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
+    my $view           = $self->param('view');
+    my $userid         = $self->param('userid');
 
     # Shared Args
     my $r              = $self->stash('r');
@@ -68,36 +77,37 @@ sub show ($self) {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-  
-    $logger->debug("Home-sID: $session->{ID}");
-    $logger->debug("Path-Prefix: ".$path_prefix);
+    my @roles           = ($query->stash('roles'))?$query->param('roles'):();
 
-    my $viewstartpage = $self->strip_suffix($config->get_startpage_of_view($view));
+    # Acting user in View?
+    if (!$user->user_exists_in_view({ viewname => $view, userid => $user->{ID}})){
+        return $self->print_authorization_error();
+    }
 
-    $logger->debug("Alternative Interne Startseite: $viewstartpage");
+    # User to change in View?
+    if (!$user->user_exists_in_view({ viewname => $view, userid => $userid})){
+        return $self->print_authorization_error();
+    }
 
-    # TT-Data erzeugen
-    my $ttdata={
+    # Roles in View?
+    @roles = $user->filter_roles_by_view({ viewname => $view, roleids => \@roles});
+
+    if (!@roles){
+        return $self->print_authorization_error();
+    }
+    
+    if (!$user->is_viewadmin($view) && !$self->authorization_successful('right_update')){
+        return $self->print_authorization_error();
+    }
+
+    my $thisuserinfo_ref = {
+        id    => $userid,
+        roles => \@roles,
     };
-    
-    $self->print_page($config->{'tt_home_tname'},$ttdata);
 
-    return;
-    
-    if ($viewstartpage){
-        my $redirecturl = $viewstartpage.".".$self->stash('representation')."?l=".$self->stash('lang');
+    $user->update_user_rights_role($thisuserinfo_ref,$view);
 
-        $logger->info("Redirecting to $redirecturl");
-
-        return $self->redirect($redirecturl);
-    }
-    else {
-        # TT-Data erzeugen
-        my $ttdata={
-        };
-        
-        $self->print_page($config->{'tt_home_tname'},$ttdata);
-    }
+    $self->redirect("$path_prefix/$config->{viewadmin_loc}/$config->{users_loc}");
 }
 
 1;

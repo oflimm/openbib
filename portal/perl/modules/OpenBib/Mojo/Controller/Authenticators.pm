@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Mojo::Controller::Home
+#  OpenBib::Mojo::Controller::Authenticators
 #
-#  Dieses File ist (C) 2001-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2012 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,77 +27,83 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Mojo::Controller::Home;
+package OpenBib::Mojo::Controller::Authenticators;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
-use Encode qw(decode_utf8);
+use Digest::MD5;
+use Encode qw/decode_utf8 encode_utf8/;
+use JSON::XS;
+use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
-use URI::Escape;
+use Template;
 
-use OpenBib::Common::Util();
-use OpenBib::Config();
+use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
+use OpenBib::Statistics;
+use OpenBib::User;
 
-use Mojo::Base 'OpenBib::Mojo::Controller', -signatures;
+use base 'OpenBib::Mojo::Controller::Admin';
 
-sub show ($self) {
+sub show_collection {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
+    
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
+    my $view           = $self->param('view');
 
     # Shared Args
     my $r              = $self->stash('r');
     my $config         = $self->stash('config');
-    my $session        = $self->stash('session');
-    my $user           = $self->stash('user');
-    my $msg            = $self->stash('msg');
-    my $queryoptions   = $self->stash('qopts');
-    my $stylesheet     = $self->stash('stylesheet');
-    my $useragent      = $self->stash('useragent');
-    my $path_prefix    = $self->stash('path_prefix');
-
-    # CGI Args
-  
-    $logger->debug("Home-sID: $session->{ID}");
-    $logger->debug("Path-Prefix: ".$path_prefix);
-
-    my $viewstartpage = $self->strip_suffix($config->get_startpage_of_view($view));
-
-    $logger->debug("Alternative Interne Startseite: $viewstartpage");
 
     # TT-Data erzeugen
     my $ttdata={
     };
     
-    $self->print_page($config->{'tt_home_tname'},$ttdata);
+    return $self->print_page($config->{tt_authenticators_tname},$ttdata);
+}
 
-    return;
+sub show_record {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view             = $self->param('view')                   || '';
+    my $authenticatorid  = $self->strip_suffix($self->param('authenticatorid'))       || '';
+
+    # Shared Args
+    my $r              = $self->stash('r');
+    my $config         = $self->stash('config');    
+    my $session        = $self->stash('session');
+    my $user           = $self->stash('user');
+    my $msg            = $self->stash('msg');
+    my $queryoptions   = $self->stash('qopts');
+    my $stylesheet     = $self->stash('stylesheet');    
+    my $useragent      = $self->stash('useragent');
+    my $path_prefix    = $self->stash('path_prefix');
     
-    if ($viewstartpage){
-        my $redirecturl = $viewstartpage.".".$self->stash('representation')."?l=".$self->stash('lang');
+    $logger->debug("Server: ".$r->get_server_name);
 
-        $logger->info("Redirecting to $redirecturl");
-
-        return $self->redirect($redirecturl);
-    }
-    else {
-        # TT-Data erzeugen
-        my $ttdata={
-        };
-        
-        $self->print_page($config->{'tt_home_tname'},$ttdata);
-    }
+    my $authenticator_ref = $config->get_authenticator_by_id($authenticatorid);
+    
+    my $ttdata={
+        authenticatorid   => $authenticatorid,	
+        authenticatorinfo => $authenticator_ref,
+    };
+    
+    return $self->print_page($config->{tt_authenticators_record_tname},$ttdata);
 }
 
 1;

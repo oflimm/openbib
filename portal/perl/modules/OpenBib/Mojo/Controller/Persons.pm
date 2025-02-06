@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Mojo::Controller::Home
+#  OpenBib::Mojo::Controller::Persons.pm
 #
-#  Dieses File ist (C) 2001-2014 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2020 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,34 +27,29 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Mojo::Controller::Home;
+package OpenBib::Mojo::Controller::Persons;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
-use DBI;
-use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
-use POSIX;
-use URI::Escape;
 
-use OpenBib::Common::Util();
-use OpenBib::Config();
-use OpenBib::L10N;
-use OpenBib::QueryOptions;
-use OpenBib::Session;
+use OpenBib::Record::Person;
 
 use Mojo::Base 'OpenBib::Mojo::Controller', -signatures;
 
-sub show ($self) {
+sub show_record {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
+    my $view           = $self->param('view');
+    my $database       = $self->param('database');
+    my $personid       = $self->strip_suffix($self->decode_id($self->param('personid')));
 
     # Shared Args
     my $r              = $self->stash('r');
@@ -68,35 +63,47 @@ sub show ($self) {
     my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-  
-    $logger->debug("Home-sID: $session->{ID}");
-    $logger->debug("Path-Prefix: ".$path_prefix);
+    my $stid          = $query->stash('stid')     || '';
+    my $callback      = $query->stash('callback') || '';
+    my $lang          = $query->stash('lang')     || $queryoptions->get_option('l') || 'de';
+    my $format        = $query->stash('format')   || 'full';
+    my $no_log         = $query->stash('no_log')  || '';
 
-    my $viewstartpage = $self->strip_suffix($config->get_startpage_of_view($view));
+    if ($database && $personid ){ # Valide Informationen etc.
+        $logger->debug("ID: $personid - DB: $database");
 
-    $logger->debug("Alternative Interne Startseite: $viewstartpage");
+        my $record = OpenBib::Record::Person->new({database => $database, id => $personid})->load_full_record;
+        
+        my $authenticatordb = $user->get_targetdb_of_session($session->{ID});
 
-    # TT-Data erzeugen
-    my $ttdata={
-    };
-    
-    $self->print_page($config->{'tt_home_tname'},$ttdata);
-
-    return;
-    
-    if ($viewstartpage){
-        my $redirecturl = $viewstartpage.".".$self->stash('representation')."?l=".$self->stash('lang');
-
-        $logger->info("Redirecting to $redirecturl");
-
-        return $self->redirect($redirecturl);
-    }
-    else {
         # TT-Data erzeugen
         my $ttdata={
+            database      => $database, # Zwingend wegen common/subtemplate
+            qopts         => $queryoptions->get_options,
+            record        => $record,
+            id            => $personid,
+            format        => $format,
+            activefeed    => $config->get_activefeeds_of_db($database),
+            authenticatordb => $authenticatordb,
         };
+
+        # Log Event
         
-        $self->print_page($config->{'tt_home_tname'},$ttdata);
+        if (!$no_log){
+            $session->log_event({
+                type      => 11,
+                content   => {
+                    id       => $personid,
+                    database => $database,
+                },
+                serialize => 1,
+            });
+        }
+
+        return $self->print_page($config->{'tt_persons_record_tname'},$ttdata);        
+    }
+    else {
+        return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
 }
 

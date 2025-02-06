@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Mojo::Controller::Home
+#  OpenBib::Mojo::Controller::Info
 #
-#  Dieses File ist (C) 2001-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2011 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Mojo::Controller::Home;
+package OpenBib::Mojo::Controller::Info;
 
 use strict;
 use warnings;
@@ -35,69 +35,68 @@ no warnings 'redefine';
 use utf8;
 
 use DBI;
-use Encode qw(decode_utf8);
+use Encode 'decode_utf8';
+use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
-use POSIX;
-use URI::Escape;
+use Template;
 
-use OpenBib::Common::Util();
-use OpenBib::Config();
+use OpenBib::Common::Util;
+use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
+use OpenBib::Statistics;
+use OpenBib::User;
+use OpenBib::Template::Utilities;
 
 use Mojo::Base 'OpenBib::Mojo::Controller', -signatures;
 
-sub show ($self) {
+sub show_record {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
-
+    my $view           = $self->param('view');
+    my $stid           = $self->strip_suffix($self->param('stid'))           || '';
+    
     # Shared Args
     my $r              = $self->stash('r');
-    my $config         = $self->stash('config');
+    my $config         = $self->stash('config');    
     my $session        = $self->stash('session');
     my $user           = $self->stash('user');
     my $msg            = $self->stash('msg');
     my $queryoptions   = $self->stash('qopts');
     my $stylesheet     = $self->stash('stylesheet');
-    my $useragent      = $self->stash('useragent');
-    my $path_prefix    = $self->stash('path_prefix');
-
+    my $useragent      = $self->stash('useragent');    
+    
     # CGI Args
-  
-    $logger->debug("Home-sID: $session->{ID}");
-    $logger->debug("Path-Prefix: ".$path_prefix);
+    my $format         = $query->stash('format')         || '';
+    my $id             = $query->stash('id')             || '';
+    
+    my $statistics  = new OpenBib::Statistics();
+    my $utils       = new OpenBib::Template::Utilities;
+    my $convconfig  = new OpenBib::Conv::Config;
 
-    my $viewstartpage = $self->strip_suffix($config->get_startpage_of_view($view));
-
-    $logger->debug("Alternative Interne Startseite: $viewstartpage");
-
+    my $viewdesc      = $config->get_viewdesc_from_viewname($view);
+    
     # TT-Data erzeugen
     my $ttdata={
+        format        => $format,
+        stid          => $stid,
+        id            => $id,
+        viewdesc      => $viewdesc,
+        statistics    => $statistics,
+        utils         => $utils,
+        convconfig    => $convconfig,
     };
+
+    my $templatename = ($stid && $stid ne "default")?"tt_info_".$stid."_tname":"tt_info_tname";
+
+    $logger->debug("Template name: $templatename");
     
-    $self->print_page($config->{'tt_home_tname'},$ttdata);
-
-    return;
-    
-    if ($viewstartpage){
-        my $redirecturl = $viewstartpage.".".$self->stash('representation')."?l=".$self->stash('lang');
-
-        $logger->info("Redirecting to $redirecturl");
-
-        return $self->redirect($redirecturl);
-    }
-    else {
-        # TT-Data erzeugen
-        my $ttdata={
-        };
-        
-        $self->print_page($config->{'tt_home_tname'},$ttdata);
-    }
+    return $self->print_page($config->{$templatename},$ttdata);
 }
 
 1;

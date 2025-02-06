@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Mojo::Controller::Home
+#  OpenBib::Mojo::Controller::Admin::Servers::Updates
 #
-#  Dieses File ist (C) 2001-2014 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2019 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -27,34 +27,42 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Mojo::Controller::Home;
+package OpenBib::Mojo::Controller::Admin::Servers::Updates;
 
 use strict;
 use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
-use Encode qw(decode_utf8);
+use Digest::MD5;
+use Encode qw/decode_utf8 encode_utf8/;
+use JSON::XS;
+use List::MoreUtils qw(none any);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
-use URI::Escape;
+use Template;
 
-use OpenBib::Common::Util();
-use OpenBib::Config();
+use OpenBib::Common::Util;
+use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
+use OpenBib::Statistics;
+use OpenBib::User;
 
-use Mojo::Base 'OpenBib::Mojo::Controller', -signatures;
+use base 'OpenBib::Mojo::Controller::Admin';
 
-sub show ($self) {
+sub show_collection {
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
+    
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
+    my $view           = $self->param('view');
+    my $serverid       = $self->param('serverid');
 
     # Shared Args
     my $r              = $self->stash('r');
@@ -67,37 +75,40 @@ sub show ($self) {
     my $useragent      = $self->stash('useragent');
     my $path_prefix    = $self->stash('path_prefix');
 
-    # CGI Args
-  
-    $logger->debug("Home-sID: $session->{ID}");
-    $logger->debug("Path-Prefix: ".$path_prefix);
+    if (!$config->server_exists($serverid)) {
+        return $self->print_warning($msg->maketext("Es existiert kein Server unter dieser ID"));
+    }
 
-    my $viewstartpage = $self->strip_suffix($config->get_startpage_of_view($view));
+    if (!$self->authorization_successful('right_read')){
+        return $self->print_authorization_error();
+    }
 
-    $logger->debug("Alternative Interne Startseite: $viewstartpage");
+    my $serverinfo_ref = $config->get_serverinfo->search_rs({ id => $serverid })->single;
 
-    # TT-Data erzeugen
+    my $number_of_updates = $serverinfo_ref->search_related("updatelogs")->count;
+
+    my $offset = $queryoptions->get_option('page')*$queryoptions->get_option('num')-$queryoptions->get_option('num');
+    my $num    = $queryoptions->get_option('num');
+
+    my $nav = Data::Pageset->new({
+        'total_entries'    => $number_of_updates,
+        'entries_per_page' => $queryoptions->get_option('num'),
+        'current_page'     => $queryoptions->get_option('page'),
+        'mode'             => 'slide',
+    });
+
+    my $updates_ref = $serverinfo_ref->search_related("updatelogs", {}, { rows => $num, offset => $offset, order_by => 'tstamp_start DESC' } );
+
+    
     my $ttdata={
+	serverid     => $serverid,
+        nav          => $nav,
+        serverinfo   => $serverinfo_ref,
+        updates      => $updates_ref,
     };
     
-    $self->print_page($config->{'tt_home_tname'},$ttdata);
-
-    return;
-    
-    if ($viewstartpage){
-        my $redirecturl = $viewstartpage.".".$self->stash('representation')."?l=".$self->stash('lang');
-
-        $logger->info("Redirecting to $redirecturl");
-
-        return $self->redirect($redirecturl);
-    }
-    else {
-        # TT-Data erzeugen
-        my $ttdata={
-        };
-        
-        $self->print_page($config->{'tt_home_tname'},$ttdata);
-    }
+    return $self->print_page($config->{tt_admin_servers_updates_tname},$ttdata);
 }
+
 
 1;

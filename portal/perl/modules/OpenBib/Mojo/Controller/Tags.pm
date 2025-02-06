@@ -200,7 +200,7 @@ sub show_record {
         num              => $num,
 
         recordlist       => $recordlist,
-        query            => $query,
+        query            => $r,
         tag              => $tag,
         tagid            => $tagid,
     };
@@ -222,8 +222,6 @@ sub show_collection_form {
     my $config         = $self->stash('config');
     my $session        = $self->stash('session');
     
-    my $query  = $r;
-
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
     #####################################################################
@@ -231,12 +229,12 @@ sub show_collection_form {
     #####################################################################
 
     my $offset         = $r->param('offset')      || 0;
-    my $hitrange       = $r->param('num')    || 50;
-    my $database       = $r->param('db')    || '';
-    my $sorttype       = $r->param('srt')    || "person";
-    my $sortorder      = $r->param('srto')   || "asc";
-    my $titleid          = $r->param('titleid')       || '';
-    my $dbname          = $r->param('dbname')       || '';
+    my $hitrange       = $r->param('num')         || 50;
+    my $database       = $r->param('db')          || '';
+    my $sorttype       = $r->param('srt')         || "person";
+    my $sortorder      = $r->param('srto')        || "asc";
+    my $titleid        = $r->param('titleid')     || '';
+    my $dbname         = $r->param('dbname')      || '';
     my $titisbn        = $r->param('titisbn')     || '';
     my $tags           = decode_utf8($r->param('tags'))        || '';
     my $type           = $r->param('type')        || 1;

@@ -51,6 +51,7 @@ sub show_collection {
     my $view           = $self->param('view');
 
     # Shared Args
+    my $r              = $self->stash('r');
     my $config         = $self->stash('config');
 
     # CGI Args

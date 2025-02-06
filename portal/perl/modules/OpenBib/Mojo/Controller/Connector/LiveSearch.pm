@@ -125,7 +125,7 @@ sub show {
         qopts           => $queryoptions->get_options,
         queryoptions    => $queryoptions,
         
-        query           => $query,
+        query           => $r,
 
         recordlist      => $recordlist,
     };

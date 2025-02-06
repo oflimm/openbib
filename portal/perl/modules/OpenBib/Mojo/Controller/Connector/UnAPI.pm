@@ -598,7 +598,7 @@ sub get_gnd_for_subject {
 
 }
 
-sub get_date_values() {
+sub get_date_values {
     my $self        = shift;
     my $record      = shift;
     my $database    = shift;

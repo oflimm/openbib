@@ -230,7 +230,7 @@ sub show_record {
         num              => $queryoptions->get_option('num'),
 
         recordlist       => $recordlist,
-        query            => $query,
+        query            => $r,
         tagname          => $tag,
         tagid            => $tagid,
     };

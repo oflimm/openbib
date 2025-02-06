@@ -68,6 +68,7 @@ sub authenticate {
     my $service        = $self->param('serviceid');
 
     # Shared Args
+    my $r              = $self->param('r');
 
     my $suppressresponsecodes = $r->param('suppress-response-codes')    || '';
     
@@ -114,6 +115,7 @@ sub core_get_services {
     my $service        = $self->param('serviceid');
 
     # Shared Args
+    my $r              = $self->param('r');
 
     my $suppressresponsecodes = $r->param('suppress-response-codes')    || '';
 
@@ -161,6 +163,7 @@ sub core_post_services {
     my $service        = $self->param('serviceid');
 
     # Shared Args
+    my $r              = $self->param('r');
 
     my $suppressresponsecodes = $r->param('suppress-response-codes')    || '';
 
@@ -207,6 +210,7 @@ sub patron {
     my $username       = uri_unescape($self->param('userid'));    
 
     # Shared Args
+    my $r              = $self->param('r');
     my $config         = $self->stash('config');
     my $lang           = $self->stash('lang');
     my $path_prefix    = $self->stash('path_prefix');
@@ -333,10 +337,11 @@ sub logout {
     my $database       = $self->param('database');
 
     # Shared Args
+    my $r              = $self->param('r');
     my $lang           = $self->stash('lang');
 
     # CGI Args
-    my $username       = $r->param('patron')        || '';
+    my $username              = $r->param('patron')        || '';
     my $suppressresponsecodes = $r->param('suppress-response-codes')    || '';
 
     # Richtigen Content-Type setzen
@@ -397,6 +402,7 @@ sub login {
     my $database    = $self->param('database');
 
     # Shared Args
+    my $r              = $self->param('r');
     my $query       = $self->query();
     my $config      = $self->stash('config');
     my $lang        = $self->stash('lang');
@@ -602,6 +608,7 @@ sub items {
     my $username       = uri_unescape($self->param('userid'));    
 
     # Shared Args
+    my $r              = $self->param('r');
     my $config         = $self->stash('config');
     my $lang           = $self->stash('lang');
     my $path_prefix    = $self->stash('path_prefix');
@@ -694,6 +701,7 @@ sub fees {  # to be implemented
     my $username       = uri_unescape($self->param('userid'));    
 
     # Shared Args
+    my $r              = $self->param('r');
     my $config         = $self->stash('config');
     my $lang           = $self->stash('lang');
     my $path_prefix    = $self->stash('path_prefix');
@@ -801,6 +809,7 @@ sub request {
     my $username       = uri_unescape($self->param('userid'));    
 
     # Shared Args
+    my $r              = $self->param('r');
     my $config         = $self->stash('config');
     my $lang           = $self->stash('lang');
     my $path_prefix    = $self->stash('path_prefix');
@@ -1169,7 +1178,7 @@ sub user_has_valid_token {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
+    
     my $r              = $self->stash('r');
     my $config         = $self->stash('config');
 

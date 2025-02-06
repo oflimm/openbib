@@ -203,7 +203,7 @@ sub show_record {
         num              => $num,
 
         recordlist       => $recordlist,
-        query            => $query,
+        query            => $r,
         tag              => $tag,
         tagid            => $tagid,
     };

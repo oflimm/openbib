@@ -279,7 +279,7 @@ sub show_record {
         num              => $queryoptions->get_option('num'),
 
         recordlist       => $recordlist,
-        query            => $query,
+        query            => $r,
         tagname          => $tagname,
         tagid            => $tagid,
     };
@@ -304,8 +304,6 @@ sub show_collection_form {
     my $msg            = $self->stash('msg');
     my $config         = $self->stash('config');
     
-    my $query  = $r;
-
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
     #####################################################################
@@ -505,8 +503,6 @@ sub update_record {
     my $msg            = $self->stash('msg');
     my $config         = $self->stash('config');
     
-    my $query  = $r;
-
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
     #####################################################################

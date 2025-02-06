@@ -68,8 +68,11 @@ sub show {
     my $authority          = exists $arg_ref->{authority}
         ? $arg_ref->{authority}           : undef;
 
-    my $query        = $self->query();
+    # Dispatched Args
     my $view         = $self->stash('view');
+    
+    # Shared Args
+    my $r            = $self->stash('r');
     my $config       = $self->stash('config');
     my $queryoptions = $self->stash('qopts');
     my $searchquery  = $self->stash('searchquery');
@@ -153,6 +156,8 @@ sub show {
     $self->stash('facets',$facets_ref);
     $self->stash('hits',$searcher->get_resultcount);
 
+    my $ttdate = {};
+    
     return $self->print_page($config->{tt_search_separate_facets_tname},$ttdata);
 }
 

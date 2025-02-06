@@ -96,7 +96,7 @@ sub new {
     
     $logger->debug("Entering Session->new");
 
-    $logger->debug("Got sessionID ".YAML::Dump($sessionID));
+    $logger->debug("Got sessionID $sessionID");
 
     if ($config->{benchmark}) {
 		$btime=new Benchmark;

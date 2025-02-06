@@ -209,7 +209,7 @@ sub show_collection {
     }
 
     my $search_args_ref = {};
-    $search_args_ref->{options}      = OpenBib::Common::Util::query2hashref($query);
+    $search_args_ref->{options}      = $self->query2hashref;
     $search_args_ref->{database}     = $database if (defined $database);
     $search_args_ref->{sb}           = $sb if (defined $sb);
     $search_args_ref->{queryoptions} = $queryoptions if (defined $queryoptions);

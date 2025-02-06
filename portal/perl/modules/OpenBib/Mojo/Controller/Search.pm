@@ -167,6 +167,7 @@ sub show_search_header {
     my $content_type   = $self->stash('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
 
     my $writer         = $self->stash('writer');
+    my $query          = $r;
     
     # CGI Args
     my $sb        = $r->param('sb') || $config->get_searchengine_of_view($view) || $config->{default_local_search_backend};
@@ -271,7 +272,7 @@ sub show_search_header {
     my $startttdata={
         password       => $password,
         searchquery    => $searchquery,
-        query          => $query,
+        query          => $r,
         
         qopts          => $queryoptions->get_options,
         queryoptions   => $queryoptions,
@@ -324,6 +325,8 @@ sub show_search_result {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # Shared Args
+    my $r              = $self->stash('r');
     
     # Alternativ: getrennte Suche uber alle Kataloge
     if (defined $r->param('sm') && $r->param('sm') eq "seq"){
@@ -387,7 +390,7 @@ sub show_search_footer {
         password      => $password,
         
         searchquery   => $searchquery,
-        query         => $query,
+        query         => $r,
         qopts         => $queryoptions->get_options,
         queryoptions  => $queryoptions,        
     };
@@ -795,7 +798,7 @@ sub gen_cloud_absolute {
 
 sub xxxget_modified_querystring {
     my ($self,$arg_ref)=@_;
-    
+
     # Set defaults
     my $exclude_array_ref    = exists $arg_ref->{exclude}
         ? $arg_ref->{exclude}        : [];
@@ -806,6 +809,8 @@ sub xxxget_modified_querystring {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $r              = $self->stash('r');
 
     $logger->debug("Modify Querystring");
     
@@ -926,7 +931,7 @@ sub search {
     my $authority          = exists $arg_ref->{authority}
         ? $arg_ref->{authority}           : undef;
 
-    my $query        = $self->query();
+    my $r            = $self->stash('r');
     my $view         = $self->stash('view');
     my $config       = $self->stash('config');
     my $queryoptions = $self->stash('qopts');
@@ -965,7 +970,7 @@ sub search {
     }
     
     my $search_args_ref = {};
-    $search_args_ref->{options}      = OpenBib::Common::Util::query2hashref($query);
+    $search_args_ref->{options}      = $self->query2hashref;
     $search_args_ref->{database}     = $database if (defined $database);
     $search_args_ref->{view}         = $view if (defined $view);
     $search_args_ref->{authority}    = $authority if (defined $authority);
@@ -1076,9 +1081,8 @@ sub print_resultitem {
     my $representation = $self->stash('representation');
     my $content_type   = $self->stash('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     my $database       = $self->stash('database') || '';
-    my $viewname       = $self->stash('viewname') || '';    
-    
-    my $searchquery  = $self->stash('searchquery');
+    my $viewname       = $self->stash('viewname') || '';        
+    my $searchquery    = $self->stash('searchquery');
 
     # TT-Data erzeugen
     my $ttdata={
@@ -1091,7 +1095,7 @@ sub print_resultitem {
         queryoptions    => $queryoptions,
 
         
-        query           => $query,
+        query           => $r,
 
         gatt            => $self->stash('generic_attributes'),
         

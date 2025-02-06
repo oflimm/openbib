@@ -139,7 +139,7 @@ sub show_collection {
 
     if ($database){ # Valide Informationen etc.
 
-        my $catalog_args_ref = OpenBib::Common::Util::query2hashref($query);
+        my $catalog_args_ref = $self->query2hashref;
         $catalog_args_ref->{database} = $database if (defined $database);
         $catalog_args_ref->{l}        = $lang if (defined $lang);
 

@@ -106,7 +106,7 @@ sub show {
     }
     
     my $search_args_ref = {};
-    $search_args_ref->{options}      = OpenBib::Common::Util::query2hashref($query);
+    $search_args_ref->{options}      = $self->query2hashref;
     $search_args_ref->{database}     = $database if (defined $database);
     $search_args_ref->{authority}    = $authority if (defined $authority);
     $search_args_ref->{searchquery}  = $searchquery if (defined $searchquery);

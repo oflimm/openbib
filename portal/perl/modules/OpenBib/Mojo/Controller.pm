@@ -1768,4 +1768,23 @@ sub header_add {
     return;
 }
 
+sub query2hashref {
+    my $self=shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $args_ref = {};
+    my @param_names = $sels->params->names;
+    foreach my $param (@param_names){
+        $args_ref->{$param} = $self->req->param($param);
+    }
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($args_ref));
+    }
+    
+    return $args_ref;
+}
+
 1;

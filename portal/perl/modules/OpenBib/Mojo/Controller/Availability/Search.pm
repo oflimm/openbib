@@ -204,7 +204,7 @@ sub search {
     # Verfuegbarkeitsrecherche ist nicht auf die Kataloge des aufrufenden Views beschraenkt!
     
     my $search_args_ref = {};
-    $search_args_ref->{options}      = OpenBib::Common::Util::query2hashref($query);
+    $search_args_ref->{options}      = $self->query2hashref;
     $search_args_ref->{database}     = $database if (defined $database);
     $search_args_ref->{view}         = $view if (defined $view);
     $search_args_ref->{authority}    = $authority if (defined $authority);

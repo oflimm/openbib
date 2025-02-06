@@ -234,7 +234,7 @@ sub show_record {
     # TT-Data erzeugen
     my $ttdata={
         record         => $record,
-        query          => $query,
+        query          => $r,
         qopts          => $queryoptions->get_options,
 
 	highlightquery    => \&highlightquery,

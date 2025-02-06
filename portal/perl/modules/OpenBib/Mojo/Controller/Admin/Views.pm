@@ -258,6 +258,7 @@ sub update_record {
     my $viewname       = $self->stash('viewid');
 
     # Shared Args
+    my $r              = $self->stash('r');
     my $config         = $self->stash('config');
     my $msg            = $self->stash('msg');
     my $lang           = $self->stash('lang');

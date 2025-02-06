@@ -80,24 +80,24 @@ sub cgiapp_get_query {
 	# Get the query object
 #	my $r = OpenBib::Request->new();
 
-	return $self->param('r');
+	return $self->stash('r');
 }
 
 sub set_paging {
     my $self = shift;
 
-    my $query        = $self->query();
-    my $queryoptions = $self->param('qopts');
-    my $config       = $self->param('config');
+    my $r            = $self->stash('r');
+    my $queryoptions = $self->stash('qopts');
+    my $config       = $self->stash('config');
     
-    my $page = $query->param('page') || 1;
+    my $page = $r->param('page') || 1;
 
     my $num    = $queryoptions->get_option('num') || $config->{queryoptions}{num}{value};
     my $offset = $page*$num-$num;
 
-    $self->param('num',$num);
-    $self->param('offset',$offset);
-    $self->param('page',$page);
+    $self->stash('num',$num);
+    $self->stash('offset',$offset);
+    $self->stash('page',$page);
 
     return;
 }
@@ -110,17 +110,17 @@ sub personalize_uri {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $r = $self->param('r');
+    my $r = $self->stash('r');
     
     # Personalisierte URIs
-    if ($self->param('users_loc')){
-        my $dispatch_url = ""; #$self->param('scheme')."://".$self->param('servername');   
+    if ($self->stash('users_loc')){
+        my $dispatch_url = ""; #$self->stash('scheme')."://".$self->stash('servername');   
         
-        my $user           = $self->param('user');
-        my $config         = $self->param('config');
-        my $path_prefix    = $self->param('path_prefix');
-        my $path           = $self->param('path');
-        my $representation = $self->param('representation');
+        my $user           = $self->stash('user');
+        my $config         = $self->stash('config');
+        my $path_prefix    = $self->stash('path_prefix');
+        my $path           = $self->stash('path');
+        my $representation = $self->stash('representation');
         
 #        # Interne Pfade sind immer mit base_loc und view
 #        my $baseloc    = $config->get('base_loc');
@@ -129,13 +129,13 @@ sub personalize_uri {
         # Eine Weiterleitung haengt vom angemeldeten Nutzer ab
         # und gilt immer nur fuer Repraesentationen.
         if ($user->{ID} && $representation){
-            my $loc = $self->param('users_loc');
+            my $loc = $self->stash('users_loc');
             $logger->debug("Replacing $path_prefix/$loc with $path_prefix/users/$user->{ID}/$loc");
             my $old_loc = "$path_prefix/$loc";
             my $new_loc = "$path_prefix/users/id/$user->{ID}/$loc";
             $path=~s{^$old_loc}{$new_loc};
 
-            $self->param('path',$path);
+            $self->stash('path',$path);
             
             $dispatch_url .=$path;
             
@@ -144,7 +144,7 @@ sub personalize_uri {
             }
 
             $logger->debug("Dispatching to $dispatch_url");
-            $self->param('dispatch_url',$dispatch_url);
+            $self->stash('dispatch_url',$dispatch_url);
 
             return;            
         }
@@ -154,14 +154,14 @@ sub personalize_uri {
             }   
         }   
     }
-    elsif ($self->param('admin_loc')){
-        my $dispatch_url = ""; #$self->param('scheme')."://".$self->param('servername');   
+    elsif ($self->stash('admin_loc')){
+        my $dispatch_url = ""; #$self->stash('scheme')."://".$self->stash('servername');   
         
-        my $user           = $self->param('user');
-        my $config         = $self->param('config');
-        my $path_prefix    = $self->param('path_prefix');
-        my $path           = $self->param('path');
-        my $representation = $self->param('representation');
+        my $user           = $self->stash('user');
+        my $config         = $self->stash('config');
+        my $path_prefix    = $self->stash('path_prefix');
+        my $path           = $self->stash('path');
+        my $representation = $self->stash('representation');
         
 #        # Interne Pfade sind immer mit base_loc und view
 #        my $baseloc    = $config->get('base_loc');
@@ -170,13 +170,13 @@ sub personalize_uri {
         # Eine Weiterleitung haengt vom angemeldeten Nutzer ab
         # und gilt immer nur fuer Repraesentationen.
         if ($user->is_admin && $representation){
-            my $loc = $self->param('admin_loc');
+            my $loc = $self->stash('admin_loc');
             $logger->debug("Replacing $path_prefix/$loc with $path_prefix/$config->{admin_loc}/$loc");
             my $old_loc = "$path_prefix/$loc";
             my $new_loc = "$path_prefix/$config->{admin_loc}/$loc";
             $path=~s{^$old_loc}{$new_loc};
 
-            $self->param('path',$path);
+            $self->stash('path',$path);
             
             $dispatch_url .=$path;
             
@@ -185,7 +185,7 @@ sub personalize_uri {
             }
 
             $logger->debug("Dispatching to $dispatch_url");
-            $self->param('dispatch_url',$dispatch_url);
+            $self->stash('dispatch_url',$dispatch_url);
 
             return;            
         }
@@ -208,19 +208,19 @@ sub is_authenticated {
     my $logger = get_logger();
 
     # Shared Args
-    my $r              = $self->param('r');
-    my $path_prefix    = $self->param('path_prefix');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $path           = $self->param('path');
-    my $servername     = $self->param('servername');
-    my $msg            = $self->param('msg');
+    my $r              = $self->stash('r');
+    my $path_prefix    = $self->stash('path_prefix');
+    my $config         = $self->stash('config');
+    my $session        = $self->stash('session');
+    my $user           = $self->stash('user');
+    my $path           = $self->stash('path');
+    my $servername     = $self->stash('servername');
+    my $msg            = $self->stash('msg');
 
     $logger->debug("Args: Role: $role UserID: $userid");
     $logger->debug("Session-UserID: ".$user->{ID}) if (defined $user->{ID});
     
-#     if (! $user->{ID} && $self->param('represenation') eq "html"){
+#     if (! $user->{ID} && $self->stash('represenation') eq "html"){
 #         # Aufruf-URL
 #         my $return_uri  = uri_escape($r->parsed_uri->path);
         
@@ -252,7 +252,7 @@ sub print_warning {
     my $logger = get_logger();
 
     # Shared Args
-    my $config         = $self->param('config');
+    my $config         = $self->stash('config');
     
     my $ttdata = {
         err_nr    => $warningnr,
@@ -275,7 +275,7 @@ sub print_info {
     my $logger = get_logger();
 
     # Shared Args
-    my $config         = $self->param('config');
+    my $config         = $self->stash('config');
 
     my $ttdata = {
         info_msg  => $info,
@@ -294,8 +294,8 @@ sub print_json {
     my $logger = get_logger();
 
     # Shared Args
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
+    my $r              = $self->stash('r');
+    my $config         = $self->stash('config');
 
     # Dann Ausgabe des neuen Headers
     $self->header_add('Content-Type' => 'application/json');
@@ -314,7 +314,7 @@ sub print_page {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view           = $self->param('view')           || '';
+    my $view           = $self->stash('view')           || '';
     
     # Shared Args
     my $r              = $self->stash('r');
@@ -440,7 +440,8 @@ sub add_default_ttdata {
     my $remote_ip      = $self->stash('remote_ip');
     my $representation = $self->stash('representation') || 'html';
     my $content_type   = $self->stash('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
-    my $query          = $self->req->params;
+    
+    my $query          = $r->params->to_hash;
     my $container      = OpenBib::Container->instance;
     
     # View- und Datenbank-spezifisches Templating
@@ -607,20 +608,20 @@ sub add_default_ttdata {
 #     my $view           = $self->param('view')           || '';
     
 #     # Shared Args
-#     my $r              = $self->param('r');
-#     my $config         = $self->param('config');
-#     my $session        = $self->param('session');
-#     my $user           = $self->param('user');
-#     my $msg            = $self->param('msg');
-#     my $lang           = $self->param('lang');
-#     my $queryoptions   = $self->param('qopts');
-#     my $stylesheet     = $self->param('stylesheet');
-#     my $useragent      = $self->param('useragent');
-#     my $servername     = $self->param('servername');
-#     my $path_prefix    = $self->param('path_prefix');
-#     my $path           = $self->param('path');
-#     my $representation = $self->param('representation');
-#     my $content_type   = $self->param('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
+#     my $r              = $self->stash('r');
+#     my $config         = $self->stash('config');
+#     my $session        = $self->stash('session');
+#     my $user           = $self->stash('user');
+#     my $msg            = $self->stash('msg');
+#     my $lang           = $self->stash('lang');
+#     my $queryoptions   = $self->stash('qopts');
+#     my $stylesheet     = $self->stash('stylesheet');
+#     my $useragent      = $self->stash('useragent');
+#     my $servername     = $self->stash('servername');
+#     my $path_prefix    = $self->stash('path_prefix');
+#     my $path           = $self->stash('path');
+#     my $representation = $self->stash('representation');
+#     my $content_type   = $self->stash('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     
 # #     # Set defaults
 # #     my $database          = exists $arg_ref->{database}
@@ -645,15 +646,15 @@ sub add_default_ttdata {
 
 #     my $query             = $self->query();
 
-#     my $hitrange          = $query->param('hitrange') || 50;
-#     my $sortorder         = $query->param('srto')     || 'up';
-#     my $sorttype          = $query->param('srt')      || 'author';
-#     my $offset            = $query->param('offset')   || undef;
+#     my $hitrange          = $r->param('hitrange') || 50;
+#     my $sortorder         = $r->param('srto')     || 'up';
+#     my $sorttype          = $r->param('srt')      || 'author';
+#     my $offset            = $r->param('offset')   || undef;
     
 #     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 #     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
 
-#     my $searchtitofcnt = decode_utf8($query->param('searchtitofcnt'))    || '';
+#     my $searchtitofcnt = decode_utf8($r->param('searchtitofcnt'))    || '';
 
 #     $logger->debug("Representation: $representation - Content-Type: $content_type ");
     
@@ -688,7 +689,7 @@ sub add_default_ttdata {
 #         }
 
 #         # Anreicherung mit OLWS-Daten
-#         if (defined $query->param('olws') && $query->param('olws') eq "Viewer"){            
+#         if (defined $r->param('olws') && $r->param('olws') eq "Viewer"){            
 #             foreach my $record ($recordlist->get_records()){
 #                 if (exists $circinfotable->{$record->{database}} && exists $circinfotable->{$record->{database}}{circcheckurl}){
 #                     $logger->debug("Endpoint: ".$circinfotable->{$record->{database}}{circcheckurl});
@@ -726,9 +727,9 @@ sub add_default_ttdata {
         
 #         # Navigationselemente erzeugen
 #         my @args=();
-#         foreach my $param ($query->param()) {
-#             $logger->debug("Adding Param $param with value ".$query->param($param));
-#             push @args, $param."=".$query->param($param) if ($param ne "offset" && $param ne "hitrange");
+#         foreach my $param ($r->param()) {
+#             $logger->debug("Adding Param $param with value ".$r->param($param));
+#             push @args, $param."=".$r->param($param) if ($param ne "offset" && $param ne "hitrange");
 #         }
         
 #         my $baseurl="http://$config->{servername}$config->{search_loc}?".join(";",@args);
@@ -806,7 +807,7 @@ sub strip_suffix {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = $self->param('config');
+    my $config = $self->stash('config');
     
     my $suffixes = join '|', map { '\.'.$_ } keys %{$config->{content_type_map_rev}};
 
@@ -997,7 +998,7 @@ sub to_cgi_hidden_input {
 sub read_json_input {
     my $self = shift;
     
-    my $r  = $self->param('r');
+    my $r  = $self->stash('r');
         
     return $r->content;
 }
@@ -1008,7 +1009,7 @@ sub parse_valid_input {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $query = $self->query();
+    my $r     = $self->stash('r');
 
     my $valid_input_params_ref = {};
 
@@ -1022,21 +1023,21 @@ sub parse_valid_input {
     my $input_params_ref = {};
 
     # JSON Processing
-    if ($self->param('representation') eq "json"){
-        my $json_input=$self->read_json_input();
-        
-        $logger->debug("JSON Input $json_input");
-
+    if ($self->stash('representation') eq "json"){
         my $input_data_ref;
         
         eval {
-            $input_data_ref = decode_json $json_input;
+            $input_data_ref = $r->json || $r->body_params->to_hash;
         };
         
         if ($@){
             $logger->error("Couldn't decode JSON POST-data");
             return { error => 1 };
         }
+
+	if ($logger->is_debug){
+	    $logger->debug("JSON Input ".YAML::Dump($input_data_ref));
+	}
 
         foreach my $param (keys %$valid_input_params_ref){
             my $type     = $valid_input_params_ref->{$param}{type};
@@ -1072,7 +1073,7 @@ sub parse_valid_input {
 	    my $no_escape = (defined $valid_input_params_ref->{$param}{no_escape})?$valid_input_params_ref->{$param}{no_escape}:0;
             
 	    if ($type eq "scalar"){
-		my $value = ($query->param($param))?decode_utf8($query->param($param)):$default;
+		my $value = ($r->param($param))?decode_utf8($r->param($param)):$default;
 		unless ($no_escape){
 		    $value = escape_html($value);
 		}
@@ -1080,19 +1081,19 @@ sub parse_valid_input {
 		$input_params_ref->{$param} = $value;
             }
 	    elsif ($type eq "integer"){
-		$input_params_ref->{$param} = ($query->param($param) >= 0)?$query->param($param):$default;
+		$input_params_ref->{$param} = ($r->param($param) >= 0)?$r->param($param):$default;
             }
             elsif ($type eq "bool"){
-                $input_params_ref->{$param} = ($query->param($param))?escape_html($query->param($param)):$default;
+                $input_params_ref->{$param} = ($r->param($param))?escape_html($r->param($param)):$default;
             }
             # sonst array
             elsif ($type eq "array") {
-                if ($query->param($param)){
+                if ($r->param($param)){
 		    if ($no_escape){
-			@{$input_params_ref->{$param}} = $query->param($param);
+			@{$input_params_ref->{$param}} = $r->param($param);
 		    }
 		    else {
-			@{$input_params_ref->{$param}} = map { $_=escape_html($_) } $query->param($param);
+			@{$input_params_ref->{$param}} = map { $_=escape_html($_) } $r->param($param);
 		    }
                 }
                 else {
@@ -1101,14 +1102,14 @@ sub parse_valid_input {
             }
             elsif ($type eq "fields") {
                 my $fields_ref = $default;
-                foreach my $qparam ($query->param){
+                foreach my $qparam ($r->param){
                     if ($qparam=~/^fields_([TXPCSNL])(\d+)_([a-z0-9])?_(\d+)$/){
                         my $prefix   = $1;
                         my $field    = $2;
                         my $subfield = $3;
                         my $mult     = $4;
 
-                        my $content  = ($no_escape)?decode_utf8($query->param($qparam)):escape_html(decode_utf8($query->param($qparam)));
+                        my $content  = ($no_escape)?decode_utf8($r->param($qparam)):escape_html(decode_utf8($r->param($qparam)));
 
                         $logger->debug("Got $field - $prefix - $subfield - $mult - $content");
 
@@ -1124,10 +1125,10 @@ sub parse_valid_input {
 	    elsif ($type eq "mixed_bag"){
 		my $param_prefix = $param;
 		
-                foreach my $qparam ($query->param){
+                foreach my $qparam ($r->param){
                     if ($qparam=~/^${param_prefix}_/){
 
-                        my $content  = ($no_escape)?decode_utf8($query->param($qparam)):escape_html(decode_utf8($query->param($qparam)));
+                        my $content  = ($no_escape)?decode_utf8($r->param($qparam)):escape_html(decode_utf8($r->param($qparam)));
 			
 			push @{$input_params_ref->{mixed_bag}{$qparam}}, $content;
                     }
@@ -1136,12 +1137,12 @@ sub parse_valid_input {
             elsif ($type eq "rights") {
                 my $rights_ref     = $default;
                 my $rights_tmp_ref = {};
-                foreach my $qparam ($query->param){
+                foreach my $qparam ($r->param){
                     if ($qparam=~/^([a-zA-Z0-9_]+)\|(right_[a-z]+)$/){
                         my $scope    = $1;
                         my $right    = $2;
                         
-                        my $content  = escape_html(decode_utf8($query->param($qparam)));
+                        my $content  = escape_html(decode_utf8($r->param($qparam)));
                         
                         $logger->debug("Got $scope - $right - $content");
                         
@@ -1179,9 +1180,9 @@ sub dispatch_to_representation {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $logger->debug("Dispatching to representation ".$self->param('dispatch_url'));
+    $logger->debug("Dispatching to representation ".$self->stash('dispatch_url'));
 
-    $self->redirect($self->param('dispatch_url'),'303');
+    $self->redirect($self->stash('dispatch_url'),'303');
     
     return;
 }
@@ -1192,7 +1193,7 @@ sub show_warning {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $message = $self->param('warning_message');
+    my $message = $self->stash('warning_message');
 
     return $self->print_warning($message);
 }
@@ -1210,7 +1211,7 @@ sub redirect {
         return;
     }
 
-#    $self->param('status',$status);
+#    $self->stash('status',$status);
 
 #     if ($url=~/\?/){
 #         my ($base,$query) = split("\\?",$url);
@@ -1236,22 +1237,22 @@ sub redirect {
 sub print_authorization_error {
     my $self = shift;
 
-    my $r           = $self->param('r');
-    my $scheme      = $self->param('scheme');
-    my $servername  = $self->param('servername');
-    my $location    = $self->param('location');
-    my $path        = $self->param('path');        
-    my $url         = $self->param('url');            
-    my $path_prefix = $self->param('path_prefix');
-    my $config      = $self->param('config');
-    my $view        = $self->param('view');    
-    my $msg         = $self->param('msg');
+    my $r           = $self->stash('r');
+    my $scheme      = $self->stash('scheme');
+    my $servername  = $self->stash('servername');
+    my $location    = $self->stash('location');
+    my $path        = $self->stash('path');        
+    my $url         = $self->stash('url');            
+    my $path_prefix = $self->stash('path_prefix');
+    my $config      = $self->stash('config');
+    my $view        = $self->stash('view');    
+    my $msg         = $self->stash('msg');
     my $args        = $self->to_cgi_querystring;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    if ($self->param('representation') eq "html"){
+    if ($self->stash('representation') eq "html"){
         # Aufruf-URL
 	
 	my $uri    = $r->request_uri;
@@ -1322,10 +1323,10 @@ sub check_http_basic_authentication {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r       = $self->param('r');
-    my $config  = $self->param('config');
-    my $user    = $self->param('user');
-    my $session = $self->param('session');
+    my $r       = $self->stash('r');
+    my $config  = $self->stash('config');
+    my $user    = $self->stash('user');
+    my $session = $self->stash('session');
     my $view    = $self->param('view');
 
 #    if ($logger->is_debug){
@@ -1374,7 +1375,7 @@ sub check_http_basic_authentication {
             $user->{ID} = $userid;
         }
         else {
-            $self->param('basic_auth_failure',1);
+            $self->stash('basic_auth_failure',1);
         }
 
         #if ($logger->is_debug){
@@ -1382,7 +1383,7 @@ sub check_http_basic_authentication {
         #}
         
         # User zurueckchreiben
-        $self->param('user',$user);
+        $self->stash('user',$user);
         
     }
 }
@@ -1393,15 +1394,15 @@ sub tunnel_through_authenticator {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $r           = $self->param('r');    
-    my $config      = $self->param('config');
+    my $r           = $self->stash('r');    
+    my $config      = $self->stash('config');
     my $view        = $self->param('view');    
-    my $location    = $self->param('location');
-    my $scheme      = $self->param('scheme');
-    my $servername  = $self->param('servername');
-    my $path        = $self->param('path');        
-    my $url         = $self->param('url');            
-    my $path_prefix = $self->param('path_prefix');
+    my $location    = $self->stash('location');
+    my $scheme      = $self->stash('scheme');
+    my $servername  = $self->stash('servername');
+    my $path        = $self->stash('path');        
+    my $url         = $self->stash('url');            
+    my $path_prefix = $self->stash('path_prefix');
     my $args        = $self->to_cgi_querystring;
 
     my $uri    = $r->request_uri;
@@ -1448,7 +1449,7 @@ sub set_cookieXX {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = $self->param('config');
+    my $config = $self->stash('config');
 
     if (!($name || $value)){
         $logger->debug("Invalid cookie parameters for cookie: $name / value: $value");
@@ -1586,22 +1587,22 @@ sub teardown {
 
     # Disconnect from Systemdb
 
-    my $queryoptions = $self->param('qopts');
+    my $queryoptions = $self->stash('qopts');
     if (defined $queryoptions){
         $queryoptions->DESTROY;
     }
     
-    my $session = $self->param('session');
+    my $session = $self->stash('session');
     if (defined $session){
         $session->DESTROY;
     }
     
-    my $user = $self->param('user');
+    my $user = $self->stash('user');
     if (defined $user){
         $user->DESTROY;
     }
     
-    my $config = $self->param('config');
+    my $config = $self->stash('config');
     if (defined $config){
         $config->DESTROY;
     }
@@ -1636,8 +1637,8 @@ sub check_online_media {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $r       = $self->param('r');
-    my $config  = $self->param('config');
+    my $r       = $self->stash('r');
+    my $config  = $self->stash('config');
 
     $logger->debug("Checking online availability of isbn $isbn for view $view");
     
@@ -1645,7 +1646,7 @@ sub check_online_media {
     
     my $searchquery = new OpenBib::SearchQuery();
 
-    my $normalizer = $self->param('normalizer');
+    my $normalizer = $self->stash('normalizer');
     
     $isbn = $normalizer->normalize({ field => 'T0540', content => $isbn });
     
@@ -1690,9 +1691,9 @@ sub ip_from_local_network {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    my $config       = $self->param('config');
+    my $config       = $self->stash('config');
     
-    my $remote_ip    = $self->param('remote_ip');
+    my $remote_ip    = $self->stash('remote_ip');
     
     my $ip_from_local_network = 0;
 

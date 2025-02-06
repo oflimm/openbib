@@ -418,7 +418,7 @@ sub cgiapp_prerun {
 
    {
        # Wenn dispatch_url, dann Runmode dispatch_to_representation mit externem Redirect
-       if ($self->param('dispatch_url')){
+       if ($self->stash('dispatch_url')){
            $self->prerun_mode('dispatch_to_representation');
        }
        
@@ -426,20 +426,20 @@ sub cgiapp_prerun {
 
    {
        # Wenn default_runmode gesetzt, dann ausschliesslich in diesen wechseln
-       if ($self->param('default_runmode')){
+       if ($self->stash('default_runmode')){
 
 	   # Zum default_runmode muss eine Methode in
 	   # diesem Modul definiert sein, denn default_runmodes werden immer in
 	   # OpenBib::Handler::PSGI definiert!
 
-	   if (OpenBib::Handler::PSGI->can($self->param('default_runmode'))){
+	   if (OpenBib::Mojo::Controller->can($self->stash('default_runmode'))){
 	       $self->run_modes(
-		   $self->param('default_runmode')  => $self->param('default_runmode'),
+		   $self->stash('default_runmode')  => $self->stash('default_runmode'),
 		   );
-	       $self->prerun_mode($self->param('default_runmode'));
+	       $self->prerun_mode($self->stash('default_runmode'));
 	   }
 	   else {
-	       $logger->error("Invalid default runmode ".$self->param('default_runmode'));
+	       $logger->error("Invalid default runmode ".$self->stash('default_runmode'));
 	   }
        }
    }

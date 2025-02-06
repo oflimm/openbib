@@ -1295,6 +1295,20 @@ sub print_authorization_error {
     }
 }
 
+sub cleanup_lang {
+    my ($self,$lang)=@_;
+
+    my $config = $self->stash('config');
+
+    my $is_valid_ref = {};
+    
+    foreach my $lang (@{$config->{lang}}){
+	$is_valid_ref->{$lang} = 1;
+    }
+
+    return (defined $is_valid_ref->{$lang} && $is_valid_ref->{$lang})?$lang:'de';
+}
+
 sub authorization_successful {
     my $self   = shift;
 

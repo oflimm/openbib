@@ -146,6 +146,7 @@ sub _app_init {
     my $r            = $self->req;
     my $view         = $self->param('view');
 
+    # Wenn kein Portal-URL (z.B. CSS, JS, Images), dann kein Preprocessing notwendig
     return if ($r->url->path !~m{^/portal/});
     
     my $config       = OpenBib::Config->new;

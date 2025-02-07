@@ -29,7 +29,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Mojo::Controller::Titles::Fields;
+package OpenBib::Mojo::Controller::Subjects::Fields;
 
 use strict;
 use warnings;

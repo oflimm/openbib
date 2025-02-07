@@ -104,7 +104,7 @@ sub _register_routes {
         my $rule       = $item->{rule};
         my $controller = $item->{controller};
         my $action     = $item->{action};
-        my $method     = $item->{method};
+        my $method     = $item->{method} || 'GET'; # Default: GET
 
 	my @representations = ();
 	    
@@ -553,12 +553,10 @@ sub set_content_type_from_uri {
 
     my ($representation) = $uri =~m/^.*?\/[^\/]*?\.($suffixes)$/;
 
-    if (defined $representation){
-        $logger->debug("Setting type from URI $uri. Got Represenation $representation");
-    }
-    
     # Korrektur des ausgehandelten Typs bei direkter Auswahl einer bestimmten Repraesentation
     if (defined $representation && $config->{content_type_map_rev}{$representation}){
+	$logger->debug("Setting type from URI $uri. Got Representation $representation and content_type ".$config->{content_type_map_rev}{$representation});
+
         $self->stash('content_type',$config->{content_type_map_rev}{$representation});
         $self->stash('representation',$representation);
     }

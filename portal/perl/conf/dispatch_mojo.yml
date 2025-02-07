@@ -1,15 +1,6 @@
-- # Resource: home_loc
-   rule: '/portal/:view/home'
-   method: 'GET'
-   controller: 'Home'
-   action: 'show'
-   representations:
-     - html
-   args:
-      users_loc: 'home'        
 - # review_loc:
    controller: 'Reviews'
-   rule: '/portal/:view/reviews/isbn/:isbn'
+   rule: '/portal/:view/reviews/isbn/#isbn'
    method: 'GET'
    action: 'show_collection_by_isbn'
 
@@ -157,14 +148,14 @@
      'restrict_db_to_view': 1
 - # users_loc/titles_loc: Record show
    controller: 'Titles::Fields'
-   rule: '/portal/:view/databases/id/:database/titles/fields/id/:fieldid'
+   rule: '/portal/:view/databases/id/:database/titles/fields/id/#fieldid'
    method: 'GET'
    action: 'show_record'
    args:
      'restrict_db_to_view': 1
 - # users_loc/titles_loc: Record show
    controller: 'Titles'
-   rule: '/portal/:view/databases/id/:database/titles/id/:titleid'
+   rule: '/portal/:view/databases/id/:database/titles/id/#titleid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -218,7 +209,7 @@
      'restrict_db_to_view': 1
 - # users_loc/holdings_loc: Record show
    controller: 'Holdings::Fields'
-   rule: '/portal/:view/databases/id/:database/holdings/fields/id/:fieldid'
+   rule: '/portal/:view/databases/id/:database/holdings/fields/id/#fieldid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -345,7 +336,7 @@
      'restrict_db_to_view': 1
 - # users/titles_loc:
    controller: 'Users::Titles'
-   rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/:titleid'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/titles/id/#titleid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -452,21 +443,21 @@
      'restrict_db_to_view': 1
 - # users_loc/titles_loc: Update Record
    controller: 'Users::Titles'
-   rule: '/portal/:view/databases/id/:database/titles/id/:titleid'
+   rule: '/portal/:view/databases/id/:database/titles/id/#titleid'
    method: 'POST'
    action: 'update_record'
    args:
      'restrict_db_to_view': 1
 - # users_loc/titles_loc: Update Record
    controller: 'Users::Titles'
-   rule: '/portal/:view/databases/id/:database/titles/id/:titleid'
+   rule: '/portal/:view/databases/id/:database/titles/id/#titleid'
    method: 'PUT'
    action: 'update_record'
    args:
      'restrict_db_to_view': 1
 - # users_loc/titles_loc: Delete Record
    controller: 'Users::Titles'
-   rule: '/portal/:view/databases/id/:database/titles/id/:titleid'
+   rule: '/portal/:view/databases/id/:database/titles/id/#titleid'
    method: 'DELETE'
    action: 'delete_record'
    args:
@@ -495,7 +486,7 @@
    action: 'show_collection'
 - # Resource: browse_loc
    controller: 'Browse::Topics'
-   rule: '/portal/:view/browse/topics/id/:topicid'
+   rule: '/portal/:view/browse/topics/id/#topicid'
    method: 'GET'
    representations:
      - none
@@ -511,7 +502,7 @@
    action: 'show_collection'
 - # Resource: browse_loc
    controller: 'Browse::LBS'
-   rule: '/portal/:view/browse/lbs/id/:lbsid'
+   rule: '/portal/:view/browse/lbs/id/#lbsid'
    method: 'GET'
    representations:
      - none
@@ -527,7 +518,7 @@
    action: 'show_collection'
 - # Resource: browse_loc
    controller: 'Browse::LS'
-   rule: '/portal/:view/browse/ls/id/:lsid'
+   rule: '/portal/:view/browse/ls/id/#lsid'
    method: 'GET'
    representations:
      - none
@@ -543,7 +534,7 @@
    action: 'show_collection'
 - # Resource: browse_loc
    controller: 'Browse::BK'
-   rule: '/portal/:view/browse/bks/id/:bkid'
+   rule: '/portal/:view/browse/bks/id/#bkid'
    method: 'GET'
    representations:
      - none
@@ -551,7 +542,7 @@
    action: 'show_record'
 - # Resource: browse_loc
    controller: 'Browse::BK'
-   rule: '/portal/:view/browse/bks/id/:tlbkid/id/:bkid'
+   rule: '/portal/:view/browse/bks/id/:tlbkid/id/#bkid'
    method: 'GET'
    action: 'show_record_databases'
 - # Resource: browse_loc
@@ -564,7 +555,7 @@
    action: 'show_collection'
 - # Resource: browse_loc
    controller: 'Browse::KMB'
-   rule: '/portal/:view/browse/kmb/id/:sysid'
+   rule: '/portal/:view/browse/kmb/id/#sysid'
    method: 'GET'
    representations:
      - none
@@ -580,7 +571,7 @@
    action: 'show_collection'
 - # Resource: browse_loc
    controller: 'Browse::RVK'
-   rule: '/portal/:view/browse/rvk/id/:sysid'
+   rule: '/portal/:view/browse/rvk/id/#sysid'
    method: 'GET'
    representations:
      - none
@@ -592,7 +583,7 @@
 
 - # info_loc:
    controller: 'Info'
-   rule: '/portal/:view/info/:stid'
+   rule: '/portal/:view/info/#stid'
    action: 'show_record'
 
 #####################################################################
@@ -624,7 +615,7 @@
 
 - # searchforms_loc:
    controller: 'SearchForms'
-   rule: '/portal/:view/searchforms/id/:type'
+   rule: '/portal/:view/searchforms/id/#type'
    method: 'GET'
    action: 'show'
 - # searchforms_loc:
@@ -694,7 +685,7 @@
    action: 'mail_confirmation'
 - # registrations_loc:
    controller: 'Users::Registrations'
-   rule: '/portal/:view/users/registrations/id/:registrationid'
+   rule: '/portal/:view/users/registrations/id/#registrationid'
    method: 'GET'
    action: 'register'
 
@@ -716,7 +707,7 @@
    action: 'create_token'
 - # passwords_loc:
    controller: 'Users::Passwords'
-   rule: '/portal/:view/users/passwords/tokens/id/:tokenid'
+   rule: '/portal/:view/users/passwords/tokens/id/#tokenid'
    method: 'GET'
    representations:
      - none
@@ -761,25 +752,25 @@
       disable_content_negotiation: 1
 - # connector_availabilityimage_loc: 
    controller: 'Connector::AvailabilityImage'
-   rule: '/portal/:view/connector/availabilityimage/:rm/:id'
+   rule: '/portal/:view/connector/availabilityimage/:rm/#id'
    action: 'gbs'
    args:
       disable_content_negotiation: 1
 - # connector_availability_loc:
    controller: 'Connector::Availability'
-   rule: '/portal/:view/connector/availability/:id'
+   rule: '/portal/:view/connector/availability/#id'
    action: 'show_collection'
    args:
       disable_content_negotiation: 1
 - # connector_availability_loc:
    controller: 'Connector::Availability'
-   rule: '/portal/:view/connector/availability/:rm/:id'
+   rule: '/portal/:view/connector/availability/:rm/#id'
    action: 'isbn'
    args:
       disable_content_negotiation: 1
 - # connector_cover_loc: 
    controller: 'Connector::Cover'
-   rule: '/portal/:view/connector/cover/:rm/:id'
+   rule: '/portal/:view/connector/cover/:rm/#id'
    action: 'vlb'
    args:
       disable_content_negotiation: 1
@@ -791,7 +782,7 @@
       disable_content_negotiation: 1
 - # connector_paia_loc:
    controller: 'Databases::PAIA'
-   rule: '/portal/:view/databases/id/:database/paia/auth/:serviceid'
+   rule: '/portal/:view/databases/id/:database/paia/auth/#serviceid'
    method: 'POST'
    action: 'authenticate'
    args:
@@ -799,7 +790,7 @@
      disable_content_negotiation: 1
 - # connector_paia_loc:
    controller: 'Databases::PAIA'
-   rule: '/portal/:view/databases/id/:database/paia/core/:userid'
+   rule: '/portal/:view/databases/id/:database/paia/core/#userid'
    method: 'GET'
    action: 'patron'
    args:
@@ -807,14 +798,14 @@
      disable_content_negotiation: 1
 - # connector_paia_loc:
    controller: 'Databases::PAIA'
-   rule: '/portal/:view/databases/id/:database/paia/core/:userid[patch]'
+   rule: '/portal/:view/databases/id/:database/paia/core/#userid[patch]'
    action: 'update_patron'
    args:
      'restrict_db_to_view': 1
      disable_content_negotiation: 1
 - # connector_paia_loc:
    controller: 'Databases::PAIA'
-   rule: '/portal/:view/databases/id/:database/paia/core/:userid/:serviceid'
+   rule: '/portal/:view/databases/id/:database/paia/core/:userid/#serviceid'
    method: 'GET'
    action: 'core_get_services'
    args:
@@ -822,7 +813,7 @@
      disable_content_negotiation: 1
 - # connector_paia_loc:
    controller: 'Databases::PAIA'
-   rule: '/portal/:view/databases/id/:database/paia/core/:userid/:serviceid'
+   rule: '/portal/:view/databases/id/:database/paia/core/:userid/#serviceid'
    method: 'POST'
    action: 'core_post_services'
    args:
@@ -992,7 +983,7 @@
 - # Resource: litlists_loc: oeffentlichen Literaturlisten zu einem Topic
   # kategorisiert sind
    controller: 'LitLists'
-   rule: '/portal/:view/litlists/topics/id/:topicid'
+   rule: '/portal/:view/litlists/topics/id/#topicid'
    method: 'GET'
    action: 'show_collection_by_single_topic'
 
@@ -1011,13 +1002,13 @@
 
 - # Resource: litlists_loc: oeffentlichen Literaturlisten von einem User
    controller: 'LitLists'
-   rule: '/portal/:view/litlists/users/id/:userid'
+   rule: '/portal/:view/litlists/users/id/#userid'
    method: 'GET'
    action: 'show_collection_by_single_user'
 
 - # Resource: users_loc/litlists_loc: Anzeige einer Literaturliste (oeffentlich/privat)
    controller: 'LitLists'
-   rule: '/portal/:view/litlists/id/:litlistid'
+   rule: '/portal/:view/litlists/id/#litlistid'
    method: 'GET'
    action: 'show_record'
 
@@ -1082,7 +1073,7 @@
 
 - # Resource: users_loc/litlists_loc: Anzeige einer Literaturliste (oeffentlich/privat)
    controller: 'Users::LitLists'
-   rule: '/portal/:view/users/id/:userid/litlists/id/:litlistid'
+   rule: '/portal/:view/users/id/:userid/litlists/id/#litlistid'
    method: 'GET'
    action: 'show_record'
 
@@ -1093,17 +1084,17 @@
    action: 'create_record'
 - # Resource: litlists_loc: Update Record
    controller: 'Users::LitLists'
-   rule: '/portal/:view/litlists/id/:litlistid'
+   rule: '/portal/:view/litlists/id/#litlistid'
    method: 'POST'
    action: 'update_record'
 - # Resource: litlists_loc: Update Record
    controller: 'Users::LitLists'
-   rule: '/portal/:view/litlists/id/:litlistid'
+   rule: '/portal/:view/litlists/id/#litlistid'
    method: 'PUT'
    action: 'update_record'
 - # Resource: litlists_loc: Delete Record
    controller: 'Users::LitLists'
-   rule: '/portal/:view/litlists/id/:litlistid'
+   rule: '/portal/:view/litlists/id/#litlistid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -1119,7 +1110,7 @@
 
 - # Resource: users_loc/litlists_loc: Show Single Item ?entfernen?
    controller: 'Users::LitLists::Item'
-   rule: '/portal/:view/litlists/id/:litlistid/items/id/:itemid'
+   rule: '/portal/:view/litlists/id/:litlistid/items/id/#itemid'
    method: 'GET'
    action: 'show_record'
 
@@ -1130,17 +1121,17 @@
    action: 'create_record'
 - # Resource: litlists_loc: Update Item
    controller: 'Users::LitLists::Item'
-   rule: '/portal/:view/litlists/id/:litlistid/items/id/:itemid'
+   rule: '/portal/:view/litlists/id/:litlistid/items/id/#itemid'
    method: 'POST'
    action: 'update_record'
 - # Resource: litlists_loc: Update Item
    controller: 'Users::LitLists::Item'
-   rule: '/portal/:view/litlists/id/:litlistid/items/id/:itemid'
+   rule: '/portal/:view/litlists/id/:litlistid/items/id/#itemid'
    method: 'PUT'
    action: 'update_record'
 - # Resource: litlists_loc: Delete Item
    controller: 'Users::LitLists::Item'
-   rule: '/portal/:view/litlists/id/:litlistid/items/id/:itemid'
+   rule: '/portal/:view/litlists/id/:litlistid/items/id/#itemid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -1218,7 +1209,7 @@
 
 - # Resource: users_loc/tags_loc: Anzeige eines Tags (oeffentlich)
    controller: 'Users::Tags'
-   rule: '/portal/:view/tags/id/:tagid'
+   rule: '/portal/:view/tags/id/#tagid'
    method: 'GET'
    action: 'show_record'
 - # Resource: users_loc/tags_loc: Anzeige aller Tags nach Tagnamen (oeffentlich)
@@ -1233,7 +1224,7 @@
 - # Resource: users_loc/tags_loc: Anzeige aller Tags nach einem konkreten Tagnamen (oeffentlich)
   # = Effektiv: Titelliste
    controller: 'Tags::Names'
-   rule: '/portal/:view/tags/names/id/:tagname'
+   rule: '/portal/:view/tags/names/id/#tagname'
    method: 'GET'
    action: 'show_record'
 
@@ -1244,17 +1235,17 @@
    action: 'create_record'
 - # Resource: tags_loc: Delete Record
    controller: 'Users::Tags'
-   rule: '/portal/:view/tags/id/:tagid'
+   rule: '/portal/:view/tags/id/#tagid'
    method: 'DELETE'
    action: 'delete_record'
 - # Resource: tags_loc: Update Record
    controller: 'Users::Tags::Names'
-   rule: '/portal/:view/tags/names/id/:tagname'
+   rule: '/portal/:view/tags/names/id/#tagname'
    method: 'POST'
    action: 'update_record'
 - # Resource: tags_loc: Update Record
    controller: 'Users::Tags::Names'
-   rule: '/portal/:view/tags/names/id/:tagname'
+   rule: '/portal/:view/tags/names/id/#tagname'
    method: 'PUT'
    action: 'update_record'
 
@@ -1280,7 +1271,7 @@
    action: 'show_collection'
 - # Resource: users_loc/tags_loc: Anzeige eines Tags (privat)
    controller: 'Users::Tags'
-   rule: '/portal/:view/users/id/:userid/tags/id/:tagid'
+   rule: '/portal/:view/users/id/:userid/tags/id/#tagid'
    method: 'GET'
    action: 'show_record'
 
@@ -1305,7 +1296,7 @@
 - # Resource: users_loc/tags_loc: Anzeige aller eigenen Tags zu einem konkreten Tagnamen
   # = Effentiv: Titelliste
    controller: 'Users::Tags::Names'
-   rule: '/portal/:view/users/id/:userid/tags/names/id/:tagname'
+   rule: '/portal/:view/users/id/:userid/tags/names/id/#tagname'
    method: 'GET'
    representations:
      - none
@@ -1340,7 +1331,7 @@
 
 - # Resource: users_loc/reviews_loc: Anzeige eines Reviews
    controller: 'Reviews'
-   rule: '/portal/:view/reviews/id/:reviewid'
+   rule: '/portal/:view/reviews/id/#reviewid'
    method: 'GET'
    action: 'show_record'
 
@@ -1358,7 +1349,7 @@
 
 - # Resource: users_loc/reviews_loc: Anzeige eines eigenen Reviews
    controller: 'Users::Reviews'
-   rule: '/portal/:view/users/id/:userid/reviews/id/:reviewid'
+   rule: '/portal/:view/users/id/:userid/reviews/id/#reviewid'
    method: 'GET'
    action: 'show_record'
 
@@ -1378,17 +1369,17 @@
    action: 'create_record'
 - # Resource: reviews_loc: Update Record
    controller: 'Users::Reviews'
-   rule: '/portal/:view/reviews/id/:reviewid'
+   rule: '/portal/:view/reviews/id/#reviewid'
    method: 'POST'
    action: 'update_record'
 - # Resource: reviews_loc: Update Record
    controller: 'Users::Reviews'
-   rule: '/portal/:view/reviews/id/:reviewid'
+   rule: '/portal/:view/reviews/id/#reviewid'
    method: 'PUT'
    action: 'update_record'
 - # Resource: reviews_loc: Delete Record
    controller: 'Users::Reviews'
-   rule: '/portal/:view/reviews/id/:reviewid'
+   rule: '/portal/:view/reviews/id/#reviewid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -1440,7 +1431,7 @@
    action: 'show_collection'
 - # Resource: clusters_loc Record show
    controller: 'Clusters'
-   rule: '/portal/:view/clusters/id/:clusterid'
+   rule: '/portal/:view/clusters/id/#clusterid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -1459,7 +1450,7 @@
 - # Repraesentation: admin_loc/clusters_loc
    scope: 'admin_clusters'
    controller: 'Admin::Clusters'
-   rule: '/portal/:view/admin/clusters/id/:clusterid'
+   rule: '/portal/:view/admin/clusters/id/#clusterid'
    method: 'GET'
    action: 'show_record'
 - # Repraesentation: admin_loc/clusters_loc: Record show form
@@ -1480,19 +1471,19 @@
 - # Resource: clusters_loc: Update Record
    scope: 'admin_clusters'
    controller: 'Admin::Clusters'
-   rule: '/portal/:view/clusters/id/:clusterid'
+   rule: '/portal/:view/clusters/id/#clusterid'
    method: 'POST'
    action: 'update_record'
 - # Resource: clusters_loc: Update Record
    scope: 'admin_clusters'
    controller: 'Admin::Clusters'
-   rule: '/portal/:view/clusters/id/:clusterid'
+   rule: '/portal/:view/clusters/id/#clusterid'
    method: 'PUT'
    action: 'update_record'
 - # Resource: clusters_loc: Delete Record
    scope: 'admin_clusters'
    controller: 'Admin::Clusters'
-   rule: '/portal/:view/clusters/id/:clusterid'
+   rule: '/portal/:view/clusters/id/#clusterid'
    method: 'DELETE'
    action: 'delete_record'
 - # Repraesentation: admin_loc/clusters_loc: Record show consistency across servers
@@ -1521,7 +1512,7 @@
       admin_loc: 'servers'
 - # admin_loc/servers_loc: Record show
    controller: 'Servers'
-   rule: '/portal/:view/servers/id/:serverid'
+   rule: '/portal/:view/servers/id/#serverid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -1540,7 +1531,7 @@
 - # admin_loc/servers_loc: Record show
    scope: 'admin_servers'
    controller: 'Admin::Servers'
-   rule: '/portal/:view/admin/servers/id/:serverid'
+   rule: '/portal/:view/admin/servers/id/#serverid'
    method: 'GET'
    action: 'show_record'
 - # admin_loc/servers_loc: Record show form
@@ -1561,19 +1552,19 @@
 - # admin_loc/servers_loc: Update Record
    scope: 'admin_servers'
    controller: 'Admin::Servers'
-   rule: '/portal/:view/servers/id/:serverid'
+   rule: '/portal/:view/servers/id/#serverid'
    method: 'POST'
    action: 'update_record'
 - # admin_loc/servers_loc: Update Record
    scope: 'admin_servers'
    controller: 'Admin::Servers'
-   rule: '/portal/:view/servers/id/:serverid'
+   rule: '/portal/:view/servers/id/#serverid'
    method: 'PUT'
    action: 'update_record'
 - # admin_loc/servers_loc: Delete Record
    scope: 'admin_servers'
    controller: 'Admin::Servers'
-   rule: '/portal/:view/servers/id/:serverid'
+   rule: '/portal/:view/servers/id/#serverid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -1617,7 +1608,7 @@
      - rdf
 - # admin_loc/databases_loc: Record show
    controller: 'Databases'
-   rule: '/portal/:view/databases/id/:databaseid'
+   rule: '/portal/:view/databases/id/#databaseid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -1637,7 +1628,7 @@
 - # admin_loc/databases_loc: Record show
    scope: 'admin_databases'
    controller: 'Admin::Databases'
-   rule: '/portal/:view/admin/databases/id/:databaseid'
+   rule: '/portal/:view/admin/databases/id/#databaseid'
    method: 'GET'
    action: 'show_record'
 - # admin_loc/databases_loc: Record show form
@@ -1658,19 +1649,19 @@
 - # admin_loc/databases_loc: Update Record
    scope: 'admin_databases'
    controller: 'Admin::Databases'
-   rule: '/portal/:view/databases/id/:databaseid'
+   rule: '/portal/:view/databases/id/#databaseid'
    method: 'POST'
    action: 'update_record'
 - # admin_loc/databases_loc: Update Record
    scope: 'admin_databases'
    controller: 'Admin::Databases'
-   rule: '/portal/:view/databases/id/:databaseid'
+   rule: '/portal/:view/databases/id/#databaseid'
    method: 'PUT'
    action: 'update_record'
 - # admin_loc/databases_loc: Delete Record
    scope: 'admin_databases'
    controller: 'Admin::Databases'
-   rule: '/portal/:view/databases/id/:databaseid'
+   rule: '/portal/:view/databases/id/#databaseid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -1691,7 +1682,7 @@
      admin_loc: 'databases'
 - # databases_loc: Record show
    controller: 'Databases::RSS'
-   rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid'
+   rule: '/portal/:view/databases/id/:databaseid/rss/id/#rssid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -1711,7 +1702,7 @@
 - # admin_loc/databases_loc: Record show
    scope: 'admin_databases'
    controller: 'Admin::Databases::RSS'
-   rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid'
+   rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/#rssid'
    method: 'GET'
    action: 'show_record'
 - # admin_loc/databases_loc: Record show form
@@ -1732,25 +1723,25 @@
 - # admin_loc/databases_loc: Update Record
    scope: 'admin_databases'
    controller: 'Admin::Databases::RSS'
-   rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid'
+   rule: '/portal/:view/databases/id/:databaseid/rss/id/#rssid'
    method: 'POST'
    action: 'update_record'
 - # admin_loc/databases_loc: Update Record
    scope: 'admin_databases'
    controller: 'Admin::Databases::RSS'
-   rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid'
+   rule: '/portal/:view/databases/id/:databaseid/rss/id/#rssid'
    method: 'PUT'
    action: 'update_record'
 - # admin_loc/databases_loc: Delete Record
    scope: 'admin_databases'
    controller: 'Admin::Databases::RSS'
-   rule: '/portal/:view/databases/id/:databaseid/rss/id/:rssid'
+   rule: '/portal/:view/databases/id/:databaseid/rss/id/#rssid'
    method: 'DELETE'
    action: 'delete_record'
 - # admin_loc/databases_loc: Delete Record
    scope: 'admin_databases'
    controller: 'Admin::Databases::RSS'
-   rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/:rssid'
+   rule: '/portal/:view/admin/databases/id/:databaseid/rss/id/#rssid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -1784,7 +1775,7 @@
       admin_loc: 'templates'
 - # admin_loc/templates_loc: Record show
    controller: 'Templates'
-   rule: '/portal/:view/templates/id/:templateid'
+   rule: '/portal/:view/templates/id/#templateid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -1821,7 +1812,7 @@
 - # admin_loc/templates_loc: Show Record 
    scope: 'admin_templates'
    controller: 'Admin::Templates'
-   rule: '/portal/:view/admin/templates/id/:templateid'
+   rule: '/portal/:view/admin/templates/id/#templateid'
    method: 'GET'
    action: 'show_record'
 - # admin_loc/templates_loc: Record show form
@@ -1842,17 +1833,17 @@
 - # admin_loc/templates_loc: Delete Record
    scope: 'admin_templates'
    controller: 'Admin::Templates'
-   rule: '/portal/:view/templates/id/:templateid'
+   rule: '/portal/:view/templates/id/#templateid'
    method: 'DELETE'
    action: 'delete_record'
 - # admin_loc/templates_loc: Update Record
    controller: 'Users::Templates'
-   rule: '/portal/:view/templates/id/:templateid'
+   rule: '/portal/:view/templates/id/#templateid'
    method: 'POST'
    action: 'update_record'
 - # admin_loc/templates_loc: Update Record
    controller: 'Users::Templates'
-   rule: '/portal/:view/templates/id/:templateid'
+   rule: '/portal/:view/templates/id/#templateid'
    method: 'PUT'
    action: 'update_record'
 
@@ -1867,7 +1858,7 @@
      - json
 - # admin_loc/templates_loc: Revisions
    controller: 'Templates::Revisions'
-   rule: '/portal/:view/templates/id/:templateid/revisions/id/:revisionid'
+   rule: '/portal/:view/templates/id/:templateid/revisions/id/#revisionid'
    method: 'GET'
    action: 'show_record'
    representations:
@@ -1876,13 +1867,13 @@
      - json
 - # admin_loc/templates_loc: Revisions
    controller: 'Users::Templates::Revisions'
-   rule: '/portal/:view/templates/id/:templateid/revisions/id/:revisionid'
+   rule: '/portal/:view/templates/id/:templateid/revisions/id/#revisionid'
    method: 'PUT'
    action: 'revert_record'
 
 - # admin_loc/templates_loc: Revisions
    controller: 'Users::Templates::Revisions'
-   rule: '/portal/:view/templates/id/:templateid/revisions/id/:revisionid'
+   rule: '/portal/:view/templates/id/:templateid/revisions/id/#revisionid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -1901,7 +1892,7 @@
      - csv
 - # admin_loc/locations_loc: Record show
    controller: 'Locations'
-   rule: '/portal/:view/locations/id/:locationid'
+   rule: '/portal/:view/locations/id/#locationid'
    method: 'GET'
    action: 'show_record'
 - # admin_loc/locations_loc: Record show
@@ -1928,7 +1919,7 @@
 - # admin_loc/locations_loc: Record show
    scope: 'admin_locations'
    controller: 'Admin::Locations'
-   rule: '/portal/:view/admin/locations/id/:locationid'
+   rule: '/portal/:view/admin/locations/id/#locationid'
    method: 'GET'
    action: 'show_record'
 - # admin_loc/locations_loc: Record show form
@@ -1949,19 +1940,19 @@
 - # admin_loc/locations_loc: Update Record
    scope: 'admin_locations'
    controller: 'Admin::Locations'
-   rule: '/portal/:view/locations/id/:locationid'
+   rule: '/portal/:view/locations/id/#locationid'
    method: 'POST'
    action: 'update_record'
 - # admin_loc/locations_loc: Update Record
    scope: 'admin_locations'
    controller: 'Admin::Locations'
-   rule: '/portal/:view/locations/id/:locationid'
+   rule: '/portal/:view/locations/id/#locationid'
    method: 'PUT'
    action: 'update_record'
 - # admin_loc/locations_loc: Delete Record
    scope: 'admin_locations'
    controller: 'Admin::Locations'
-   rule: '/portal/:view/locations/id/:locationid'
+   rule: '/portal/:view/locations/id/#locationid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -1981,7 +1972,7 @@
       admin_loc: 'profiles'
 - # admin_loc/profiles_loc: Record show
    controller: 'Profiles'
-   rule: '/portal/:view/profiles/id/:profileid'
+   rule: '/portal/:view/profiles/id/#profileid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -2000,7 +1991,7 @@
 - # admin_loc/profiles_loc: Record show
    scope: 'admin_profiles'
    controller: 'Admin::Profiles'
-   rule: '/portal/:view/admin/profiles/id/:profileid'
+   rule: '/portal/:view/admin/profiles/id/#profileid'
    method: 'GET'
    action: 'show_record'
 - # admin_loc/profiles_loc: Record show form
@@ -2021,19 +2012,19 @@
 - # admin_loc/profiles_loc: Update Record
    scope: 'admin_profiles'
    controller: 'Admin::Profiles'
-   rule: '/portal/:view/profiles/id/:profileid'
+   rule: '/portal/:view/profiles/id/#profileid'
    method: 'POST'
    action: 'update_record'
 - # admin_loc/profiles_loc: Update Record
    scope: 'admin_profiles'
    controller: 'Admin::Profiles'
-   rule: '/portal/:view/profiles/id/:profileid'
+   rule: '/portal/:view/profiles/id/#profileid'
    method: 'PUT'
    action: 'update_record'
 - # admin_loc/profiles_loc: Delete Record
    scope: 'admin_profiles'
    controller: 'Admin::Profiles'
-   rule: '/portal/:view/profiles/id/:profileid'
+   rule: '/portal/:view/profiles/id/#profileid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -2053,7 +2044,7 @@
       admin_loc: 'profiles'
 - # admin_loc/profiles_loc: Record show
    controller: 'OrganizationalUnits'
-   rule: '/portal/:view/profiles/id/:profileid/orgunits/id/:orgunitid'
+   rule: '/portal/:view/profiles/id/:profileid/orgunits/id/#orgunitid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -2072,7 +2063,7 @@
 - # admin_loc/profiles_loc: Record show
    scope: 'admin_profiles'
    controller: 'Admin::OrganizationalUnits'
-   rule: '/portal/:view/admin/profiles/id/:profileid/orgunits/id/:orgunitid'
+   rule: '/portal/:view/admin/profiles/id/:profileid/orgunits/id/#orgunitid'
    method: 'GET'
    action: 'show_record'
 - # admin_loc/profiles_loc: Record show form
@@ -2093,19 +2084,19 @@
 - # admin_loc/profiles_loc: Update Record
    scope: 'admin_profiles'
    controller: 'Admin::OrganizationalUnits'
-   rule: '/portal/:view/profiles/id/:profileid/orgunits/id/:orgunitid'
+   rule: '/portal/:view/profiles/id/:profileid/orgunits/id/#orgunitid'
    method: 'POST'
    action: 'update_record'
 - # admin_loc/profiles_loc: Update Record
    scope: 'admin_profiles'
    controller: 'Admin::OrganizationalUnits'
-   rule: '/portal/:view/profiles/id/:profileid/orgunits/id/:orgunitid'
+   rule: '/portal/:view/profiles/id/:profileid/orgunits/id/#orgunitid'
    method: 'PUT'
    action: 'update_record'
 - # admin_loc/profiles_loc: Delete Record
    scope: 'admin_profiles'
    controller: 'Admin::OrganizationalUnits'
-   rule: '/portal/:view/profiles/id/:profileid/orgunits/id/:orgunitid'
+   rule: '/portal/:view/profiles/id/:profileid/orgunits/id/#orgunitid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -2125,7 +2116,7 @@
       admin_loc: 'views'
 - # admin_loc/views_loc: Record show
    controller: 'Views'
-   rule: '/portal/:view/views/id/:viewid'
+   rule: '/portal/:view/views/id/#viewid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -2144,7 +2135,7 @@
 - # admin_loc/views_loc: Record show
    scope: 'admin_views'
    controller: 'Admin::Views'
-   rule: '/portal/:view/admin/views/id/:viewid'
+   rule: '/portal/:view/admin/views/id/#viewid'
    method: 'GET'
    action: 'show_record'
 - # admin_loc/views_loc: Record show form
@@ -2165,19 +2156,19 @@
 - # admin_loc/views_loc: Update Record
    scope: 'admin_views'
    controller: 'Admin::Views'
-   rule: '/portal/:view/views/id/:viewid'
+   rule: '/portal/:view/views/id/#viewid'
    method: 'POST'
    action: 'update_record'
 - # admin_loc/views_loc: Update Record
    scope: 'admin_views'
    controller: 'Admin::Views'
-   rule: '/portal/:view/views/id/:viewid'
+   rule: '/portal/:view/views/id/#viewid'
    method: 'PUT'
    action: 'update_record'
 - # admin_loc/views_loc: Delete Record
    scope: 'admin_views'
    controller: 'Admin::Views'
-   rule: '/portal/:view/views/id/:viewid'
+   rule: '/portal/:view/views/id/#viewid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -2250,7 +2241,7 @@
       admin_loc: 'searchprofiles'
 - # admin_loc/searchprofiles_loc: Record show
    controller: 'Searchprofiles'
-   rule: '/portal/:view/searchprofiles/id/:searchprofileid'
+   rule: '/portal/:view/searchprofiles/id/#searchprofileid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -2269,7 +2260,7 @@
 - # admin_loc/searchprofiles_loc: Record show
    scope: 'admin_searchprofiles'
    controller: 'Admin::Searchprofiles'
-   rule: '/portal/:view/admin/searchprofiles/id/:searchprofileid'
+   rule: '/portal/:view/admin/searchprofiles/id/#searchprofileid'
    method: 'GET'
    action: 'show_record'
 
@@ -2309,13 +2300,13 @@
 - # admin_loc/sessions_loc: Record show
    scope: 'admin_sessions'
    controller: 'Admin::Sessions'
-   rule: '/portal/:view/admin/sessions/active/id/:sessionid'
+   rule: '/portal/:view/admin/sessions/active/id/#sessionid'
    method: 'GET'
    action: 'show_active_record'
 - # admin_loc/sessions_loc: Record show
    scope: 'admin_sessions'
    controller: 'Admin::Sessions'
-   rule: '/portal/:view/admin/sessions/archived/id/:sessionid'
+   rule: '/portal/:view/admin/sessions/archived/id/#sessionid'
    method: 'GET'
    action: 'show_archived_record'
 
@@ -2335,13 +2326,13 @@
 - # admin_loc/statistics_loc: Record show
    scope: 'admin_statistics'
    controller: 'Admin::Statistics'
-   rule: '/portal/:view/admin/statistics/id/:statisticsid'
+   rule: '/portal/:view/admin/statistics/id/#statisticsid'
    method: 'GET'
    action: 'show_statistics'
 - # admin_loc/statistics_loc: Record show
    scope: 'admin_statistics'
    controller: 'Admin::Statistics'
-   rule: '/portal/:view/admin/statistics/id/:statisticsid/subid/:statisticsid2'
+   rule: '/portal/:view/admin/statistics/id/:statisticsid/subid/#statisticsid2'
    method: 'GET'
    action: 'show_statistics'
 - # admin_loc/statistics_loc: Record show
@@ -2371,7 +2362,7 @@
       admin_loc: 'roles'
 - # admin_loc/roles_loc: Record show
    controller: 'Roles'
-   rule: '/portal/:view/roles/id/:roleid'
+   rule: '/portal/:view/roles/id/#roleid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -2390,7 +2381,7 @@
 - # admin_loc/roles_loc: Record show
    scope: 'admin_roles'
    controller: 'Admin::Roles'
-   rule: '/portal/:view/admin/roles/id/:roleid'
+   rule: '/portal/:view/admin/roles/id/#roleid'
    method: 'GET'
    action: 'show_record'
 - # admin_loc/roles_loc: Record show form
@@ -2411,19 +2402,19 @@
 - # admin_loc/roles_loc: Update Record
    scope: 'admin_roles'
    controller: 'Admin::Roles'
-   rule: '/portal/:view/roles/id/:roleid'
+   rule: '/portal/:view/roles/id/#roleid'
    method: 'POST'
    action: 'update_record'
 - # admin_loc/roles_loc: Update Record
    scope: 'admin_roles'
    controller: 'Admin::Roles'
-   rule: '/portal/:view/roles/id/:roleid'
+   rule: '/portal/:view/roles/id/#roleid'
    method: 'PUT'
    action: 'update_record'
 - # admin_loc/roles_loc: Delete Record
    scope: 'admin_roles'
    controller: 'Admin::Roles'
-   rule: '/portal/:view/roles/id/:roleid'
+   rule: '/portal/:view/roles/id/#roleid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -2450,13 +2441,13 @@
 - # admin_loc/views_loc: Record show
    scope: 'viewadmin_views'
    controller: 'ViewAdmin::Views'
-   rule: '/portal/:view/viewadmin/views/id/:viewid'
+   rule: '/portal/:view/viewadmin/views/id/#viewid'
    method: 'GET'
    action: 'show_record'
 - # admin_loc/views_loc: Record show
    scope: 'viewadmin_views'
    controller: 'Viewadmin::Views'
-   rule: '/portal/:view/viewadmin/views/id/:viewid'
+   rule: '/portal/:view/viewadmin/views/id/#viewid'
    method: 'GET'
    action: 'show_record'
 - # admin_loc/views_loc: Record show form
@@ -2471,13 +2462,13 @@
 - # admin_loc/views_loc: Update Record
    scope: 'viewadmin_views'
    controller: 'Viewadmin::Views'
-   rule: '/portal/:view/viewadviews/id/:viewid'
+   rule: '/portal/:view/viewadviews/id/#viewid'
    method: 'POST'
    action: 'update_record'
 - # admin_loc/views_loc: Update Record
    scope: 'viewadmin_views'
    controller: 'Viewadmin::Views'
-   rule: '/portal/:view/viewadmin/views/id/:viewid'
+   rule: '/portal/:view/viewadmin/views/id/#viewid'
    method: 'PUT'
    action: 'update_record'
 
@@ -2498,7 +2489,7 @@
 - # admin_loc/roles_loc: Record show
    scope: 'viewadmin_roles'
    controller: 'Viewadmin::Roles'
-   rule: '/portal/:view/viewadmin/roles/id/:roleid'
+   rule: '/portal/:view/viewadmin/roles/id/#roleid'
    method: 'GET'
    action: 'show_record'
 - # admin_loc/roles_loc: Record show form
@@ -2519,19 +2510,19 @@
 - # admin_loc/roles_loc: Update Record
    scope: 'viewadmin_roles'
    controller: 'Viewadmin::Roles'
-   rule: '/portal/:view/viewadmin/roles/id/:roleid'
+   rule: '/portal/:view/viewadmin/roles/id/#roleid'
    method: 'POST'
    action: 'update_record'
 - # admin_loc/roles_loc: Update Record
    scope: 'viewadmin_roles'
    controller: 'Viewadmin::Roles'
-   rule: '/portal/:view/viewadmin/roles/id/:roleid'
+   rule: '/portal/:view/viewadmin/roles/id/#roleid'
    method: 'PUT'
    action: 'update_record'
 - # admin_loc/roles_loc: Delete Record
    scope: 'viewadmin_roles'
    controller: 'Viewadmin::Roles'
-   rule: '/portal/:view/viewadmin/roles/id/:roleid'
+   rule: '/portal/:view/viewadmin/roles/id/#roleid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -2574,7 +2565,7 @@
 - # viewadmin users:
    scope: 'viewadmin_users'
    controller: 'Viewadmin::Users'
-   rule: '/portal/:view/viewadmin/users/id/:userid'
+   rule: '/portal/:view/viewadmin/users/id/#userid'
    method: 'GET'
    action: 'show_record'
 - # viewadmin users:
@@ -2589,7 +2580,7 @@
 - # viewadmin users: Update
    scope: 'viewadmin_users'
    controller: 'Viewadmin::Users'
-   rule: '/portal/:view/viewadmin/users/id/:userid'
+   rule: '/portal/:view/viewadmin/users/id/#userid'
    method: 'POST'
    action: 'update_record'
 - # users_loc/roles_loc: Update
@@ -2700,7 +2691,7 @@
    action: 'show_collection'
 - # Resource: authenticators_loc Record show
    controller: 'Authenticators'
-   rule: '/portal/:view/authenticators/id/:authenticatorid'
+   rule: '/portal/:view/authenticators/id/#authenticatorid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -2719,7 +2710,7 @@
 - # Repraesentation: admin_loc/authenticators_loc
    scope: 'admin_authenticators'
    controller: 'Admin::Authenticators'
-   rule: '/portal/:view/admin/authenticators/id/:authenticatorid'
+   rule: '/portal/:view/admin/authenticators/id/#authenticatorid'
    method: 'GET'
    action: 'show_record'
 - # Repraesentation: admin_loc/authenticators_loc: Record show form
@@ -2740,19 +2731,19 @@
 - # Resource: authenticators_loc: Update Record
    scope: 'admin_authenticators'
    controller: 'Admin::Authenticators'
-   rule: '/portal/:view/authenticators/id/:authenticatorid'
+   rule: '/portal/:view/authenticators/id/#authenticatorid'
    method: 'POST'
    action: 'update_record'
 - # Resource: authenticators_loc: Update Record
    scope: 'admin_authenticators'
    controller: 'Admin::Authenticators'
-   rule: '/portal/:view/authenticators/id/:authenticatorid'
+   rule: '/portal/:view/authenticators/id/#authenticatorid'
    method: 'PUT'
    action: 'update_record'
 - # Resource: authenticators_loc: Delete Record
    scope: 'admin_authenticators'
    controller: 'Admin::Authenticators'
-   rule: '/portal/:view/authenticators/id/:authenticatorid'
+   rule: '/portal/:view/authenticators/id/#authenticatorid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -2772,7 +2763,7 @@
       admin_loc: 'topics'
 - # admin_loc/topics_loc: Record show
    controller: 'Topics'
-   rule: '/portal/:view/topics/id/:topicid'
+   rule: '/portal/:view/topics/id/#topicid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -2791,7 +2782,7 @@
 - # admin_loc/topics_loc: Record show
    scope: 'admin_topics'
    controller: 'Admin::Topics'
-   rule: '/portal/:view/admin/topics/id/:topicid'
+   rule: '/portal/:view/admin/topics/id/#topicid'
    method: 'GET'
    action: 'show_record'
 - # admin_loc/topics_loc: Record show form
@@ -2812,19 +2803,19 @@
 - # admin_loc/topics_loc: Update Record
    scope: 'admin_topics'
    controller: 'Admin::Topics'
-   rule: '/portal/:view/topics/id/:topicid'
+   rule: '/portal/:view/topics/id/#topicid'
    method: 'POST'
    action: 'update_record'
 - # admin_loc/topics_loc: Update Record
    scope: 'admin_topics'
    controller: 'Admin::Topics'
-   rule: '/portal/:view/topics/id/:topicid'
+   rule: '/portal/:view/topics/id/#topicid'
    method: 'PUT'
    action: 'update_record'
 - # admin_loc/topics_loc: Delete Record
    scope: 'admin_topics'
    controller: 'Admin::Topics'
-   rule: '/portal/:view/topics/id/:topicid'
+   rule: '/portal/:view/topics/id/#topicid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -2844,7 +2835,7 @@
       admin_loc: 'topics'
 - # admin_loc/topics_loc: Record show
    controller: 'Topics::Mappings'
-   rule: '/portal/:view/topics/id/:topicid/mappings/id/:mappingid'
+   rule: '/portal/:view/topics/id/:topicid/mappings/id/#mappingid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -2863,19 +2854,19 @@
 - # admin_loc/topics_loc: Record show
    scope: 'admin_topics'
    controller: 'Admin::Topics::Mappings'
-   rule: '/portal/:view/admin/topics/id/:topicid/mappings/id/:mappingid'
+   rule: '/portal/:view/admin/topics/id/:topicid/mappings/id/#mappingid'
    method: 'GET'
    action: 'show_record'
 - # admin_loc/topics_loc: Update Record
    scope: 'admin_topics'
    controller: 'Admin::Topics::Mappings'
-   rule: '/portal/:view/topics/id/:topicid/mappings/id/:mappingid'
+   rule: '/portal/:view/topics/id/:topicid/mappings/id/#mappingid'
    method: 'POST'
    action: 'update_record'
 - # admin_loc/topics_loc: Update Record
    scope: 'admin_topics'
    controller: 'Admin::Topics::Mappings'
-   rule: '/portal/:view/topics/id/:topicid/mappings/id/:mappingid'
+   rule: '/portal/:view/topics/id/:topicid/mappings/id/#mappingid'
    method: 'PUT'
    action: 'update_record'
  
@@ -2888,7 +2879,7 @@
 # Persons-Resource/Repraesentation
 - # users_loc/persons_loc: Record show
    controller: 'Persons'
-   rule: '/portal/:view/databases/id/:database/persons/id/:personid'
+   rule: '/portal/:view/databases/id/:database/persons/id/#personid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -2906,7 +2897,7 @@
      'restrict_db_to_view': 1
 - # users/persons_loc:
    controller: 'Persons'
-   rule: '/portal/:view/users/id/:id/databases/id/:database/persons/id/:personid'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/persons/id/#personid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -2940,21 +2931,21 @@
      'restrict_db_to_view': 1
 - # users_loc/persons_loc: Update Record TODO
    controller: 'Persons'
-   rule: '/portal/:view/databases/id/:database/persons/id/:personid'
+   rule: '/portal/:view/databases/id/:database/persons/id/#personid'
    method: 'POST'
    action: 'update_record'
    args:
      'restrict_db_to_view': 1
 - # users_loc/persons_loc: Update Record TODO
    controller: 'Persons'
-   rule: '/portal/:view/databases/id/:database/persons/id/:personid'
+   rule: '/portal/:view/databases/id/:database/persons/id/#personid'
    method: 'PUT'
    action: 'update_record'
    args:
      'restrict_db_to_view': 1
 - # users_loc/persons_loc: Delete Record TODO
    controller: 'Persons'
-   rule: '/portal/:view/databases/id/:database/persons/id/:personid'
+   rule: '/portal/:view/databases/id/:database/persons/id/#personid'
    method: 'DELETE'
    action: 'delete_record'
    args:
@@ -2964,7 +2955,7 @@
 # Corporatebodies-Resource/Repraesentation
 - # users_loc/corporatebodies_loc: Record show
    controller: 'CorporateBodies'
-   rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid'
+   rule: '/portal/:view/databases/id/:database/corporatebodies/id/#corporatebodyid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -2982,7 +2973,7 @@
      'restrict_db_to_view': 1
 - # users/corporatebodies_loc:
    controller: 'CorporateBodies'
-   rule: '/portal/:view/users/id/:id/databases/id/:database/corporatebodies/id/:corporatebodyid'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/corporatebodies/id/#corporatebodyid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -3016,21 +3007,21 @@
      'restrict_db_to_view': 1
 - # users_loc/corporatebodies_loc: Update Record TODO
    controller: 'CorporateBodies'
-   rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid'
+   rule: '/portal/:view/databases/id/:database/corporatebodies/id/#corporatebodyid'
    method: 'POST'
    action: 'update_record'
    args:
      'restrict_db_to_view': 1
 - # users_loc/corporatebodies_loc: Update Record TODO
    controller: 'CorporateBodies'
-   rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid'
+   rule: '/portal/:view/databases/id/:database/corporatebodies/id/#corporatebodyid'
    method: 'PUT'
    action: 'update_record'
    args:
      'restrict_db_to_view': 1
 - # users_loc/corporatebodies_loc: Delete Record TODO
    controller: 'CorporateBodies'
-   rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid'
+   rule: '/portal/:view/databases/id/:database/corporatebodies/id/#corporatebodyid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -3051,7 +3042,7 @@
      'restrict_db_to_view': 1
 - # users_loc/subjects_loc: Record show
    controller: 'Subjects'
-   rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid'
+   rule: '/portal/:view/databases/id/:database/subjects/id/#subjectid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -3069,7 +3060,7 @@
      'restrict_db_to_view': 1
 - # users/subjects_loc:
    controller: 'Subjects'
-   rule: '/portal/:view/users/id/:id/databases/id/:database/subjects/id/:subjectid'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/subjects/id/#subjectid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -3103,21 +3094,21 @@
      'restrict_db_to_view': 1
 - # users_loc/subjects_loc: Update Record TODO
    controller: 'Subjects'
-   rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid'
+   rule: '/portal/:view/databases/id/:database/subjects/id/#subjectid'
    method: 'POST'
    action: 'update_record'
    args:
      'restrict_db_to_view': 1
 - # users_loc/subjects_loc: Update Record TODO
    controller: 'Subjects'
-   rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid'
+   rule: '/portal/:view/databases/id/:database/subjects/id/#subjectid'
    method: 'PUT'
    action: 'update_record'
    args:
      'restrict_db_to_view': 1
 - # users_loc/subjects_loc: Delete Record TODO
    controller: 'Subjects'
-   rule: '/portal/:view/databases/id/:database/subjects/id/:subjectid'
+   rule: '/portal/:view/databases/id/:database/subjects/id/#subjectid'
    method: 'DELETE'
    action: 'delete_record'
    args:
@@ -3140,7 +3131,7 @@
      'restrict_db_to_view': 1
 - # users_loc/classifications_loc: Record show
    controller: 'Classifications'
-   rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid'
+   rule: '/portal/:view/databases/id/:database/classifications/id/#classificationid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -3158,7 +3149,7 @@
      'restrict_db_to_view': 1
 - # users/classifications_loc:
    controller: 'Classifications'
-   rule: '/portal/:view/users/id/:id/databases/id/:database/classifications/id/:classificationid'
+   rule: '/portal/:view/users/id/:id/databases/id/:database/classifications/id/#classificationid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -3192,21 +3183,21 @@
      'restrict_db_to_view': 1
 - # users_loc/classifications_loc: Update Record TODO
    controller: 'Classifications'
-   rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid'
+   rule: '/portal/:view/databases/id/:database/classifications/id/#classificationid'
    method: 'POST'
    action: 'update_record'
    args:
      'restrict_db_to_view': 1
 - # users_loc/classifications_loc: Update Record TODO
    controller: 'Classifications'
-   rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid'
+   rule: '/portal/:view/databases/id/:database/classifications/id/#classificationid'
    method: 'PUT'
    action: 'update_record'
    args:
      'restrict_db_to_view': 1
 - # users_loc/classifications_loc: Delete Record TODO
    controller: 'Classifications'
-   rule: '/portal/:view/databases/id/:database/classifications/id/:classificationid'
+   rule: '/portal/:view/databases/id/:database/classifications/id/#classificationid'
    method: 'DELETE'
    action: 'delete_record'
    args:
@@ -3269,7 +3260,7 @@
       users_loc: 'cartitems'
 - # users_loc/cartitems_loc: Record show
    controller: 'CartItems'
-   rule: '/portal/:view/cartitems/id/:itemid'
+   rule: '/portal/:view/cartitems/id/#itemid'
    method: 'GET'
    action: 'show_record'
    args:
@@ -3319,7 +3310,7 @@
      - html
 - # users_loc/cartitems_loc: Record show
    controller: 'Users::CartItems'
-   rule: '/portal/:view/users/id/:id/cartitems/id/:itemid'
+   rule: '/portal/:view/users/id/:id/cartitems/id/#itemid'
    method: 'GET'
    action: 'show_record'
 - # users_loc/cartitems_loc: Record show form
@@ -3350,34 +3341,34 @@
    action: 'mail_collection_send'
 - # users_loc/cartitems_loc: Update Record
    controller: 'CartItems'
-   rule: '/portal/:view/cartitems/id/:itemid'
+   rule: '/portal/:view/cartitems/id/#itemid'
    method: 'POST'
    action: 'update_record'
 - # users_loc/cartitems_loc: Update Record
    controller: 'CartItems'
-   rule: '/portal/:view/cartitems/id/:itemid'
+   rule: '/portal/:view/cartitems/id/#itemid'
    method: 'PUT'
    action: 'update_record'
 - # users_loc/cartitems_loc: Update Record
    controller: 'Users::CartItems'
-   rule: '/portal/:view/users/id/:userid/cartitems/id/:itemid'
+   rule: '/portal/:view/users/id/:userid/cartitems/id/#itemid'
    method: 'POST'
    action: 'update_record'
 - # users_loc/cartitems_loc: Update Record
    controller: 'Users::CartItems'
-   rule: '/portal/:view/users/id/:userid/cartitems/id/:itemid'
+   rule: '/portal/:view/users/id/:userid/cartitems/id/#itemid'
    method: 'PUT'
    action: 'update_record'
 - # users_loc/cartitems_loc: Delete Record
    controller: 'CartItems'
-   rule: '/portal/:view/cartitems/id/:itemid'
+   rule: '/portal/:view/cartitems/id/#itemid'
    method: 'DELETE'
    action: 'delete_record'
    args:
       users_loc: 'cartitems'
 - # users_loc/cartitems_loc: Delete Record
    controller: 'Users::CartItems'
-   rule: '/portal/:view/users/id/:userid/cartitems/id/:itemid'
+   rule: '/portal/:view/users/id/:userid/cartitems/id/#itemid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -3419,7 +3410,7 @@
      - rdf
 - # users_loc/searchprofiles_loc: Record show
    controller: 'Users::Searchprofiles'
-   rule: '/portal/:view/users/id/:userid/searchprofiles/id/:searchprofileid'
+   rule: '/portal/:view/users/id/:userid/searchprofiles/id/#searchprofileid'
    method: 'GET'
    action: 'show_record'
 - # users_loc/searchprofiles_loc: Record show form
@@ -3437,17 +3428,17 @@
    action: 'create_record'
 - # users_loc/searchprofiles_loc: Update Record
    controller: 'Users::Searchprofiles'
-   rule: '/portal/:view/users/id/:userid/searchprofiles/id/:searchprofileid'
+   rule: '/portal/:view/users/id/:userid/searchprofiles/id/#searchprofileid'
    method: 'POST'
    action: 'update_record'
 - # users_loc/searchprofiles_loc: Update Record
    controller: 'Users::Searchprofiles'
-   rule: '/portal/:view/users/id/:userid/searchprofiles/id/:searchprofileid'
+   rule: '/portal/:view/users/id/:userid/searchprofiles/id/#searchprofileid'
    method: 'PUT'
    action: 'update_record'
 - # users_loc/searchprofiles_loc: Delete Record
    controller: 'Users::Searchprofiles'
-   rule: '/portal/:view/users/id/:userid/searchprofiles/id/:searchprofileid'
+   rule: '/portal/:view/users/id/:userid/searchprofiles/id/#searchprofileid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -3716,7 +3707,7 @@
 
 - # users/circulations_loc: Resource-Finder-URL
    controller: 'Users::Circulations::Mail'
-   rule: '/portal/:view/users/me/circulations/id/mail/:mailtype'
+   rule: '/portal/:view/users/me/circulations/id/mail/#mailtype'
    method: 'GET'
    action: 'dispatch_to_user'
    args:
@@ -3724,7 +3715,7 @@
 
 - # users/circulations_loc:
    controller: 'Users::Circulations::Mail'
-   rule: '/portal/:view/users/id/:userid/circulations/id/mail/:mailtype'
+   rule: '/portal/:view/users/id/:userid/circulations/id/mail/#mailtype'
    method: 'GET'
    action: 'show_form'
    representations:
@@ -3732,7 +3723,7 @@
      - html
 - # users/circulations_loc:
    controller: 'Users::Circulations::Mail'
-   rule: '/portal/:view/users/id/:userid/circulations/id/mail/:mailtype'
+   rule: '/portal/:view/users/id/:userid/circulations/id/mail/#mailtype'
    method: 'POST'
    action: 'mail_form'
 - # users/circulations_loc:
@@ -3844,7 +3835,7 @@
 - # admin users:
    scope: 'admin_users'
    controller: 'Admin::Users'
-   rule: '/portal/:view/admin/users/id/:userid'
+   rule: '/portal/:view/admin/users/id/#userid'
    method: 'GET'
    action: 'show_record'
 - # admin users:
@@ -3859,19 +3850,19 @@
 - # admin users:
    scope: 'admin_users'
    controller: 'Admin::Users'
-   rule: '/portal/:view/admin/users/id/:userid'
+   rule: '/portal/:view/admin/users/id/#userid'
    method: 'PUT'
    action: 'update_record'
 - # admin users:
    scope: 'admin_users'
    controller: 'Admin::Users'
-   rule: '/portal/:view/admin/users/id/:userid'
+   rule: '/portal/:view/admin/users/id/#userid'
    method: 'POST'
    action: 'update_record'
 - # admin users:
    scope: 'admin_users'
    controller: 'Admin::Users'
-   rule: '/portal/:view/admin/users/id/:userid'
+   rule: '/portal/:view/admin/users/id/#userid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -3946,7 +3937,7 @@
 # User (Account)-Resource/Repraesentation
 - # users_loc: Update
    controller: 'Users'
-   rule: '/portal/:view/users/id/:userid'
+   rule: '/portal/:view/users/id/#userid'
    method: 'GET'
    action: 'show_record'
 - # users_loc: Update
@@ -3964,17 +3955,17 @@
    action: 'create_record'
 - # users_loc: Update
    controller: 'Users'
-   rule: '/portal/:view/users/id/:userid'
+   rule: '/portal/:view/users/id/#userid'
    method: 'POST'
    action: 'update_record'
 - # users_loc: Update
    controller: 'Users'
-   rule: '/portal/:view/users/id/:userid'
+   rule: '/portal/:view/users/id/#userid'
    method: 'PUT'
    action: 'update_record'
 - # users_loc: Update
    controller: 'Users'
-   rule: '/portal/:view/users/id/:userid'
+   rule: '/portal/:view/users/id/#userid'
    method: 'DELETE'
    action: 'delete_record'
 
@@ -4048,12 +4039,12 @@
      'restrict_db_to_view': 1
 - # users_loc/clouds_loc: Record show
    controller: 'Clouds'
-   rule: '/portal/:view/clouds/id/:cloudid'
+   rule: '/portal/:view/clouds/id/#cloudid'
    method: 'GET'
    action: 'show_record'
 - # users_loc/clouds_loc: Record show
    controller: 'Clouds'
-   rule: '/portal/:view/databases/id/:database/clouds/id/:cloudid'
+   rule: '/portal/:view/databases/id/:database/clouds/id/#cloudid'
    method: 'GET'
    action: 'show_record'
    args:

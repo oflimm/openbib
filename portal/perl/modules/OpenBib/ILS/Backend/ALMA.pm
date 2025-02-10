@@ -2696,7 +2696,7 @@ sub send_alma_api_call {
 	    $api_result_ref->{'response'} = {
 		"code" => $api_result_ref->{'http_status_code'},
 		    "error" => "error",
-		    "error_description" => $msg->maketext("Ihre Anfrage konnte nicht bearbeitet werden, da das Cloud-Bibliothekssystem Alma derzeit zu langsam antwortet und der Timeout von 30 Sekunden erreicht wurde."),
+		    "error_description" => $msg->maketext("Ihre Anfrage konnte nicht bearbeitet werden, da das Cloud-Bibliothekssystem Alma derzeit zu langsam antwortet und der Timeout erreicht wurde."),
 	    };
 	    
 	    return $api_result_ref;

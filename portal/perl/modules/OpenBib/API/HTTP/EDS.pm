@@ -148,11 +148,24 @@ sub send_retrieve_request {
     if ($logger->is_debug()){
 	$logger->debug("Request URL: $url");
     }
-    
+
+    my $threshold_starttime=new Benchmark;
+
     my $request = HTTP::Request->new('GET' => $url);
     $request->content_type('application/json');
     
     my $response = $ua->request($request);
+
+    my $threshold_endtime      = new Benchmark;
+    my $threshold_timeall    = timediff($threshold_endtime,$threshold_starttime);
+    my $threshold_resulttime = timestr($threshold_timeall,"nop");
+    $threshold_resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $threshold_resulttime = $threshold_resulttime * 1000.0; # to ms
+    
+    if (defined $config->get('eds')->{'api_logging_threshold'} && $threshold_resulttime > $config->get('eds')->{'api_logging_threshold'}){
+	$url =~s/\?.+$//; # Don't log args
+	$logger->error("EDS API call $url took $threshold_resulttime ms");
+    }
 
     if ($logger->is_debug){
 	$logger->debug("Response: ".$response->content);
@@ -262,15 +275,23 @@ sub send_search_request {
 	$logger->debug("Request URL: $url");
     }
 
-    if ($config->{benchmark}) {
-        $atime=new Benchmark;
-    }
-    
+    my $threshold_starttime=new Benchmark;
+
     my $request = HTTP::Request->new('GET' => $url);
     $request->content_type('application/json');
     
     my $response = $ua->request($request);
 
+    my $threshold_endtime      = new Benchmark;
+    my $threshold_timeall    = timediff($threshold_endtime,$threshold_starttime);
+    my $threshold_resulttime = timestr($threshold_timeall,"nop");
+    $threshold_resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $threshold_resulttime = $threshold_resulttime * 1000.0; # to ms
+    
+    if (defined $config->get('eds')->{'api_logging_threshold'} && $threshold_resulttime > $config->get('eds')->{'api_logging_threshold'}){
+	$url =~s/\?.+$//; # Don't log args
+	$logger->error("EDS API call $url took $threshold_resulttime ms");
+    }
   
     if ($config->{benchmark}) {
 	my $stime        = new Benchmark;

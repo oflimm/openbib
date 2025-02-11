@@ -270,11 +270,7 @@ sub _run_app {
 
     my $config  = OpenBib::Config::File->instance;
 
-    my $atime;
-    
-    if ($config->{benchmark}) {
-        $atime=new Benchmark;
-    }
+    my $threshold_starttime=new Benchmark;
     
     if($DEBUG) {
         require Data::Dumper;
@@ -315,15 +311,16 @@ sub _run_app {
         $psgi = $app->run_as_psgi;
     };
 
-    if ($config->{benchmark}){
-        my $btime      = new Benchmark;
-        my $timeall    = timediff($btime,$atime);
-        my $resulttime = timestr($timeall,"nop");
-        $resulttime    =~s/(\d+\.\d+) .*/$1/;
-        
-        $logger->info("Processing runmode $rm in module $module took $resulttime seconds");
+    my $threshold_endtime      = new Benchmark;
+    my $threshold_timeall    = timediff($threshold_endtime,$threshold_starttime);
+    my $threshold_resulttime = timestr($threshold_timeall,"nop");
+    $threshold_resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $threshold_resulttime = $threshold_resulttime * 1000.0; # to ms
+    
+    if (defined $config->{'runmode_logging_threshold'} && $threshold_resulttime > $config->{'runmode_logging_threshold'}){
+        $logger->error("Processing runmode $rm in module $module took $threshold_resulttime ms");
     }
-
+    
     # App threw an HTTP::Exception? Cool. Bubble it up.
     my $e;
     if ($e = HTTP::Exception->caught) {

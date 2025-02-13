@@ -259,7 +259,8 @@ CREATE TABLE sessioninfo (
  username       TEXT,
 
  viewname       TEXT,
-
+ network        CIDR,
+ 
  queryoptions   TEXT,
 
  searchform     TEXT,
@@ -729,4 +730,14 @@ CREATE TABLE classificationshierarchy (
   name                TEXT,
   number              INT,
   subname             TEXT
+);
+
+DROP TABLE IF EXISTS networkinfo;
+
+CREATE TABLE networkinfo (
+    id BIGSERIAL,
+    network CIDR NOT NULL,
+    country TEXT,
+    continent TEXT,
+    is_eu INT
 );

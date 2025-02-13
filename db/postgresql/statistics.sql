@@ -17,10 +17,12 @@ CREATE TABLE sessioninfo (
  sessionid     VARCHAR(70),
  createtime    TIMESTAMP,
 
+ viewname       TEXT,
+ network        CIDR,
+
  createtime_year   SMALLINT,
  createtime_month  SMALLINT,
- createtime_day    SMALLINT,
- viewname TEXT
+ createtime_day    SMALLINT
 );
 
 drop table IF EXISTS titleusage;
@@ -126,3 +128,12 @@ CREATE TABLE loans (
  titleid       TEXT	
 ) PARTITION BY RANGE (tstamp);
 
+DROP TABLE IF EXISTS networkinfo;
+
+CREATE TABLE networkinfo (
+    id BIGSERIAL,
+    network CIDR NOT NULL,
+    country TEXT,
+    continent TEXT,
+    is_eu INT
+);

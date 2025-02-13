@@ -205,6 +205,8 @@ sub _init_new_session {
 	    $network = $networkinfo->get_column('network');
 	}
     }
+
+    $logger->info("No networkinfo for IP $remote_ip") unless (defined $network);
     
     while ($havenewsessionID == 0) {
         my $gmtime = localtime(time);

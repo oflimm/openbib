@@ -106,7 +106,7 @@ sub new {
     }
 
     if (!defined $sessionID || !$sessionID){
-        $self->_init_new_session();
+        $self->_init_new_session($remote_ip);
 	if ($config->{benchmark}) {
 	    $btime=new Benchmark;
 	    $timeall=timediff($btime,$atime);

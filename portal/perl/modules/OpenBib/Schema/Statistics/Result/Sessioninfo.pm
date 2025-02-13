@@ -46,11 +46,6 @@ __PACKAGE__->table("sessioninfo");
   data_type: 'text'
   is_nullable: 1
 
-=head2 network
-
-  data_type: 'cidr'
-  is_nullable: 1
-
 =head2 createtime_year
 
   data_type: 'smallint'
@@ -64,6 +59,11 @@ __PACKAGE__->table("sessioninfo");
 =head2 createtime_day
 
   data_type: 'smallint'
+  is_nullable: 1
+
+=head2 network
+
+  data_type: 'cidr'
   is_nullable: 1
 
 =cut
@@ -82,14 +82,14 @@ __PACKAGE__->add_columns(
   { data_type => "timestamp", is_nullable => 1 },
   "viewname",
   { data_type => "text", is_nullable => 1 },
-  "network",
-  { data_type => "cidr", is_nullable => 1 },
   "createtime_year",
   { data_type => "smallint", is_nullable => 1 },
   "createtime_month",
   { data_type => "smallint", is_nullable => 1 },
   "createtime_day",
   { data_type => "smallint", is_nullable => 1 },
+  "network",
+  { data_type => "cidr", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -105,8 +105,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07051 @ 2025-02-13 13:38:33
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pp/u0yutb+WOhNRxhZ++vg
+# Created by DBIx::Class::Schema::Loader v0.07051 @ 2025-02-13 15:16:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Wf8+IeEqIP5sHmOwXRSI/g
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

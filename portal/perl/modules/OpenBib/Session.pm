@@ -1286,15 +1286,28 @@ sub save_eventlog_to_statisticsdb {
         {
             sessionid => $self->{ID},
         }
-    )->single;
+    )->first;
+
+    next unless ($sessioninfo);
+
+    my $createtime = $sessioninfo->get_column('createtime');
+    my $viewname   = $sessioninfo->get_column('viewname');
+    my $network    = $sessioninfo->get_column('network');
 
     $logger->debug("Create new session in statistics db");
 
-    my $new_sid = $statistics->create_session({
+    my $system_sessioninfo_ref = {
         sessionid  => $self->{ID},
-        createtime => $sessioninfo->createtime,
-        viewname   => $view,
-    });
+        createtime => $createtime,
+        network    => $network,
+        viewname   => $viewname,
+    };
+
+    if ($logger->is_debug){	
+       $logger->debug("Old Sessioninfo: ".YAML::Dump($system_sessioninfo_ref));
+    }
+
+    my $new_sid = $statistics->create_session($system_sessioninfo_ref);
     
     $logger->debug("Copy default events from active session to new session in statistics db");
 

@@ -31,6 +31,189 @@
 </table>
 </div>
 
+<h3>[% msg.maketext("Aktive Sessions") %]</h3>
+
+<h4>[% msg.maketext("Nache Views") %]</h4>
+[%
+
+   funcargs = { id => 'active_sessions', type => 24 } ;
+   resultlist = config.get_datacache(funcargs);
+
+#   USE dumper;dumper.dump(resultlist);
+
+   sessions_by_view = resultlist.sessions_by_view;
+   
+   x_axis = [];
+   y_axis = [];
+
+   FOREACH thisview IN sessions_by_view ;
+      x_axis.push("'${thisview.view}'");
+      y_axis.push(thisview.count);
+   END;
+%]
+
+<div style="max-width:800px;">
+
+<canvas id="ob-session_by_viewChart"></canvas>
+
+<script>
+var type_ctx_session_by_view = document.getElementById('ob-session_by_viewChart');
+var typeChart_session_by_view = new Chart(type_ctx_session_by_view, {
+    type: 'bar',
+    label: '[% msg.maketext("Aktive Sessions nach View") %]',
+    data: {    
+        labels: [[% x_axis.join(',') %]],
+        datasets: [{
+            label: 'Zahl der Sessions',
+            data: [[% y_axis.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+            BarThickness: 8,
+        }],
+    },
+    options: {
+        legend: {
+           display: false
+        },
+    }
+});
+</script>
+
+</div>
+
+<h4>[% msg.maketext("Nach L&auml;ndern") %]</h4>
+[%
+
+   sessions_by_country = resultlist.sessions_by_country;
+   
+   x_axis = [];
+   y_axis = [];
+
+   FOREACH thiscountry IN sessions_by_country ;
+      x_axis.push("'${thiscountry.country}'");
+      y_axis.push(thiscountry.count);
+   END;
+%]
+
+<div style="max-width:800px;">
+
+<canvas id="ob-session_by_countryChart"></canvas>
+
+<script>
+var type_ctx_session_by_country = document.getElementById('ob-session_by_countryChart');
+var typeChart_session_by_country = new Chart(type_ctx_session_by_country, {
+    type: 'bar',
+    label: '[% msg.maketext("Aktive Sessions nach Country") %]',
+    data: {    
+        labels: [[% x_axis.join(',') %]],
+        datasets: [{
+            label: 'Zahl der Sessions',
+            data: [[% y_axis.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+            BarThickness: 8,
+        }],
+    },
+    options: {
+        legend: {
+           display: false
+        },
+    }
+});
+</script>
+
+</div>
+
+<h4>[% msg.maketext("Nach St&auml;dten weltweit") %]</h4>
+[%
+
+   sessions_by_city = resultlist.sessions_by_city;
+   
+   x_axis = [];
+   y_axis = [];
+
+   FOREACH thiscity IN sessions_by_city ;
+      x_axis.push("'${thiscity.city}'");
+      y_axis.push(thiscity.count);
+   END;
+%]
+
+<div style="max-width:800px;">
+
+<canvas id="ob-session_by_cityChart"></canvas>
+
+<script>
+var type_ctx_session_by_city = document.getElementById('ob-session_by_cityChart');
+var typeChart_session_by_city = new Chart(type_ctx_session_by_city, {
+    type: 'bar',
+    label: '[% msg.maketext("Aktive Sessions nach Stadt") %]',
+    data: {    
+        labels: [[% x_axis.join(',') %]],
+        datasets: [{
+            label: 'Zahl der Sessions',
+            data: [[% y_axis.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+            BarThickness: 8,
+        }],
+    },
+    options: {
+        legend: {
+           display: false
+        },
+    }
+});
+</script>
+
+</div>
+
+<h4>[% msg.maketext("Nach deutschen St&auml;dten") %]</h4>
+[%
+
+   sessions_by_city_de = resultlist.sessions_by_city_de
+   
+   x_axis = [];
+   y_axis = [];
+
+   FOREACH thiscity IN sessions_by_city_de ;
+      x_axis.push("'${thiscity.city}'");
+      y_axis.push(thiscity.count);
+   END;
+%]
+
+<div style="max-width:800px;">
+
+<canvas id="ob-session_by_city_deChart"></canvas>
+
+<script>
+var type_ctx_session_by_city_de = document.getElementById('ob-session_by_city_deChart');
+var typeChart_session_by_city_de = new Chart(type_ctx_session_by_city_de, {
+    type: 'bar',
+    label: '[% msg.maketext("Aktive Sessions nach deutscher Stadt") %]',
+    data: {    
+        labels: [[% x_axis.join(',') %]],
+        datasets: [{
+            label: 'Zahl der Sessions',
+            data: [[% y_axis.join(',') %]],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+            BarThickness: 8,
+        }],
+    },
+    options: {
+        legend: {
+           display: false
+        },
+    }
+});
+</script>
+
+</div>
+
 <h3>[% msg.maketext("Zahl der Nutzer pro gegebener Merklistengröße") %]</h3>
 
 <div style="max-width:800px;">

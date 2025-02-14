@@ -1449,7 +1449,7 @@ if ($type == 18){
 	$metrics_ref = $statistics->get_sequencestat_of_event({ type => 100 , subtype => 'daily', content => $view, year => $current_year, month => $current_month, refresh => 1 }) ;
 
         if ($logger->is_debug){
-            $logger->debug("Daily $current_month/$current_year ".YAML::Dump($metrics_ref));
+            $logger->debug("Daily $current_month / $current_year ".YAML::Dump($metrics_ref));
         }
     }
 }
@@ -1502,7 +1502,7 @@ if ($type == 20){
 	$metrics_ref = $statistics->get_sequencestat_of_event({ type => 1 , subtype => 'daily', content => $view, year => $current_year, month => $current_month, refresh => 1 }) ;
 
         if ($logger->is_debug){
-            $logger->debug("Daily $current_month/$current_year ".YAML::Dump($metrics_ref));
+            $logger->debug("Daily $current_month / $current_year ".YAML::Dump($metrics_ref));
         }
     }
 }
@@ -1555,7 +1555,7 @@ if ($type == 22){
 	$metrics_ref = $statistics->get_sequencestat_of_event({ type => 10 , subtype => 'daily', content => $view, year => $current_year, month => $current_month, refresh => 1 }) ;
 
         if ($logger->is_debug){
-            $logger->debug("Daily $current_month/$current_year ".YAML::Dump($metrics_ref));
+            $logger->debug("Daily $current_month / $current_year ".YAML::Dump($metrics_ref));
         }
     }
 }
@@ -1581,6 +1581,63 @@ if ($type == 23){
             $logger->debug("Monthly $last_year ".YAML::Dump($metrics_ref));
         }
     }
+}
+
+# Typ 24 => Aktive Sessions (Top 20 nach Land, nach Stadt, nach View)
+
+if ($type == 24){
+
+   my $metrics_ref = {};
+
+   my $dbh = $config->get_schema->storage->dbh;
+
+   my $request = $dbh->prepare("select ni.country as thiscountry, count(ni.country) as countrycount from networkinfo as ni, sessioninfo as si where ni.network=si.network group by ni.country order by count(ni.country) desc limit 20");
+   $request->execute();
+
+   while (my $result=$request->fetchrow_hashref){
+       push @{$metrics_ref->{sessions_by_country}}, {
+          country => $result->{thiscountry},
+          count   => $result->{countrycount},
+       };
+   }
+
+   $request = $dbh->prepare("select si.viewname as thisview, count(si.viewname) as viewcount from networkinfo as ni, sessioninfo as si where si.network <<= ni.network group by si.viewname order by count(si.viewname) desc limit 20");
+   $request->execute();
+
+   while (my $result=$request->fetchrow_hashref){
+       push @{$metrics_ref->{sessions_by_view}}, {
+          view => $result->{thisview},
+          count   => $result->{viewcount},
+       };
+   }
+
+   $request = $dbh->prepare("select ni.city as thiscity, count(ni.city) as citycount from networkinfo as ni, sessioninfo as si where ni.network=si.network group by ni.city order by count(ni.city) desc");
+   $request->execute();
+
+   while (my $result=$request->fetchrow_hashref){
+       push @{$metrics_ref->{sessions_by_city}}, {
+          city  => $result->{thiscity},
+          count => $result->{citycount},
+       };
+   }
+
+   $request = $dbh->prepare("select ni.city as thiscity, count(ni.city) as citycount from networkinfo as ni, sessioninfo as si where ni.network=si.network and ni.country='DE' group by ni.city order by count(ni.city) desc");
+   $request->execute();
+
+   while (my $result=$request->fetchrow_hashref){
+       push @{$metrics_ref->{sessions_by_city_de}}, {
+          city  => $result->{thiscity},
+          count => $result->{citycount},
+       };
+   }
+
+   $config->set_datacache({
+        type => 24,
+        id   => 'active_sessions',
+        data => $metrics_ref,
+   });
+
+
 }
 
 sub gen_cloud_class {
@@ -1680,6 +1737,7 @@ gen_metrics.pl - Erzeugen und Cachen von Metriken aus Katalog- oder Statistik-Da
   21 => Suchanfragen pro View vergangenes Jahr (monatlich)
   22 => Trefferaufrufe pro View aktuelles Jahr (monatlich, taeglich)
   23 => Trefferaufrufe pro View vergangenes Jahr (monatlich)
+  24 => Aktive Sessions (nach Land, nach Stadt, nach View)
 ENDHELP
     exit;
 }

@@ -40,7 +40,27 @@ __PACKAGE__->table("networkinfo");
   data_type: 'text'
   is_nullable: 1
 
+=head2 country_name
+
+  data_type: 'text'
+  is_nullable: 1
+
 =head2 continent
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 subdivision
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 subsubdivision
+
+  data_type: 'text'
+  is_nullable: 1
+
+=head2 city
 
   data_type: 'text'
   is_nullable: 1
@@ -64,7 +84,15 @@ __PACKAGE__->add_columns(
   { data_type => "cidr", is_nullable => 0 },
   "country",
   { data_type => "text", is_nullable => 1 },
+  "country_name",
+  { data_type => "text", is_nullable => 1 },
   "continent",
+  { data_type => "text", is_nullable => 1 },
+  "subdivision",
+  { data_type => "text", is_nullable => 1 },
+  "subsubdivision",
+  { data_type => "text", is_nullable => 1 },
+  "city",
   { data_type => "text", is_nullable => 1 },
   "is_eu",
   { data_type => "integer", is_nullable => 1 },
@@ -83,8 +111,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07051 @ 2025-02-13 15:16:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:AYA0Idu5kk6Nbd/0V/t9MQ
+# Created by DBIx::Class::Schema::Loader v0.07051 @ 2025-02-14 12:48:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:HRLqBSr3jcbAN+ollh62UA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

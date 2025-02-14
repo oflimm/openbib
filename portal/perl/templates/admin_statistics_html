@@ -33,7 +33,7 @@
 
 <h3>[% msg.maketext("Aktive Sessions") %]</h3>
 
-<h4>[% msg.maketext("Nache Views") %]</h4>
+<h4>[% msg.maketext("Nach Views") %]</h4>
 [%
 
    funcargs = { id => 'active_sessions', type => 24 } ;

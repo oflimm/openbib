@@ -1611,7 +1611,7 @@ if ($type == 24){
        };
    }
 
-   $request = $dbh->prepare("select ni.city as thiscity, count(ni.city) as citycount from networkinfo as ni, sessioninfo as si where ni.network=si.network group by ni.city order by count(ni.city) desc");
+   $request = $dbh->prepare("select ni.city as thiscity, count(ni.city) as citycount from networkinfo as ni, sessioninfo as si where ni.network=si.network group by ni.city order by count(ni.city) desc limit 20");
    $request->execute();
 
    while (my $result=$request->fetchrow_hashref){
@@ -1621,7 +1621,7 @@ if ($type == 24){
        };
    }
 
-   $request = $dbh->prepare("select ni.city as thiscity, count(ni.city) as citycount from networkinfo as ni, sessioninfo as si where ni.network=si.network and ni.country='DE' group by ni.city order by count(ni.city) desc");
+   $request = $dbh->prepare("select ni.city as thiscity, count(ni.city) as citycount from networkinfo as ni, sessioninfo as si where ni.network=si.network and ni.country='DE' group by ni.city order by count(ni.city) desc limit 20");
    $request->execute();
 
    while (my $result=$request->fetchrow_hashref){

@@ -105,6 +105,10 @@ CREATE INDEX loans_isbn ON loans (isbn);
 -------------------------------------------------
 
 ALTER TABLE networkinfo ADD PRIMARY KEY (id);
-CREATE index networkinfo_network ON networkinfo USING gist (network inet_ops);
+CREATE INDEX networkinfo_network ON networkinfo USING gist (network inet_ops);
+CREATE INDEX networkinfo_country ON networkinfo (country);
+CREATE INDEX networkinfo_country_name ON networkinfo (country_name);
+CREATE INDEX networkinfo_continent ON networkinfo (continent);
+CREATE INDEX networkinfo_is_eu ON networkinfo (is_eu);
 
 vacuum analyze;

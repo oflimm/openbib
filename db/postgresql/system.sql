@@ -738,6 +738,10 @@ CREATE TABLE networkinfo (
     id BIGSERIAL,
     network CIDR NOT NULL,
     country TEXT,
+    country_name TEXT,
     continent TEXT,
+    subdivision TEXT,
+    subsubdivision TEXT,
+    city TEXT,
     is_eu INT
 );

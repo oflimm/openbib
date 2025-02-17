@@ -1589,7 +1589,7 @@ if ($type == 23){
 if ($type == 24){
 
    my $createtime = Date::Manip::ParseDate("now");	
-   $createtime = Date::Manip::UnixDate($createtime,"%Y-%m-%d %H:%M:%S");
+   $createtime = Date::Manip::UnixDate($createtime,"%d.%m.%Y - %H:%M");
 
    my $metrics_ref = {
      tstamp => $createtime,

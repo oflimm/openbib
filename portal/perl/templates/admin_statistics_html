@@ -39,7 +39,7 @@
 #   USE dumper;dumper.dump(resultlist);
 %]
 
-<h3>[% msg.maketext("Aktive Sessions") %] ([% msg.maketext("Stand") %]: [% resultlist.tstamp%])</h3>
+<h3>[% msg.maketext("Aktive Sessions") %] ([% msg.maketext("Stand") %]: [% resultlist.tstamp%] [% msg.maketext("Uhr") %])</h3>
 
 <h4>[% msg.maketext("Nach Views") %]</h4>
 [%

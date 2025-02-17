@@ -34,6 +34,7 @@ use utf8;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Benchmark ':hireswallclock';
+use Date::Manip;
 use DBI;
 use DBIx::Class::ResultClass::HashRefInflator;
 use Getopt::Long;
@@ -1587,7 +1588,12 @@ if ($type == 23){
 
 if ($type == 24){
 
-   my $metrics_ref = {};
+   my $createtime = Date::Manip::ParseDate("now");	
+   $createtime = Date::Manip::UnixDate($createtime,"%Y-%m-%d %H:%M:%S");
+
+   my $metrics_ref = {
+     tstamp => $createtime,
+   };
 
    my $dbh = $config->get_schema->storage->dbh;
 

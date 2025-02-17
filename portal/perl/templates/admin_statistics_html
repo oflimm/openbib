@@ -31,16 +31,18 @@
 </table>
 </div>
 
-<h3>[% msg.maketext("Aktive Sessions") %]</h3>
-
-<h4>[% msg.maketext("Nach Views") %]</h4>
 [%
 
    funcargs = { id => 'active_sessions', type => 24 } ;
    resultlist = config.get_datacache(funcargs);
 
 #   USE dumper;dumper.dump(resultlist);
+%]
 
+<h3>[% msg.maketext("Aktive Sessions") %] ([% msg.maketext("Stand") %]: [% resultlist.tstamp%])</h3>
+
+<h4>[% msg.maketext("Nach Views") %]</h4>
+[%
    sessions_by_view = resultlist.sessions_by_view;
    
    x_axis = [];

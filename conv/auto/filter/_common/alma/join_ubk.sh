@@ -4,4 +4,31 @@ cd /alma/export
 
 mmv "ubkfull_*_new_?.mrc" "ubkfull_#1_new_0#2.mrc"
 
-cat `ls -r1 ubkfull*_delete*.mrc | xargs` `ls -r1 ubkelectronicfull*_delete*.mrc | xargs` `ls -r1 ubkfull*_new*.mrc | xargs` `ls -r1 ubkelectronicfull*_new*.mrc | xargs` > /opt/openbib/autoconv/pools/uni/pool.mrc
+cat /dev/null > /opt/openbib/autoconv/pools/uni/pool.mrc
+
+for thisdate in `ls -1 ubkfull_*.mrc ubkelectronicfull_*.mrc|cut -d_ -f 2|sort -ru|xargs`;do
+ echo "Joining ${thisdate}"
+ for file in `ls -1 ubkfull_${thisdate}_*delete*.mrc|xargs`;do
+  if [[ $file ]] ; then
+     cat $file >> /opt/openbib/autoconv/pools/uni/pool.mrc
+  fi
+ done
+
+ for file in `ls -1 ubkfull_${thisdate}_*new*.mrc|xargs`;do
+  if [[ $file ]] ; then
+    cat $file >> /opt/openbib/autoconv/pools/uni/pool.mrc
+  fi
+ done
+
+ for file in `ls -1 ubkelectronicfull_${thisdate}_*delete*.mrc|xargs`; do	        
+  if [[ $file ]] ; then
+     cat $file >> /opt/openbib/autoconv/pools/uni/pool.mrc
+  fi
+ done
+
+ for file in `ls -1 ubkelectronicfull_${thisdate}_*delete*.mrc|xargs`; do
+  if [[ $file ]] ; then
+    cat $file >> /opt/openbib/autoconv/pools/uni/pool.mrc
+  fi
+ done
+done

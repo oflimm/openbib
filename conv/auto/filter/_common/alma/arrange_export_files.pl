@@ -33,4 +33,4 @@ foreach my $date (reverse sort keys %dates){
     push @resultfiles, @electronic_iz_nz_by_date if (@electronic_iz_nz_by_date);
 }
 
-print YAML::Dump(\@resultfiles),"\n";
+print join ' ',@resultfiles;

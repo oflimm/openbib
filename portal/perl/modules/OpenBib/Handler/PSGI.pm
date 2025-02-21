@@ -326,7 +326,7 @@ sub cgiapp_init {
     }
 
     # Session abgelaufen?
-    $session->is_expired;
+    #$session->is_expired;
     if (0 == 1 && $session->is_expired){
 	if ($self->param('representation') eq "html"){
 

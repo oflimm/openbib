@@ -813,6 +813,7 @@ sub get_popular_records {
     # 'r': Kein Zugriff (red)
     
     my $type_mapping_ref = {
+	'yellow'      => 'y', # yellow
 	'access_0'    => 'g', # green
 	'access_2'    => 'y', # yellow
 	'access_3'    => 'y', # yellow
@@ -830,8 +831,9 @@ sub get_popular_records {
     
     foreach my $db_node (@nodes) {
 
-	my $id     = $db_node->findvalue('@title_id');
-	my $access = $db_node->findvalue('@access_ref');
+	my $id            = $db_node->findvalue('@title_id');
+	my $access        = $db_node->findvalue('@access_ref');
+	my $traffic_light = $db_node->findvalue('@traffic_light');
 	my @types  = split(" ",$db_node->findvalue('@db_type_refs'));
 	
 	my $db_types_ref = \@types;
@@ -840,9 +842,10 @@ sub get_popular_records {
 	my $url     = $config->get("dbis_baseurl").$db_node->findvalue('@href');
 
         my $access_info = $access_info_ref->{$access};
-	
-	my $access_type = (defined $type_mapping_ref->{$access})?$type_mapping_ref->{$access}:'';
 
+	my $access_type = (defined $type_mapping_ref->{$access})?$type_mapping_ref->{$access}:
+	    (defined $type_mapping_ref->{$traffic_light})?$type_mapping_ref->{$traffic_light}:'';
+	
 	if ($logger->is_debug){
 	    $logger->debug("Access Type:".YAML::Dump($access_type));
 	}

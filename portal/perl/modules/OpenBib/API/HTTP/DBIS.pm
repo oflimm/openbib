@@ -269,7 +269,16 @@ sub get_titles_record {
         'access_500'  => 'n', # national license
     };
     
-    my $access_type = $type_mapping_ref->{$access_info_ref->{id}};
+    my $access_type = "";
+
+    if ($access_info_ref->{id} =~m/^access/){
+	$access_type = $type_mapping_ref->{$access_info_ref->{id}};
+    }
+    else {
+	if ($access_info_ref->{desc} =~m/Online Uninetz/){
+	    $access_type = "y";
+	}
+    }
 
     my $db_type_ref = [];
     my @db_type_nodes = $root->findnodes('/dbis_page/details/db_type_infos/db_type_info');
@@ -639,8 +648,9 @@ sub search {
             
             my $single_db_ref = {};
 
-            $single_db_ref->{id}       = $db_node->findvalue('@title_id');
-            $single_db_ref->{access}   = $db_node->findvalue('@access_ref');
+            $single_db_ref->{id}            = $db_node->findvalue('@title_id');
+            $single_db_ref->{access}        = $db_node->findvalue('@access_ref');
+            $single_db_ref->{traffic_light} = $db_node->findvalue('@traffic_light');
             my @types = split(" ",$db_node->findvalue('@db_type_refs'));
 
             $single_db_ref->{db_types} = \@types;
@@ -889,6 +899,7 @@ sub get_search_resultlist {
     # 'r': Kein Zugriff (red)
     
     my $type_mapping_ref = {
+	'yellow'      => 'y', # yellow
 	'access_0'    => 'g', # green
 	'access_2'    => 'y', # yellow
 	'access_3'    => 'y', # yellow
@@ -905,7 +916,8 @@ sub get_search_resultlist {
 
         my $access_info = $self->{_access_info}{$match_ref->{access}};
 
-	my $access_type = (defined $type_mapping_ref->{$match_ref->{access}})?$type_mapping_ref->{$match_ref->{access}}:'';
+	my $access_type = (defined $type_mapping_ref->{$match_ref->{access}})?$type_mapping_ref->{$match_ref->{access}}:
+	    (defined $type_mapping_ref->{$match_ref->{traffic_light}})?$type_mapping_ref->{$match_ref->{traffic_light}}:'';
         
         my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => 'dbis', generic_attributes => { access => $access_info }});
 

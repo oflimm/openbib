@@ -70,6 +70,7 @@ sub show ($self) {
     # CGI Args
   
     $logger->debug("Home-sID: $session->{ID}");
+    $logger->debug("View: ".$view);
     $logger->debug("Path-Prefix: ".$path_prefix);
 
     my $viewstartpage = $self->strip_suffix($config->get_startpage_of_view($view));

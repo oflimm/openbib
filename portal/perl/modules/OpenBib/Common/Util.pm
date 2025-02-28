@@ -2003,6 +2003,7 @@ sub gen_cloud_class {
     return $items_ref;
 }
 
+# Nur fuer PSGI. Legacy. Bei Mojo in Controller.pm
 sub query2hashref {
     my $query=shift;
 

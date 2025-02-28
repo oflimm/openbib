@@ -70,19 +70,6 @@ use Scalar::Util;
 
 use Mojo::Base 'Mojolicious::Controller', -signatures;
 
-
-sub cgiapp_get_query {
-	my $self = shift;
-
-	# Include OpenBib::Request instead of CGI.pm and related modules
-#	require OpenBib::Request;
-
-	# Get the query object
-#	my $r = OpenBib::Request->new();
-
-	return $self->stash('r');
-}
-
 sub set_paging {
     my $self = shift;
 

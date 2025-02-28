@@ -62,12 +62,12 @@ sub startup ($app){
     my $logger = get_logger();
     
     # Register app secret and hypnotoad config
-    $app->secrets($config->{mojo_secrets});
-    $app->config(hypnotoad => $config->{mojo_hypnotoad});
+    $app->secrets($config->{mojo}{secrets});
+    $app->config(hypnotoad => $config->{mojo}{hypnotoad});
 
     # Sessions
     $app->sessions->cookie_name('openbib');
-    $app->sessions->cookie_path('/portal');
+    $app->sessions->cookie_path($config->{base_loc});
     #$app->sessions->cookie_domain($app->req->url->to_abs->host);
     $app->sessions->default_expiration(3600);
 
@@ -84,11 +84,54 @@ sub startup ($app){
     my $r = $app->routes;
     $app->_register_routes($r);
 
-    # Pre-processeing
+    # Pre-processeing mit Hooks
+    #
+    # Abarbeitungsreihenfolge der Hooks
+    #
+    #    before_command.
+    #    before_server_start.
+    #    after_build_tx.
+    #    around_dispatch.
+    #    before_dispatch.
+    #    after_static.
+    #    before_routes.
+    #    around_action.
+    #    before_render.
+    #    after_render.
+    #    after_dispatch.
+    #
+    # see https://docs.mojolicious.org/Mojolicious#HOOKS
+    
     $app->hook(before_dispatch => sub ($c){
-	\&_app_init($c)
+	\&_before_dispatch($c)
+	       }
+	);
+    
+    $app->hook(before_routes => sub ($c){
+	\&_before_routes($c)
 	       }
 	);    
+
+    $app->hook(around_action => sub ($next, $c, $action, $last) {
+	# Log4perl logger erzeugen
+	my $logger = get_logger();
+	
+	my $r            = $c->req;
+	my $path         = $r->url->path;
+	my $config       = $c->stash('config');
+	my $base_loc     = $config->{'base_loc'};
+
+	$logger->debug("Mojo - Entering _around_action");
+	
+	return $next->() if ($path !~m{^$base_loc/});
+	
+	$logger->debug("Mojo - View: ".$c->param('view'));
+	$logger->debug("Mojo - Path: ".$r->url->path);
+	$logger->debug("Mojo - Route: ".$c->match);
+	$logger->debug("Mojo - Format: ".$c->stash('format'));
+	
+	return $next->();
+	       });
 }
 
 sub _register_routes {
@@ -111,41 +154,44 @@ sub _register_routes {
         my $action     = $item->{action};
         my $method     = $item->{method} || 'GET'; # Default: GET
 
-	my @representations = ();
-	
-	@representations = @{$item->{representations}} if (defined $item->{representations});
-		
 	if ($method eq "GET"){
-	    # Representations in #-Wildcard, dann Mojo Automatismus mit format
-	    if ($rule=~m{\#[a-z]+$}){
-		$logger->debug("Mojo - Last path element is wildcard");
-		$logger->debug("Mojo - Adding rule: $rule -> $action - $controller ($method)");
-		$routes->get($rule)->to(controller => $controller, action => $action )
+	    if (defined $item->{representations}){
+		$routes->get($rule => [ format => $item->{representations} ])->to(controller => $controller, action => $action );
 	    }
 	    else {
-		$logger->debug("Mojo - Last path element is NOT wildcard: $rule");
-		if (@representations){
-		    foreach my $representation (@representations){
-			my $subrule = $rule;
-			if ($representation eq "none"){
-			    $representation = '';
-			}
-
-			$subrule = $subrule.".".$representation;
-			$logger->debug("Mojo - Adding rule: $subrule -> $action - $controller ($method)");
-			$routes->get($subrule)->to(controller => $controller, action => $action );
-		    }
-		}
+		$routes->get($rule)->to(controller => $controller, action => $action );
 	    }
+	    
+	    # # Representations in #-Wildcard, dann Mojo Automatismus mit format
+	    # if ($rule=~m{\#[a-z]+$}){
+	    # 	$logger->debug("Mojo - Last path element is wildcard");
+	    # 	$logger->debug("Mojo - Adding rule: $rule -> $action - $controller ($method)");
+	    # 	$routes->get($rule)->to(controller => $controller, action => $action )
+	    # }
+	    # else {
+	    # 	$logger->debug("Mojo - Last path element is NOT wildcard: $rule");
+	    # 	if (@representations){
+	    # 	    foreach my $representation (@representations){
+	    # 		my $subrule = $rule;
+	    # 		if ($representation eq "none"){
+	    # 		    $representation = '';
+	    # 		}
+
+	    # 		$subrule = $subrule.".".$representation;
+	    # 		$logger->debug("Mojo - Adding rule: $subrule -> $action - $controller ($method)");
+	    # 		$routes->get($subrule)->to(controller => $controller, action => $action );
+	    # 	    }
+	    # 	}
+	    # }
 	}
 	elsif ($method eq "POST"){
-	    $routes->post($rule => [ format => \@representations ])->to(controller => $controller, action => $action )
+	    $routes->post($rule)->to(controller => $controller, action => $action )
 	}
 	elsif ($method eq "PUT"){
-	    $routes->put($rule => [ format => \@representations ])->to(controller => $controller, action => $action )
+	    $routes->put($rule)->to(controller => $controller, action => $action )
 	}
 	elsif ($method eq "DELETE"){
-	    $routes->delete($rule => [ format => \@representations ])->to(controller => $controller, action => $action )
+	    $routes->delete($rule)->to(controller => $controller, action => $action )
 	}
     }
 
@@ -158,13 +204,15 @@ sub _register_routes {
 sub _plugins {
     my $app = shift;
 
+    $app->plugin('DefaultHelpers');
+    
     $app->plugin('Directory',{
 	root => '/var/www/html'
 		 });
-        
+
 }
 
-sub _app_init($c){
+sub _before_dispatch($c){
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -172,20 +220,23 @@ sub _app_init($c){
     my $r            = $c->req;
     my $path         = $r->url->path;
 
+    # Wenn kein Portal-URL (z.B. CSS, JS, Images), dann kein Preprocessing notwendig
+    # hardcoded for performance
     return if ($path !~m{^/portal/});
     
-    my ($view)       = $path =~ m{^/portal/([^/]+)/}; # $c->param('view') for placeholder :view doesn't work...
+    my ($view)       = $path =~ m{^/portal/([^/]+)/}; # $c->param('view') for placeholder :view not yet available at this stage
     
-    # Wenn kein Portal-URL (z.B. CSS, JS, Images), dann kein Preprocessing notwendig
-
-    $logger->debug("Mojo - Entering _app_init");
-    $logger->debug("Mojo - View: ".$view);
+    $logger->debug("Mojo - Entering _before_dispatch");
+    $logger->debug("Mojo - View c: ".YAML::Dump($c->param('view')));
     $logger->debug("Mojo - Path: ".$r->url->path);
     $logger->debug("Mojo - Route: ".$c->match);
     $logger->debug("Mojo - Format: ".$c->stash('format'));
+    $logger->debug("Mojo - View regexp: ".$view);
+
     
     my $config       = OpenBib::Config->new;
 
+    $c->stash('view',$view);    
     $c->stash('config',$config);
     $c->stash('r',$r);
     
@@ -204,6 +255,11 @@ sub _app_init($c){
     my $forwarded_for = $r->headers->header('X-Forwarded-For') || '';
     my $xclientip     = $r->headers->header('X-Client-IP')     || '';
     my $servername    = $r->url->to_abs->host;
+    my $port          = $r->url->to_abs->port;
+
+    if ($port){
+	$servername = "$servername:$port";
+    }
     
     if ($logger->is_debug){
 	$logger->debug("X-Forwarded-For: $forwarded_for");
@@ -293,7 +349,7 @@ sub _app_init($c){
     # und ggf. zum konkreten Repraesenations-URI redirecten
     # Setzt: content_type,represenation,lang
     &negotiate_content($c);
-
+    
     if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
@@ -329,6 +385,8 @@ sub _app_init($c){
 	my $scheme = $c->stash('scheme');
 	$logger->info("Remote IP set to $remote_ip for scheme $scheme and path $path");
     }
+
+    $logger->debug("Lang is: ".$c->stash('lang'));
     
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($c->stash('lang')) || $logger->error("L10N-Fehler");
@@ -393,7 +451,7 @@ sub _app_init($c){
     }
 
     # Session abgelaufen?
-    $session->is_expired;
+    #$session->is_expired;
     if (0 == 1 && $session->is_expired){
 	if ($c->stash('representation') eq "html"){
 
@@ -411,83 +469,80 @@ sub _app_init($c){
 	}
     }
     
-    $logger->debug("Main objects initialized");        
+
+    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
+    # zu verwenden
+    
+    my $method          = ($r->param('_method'))?escape_html($r->param('_method')):'';
+    my $confirm         = ($r->param('confirm'))?escape_html($r->param('confirm')):0;
+    
+    if ($method eq "DELETE" || $r->method eq "DELETE"){
+	$logger->debug("Deletion shortcut");
+	
+	if ($confirm){
+	    $c->routes->continue("#confirm_delete_record")
+		#$c->prerun_mode('confirm_delete_record');
+	}
+	else {
+	    $c->routes->continue("#delete_record")	       
+		#               $c->prerun_mode('delete_record');
+	}
+    }
+    
+    # Wenn dispatch_url, dann Runmode dispatch_to_representation mit externem Redirect
+    if ($c->stash('dispatch_url')){
+	$logger->debug("Dispatching to representation ".$c->stash('dispatch_url'));
+	$c->res->code(303);
+	$c->redirect_to($c->stash('dispatch_url'));
+    }
+    
+
+    # Wenn default_runmode gesetzt, dann ausschliesslich in diesen wechseln
+    if ($c->stash('default_runmode')){
+	
+	# Zum default_runmode muss eine Methode in
+	# diesem Modul definiert sein, denn default_runmodes werden immer in
+	# OpenBib::Handler::PSGI definiert!
+	
+	if (OpenBib::Mojo::Controller->can($c->stash('default_runmode'))){
+	    $c->run_modes(
+		$c->stash('default_runmode')  => $c->stash('default_runmode'),
+		);
+	    #	       $c->prerun_mode($c->stash('default_runmode'));
+	}
+	else {
+	    $logger->error("Invalid default runmode ".$c->stash('default_runmode'));
+	}
+    }        
+    
+    # Cookie-Header ausgeben
+    &finalize_cookies($c);
+
+    $logger->debug("Existing _before_dispatch");        
     
     if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
-        $logger->info("Total time for cgiapp_init is ".timestr($timeall));
+        $logger->info("Total time for _before_dispatch is ".timestr($timeall));
     }
-	
 }
 
-sub cgiapp_prerun {
-    my $c = shift;
-    my $runmode = shift;
+sub _before_routes($c) {
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $r            = $c->req;
+    my $path         = $r->url->path;
 
-   # Log4perl logger erzeugen
-   my $logger = get_logger();
+    return if ($path !~m{^/portal/});
 
-   $logger->debug("Entering cgiapp_prerun");
+    $logger->debug("Mojo - Entering _before_routes");
+    $logger->debug("Mojo - View: ".$c->param('view'));
+    $logger->debug("Mojo - Path: ".$r->url->path);
+    $logger->debug("Mojo - Route: ".$c->match);
+    $logger->debug("Mojo - Format: ".$c->stash('format'));
 
-   my $r            = $c->param('r');
-   my $user         = $c->param('user');
-   my $config       = $c->param('config');
-   
-   {
-       # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-       # zu verwenden
-       
-       my $method          = ($r->param('_method'))?escape_html($r->param('_method')):'';
-       my $confirm         = ($r->param('confirm'))?escape_html($r->param('confirm')):0;
-       
-       if ($method eq "DELETE" || $r->method eq "DELETE"){
-           $logger->debug("Deletion shortcut");
-           
-           if ($confirm){
-               $c->prerun_mode('confirm_delete_record');
-           }
-           else {
-               $c->prerun_mode('delete_record');
-           }
-       }
-   }
-
-   {
-       # Wenn dispatch_url, dann Runmode dispatch_to_representation mit externem Redirect
-       if ($c->stash('dispatch_url')){
-           $c->prerun_mode('dispatch_to_representation');
-       }
-       
-   }
-
-   {
-       # Wenn default_runmode gesetzt, dann ausschliesslich in diesen wechseln
-       if ($c->stash('default_runmode')){
-
-	   # Zum default_runmode muss eine Methode in
-	   # diesem Modul definiert sein, denn default_runmodes werden immer in
-	   # OpenBib::Handler::PSGI definiert!
-
-	   if (OpenBib::Mojo::Controller->can($c->stash('default_runmode'))){
-	       $c->run_modes(
-		   $c->stash('default_runmode')  => $c->stash('default_runmode'),
-		   );
-	       $c->prerun_mode($c->stash('default_runmode'));
-	   }
-	   else {
-	       $logger->error("Invalid default runmode ".$c->stash('default_runmode'));
-	   }
-       }
-   }
-   
-   
-#   if ($config->get('cookies_everywhere') || $c->param('send_new_cookie')){
-       # Cookie-Header ausgeben
-   &finalize_cookies($c);
-#   }
-   
-   $logger->debug("Exit cgiapp_prerun");
+    return;
 }
 
 sub process_uri($c) {
@@ -496,7 +551,7 @@ sub process_uri($c) {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view       = $c->param('view');
+    my $view       = $c->stash('view');
 
     # Shared Args
     my $r          = $c->stash('r');
@@ -583,7 +638,7 @@ sub process_uri($c) {
 }
 
 sub set_content_type_from_uri {
-    my $c = shift;
+    my $c    = shift;
     my $uri  = shift || $c->stash('path');
 
     # Log4perl logger erzeugen
@@ -656,12 +711,9 @@ sub negotiate_type($c) {
         }
     }
 
-    # Korrektur bei mobilen Endgeraeten, wenn die Repraesentation in portal.yml definiert ist
-    if (defined $config->{enable_mobile}{$c->param('view')} && $c->stash('representation') eq "html" && $c->stash('browser')->mobile() ){
-        $c->stash('content_type','text/html');
-        $c->stash('representation','mobile');
-    }
-    
+    # mobile-Repraesentation ist obsolet. Daher keine Analyse mehr
+
+    # Default, wenn bisher nicht besetzt
     if (!$c->stash('content_type') && !$c->stash('representation') ){
         $logger->debug("Default Type: text/html - Suffix: html");
         $c->stash('content_type','text/html');
@@ -708,7 +760,7 @@ sub negotiate_content($c) {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $view       = $c->param('view');
+    my $view       = $c->stash('view');
 
     # Shared Args
     my $r       = $c->stash('r');
@@ -742,20 +794,21 @@ sub negotiate_content($c) {
                 my $args="";
                 if (!$r->param('l')){
                     if ($session->{lang}){
-                        $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
+                        $logger->debug("Sprache definiert durch Session: ".$session->{lang});
                         $c->stash('lang',&cleanup_lang($c,$session->{lang}));
                     }
 		    elsif ($c->cookie('lang')){
+                        $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
                         $c->stash('lang',$r->cookies->{lang});
 		    }
                     else {
                         &negotiate_language($c);
                     }
-                    
-                    $args="?l=".$c->stash('lang');
-                    if ($r->url->query){
-                        $args="$args;".$r->url->query;
-                    }
+
+		    # language nun in stash lang
+		    my $existing_args = $r->url->query->merge(l => $c->stash('lang'));
+		    $logger->debug("Args with added language: ".$existing_args->to_string);
+		    $args = "?".$existing_args->to_string;
                 }
                 else {
                     $args="?".$r->url->query;
@@ -776,7 +829,7 @@ sub negotiate_content($c) {
 
             # Wenn eine konkrete Repraesentation angesprochen wird, jedoch ohne Sprach-Stasheter,
             # dann muss dieser verhandelt werden.
-            if (!$c->param('l') ){
+            if (!$r->param('l') ){
                 $logger->debug("Specific representation given, but without language - negotiating");
                 
                 # Pfade sind immer mit base_loc und view
@@ -791,9 +844,10 @@ sub negotiate_content($c) {
                     &negotiate_language($c);
                 }
                 
-                my $args = "?l=".$c->stash('lang');
-                
-                $args=$args.";".$r->url->query if ($r->url->query);
+		# language nun in stash lang
+		my $existing_args = $r->url->query->merge(l => $c->stash('lang'));
+		$logger->debug("Args with added language: ".$existing_args->to_string);
+		my $args = "?".$existing_args->to_string;
 
                 my $dispatch_url = $c->stash('scheme')."://".$c->stash('servername').$c->stash('path').$args;
             
@@ -843,9 +897,9 @@ sub alter_negotiated_language($c) {
     my $session = $c->stash('session');
 
     # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Stasheter 'l'
-    if ($c->param('l')){
-        $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Stasheter: ".$c->param('l'));
-        $c->stash('lang',&cleanup_lang($c,$c->param('l')));
+    if ($r->param('l')){
+        $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$r->param('l'));
+        $c->stash('lang',&cleanup_lang($c,$r->param('l')));
         
         # Setzen als Cookie
         &set_cookie($c,'lang',$c->stash('lang'));
@@ -919,9 +973,9 @@ sub finalize_cookies($c) {
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
-    if (defined $c->stash('cookie_jar')){
-        $c->header_add('Set-Cookie', $c->stash('cookie_jar'));
-    }
+#    if (defined $c->stash('cookie_jar')){
+#	$c->tx->res->content->headers('Set-Cookie', $c->stash('cookie_jar'));
+#    }
     
     return;
 }
@@ -1024,7 +1078,7 @@ sub check_http_basic_authentication($c) {
     my $logger = get_logger();
     
     # Dispatched Args
-    my $view       = $c->param('view');
+    my $view       = $c->stash('view');
 
     # Shared Args
     my $r       = $c->stash('r');

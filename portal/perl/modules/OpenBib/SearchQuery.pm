@@ -163,7 +163,8 @@ sub set_from_psgi_request {
     $self->{_searchquery} = {};
 
     if ($logger->is_debug){
-	$logger->debug("Paramstring: ".$self->{r}->args);
+#	$logger->debug("Paramstring: ".$self->{r}->args);
+	$logger->debug("Paramstring: ".$self->{r}->url->query);
     }
 
     my @param_names = $query->param;

@@ -274,10 +274,16 @@ sub get_titles_record {
     if ($access_info_ref->{id} =~m/^access/){
 	$access_type = $type_mapping_ref->{$access_info_ref->{id}};
     }
-    else {
-	if ($access_info_ref->{desc} =~m/Online Uninetz/){
-	    $access_type = "y";
-	}
+
+    # Fix: z.T. falsche type_mapping-Werte in den Daten, daher zusaetzlich mit desc unterscheiden
+    if ($access_info_ref->{desc} =~m/Online Uninetz/){
+	$access_type = "y";
+    }
+    elsif ($access_info_ref->{desc} =~m/Nationallizenz/){
+	$access_type = "n";
+    }
+    elsif (!$access_info_ref->{desc} || $access_info_ref->{desc} =~m/frei im Web/){
+	$access_type = "g";
     }
 
     my $db_type_ref = [];
@@ -814,6 +820,8 @@ sub get_popular_records {
     
     my $type_mapping_ref = {
 	'yellow'      => 'y', # yellow
+	'green'       => 'g', # green
+	'red'         => 'r', # red
 	'access_0'    => 'g', # green
 	'access_2'    => 'y', # yellow
 	'access_3'    => 'y', # yellow
@@ -843,8 +851,8 @@ sub get_popular_records {
 
         my $access_info = $access_info_ref->{$access};
 
-	my $access_type = (defined $type_mapping_ref->{$access})?$type_mapping_ref->{$access}:
-	    (defined $type_mapping_ref->{$traffic_light})?$type_mapping_ref->{$traffic_light}:'';
+	my $access_type = (defined $type_mapping_ref->{$traffic_light})?$type_mapping_ref->{$traffic_light}:
+	    (defined $type_mapping_ref->{$access})?$type_mapping_ref->{$access}:'';
 	
 	if ($logger->is_debug){
 	    $logger->debug("Access Type:".YAML::Dump($access_type));
@@ -903,6 +911,8 @@ sub get_search_resultlist {
     
     my $type_mapping_ref = {
 	'yellow'      => 'y', # yellow
+	'green'       => 'g', # green
+	'red'         => 'r', # red
 	'access_0'    => 'g', # green
 	'access_2'    => 'y', # yellow
 	'access_3'    => 'y', # yellow
@@ -919,8 +929,8 @@ sub get_search_resultlist {
 
         my $access_info = $self->{_access_info}{$match_ref->{access}};
 
-	my $access_type = (defined $type_mapping_ref->{$match_ref->{access}})?$type_mapping_ref->{$match_ref->{access}}:
-	    (defined $type_mapping_ref->{$match_ref->{traffic_light}})?$type_mapping_ref->{$match_ref->{traffic_light}}:'';
+	my $access_type = (defined $type_mapping_ref->{$match_ref->{traffic_light}})?$type_mapping_ref->{$match_ref->{traffic_light}}:
+	    (defined $type_mapping_ref->{$match_ref->{access}})?$type_mapping_ref->{$match_ref->{access}}:'';
         
         my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => 'dbis', generic_attributes => { access => $access_info }});
 

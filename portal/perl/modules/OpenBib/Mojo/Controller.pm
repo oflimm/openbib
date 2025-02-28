@@ -322,7 +322,7 @@ sub print_page {
     my $location       = $self->stash('location');
     my $url            = $self->stash('url');
 
-    $logger->debug("Entering print_page with template $templatename");
+    $logger->debug("Entering print_page with template $templatename and representation $representation");
         
     if (!$config->view_is_active($view)){
 	$logger->error("View $view doesn't exist");	
@@ -364,7 +364,7 @@ sub print_page {
 
     my $content = "";
 
-    $ttdata->{representation} = "html";
+    $ttdata->{representation} = $representation;
     
     eval {
         my $template = Template->new({ 
@@ -798,11 +798,20 @@ sub strip_suffix {
     
     my $suffixes = join '|', map { '\.'.$_ } keys %{$config->{content_type_map_rev}};
 
+    # Leerzeichen rueckumwandeln
+    $element =~s/%20/ /g;
+    
+    $logger->debug("Element in: $element");
     $logger->debug("Suffixes: $suffixes");
     
+    
     if ($element=~/^(.+?)($suffixes)$/){
+	$logger->debug("Element out stripped: $element");
+	
         return $1;
     }
+
+    $logger->debug("Element out original: $element");
     
     return $element;
 }

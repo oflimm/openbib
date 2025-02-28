@@ -129,6 +129,7 @@ sub startup ($app){
 	$logger->debug("Mojo - Path: ".$r->url->path);
 	$logger->debug("Mojo - Route: ".$c->match);
 	$logger->debug("Mojo - Format: ".$c->stash('format'));
+	$logger->debug("Mojo - Repraesentation: ".$c->stash('representation'));
 	
 	return $next->();
 	       });

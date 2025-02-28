@@ -1771,7 +1771,7 @@ sub query2hashref {
     my $logger = get_logger();
     
     my $args_ref = {};
-    my @param_names = $self->params->names;
+    my @param_names = @{$self->req->query_params->names};
     foreach my $param (@param_names){
         $args_ref->{$param} = $self->req->param($param);
     }

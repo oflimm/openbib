@@ -110,34 +110,46 @@ sub show_search {
     unless ($searchquery->have_searchterms){
 	return $self->print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."));
     }
+
+    $logger->debug("Getting search header");
+    $self->write_chunk($self->show_search_header());
+    $logger->debug("Getting search header done");
     
-    return sub {
-        my $respond = shift;
+    $logger->debug("Getting search result");
+    $self->write_chunk($self->show_search_result());
+    $logger->debug("Getting search result done");
+    
+    $logger->debug("Getting search footer");
+    $self->write_chunk($self->show_search_footer());
+    $logger->debug("Getting search footer done");
+    
+#     return sub {
+#         my $respond = shift;
         
-        my $writer = $respond->([ $self->send_psgi_headers ]); # using cgi-app header props
+#         my $writer = $respond->([ $self->send_psgi_headers ]); # using cgi-app header props
 
-        $self->stash('writer',$writer);
+#         $self->stash('writer',$writer);
 
-        $logger->debug("Getting search header");
-        $self->show_search_header();
-        $logger->debug("Getting search header done");
+#         $logger->debug("Getting search header");
+#         $self->show_search_header();
+#         $logger->debug("Getting search header done");
 
-        $logger->debug("Getting search result");
-        $self->show_search_result();
-        $logger->debug("Getting search result done");
+#         $logger->debug("Getting search result");
+#         $self->show_search_result();
+#         $logger->debug("Getting search result done");
 
-        $logger->debug("Getting search footer");
-        $self->show_search_footer();
-        $logger->debug("Getting search footer done");
+#         $logger->debug("Getting search footer");
+#         $self->show_search_footer();
+#         $logger->debug("Getting search footer done");
         
-#        $writer->write($self->show_search_header());
+# #        $writer->write($self->show_search_header());
         
-#        $writer->write($self->show_search_result());
+# #        $writer->write($self->show_search_result());
         
-#        $writer->write($self->show_search_footer());
+# #        $writer->write($self->show_search_footer());
         
-        $writer->close;
-    };
+#         $writer->close;
+#     };
 }
 
 sub show_search_header {
@@ -166,7 +178,6 @@ sub show_search_header {
     my $representation = $self->stash('representation');
     my $content_type   = $self->stash('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
 
-    my $writer         = $self->stash('writer');
     my $query          = $r;
     
     # CGI Args
@@ -314,9 +325,10 @@ sub show_search_header {
         return;
     };
 
-    $writer->write(encode_utf8($content_header));
+#    $self->render_later(text => encode_utf8($content_header) );
+#    $self->render_later(text => $content_header );
 
-    return;
+    return encode_utf8($content_header);
 }
 
 sub show_search_result {
@@ -333,7 +345,7 @@ sub show_search_result {
         # BEGIN Anfrage an Datenbanken schicken und Ergebnisse einsammeln
         #
 
-        $self->sequential_search;
+        return $self->sequential_search;
 
         ######################################################################
         #
@@ -345,7 +357,7 @@ sub show_search_result {
         # Gesamtdatenbank aus allen ausgewaehlten Recherche-Datenbanken schicken und Ergebniss ausgeben
         #
 
-        $self->joined_search;
+        return $self->joined_search;
 
         ######################################################################
         #
@@ -375,7 +387,6 @@ sub show_search_footer {
     
     my $user           = $self->stash('user');
     my $msg            = $self->stash('msg');
-    my $writer         = $self->stash('writer');
 
     # Jetzt update der Trefferinformationen, wenn keine ID
     $searchquery->save({sid => $session->{sid}});
@@ -455,9 +466,10 @@ sub show_search_footer {
         serialize => 1,
     });
 
-    $writer->write(encode_utf8($content_footer));
+#    $self->render(text => encode_utf8($content_footer) );
+#    $self->render_later(text => $content_footer );
     
-    return;
+    return encode_utf8($content_footer);
 }
 
 # Auf Grundlage der <form>-Struktur im Template searchform derzeit nicht verwendet
@@ -854,7 +866,6 @@ sub joined_search {
     my $config       = $self->stash('config');
     my $searchquery  = $self->stash('searchquery');
     my $session      = $self->stash('session');
-    my $writer       = $self->stash('writer');
     
     $logger->debug("Starting joined search");
 
@@ -864,24 +875,25 @@ sub joined_search {
 
     my $content_searchresult = $self->print_resultitem({templatename => $templatename});
 
-    $writer->write(encode_utf8($content_searchresult));
-    
+#    $self->render_later(text => encode_utf8($content_searchresult) );
+    return encode_utf8($content_searchresult);
+
     # Etwaige Kataloge, die nicht lokal vorliegen und durch ein API angesprochen werden
-    if (0 == 1){ # deaktiviert
-	foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
-	    my $system = $config->get_system_of_db($database);
+    # if (0 == 1){ # deaktiviert
+    # 	foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
+    # 	    my $system = $config->get_system_of_db($database);
 	    
-	    if ($system =~ /^Backend/){
-		$self->stash('database',$database);
+    # 	    if ($system =~ /^Backend/){
+    # 		$self->stash('database',$database);
 		
-		$self->search({database => $database});
+    # 		$self->search({database => $database});
 		
-		my $seq_content_searchresult = $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
+    # 		my $seq_content_searchresult = $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
 		
-		$writer->write(encode_utf8($seq_content_searchresult));
-	    }
-	}
-    }
+    # 		$writer->write(encode_utf8($seq_content_searchresult));
+    # 	    }
+    # 	}
+    # }
     
     return; # $content_searchresult;
 }
@@ -895,7 +907,6 @@ sub sequential_search {
     my $config      = $self->stash('config');
     my $searchquery = $self->stash('searchquery');
     my $session     = $self->stash('session');
-    my $writer      = $self->stash('writer');
 
     ######################################################################
     # Schleife ueber alle Datenbanken 
@@ -913,10 +924,11 @@ sub sequential_search {
         my $seq_content_searchresult = $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
 
         $logger->debug("Result: $seq_content_searchresult");
-        $writer->write(encode_utf8($seq_content_searchresult));
+	#$self->render_later(text => encode_utf8($seq_content_searchresult) );	
+	$content_searchresult.= $seq_content_searchresult;	
     }
 
-    return; #   $content_searchresult;
+    return encode_utf8($content_searchresult);
 }
 
 sub search {

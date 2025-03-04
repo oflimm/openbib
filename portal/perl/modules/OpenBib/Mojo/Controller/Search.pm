@@ -111,18 +111,22 @@ sub show_search {
 	return $self->print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."));
     }
 
+    #$self->render_later;
+    
     $logger->debug("Getting search header");
-    $self->write_chunk($self->show_search_header());
+    $self->show_search_header();
     $logger->debug("Getting search header done");
     
     $logger->debug("Getting search result");
-    $self->write_chunk($self->show_search_result());
+    $self->show_search_result();
     $logger->debug("Getting search result done");
     
     $logger->debug("Getting search footer");
-    $self->write_chunk($self->show_search_footer());
+    $self->show_search_footer();
     $logger->debug("Getting search footer done");
-    
+
+    # Finalize with empty chunk
+    $self->write_chunk('');
 #     return sub {
 #         my $respond = shift;
         
@@ -328,7 +332,7 @@ sub show_search_header {
 #    $self->render_later(text => encode_utf8($content_header) );
 #    $self->render_later(text => $content_header );
 
-    return encode_utf8($content_header);
+    $self->write_chunk(encode_utf8($content_header)) if ($content_header);
 }
 
 sub show_search_result {
@@ -345,7 +349,7 @@ sub show_search_result {
         # BEGIN Anfrage an Datenbanken schicken und Ergebnisse einsammeln
         #
 
-        return $self->sequential_search;
+        $self->sequential_search;
 
         ######################################################################
         #
@@ -357,7 +361,7 @@ sub show_search_result {
         # Gesamtdatenbank aus allen ausgewaehlten Recherche-Datenbanken schicken und Ergebniss ausgeben
         #
 
-        return $self->joined_search;
+        $self->joined_search;
 
         ######################################################################
         #
@@ -469,7 +473,7 @@ sub show_search_footer {
 #    $self->render(text => encode_utf8($content_footer) );
 #    $self->render_later(text => $content_footer );
     
-    return encode_utf8($content_footer);
+    $self->write_chunk(encode_utf8($content_footer)) if ($content_footer);
 }
 
 # Auf Grundlage der <form>-Struktur im Template searchform derzeit nicht verwendet
@@ -876,7 +880,7 @@ sub joined_search {
     my $content_searchresult = $self->print_resultitem({templatename => $templatename});
 
 #    $self->render_later(text => encode_utf8($content_searchresult) );
-    return encode_utf8($content_searchresult);
+    $self->write_chunk(encode_utf8($content_searchresult));
 
     # Etwaige Kataloge, die nicht lokal vorliegen und durch ein API angesprochen werden
     # if (0 == 1){ # deaktiviert
@@ -915,7 +919,6 @@ sub sequential_search {
 
     $logger->debug("Starting sequential search");
 
-    my $content_searchresult = "";
     foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
         $self->stash('database',$database);
 
@@ -924,11 +927,11 @@ sub sequential_search {
         my $seq_content_searchresult = $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
 
         $logger->debug("Result: $seq_content_searchresult");
+	$self->write_chunk(encode_utf8($seq_content_searchresult)) if ($seq_content_searchresult);
 	#$self->render_later(text => encode_utf8($seq_content_searchresult) );	
-	$content_searchresult.= $seq_content_searchresult;	
     }
 
-    return encode_utf8($content_searchresult);
+    return;
 }
 
 sub search {
@@ -1130,7 +1133,7 @@ sub print_resultitem {
 
     my $content = "";
 
-    $logger->debug("Trying template $templatename");
+    $logger->debug("Trying template $templatename with view ".$ttdata->{view}." and database ".$ttdata->{database}." for representation $representation");
     
     $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
         database     => $database, # Template ist fuer joined-search nicht datenbankabhaengig (=''), aber fuer sequential search

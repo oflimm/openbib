@@ -6734,7 +6734,7 @@ sub is_viewadmin {
     };
     
     if ($@){
-	$logger->error($@);
+	$logger->error("Trying to get viewid for viewname $viewname: ".$@);
     }
     
     # Sonst: Normale Nutzer mit der der Admin-Role

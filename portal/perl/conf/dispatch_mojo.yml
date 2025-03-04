@@ -28,7 +28,6 @@
      - json
      - rdf
      - rss
-     - mobile
    action: 'show_search'
 - # Resource: search_loc
    controller: 'Availability::Search'
@@ -40,7 +39,6 @@
      - json
      - rdf
      - rss
-     - mobile
    action: 'show_search'
 - # Resource: search_loc
    controller: 'Authority::Search'
@@ -51,7 +49,6 @@
      - json
      - txt
      - rss
-     - mobile
    action: 'show_search'
 - # Resource: search_loc
    controller: 'Search::History'
@@ -473,7 +470,6 @@
    representations:
      - none
      - html
-     - mobile
    action: 'show_collection'
 - # Resource: browse_loc
    controller: 'Browse::Topics'
@@ -617,6 +613,9 @@
    controller: 'SearchForms'
    rule: '/portal/:view/searchforms/id/#type'
    method: 'GET'
+   representations:
+     - include
+     - html
    action: 'show'
 - # searchforms_loc:
    controller: 'SearchForms'
@@ -919,9 +918,7 @@
    rule: '/portal/:view/home'
    method: 'GET'
    representations:
-     - none
      - html
-     - mobile
    args:
       users_loc: 'home'        
    action: 'show'
@@ -930,9 +927,7 @@
    rule: '/portal/:view/users/id/:userid/home'
    method: 'GET'
    representations:
-     - none
      - html
-     - mobile
    action: 'show'
 
 # Charakteristik

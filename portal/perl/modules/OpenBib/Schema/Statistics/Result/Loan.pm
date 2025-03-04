@@ -33,7 +33,7 @@ __PACKAGE__->table("loans");
 =head2 tstamp
 
   data_type: 'timestamp'
-  is_nullable: 1
+  is_nullable: 0
 
 =head2 tstamp_year
 
@@ -89,7 +89,7 @@ __PACKAGE__->add_columns(
     sequence          => "loans_id_seq",
   },
   "tstamp",
-  { data_type => "timestamp", is_nullable => 1 },
+  { data_type => "timestamp", is_nullable => 0 },
   "tstamp_year",
   { data_type => "smallint", is_nullable => 1 },
   "tstamp_month",
@@ -114,15 +114,17 @@ __PACKAGE__->add_columns(
 
 =item * L</id>
 
+=item * L</tstamp>
+
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("id");
+__PACKAGE__->set_primary_key("id", "tstamp");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07046 @ 2018-10-24 09:21:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6llecRdG1K493LA8LNbfKA
+# Created by DBIx::Class::Schema::Loader v0.07051 @ 2025-02-14 12:48:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YKGIq/wx2iNMXAGPYNiZpA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -300,13 +300,16 @@ sub create_session {
 
     # Set defaults
     my $sessionid    = exists $arg_ref->{sessionid}
-        ? $arg_ref->{sessionid}         : undef;
+        ? $arg_ref->{sessionid}                : undef;
 
     my $createtime         = exists $arg_ref->{createtime}
         ? $arg_ref->{createtime}               : undef;
 
     my $viewname           = exists $arg_ref->{viewname}
         ? $arg_ref->{viewname}                 : undef;
+
+    my $network            = exists $arg_ref->{network}
+        ? $arg_ref->{network}                  : undef;
 
     my $parsed_tstamp = new Date::Manip::Date;
     $parsed_tstamp->parse($createtime);
@@ -318,6 +321,7 @@ sub create_session {
         createtime_month => $parsed_tstamp->printf("%m"),
         createtime_day   => $parsed_tstamp->printf("%d"),
         viewname         => $viewname,
+        network          => $network,
     });
 
     if ($new_session){
@@ -1178,12 +1182,12 @@ sub get_sequencestat_of_event {
 	$logger->debug("Selecting daily range from $tstamp_from to $tstamp_to");
 
         # DBI: "select day(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and month(tstamp) = ? and YEAR(tstamp) = ? group by day(tstamp)";
-        push @$where_lhsql_ref, \[ 'tstamp < ?', [ plain_value => $tstamp_to ] ];     
-        push @$where_lhsql_ref, \[ 'tstamp >= ?', [ plain_value => $tstamp_from ] ]; 
+        push @$where_lhsql_ref, \[ 'me.tstamp < ?', [ plain_value => $tstamp_to ] ];     
+        push @$where_lhsql_ref, \[ 'me.tstamp >= ?', [ plain_value => $tstamp_from ] ]; 
         $attribute_ref = {
-            group_by => [ 'tstamp_day'  ],
-            order_by => [ 'tstamp_day'  ],
-            select => [ 'tstamp_day', { count => 'tstamp' } ],
+            group_by => [ 'me.tstamp_day'  ],
+            order_by => [ 'me.tstamp_day'  ],
+            select => [ 'me.tstamp_day', { count => 'me.tstamp' } ],
             as     => ['x_value','y_value'],
         };
 
@@ -1209,6 +1213,13 @@ sub get_sequencestat_of_event {
  	   $attribute_ref->{'join'} = ['sid'];
 	}
     }
+
+    if ($logger->is_debug){
+        $logger->debug("where_lhsql_ref: ".YAML::Dump($where_lhsql_ref));
+        $logger->debug("where_ref: ".YAML::Dump($where_ref));
+        $logger->debug("attribute_ref: ".YAML::Dump($attribute_ref));
+
+    }  
 
     my $stats = $self->get_schema->resultset($resultset)->search(
         {

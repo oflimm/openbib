@@ -223,7 +223,7 @@ sub load_full_record {
 
     my $record;
 
-    if ($config->{memc}){
+    if ($config->{memc} && length ($memc_key) < 250 ){
       $record = $config->{memc}->get($memc_key);
 
       if ($logger->is_debug){
@@ -1051,7 +1051,7 @@ sub enrich_similar_records {
 
     my $memc_key = "record:title:enrich_similar:$profilename:$viewname:$self->{database}:$self->{id}";
     
-    if ($config->{memc}){
+    if ($config->{memc} && length ($memc_key) < 250 ){
         my $similar_recordlist = $self->get_similar_records;
         
         my $cached_records = $config->{memc}->get($memc_key);
@@ -1247,7 +1247,7 @@ sub enrich_same_records {
 
     my $memc_key = "record:title:enrich_same:$profilename:$viewname:$self->{database}:$self->{id}";
     
-    if ($config->{memc}){
+    if ($config->{memc} && length ($memc_key) < 250 ){
         my $same_recordlist = $self->get_same_records;
 
         my $cached_records = $config->{memc}->get($memc_key);
@@ -1435,7 +1435,7 @@ sub load_circulation {
 
     my $memc_key = "record:title:circulation:$self->{database}:$self->{id}";
     
-    if ($config->{memc}){
+    if ($config->{memc} && length ($memc_key) < 250 ){
         my $circulation_ref = $config->{memc}->get($memc_key);
                 
         if ($config->{benchmark}) {
@@ -3570,6 +3570,7 @@ sub to_abstract_fields_mab2 {
     $abstract_fields_ref->{series_volume} = (exists $self->{_fields}->{T0089})?$self->{_fields}->{T0089}[0]{content}:(exists $self->{_fields}->{T0455})?$self->{_fields}->{T0455}[0]{content}:'';
     
     # Mediatyp
+    $abstract_fields_ref->{type} = '';
     if ($abstract_fields_ref->{issn}){
 	if (@{$abstract_fields_ref->{authors}}){
 	    $abstract_fields_ref->{type} = 'article';

@@ -67,6 +67,9 @@ sub new {
 
     my $config     = exists $arg_ref->{config}
         ? $arg_ref->{config}                : OpenBib::Config->new;
+
+    my $remote_ip  = exists $arg_ref->{remote_ip}
+        ? $arg_ref->{remote_ip}             : undef;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -105,7 +108,7 @@ sub new {
     }
 
     if (!defined $sessionID || !$sessionID){
-        $self->_init_new_session();
+        $self->_init_new_session($remote_ip);
 	if ($config->{benchmark}) {
 	    $btime=new Benchmark;
 	    $timeall=timediff($btime,$atime);
@@ -128,7 +131,7 @@ sub new {
 	    }
             
             # Wenn uebergebene SessionID nicht ok, dann neue generieren
-            $self->_init_new_session();
+            $self->_init_new_session($remote_ip);
             $logger->debug("Generation of new SessionID $self->{ID} successful");
         }
     }
@@ -171,7 +174,7 @@ sub get_config {
 }
 
 sub _init_new_session {
-    my ($self,$r) = @_;
+    my ($self,$remote_ip) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -188,6 +191,27 @@ sub _init_new_session {
         $atime=new Benchmark;
     }
 
+    $logger->debug("Request from remote_ip $remote_ip");
+
+    my $network;
+    
+    if ($remote_ip){
+	# Bestimme Network der anfragenden IP
+	my $networkinfo = $self->get_schema->resultset('Networkinfo')->search_rs({
+	    network => {
+		'>>=' => $remote_ip,
+	    }
+										 }
+	    )->first;
+	
+	
+	if ($networkinfo){	    
+	    $network = $networkinfo->get_column('network');
+	}
+    }
+
+    $logger->info("No networkinfo for IP $remote_ip") unless (defined $network);
+    
     while ($havenewsessionID == 0) {
         my $gmtime = localtime(time);
         my $md5digest=Digest::MD5->new();
@@ -229,6 +253,7 @@ sub _init_new_session {
                     expiretime   => $expiretime,
                     queryoptions => encode_json($queryoptions),
                     viewname     => $self->{view},
+		    network      => $network,
                     searchform   => 'simple',
                 }
             );
@@ -244,10 +269,6 @@ sub _init_new_session {
         }
     }
 
-    if ($logger->is_debug){
-        $logger->debug("Request Object: ".YAML::Dump($r));
-    }
-    
     if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
@@ -1269,15 +1290,28 @@ sub save_eventlog_to_statisticsdb {
         {
             sessionid => $self->{ID},
         }
-    )->single;
+    )->first;
+
+    next unless ($sessioninfo);
+
+    my $createtime = $sessioninfo->get_column('createtime');
+    my $viewname   = $sessioninfo->get_column('viewname');
+    my $network    = $sessioninfo->get_column('network');
 
     $logger->debug("Create new session in statistics db");
 
-    my $new_sid = $statistics->create_session({
+    my $system_sessioninfo_ref = {
         sessionid  => $self->{ID},
-        createtime => $sessioninfo->createtime,
-        viewname   => $view,
-    });
+        createtime => $createtime,
+        network    => $network,
+        viewname   => $viewname,
+    };
+
+    if ($logger->is_debug){	
+       $logger->debug("Old Sessioninfo: ".YAML::Dump($system_sessioninfo_ref));
+    }
+
+    my $new_sid = $statistics->create_session($system_sessioninfo_ref);
     
     $logger->debug("Copy default events from active session to new session in statistics db");
 

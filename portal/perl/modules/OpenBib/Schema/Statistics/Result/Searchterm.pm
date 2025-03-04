@@ -33,13 +33,12 @@ __PACKAGE__->table("searchterms");
 =head2 sid
 
   data_type: 'bigint'
-  is_foreign_key: 1
   is_nullable: 1
 
 =head2 tstamp
 
   data_type: 'timestamp'
-  is_nullable: 1
+  is_nullable: 0
 
 =head2 tstamp_year
 
@@ -82,9 +81,9 @@ __PACKAGE__->add_columns(
     sequence          => "searchterms_id_seq",
   },
   "sid",
-  { data_type => "bigint", is_foreign_key => 1, is_nullable => 1 },
+  { data_type => "bigint", is_nullable => 1 },
   "tstamp",
-  { data_type => "timestamp", is_nullable => 1 },
+  { data_type => "timestamp", is_nullable => 0 },
   "tstamp_year",
   { data_type => "smallint", is_nullable => 1 },
   "tstamp_month",
@@ -105,37 +104,17 @@ __PACKAGE__->add_columns(
 
 =item * L</id>
 
+=item * L</tstamp>
+
 =back
 
 =cut
 
-__PACKAGE__->set_primary_key("id");
-
-=head1 RELATIONS
-
-=head2 sid
-
-Type: belongs_to
-
-Related object: L<OpenBib::Schema::Statistics::Result::Sessioninfo>
-
-=cut
-
-__PACKAGE__->belongs_to(
-  "sid",
-  "OpenBib::Schema::Statistics::Result::Sessioninfo",
-  { id => "sid" },
-  {
-    is_deferrable => 1,
-    join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
-  },
-);
+__PACKAGE__->set_primary_key("id", "tstamp");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07046 @ 2018-10-24 09:21:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2nhwHjlhuqbBHszpy0+++A
+# Created by DBIx::Class::Schema::Loader v0.07051 @ 2025-02-14 12:48:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:MHP9LVqHFgc7gnAPNLBwTw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

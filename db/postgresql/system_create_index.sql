@@ -110,6 +110,7 @@ CREATE INDEX sessioninfo_createtime ON sessioninfo (createtime);
 CREATE INDEX sessioninfo_expiretime ON sessioninfo (expiretime);
 CREATE INDEX sessioninfo_username ON sessioninfo (username);
 CREATE INDEX sessioninfo_viewname ON sessioninfo (viewname);
+CREATE INDEX sessioninfo_network ON sessioninfo USING gist (network inet_ops);
 
 ALTER TABLE cartitem ADD PRIMARY KEY (id);
 CREATE INDEX cartitem_dbname ON cartitem (dbname);
@@ -361,3 +362,9 @@ CREATE INDEX classificationshierarchy_name ON classificationshierarchy (name);
 CREATE INDEX classificationshierarchy_number ON classificationshierarchy (number);
 CREATE INDEX classificationshierarchy_subname ON classificationshierarchy (subname);	
 
+ALTER TABLE networkinfo ADD PRIMARY KEY (id);
+CREATE INDEX networkinfo_network ON networkinfo USING gist (network inet_ops);
+CREATE INDEX networkinfo_country ON networkinfo (country);
+CREATE INDEX networkinfo_country_name ON networkinfo (country_name);
+CREATE INDEX networkinfo_continent ON networkinfo (continent);
+CREATE INDEX networkinfo_is_eu ON networkinfo (is_eu);

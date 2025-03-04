@@ -269,7 +269,22 @@ sub get_titles_record {
         'access_500'  => 'n', # national license
     };
     
-    my $access_type = $type_mapping_ref->{$access_info_ref->{id}};
+    my $access_type = "";
+
+    if ($access_info_ref->{id} =~m/^access/){
+	$access_type = $type_mapping_ref->{$access_info_ref->{id}};
+    }
+
+    # Fix: z.T. falsche type_mapping-Werte in den Daten, daher zusaetzlich mit desc unterscheiden
+    if ($access_info_ref->{desc} =~m/Online Uninetz/){
+	$access_type = "y";
+    }
+    elsif ($access_info_ref->{desc} =~m/Nationallizenz/){
+	$access_type = "n";
+    }
+    elsif (!$access_info_ref->{desc} || $access_info_ref->{desc} =~m/frei im Web/){
+	$access_type = "g";
+    }
 
     my $db_type_ref = [];
     my @db_type_nodes = $root->findnodes('/dbis_page/details/db_type_infos/db_type_info');
@@ -639,8 +654,9 @@ sub search {
             
             my $single_db_ref = {};
 
-            $single_db_ref->{id}       = $db_node->findvalue('@title_id');
-            $single_db_ref->{access}   = $db_node->findvalue('@access_ref');
+            $single_db_ref->{id}            = $db_node->findvalue('@title_id');
+            $single_db_ref->{access}        = $db_node->findvalue('@access_ref');
+            $single_db_ref->{traffic_light} = $db_node->findvalue('@traffic_light');
             my @types = split(" ",$db_node->findvalue('@db_type_refs'));
 
             $single_db_ref->{db_types} = \@types;
@@ -803,6 +819,9 @@ sub get_popular_records {
     # 'r': Kein Zugriff (red)
     
     my $type_mapping_ref = {
+	'yellow'      => 'y', # yellow
+	'green'       => 'g', # green
+	'red'         => 'r', # red
 	'access_0'    => 'g', # green
 	'access_2'    => 'y', # yellow
 	'access_3'    => 'y', # yellow
@@ -820,8 +839,9 @@ sub get_popular_records {
     
     foreach my $db_node (@nodes) {
 
-	my $id     = $db_node->findvalue('@title_id');
-	my $access = $db_node->findvalue('@access_ref');
+	my $id            = $db_node->findvalue('@title_id');
+	my $access        = $db_node->findvalue('@access_ref');
+	my $traffic_light = $db_node->findvalue('@traffic_light');
 	my @types  = split(" ",$db_node->findvalue('@db_type_refs'));
 	
 	my $db_types_ref = \@types;
@@ -830,9 +850,10 @@ sub get_popular_records {
 	my $url     = $config->get("dbis_baseurl").$db_node->findvalue('@href');
 
         my $access_info = $access_info_ref->{$access};
-	
-	my $access_type = (defined $type_mapping_ref->{$access})?$type_mapping_ref->{$access}:'';
 
+	my $access_type = (defined $type_mapping_ref->{$traffic_light})?$type_mapping_ref->{$traffic_light}:
+	    (defined $type_mapping_ref->{$access})?$type_mapping_ref->{$access}:'';
+	
 	if ($logger->is_debug){
 	    $logger->debug("Access Type:".YAML::Dump($access_type));
 	}
@@ -889,6 +910,9 @@ sub get_search_resultlist {
     # 'r': Kein Zugriff (red)
     
     my $type_mapping_ref = {
+	'yellow'      => 'y', # yellow
+	'green'       => 'g', # green
+	'red'         => 'r', # red
 	'access_0'    => 'g', # green
 	'access_2'    => 'y', # yellow
 	'access_3'    => 'y', # yellow
@@ -905,7 +929,8 @@ sub get_search_resultlist {
 
         my $access_info = $self->{_access_info}{$match_ref->{access}};
 
-	my $access_type = (defined $type_mapping_ref->{$match_ref->{access}})?$type_mapping_ref->{$match_ref->{access}}:'';
+	my $access_type = (defined $type_mapping_ref->{$match_ref->{traffic_light}})?$type_mapping_ref->{$match_ref->{traffic_light}}:
+	    (defined $type_mapping_ref->{$match_ref->{access}})?$type_mapping_ref->{$match_ref->{access}}:'';
         
         my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => 'dbis', generic_attributes => { access => $access_info }});
 

@@ -116,12 +116,18 @@ sub cgiapp_init {
         $remote_ip = $1;
     }
 
+    if ($forwarded_for && $forwarded_for =~ /\d+\.\d+\.\d+\.\d+/){
+	($remote_ip) = split(',',$forwarded_for);
+    }
+    
+    $logger->debug("Remote IP: $remote_ip");
+    
     $self->param('remote_ip',$remote_ip);
     $self->param('servername',$r->get_server_name);
     
     my $sessionID    = $r->cookies->{sessionID} || '';
 
-    my $session      = OpenBib::Session->new({ sessionID => $sessionID , view => $view, config => $config });
+    my $session      = OpenBib::Session->new({ sessionID => $sessionID , view => $view, config => $config, remote_ip => $remote_ip });
 
     $self->param('session',$session);
 
@@ -319,8 +325,27 @@ sub cgiapp_init {
         $logger->error("No SessionID after initialization");
     }
 
-    $logger->debug("Main objects initialized");    
+    # Session abgelaufen?
+    #$session->is_expired;
+    if (0 == 1 && $session->is_expired){
+	if ($self->param('representation') eq "html"){
 
+	    my $scheme = ($config->get('use_https'))?'https':$self->param('scheme');
+	    
+	    my $dispatch_url = $scheme."://".$self->param('servername').$self->param('path_prefix')."/".$config->get('logout_loc').".html?l=".$self->param('lang').";expired=1";
+	    
+	    $logger->debug("Session expired. Force logout: ".$self->param('url')." - ".$dispatch_url);
+	    
+	    $self->param('dispatch_url',$dispatch_url);
+	}
+	else {
+	    $self->param('default_runmode','show_warning');
+	    $self->param('warning_message',$msg->maketext("Sitzung abgelaufen."));
+	}
+    }
+    
+    $logger->debug("Main objects initialized");        
+    
     if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);

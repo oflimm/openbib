@@ -41,6 +41,11 @@ __PACKAGE__->table("sessioninfo");
   data_type: 'timestamp'
   is_nullable: 1
 
+=head2 viewname
+
+  data_type: 'text'
+  is_nullable: 1
+
 =head2 createtime_year
 
   data_type: 'smallint'
@@ -56,9 +61,9 @@ __PACKAGE__->table("sessioninfo");
   data_type: 'smallint'
   is_nullable: 1
 
-=head2 viewname
+=head2 network
 
-  data_type: 'text'
+  data_type: 'cidr'
   is_nullable: 1
 
 =cut
@@ -75,14 +80,16 @@ __PACKAGE__->add_columns(
   { data_type => "varchar", is_nullable => 1, size => 70 },
   "createtime",
   { data_type => "timestamp", is_nullable => 1 },
+  "viewname",
+  { data_type => "text", is_nullable => 1 },
   "createtime_year",
   { data_type => "smallint", is_nullable => 1 },
   "createtime_month",
   { data_type => "smallint", is_nullable => 1 },
   "createtime_day",
   { data_type => "smallint", is_nullable => 1 },
-  "viewname",
-  { data_type => "text", is_nullable => 1 },
+  "network",
+  { data_type => "cidr", is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -97,86 +104,9 @@ __PACKAGE__->add_columns(
 
 __PACKAGE__->set_primary_key("id");
 
-=head1 RELATIONS
 
-=head2 eventlogjsons
-
-Type: has_many
-
-Related object: L<OpenBib::Schema::Statistics::Result::Eventlogjson>
-
-=cut
-
-__PACKAGE__->has_many(
-  "eventlogjsons",
-  "OpenBib::Schema::Statistics::Result::Eventlogjson",
-  { "foreign.sid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-=head2 eventlogs
-
-Type: has_many
-
-Related object: L<OpenBib::Schema::Statistics::Result::Eventlog>
-
-=cut
-
-__PACKAGE__->has_many(
-  "eventlogs",
-  "OpenBib::Schema::Statistics::Result::Eventlog",
-  { "foreign.sid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-=head2 searchfields
-
-Type: has_many
-
-Related object: L<OpenBib::Schema::Statistics::Result::Searchfield>
-
-=cut
-
-__PACKAGE__->has_many(
-  "searchfields",
-  "OpenBib::Schema::Statistics::Result::Searchfield",
-  { "foreign.sid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-=head2 searchterms
-
-Type: has_many
-
-Related object: L<OpenBib::Schema::Statistics::Result::Searchterm>
-
-=cut
-
-__PACKAGE__->has_many(
-  "searchterms",
-  "OpenBib::Schema::Statistics::Result::Searchterm",
-  { "foreign.sid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-=head2 titleusages
-
-Type: has_many
-
-Related object: L<OpenBib::Schema::Statistics::Result::Titleusage>
-
-=cut
-
-__PACKAGE__->has_many(
-  "titleusages",
-  "OpenBib::Schema::Statistics::Result::Titleusage",
-  { "foreign.sid" => "self.id" },
-  { cascade_copy => 0, cascade_delete => 0 },
-);
-
-
-# Created by DBIx::Class::Schema::Loader v0.07046 @ 2018-10-24 09:21:04
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:kzmbuNOpQS3fNFJD0P/w1A
+# Created by DBIx::Class::Schema::Loader v0.07051 @ 2025-02-14 12:48:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6VSXP2hf6y0dSYVtlJr6GQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -15,6 +15,7 @@ CREATE INDEX sessioninfo_createtime_year ON sessioninfo (createtime_year);
 CREATE INDEX sessioninfo_createtime_month ON sessioninfo (createtime_month);
 CREATE INDEX sessioninfo_createtime_day ON sessioninfo (createtime_day);
 CREATE INDEX sessioninfo_viewname ON sessioninfo (viewname);
+CREATE INDEX sessioninfo_network ON sessioninfo USING gist (network inet_ops);
 
 -------------------------------------------------
 
@@ -100,5 +101,14 @@ CREATE INDEX loans_groupid ON loans (groupid);
 CREATE INDEX loans_titleid ON loans (titleid);
 CREATE INDEX loans_dbname ON loans (dbname);
 CREATE INDEX loans_isbn ON loans (isbn);
+
+-------------------------------------------------
+
+ALTER TABLE networkinfo ADD PRIMARY KEY (id);
+CREATE INDEX networkinfo_network ON networkinfo USING gist (network inet_ops);
+CREATE INDEX networkinfo_country ON networkinfo (country);
+CREATE INDEX networkinfo_country_name ON networkinfo (country_name);
+CREATE INDEX networkinfo_continent ON networkinfo (continent);
+CREATE INDEX networkinfo_is_eu ON networkinfo (is_eu);
 
 vacuum analyze;

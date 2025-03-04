@@ -32,7 +32,7 @@
        request_base.push("db=${thisdb}");
     END;
 
-    request_base = request_base.join(";");
+    request_base = request_base.join('&');
 
     start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
     end_range       = nav.current_page*queryoptions.get_option('num');

@@ -30,7 +30,7 @@
        request_base.push("db=${thisdb}");
     END;
 
-    request_base = request_base.join(";");
+    request_base = request_base.join('&');
 
     start_range     = queryoptions.get_option('page')*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
     end_range       = start_range - 1 + hits;

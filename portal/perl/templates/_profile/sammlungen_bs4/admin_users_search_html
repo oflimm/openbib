@@ -30,7 +30,7 @@
      searchfields.push("commonname=${commonname}");
    END;
 
-   query_args_base = searchfields.join(';');
+   query_args_base = searchfields.join('&');
 
    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
 -%]

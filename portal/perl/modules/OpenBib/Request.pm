@@ -133,7 +133,7 @@ sub args {
         }
     }
 
-    return join(";",@parameters);
+    return join('&',@parameters);
 }
 
 sub escaped_args {
@@ -146,7 +146,7 @@ sub escaped_args {
         }
     }
 
-    return join(";",@parameters);
+    return join('&',@parameters);
 }
 
 sub get_server_name {

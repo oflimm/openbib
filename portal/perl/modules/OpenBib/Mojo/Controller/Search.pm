@@ -856,7 +856,7 @@ sub xxxget_modified_querystring {
         }
     }
     
-    return join(";",@cgiparams) if (@cgiparams);
+    return join('&',@cgiparams) if (@cgiparams);
 
     return 'blabla';
 }

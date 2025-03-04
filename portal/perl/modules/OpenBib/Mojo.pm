@@ -624,7 +624,7 @@ sub process_uri($c) {
 
     my $location = "$scheme://$servername$location_uri";
     if (@$args_ref){
-	my $args = join(';',@$args_ref);
+	my $args = join('&',@$args_ref);
         $location.="?$args";
     }
 

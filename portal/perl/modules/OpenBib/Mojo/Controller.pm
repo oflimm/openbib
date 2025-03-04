@@ -957,7 +957,7 @@ sub to_cgi_querystring {
         push @cgiparams, "$arg_ref->{param}=".uri_escape_utf8($arg_ref->{val});
     }   
         
-    return join(';',@cgiparams);
+    return join('&',@cgiparams);
 }
 
 sub to_cgi_hidden_input {

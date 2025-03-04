@@ -333,7 +333,7 @@ sub to_cgi_querystring {
 
     my @cgiparams = $self->to_cgi_params($arg_ref);
     
-    return join(";",@cgiparams);
+    return join('&',@cgiparams);
 }
 
 sub get_schema {

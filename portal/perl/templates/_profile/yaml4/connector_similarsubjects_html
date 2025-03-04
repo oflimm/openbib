@@ -81,7 +81,7 @@
    searchterm    = uri_escape(item);
    searchprefix  = config.get('searchfield').subjectstring.prefix;
 
-   localurl  = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};page=1;db=${database};${searchprefix}=${searchterm}";
+   localurl  = "${path_prefix}/${config.get('search_loc')}.html?l=${lang}&page=1&db=${database}&${searchprefix}=${searchterm}";
 
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>

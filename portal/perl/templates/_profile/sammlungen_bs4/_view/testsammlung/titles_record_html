@@ -165,7 +165,7 @@ $(document).ready(function(){
        field = provenance.${'T4306'}.first ;
        searchterm    = uri_escape(field.content);
        searchprefix  = config.get('searchfield').subjectstring.prefix;
-       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};${searchprefix}=${searchterm}";
+       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang}&${searchprefix}=${searchterm}";
 
        resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${field.id}.html?l=${lang}";
        normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Sammlung-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
@@ -175,7 +175,7 @@ $(document).ready(function(){
        field = provenance.${'T4307'}.first ;
        searchterm    = uri_escape(field.content);
        searchprefix  = config.get('searchfield').corporatebodystring.prefix;
-       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};${searchprefix}=${searchterm}";
+       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang}&${searchprefix}=${searchterm}";
 
        resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${field.id}.html?l=${lang}";
        normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
@@ -185,7 +185,7 @@ $(document).ready(function(){
        field = provenance.${'T4308'}.first ;
        searchterm    = uri_escape(field.content);
        searchprefix  = config.get('searchfield').personstring.prefix;
-       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};${searchprefix}=${searchterm}";
+       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang}&${searchprefix}=${searchterm}";
        resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${field.id}.html?l=${lang}";
        normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
        owner.push("<a href=\"${localurl}\">${field.content}</a>&nbsp;${normdataicon}");

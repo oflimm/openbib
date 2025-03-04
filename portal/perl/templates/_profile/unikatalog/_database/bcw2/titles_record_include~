@@ -375,7 +375,7 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
 <div class="d-flex ob-fulltitle_actions mt-4">
 
    <div class="pe-1">
-         <a  class="btn btn-primary" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span>[% msg.maketext("Merken") %]</span></a>
+         <a  class="btn btn-primary" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span>[% msg.maketext("Merken") %]</span></a>
   </div>
 
 [% IF fulltext %]

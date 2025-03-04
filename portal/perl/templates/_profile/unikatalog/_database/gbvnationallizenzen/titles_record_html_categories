@@ -55,7 +55,7 @@ $(wikipedia_articles).prop("hidden", false)
 [%-
 
    request_base = config.get('search_defaultparams');
-   request_base = "l=${lang};profile=${current_profile};${request_base}";
+   request_base = "l=${lang}&profile=${current_profile}&${request_base}";
 
    IF NOT viewdbs ;
        viewdbs = config.get_dbs_of_view(view);
@@ -729,7 +729,7 @@ FOREACH field IN normdata;
             searchterm    = thisisbn;
             searchprefix  = config.get('searchfield').freesearch.prefix;
 
-            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
 
 	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
 	  ELSIF thisissn ;
@@ -737,7 +737,7 @@ FOREACH field IN normdata;
             searchterm    = thisissn;
             searchprefix  = config.get('searchfield').freesearch.prefix;
 
-            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
 
 	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
 	  END;
@@ -872,7 +872,7 @@ FOREACH field IN normdata;
          END;
 
          zeigeueberordnung        = msg.maketext('Zeige Überordnung');
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};dop=or;fs=${searchterms.join(' ')}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&dop=or&fs=${searchterms.join(' ')}";
          content   = "<a class=\"btn btn-primary\" href=\"${localurl}\">${zeigeueberordnung}</a>";
          IF NOT content_map.${'T5001'} ;
 	    content_map.${'T5001'} = [];
@@ -885,7 +885,7 @@ FOREACH field IN normdata;
 
          baendeanzeigen = msg.maketext('Bände/Stücktitel anzeigen');
 	 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1;num=20;srt=order_desc;profile=${searchprofileid_of_database};${searchprefix}=${record.id}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1&num=20&srt=order_desc&profile=${searchprofileid_of_database}&${searchprefix}=${record.id}";
          content   = "<a class=\"btn btn-primary\" href=\"${localurl}\">${baendeanzeigen}</a>";
          IF NOT content_map.${'T5002'} ;
 	    content_map.${'T5002'} = [];
@@ -911,7 +911,7 @@ FOREACH field IN normdata;
             super_title = "Zur &Uuml;berordnung";
          END ;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
          content   = "<a class=\"inturl\" href=\"${localurl}\">${super_title}</a>";
          IF NOT content_map.${'T5005'} ;
 	    content_map.${'T5005'} = [];

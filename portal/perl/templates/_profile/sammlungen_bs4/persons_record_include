@@ -70,7 +70,7 @@ FOREACH category IN categories;
          wikicontent = content.split(', ').reverse.join(' ');
          wikicontent = wikicontent.replace('¬','');
          wikipediaurl = "http://${lang}.wikipedia.org/w/index.php?search=${wikicontent}";
-         icon = "<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\" title=\"Person in Wikipedia\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>";
+         icon = "<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520&url=${uri_escape(wikipediaurl)}\" target=\"_blank\" title=\"Person in Wikipedia\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>";
 	 content = "${content} ${icon}";
 
     CASE "P0806";
@@ -123,7 +123,7 @@ FOREACH category IN categories;
          searchterm    = record.id;
          searchprefix  = config.get('searchfield').personid.prefix;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;db=${database};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}&page=1&db=${database}&${searchprefix}=${searchterm}";
          desc      = msg.maketext("Titel ist in diesem Katalog mit der Person verknüpft");
          IF content > 1 ;
              desc      = msg.maketext("Titel sind in diesem Katalog mit der Person verknüpft");
@@ -163,7 +163,7 @@ END;
          searchterm    = record.id;
          searchprefix  = config.get('searchfield').personid.prefix;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;fdb=${database};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}&page=1&fdb=${database}&${searchprefix}=${searchterm}";
          desc      = msg.maketext("Titel ist in diesem Katalog mit der Person verknüpft");
          IF content > 1 ;
              desc      = msg.maketext("Titel sind in diesem Katalog mit der Person verknüpft");

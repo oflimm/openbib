@@ -38,13 +38,13 @@ f&uuml;r Sie als [_1]E-Book[_2] bereit.","<a href=\"http://unikatalog.ub.uni-koe
 <h4>[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h4>
 
 <p>
-[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/ezb/${config.get('classifications_loc')}.html?l=${lang};type=cloud;access_green=1;access_yellow=1\">","</a>") %]
+[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizenzierten Zeitschriften[_2] zu","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/ezb/${config.get('classifications_loc')}.html?l=${lang}&type=cloud&access_green=1&access_yellow=1\">","</a>") %]
 </p>
 
 <h4>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h4>
 
 <p>
 [% msg.maketext("Recherchieren Sie fachspezifisch in einer Vielzahl von [_1]freien und
-lizenzierten Datenbanken[_2]","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/dbis/${config.get('classifications_loc')}.html?l=${lang};type=cloud;access_green=1;access_yellow=1;access_national=1\">","</a>") %]
+lizenzierten Datenbanken[_2]","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/dbis/${config.get('classifications_loc')}.html?l=${lang}&type=cloud&access_green=1&access_yellow=1&access_national=1\">","</a>") %]
 </p>
 

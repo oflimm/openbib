@@ -103,7 +103,7 @@ FOREACH category IN categories;
              desc      = msg.maketext("Titel sind in diesem Katalog mit dem Schlagwort verknüpft");
          END;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;db=${database};fs=${searchprefix}:${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}&page=1&db=${database}&fs=${searchprefix}:${searchterm}";
          content   = "<a href=\"${localurl}\">${content} ${desc}</a>";
     END;
 

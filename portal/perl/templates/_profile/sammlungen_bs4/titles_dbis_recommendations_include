@@ -35,7 +35,7 @@ gefunden werden.") %]
 
 <p>
 [% msg.maketext("Keine geeignete Fachdatenbank dabei? Eine thematisch
-gegliederte Übersicht <b>[_1]aller Fachdatenbanken[_2]</b> kann Ihnen weiterhelfen!","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/dbis/classifications.html?l=${lang};type=cloud;access_green=1;access_yellow=1;access_national=1\">","</a>")
+gegliederte Übersicht <b>[_1]aller Fachdatenbanken[_2]</b> kann Ihnen weiterhelfen!","<a href=\"${path_prefix}/${config.get('databases_loc')}/id/dbis/classifications.html?l=${lang}&type=cloud&access_green=1&access_yellow=1&access_national=1\">","</a>")
 %]
 </p>
 

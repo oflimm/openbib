@@ -359,7 +359,7 @@ $(document).ready(function(){
        </div>
 [% IF NOT with_cartitems_delete %]
        <div class="pr-1">
-          <a  class="btn btn-light pr-2" ic-transform-response="return incollection();" ic-get-from="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /><span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
+          <a  class="btn btn-light pr-2" ic-transform-response="return incollection();" ic-get-from="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /><span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
        </div>
 [% END %]
 <!--       <div class="pr-1">

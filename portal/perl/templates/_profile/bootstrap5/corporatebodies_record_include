@@ -48,7 +48,7 @@ FOREACH category IN categories;
 
          wikicontent = content.replace('¬','');
          wikipediaurl = "http://${lang}.wikipedia.org/w/index.php?search=${wikicontent}";
-         icon = "<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\" title=\"Körperschaft in Wikipedia\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>";
+         icon = "<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520&url=${uri_escape(wikipediaurl)}\" target=\"_blank\" title=\"Körperschaft in Wikipedia\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>";
 	 content = "${content} ${icon}";
 	 
     CASE "C5000";
@@ -60,7 +60,7 @@ FOREACH category IN categories;
              desc      = msg.maketext("Titel sind in diesem Katalog mit der Körperschaft verknüpft");
          END;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;fdb=${database};{searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}&page=1&fdb=${database}&{searchprefix}=${searchterm}";
          content   = "<a href=\"${localurl}\">${content} ${desc}</a>";
     END;
 
@@ -94,7 +94,7 @@ END;
          searchterm    = record.id;
          searchprefix  = config.get('searchfield').corporatebodyid.prefix;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;fdb=${database};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}&page=1&fdb=${database}&${searchprefix}=${searchterm}";
          desc      = msg.maketext("Titel ist in diesem Katalog mit der Person verknüpft");
          IF content > 1 ;
              desc      = msg.maketext("Titel sind in diesem Katalog mit der Klassifikation verknüpft");

@@ -72,7 +72,7 @@
        gndid   = provenance.${'T4306'}.${'g'};       
        searchterm    = uri_escape(content);
        searchprefix  = config.get('searchfield').subjectstring.prefix;
-       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};${searchprefix}=${searchterm}";
+       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang}&${searchprefix}=${searchterm}";
 
        normdataicon = "";
 
@@ -91,7 +91,7 @@
        gndid   = provenance.${'T4307'}.${'g'};       
        searchterm    = uri_escape(content);
        searchprefix  = config.get('searchfield').corporatebodystring.prefix;
-       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};${searchprefix}=${searchterm}";
+       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang}&${searchprefix}=${searchterm}";
 
        normdataicon = "";
        
@@ -110,7 +110,7 @@
        gndid   = provenance.${'T4308'}.${'g'};       
        searchterm    = uri_escape(content);
        searchprefix  = config.get('searchfield').personstring.prefix;
-       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};${searchprefix}=${searchterm}";
+       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang}&${searchprefix}=${searchterm}";
 
        normdataicon = "";
        

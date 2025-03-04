@@ -28,7 +28,7 @@ searchprefix  = config.get('searchfield').personid.prefix;
 [%-
 
          searchterm    = dbitem.id;
-         localurl      = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;db=${dbitem.dbname};fs=${searchprefix}:${searchterm}";
+         localurl      = "${path_prefix}/${config.get('search_loc')}.html?${request_base}&page=1&db=${dbitem.dbname}&fs=${searchprefix}:${searchterm}";
 
 -%]
 <tr><td align="left"><a href="[% localurl %]">[% dbitem.dbdesc.full %]</a></td><td align="right">[% dbitem.titcount %]</td></tr>

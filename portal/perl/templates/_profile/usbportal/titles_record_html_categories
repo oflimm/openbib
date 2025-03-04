@@ -15,7 +15,7 @@
 <table class="result-details" style="margin:-0.2em 3em 0.2em 0;padding-bottom:0;">
 <tr><th>id</th><td>[% record.id %]</td></tr>
 [%-
-request_base = "${view_config.$view.zms_search_url}?l=de;view=${view};num=10;page=1";
+request_base = "${view_config.$view.zms_search_url}?l=de&view=${view}&num=10&page=1";
 local_searchprofile = config.get_searchprofile_of_database(record.database) ;
 view_searchprofile  = config.get_searchprofile_of_view(view) ;
 
@@ -50,9 +50,9 @@ FOREACH category IN categories;
 
          wikipediaurl = "http://${lang}.wikipedia.org/wiki/index.php?search=${wikicontent}";
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}searchall=1;${searchprefix}=${searchterm}";
-         localurl  = "${request_base};${searchprefix}=${searchterm}";
-#         localurl  = "${request_base};fs=${searchterm}";
-         content   = "${rssfeed}<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         localurl  = "${request_base}&${searchprefix}=${searchterm}";
+#         localurl  = "${request_base}&fs=${searchterm}";
+         content   = "${rssfeed}<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520&url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
@@ -70,8 +70,8 @@ FOREACH category IN categories;
 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${thisid}.html";
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}searchall=1;${searchprefix}=${searchterm}";
-         localurl  = "${request_base};db=${database};${searchprefix}=${searchterm}";
-#         localurl  = "${request_base};fs=${searchterm}";
+         localurl  = "${request_base}&db=${database}&${searchprefix}=${searchterm}";
+#         localurl  = "${request_base}&fs=${searchterm}";
          content   = "${rssfeed}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0331";
@@ -81,17 +81,17 @@ FOREACH category IN categories;
          IF content.match("---&gt;: ") ;
             previssues = content.split("---&gt;: ");
             globalurl  = "${path_prefix}/${config.get('search_loc')}.html?searchall=1;hststring=${previssues.1}";
-            localurl   = "${path_prefix}/${config.get('indexes_loc')}?db=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;num=${qopts.num}";
+            localurl   = "${path_prefix}/${config.get('indexes_loc')}?db=${record.database}&searchtitofcnt=${previssues.1.replace('&amp&','%26')}*&category=T0331&category=T0310&num=${qopts.num}";
             content    = "{previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
          END ;
           
     CASE "T0540";
          wikisearchurl = "http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}";
-         content   = "<a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}?type=521;url=${uri_escape(wikisearchurl)}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
+         content   = "<a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}?type=521&url=${uri_escape(wikisearchurl)}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
 
     CASE "T0543";
          ezb_url = "${config.get('ezb_exturl')}&jq_term1=${content}";
-         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=530;url=${uri_escape(ezb_exturl)}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=530&url=${uri_escape(ezb_exturl)}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
     CASE [ "T0662" "T2662" ];
          thisindicator = item.indicator ;
@@ -129,7 +129,7 @@ FOREACH category IN categories;
          searchterm    = item.content.replace('&amp;','%26');
          searchprefix  = config.get('searchfield').ft4100.prefix;
 
-         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}db=${database};${searchprefix}=${searchterm}";
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}db=${database}&${searchprefix}=${searchterm}";
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
@@ -154,7 +154,7 @@ FOREACH category IN categories;
          searchterm    = item.content.replace('&amp;','%26');
          searchprefix  = config.get('searchfield').ft4300.prefix;
 
-         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}db=${database};${searchprefix}=${searchterm}";
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}db=${database}&${searchprefix}=${searchterm}";
 
          NEXT IF rswkswt_done.${thiscontent} == 1;
 	 content       = "<a href=\"${localurl}\">${content}</a>";
@@ -180,8 +180,8 @@ FOREACH category IN categories;
 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${thisid}.html";
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}searchall=1;${searchprefix}=${searchterm}";
-         localurl  = "${request_base};db=${database};${searchprefix}=${searchterm}";
-#         localurl  = "${request_base};fs=${searchterm}";
+         localurl  = "${request_base}&db=${database}&${searchprefix}=${searchterm}";
+#         localurl  = "${request_base}&fs=${searchterm}";
          content   = " ${rssfeed}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
          rswkswt_done.${thiscontent} = 1;
 
@@ -200,7 +200,7 @@ FOREACH category IN categories;
          searchprefix  = config.get('searchfield').classificationstring.prefix;
 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}.html";
-         localurl  = "${request_base};db=${database};${searchprefix}=${searchterm}";
+         localurl  = "${request_base}&db=${database}&${searchprefix}=${searchterm}";
          content   = "${rssfeed}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T1600";
@@ -219,15 +219,15 @@ FOREACH category IN categories;
             searchterms.push("id:${superid.content}");
          END;
 
-         localurl  = "${request_base}?l=de;view=${view};db=${database};dop=or;fs=${searchterms.join(' ')}";
+         localurl  = "${request_base}?l=de&view=${view}&db=${database}&dop=or&fs=${searchterms.join(' ')}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').subid.prefix;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1;num=20;srt=order_asc;profile=${local_searchprofile};${searchprefix}=${record.id}";
-         localurl  = "${request_base}?l=de;view=${view};db=${database};fs=${searchprefix}:${record.id}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1&num=20&srt=order_asc&profile=${local_searchprofile}&${searchprefix}=${record.id}";
+         localurl  = "${request_base}?l=de&view=${view}&db=${database}&fs=${searchprefix}:${record.id}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5005";
@@ -246,7 +246,7 @@ FOREACH category IN categories;
             super_title = "Zur &Uuml;berordnung";
          END ;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
          content   = "<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${super_title}</span></a>";
 
     CASE ;

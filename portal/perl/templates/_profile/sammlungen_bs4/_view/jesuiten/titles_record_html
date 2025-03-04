@@ -184,7 +184,7 @@ $('#normdataModal').on('show.bs.modal', function (event) {
        field = provenance.${'T4306'}.first ;
        searchterm    = uri_escape(field.content);
        searchprefix  = config.get('searchfield').subjectstring.prefix;
-       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};${searchprefix}=${searchterm}";
+       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang}&${searchprefix}=${searchterm}";
 
        resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${field.id}";
        normdataicon = "&nbsp;<a href=\"${resourceurl}.html?l=${lang}\" title=\"Schlagwort-Information\" data-toggle=\"modal\" data-target=\"#normdataModal\" data-formattitle=\"Schlagwortdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
@@ -194,7 +194,7 @@ $('#normdataModal').on('show.bs.modal', function (event) {
        field = provenance.${'T4307'}.first ;
        searchterm    = uri_escape(field.content);
        searchprefix  = config.get('searchfield').corporatebodystring.prefix;
-       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};${searchprefix}=${searchterm}";
+       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang}&${searchprefix}=${searchterm}";
 
        resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${field.id}";
        normdataicon = "&nbsp;<a href=\"${resourceurl}.html?l=${lang}\" title=\"K&ouml;rperschafts-Information\" data-toggle=\"modal\" data-target=\"#normdataModal\" data-formattitle=\"Körperschaftsdaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
@@ -204,7 +204,7 @@ $('#normdataModal').on('show.bs.modal', function (event) {
        field = provenance.${'T4308'}.first ;
        searchterm    = uri_escape(field.content);
        searchprefix  = config.get('searchfield').personstring.prefix;
-       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};${searchprefix}=${searchterm}";
+       localurl      = "${path_prefix}/${config.get('search_loc')}.html?l=${lang}&${searchprefix}=${searchterm}";
        resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${field.id}";
        normdataicon = "&nbsp;<a href=\"${resourceurl}.html?l=${lang}\" title=\"Personen-Information\" data-toggle=\"modal\" data-target=\"#normdataModal\" data-formattitle=\"Personendaten\" data-formaturl=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
        owner.push("<a href=\"${localurl}\">${field.content}</a>&nbsp;${normdataicon}");

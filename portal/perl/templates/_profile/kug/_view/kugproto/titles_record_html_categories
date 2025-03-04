@@ -51,7 +51,7 @@ $('#normdataModal').on('show.bs.modal', function (event) {
 [%-
 
    request_base = config.get('search_defaultparams');
-   request_base = "l=${lang};profile=${current_profile};${request_base}";
+   request_base = "l=${lang}&profile=${current_profile}&${request_base}";
 
    IF NOT viewdbs ;
        viewdbs = config.get_dbs_of_view(view);
@@ -325,13 +325,13 @@ FOREACH field IN normdata;
 #         IF content.match("---&gt;: ") ;
 #            previssues = content.split("---&gt;: ");
 #            globalurl  = "${path_prefix}/${config.get('search_loc')}.html?searchall=1;hststring=${previssues.1}";
-#            localurl   = "${path_prefix}/${config.get('indexes_loc')}?fdb=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;num=${qopts.num}";
+#            localurl   = "${path_prefix}/${config.get('indexes_loc')}?fdb=${record.database}&searchtitofcnt=${previssues.1.replace('&amp&','%26')}*&category=T0331&category=T0310&num=${qopts.num}";
 #            content    = "&nbsp;${previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
 #         END ;
           
     CASE "T0540";
          wikipediaurl = "http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}";
-         content   = "${highlightquery(searchquery,content)} <span><a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}?type=521;url=${uri_escape(wikipediaurl)}\" target=\"_blank\" title=\"Titel in Wikipedia\"><img src=\"${config.get_icon('wikipedia',view,sysprofile)}\" alt=\"Mashup mit Wikipedia\" /></a></span>";
+         content   = "${highlightquery(searchquery,content)} <span><a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}?type=521&url=${uri_escape(wikipediaurl)}\" target=\"_blank\" title=\"Titel in Wikipedia\"><img src=\"${config.get_icon('wikipedia',view,sysprofile)}\" alt=\"Mashup mit Wikipedia\" /></a></span>";
          content_map.${'T0540'}.push(content);
          IF NOT content_map.${'T0540'} ;
 	    content_map.${'T0540'} = [];
@@ -339,7 +339,7 @@ FOREACH field IN normdata;
 
     CASE [ "T0543" "T0585" ];
          ezburl  = "${config.get('ezb_exturl')}&jq_term1=${content}";
-         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=530;url=${uri_escape(ezburl)}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=530&url=${uri_escape(ezburl)}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
          IF NOT content_map.${'T0543'} ;
 	    content_map.${'T0543'} = [];
 	 END;
@@ -519,7 +519,7 @@ FOREACH field IN normdata;
          END;
 
          zeigeueberordnung        = msg.maketext('Zeige Überordnung');
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};dop=or;fs=${searchterms.join(' ')}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&dop=or&fs=${searchterms.join(' ')}";
          content   = "<a class=\"btn btn-primary\" href=\"${localurl}\">${zeigeueberordnung}</a>";
          IF NOT content_map.${'T5001'} ;
 	    content_map.${'T5001'} = [];
@@ -533,7 +533,7 @@ FOREACH field IN normdata;
          zeige = msg.maketext('Zeige');
          baende = msg.maketext('Bände');
 	 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1;num=20;srt=order_asc;profile=${searchprofileid_of_database};${searchprefix}=${record.id}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1&num=20&srt=order_asc&profile=${searchprofileid_of_database}&${searchprefix}=${record.id}";
          content   = "<a class=\"btn btn-primary\" href=\"${localurl}\">${zeige} ${content} ${baende}</a>";
          IF NOT content_map.${'T5002'} ;
 	    content_map.${'T5002'} = [];
@@ -556,7 +556,7 @@ FOREACH field IN normdata;
             super_title = "Zur &Uuml;berordnung";
          END ;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
          content   = "<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${super_title}</span></a>";
          IF NOT content_map.${'T5005'} ;
 	    content_map.${'T5005'} = [];

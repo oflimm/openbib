@@ -473,7 +473,7 @@
 [%   END # record_from_cache %]	    
 [% IF NOT with_cartitems_delete && NOT hide_hit && NOT record_from_cache %]
 	    <div class="pe-1">
-              <a  class="btn btn-primary pe-2" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span>[% msg.maketext("Merken") %]</span></a>
+              <a  class="btn btn-primary pe-2" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span>[% msg.maketext("Merken") %]</span></a>
 	    </div>
 [% END %]
 

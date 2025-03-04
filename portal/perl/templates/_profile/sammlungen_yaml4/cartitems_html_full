@@ -89,7 +89,7 @@ FOREACH category IN categories;
          wikipediaurl = "http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel";
          globalurl = "${path_prefix}/${config.get('search_loc')}.html?searchall=1;verf=%22${item.content}%22";
          localurl  = "${path_prefix}/databases/id/${record.database}/persons/id/${thisid}.html";
-         content   = "${rssfeed}<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+         content   = "${rssfeed}<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520&url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
@@ -110,11 +110,11 @@ FOREACH category IN categories;
 
     CASE "T0540";
          wikipediaurl = "http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}";
-         content   = "<a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}?type=521;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${content}";
+         content   = "<a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}?type=521&url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${content}";
 
     CASE "T0543";
          ezburl = "${config.get('ezb_exturl')}&jq_term1=${content}";
-         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=530;url=${uri_escape(ezburl)}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=530&url=${uri_escape(ezburl)}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
     CASE [ "T0662" "T2662" ];
          thisindicator = item.indicator ;
@@ -143,7 +143,7 @@ FOREACH category IN categories;
          END ;
 
     CASE "E4100";
-         localurl    = "${path_prefix}/${config.get('indexes_loc')}?database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};num=${qopts.num}";
+         localurl    = "${path_prefix}/${config.get('indexes_loc')}?database=${record.database}&searchtitofcnt=${content.replace('&amp&','%26')}&category=${category}&num=${qopts.num}";
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
@@ -200,10 +200,10 @@ FOREACH category IN categories;
          content   = content ;
 
     CASE "T5001";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${path_prefix}/${config.get('indexes_loc')}?database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${path_prefix}/${config.get('indexes_loc')}?database=${record.database}&supertit=${record.id}&generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
-         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${path_prefix}/${config.get('indexes_loc')}?database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${path_prefix}/${config.get('indexes_loc')}?database=${record.database}&subtit=${record.id}&generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
    END;
 

@@ -35,7 +35,7 @@ FOREACH category IN categories;
          searchterm    = record.id;
          searchprefix  = config.get('searchfield').personid.prefix;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};page=1;db=${database};fs=${searchprefix}:${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}&page=1&db=${database}&fs=${searchprefix}:${searchterm}";
 
          content   = "<a href=\"${localurl}\">${content}</a>";
     END;
@@ -59,7 +59,7 @@ END;
 [%# USE dumper;dumper.dump(normset)%]
 [%
 
-    request_base = "page=1;num=20;srt=person_asc;";
+    request_base = "page=1&num=20&srt=person_asc;";
 
     searchterm        = normset.${"P0800"}.first.content;
     searchprefix      = config.get('searchfield').personstring.prefix;

@@ -79,7 +79,7 @@
    searchterm    = uri_escape(item);
    searchprefix  = config.get('searchfield').personstring.prefix;
 
-   localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base};db=${database};${searchprefix}=${searchterm}";
+   localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}&db=${database}&${searchprefix}=${searchterm}";
 
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel haben folgende Person als Verfasser</span><a href="[% localurl %]" class="tag" title="[% itemcount %] Titel haben die folgende Person als Verfasser [% item %]">[% item %]</a></li>

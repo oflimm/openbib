@@ -33,7 +33,7 @@ unknown = 'Informationen über Zugriffsrechte liegen nicht vor.'
 
 [%-
 request_base = config.get('search_defaultparams');
-request_base = "l=${lang};${request_base}sb=eds;";
+request_base = "l=${lang}&${request_base}sb=eds;";
 
 IF NOT viewdbs ;
 viewdbs = config.get_dbs_of_view(view);
@@ -166,7 +166,7 @@ END;%]
       END;
 
       icons = "<div class=\"float-right\"><a
-            href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\"
+            href=\"${path_prefix}/${config.get('redirect_loc')}?type=520&url=${uri_escape(wikipediaurl)}\"
             target=\"_blank\"><img
                src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\"
                alt=\"Mashup mit Wikipedia\" /></a>${rssfeed}${normdataicon}</div>";
@@ -207,14 +207,14 @@ END;%]
       # IF content.match("---&gt;: ") ;
       # previssues = content.split("---&gt;: ");
       # globalurl = "${path_prefix}/${config.get('search_loc')}.html?searchall=1;hststring=${previssues.1}";
-      # localurl ="${path_prefix}/${config.get('indexes_loc')}?fdb=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;num=${qopts.num}";
+      # localurl ="${path_prefix}/${config.get('indexes_loc')}?fdb=${record.database}&searchtitofcnt=${previssues.1.replace('&amp&','%26')}*&category=T0331&category=T0310&num=${qopts.num}";
       # content = "&nbsp;${previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
       # END ;
 
       CASE "T0540";
       wikipediaurl = "http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}";
       content = "<div class=\"float-right\"><a class=\"isbn\"
-            href=\"${path_prefix}/${config.get('redirect_loc')}?type=521;url=${uri_escape(wikipediaurl)}\"
+            href=\"${path_prefix}/${config.get('redirect_loc')}?type=521&url=${uri_escape(wikipediaurl)}\"
             target=\"_blank\"><img src=\"${config.get_icon('wikipedia',view,sysprofile)}\" alt=\"Mashup mit
                Wikipedia\" /></a></div>${highlightquery(searchquery,content)}";
 
@@ -223,7 +223,7 @@ END;%]
       content = "${content} <img
          src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\"
          title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'>
-      (<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=530;url=${uri_escape(ezburl)}\" class=\"ext\"
+      (<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=530&url=${uri_escape(ezburl)}\" class=\"ext\"
          title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\"
          target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 

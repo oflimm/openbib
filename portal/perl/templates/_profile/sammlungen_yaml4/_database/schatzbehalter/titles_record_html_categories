@@ -21,7 +21,7 @@
 
 [%-
    request_base = config.get('search_defaultparams');
-   request_base = "l=${lang};${request_base}";
+   request_base = "l=${lang}&${request_base}";
 
    IF NOT viewdbs ;
        viewdbs = config.get_dbs_of_view(view);
@@ -55,7 +55,7 @@ FOREACH category IN categories;
 
          resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('persons_loc')}/id/${thisid}";
          wikipediaurl = "http://${lang}.wikipedia.org/w/index.php?search=${wikicontent}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
          IF activefeed.2 ;
@@ -68,7 +68,7 @@ FOREACH category IN categories;
             normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Personen-Information\"><img src=\"${config.get('info_img')}\" alt=\"Info-Bild\" /></a>";
          END;
 
-         icons     = "<div class=\"float-right\"><a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${rssfeed}&nbsp;${normdataicon}</div>";
+         icons     = "<div class=\"float-right\"><a href=\"${path_prefix}/${config.get('redirect_loc')}?type=520&url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${path_prefix}/${config.get('connector_availabilityimage_loc')}/wikipedia/${wikicontent}?lang=${lang}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${rssfeed}&nbsp;${normdataicon}</div>";
          content   = "${icons}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
@@ -79,7 +79,7 @@ FOREACH category IN categories;
          searchprefix  = config.get('searchfield').corporatebodystring.prefix;
 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('corporatebodies_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
          IF activefeed.3 ;
@@ -103,17 +103,17 @@ FOREACH category IN categories;
 #         IF content.match("---&gt;: ") ;
 #            previssues = content.split("---&gt;: ");
 #            globalurl  = "${path_prefix}/${config.get('search_loc')}.html?searchall=1;hststring=${previssues.1}";
-#            localurl   = "${path_prefix}/${config.get('indexes_loc')}?fdb=${record.database};searchtitofcnt=${previssues.1.replace('&amp;','%26')}*;category=T0331;category=T0310;num=${qopts.num}";
+#            localurl   = "${path_prefix}/${config.get('indexes_loc')}?fdb=${record.database}&searchtitofcnt=${previssues.1.replace('&amp&','%26')}*&category=T0331&category=T0310&num=${qopts.num}";
 #            content    = "&nbsp;${previssues.0}--&gt;: <a href=\"${localurl}\">${previssues.1}</a>";
 #         END ;
           
     CASE "T0540";
          wikipediaurl = "http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}";
-         content   = "<div class=\"float-right\"><a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}?type=521;url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a></div>${highlightquery(searchquery,content)}";
+         content   = "<div class=\"float-right\"><a class=\"isbn\" href=\"${path_prefix}/${config.get('redirect_loc')}?type=521&url=${uri_escape(wikipediaurl)}\" target=\"_blank\"><img src=\"${config.get('wikipedia_img')}\" alt=\"Mashup mit Wikipedia\" /></a></div>${highlightquery(searchquery,content)}";
 
     CASE "T0543";
          ezburl  = "${config.get('ezb_exturl')}&jq_term1=${content}";
-         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=530;url=${uri_escape(ezburl)}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${path_prefix}/${config.get('redirect_loc')}?type=530&url=${uri_escape(ezburl)}\" class=\"ext\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
     CASE "T0501";
          content =
@@ -150,7 +150,7 @@ content.replace('http://www.aleki.uni-koeln.de/schatzbehalter/schluessel.gif','<
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').ft4100.prefix;
 
-         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
          IF bkdesc ;
@@ -173,7 +173,7 @@ content.replace('http://www.aleki.uni-koeln.de/schatzbehalter/schluessel.gif','<
          searchterm    = uri_escape(item.content);
          searchprefix  = config.get('searchfield').ft4300.prefix;
 
-         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         localurl    = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
 
          NEXT IF rswkswt_done.${thiscontent} == 1;
 	 content       = "<a href=\"${localurl}\">${content}</a>";
@@ -190,7 +190,7 @@ content.replace('http://www.aleki.uni-koeln.de/schatzbehalter/schluessel.gif','<
          searchprefix  = config.get('searchfield').subjectstring.prefix;
 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
          IF activefeed.4 ;
@@ -215,7 +215,7 @@ content.replace('http://www.aleki.uni-koeln.de/schatzbehalter/schluessel.gif','<
          searchprefix  = config.get('searchfield').classificationstring.prefix;
 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('classifications_loc')}/id/${thisid}";
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
 
          rssfeed = "" ;
          IF activefeed.5 ;
@@ -248,14 +248,14 @@ content.replace('http://www.aleki.uni-koeln.de/schatzbehalter/schluessel.gif','<
             searchterms.push("id:${superid.content}");
          END;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};dop=or;fs=${searchterms.join(' ')}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&dop=or&fs=${searchterms.join(' ')}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
          searchterm    = item.content;
          searchprefix  = config.get('searchfield').subid.prefix;
 
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1;num=20;srt=order_asc;profile=${searchprofileid_of_database};${searchprefix}=${record.id}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?page=1&num=20&srt=order_asc&profile=${searchprofileid_of_database}&${searchprefix}=${record.id}";
          content   = "<img style=\"vertical-align:bottom\" src=\"${config.get('follow_img')}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5005";
@@ -265,7 +265,7 @@ content.replace('http://www.aleki.uni-koeln.de/schatzbehalter/schluessel.gif','<
          searchprefix  = config.get('searchfield').id.prefix;
 
          super_title   = super.fields.${'0331'}.first.content
-         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
          content   = "<a href=\"${localurl}\"><span style=\"font-size:1.4em\">${super_title}</span></a>";
 
     CASE ;

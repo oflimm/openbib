@@ -13,7 +13,7 @@
 -%]
 
 [%-
-    request_base    = "num=${queryoptions.get_option('num')};srt=${queryoptions.get_option('srt')}_${queryoptions.get_option('srto')};" ;
+    request_base    = "num=${queryoptions.get_option('num')}&srt=${queryoptions.get_option('srt')}_${queryoptions.get_option('srto')};" ;
     start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
     end_range       = nav.current_page*queryoptions.get_option('num');
     IF end_range >= hits ;
@@ -95,7 +95,7 @@
        END;
     END ;
 
-    sprstring = spr.join(';');
+    sprstring = spr.join('&');
 
 %]
 <li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %]&[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% sprstring %]</a></li>

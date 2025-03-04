@@ -41,7 +41,7 @@
 	<div class="accordion-body">
 	  
 	  <div class="pt-2">
-	    <i class="fas fa-print"></i><a class="ps-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/print.html?l=[% lang %];format=full" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a>
+	    <i class="fas fa-print"></i><a class="ps-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/print.html?l=[% lang %]&format=full" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a>
 	  </div>
 
 	  <div class="pt-2">
@@ -260,7 +260,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 	    <p>
 [% FOREACH thistag IN private_tags_of_tit %]
-<a href="[% path_prefix %]/[% config.get('tags_loc') %]/id/[% thistag.id %]?_method=DELETE;redirect_to=[% uri_escape(location) %]" class="ob_button">[% thistag.tagname %]</a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('tags_loc') %]/id/[% thistag.id %]?_method=DELETE&redirect_to=[% uri_escape(location) %]" class="ob_button">[% thistag.tagname %]</a>&nbsp;
 [% END %]
 	    </p>
 
@@ -410,7 +410,7 @@ END;
 
 <div class="accordion-item"><!-- Begin Verwandte Personen -->
   <h2 class="accordion-header" id="headingSimilarPersons">
-    <button class="accordion-button" type="button" hx-get="[% path_prefix %]/[% config.get('connector_similarpersons_loc') %].include?l=[% lang %];db=[% record.database %];type=tit;id=[% record.get_encoded_id %]" hx-indicator="#spinner" hx-target="#ob-similar_persons_content" data-bs-toggle="collapse" data-bs-target="#collapseSimilarPersons" aria-expanded="false" aria-controls="collapseSimilarPersons">
+    <button class="accordion-button" type="button" hx-get="[% path_prefix %]/[% config.get('connector_similarpersons_loc') %].include?l=[% lang %]&db=[% record.database %]&type=tit&id=[% record.get_encoded_id %]" hx-indicator="#spinner" hx-target="#ob-similar_persons_content" data-bs-toggle="collapse" data-bs-target="#collapseSimilarPersons" aria-expanded="false" aria-controls="collapseSimilarPersons">
       [% msg.maketext("Verwandte Personen") %]
     </button>
   </h2>
@@ -430,7 +430,7 @@ END;
 
 <div class="accordion-item"><!-- Begin Verwandte Themen -->
   <h2 class="accordion-header" id="headingSimilarSubjects">
-    <button class="accordion-button" type="button" hx-get="[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %].include?l=[% lang %];db=[% record.database %];type=tit;id=[% record.get_encoded_id %]" hx-indicator="#spinner" hx-target="#ob-similar_subjects_content" data-bs-toggle="collapse" data-bs-target="#collapseSimilarSubjects" aria-expanded="false" aria-controls="collapseSimilarSubjects">
+    <button class="accordion-button" type="button" hx-get="[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %].include?l=[% lang %]&db=[% record.database %]&type=tit&id=[% record.get_encoded_id %]" hx-indicator="#spinner" hx-target="#ob-similar_subjects_content" data-bs-toggle="collapse" data-bs-target="#collapseSimilarSubjects" aria-expanded="false" aria-controls="collapseSimilarSubjects">
           [% msg.maketext("Verwandte Themen") %]
     </button>
   </h2>

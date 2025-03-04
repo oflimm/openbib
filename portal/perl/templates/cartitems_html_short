@@ -58,9 +58,9 @@
   </button>
 
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuSortCartitems">
-    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'tstamp_desc' || session_sort == 'tstamp_desc' %]text-strong[% END %]" href="[% this_loc %].html?[% sort_args %];srt=tstamp_desc" title="[% msg.maketext("Zuletzt hinzugefügt") %]">[% msg.maketext("Zuletzt hinzugefügt") %]</a></li>
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'tstamp_desc' || session_sort == 'tstamp_desc' %]text-strong[% END %]" href="[% this_loc %].html?[% sort_args %]&srt=tstamp_desc" title="[% msg.maketext("Zuletzt hinzugefügt") %]">[% msg.maketext("Zuletzt hinzugefügt") %]</a></li>
 
-    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'tstamp_asc' || session_sort == 'tstamp_asc' %]text-strong[% END %]" href="[% this_loc %].html?[% sort_args %];srt=tstamp_asc" title="[% msg.maketext("Zuerst hinzugefügt") %]">[% msg.maketext("Zuerst hinzugefügt") %]</a></li>
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'tstamp_asc' || session_sort == 'tstamp_asc' %]text-strong[% END %]" href="[% this_loc %].html?[% sort_args %]&srt=tstamp_asc" title="[% msg.maketext("Zuerst hinzugefügt") %]">[% msg.maketext("Zuerst hinzugefügt") %]</a></li>
   </ul>
 </div>    
 [%# PROCESS common/subtemplate name="titlist_options" this_loc=config.get('cartitems_loc') no_jn=1 no_relevance=1 %]

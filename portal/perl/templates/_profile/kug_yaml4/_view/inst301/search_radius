@@ -9,8 +9,8 @@
    prevprofile = session.get_profile; %]
 [% searchprofileid_of_view = config.get_searchprofile_of_view(view) ; checked_profile = 0 %]
 [% searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view) %]
-<dd><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude = ["profile"] }) %];profile=[% searchprofileid_of_view %]" [%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%]class="ob-strong"[% checked_profile = 1 ; END %]>[% config.get_viewdesc_from_viewname(view) %]</a></dd>
-<dd><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude = ["profile"] }) %];profile=[% searchprofileid_of_sysprofile %]"[%- IF prevprofile == searchprofileid_of_sysprofile && NOT checked_profile -%]class="ob-strong"[% checked_profile = 1 ; END %]">[% msg.maketext("Alle Kataloge") %]</a></dd>
+<dd><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %]&[% searchquery.to_cgi_querystring({ exclude = ["profile"] }) %];profile=[% searchprofileid_of_view %]" [%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%]class="ob-strong"[% checked_profile = 1 ; END %]>[% config.get_viewdesc_from_viewname(view) %]</a></dd>
+<dd><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %]&[% searchquery.to_cgi_querystring({ exclude = ["profile"] }) %];profile=[% searchprofileid_of_sysprofile %]"[%- IF prevprofile == searchprofileid_of_sysprofile && NOT checked_profile -%]class="ob-strong"[% checked_profile = 1 ; END %]">[% msg.maketext("Alle Kataloge") %]</a></dd>
 </dl>
 <!-- End search radius -->
 

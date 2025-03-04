@@ -44,7 +44,7 @@
 
 <p/>
 [% borrow_url = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('databases_loc')}/id/${authenticator.name}/${config.get('circulations_loc')}/id/borrows.ics" %]
-Ausgeliehene Medien im <a href="[% borrow_url %]">iCalendar-Format</a> zur &Uuml;bernahme in einen Kalender <!-- oder als QR-Code <a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% borrow_url.replace(';','%3B') %]" title="Ausleihen im iCalendar-Format via URL"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a>-->
+Ausgeliehene Medien im <a href="[% borrow_url %]">iCalendar-Format</a> zur &Uuml;bernahme in einen Kalender <!-- oder als QR-Code <a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% borrow_url.replace('&','%3B') %]" title="Ausleihen im iCalendar-Format via URL"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" /></a>-->
 <p/>
 
 [%# USE dumper;dumper.dump(authenticator)%]

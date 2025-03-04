@@ -29,35 +29,35 @@
 <div class="ob-alphabetic_index">
 <p>
 <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]">Alles</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=A">A</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=B">B</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=C">C</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=D">D</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=E">E</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=F">F</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=G">G</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=H">H</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=I">I</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=J">J</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=K">K</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=L">L</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=M">M</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=N">N</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=O">O</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=P">P</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=Q">Q</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=R">R</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=S">S</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=T">T</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=U">U</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=V">V</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=W">W</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=X">X</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=Y">Y</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=Z">Z</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=Ä">Ä</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=Ö">Ö</a>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %];start=Ü">Ü</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=A">A</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=B">B</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=C">C</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=D">D</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=E">E</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=F">F</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=G">G</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=H">H</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=I">I</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=J">J</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=K">K</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=L">L</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=M">M</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=N">N</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=O">O</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=P">P</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=Q">Q</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=R">R</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=S">S</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=T">T</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=U">U</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=V">V</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=W">W</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=X">X</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=Y">Y</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=Z">Z</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=Ä">Ä</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=Ö">Ö</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/fields/id/[% field %].html?l=[% lang %]&start=Ü">Ü</a>
 <p/>
 </div>
 [%  END %]
@@ -66,7 +66,7 @@
 <ul class="list-group">
 [% FOREACH item IN browselist %]
 [%  IF searchfield %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %];[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% item %]</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %]&[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% item %]</a></li>
 [%  ELSE %]
 <li class="list-group-item">[% item %]</li>
 [%  END %]

@@ -109,7 +109,7 @@
    searchterm    = classification.name;
    searchprefix  = config.get('searchfield').classification.prefix;
 -%]
-<li class="[% itemclass %]"><span>[% classification.count %] Titel sind in der Fachgruppe</span><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]"  class="tag" title="[% classification.count %] Zeitschriften sind in der Fachgruppe [% classification.desc %]">[% classification.desc %]</a></li>
+<li class="[% itemclass %]"><span>[% classification.count %] Titel sind in der Fachgruppe</span><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=dbis&sm=seq&page=1&num=[% qopts.get_option('num') %]&[% IF query.param('access_green') %]access_green=1&[% END %][% IF query.param('access_yellow') %]access_yellow=1&[% END %][% IF query.param('access_red') %]access_red=1&[% END %][% IF query.param('access_national') %]access_national=1&[% END %][% searchprefix %]=[% searchterm %]"  class="tag" title="[% classification.count %] Zeitschriften sind in der Fachgruppe [% classification.desc %]">[% classification.desc %]</a></li>
 [% END %]
 </ol>
 <!-- Ende Tag-Cloud -->
@@ -119,7 +119,7 @@
    searchterm    = classification.name;
    searchprefix  = config.get('searchfield').classification.prefix;
 %]
-<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% classification.desc %]</a> ([% classification.count %])</li>
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=dbis&sm=seq&page=1&num=[% qopts.get_option('num') %]&[% IF query.param('access_green') %]access_green=1&[% END %][% IF query.param('access_yellow') %]access_yellow=1&[% END %][% IF query.param('access_red') %]access_red=1&[% END %][% IF query.param('access_national') %]access_national=1&[% END %][% searchprefix %]=[% searchterm %]">[% classification.desc %]</a> ([% classification.count %])</li>
 [% END %]
 </ul>
 [% END %]

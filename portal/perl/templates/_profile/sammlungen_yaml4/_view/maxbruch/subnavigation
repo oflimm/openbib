@@ -58,12 +58,12 @@
 [% IF active_submenu == "register_0800" %]
   <li class="active"><strong>Medienart</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/maxbruch/titles/fields/id/0800.html?l=[% lang %];page=1">Medienart</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/maxbruch/titles/fields/id/0800.html?l=[% lang %]&page=1">Medienart</a></li>
 [% END %]
 [% IF active_submenu == "register_0100" %]
   <li class="active"><strong>Adressat</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/maxbruch/titles/fields/id/0100.html?l=[% lang %];page=1">Adressat</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/maxbruch/titles/fields/id/0100.html?l=[% lang %]&page=1">Adressat</a></li>
 [% END %]
  </ul>
 </nav>

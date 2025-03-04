@@ -97,7 +97,7 @@
 [%- dbdesc   = dbinfo.get('dbnames').${review.titnormset.database}.full -%]
 [%- dburl    = dbinfo.get('urls').${review.titnormset.database} -%]
 
-<span class="rlauthor">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('indexes_loc') %]?search=Mehrfachauswahl;srt=[% srt %];database=[% review.titnormset.${"database"} %];searchsingletit=[% item.titnormset.id %]"><strong><span class="ob-title">[% title %]</span></strong></a>, <span
+<span class="rlauthor">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('indexes_loc') %]?search=Mehrfachauswahl&srt=[% srt %]&database=[% review.titnormset.${"database"} %];searchsingletit=[% item.titnormset.id %]"><strong><span class="ob-title">[% title %]</span></strong></a>, <span
 class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>
 <p />
 

@@ -40,7 +40,7 @@
 [% IF profileinfo.viewinfos.size <= 0 %]
 &nbsp;&nbsp;&nbsp;
 
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]?_method=DELETE&confirm=1">[% msg.maketext("Löschen") %]</a>
 [% END %]
 
 <p class="alert alert-info">[% msg.maketext("Achtung: Ein Katalog-Profil kann erst dann gelöscht werden, wenn es von keinen Views mehr genutzt wird!") %]</p>

@@ -63,42 +63,42 @@
 [% IF active_submenu == "register_0101" %]
   <li class="active"><strong>[% msg.maketext("Buchbinder/Werkstatt") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0101.html?l=[% lang %];page=1">[% msg.maketext("Buchbinder/Werkstatt") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0101.html?l=[% lang %]&page=1">[% msg.maketext("Buchbinder/Werkstatt") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0700" %]
   <li class="active"><strong>[% msg.maketext("Einband") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0700.html?l=[% lang %];page=1">[% msg.maketext("Einband") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0700.html?l=[% lang %]&page=1">[% msg.maketext("Einband") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0200" %]
   <li class="active"><strong>[% msg.maketext("Region") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0200.html?l=[% lang %];page=1">[% msg.maketext("Region") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0200.html?l=[% lang %]&page=1">[% msg.maketext("Region") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0710" %]
   <li class="active"><strong>[% msg.maketext("Jahrhundert") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0710.html?l=[% lang %];page=1">[% msg.maketext("Jahrhundert") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0710.html?l=[% lang %]&page=1">[% msg.maketext("Jahrhundert") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0413" %]
   <li class="active"><strong>[% msg.maketext("Drucker/Verleger/Verlag") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0413.html?l=[% lang %];page=1">[% msg.maketext("Drucker/Verleger/Verlag") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0413.html?l=[% lang %]&page=1">[% msg.maketext("Drucker/Verleger/Verlag") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0304" %]
   <li class="active"><strong>[% msg.maketext("Motiv/Werkzeug") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0304.html?l=[% lang %];page=1">[% msg.maketext("Motiv/Werkzeug") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0304.html?l=[% lang %]&page=1">[% msg.maketext("Motiv/Werkzeug") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0102" %]
   <li class="active"><strong>[% msg.maketext("Werkstatt/Werkzeug") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0102.html?l=[% lang %];page=1">[% msg.maketext("Werkstatt/Werkzeug") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0102.html?l=[% lang %]&page=1">[% msg.maketext("Werkstatt/Werkzeug") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0201" %]
   <li class="active"><strong>[% msg.maketext("Region/Werkzeug") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0201.html?l=[% lang %];page=1">[% msg.maketext("Region/Werkzeug") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/einbaende/titles/fields/id/0201.html?l=[% lang %]&page=1">[% msg.maketext("Region/Werkzeug") %]</a></li>
 [% END %]
  </ul>
 </nav>

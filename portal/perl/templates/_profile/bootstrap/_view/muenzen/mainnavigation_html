@@ -99,34 +99,34 @@ $(document).ready(function(){
           [% msg.maketext("Register") %]
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Regent") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0700.html?l=[% lang %];page=1">[% msg.maketext("Stadt") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0710.html?l=[% lang %];page=1">[% msg.maketext("Region") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0410.html?l=[% lang %];page=1">[% msg.maketext("Bereich") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0531.html?l=[% lang %];page=1">[% msg.maketext("T0531-muenzen") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0533.html?l=[% lang %];page=1">[% msg.maketext("T0533-muenzen") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0800.html?l=[% lang %];page=1">[% msg.maketext("Material") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0338.html?l=[% lang %];page=1">[% msg.maketext("Nominal") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0100.html?l=[% lang %]&page=1">[% msg.maketext("Regent") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0700.html?l=[% lang %]&page=1">[% msg.maketext("Stadt") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0710.html?l=[% lang %]&page=1">[% msg.maketext("Region") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0410.html?l=[% lang %]&page=1">[% msg.maketext("Bereich") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0531.html?l=[% lang %]&page=1">[% msg.maketext("T0531-muenzen") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0533.html?l=[% lang %]&page=1">[% msg.maketext("T0533-muenzen") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0800.html?l=[% lang %]&page=1">[% msg.maketext("Material") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0338.html?l=[% lang %]&page=1">[% msg.maketext("Nominal") %]</a></li>
           <li class="dropdown-submenu">
 	    <a href="#" class="dropdown-item dropdown-toggle">Legende griechisch</a>
 
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0341.html?l=[% lang %];page=1">Vorderseite nicht aufgelöst</a></li>
-              <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0342.html?l=[% lang %];page=1">Vorderseite aufgelöst, nur Text</a></li>
-              <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0343.html?l=[% lang %];page=1">Vorderseite aufgelöst, Editionstext</a></li>
-              <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0352.html?l=[% lang %];page=1">Rückseite aufgelöst, nur Text</a></li>
-              <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0353.html?l=[% lang %];page=1">Rückseite aufgelöst, Editionstext</a></li>
+              <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0341.html?l=[% lang %]&page=1">Vorderseite nicht aufgelöst</a></li>
+              <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0342.html?l=[% lang %]&page=1">Vorderseite aufgelöst, nur Text</a></li>
+              <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0343.html?l=[% lang %]&page=1">Vorderseite aufgelöst, Editionstext</a></li>
+              <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0352.html?l=[% lang %]&page=1">Rückseite aufgelöst, nur Text</a></li>
+              <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0353.html?l=[% lang %]&page=1">Rückseite aufgelöst, Editionstext</a></li>
             </ul>
           </li>
           <li class="dropdown-submenu">
 	     <a href="#" class="dropdown-item dropdown-toggle">Legende lateinisch</a>
             <ul class="dropdown-menu">
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0344.html?l=[% lang %];page=1">Vorderseite nicht aufgelöst</a></li>
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0345.html?l=[% lang %];page=1">Vorderseite aufgelöst, nur Text</a></li>
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0346.html?l=[% lang %];page=1">Vorderseite aufgelöst, Editionstext</a></li>
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0354.html?l=[% lang %];page=1">Rückseite nicht aufgelöst</a></li>
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0355.html?l=[% lang %];page=1">Rückseite aufgelöst, nur Text</a></li>
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0356.html?l=[% lang %];page=1">Rückseite aufgelöst, Editionstext</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0344.html?l=[% lang %]&page=1">Vorderseite nicht aufgelöst</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0345.html?l=[% lang %]&page=1">Vorderseite aufgelöst, nur Text</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0346.html?l=[% lang %]&page=1">Vorderseite aufgelöst, Editionstext</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0354.html?l=[% lang %]&page=1">Rückseite nicht aufgelöst</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0355.html?l=[% lang %]&page=1">Rückseite aufgelöst, nur Text</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0356.html?l=[% lang %]&page=1">Rückseite aufgelöst, Editionstext</a></li>
             </ul>
 	   </li>
        </ul>

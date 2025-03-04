@@ -63,6 +63,6 @@
 
 &nbsp;&nbsp;&nbsp;
 
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]?_method=DELETE&confirm=1">[% msg.maketext("Löschen") %]</a>
 
 </form>

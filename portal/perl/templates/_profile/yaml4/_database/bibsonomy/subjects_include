@@ -14,7 +14,7 @@
 [%- PROCESS common/subtemplate name="local_config" -%] 
 [% IF subjects.first %]
 [% FOREACH subject IN subjects %]
-<a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;sm=seq;db=bibsonomy;typ=publication;fsubj=[% subject.name |uri %]">[% subject.name %]</a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&page=1&sm=seq&db=bibsonomy&typ=publication&fsubj=[% subject.name |uri %]">[% subject.name %]</a>&nbsp;
 [% END %]
 [% ELSE %]
 [% msg.maketext("Titel/Schlagworte nicht in BibSonomy enthalten") %]

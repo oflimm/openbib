@@ -20,7 +20,7 @@
 </p>
 [% redirect_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}.html?l=${lang}" %]
  
-<a class="btn btn-primary mt-2 mb-1" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=15;redirect_to=[% redirect_url | uri %]" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];authenticatorid=15;redirect_to=[% redirect_url | uri %]">[% msg.maketext("Anmelden") %]</a> 
+<a class="btn btn-primary mt-2 mb-1" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %]&authenticatorid=15&redirect_to=[% redirect_url | uri %]" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]&authenticatorid=15&redirect_to=[% redirect_url | uri %]">[% msg.maketext("Anmelden") %]</a> 
 
 [% ELSIF NOT external_info.external_group.match('^[1-6]$') %]
 <p>

@@ -65,7 +65,7 @@
 
 <ul class="list-group">
 [% FOREACH sammlung IN sammlungen %]
-<li class="list-group-item"><a style="font-weight:bold" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];[% config.get('searchfield').corporatebodystring.prefix %]=[% sammlung %]">[% sammlung %]</a></li>
+<li class="list-group-item"><a style="font-weight:bold" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&[% config.get('searchfield').corporatebodystring.prefix %]=[% sammlung %]">[% sammlung %]</a></li>
 [% END %]
 </ul>
 

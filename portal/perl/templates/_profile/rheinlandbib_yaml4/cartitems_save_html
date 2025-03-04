@@ -47,7 +47,7 @@
       <input type="hidden" name="action"    value="show" />
       
       <ul class="tabbingmenu">
-	<li><a class="active" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?action=show;type=HTML">[% msg.maketext("Merkliste") %]</a></li>
+	<li><a class="active" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?action=show&type=HTML">[% msg.maketext("Merkliste") %]</a></li>
       </ul>
       
       <div class="content">
@@ -55,7 +55,7 @@
 	<p />
 	  
 	<ul class="tabbingmenu">
-	  <li><a[%- IF type == 'HTML' -%] class="active"[%- END -%] href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?action=show;type=HTML">HTML</a></li>
+	  <li><a[%- IF type == 'HTML' -%] class="active"[%- END -%] href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?action=show&type=HTML">HTML</a></li>
 	</ul>
 	
 	<div class="content">

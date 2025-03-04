@@ -33,7 +33,7 @@
 [% ELSE %]
 [%   IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
 <p>
-<a id="cover_full_url" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=526;url=[% uri_escape("${config.get('coverscans_credits_exturl').replace('ISBNINHERE',isbn)}") %]" target="_blank"><img id="cover_full" class="mx-auto d-block" src="[% config.get('coverscans_full_exturl').replace('ISBNINHERE',isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>
+<a id="cover_full_url" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=526&url=[% uri_escape("${config.get('coverscans_credits_exturl').replace('ISBNINHERE',isbn)}") %]" target="_blank"><img id="cover_full" class="mx-auto d-block" src="[% config.get('coverscans_full_exturl').replace('ISBNINHERE',isbn) %]" title="[% config.get('coverscans_creditstext_exturl') %]" /></a>
 </p>
 [%   END %]
 [% END %]
@@ -45,12 +45,12 @@
 [% END %]
 [%- IF isbn -%]
 <p>
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=525;url=[% uri_escape("http://books.google.com/books?vid=ISBN${isbn}") %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/gbs/[% isbn %]" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a>
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=525&url=[% uri_escape("http://books.google.com/books?vid=ISBN${isbn}") %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/gbs/[% isbn %]" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a>
 </p>
 [%- END -%]
 [%- IF bibkey -%]
 <p>
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=511;url=[% uri_escape("http://www.bibsonomy.org/bibtex/${bibkey}") %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/bibsonomy/[% bibkey %]" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a>
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=511&url=[% uri_escape("http://www.bibsonomy.org/bibtex/${bibkey}") %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/bibsonomy/[% bibkey %]" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a>
 </p>
 [%- END -%]
 

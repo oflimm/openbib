@@ -48,74 +48,74 @@
 [% IF active_submenu == "register_0100" %]
   <li class="active"><strong>[% msg.maketext("Regent") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Regent") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0100.html?l=[% lang %]&page=1">[% msg.maketext("Regent") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0700" %]
   <li class="active"><strong>[% msg.maketext("Stadt") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0700.html?l=[% lang %];page=1">[% msg.maketext("Stadt") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0700.html?l=[% lang %]&page=1">[% msg.maketext("Stadt") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0710" %]
   <li class="active"><strong>[% msg.maketext("Region") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0710.html?l=[% lang %];page=1">[% msg.maketext("Region") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0710.html?l=[% lang %]&page=1">[% msg.maketext("Region") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0410" %]
   <li class="active"><strong>[% msg.maketext("Bereich") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0410.html?l=[% lang %];page=1">[% msg.maketext("Bereich") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0410.html?l=[% lang %]&page=1">[% msg.maketext("Bereich") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0531" %]
   <li class="active"><strong>[% msg.maketext("T0531-muenzen") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0531.html?l=[% lang %];page=1">[% msg.maketext("T0531-muenzen") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0531.html?l=[% lang %]&page=1">[% msg.maketext("T0531-muenzen") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0533" %]
   <li class="active"><strong>[% msg.maketext("T0533-muenzen") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0533.html?l=[% lang %];page=1">[% msg.maketext("T0533-muenzen") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0533.html?l=[% lang %]&page=1">[% msg.maketext("T0533-muenzen") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0800" %]
   <li class="active"><strong>[% msg.maketext("Material") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0800.html?l=[% lang %];page=1">[% msg.maketext("Material") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0800.html?l=[% lang %]&page=1">[% msg.maketext("Material") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0338" %]
   <li class="active"><strong>[% msg.maketext("Nominal") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0338.html?l=[% lang %];page=1">[% msg.maketext("Nominal") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0338.html?l=[% lang %]&page=1">[% msg.maketext("Nominal") %]</a></li>
 [% END %]
 <li><span  style="font-weight:normal">Legende griechisch</span>
     <ul>
 [% IF active_submenu == "register_0341" %]
   <li class="active"><strong>Vorderseite nicht aufgelöst</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0341.html?l=[% lang %];page=1">Vorderseite nicht aufgelöst</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0341.html?l=[% lang %]&page=1">Vorderseite nicht aufgelöst</a></li>
 [% END %]
 [% IF active_submenu == "register_0342" %]
   <li class="active"><strong>Vorderseite aufgelöst, nur Text</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0342.html?l=[% lang %];page=1">Vorderseite aufgelöst, nur Text</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0342.html?l=[% lang %]&page=1">Vorderseite aufgelöst, nur Text</a></li>
 [% END %]
 [% IF active_submenu == "register_0343" %]
   <li class="active"><strong>Vorserseite aufgelöst, Editionstext</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0343.html?l=[% lang %];page=1">Vorderseite aufgelöst, Editionstext</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0343.html?l=[% lang %]&page=1">Vorderseite aufgelöst, Editionstext</a></li>
 [% END %]
 [% IF active_submenu == "register_0351" %]
   <li class="active"><strong>Rückseite nicht aufgelöst</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0351.html?l=[% lang %];page=1">Rückseite nicht aufgelöst</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0351.html?l=[% lang %]&page=1">Rückseite nicht aufgelöst</a></li>
 [% END %]
 [% IF active_submenu == "register_0352" %]
   <li class="active"><strong>Rückseite aufgelöst, nur Text</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0352.html?l=[% lang %];page=1">Rückseite aufgelöst, nur Text</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0352.html?l=[% lang %]&page=1">Rückseite aufgelöst, nur Text</a></li>
 [% END %]
 [% IF active_submenu == "register_0353" %]
   <li class="active"><strong>Rückseite aufgelöst, Editionstext</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0353.html?l=[% lang %];page=1">Rückseite aufgelöst, Editionstext</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0353.html?l=[% lang %]&page=1">Rückseite aufgelöst, Editionstext</a></li>
 [% END %]
 </ul>
 </li>
@@ -124,32 +124,32 @@
 [% IF active_submenu == "register_0344" %]
   <li class="active"><strong>Vorderseite nicht aufgelöst</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0344.html?l=[% lang %];page=1">Vorderseite nicht aufgelöst</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0344.html?l=[% lang %]&page=1">Vorderseite nicht aufgelöst</a></li>
 [% END %]
 [% IF active_submenu == "register_0345" %]
   <li class="active"><strong>Vorderseite aufgelöst, nur Text</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0345.html?l=[% lang %];page=1">Vorderseite aufgelöst, nur Text</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0345.html?l=[% lang %]&page=1">Vorderseite aufgelöst, nur Text</a></li>
 [% END %]
 [% IF active_submenu == "register_0346" %]
   <li class="active"><strong>Vorserseite aufgelöst, Editionstext</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0346.html?l=[% lang %];page=1">Vorderseite aufgelöst, Editionstext</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0346.html?l=[% lang %]&page=1">Vorderseite aufgelöst, Editionstext</a></li>
 [% END %]
 [% IF active_submenu == "register_0354" %]
   <li class="active"><strong>Rückseite nicht aufgelöst</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0354.html?l=[% lang %];page=1">Rückseite nicht aufgelöst</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0354.html?l=[% lang %]&page=1">Rückseite nicht aufgelöst</a></li>
 [% END %]
 [% IF active_submenu == "register_0355" %]
   <li class="active"><strong>Rückseite aufgelöst, nur Text</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0355.html?l=[% lang %];page=1">Rückseite aufgelöst, nur Text</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0355.html?l=[% lang %]&page=1">Rückseite aufgelöst, nur Text</a></li>
 [% END %]
 [% IF active_submenu == "register_0356" %]
   <li class="active"><strong>Rückseite aufgelöst, Editionstext</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0356.html?l=[% lang %];page=1">Rückseite aufgelöst, Editionstext</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/muenzen/titles/fields/id/0356.html?l=[% lang %]&page=1">Rückseite aufgelöst, Editionstext</a></li>
 [% END %]
 </ul>
 </li>

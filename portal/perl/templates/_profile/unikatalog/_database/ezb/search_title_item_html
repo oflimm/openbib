@@ -110,59 +110,59 @@
 
 <ul class="nav ob-alphabetic_index">
 
-<li [% IF indexstelle == '' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %]">Alles</a>
+<li [% IF indexstelle == '' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]">Alles</a>
 </li>
-<li [% IF indexstelle == 'a*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=A*">A</a>
+<li [% IF indexstelle == 'a*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=A*">A</a>
 </li>
-<li [% IF indexstelle == 'B*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=B*">B</a> 
+<li [% IF indexstelle == 'B*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=B*">B</a> 
 </li>
-<li [% IF indexstelle == 'C*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=C*">C</a> 
+<li [% IF indexstelle == 'C*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=C*">C</a> 
 </li>
-<li [% IF indexstelle == 'D*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=D*">D</a> 
+<li [% IF indexstelle == 'D*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=D*">D</a> 
 </li>
-<li [% IF indexstelle == 'E*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=E*">E</a> 
+<li [% IF indexstelle == 'E*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=E*">E</a> 
 </li>
-<li [% IF indexstelle == 'F*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=F*">F</a> 
+<li [% IF indexstelle == 'F*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=F*">F</a> 
 </li>
-<li [% IF indexstelle == 'G*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=G*">G</a> 
+<li [% IF indexstelle == 'G*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=G*">G</a> 
 </li>
-<li [% IF indexstelle == 'H*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=H*">H</a> 
+<li [% IF indexstelle == 'H*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=H*">H</a> 
 </li>
-<li [% IF indexstelle == 'I*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=I*">I</a> 
+<li [% IF indexstelle == 'I*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=I*">I</a> 
 </li>
-<li [% IF indexstelle == 'J*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=J*">J</a> 
+<li [% IF indexstelle == 'J*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=J*">J</a> 
 </li>
-<li [% IF indexstelle == 'K*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=K*">K</a> 
+<li [% IF indexstelle == 'K*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=K*">K</a> 
 </li>
-<li [% IF indexstelle == 'L*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=L*">L</a> 
+<li [% IF indexstelle == 'L*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=L*">L</a> 
 </li>
-<li [% IF indexstelle == 'M*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=M*">M</a> 
+<li [% IF indexstelle == 'M*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=M*">M</a> 
 </li>
-<li [% IF indexstelle == 'N*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=N*">N</a> 
+<li [% IF indexstelle == 'N*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=N*">N</a> 
 </li>
-<li [% IF indexstelle == 'O*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=O*">O</a> 
+<li [% IF indexstelle == 'O*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=O*">O</a> 
 </li>
-<li [% IF indexstelle == 'P*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=P*">P</a> 
+<li [% IF indexstelle == 'P*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=P*">P</a> 
 </li>
-<li [% IF indexstelle == 'Q*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=Q*">Q</a> 
+<li [% IF indexstelle == 'Q*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=Q*">Q</a> 
 </li>
-<li [% IF indexstelle == 'R*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=R*">R</a> 
+<li [% IF indexstelle == 'R*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=R*">R</a> 
 </li>
-<li [% IF indexstelle == 'S*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=S*">S</a> 
+<li [% IF indexstelle == 'S*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=S*">S</a> 
 </li>
-<li [% IF indexstelle == 'T*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=T*">T</a> 
+<li [% IF indexstelle == 'T*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=T*">T</a> 
 </li>
-<li [% IF indexstelle == 'U*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=U*">U</a> 
+<li [% IF indexstelle == 'U*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=U*">U</a> 
 </li>
-<li [% IF indexstelle == 'V*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=V*">V</a> 
+<li [% IF indexstelle == 'V*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=V*">V</a> 
 </li>
-<li [% IF indexstelle == 'W*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=W*">W</a> 
+<li [% IF indexstelle == 'W*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=W*">W</a> 
 </li>
-<li [% IF indexstelle == 'X*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=X*">X</a> 
+<li [% IF indexstelle == 'X*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=X*">X</a> 
 </li>
-<li [% IF indexstelle == 'Y*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=Y*">Y</a> 
+<li [% IF indexstelle == 'Y*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=Y*">Y</a> 
 </li>
-<li [% IF indexstelle == 'Z*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];cln=[% classification_name %];ftit=Z*">Z</a>
+<li [% IF indexstelle == 'Z*' %]class="nav-item active" aria-current="page"[% ELSE %]class="nav-item"[% END %]><a class="nav-link inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&cln=[% classification_name %]&ftit=Z*">Z</a>
 </li>
 </ul>
 

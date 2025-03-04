@@ -66,9 +66,9 @@
           [% msg.maketext("Register") %]
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/usbbibliographie/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Person") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/usbbibliographie/titles/fields/id/0331.html?l=[% lang %];page=1">[% msg.maketext("Titel") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/usbbibliographie/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Erscheinungsjahre") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/usbbibliographie/titles/fields/id/0100.html?l=[% lang %]&page=1">[% msg.maketext("Person") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/usbbibliographie/titles/fields/id/0331.html?l=[% lang %]&page=1">[% msg.maketext("Titel") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/usbbibliographie/titles/fields/id/0425.html?l=[% lang %]&page=1">[% msg.maketext("Erscheinungsjahre") %]</a></li>
         </ul>
       </li>
 
@@ -99,7 +99,7 @@
     [% IF config.get('lang').size == 2 %]
                <li class="nav-item">		
       [% FOREACH thislang IN config.get('lang') %]
-       [% IF lang != thislang %]<a class="nav-link" href="[% path %]?[% cgiapp.to_cgi_querystring({ exclude = ['l']}) %];l=[% thislang %]">[% lang_desc.${thislang} %]</a>[% END %]
+       [% IF lang != thislang %]<a class="nav-link" href="[% path %]?[% cgiapp.to_cgi_querystring({ exclude = ['l']}) %]&l=[% thislang %]">[% lang_desc.${thislang} %]</a>[% END %]
      [% END %]
                </li>
     [% ELSE %]

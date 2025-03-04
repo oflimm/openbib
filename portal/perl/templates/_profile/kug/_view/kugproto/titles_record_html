@@ -163,7 +163,7 @@ $(document).ready(function(){
 <div class="d-flex ob-fulltitle_actions">
 
    <div class="pr-1">
-         <a  class="btn btn-primary" ic-transform-response="return incollection();" ic-get-from="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
+         <a  class="btn btn-primary" ic-transform-response="return incollection();" ic-get-from="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
   </div>
 
 [% IF fulltext %]
@@ -217,19 +217,19 @@ $(document).ready(function(){
 [%-   IF normdata.${"E4200"} %]
 [%-     FOREACH item IN normdata.${"E4200"}-%]
 [%        redirect_url = "http://de.wikipedia.org/wiki/${item.content}" %]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522&url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END %]
 [%-   IF normdata.${"E4201"} %]
 [%-     FOREACH item IN normdata.${"E4201"}-%]
 [%        redirect_url = "http://en.wikipedia.org/wiki/${item.content}" %]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522&url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END %]
 [%-   IF normdata.${"E4202"} %]
 [%-     FOREACH item IN normdata.${"E4202"}-%]
 [%        redirect_url = "http://fr.wikipedia.org/wiki/${item.content}" %]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522&url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END -%]
 </p>
@@ -376,11 +376,11 @@ von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,it
 [% IF item.id == ownreviewid %]
 <p />
 <a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]/edit">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=DELETE;confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
+href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=DELETE&confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
 [% ELSIF username %]
 <p />
-[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT;titleid=[% record.get_encoded_id %];dbname=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
-<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titleid=[% record.get_encoded_id %];dbname=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>
+[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT&titleid=[% record.get_encoded_id %]&dbname=[% record.database %]&rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titleid=[% record.get_encoded_id %]&dbname=[% record.database %]&rating=0">[% msg.maketext("Nein") %]</a>
 [% END %]
 </dd>
 [%  END %]
@@ -419,7 +419,7 @@ href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method
          <h1 class="display-4">[% msg.maketext("Kein Zugriff") %]</h1>
          <p class="lead">[% hide_detail_msg %]</p>
          <p class="lead">
-            <a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %]" role="button">[% msg.maketext('Weiter') %]</a>
+            <a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]&redirect_to=[% uri_escape(detail_url) %]" role="button">[% msg.maketext('Weiter') %]</a>
          </p>
         </div><!-- End: jumbotron -->
 [%  END %]

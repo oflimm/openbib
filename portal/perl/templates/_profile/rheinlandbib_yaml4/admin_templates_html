@@ -123,9 +123,9 @@
 <td><img style="vertical-align: bottom;" src="/images/openbib/[% templateinfo.templatelang %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",templateinfo.templatelang) %]" /></td>
 <td>
 [%   IF user.has_right({scope = 'admin_templates', right = 'right_update'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=3">[% templateinfo.templatename %]</a>
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %]&numrev=3">[% templateinfo.templatename %]</a>
 [%   ELSIF user.has_right({scope = 'admin_templates', right = 'right_read'}) %]
-<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %];numrev=3">[% templateinfo.templatename %]</a>
+<a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %]&numrev=3">[% templateinfo.templatename %]</a>
 [%   END %]
 </td>
 <td>[% templateinfo.viewid.viewname %]: [% templateinfo.viewid.description %]</td>

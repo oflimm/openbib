@@ -338,7 +338,7 @@ $(document).ready(function(){
        </div>
 [% IF 0 == 1 && NOT with_cartitems_delete %]
        <div class="pr-1">
-          <a  class="btn btn-light pr-2" ic-transform-response="return incollection();" ic-get-from="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /><span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
+          <a  class="btn btn-light pr-2" ic-transform-response="return incollection();" ic-get-from="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /><span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
        </div>
 [% END %]
 <!--       <div class="pr-1">
@@ -352,7 +352,7 @@ $(document).ready(function(){
 [% END %]
 [% IF parameter.private_tags %]
        <div class="pr-1">
-         <button type="button" class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></button>
+         <button type="button" class="btn btn-light pr-2" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.id %]&dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></button>
        </div>
 [% END %]
 [% IF with_cartitems_delete %]

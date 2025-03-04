@@ -13,6 +13,6 @@
 -%]
 <table width="100%">
 [% FOREACH item IN browselist %]
-<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=[% database %];[% category FILTER lower %]=[% item.replace('&amp;','%26').replace('/','').replace('\(','').replace('\)','') %]">[% item %]</a></td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=[% database %]&[% category FILTER lower %]=[% item.replace('&amp&','%26').replace('/','').replace('\(','').replace('\)','') %]">[% item %]</a></td></tr>
 [% END %]
 </table>

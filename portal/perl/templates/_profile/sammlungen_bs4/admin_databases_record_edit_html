@@ -245,7 +245,7 @@
 [%- IF user.has_right({scope = 'admin_clusters', right = 'right_delete'}) -%]
 &nbsp;&nbsp;&nbsp;
 
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% databaseinfo.dbname %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% databaseinfo.dbname %]?_method=DELETE&confirm=1">[% msg.maketext("Löschen") %]</a>
 [%- END -%]
 
 </form>

@@ -115,7 +115,7 @@ $(document).ready(function(){
             document.write('<h4><a href="javascript:ajaxpage(\'/portal/[% view %]/title/[% same_record.database %]/[% same_record.id %].include?l=de\', \'DISPLAY_SEARCH_SAME_[% same_record.database %]_[% same_record.id %]\', \'Lade Detailanzeige\');">[% dbinfo.get('dbnames').${same_record.database}.short %]<\/a><\/h4>');
         </script>
         <noscript>
-            <h4><a href="[% view_config.${view}.zms_titles_url %]?l=de;view=[% view %];db=[% same_record.database %];id=[% same_record.id %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></h4>
+            <h4><a href="[% view_config.${view}.zms_titles_url %]?l=de&view=[% view %]&db=[% same_record.database %]&id=[% same_record.id %]">[% dbinfo.get('dbnames').${same_record.database}.short %]</a></h4>
         </noscript>
 
         <div id="DISPLAY_SEARCH_SAME_[% same_record.database %]_[% same_record.id %]" style="margin-bottom:1.0em;"></div>

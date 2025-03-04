@@ -374,11 +374,11 @@
           <div class="d-flex flex-wrap ob-titleactions">
 [% IF record.id && record.database %]
             <div class="pe-1 pb-1">
-              <a class="btn btn-primary pe-2" href="[% IF NOT hide_detail && NOT hide_hit %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]">[% IF hide_detail %]<i class="fas fa-ban"></i>[% ELSE %]<i class="fas fa-eye"></i>[% END %] <span class="d-none d-sm-inline">Details</span></a>
+              <a class="btn btn-primary pe-2" href="[% IF NOT hide_detail && NOT hide_hit %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]&redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]">[% IF hide_detail %]<i class="fas fa-ban"></i>[% ELSE %]<i class="fas fa-eye"></i>[% END %] <span class="d-none d-sm-inline">Details</span></a>
             </div>
 [% IF NOT with_cartitems_delete && NOT hide_hit %]
 	    <div class="pe-1 pb-1">
-              <a  class="btn btn-primary pe-2" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
+              <a  class="btn btn-primary pe-2" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>
 	    </div>
 [% END %]
 
@@ -416,7 +416,7 @@
 [% END %]
 [% IF parameter.private_tags %]
 	    <div class="pe-1 pb-1">
-	      <a class="ob-collection btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.get_encoded_id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
+	      <a class="ob-collection btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.get_encoded_id %]&dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
 	    </div>
 [% END %]
 [% IF with_cartitems_delete %]

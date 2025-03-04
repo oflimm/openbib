@@ -88,7 +88,7 @@ END;
 <td>[% standort %]
 [% provenances = record.get_provenances_of_media(thisholding.${"X0014"}.content) %]
 [% IF provenances.size > 0 %]
-<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% thisholding.${"X0014"}.content |uri %]">Provenienzen</a>
+<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %]&mnr=[% thisholding.${"X0014"}.content |uri %]">Provenienzen</a>
 [% END %]
 </td><td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong></td><td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]     
 [% IF NOT normdata.${"T5002"}.first.content && thisholding.${"X0014"}.content.match('^ZTG') %]

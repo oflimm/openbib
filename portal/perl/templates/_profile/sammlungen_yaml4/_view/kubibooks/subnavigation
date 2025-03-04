@@ -48,17 +48,17 @@
 [% IF active_submenu == "register_0100" %]
   <li class="active"><strong>Autor</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0100.html?l=[% lang %];page=1">Autor</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0100.html?l=[% lang %]&page=1">Autor</a></li>
 [% END %]
 [% IF active_submenu == "register_0331" %]
   <li class="active"><strong>Titel</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0331.html?l=[% lang %];page=1">Titel</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0331.html?l=[% lang %]&page=1">Titel</a></li>
 [% END %]
 [% IF active_submenu == "register_0425" %]
   <li class="active"><strong>Erscheinungsjahre</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0425.html?l=[% lang %];page=1">Erscheinungsjahre</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0425.html?l=[% lang %]&page=1">Erscheinungsjahre</a></li>
 [% END %]
  </ul>
 </nav>

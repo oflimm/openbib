@@ -485,7 +485,7 @@ Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es au
   </div>
 
    <div class="pe-1 pb-3">
-         <a  class="btn btn-primary text-nowrap" aria-described-by="[% msg.maketext("In die Merkliste") %]" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span>[% msg.maketext("Merken") %]</span></a>
+         <a  class="btn btn-primary text-nowrap" aria-described-by="[% msg.maketext("In die Merkliste") %]" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span>[% msg.maketext("Merken") %]</span></a>
   </div>
 
 [% IF fulltext %]
@@ -529,7 +529,7 @@ Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es au
     END;
 %]
 	    <div class="pe-1 pb-3">
-<!--              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="[% path_prefix %]/availability/search.html?issn=[% issn %];jrnl=[% journal %];vol=[% volume %];issue=[% issue %];tit=[% title %];per=[% person %]" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a> -->
+<!--              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="[% path_prefix %]/availability/search.html?issn=[% issn %]&jrnl=[% journal %]&vol=[% volume %]&issue=[% issue %]&tit=[% title %]&per=[% person %]" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a> -->
 <!--              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?genre=[% q_openurltype %]&isbn=[% q_isbn %]&issn=[% q_issn %]&title=[% q_journal |uri %]&volume=[% q_volume %]&issue=[% q_issue %]&date=[% q_year %]&atitle=[% q_title |uri %]&aufirst=[% q_aufirst %]&aulast=[% q_aulast |uri %]&spage=[% q_spage %]&pages=[% q_pages %]&sid=[% q_sid %]&pid=%3Clocation%3E038%3C%2Flocation%3E" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span>[% msg.maketext("Verfügbarkeit") %]</span></a>-->
               <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="https://usb-koeln.digibib.net/openurl?genre=[% q_openurltype %]&isbn=[% q_isbn %]&issn=[% q_issn %]&title=[% q_journal |uri %]&volume=[% q_volume %]&issue=[% q_issue %]&date=[% q_year %]&atitle=[% q_title |uri %]&aufirst=[% q_aufirst %]&aulast=[% q_aulast |uri %]&spage=[% q_spage %]&pages=[% q_pages %]&sid=[% q_sid %]&pid=%3Clocation%3E038%3C%2Flocation%3E" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span>[% msg.maketext("Verfügbarkeit") %]</span></a>
 	    </div>
@@ -583,7 +583,7 @@ Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es au
          <h1 class="display-4">[% msg.maketext("Kein Zugriff") %]</h1>
          <p class="lead">[% hide_detail_msg %]</p>
          <p class="lead">
-            <a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %]" role="button">[% msg.maketext('Weiter') %]</a>
+            <a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]&redirect_to=[% uri_escape(detail_url) %]" role="button">[% msg.maketext('Weiter') %]</a>
          </p>
         </div><!-- End: ob-jumbotron -->
 [%  END %]

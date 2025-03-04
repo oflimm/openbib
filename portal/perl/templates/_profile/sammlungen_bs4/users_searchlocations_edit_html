@@ -67,7 +67,7 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;
 
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchlocations_loc') %]?_method=DELETE;confirm=1" title="[% msg.maketext("Entfernen") %]" class="btn btn-primary mb-2">[% msg.maketext("Löschen") %]</a>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchlocations_loc') %]?_method=DELETE&confirm=1" title="[% msg.maketext("Entfernen") %]" class="btn btn-primary mb-2">[% msg.maketext("Löschen") %]</a>
 
 <p />
 
@@ -135,6 +135,6 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;
 
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchlocations_loc') %]?_method=DELETE;confirm=1" title="[% msg.maketext("Entfernen") %]" class="btn btn-primary mb-2">[% msg.maketext("Löschen") %]</a>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchlocations_loc') %]?_method=DELETE&confirm=1" title="[% msg.maketext("Entfernen") %]" class="btn btn-primary mb-2">[% msg.maketext("Löschen") %]</a>
 
 </form>

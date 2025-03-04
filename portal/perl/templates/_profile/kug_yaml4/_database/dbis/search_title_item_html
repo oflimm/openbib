@@ -103,7 +103,7 @@
    searchterm    = classification.name;
    searchprefix  = config.get('searchfield').classification.prefix;
  %]
-<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% IF classification_name == classification.name %]<b>[% classification.desc %]</b>[% ELSE %][% classification.desc %][% END %]</a><!-- ([% classification.count %])--></li>
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=dbis&sm=seq&page=1&num=[% qopts.get_option('num') %]&[% IF query.param('access_green') %]access_green=1&[% END %][% IF query.param('access_yellow') %]access_yellow=1&[% END %][% IF query.param('access_red') %]access_red=1&[% END %][% IF query.param('access_national') %]access_national=1&[% END %][% searchprefix %]=[% searchterm %]">[% IF classification_name == classification.name %]<b>[% classification.desc %]</b>[% ELSE %][% classification.desc %][% END %]</a><!-- ([% classification.count %])--></li>
 [% END %]
 </ul>
 </div>

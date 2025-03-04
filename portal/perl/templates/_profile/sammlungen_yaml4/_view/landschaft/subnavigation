@@ -24,22 +24,22 @@
 [% IF active_submenu == "register_101" %]
   <li class="active"><strong>[% msg.maketext("Personen") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/landschaft/titles/fields/id/0101.html?l=[% lang %];page=1">[% msg.maketext("Personen") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/landschaft/titles/fields/id/0101.html?l=[% lang %]&page=1">[% msg.maketext("Personen") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0200" %]
   <li class="active"><strong>[% msg.maketext("Topogr. Schlagwort") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/landschaft/titles/fields/id/0200.html?l=[% lang %];page=1">[% msg.maketext("Topogr. Schlagwort") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/landschaft/titles/fields/id/0200.html?l=[% lang %]&page=1">[% msg.maketext("Topogr. Schlagwort") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0700" %]
   <li class="active"><strong>[% msg.maketext("1. Ikonogr. Schlagwort") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/landschaft/titles/fields/id/0700.html?l=[% lang %];page=1">[% msg.maketext("1. Ikonogr. Schlagwort") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/landschaft/titles/fields/id/0700.html?l=[% lang %]&page=1">[% msg.maketext("1. Ikonogr. Schlagwort") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0710" %]
   <li class="active"><strong>[% msg.maketext("2. Ikonogr. Schlagwort") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/landschaft/titles/fields/id/0710.html?l=[% lang %];page=1">[% msg.maketext("2. Ikonogr. Schlagwort") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/landschaft/titles/fields/id/0710.html?l=[% lang %]&page=1">[% msg.maketext("2. Ikonogr. Schlagwort") %]</a></li>
 [% END %]
  </ul>
 </nav>

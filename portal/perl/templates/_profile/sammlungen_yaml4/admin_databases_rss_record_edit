@@ -106,7 +106,7 @@ yesno = {
 
 &nbsp;&nbsp;&nbsp;
 
-<a class="ob_button" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% dbname %]/rss/id/[% rssinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="ob_button" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% dbname %]/rss/id/[% rssinfo.id %]?_method=DELETE&confirm=1">[% msg.maketext("Löschen") %]</a>
 
 </div>
 

@@ -170,7 +170,7 @@ $(document).ready(function(){
 [% END %]
 </select></td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/session.html?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/session.html?fs=&titel=&verf=&kor=&swt=&hststring=&gtquelle=&sign=&isbn=&issn=&notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 
 </form>
@@ -260,7 +260,7 @@ $(document).ready(function(){
 [% END %]
 </select></td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/session.html?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/session.html?fs=&titel=&verf=&kor=&swt=&hststring=&gtquelle=&sign=&isbn=&issn=&notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 
 </form>
@@ -352,7 +352,7 @@ $(document).ready(function(){
 [% END %]
 </select></td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/session.html?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/session.html?fs=&titel=&verf=&kor=&swt=&hststring=&gtquelle=&sign=&isbn=&issn=&notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 
 </form>
@@ -445,7 +445,7 @@ $(document).ready(function(){
 [% END %]
 </select></td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/session.html?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td align="left"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/session.html?fs=&titel=&verf=&kor=&swt=&hststring=&gtquelle=&sign=&isbn=&issn=&notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 
 </form>

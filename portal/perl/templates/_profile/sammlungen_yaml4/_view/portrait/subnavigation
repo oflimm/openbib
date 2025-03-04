@@ -63,37 +63,37 @@
 [% IF active_submenu == "register_0102" %]
   <li class="active"><strong>Dargestellte Person</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0102.html?l=[% lang %];page=1">Dargestellte Person</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0102.html?l=[% lang %]&page=1">Dargestellte Person</a></li>
 [% END %]
 [% IF active_submenu == "register_0100" %]
   <li class="active"><strong>Maler / Zeichner</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0100.html?l=[% lang %];page=1">Maler / Zeichner</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0100.html?l=[% lang %]&page=1">Maler / Zeichner</a></li>
 [% END %]
 [% IF active_submenu == "register_0101" %]
   <li class="active"><strong>Stecher / Lithograph</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0101.html?l=[% lang %];page=1">Stecher / Lithograph</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0101.html?l=[% lang %]&page=1">Stecher / Lithograph</a></li>
 [% END %]
 [% IF active_submenu == "register_0103" %]
   <li class="active"><strong>Weitere Person</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0103.html?l=[% lang %];page=1">Weitere Person</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0103.html?l=[% lang %]&page=1">Weitere Person</a></li>
 [% END %]
 [% IF active_submenu == "register_0710" %]
   <li class="active"><strong>Region</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0710.html?l=[% lang %];page=1">Region</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0710.html?l=[% lang %]&page=1">Region</a></li>
 [% END %]
 [% IF active_submenu == "register_0700" %]
   <li class="active"><strong>Beruf / Weltanschauung</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0700.html?l=[% lang %];page=1">Beruf / Weltanschauung</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0700.html?l=[% lang %]&page=1">Beruf / Weltanschauung</a></li>
 [% END %]
 [% IF active_submenu == "register_0200" %]
   <li class="active"><strong>Provenienz</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0200.html?l=[% lang %];page=1">Provenienz</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/portrait/titles/fields/id/0200.html?l=[% lang %]&page=1">Provenienz</a></li>
 [% END %]
  </ul>
 </nav>

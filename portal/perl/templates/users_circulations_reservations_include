@@ -59,7 +59,7 @@
 <td>[% IF reservation.pickup_location.about %][% reservation.pickup_location.about %][% END %]
 </td>
 <td>[% reservation.starttime %]</td>
-<td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations?_method=DELETE;requestid=[% reservation.requestid %];unit=[% reservation.department.id %];[% IF reservation.item.match(' \(T\)$')%]titleid=[% reservation.edition %][% ELSE %]holdingid=[% uri_escape(reservation.item) %][% END %];validtarget=[% database %]" title="[% msg.maketext("Stornieren") %]" class="btn btn-primary">[% msg.maketext("Stornieren") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations?_method=DELETE&requestid=[% reservation.requestid %]&unit=[% reservation.department.id %]&[% IF reservation.item.match(' \(T\)$')%]titleid=[% reservation.edition %][% ELSE %]holdingid=[% uri_escape(reservation.item) %][% END %]&validtarget=[% database %]" title="[% msg.maketext("Stornieren") %]" class="btn btn-primary">[% msg.maketext("Stornieren") %]</a></td>
 </tr>
 [% END %]
 </tbody>

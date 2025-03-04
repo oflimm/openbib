@@ -203,7 +203,7 @@ $(document).ready(function(){
        <li><a href="http://www.portal.uni-koeln.de/universitaet.html">Universität</a></li>
        <li><a href="http://verwaltung.uni-koeln.de/studsek/content/">Studierendensekretariat</a></li>
        <li><a href="http://www.portal.uni-koeln.de/kontakt.html">Kontakt</a></li>
-       <li><a href="http://www.kstw.de/index.php?option=com_content&amp;view=article&amp;id=182&amp;Itemid=121&amp;lang=de">Mensa</a></li>
+       <li><a href="http://www.kstw.de/index.php?option=com_content&amp&view=article&amp&id=182&amp&Itemid=121&amp&lang=de">Mensa</a></li>
        <li><a href="http://www.portal.uni-koeln.de/bibliotheken.html">Bibliothek</a></li>
        <li><a href="http://www.portal.uni-koeln.de/termine.html">Terminkalender</a></li>
        <li><a href="https://webmail.uni-koeln.de/login.php">Webmail</a></li>

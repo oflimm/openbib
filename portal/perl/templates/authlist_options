@@ -28,7 +28,7 @@
   </button>
 
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuSort">
-    <li class="dropdown-item"><a [% IF query.param('srt') == 'authority_asc' %]class="text-strong"[% END %] href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].html?[% sort_args %];srt=authority_asc" title="[% msg.maketext("Name aufsteigend") %]">[% msg.maketext("Name aufsteigend") %]</a></li>
-    <li class="dropdown-item"><a [% IF query.param('srt') == 'authority_desc' %]class="text-strong"[% END %] href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].html?[% sort_args %];srt=authority_desc" title="[% msg.maketext("Name absteigend") %]">[% msg.maketext("Name absteigend") %]</a></li>
+    <li class="dropdown-item"><a [% IF query.param('srt') == 'authority_asc' %]class="text-strong"[% END %] href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].html?[% sort_args %]&srt=authority_asc" title="[% msg.maketext("Name aufsteigend") %]">[% msg.maketext("Name aufsteigend") %]</a></li>
+    <li class="dropdown-item"><a [% IF query.param('srt') == 'authority_desc' %]class="text-strong"[% END %] href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].html?[% sort_args %]&srt=authority_desc" title="[% msg.maketext("Name absteigend") %]">[% msg.maketext("Name absteigend") %]</a></li>
   </ul>
 </div>

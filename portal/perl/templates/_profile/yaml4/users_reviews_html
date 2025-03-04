@@ -102,7 +102,7 @@
 
 <tr><td class="boxedclear">
 <p>
-<span class="rlauthor">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('indexes_loc') %]?search=Mehrfachauswahl;srt=[% srt %];database=[% item.titnormset.${"database"} %];searchsingletit=[% item.titnormset.id %]"><strong><span class="ob-title">[% title %]</span></strong></a>, <span
+<span class="rlauthor">[% person %]</span><br /><a href="[% path_prefix %]/[% config.get('indexes_loc') %]?search=Mehrfachauswahl&srt=[% srt %]&database=[% item.titnormset.${"database"} %];searchsingletit=[% item.titnormset.id %]"><strong><span class="ob-title">[% title %]</span></strong></a>, <span
 class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.get('maxlength_dbname')) %]</a></i>
 </p>
 
@@ -111,7 +111,7 @@ class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearof
 <p />[%    IF item.review %][% item.review %][% END %]
 
 <p>
-<a class="ob-button" href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]/edit"><span>Bearbeiten</span></a><a class="ob-button" href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=DELETE;confirm=1"><span>L&ouml;schen</span></a>
+<a class="ob-button" href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]/edit"><span>Bearbeiten</span></a><a class="ob-button" href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=DELETE&confirm=1"><span>L&ouml;schen</span></a>
 </p>
 </td></tr>
 <tr><td></td></tr>

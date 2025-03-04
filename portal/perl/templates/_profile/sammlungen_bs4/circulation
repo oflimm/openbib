@@ -50,7 +50,7 @@ thiscirculation.location_mark = thiscirculation.location_mark.replace('^ARCH/','
 <td><strong>[% thiscirculation.location_mark %]</strong>
 [% provenances = record.get_provenances_of_media(thiscirculation.holdingid) %]
 [% IF provenances.size > 0 %]
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% uri_escape(thiscirculation.holdingid) %]">Provenienzen</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %]&mnr=[% uri_escape(thiscirculation.holdingid) %]">Provenienzen</a>
 [% END %]
 </td>
 <td><strong>[%- IF thiscirculation.availability == 'loan' -%]ausleihbar[% ELSIF thiscirculation.availability == 'presence' %]Pr&auml;senzbestand[% ELSIF thiscirculation.availability == 'order' %]bestellbar[% IF availability_limitation %][% END %][% ELSIF

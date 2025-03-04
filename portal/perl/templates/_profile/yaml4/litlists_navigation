@@ -28,7 +28,7 @@
 [% IF active_submenu == "litlists_recent" %]
   <li class="active"><strong>[% msg.maketext("Zuletzt angelegt") %]</strong></li>
 [% ELSE %]
-   <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/recent.html?l=[% lang %];num=20">[% msg.maketext("Zuletzt angelegt") %]</a></li>
+   <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/recent.html?l=[% lang %]&num=20">[% msg.maketext("Zuletzt angelegt") %]</a></li>
 [% END %]
 [% IF active_submenu == "litlists_topics" %]
   <li class="active"><strong>[% msg.maketext("Themengebiete") %]</strong></li>
@@ -46,7 +46,7 @@
 [%   IF active_submenu == "litlists_topic_recent" %]
        <li class="active"><strong>[% msg.maketext("Zuletzt angelegt") %]</strong></li>
 [%   ELSE %]
-       <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/topics/id/[% topicid %]/recent.html?l=[% lang %];num=20">[% msg.maketext("Zuletzt angelegt") %]</a></li>
+       <li><a href="[% path_prefix %]/[% config.get('litlists_loc') %]/topics/id/[% topicid %]/recent.html?l=[% lang %]&num=20">[% msg.maketext("Zuletzt angelegt") %]</a></li>
 [% END %]
     </ul>
   </li>

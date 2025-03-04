@@ -66,9 +66,9 @@
           [% msg.maketext("Register") %]
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Person") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0331.html?l=[% lang %];page=1">[% msg.maketext("Titel") %]</a></li>
-          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Erscheinungsjahre") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0100.html?l=[% lang %]&page=1">[% msg.maketext("Person") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0331.html?l=[% lang %]&page=1">[% msg.maketext("Titel") %]</a></li>
+          <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/titles/fields/id/0425.html?l=[% lang %]&page=1">[% msg.maketext("Erscheinungsjahre") %]</a></li>
         </ul>
       </li>
 

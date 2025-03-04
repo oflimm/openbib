@@ -209,7 +209,7 @@
    searchterm    = topic.name;
    searchprefix  = config.get('searchfield').classification.prefix;
 %]
-<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=ezb;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% searchprefix %]=[% searchterm %]">[% topic.desc %]</a> ([% msg.maketext("[_1] Zeitschriften",topic.count) %])</li>
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=ezb&sm=seq&page=1&num=[% qopts.get_option('num') %]&[% IF query.param('access_green') %]access_green=1&[% END %][% IF query.param('access_yellow') %]access_yellow=1&[% END %][% IF query.param('access_red') %]access_red=1&[% END %][% searchprefix %]=[% searchterm %]">[% topic.desc %]</a> ([% msg.maketext("[_1] Zeitschriften",topic.count) %])</li>
 [%   END %]
 [% END %]
 <li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/[% config.get('classifications_loc') %].html?l=[% lang %]">[% msg.maketext("alle Fachgebiete") %]</a></li>
@@ -236,7 +236,7 @@
    searchterm    = topic.name;
    searchprefix  = config.get('searchfield').classification.prefix;
 %]
-<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbis;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% searchprefix %]=[% searchterm %]">[% topic.desc %]</a> ([% msg.maketext("[_1] Datenbanken",topic.count) %])</li>
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=dbis&sm=seq&page=1&num=[% qopts.get_option('num') %]&[% IF query.param('access_green') %]access_green=1&[% END %][% IF query.param('access_yellow') %]access_yellow=1&[% END %][% IF query.param('access_red') %]access_red=1&[% END %][% searchprefix %]=[% searchterm %]">[% topic.desc %]</a> ([% msg.maketext("[_1] Datenbanken",topic.count) %])</li>
 [%   END %]
 [% END %]
 <li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/[% config.get('classifications_loc') %].html?l=[% lang %]">[% msg.maketext("alle Fachgebiete") %]</a></li>

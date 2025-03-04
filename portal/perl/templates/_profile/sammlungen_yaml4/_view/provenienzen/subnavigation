@@ -48,27 +48,27 @@
 [% IF active_submenu == "register_4308" %]
   <li class="active"><strong>Provenienz Person</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4308.html?l=[% lang %];page=1">Provenienz Person</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4308.html?l=[% lang %]&page=1">Provenienz Person</a></li>
 [% END %]
 [% IF active_submenu == "register_4307" %]
   <li class="active"><strong>Provenienz K&ouml;rperschaft</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4307.html?l=[% lang %];page=1">Provenienz K&ouml;rperschaft</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4307.html?l=[% lang %]&page=1">Provenienz K&ouml;rperschaft</a></li>
 [% END %]
 [% IF active_submenu == "register_4310" %]
   <li class="active"><strong>Provenienz Beschreibung (mit T-PRO)</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4310.html?l=[% lang %];page=1">Provenienz Beschreibung (mit T-PRO)</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4310.html?l=[% lang %]&page=1">Provenienz Beschreibung (mit T-PRO)</a></li>
 [% END %]
 [% IF active_submenu == "register_4306" %]
   <li class="active"><strong>Provenienz Sammlung</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4306.html?l=[% lang %];page=1">Provenienz Sammlung</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4306.html?l=[% lang %]&page=1">Provenienz Sammlung</a></li>
 [% END %]
 [% IF active_submenu == "register_4700" %]
   <li class="active"><strong>USB Sammlungsvermerk</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4700.html?l=[% lang %];page=1">USB Sammlungsvermerk</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/provenienzen/titles/fields/id/4700.html?l=[% lang %]&page=1">USB Sammlungsvermerk</a></li>
 [% END %]
  </ul>
 </nav>

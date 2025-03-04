@@ -55,11 +55,11 @@
 <p>
 [% msg.maketext("Anzahl") %]
 &nbsp;
-<a [% IF numrev == 10 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %];numrev=10">10</a>
+<a [% IF numrev == 10 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %]&numrev=10">10</a>
 &nbsp;|&nbsp;
-<a  [% IF numrev == 20 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %];numrev=20">20</a>
+<a  [% IF numrev == 20 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %]&numrev=20">20</a>
 &nbsp;|&nbsp;
-<a  [% IF numrev == 100 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %];numrev=100">100</a>
+<a  [% IF numrev == 100 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %]&numrev=100">100</a>
 </p>
 
 <div class="table-responsive">

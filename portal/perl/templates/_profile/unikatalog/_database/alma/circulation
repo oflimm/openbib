@@ -189,7 +189,7 @@
 [% END %]
 
 [% IF have_provenance_for.defined(thiscirculation.holdingid) %]
-<br/><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% uri_escape(thiscirculation.holdingid) %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.include?l=[% lang %];mnr=[% uri_escape(thiscirculation.holdingid) %]">Provenienzen</a>
+<br/><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %]&mnr=[% uri_escape(thiscirculation.holdingid) %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.include?l=[% lang %]&mnr=[% uri_escape(thiscirculation.holdingid) %]">Provenienzen</a>
 [% END %]
 </td>
 <td>
@@ -216,7 +216,7 @@
 
 
 %]
-&nbsp;<a class="btn btn-primary mb-1" [% IF NOT user.ID %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=1;redirect_to=[% anon_redirect_url | uri %]"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/default?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];realm=usb">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
+&nbsp;<a class="btn btn-primary mb-1" [% IF NOT user.ID %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %]&authenticatorid=1&redirect_to=[% anon_redirect_url | uri %]"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/default?l=[% lang %]&dbname=[% database %]&titleid=[% record.id %]&label=[% thiscirculation.location_mark |uri %]&location=[% standort |uri %]&realm=usb">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%############### HANDAPPARAT ################# %]
 [% ELSIF thiscirculation.storage_id.match('-HAP$') %]
@@ -240,7 +240,7 @@
         anon_redirect_url = "${path_prefix}/${config.get('users_loc')}/id/me/${config.get('circulations_loc')}/id/mail/handset.html?l=${lang};dbname=${database};titleid=${record.id};label=${uri_escape(thiscirculation.location_mark)};location=${uri_escape(standort)};realm=${realm}";
 
 %]
-&nbsp;<a class="btn btn-primary mb-1" [% IF NOT user.ID %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=1;redirect_to=[% anon_redirect_url | uri %]"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/handset.html?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];realm=[% realm %]">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
+&nbsp;<a class="btn btn-primary mb-1" [% IF NOT user.ID %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %]&authenticatorid=1&redirect_to=[% anon_redirect_url | uri %]"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/handset.html?l=[% lang %]&dbname=[% database %]&titleid=[% record.id %]&label=[% thiscirculation.location_mark |uri %]&location=[% standort |uri %]&realm=[% realm %]">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%   ELSE %]
 [% availability_info %]
@@ -451,7 +451,7 @@ Präsenzbestand
 [%   IF NOT standort.match('(Museum für Angewandte Kunst|Graphische Sammlung|Schwarze Lade)') # Bestellfunktionen fuer KMB-Bestand im MAKK, WRM (Graphische Sammlung) und DSL unterdruecken %]
 [%#     IF config.get('active_ils') %]
 <br/><span style="color: red"> Die Nutzung der Lesesäle ist momentan nur nach Terminvereinbarung möglich.</span>
-<p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];dbname=[% database %];location=[% standort |uri %];realm=kmb">[% msg.maketext("In den Lesesaal bestellen") %]</a></p> 
+<p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %]&titleid=[% record.id %]&label=[% thiscirculation.location_mark |uri %]&dbname=[% database %]&location=[% standort |uri %]&realm=kmb">[% msg.maketext("In den Lesesaal bestellen") %]</a></p> 
 <p>
 <b>KMB-Dokumentlieferdienst:</b><br/>
 <a href="https://www.subito-doc.de/" target="_blank">Aufsatzbestellung</a>

@@ -27,17 +27,17 @@
 [% END %]
 [%- IF isbn -%]
 <p>
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=525;url=[% uri_escape("http://books.google.com/books?vid=ISBN${isbn}") %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/gbs/[% isbn %]" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a>
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=525&url=[% uri_escape("http://books.google.com/books?vid=ISBN${isbn}") %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/gbs/[% isbn %]" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a>
 </p>
 [%- END -%]
 [%- IF bibkey -%]
 <p>
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=511;url=[% uri_escape("http://www.bibsonomy.org/bibtex/${bibkey}") %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/bibsonomy/[% bibkey %]" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a>
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=511&url=[% uri_escape("http://www.bibsonomy.org/bibtex/${bibkey}") %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/bibsonomy/[% bibkey %]" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a>
 </p>
 [%- END -%]
 [% IF cgiapp.is_authenticated('admin') || cgiapp.is_authenticated('librarian') %]
 <p>
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %];flush_cache=1" >[% msg.maketext("Titel ohne Cache") %]</a>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %]&flush_cache=1" >[% msg.maketext("Titel ohne Cache") %]</a>
 </p>
 <p>
 <a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/searchindex.html?l=[% lang %]" >[% msg.maketext("Zum Suchindex") %]</a>

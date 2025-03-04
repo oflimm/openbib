@@ -71,8 +71,8 @@
 
 <dl class="ob-items">
 <dt class="ob-headline">[% msg.maketext("Eingrenzen") %]</dt>
-<dd [% IF searchquery.get_searchfield('mediatype').norm == "publication" %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% cgi_querystring %];typ=publication">[% msg.maketext("Publikationen") %]</a></dd>
-<dd [% IF searchquery.get_searchfield('mediatype').norm == "bookmark" %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% cgi_querystring %];typ=bookmark">[% msg.maketext("Web") %]</a></dd>
+<dd [% IF searchquery.get_searchfield('mediatype').norm == "publication" %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% cgi_querystring %]&typ=publication">[% msg.maketext("Publikationen") %]</a></dd>
+<dd [% IF searchquery.get_searchfield('mediatype').norm == "bookmark" %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% cgi_querystring %]&typ=bookmark">[% msg.maketext("Web") %]</a></dd>
 </dl>
 
 <dl class="ob-items">
@@ -94,7 +94,7 @@
 <dl class="ob-items">
 <dt class="ob-headline">[% msg.maketext("Schlagworte in den angezeigten Titeln") %]</dt>
 [% FOREACH thissubject IN allsubjects.keys.unique.sort %]
-<dd><a class="tag" style="display: inline; cursor: pointer;" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;db=bibsonomy;sm=seq;typ=[% searchquery.get_searchfield('mediatype').norm %];fsubj=[% thissubject %]">[% thissubject %]</a></dd>
+<dd><a class="tag" style="display: inline; cursor: pointer;" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&page=1&db=bibsonomy&sm=seq&typ=[% searchquery.get_searchfield('mediatype').norm %]&fsubj=[% thissubject %]">[% thissubject %]</a></dd>
 [% END %]
 </dl>
 

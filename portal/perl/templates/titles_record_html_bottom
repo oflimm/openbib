@@ -151,11 +151,11 @@ von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,it
 [% IF item.id == ownreviewid %]
 <p />
 <a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]/edit">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=DELETE;confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
+href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=DELETE&confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
 [% ELSIF username %]
 <p />
-[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT;titleid=[% record.get_encoded_id %];dbname=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
-<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titleid=[% record.get_encoded_id %];dbname=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>
+[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT&titleid=[% record.get_encoded_id %]&dbname=[% record.database %]&rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titleid=[% record.get_encoded_id %]&dbname=[% record.database %]&rating=0">[% msg.maketext("Nein") %]</a>
 [% END %]
 </dd>
 [%  END %]

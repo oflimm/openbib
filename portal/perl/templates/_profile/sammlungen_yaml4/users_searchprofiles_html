@@ -90,7 +90,7 @@
 [% dbinfo.get('dbnames').${db}.short %]<br/>
 [% END %]
 </td>
-<td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]/id/[% userdbprofile.profileid %]?_method=DELETE;confirm=1" title="[% msg.maketext("Entfernen") %]" class="ob_button">[% msg.maketext("Löschen") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]/id/[% userdbprofile.profileid %]?_method=DELETE&confirm=1" title="[% msg.maketext("Entfernen") %]" class="ob_button">[% msg.maketext("Löschen") %]</a></td>
 </tr>
 
 [%-   END -%]

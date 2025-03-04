@@ -45,7 +45,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('search_loc') %]?page=1;[% queryoptions.to_cgi_params({exclude = ['profile','page','db']}) %];[% searchprefix %]=[% item %];db=[% database %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('search_loc') %]?page=1&[% queryoptions.to_cgi_params({exclude = ['profile','page','db']}) %]&[% searchprefix %]=[% item %]&db=[% database %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

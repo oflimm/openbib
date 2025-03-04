@@ -107,7 +107,7 @@
 [% END %]
 
 [%   IF userinfo.username != 'admin' %]
-<a class="btn btn-primary mb-2 mt-4" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Kennung l&ouml;schen") %]</a>
+<a class="btn btn-primary mb-2 mt-4" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% userinfo.id %]?_method=DELETE&confirm=1">[% msg.maketext("Kennung l&ouml;schen") %]</a>
 [%   END %]
 
 [% IF authenticator.type != 'self' %]

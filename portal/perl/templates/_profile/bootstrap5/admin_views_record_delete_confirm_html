@@ -15,7 +15,7 @@
         <div class="ob-jumbotron">
           <h1 class="display-4">[% msg.maketext("Sind sie sicher?") %]</h1>
           <p class="lead">[% msg.maketext("Möchten Sie wirklich den View <b>[_1]</b> löschen?",viewinfo.viewname) %]</p>
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]?_method=DELETE;confirm=0">[% msg.maketext("Ja") %]</a>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('views_loc') %]/id/[% viewinfo.viewname %]?_method=DELETE&confirm=0">[% msg.maketext("Ja") %]</a>
 
 &nbsp;&nbsp;
 

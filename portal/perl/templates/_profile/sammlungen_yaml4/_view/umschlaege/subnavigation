@@ -41,27 +41,27 @@
 [% IF active_submenu == "register_0710" %]
   <li class="active"><strong>[% msg.maketext("Am Umschlag Beteiligte") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0710.html?l=[% lang %];page=1">[% msg.maketext("Am Umschlag Beteiligte") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0710.html?l=[% lang %]&page=1">[% msg.maketext("Am Umschlag Beteiligte") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0200" %]
   <li class="active"><strong>[% msg.maketext("Zusammenarbeit") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0200.html?l=[% lang %];page=1">[% msg.maketext("Zusammenarbeit") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0200.html?l=[% lang %]&page=1">[% msg.maketext("Zusammenarbeit") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0100" %]
   <li class="active"><strong>[% msg.maketext("Autor") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Autor") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0100.html?l=[% lang %]&page=1">[% msg.maketext("Autor") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0412" %]
   <li class="active"><strong>[% msg.maketext("Verlag") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0412.html?l=[% lang %];page=1">[% msg.maketext("Verlag") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0412.html?l=[% lang %]&page=1">[% msg.maketext("Verlag") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0425" %]
   <li class="active"><strong>[% msg.maketext("Erscheinungsjahr") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Erscheinungsjahr") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0425.html?l=[% lang %]&page=1">[% msg.maketext("Erscheinungsjahr") %]</a></li>
 [% END %]
  </ul>
 </nav>

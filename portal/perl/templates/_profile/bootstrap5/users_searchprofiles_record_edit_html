@@ -99,6 +99,6 @@ function update_fak(yourform, checked, fak) {
 
 &nbsp;&nbsp;&nbsp;&nbsp;
 
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]/id/[% profileid %]?_method=DELETE;confirm=1" title="[% msg.maketext("Entfernen") %]" class="btn btn-primary mb-2">[% msg.maketext("Löschen") %]</a>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('searchprofiles_loc') %]/id/[% profileid %]?_method=DELETE&confirm=1" title="[% msg.maketext("Entfernen") %]" class="btn btn-primary mb-2">[% msg.maketext("Löschen") %]</a>
 
 </form>

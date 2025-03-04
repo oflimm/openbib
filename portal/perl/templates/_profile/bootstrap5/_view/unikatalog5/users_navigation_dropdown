@@ -41,8 +41,8 @@
 [% END %]
 <li class=""><span>[% msg.maketext("Tags") %]</span>
     <ul>
-       <li class="[% IF layout_param.active_subsubmenu == "tags_names" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/names.html?l=[% lang %];format=cloud">[% msg.maketext("nach Tagnamen") %]</a></li>
-       <li class="[% IF layout_param.active_subsubmenu == "tags_titles" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags.html?l=[% lang %];num=[% qopts.get_option('num') %];srt=title_asc">[% msg.maketext("nach Titeln") %]</a></li>
+       <li class="[% IF layout_param.active_subsubmenu == "tags_names" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/names.html?l=[% lang %]&format=cloud">[% msg.maketext("nach Tagnamen") %]</a></li>
+       <li class="[% IF layout_param.active_subsubmenu == "tags_titles" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags.html?l=[% lang %]&num=[% qopts.get_option('num') %]&srt=title_asc">[% msg.maketext("nach Titeln") %]</a></li>
      </ul>
 </li>
 [% IF config.get('reviews') %]
@@ -101,7 +101,7 @@
 </div><!-- End: col -->
 [% END %]
 </div><!-- End: row -->
-<a class="btn btn-primary ms-1 me-1 mt-4" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %];purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a>
+<a class="btn btn-primary ms-1 me-1 mt-4" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %]&purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a>
 </div><!-- End: container -->
 </div><!-- End: card-body -->
 </div><!-- End: card -->

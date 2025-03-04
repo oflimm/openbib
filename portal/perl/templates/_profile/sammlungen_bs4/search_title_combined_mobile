@@ -55,7 +55,7 @@ Seite:
 [%-   IF page == nav.current_page -%]
 &nbsp;&nbsp;<span class="paging_active">[% page %]</span>
 [%-   ELSE -%]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %].mobile?page=[% page %];[% query_args_base %]" >[% page %]</a>
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('search_loc') %].mobile?page=[% page %]&[% query_args_base %]" >[% page %]</a>
 [%-   END -%]
 [%- END -%]
 [%- IF lastpage < nav.last_page -%]

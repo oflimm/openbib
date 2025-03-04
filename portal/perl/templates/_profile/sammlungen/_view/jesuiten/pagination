@@ -5,7 +5,7 @@
 [%-# Navigation: Zurueck -%]  
 [% IF nav.current_page > 1 %]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page - 1 %][% IF query_args_base %];[% query_args_base %][% END %]">Zurück</a>
+       <a class="page-link" href="[% path %]?page=[% nav.current_page - 1 %][% IF query_args_base %]&[% query_args_base %][% END %]">Zurück</a>
     </li>
 [% ELSE %]
     <li class="page-item disabled">
@@ -15,7 +15,7 @@
 
 [% IF nav.current_page > 25 %]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page - 25 %][% IF query_args_base %];[% query_args_base %][% END %]">25 Zurück</a>
+       <a class="page-link" href="[% path %]?page=[% nav.current_page - 25 %][% IF query_args_base %]&[% query_args_base %][% END %]">25 Zurück</a>
     </li>
 [% ELSE %]
     <li class="page-item disabled">
@@ -26,12 +26,12 @@
 
 [%- IF nav.pages_in_set.first > nav.first_page -%]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.first_page %][% IF query_args_base %];[% query_args_base %][% END %]">[% nav.first_page %]</a>
+       <a class="page-link" href="[% path %]?page=[% nav.first_page %][% IF query_args_base %]&[% query_args_base %][% END %]">[% nav.first_page %]</a>
     </li>
 [%- END -%]
 [%- IF nav.pages_in_set.first - 1 > nav.first_page -%]
     <li class="page-item">
-       <span class="page-link disabled">...</span><!-- <a class="page-link" href="[% path %]?page=[% nav.last_page %][% IF query_args_base %];[% query_args_base %][% END %]">[% nav.last_page %]</a> -->
+       <span class="page-link disabled">...</span><!-- <a class="page-link" href="[% path %]?page=[% nav.last_page %][% IF query_args_base %]&[% query_args_base %][% END %]">[% nav.last_page %]</a> -->
     </li>
 [%- END -%]
 
@@ -43,21 +43,21 @@
     </li>
 [%-   ELSE -%]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% page %][% IF query_args_base %];[% query_args_base %][% END %]">[% page %]</a>
+       <a class="page-link" href="[% path %]?page=[% page %][% IF query_args_base %]&[% query_args_base %][% END %]">[% page %]</a>
     </li>
 [%-   END -%]
 [%- END -%]
 
 [%- IF lastpage < nav.last_page -%]
     <li class="page-item">
-       <span class="page-link disabled">...</span><!-- <a class="page-link" href="[% path %]?page=[% nav.last_page %][% IF query_args_base %];[% query_args_base %][% END %]">[% nav.last_page %]</a> -->
+       <span class="page-link disabled">...</span><!-- <a class="page-link" href="[% path %]?page=[% nav.last_page %][% IF query_args_base %]&[% query_args_base %][% END %]">[% nav.last_page %]</a> -->
     </li>
 [%- END -%]
 
 [%-# Navigation: Vor -%]
 [% IF nav.current_page < nav.last_page - 25 %]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page + 25 %][% IF query_args_base %];[% query_args_base %][% END %]">25 Vor</a>
+       <a class="page-link" href="[% path %]?page=[% nav.current_page + 25 %][% IF query_args_base %]&[% query_args_base %][% END %]">25 Vor</a>
     </li>
 [% ELSE %]
     <li class="page-item disabled">
@@ -67,7 +67,7 @@
 
 [% IF nav.current_page < nav.last_page %]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page + 1 %][% IF query_args_base %];[% query_args_base %][% END %]">Vor</a>
+       <a class="page-link" href="[% path %]?page=[% nav.current_page + 1 %][% IF query_args_base %]&[% query_args_base %][% END %]">Vor</a>
     </li>
 [% ELSE %]
     <li class="page-item disabled">

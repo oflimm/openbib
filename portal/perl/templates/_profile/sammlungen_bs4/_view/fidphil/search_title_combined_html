@@ -77,7 +77,7 @@ END ;
     [% suggestion = searchquery.get_spelling_suggestion %]
     [% IF suggestion%]
     [% msg.maketext("Meinten Sie vielleicht:") %]<b><a
-        href="[% path_prefix %]/[% search_loc %]?num=[% query.param('num') %];srt=relevance_desc;st=[% query.param('st') %]fs=[% suggestion %]">[%
+        href="[% path_prefix %]/[% search_loc %]?num=[% query.param('num') %]&srt=relevance_desc&st=[% query.param('st') %]fs=[% suggestion %]">[%
         suggestion %]</b>
     [% END %]
     [% END %]

@@ -6,8 +6,8 @@
 	<div class="card-body">
 	  [% msg.maketext("Bestellen Sie Literatur aus anderen Bibliotheken per Fernleihe: ") %]
 	  <ul style="margin-top:0.5em;">
-            <li><a href="https://www.ub.uni-koeln.de/IPS?SERVICE=TEMPLATE&amp;SUBSERVICE=SEARCHMASK&amp;SID=IPS1:b27424f2668e50e9d20e8b92349d031b&amp;LOCATION=USB&amp;VIEW=USB%3AILLMono&amp;LANGUAGE=de&amp;SEARCHMODE=ext">Buch bestellen</a><br><a target='_blank' href="https://youtu.be/HOpYAvYndVQ"><img src="/images/openbib/uzk15/youtube_icon.jpg" width="20px" alt="YouTube-Icon" title="Buchausleihe als Kopie" class="imageyt" style="margin-right:0.6em;" />So geht's</a></li>
-            <li><a href="https://www.ub.uni-koeln.de/IPS?SERVICE=TEMPLATE&amp;SUBSERVICE=SEARCHMASK&amp;SID=IPS1:b27424f2668e50e9d20e8b92349d031b&amp;LOCATION=USB&amp;VIEW=USB%3AILLArticle&amp;LANGUAGE=de&amp;SEARCHMODE=ext">Zeitschriftenartikel bestellen</a><br><a target='_blank' href="https://youtu.be/gYL-aDqbraE"><img src="/images/openbib/uzk15/youtube_icon.jpg" width="20px" alt="YouTube-Icon" title="Buchausleihe als Kopie" class="imageyt" style="margin-right:0.6em;" />So geht's</a></li>
+            <li><a href="https://www.ub.uni-koeln.de/IPS?SERVICE=TEMPLATE&amp&SUBSERVICE=SEARCHMASK&amp&SID=IPS1:b27424f2668e50e9d20e8b92349d031b&amp&LOCATION=USB&amp&VIEW=USB%3AILLMono&amp&LANGUAGE=de&amp&SEARCHMODE=ext">Buch bestellen</a><br><a target='_blank' href="https://youtu.be/HOpYAvYndVQ"><img src="/images/openbib/uzk15/youtube_icon.jpg" width="20px" alt="YouTube-Icon" title="Buchausleihe als Kopie" class="imageyt" style="margin-right:0.6em;" />So geht's</a></li>
+            <li><a href="https://www.ub.uni-koeln.de/IPS?SERVICE=TEMPLATE&amp&SUBSERVICE=SEARCHMASK&amp&SID=IPS1:b27424f2668e50e9d20e8b92349d031b&amp&LOCATION=USB&amp&VIEW=USB%3AILLArticle&amp&LANGUAGE=de&amp&SEARCHMODE=ext">Zeitschriftenartikel bestellen</a><br><a target='_blank' href="https://youtu.be/gYL-aDqbraE"><img src="/images/openbib/uzk15/youtube_icon.jpg" width="20px" alt="YouTube-Icon" title="Buchausleihe als Kopie" class="imageyt" style="margin-right:0.6em;" />So geht's</a></li>
           </ul>
 	</div>
       </div>

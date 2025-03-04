@@ -213,7 +213,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
                    END ;
 %]
 [%# USE dumper;dumper.dump(category_map) %]
-<dd><a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSE %][% filter.term %][% END %]</dd>
+<dd><a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %]&[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSE %][% filter.term %][% END %]</dd>
 [%             END %]
 </dl>
 [%        END %]
@@ -234,7 +234,7 @@ $("#dd_availability_[% database %]_toggle").click(function(){
     searchprefix  = config.get('searchfield').dbstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])</dd>
+<dd><input type="checkbox" name="f[[% searchprefix %]]" value="[% uri_escape(searchterm) %]" [% IF have_filter.${filterstring} %]checked="checked"[% END %] onClick="this.form.submit()"/>&nbsp;<a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %]&[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %]&f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a>&nbsp;([% termitem.1 %])</dd>
 [%             END %]
 [% IF facets.database.size > 5 %]
 </div>

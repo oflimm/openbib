@@ -101,7 +101,7 @@
 
 &nbsp;&nbsp;&nbsp;
 
-<a class="ob_button" href="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticatorinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="ob_button" href="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticatorinfo.id %]?_method=DELETE&confirm=1">[% msg.maketext("Löschen") %]</a>
 
 </div>
 

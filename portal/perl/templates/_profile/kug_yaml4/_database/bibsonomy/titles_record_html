@@ -96,7 +96,7 @@ $(document).ready(function(){
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
 [% IF searchquery %]
-         <li><a href="[% path_prefix%]/[% config.get('search_loc')%].html?[% queryoptions.to_cgi_querystring({ exclude = ['page'] }) %];page=1;[% searchquery.to_cgi_querystring %]">[% msg.maketext("Recherche") %]:&nbsp;
+         <li><a href="[% path_prefix%]/[% config.get('search_loc')%].html?[% queryoptions.to_cgi_querystring({ exclude = ['page'] }) %]&page=1&[% searchquery.to_cgi_querystring %]">[% msg.maketext("Recherche") %]:&nbsp;
 [%- 
     FOREACH field IN searchquery.get_searchquery.keys ;
        fieldname    = field_map.${field};

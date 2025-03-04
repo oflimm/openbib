@@ -4,7 +4,7 @@
   <ul class="pagination justify-content-start">
 [% IF nav.current_page > 1 %]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page - 1 %][% IF query_args_base %];[% query_args_base %][% END %]">[% msg.maketext("Zurück") %]</a>
+       <a class="page-link" href="[% path %]?page=[% nav.current_page - 1 %][% IF query_args_base %]&[% query_args_base %][% END %]">[% msg.maketext("Zurück") %]</a>
     </li>
 [% ELSE %]
     <li class="page-item disabled">
@@ -13,12 +13,12 @@
 [% END %]
 [%- IF nav.pages_in_set.first > nav.first_page -%]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.first_page %][% IF query_args_base %];[% query_args_base %][% END %]">[% nav.first_page %]</a>
+       <a class="page-link" href="[% path %]?page=[% nav.first_page %][% IF query_args_base %]&[% query_args_base %][% END %]">[% nav.first_page %]</a>
     </li>
 [%- END -%]
 [%- IF nav.pages_in_set.first - 1 > nav.first_page -%]
     <li class="page-item">
-       <span class="page-link disabled">...</span><!-- <a class="page-link" href="[% path %]?page=[% nav.last_page %][% IF query_args_base %];[% query_args_base %][% END %]">[% nav.last_page %]</a> -->
+       <span class="page-link disabled">...</span><!-- <a class="page-link" href="[% path %]?page=[% nav.last_page %][% IF query_args_base %]&[% query_args_base %][% END %]">[% nav.last_page %]</a> -->
     </li>
 [%- END -%]
 
@@ -30,20 +30,20 @@
     </li>
 [%-   ELSE -%]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% page %][% IF query_args_base %];[% query_args_base %][% END %]">[% page %]</a>
+       <a class="page-link" href="[% path %]?page=[% page %][% IF query_args_base %]&[% query_args_base %][% END %]">[% page %]</a>
     </li>
 [%-   END -%]
 [%- END -%]
 
 [%- IF lastpage < nav.last_page -%]
     <li class="page-item">
-       <span class="page-link disabled">...</span><!-- <a class="page-link" href="[% path %]?page=[% nav.last_page %][% IF query_args_base %];[% query_args_base %][% END %]">[% nav.last_page %]</a> -->
+       <span class="page-link disabled">...</span><!-- <a class="page-link" href="[% path %]?page=[% nav.last_page %][% IF query_args_base %]&[% query_args_base %][% END %]">[% nav.last_page %]</a> -->
     </li>
 [%- END -%]
 
 [% IF nav.current_page < nav.last_page %]
     <li class="page-item">
-       <a class="page-link" href="[% path %]?page=[% nav.current_page + 1 %][% IF query_args_base %];[% query_args_base %][% END %]">[% msg.maketext("Vor") %]</a>
+       <a class="page-link" href="[% path %]?page=[% nav.current_page + 1 %][% IF query_args_base %]&[% query_args_base %][% END %]">[% msg.maketext("Vor") %]</a>
     </li>
 [% ELSE %]
     <li class="page-item disabled">

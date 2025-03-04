@@ -346,7 +346,7 @@ Zugriff nur im <a class="inturl" href="https://www.ub.uni-koeln.de/suchen_auslei
          <h1 class="display-4">[% msg.maketext("Kein Zugriff") %]</h1>
          <p class="lead">[% hide_detail_msg %]</p>
          <p class="lead">
-            <a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %]" role="button">[% msg.maketext('Weiter') %]</a>
+            <a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]&redirect_to=[% uri_escape(detail_url) %]" role="button">[% msg.maketext('Weiter') %]</a>
          </p>
         </div><!-- End: ob-jumbotron -->
 [%  END %]

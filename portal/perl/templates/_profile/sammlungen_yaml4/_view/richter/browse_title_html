@@ -90,7 +90,7 @@ aufgef&uuml;hrt.") %]
 
 <table width="100%">
 [% FOREACH item IN browselist %]
-<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?l=[% lang %];page=1;db=richter;ft0720=[% uri_escape(item.replace('/','').replace('\(','').replace('\)','').replace('\?','')) %]">[% item %]</a></td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?l=[% lang %]&page=1&db=richter&ft0720=[% uri_escape(item.replace('/','').replace('\(','').replace('\)','').replace('\?','')) %]">[% item %]</a></td></tr>
 [% END %]
 </table>
 

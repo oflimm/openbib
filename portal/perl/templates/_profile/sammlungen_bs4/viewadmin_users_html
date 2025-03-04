@@ -41,7 +41,7 @@
 
 <ul class="list-group">
 [% FOREACH role IN roles %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('viewadmin_loc') %]/[% config.get('users_loc') %]/search.html?l=[% lang %];roleid=[% role.id %]">[% role.description %]</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('viewadmin_loc') %]/[% config.get('users_loc') %]/search.html?l=[% lang %]&roleid=[% role.id %]">[% role.description %]</a></li>
 [% END %]
 </ul>
 

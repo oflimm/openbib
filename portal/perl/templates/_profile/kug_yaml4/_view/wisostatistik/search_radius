@@ -9,15 +9,15 @@
    prevprofile = session.get_profile; %]
 [% searchprofileid_of_view = config.get_searchprofile_of_view(view) ; checked_profile = 0 %]
 [% searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view) %]
-<dd><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude = ["profile"] }) %];profile=[% searchprofileid_of_view %]" [%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%]class="ob-strong"[% checked_profile = 1 ; END %]>Wirtschafts- und Sozialstatisik</a></dd>
+<dd><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %]&[% searchquery.to_cgi_querystring({ exclude = ["profile"] }) %];profile=[% searchprofileid_of_view %]" [%- IF prevprofile == searchprofileid_of_view && NOT checked_profile -%]class="ob-strong"[% checked_profile = 1 ; END %]>Wirtschafts- und Sozialstatisik</a></dd>
 [%  FOREACH unit IN config.get_orgunitinfo_overview(sysprofile).all ;
      IF unit.orgunitname == orgunitname ;
       searchprofileid_of_orgunit = config.get_searchprofile_of_orgunit(sysprofile,unit.orgunitname) ;
 %]
-<dd><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude = ["profile"] }) %];profile=[% searchprofileid_of_orgunit %]"[%- IF prevprofile == searchprofileid_of_orgunit && NOT checked_profile -%]class="ob-strong"[% checked_profile = 1 ; END %]>[% unit.description %]</a></dd>
+<dd><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %]&[% searchquery.to_cgi_querystring({ exclude = ["profile"] }) %];profile=[% searchprofileid_of_orgunit %]"[%- IF prevprofile == searchprofileid_of_orgunit && NOT checked_profile -%]class="ob-strong"[% checked_profile = 1 ; END %]>[% unit.description %]</a></dd>
 [%   END;
     END; %]
-<dd><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude = ["profile"] }) %];profile=[% searchprofileid_of_sysprofile %]"[%- IF prevprofile == searchprofileid_of_sysprofile && NOT checked_profile -%]class="ob-strong"[% checked_profile = 1 ; END %]">[% msg.maketext("Alle Kataloge") %]</a></dd>
+<dd><a href="[% path_prefix %]/[% config.get('search_loc') %]?[% facets_query_args_base %]&[% searchquery.to_cgi_querystring({ exclude = ["profile"] }) %];profile=[% searchprofileid_of_sysprofile %]"[%- IF prevprofile == searchprofileid_of_sysprofile && NOT checked_profile -%]class="ob-strong"[% checked_profile = 1 ; END %]">[% msg.maketext("Alle Kataloge") %]</a></dd>
 </dl>
 <!-- End search radius -->
 

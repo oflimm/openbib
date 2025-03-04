@@ -98,7 +98,7 @@
 [%- IF user.has_right({scope = 'admin_clusters', right = 'right_delete'}) -%]
 &nbsp;&nbsp;&nbsp;
 
-<a class="ob_button" href="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="ob_button" href="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]?_method=DELETE&confirm=1">[% msg.maketext("Löschen") %]</a>
 [%- END -%]
 </div>
 

@@ -113,7 +113,7 @@
 
 &nbsp;&nbsp;&nbsp;
 
-<a class="ob_button" href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/[% config.get('orgunits_loc') %]/id/[% orgunitinfo.orgunitname %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="ob_button" href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/[% config.get('orgunits_loc') %]/id/[% orgunitinfo.orgunitname %]?_method=DELETE&confirm=1">[% msg.maketext("Löschen") %]</a>
 
 </div>
 

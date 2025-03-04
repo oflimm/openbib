@@ -81,10 +81,10 @@ END:VCALENDAR
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=showcirc;circaction=borrows">[% msg.maketext("Ausleihen") %]</a></li>
-   <li><a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=showcirc;circaction=reservations">[% msg.maketext("Vormerkungen") %]</a></li>
-   <li><a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=showcirc;circaction=orders">[% msg.maketext("Bestellungen") %]</a></li>
-   <li><a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=showcirc;circaction=reminders">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
+   <li><a class="active" href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %]&action=showcirc&circaction=borrows">[% msg.maketext("Ausleihen") %]</a></li>
+   <li><a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %]&action=showcirc&circaction=reservations">[% msg.maketext("Vormerkungen") %]</a></li>
+   <li><a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %]&action=showcirc&circaction=orders">[% msg.maketext("Bestellungen") %]</a></li>
+   <li><a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %]&action=showcirc&circaction=reminders">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
 </ul>
 
 <div class="content">
@@ -109,7 +109,7 @@ END:VCALENDAR
 </style>
 
 <p>
-<b>[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]:</b> <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %];action=renew_loans;validtarget=[% database %]" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("durchf&uuml;hren") %]</a>
+<b>[% msg.maketext("Gesamtkonto-Verl&auml;ngerung") %]:</b> <a href="[% config.get('circulation_loc') %]?sessionID=[% sessionID %]&action=renew_loans&validtarget=[% database %]" title="[% msg.maketext("Gesamtkonto verl&auml;ngern") %]">[% msg.maketext("durchf&uuml;hren") %]</a>
 </p>
 
 [%# USE dumper;dumper.dump(borrows)%]

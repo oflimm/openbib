@@ -36,21 +36,21 @@
 </div>
 
 <div class="pt-2">
-<img src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a>
+<img src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a>
 </div>
 
 [% IF user.ID %]
 <div class="pt-2">
-<img src="[% config.get_icon('mail',view,sysprofile) %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/mail.html?l=[% lang %];format=Text" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a>
+<img src="[% config.get_icon('mail',view,sysprofile) %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/mail.html?l=[% lang %]&format=Text" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a>
 </div>
 [% END %]
 
 <div class="pt-2">
-<img src="[% config.get_icon('save',view,sysprofile) %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/save.html?l=[% lang %];format=Text" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a>
+<img src="[% config.get_icon('save',view,sysprofile) %]" alt="[% msg.maketext("Abspeichern") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/save.html?l=[% lang %]&format=Text" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a>
 </div>
 
 <div class="pt-2">
-<img src="[% config.get_icon('print',view,sysprofile) %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/print.html?l=[% lang %];format=short" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a>
+<img src="[% config.get_icon('print',view,sysprofile) %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" />&nbsp;<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/print.html?l=[% lang %]&format=short" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a>
 </div>
 
 </div>
@@ -73,7 +73,7 @@
     <div id="collapseFormats" class="collapse" aria-labelledby="headingFormats" data-parent="#ob-formats">
       <div class="card-body">
 <p>
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=full" [%- IF format == 'full' || format == '' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %];format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a> 
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %]&format=full" [%- IF format == 'full' || format == '' -%]class="ob-selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %]&format=Text" [%- IF format == 'Text'-%]class="ob-selected_item"[%- END -%]>Text</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %]&format=BibTeX" [%- IF format == 'BibTeX'-%]class="ob-selected_item"[%- END -%]>BibTeX</a>, <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=[% lang %]&format=EndNote" [%- IF format == 'EndNote'-%]class="ob-selected_item"[%- END -%]>EndNote</a> 
 </p>
       </div>
     </div>      
@@ -298,7 +298,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 <p>
 [% FOREACH thistag IN private_tags_of_tit %]
-<a href="[% path_prefix %]/[% config.get('tags_loc') %]/id/[% thistag.id %]?_method=DELETE;redirect_to=[% uri_escape(location) %]" class="ob_button">[% thistag.tagname %]</a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('tags_loc') %]/id/[% thistag.id %]?_method=DELETE&redirect_to=[% uri_escape(location) %]" class="ob_button">[% thistag.tagname %]</a>&nbsp;
 [% END %]
 </p>
 
@@ -529,7 +529,7 @@ $(document).ready(function(){
 <p/>
 [% END %]
       <h5>Aus Bibsonomy</h5>
-<span id="ob-bibsonomy_tags_content"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].html?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags | uri %]">Suchen?</a></span>
+<span id="ob-bibsonomy_tags_content"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].html?l=[% lang %]&bibkey=[% record.to_bibkey %]&subjects=[% record.to_tags | uri %]">Suchen?</a></span>
 <p/>
 </div>
 </div>
@@ -562,7 +562,7 @@ $(document).ready(function(){
     <div id="collapseSimilarPersons" class="collapse" aria-labelledby="headingSimilarPersons" data-parent="#ob-similar_persons">
       <div class="card-body">
 
-<span id="ob-similar_persons_content"><a href="[% path_prefix %]/[% config.get('connector_similarpersons_loc') %].html?l=[% lang %];db=[% record.database%];type=tit;id=[% record.id %]">Anzeigen?</a></span>
+<span id="ob-similar_persons_content"><a href="[% path_prefix %]/[% config.get('connector_similarpersons_loc') %].html?l=[% lang %]&db=[% record.database%]&type=tit&id=[% record.id %]">Anzeigen?</a></span>
 </div>
 <p/>
 </div>
@@ -595,7 +595,7 @@ $(document).ready(function(){
     <div id="collapseSimilarSubjects" class="collapse" aria-labelledby="headingSimilarSubjects" data-parent="#ob-similar_subjects">
       <div class="card-body">
 
-<span id="ob-similar_subjects_content"><a href="[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %].html?l=[% lang %];db=[% record.database%];type=tit;id=[% record.id %]">Anzeigen?</a></span>
+<span id="ob-similar_subjects_content"><a href="[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %].html?l=[% lang %]&db=[% record.database%]&type=tit&id=[% record.id %]">Anzeigen?</a></span>
 </div>
 <p/>
 </div>

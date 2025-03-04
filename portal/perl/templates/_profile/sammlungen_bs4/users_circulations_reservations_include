@@ -28,7 +28,7 @@
 
 <tr>
 <td><i><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% reservation.edition %].html?l=[% lang %]">[% reservation.about %]</a></i></td>
-<td>[% reservation.label %]</td><td>[% reservation.starttime %]-[% reservation.endtime %]</td><td>[% reservation.queue %]. Stelle</td><td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/reservations?_method=DELETE;unit=[% reservation.department.id %];[% IF holdingid.match(' \(T\)$')%]titleid=[% reservation.edition %][% ELSE %]holdingid=[% uri_escape(reservation.item) %][% END %];validtarget=[% database %]" title="Vormerkung l&ouml;schen" class="btn btn-primary">Vormerkung l&ouml;schen</a></td></tr>
+<td>[% reservation.label %]</td><td>[% reservation.starttime %]-[% reservation.endtime %]</td><td>[% reservation.queue %]. Stelle</td><td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/reservations?_method=DELETE&unit=[% reservation.department.id %]&[% IF holdingid.match(' \(T\)$')%]titleid=[% reservation.edition %][% ELSE %]holdingid=[% uri_escape(reservation.item) %][% END %]&validtarget=[% database %]" title="Vormerkung l&ouml;schen" class="btn btn-primary">Vormerkung l&ouml;schen</a></td></tr>
 [% END %]
 </tbody>
 </table>

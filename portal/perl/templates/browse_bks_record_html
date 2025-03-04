@@ -45,7 +45,7 @@ bklist = bklist.sort;
 [% NEXT IF NOT thisbklist.${bk} %]
 <tr>
 <th style="font-weight:bold;font-size:1.2em;" width="2%">[% bk %]</th>
-<td><a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];profile=[% searchprofileid_of_books %];ft4100=[% bk %]">[% bks.${bk} %]</a></td>
+<td><a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&profile=[% searchprofileid_of_books %]&ft4100=[% bk %]">[% bks.${bk} %]</a></td>
 </tr>
 [% END %]
 </table>

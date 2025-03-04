@@ -50,7 +50,7 @@
 thiscirculation.Status == 'entliehen' && thiscirculation.Rueckgabe != '31.12.9999' && thiscirculation.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% thiscirculation.Rueckgabe %][%- ELSE -%][% thiscirculation.Status %][%- END -%]</strong><br/>
 [%
      IF thiscirculation.Ausleihurl %]
-   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550;url=[% uri_escape(thiscirculation.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
+   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550&url=[% uri_escape(thiscirculation.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
 [%   ELSE %]
 [%      IF thiscirculation.Statuscode != 0 ;
             IF thiscirculation.Gruppe.Name.match("Handapparat") %]

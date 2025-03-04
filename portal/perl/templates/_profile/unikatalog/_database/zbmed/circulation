@@ -226,7 +226,7 @@
 [% END %]
 
 [% IF have_provenance_for.defined(thiscirculation.barcode) %]
-<br/><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% uri_escape(thiscirculation.barcode) %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.include?l=[% lang %];mnr=[% uri_escape(thiscirculation.barcode) %]">Provenienzen</a>
+<br/><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %]&mnr=[% uri_escape(thiscirculation.barcode) %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.include?l=[% lang %]&mnr=[% uri_escape(thiscirculation.barcode) %]">Provenienzen</a>
 [% END %]
 </td>
 <td>
@@ -258,7 +258,7 @@
 
 
 %]
-&nbsp;<a class="btn btn-primary mb-1" [% IF NOT user.ID %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=1;redirect_to=[% anon_redirect_url | uri %]"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/default?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];realm=usb">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
+&nbsp;<a class="btn btn-primary mb-1" [% IF NOT user.ID %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %]&authenticatorid=1&redirect_to=[% anon_redirect_url | uri %]"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.id %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/default?l=[% lang %]&dbname=[% database %]&titleid=[% record.id %]&label=[% thiscirculation.location_mark |uri %]&location=[% standort |uri %]&realm=usb">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%############### Temporaerer Standort ######## %]
 [% ELSIF thiscirculation.unavailability_info && thiscirculation.unavailability_info.first.expected && thiscirculation.unavailability_info.first.expected.match('temporarily unavailable') %]
@@ -310,7 +310,7 @@
         anon_redirect_url = "${path_prefix}/${config.get('users_loc')}/id/me/${config.get('circulations_loc')}/id/mail/handset.html?l=${lang};dbname=${database};titleid=${record.id};label=${uri_escape(thiscirculation.location_mark)};location=${uri_escape(standort)};realm=${realm}";
 
 %]
-<br/><a class="btn btn-primary mb-1" [% IF NOT user.ID %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %];authenticatorid=1;redirect_to=[% anon_redirect_url | uri %]"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/handset.html?l=[% lang %];dbname=[% database %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];location=[% standort |uri %];realm=[% realm %]">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
+<br/><a class="btn btn-primary mb-1" [% IF NOT user.ID %]data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('login_loc') %].include?l=[% lang %]&authenticatorid=1&redirect_to=[% anon_redirect_url | uri %]"[% END %] href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/handset.html?l=[% lang %]&dbname=[% database %]&titleid=[% record.id %]&label=[% thiscirculation.location_mark |uri %]&location=[% standort |uri %]&realm=[% realm %]">[% msg.maketext("Bestellen") %] mit Bestellformular</a> 
 [%    END %]
 [%   ELSE %]
 [% availability_info %]
@@ -533,7 +533,7 @@ Präsenzbestand
 [% IF thiscirculation.department_id == 'KN3' # KMB: Bestellbutton mit Sprung ins KuBi-Portal bzw. zur Bestellmaske, z.B. ID=inst001:7140497 %]
 [%   IF NOT thiscirculation.storage_id.match('(KN3-RHBILD|KN3-SCHLAD|KN3-MAK|KN3-WRMGRA)$') && NOT thiscirculation.availability.match('missing') && NOT thiscirculation.remark.match('vermisst') && NOT thiscirculation.unavailability_info.first.expected.match('acquisition') && NOT thiscirculation.barcode.match('DummyBarcodeOrders') # Bestellfunktionen fuer KMB-Bestand im MAKK, WRM (Graphische Sammlung) und DSL usw. unterdruecken. Nur KMB selbst %]
 [%#     IF config.get('active_ils') %]
-<p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %];titleid=[% record.id %];label=[% thiscirculation.location_mark |uri %];dbname=[% database %];location=[% thiscirculation.storage_id %];realm=kmb">[% msg.maketext("In den KMB Lesesaal bestellen") %]</a></p> 
+<p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %]&titleid=[% record.id %]&label=[% thiscirculation.location_mark |uri %]&dbname=[% database %]&location=[% thiscirculation.storage_id %]&realm=kmb">[% msg.maketext("In den KMB Lesesaal bestellen") %]</a></p> 
 <p>
 <b>KMB-Dokumentlieferdienst:</b><br/>
 <a href="https://www.subito-doc.de/" target="_blank">Aufsatzbestellung</a>

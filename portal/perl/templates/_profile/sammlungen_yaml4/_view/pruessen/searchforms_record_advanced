@@ -114,7 +114,7 @@ alt="Plakat aus dem Jahr 1981">
 [% FOREACH form IN publikationsformen %]
 [%- searchprefix  = config.get('searchfield').subjectstring.prefix -%]
 
-<tr><td><a style="font-weight:bold" href="[% path_prefix %]/[% config.get('search_loc')%].html?l=[% lang %];db=pruessen;[% searchprefix %]=[% form.swt %]">[% form.desc %]</a></td></tr>
+<tr><td><a style="font-weight:bold" href="[% path_prefix %]/[% config.get('search_loc')%].html?l=[% lang %]&db=pruessen&[% searchprefix %]=[% form.swt %]">[% form.desc %]</a></td></tr>
 [% END %]
 </table>
 

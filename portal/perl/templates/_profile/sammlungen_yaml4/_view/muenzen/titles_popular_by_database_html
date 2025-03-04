@@ -292,7 +292,7 @@
       </div>
       <div class="ob-titlemark"><span>[% item.id %]</span></div>
       <div class="ob-titleactions">
-[% IF item.id && item.database %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% item.database %];titleid=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get('listofinterest_small_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />[% msg.maketext("Merken") %]</a>[% END %]
+[% IF item.id && item.database %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% item.database %]&titleid=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get('listofinterest_small_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />[% msg.maketext("Merken") %]</a>[% END %]
       </div>
     </div>
 

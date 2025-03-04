@@ -65,7 +65,7 @@
 [%- IF user.has_right({scope = 'admin_servers', right = 'right_delete'}) -%]
 &nbsp;&nbsp;&nbsp;
 
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]?_method=DELETE&confirm=1">[% msg.maketext("Löschen") %]</a>
 [%- END -%]
 
 </form>

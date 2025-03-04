@@ -92,7 +92,7 @@
     [%  IF username %]
       [% IF NOT suppress_unauthorized %]
            <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/edit.html?l=[% lang %]">[% msg.maketext("Mein KUG") %]</a></li>
-           <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %];purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a></li>
+           <li class="nav-item[% IF layout_param.active_menu == "loginout" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('logout_loc') %].html?l=[% lang %]&purge_private_userinfo=1">[% msg.maketext("Abmelden") %]</a></li>
       [% END %]
     [%  ELSE %]
            <li class="nav-item[% IF layout_param.active_menu == "login" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]">[% msg.maketext("Anmelden") %]</a></li>
@@ -108,7 +108,7 @@
     [% IF config.get('lang').size == 2 %]
                <li class="nav-item">		
       [% FOREACH thislang IN config.get('lang') %]
-       [% IF lang != thislang %]<a class="nav-link" href="[% path %]?[% qstring = cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% IF qstring %][% qstring %];[% END %]l=[% thislang %]">[% lang_desc.${thislang} %]</a>[% END %]
+       [% IF lang != thislang %]<a class="nav-link" href="[% path %]?[% qstring = cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% IF qstring %][% qstring %]&[% END %]l=[% thislang %]">[% lang_desc.${thislang} %]</a>[% END %]
      [% END %]
                </li>
     [% ELSE %]

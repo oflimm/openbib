@@ -46,7 +46,7 @@
 <p/>
 <ul>
 [% FOREACH subject IN subjects %]
-<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];page=1;sm=seq;db=bibsonomy;typ=publication;fsubj=[% subject.name |uri %]">[% subject.name %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&page=1&sm=seq&db=bibsonomy&typ=publication&fsubj=[% subject.name |uri %]">[% subject.name %]</a></li>
 [% END %]
 </ul>
 <p/>

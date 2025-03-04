@@ -57,7 +57,7 @@
 [% IF rvk_has_sub.${syssubid} %]
 <a class="inturl ms-3" href="[% path_prefix %]/[% config.get('browse_loc') %]/rvk/id/[% syssubid %].html?l=[% lang %]">[% rvk_desc.${syssubid} %]</a> <i class="fas fa-sort-down"></i>
 [% ELSE %]
-<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?rvk=[% syssubid %];srt=mark_asc;profile=[% profileid %];l=[% lang%]">[% rvk_desc.${syssubid} %]</a>
+<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?rvk=[% syssubid %]&srt=mark_asc&profile=[% profileid %]&l=[% lang%]">[% rvk_desc.${syssubid} %]</a>
 [% END%]
 </td>
 </tr>

@@ -80,7 +80,7 @@
 
 <ul class="topiclist">
 [% FOREACH role IN user.get_all_roles %]
-<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/search.html?l=[% lang %];roleid=[% role.id %]">[% role.description %]</a></li>
+<li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/search.html?l=[% lang %]&roleid=[% role.id %]">[% role.description %]</a></li>
 [% END %]
 </ul>
 

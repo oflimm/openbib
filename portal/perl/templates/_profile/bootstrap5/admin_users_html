@@ -32,7 +32,7 @@
 
 <ul class="list-group">
 [% FOREACH role IN user.get_all_roles %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/search.html?l=[% lang %];roleid=[% role.id %]">[% role.description %]</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/search.html?l=[% lang %]&roleid=[% role.id %]">[% role.description %]</a></li>
 [% END %]
 </ul>
 

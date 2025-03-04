@@ -44,7 +44,7 @@
      cdm_imgurl = "https://services.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}&width=200";
 
 %]
-<p><a id="cover_full_url" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=534;url=[% uri_escape(cdm_url) %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]" title="Zum Digitalisat des Titels in ContentDM" /></a><br/>[% cdmrecord.title %]</p>
+<p><a id="cover_full_url" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=534&url=[% uri_escape(cdm_url) %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]" title="Zum Digitalisat des Titels in ContentDM" /></a><br/>[% cdmrecord.title %]</p>
   [% END %]
 
   <span style="font-face:bold;font-size:0.8em;">Klicken Sie auf das

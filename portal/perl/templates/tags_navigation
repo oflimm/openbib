@@ -30,7 +30,7 @@
 [% IF layout_param.active_submenu == "tags_names_recent" %]
   <li class="nav-item active"><strong>[% msg.maketext("Zuletzt angelegt") %]</strong></li>
 [% ELSE %]
-   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('tags_loc') %]/names/recent.html?l=[% lang %];num=20">[% msg.maketext("Zuletzt angelegt") %]</a></li>
+   <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('tags_loc') %]/names/recent.html?l=[% lang %]&num=20">[% msg.maketext("Zuletzt angelegt") %]</a></li>
 [% END %]
  </ul>
 </nav>

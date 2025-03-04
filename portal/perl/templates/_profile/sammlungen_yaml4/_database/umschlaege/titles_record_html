@@ -96,7 +96,7 @@ $(document).ready(function(){
        <ul>
          <li><a href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
 [% IF searchquery %]
-         <li><a href="[% path_prefix%]/[% config.get('search_loc')%].html?[% queryoptions.to_cgi_querystring({ exclude = ['page'] }) %];page=1;[% searchquery.to_cgi_querystring %]">[% msg.maketext("Recherche") %]:&nbsp;
+         <li><a href="[% path_prefix%]/[% config.get('search_loc')%].html?[% queryoptions.to_cgi_querystring({ exclude = ['page'] }) %]&page=1&[% searchquery.to_cgi_querystring %]">[% msg.maketext("Recherche") %]:&nbsp;
 [%- 
     FOREACH field IN searchquery.get_searchquery.keys ;
        fieldname    = field_map.${field};
@@ -182,19 +182,19 @@ $(document).ready(function(){
 [%-   IF normdata.${"E4200"} %]
 [%-     FOREACH item IN normdata.${"E4200"}-%]
 [%        redirect_url = "http://de.wikipedia.org/wiki/${item.content}" %]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522&url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END %]
 [%-   IF normdata.${"E4201"} %]
 [%-     FOREACH item IN normdata.${"E4201"}-%]
 [%        redirect_url = "http://en.wikipedia.org/wiki/${item.content}" %]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522&url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END %]
 [%-   IF normdata.${"E4202"} %]
 [%-     FOREACH item IN normdata.${"E4202"}-%]
 [%        redirect_url = "http://fr.wikipedia.org/wiki/${item.content}" %]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522&url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END -%]
 </p>
@@ -334,11 +334,11 @@ von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,it
 [% IF item.id == ownreviewid %]
 <p />
 <a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]/edit">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=DELETE;confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
+href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=DELETE&confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
 [% ELSIF username %]
 <p />
-[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT;titleid=[% record.id %];dbname=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
-<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titleid=[% record.id %];dbname=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>
+[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT&titleid=[% record.id %]&dbname=[% record.database %]&rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titleid=[% record.id %]&dbname=[% record.database %]&rating=0">[% msg.maketext("Nein") %]</a>
 [% END %]
 </dd>
 [%  END %]

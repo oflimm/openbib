@@ -68,7 +68,7 @@
 <tr>
 <td>[% usertemplate.templateid.id %]</td>
 <td><img style="vertical-align: bottom;" src="/images/openbib/[% usertemplate.templateid.templatelang %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",usertemplate.templateid.templatelang) %]" /></td>
-<td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('templates_loc') %]/id/[% usertemplate.templateid.id %]/edit.html?l=[% lang %];numrev=3">[% usertemplate.templateid.templatename %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('templates_loc') %]/id/[% usertemplate.templateid.id %]/edit.html?l=[% lang %]&numrev=3">[% usertemplate.templateid.templatename %]</a></td>
 <td>[% usertemplate.templateid.viewid.viewname %]: [% usertemplate.templateid.viewid.description %]</td>
 </tr>
 [% END %]

@@ -163,6 +163,6 @@ $(document).ready(function(){
 [% END %]
 </select></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
 <tr><td></td><td></td><td></td><td></td></tr>
-<tr><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/simple.html" class="navlink">[% msg.maketext("Einfache Suche") %]</a></td><td colspan="2" align="right"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/session.html?fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td colspan="2"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/simple.html" class="navlink">[% msg.maketext("Einfache Suche") %]</a></td><td colspan="2" align="right"><a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/session.html?fs=&titel=&verf=&kor=&swt=&hststring=&gtquelle=&sign=&isbn=&issn=&notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 
 </table>

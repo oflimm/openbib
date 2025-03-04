@@ -80,17 +80,17 @@
 [% IF active_submenu == "register_0426" %]
   <li class="active"><strong>Briefe von Gentz</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0426.html?l=[% lang %];page=1">Briefe von Gentz</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0426.html?l=[% lang %]&page=1">Briefe von Gentz</a></li>
 [% END %]
 [% IF active_submenu == "register_0427" %]
   <li class="active"><strong>Briefe an Gentz</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0427.html?l=[% lang %];page=1">Briefe an Gentz</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0427.html?l=[% lang %]&page=1">Briefe an Gentz</a></li>
 [% END %]
 [% IF active_submenu == "register_0428" %]
   <li class="active"><strong>Briefe Dritter</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0428.html?l=[% lang %];page=1">Briefe Dritter</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0428.html?l=[% lang %]&page=1">Briefe Dritter</a></li>
 [% END %]
 </ul>
 </li>
@@ -98,12 +98,12 @@
 [% IF active_submenu == "register_0200" %]
   <li class="active"><strong>Briefempfänger</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0200.html?l=[% lang %];page=1">Briefempfänger</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0200.html?l=[% lang %]&page=1">Briefempfänger</a></li>
 [% END %]
 [% IF active_submenu == "register_0100" %]
   <li class="active"><strong>Briefaussteller</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0100.html?l=[% lang %];page=1">Briefaussteller</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0100.html?l=[% lang %]&page=1">Briefaussteller</a></li>
 [% END %]
  </ul>
 </nav>

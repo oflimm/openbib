@@ -366,9 +366,9 @@
       <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
 [%     ELSE %]
 [%       IF user.has_right({scope = 'admin_templates', right = 'right_update'}) %]
-      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=3">[% msg.maketext("Allgemein") %]</a></li>
+      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %]&numrev=3">[% msg.maketext("Allgemein") %]</a></li>
 [%       ELSIF user.has_right({scope = 'admin_templates', right = 'right_read'}) %]
-      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %];numrev=3">[% msg.maketext("Allgemein") %]</a></li>
+      <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %]&numrev=3">[% msg.maketext("Allgemein") %]</a></li>
 [%       END %]
 [%     END %]
     </ul>

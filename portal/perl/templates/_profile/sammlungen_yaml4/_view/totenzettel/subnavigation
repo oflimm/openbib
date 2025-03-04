@@ -41,24 +41,24 @@
 [% IF active_submenu == "register_0425" %]
   <li class="active"><strong>Sterbejahre</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/totenzettel/titles/fields/id/0425.html?l=[% lang %];page=1">Sterbejahre</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/totenzettel/titles/fields/id/0425.html?l=[% lang %]&page=1">Sterbejahre</a></li>
 [% END %]
 <!--
 [% IF active_submenu == "register_0426" %]
   <li class="active"><strong>Geburtsjahre</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/totenzettel/titles/fields/id/0426.html?l=[% lang %];page=1">Geburtsjahre</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/totenzettel/titles/fields/id/0426.html?l=[% lang %]&page=1">Geburtsjahre</a></li>
 [% END %]
 -->
 [% IF active_submenu == "register_0410" %]
   <li class="active"><strong>Sterbeorte</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/totenzettel/titles/fields/id/0410.html?l=[% lang %];page=1">Sterbeorte</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/totenzettel/titles/fields/id/0410.html?l=[% lang %]&page=1">Sterbeorte</a></li>
 [% END %]
 [% IF active_submenu == "register_0411" %]
   <li class="active"><strong>Geburtsorte</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/totenzettel/titles/fields/id/0411.html?l=[% lang %];page=1">Geburtsorte</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/totenzettel/titles/fields/id/0411.html?l=[% lang %]&page=1">Geburtsorte</a></li>
 [% END %]
  </ul>
 </nav>

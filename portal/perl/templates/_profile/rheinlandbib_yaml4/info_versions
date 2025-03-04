@@ -109,7 +109,7 @@ abonnieren, wie z.B. die Literaturlisten zu einem Themengebiet. Die entsprechend
 <dt>HTML Include</dt>
 <dd>Zur noch einfacheren Integration kann der effektive Nutzinhalt im
 HTML-Format ohne das ihn umgebende Layout abgerufen und in externe
-Webseiten oder -anwendungen eingebettet werden. Die entsprechenden URI's enden auf <em>.include</em> <br/>[<a href="http://search.ub.uni-koeln.de/portal/kug/litlists/topics/id/15/recent.include?l=de;num=5">Beispiel: Letzte 5 Literaturlisten in einem Themengebiet</a>]</dd>
+Webseiten oder -anwendungen eingebettet werden. Die entsprechenden URI's enden auf <em>.include</em> <br/>[<a href="http://search.ub.uni-koeln.de/portal/kug/litlists/topics/id/15/recent.include?l=de&num=5">Beispiel: Letzte 5 Literaturlisten in einem Themengebiet</a>]</dd>
 </dl>
 
 <p> Neben dem Aufruf des Indentifikations-URI und anschließender

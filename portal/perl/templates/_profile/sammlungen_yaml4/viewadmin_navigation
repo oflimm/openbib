@@ -25,7 +25,7 @@
 [% IF active_subsubmenu == "viewadmin_templates_record_main" %]
       <li class="active"><strong>[% msg.maketext("Allgemein") %]</strong></li>
 [% ELSE %]
-      <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=3">[% msg.maketext("Allgemein") %]</a></li>
+      <li><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %]&numrev=3">[% msg.maketext("Allgemein") %]</a></li>
 [% END %]
     </ul>
 </li>

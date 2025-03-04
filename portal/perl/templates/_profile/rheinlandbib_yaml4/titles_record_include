@@ -92,19 +92,19 @@ END ;
 [%-   IF normdata.${"E4200"} %]
 [%-    FOREACH item IN normdata.${"E4200"}-%]
 [%-      redirect_url = "http://de.wikipedia.org/wiki/${item.content}" -%]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522&url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
 [%-    END -%]
 [%-   END %]
 [%-   IF normdata.${"E4201"} %]
 [%-     FOREACH item IN normdata.${"E4201"}-%]
 [%-      redirect_url = "http://en.wikipedia.org/wiki/${item.content}" -%]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522&url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END %]
 [%-   IF normdata.${"E4202"} %]
 [%-     FOREACH item IN normdata.${"E4202"}-%]
 [%-      redirect_url = "http://fr.wikipedia.org/wiki/${item.content}" -%]
-<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522&url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END -%]
 </p>
@@ -245,11 +245,11 @@ von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,it
 [% IF item.id == ownreviewid %]
 <p />
 <a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews/id/[% item.id %]/edit">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
-href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews/id/[% item.id %]?_method=DELETE;confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
+href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews/id/[% item.id %]?_method=DELETE&confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
 [% ELSIF username %]
 <p />
-[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT;titleid=[% record.id %];dbname=[% record.database %];rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
-<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titleid=[% record.id %];dbname=[% record.database %];rating=0">[% msg.maketext("Nein") %]</a>
+[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT&titleid=[% record.id %]&dbname=[% record.database %]&rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titleid=[% record.id %]&dbname=[% record.database %]&rating=0">[% msg.maketext("Nein") %]</a>
 [% END %]
 </dd>
 [%  END %]
@@ -348,9 +348,9 @@ href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/reviews/i
 <table>
 <tr>
 <th><img src="[% config.get('share_img') %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" /></th>
-<td><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/add_item?id=[% record.id %];db=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
+<td><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/add_item?id=[% record.id %]&db=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
 <th><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></th>
-<td><a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]?_method=POST;db=[% record.database %];id=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
+<td><a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]?_method=POST&db=[% record.database %]&id=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
 </tr>
 <tr>
 [% IF user.ID %]
@@ -674,7 +674,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <div class="ob-bibsonomy_tags"><!-- Begin Vorhandene BibSonomy tags -->
 <div class="ob-headline"><span id="ob-bibsonomy_tags_toggle">[% msg.maketext("BibSonomy Tags") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="ob-bibsonomy_tags_do"><!-- Begin bibsonomy_tags do -->
-<span id="ob-bibsonomy_tags"><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/lookup?bibkey=[% bibkey %];tags=[% record.to_tags | uri %]">Suchen?</a></span>
+<span id="ob-bibsonomy_tags"><a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]/lookup?bibkey=[% bibkey %]&tags=[% record.to_tags | uri %]">Suchen?</a></span>
 </div>
 <p/>
 </div>
@@ -694,7 +694,7 @@ $(document).ready(function(){
 <div class="ob-similar_persons"><!-- Begin Verwandte Personen -->
 <div class="ob-headline"><span id="ob-similar_persons_toggle">[% msg.maketext("Verwandte Personen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="ob-similar_persons_do"><!-- Begin similarpersons do -->
-<span id="ob-similar_persons"><a href="[% path_prefix %]/[% config.get('connector_similarpersons_loc') %]?db=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
+<span id="ob-similar_persons"><a href="[% path_prefix %]/[% config.get('connector_similarpersons_loc') %]?db=[% record.database%]&type=tit&id=[% record.id %]&format=html">Anzeigen?</a></span>
 </div>
 <p/>
 </div>
@@ -713,7 +713,7 @@ $(document).ready(function(){
 <div class="ob-similar_subjects"><!-- Begin Verwandte Themen -->
 <div class="ob-headline"><span id="ob-similar_subjects_toggle">[% msg.maketext("Verwandte Themen") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="ob-similar_subjects_do"><!-- Begin similarsubjects do -->
-<span id="ob-similar_subjects"><a href="[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %]?db=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
+<span id="ob-similar_subjects"><a href="[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %]?db=[% record.database%]&type=tit&id=[% record.id %]&format=html">Anzeigen?</a></span>
 </div>
 <p/>
 </div>

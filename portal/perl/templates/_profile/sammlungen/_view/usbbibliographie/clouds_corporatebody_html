@@ -56,7 +56,7 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel sind verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('search_loc') %]?page=1;[% IF default_query_options %][% default_query_options %];[% END %]profile=[% config.get_searchprofile_of_database(database) %];[% searchprefix %]=[% uri_escape(item) %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('search_loc') %]?page=1&[% IF default_query_options %][% default_query_options %]&[% END %]profile=[% config.get_searchprofile_of_database(database) %]&[% searchprefix %]=[% uri_escape(item) %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

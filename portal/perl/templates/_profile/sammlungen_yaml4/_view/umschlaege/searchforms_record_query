@@ -89,7 +89,7 @@ $(document).ready(function(){
     this_searchfield = 'person';
  -%]
 <div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Autor") %]<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Register") %]</a></label>
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Autor") %]<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0100.html?l=[% lang %]&page=1">[% msg.maketext("Register") %]</a></label>
 <input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
@@ -97,7 +97,7 @@ $(document).ready(function(){
     this_searchfield = 'corporatebody';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Zusammenarbeit") %]<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0200.html?l=[% lang %];page=1">[% msg.maketext("Register") %]</a></label>
+<label for="[% cgiparam %]">[% msg.maketext("Zusammenarbeit") %]<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0200.html?l=[% lang %]&page=1">[% msg.maketext("Register") %]</a></label>
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
@@ -105,7 +105,7 @@ $(document).ready(function(){
     this_searchfield = 'subject';
  -%]
 <div class="ym-fbox-text">
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Am Umschlag Beteiligte") %]<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0710.html?l=[% lang %];page=1">[% msg.maketext("Register") %]</a></label>
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Am Umschlag Beteiligte") %]<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0710.html?l=[% lang %]&page=1">[% msg.maketext("Register") %]</a></label>
 <input id="autocomplete_[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" /> 
 </div>
 
@@ -113,7 +113,7 @@ $(document).ready(function(){
     this_searchfield = 'publisher';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Verlag") %]<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0412.html?l=[% lang %];page=1">[% msg.maketext("Register") %]</a></label>
+<label for="[% cgiparam %]">[% msg.maketext("Verlag") %]<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0412.html?l=[% lang %]&page=1">[% msg.maketext("Register") %]</a></label>
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
 </div>
 
@@ -121,7 +121,7 @@ $(document).ready(function(){
     this_searchfield = 'yearstring';
  -%]
 <div class="ym-fbox-text">
-<label for="[% cgiparam %]">[% msg.maketext("Jahr") %]<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Register") %]</a></label>
+<label for="[% cgiparam %]">[% msg.maketext("Jahr") %]<br/><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/umschlaege/titles/fields/id/0425.html?l=[% lang %]&page=1">[% msg.maketext("Register") %]</a></label>
 <input id="[% cgiparam %]" type="text" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="4" maxlength="4" />
 </div>
 

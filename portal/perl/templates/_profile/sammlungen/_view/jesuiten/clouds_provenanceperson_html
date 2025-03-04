@@ -60,7 +60,7 @@
    item      = item.replace('&amp;','&');
    searchterm = item.replace('&lt;','<').replace('&gt;','>');
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben die Provenienz/Peson</span><a href="[% path_prefix %]/[% config.get('search_loc') %]?page=1;[% IF default_query_options %][% default_query_options %];[% END %]profile=[% config.get_searchprofile_of_database(database) %];[% searchprefix %]=[% uri_escape(item) %]" class="tag" title="[% itemcount %] Titel haben die Provenienz/Person [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben die Provenienz/Peson</span><a href="[% path_prefix %]/[% config.get('search_loc') %]?page=1&[% IF default_query_options %][% default_query_options %]&[% END %]profile=[% config.get_searchprofile_of_database(database) %]&[% searchprefix %]=[% uri_escape(item) %]" class="tag" title="[% itemcount %] Titel haben die Provenienz/Person [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

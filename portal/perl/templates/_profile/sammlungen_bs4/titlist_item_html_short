@@ -345,13 +345,13 @@ $(document).ready(function(){
 [% IF tagname %]
         <a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="ob-tags">[% tagname %]</a>
 [% END %]
-[% IF record.id && record.database && NOT hide_hit %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.get_encoded_id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /><span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>&nbsp;&nbsp;<a class="ob-bibsonomy" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><img src="[% config.get_icon('share_small',view,sysprofile) %]" alt="Share this"/><span class="d-none d-sm-inline">BibSonomy</span></a>
+[% IF record.id && record.database && NOT hide_hit %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.get_encoded_id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get_icon('listofinterest_small',view,sysprofile) %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /><span class="d-none d-sm-inline">[% msg.maketext("Merken") %]</span></a>&nbsp;&nbsp;<a class="ob-bibsonomy" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><img src="[% config.get_icon('share_small',view,sysprofile) %]" alt="Share this"/><span class="d-none d-sm-inline">BibSonomy</span></a>
 [% END # id / database%]
 [% IF user_owns_litlist %]
 &nbsp;&nbsp;<a class="ob-delete" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
 [% END %]
 [% IF parameter.private_tags %]
-&nbsp;&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.get_encoded_id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
+&nbsp;&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.get_encoded_id %]&dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("L&ouml;schen") %]</span></a>
 [% END %]
 [% IF with_cartitems_delete %]
 &nbsp;&nbsp;<a class="ob-delete" href="[% path_prefix %]/[% config.get('cartitems_loc') %]/id/[% record.listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Löschen") %]" /><span class="d-none d-sm-inline">[% msg.maketext("Löschen") %]</span></a>
@@ -363,13 +363,13 @@ $(document).ready(function(){
 [% IF NOT hide_hit %]	
          <span class="ob-person">[% person %]</span><br />
 [%  IF record.id && record.database %]
-<a href="[% IF NOT hide_detail %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>
+<a href="[% IF NOT hide_detail %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]&redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]"><strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong></a>
 [%  ELSE %]
 <strong><span class="ob-title">[% title | truncate(config.get('maxlength_title')) %]</span></strong>
 [%  END %]
 [%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%], <span class="ob-publisher">[% publisher %]</span> <span class="ob-yearofpub">[% yearofpub %]</span>   
 [% ELSE %]
-<strong><span class="ob-title"><a href="[% path_prefix %]/[% login_loc %]?l=[% lang %];redirect_to=[% uri_escape(detail_url) %]">[% hide_hit_msg %]</a></span></strong>
+<strong><span class="ob-title"><a href="[% path_prefix %]/[% login_loc %]?l=[% lang %]&redirect_to=[% uri_escape(detail_url) %]">[% hide_hit_msg %]</a></span></strong>
 [% END %]
 [% IF multiple_dbs == 1 %]
          <br /><img style="vertical-align:text-bottom;padding:1px;" src="[% config.get_icon('home_small',view,sysprofile) %]" alt="[% msg.maketext("Katalog") %]" title="[% msg.maketext("Katalog") %]"/>

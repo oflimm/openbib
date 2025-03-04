@@ -83,7 +83,7 @@
 [% IF active_submenu == "register_0334" %]
   <li class="active"><strong>Technik</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/schatzbehalter/titles/fields/id/0334.html?l=[% lang %];page=1">Technik</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/schatzbehalter/titles/fields/id/0334.html?l=[% lang %]&page=1">Technik</a></li>
 [% END %]
  </ul>
 </nav>

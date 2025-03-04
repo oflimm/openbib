@@ -67,7 +67,7 @@
 <td>[% IF loan.emergency_remark %]<span style="font-weight:bold;color:red;">[% END %][% loan.starttime.replace('T.*','') %] [% msg.maketext("bis") %] <b>[% loan.endtime.replace('T.*','') %]</b>[% IF loan.emergency_remark %]</span>[% END %]</td>
 <td>
 [% IF loan.renewable %]
-<a class="btn btn-primary" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/renew_single_loan?loanid=[% loan.loanid %];unit=[% loan.department.id %];holdingid=[% loan.item %]" title="[% msg.maketext("Verlängerung durchführen") %]">[% msg.maketext("Verlängerung durchführen") %]</a>
+<a class="btn btn-primary" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/renew_single_loan?loanid=[% loan.loanid %]&unit=[% loan.department.id %]&holdingid=[% loan.item %]" title="[% msg.maketext("Verlängerung durchführen") %]">[% msg.maketext("Verlängerung durchführen") %]</a>
 [% ELSE %]
 [% msg.maketext("Keine Verlängerung möglich") %]
 [% END %]
@@ -80,7 +80,7 @@
 
 <p/>
 [% loan_url = "${path_prefix}/${config.get('users_loc')}/id/${user.ID}/${config.get('circulations_loc')}/id/loans.ics" %]
-Ausgeliehene Medien im <a href="[% loan_url %]">iCalendar-Format</a> zur &Uuml;bernahme in einen Kalender <!-- oder als QR-Code <a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% loan_url.replace(';','%3B') %]" title="Ausleihen im iCalendar-Format via URL"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" alt="QR-Code"/></a>-->
+Ausgeliehene Medien im <a href="[% loan_url %]">iCalendar-Format</a> zur &Uuml;bernahme in einen Kalender <!-- oder als QR-Code <a class="preview" href="[% config.get('connector_qrcode_loc') %]?text=[% loan_url.replace('&','%3B') %]" title="Ausleihen im iCalendar-Format via URL"><img src="[% config.get_icon('qrcode',view,sysprofile) %]" alt="QR-Code"/></a>-->
 <p/>
 
 [%# USE dumper;dumper.dump(authenticator)%]

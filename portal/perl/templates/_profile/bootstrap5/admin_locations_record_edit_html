@@ -128,7 +128,7 @@ END ;-%]
 &nbsp;&nbsp;
 
 [%- IF user.has_right({scope = 'admin_locations', right = 'right_delete'}) -%]
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.identifier %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.identifier %]?_method=DELETE&confirm=1">[% msg.maketext("Löschen") %]</a>
 [% END %]
 </form>
 

@@ -59,7 +59,7 @@
 
 <table>
 [% FOREACH sammlung IN sammlungen %]
-<tr><td><a style="font-weight:bold" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=portrait;[% config.get('searchfield').corporatebodystring.prefix %]=[% sammlung %]">[% sammlung %]</a></td></tr>
+<tr><td><a style="font-weight:bold" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=portrait&[% config.get('searchfield').corporatebodystring.prefix %]=[% sammlung %]">[% sammlung %]</a></td></tr>
 [% END %]
 </table>
 

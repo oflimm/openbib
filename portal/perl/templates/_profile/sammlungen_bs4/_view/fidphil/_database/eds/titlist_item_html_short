@@ -399,7 +399,7 @@ titleinfo = titleinfos.join(" | ");
   <a  x-ref="addcart" x-show="showaddcart"
    x-on:htmx:before-request.camel="showspinner=true;showaddcart=false;"
    x-on:htmx:after-request.camel="cartlistChange($dispatch, $refs, $store);" 
-    class="text-secondary" hx-post="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-swap="none" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" 
+    class="text-secondary" hx-post="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" hx-swap="none" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" 
   title="[% msg.maketext('In die Merkliste') %]" style="display:none"> 
   <i @cartitem-loaded.document="test($store, '[%record.id%]' )" class="far fa-star" ></i>
   

@@ -97,13 +97,13 @@ thiscirculation.Status == 'entliehen' && thiscirculation.Rueckgabe != '31.12.999
 <td class="circurl">
 [%
      IF thiscirculation.Ausleihurl %]
-   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550;url=[% uri_escape(thiscirculation.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
+   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550&url=[% uri_escape(thiscirculation.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
 [%   ELSE %]
 [%      IF thiscirculation.Statuscode != 0 ;
             IF thiscirculation.Gruppe.Name.match("Handapparat") %]
                 keine Vormerkung m&ouml;glich<br/>(in [% thiscirculation.Entleiher.Name %])
 [%#          ELSIF thiscirculation.Vormerkbarkeit  %]
-<!--     <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=make_reservation;mnr=[% thiscirculation.Mediennr %];zst=[% thiscirculation.Zweigstelle %];aort=[% thiscirculation.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;([% thiscirculation.Vormerkungen+1 %]. Stelle) -->
+<!--     <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=make_reservation&mnr=[% thiscirculation.Mediennr %]&zst=[% thiscirculation.Zweigstelle %]&aort=[% thiscirculation.Ausgabeort %]&validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;([% thiscirculation.Vormerkungen+1 %]. Stelle) -->
 [%          ELSE %]            
                 keine Vormerkung m&ouml;glich
 [%          END %]

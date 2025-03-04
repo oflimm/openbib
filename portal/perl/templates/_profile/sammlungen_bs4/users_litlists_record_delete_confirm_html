@@ -15,7 +15,7 @@
         <div class="jumbotron">
           <h1 class="display-4">[% msg.maketext("Sind sie sicher?") %]</h1>
           <p class="lead">[% msg.maketext("Möchten Sie wirklich die Literaturliste <b>[_1] löschen</b>?",properties.title) %]</p>
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlistid %]?_method=DELETE;confirm=0">[% msg.maketext("Ja") %]</a>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlistid %]?_method=DELETE&confirm=0">[% msg.maketext("Ja") %]</a>
 
 &nbsp;&nbsp;
 

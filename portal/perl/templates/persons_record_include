@@ -242,7 +242,7 @@ END;
 [% IF normset.defined('P0010') %]
 [% gnd = normset.${'P0010'}.first.content %]
 <tr><th class="ob-field">Dt.&nbsp;Nationalbibliothek</th><td><a href="http://d-nb.info/gnd/[% gnd %]" target="_blank">Normdatensatz</a></td></tr>
-<tr><th class="ob-field">Titel im Unikatalog zur GND</th><td><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];gnd=[% gnd %]" target="_blank">[% msg.maketext("Titel anzeigen") %]</a></td></tr>
+<tr><th class="ob-field">Titel im Unikatalog zur GND</th><td><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&gnd=[% gnd %]" target="_blank">[% msg.maketext("Titel anzeigen") %]</a></td></tr>
 [% END %]
 [% IF activefeed.4 && catalog_has_authorities ;
 

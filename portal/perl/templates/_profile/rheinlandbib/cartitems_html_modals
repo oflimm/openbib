@@ -1,7 +1,7 @@
 <div class="modal fade" id="cartitemsPrintModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="cartitemsPrintModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-	<form method="GET" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/print?l=[% lang%];page=[% qopts.get_option('page') %];num=[% qopts.get_option('num') %]" target="_blank">
+	<form method="GET" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/print?l=[% lang%]&page=[% qopts.get_option('page') %]&num=[% qopts.get_option('num') %]" target="_blank">
 	  <div class="modal-header">
             <h5 class="modal-title" id="cartitemsPrintModalLabel">[% msg.maketext("Merkliste drucken") %]</h5>
 	  </div>
@@ -49,7 +49,7 @@
 <div class="modal fade" id="cartitemsSaveModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="cartitemsSaveModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-	<form method="GET" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/save?l=[% lang%];page=[% qopts.get_option('page') %];num=[% qopts.get_option('num') %]">
+	<form method="GET" action="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %]/save?l=[% lang%]&page=[% qopts.get_option('page') %]&num=[% qopts.get_option('num') %]">
 	  <div class="modal-header">
             <h5 class="modal-title" id="cartitemsSaveModalLabel">[% msg.maketext("Merkliste exportieren") %]</h5>
 	  </div>

@@ -294,12 +294,12 @@
 [% IF tagname %]
       <a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="ob-tags">[% tagname %]</a>
 [% END %]
-[% IF item.id && item.database %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% item.database %];titleid=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get('listofinterest_small_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />[% msg.maketext("Merken") %]</a>&nbsp;&nbsp;<a class="ob-bibsonomy" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% item.database %]/[% config.get('titles_loc') %]/id/[% item.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><img src="[% config.get('share_small_img') %]" alt="Share this"/>BibSonomy</a>[% END %]
+[% IF item.id && item.database %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% item.database %]&titleid=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get('listofinterest_small_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />[% msg.maketext("Merken") %]</a>&nbsp;&nbsp;<a class="ob-bibsonomy" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% item.database %]/[% config.get('titles_loc') %]/id/[% item.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><img src="[% config.get('share_small_img') %]" alt="Share this"/>BibSonomy</a>[% END %]
 [% IF user_owns_litlist %]
 &nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
 [% END %]
 [% IF parameter.private_tags %]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% item.id %];dbname=[% item.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% item.id %]&dbname=[% item.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
 [% END %]
       </div>
     </div>

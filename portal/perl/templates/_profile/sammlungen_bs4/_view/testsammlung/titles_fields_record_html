@@ -98,9 +98,9 @@
     sprstring = spr.join(';');
 
 %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %];[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% sprstring %]</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %]&[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% sprstring %]</a></li>
 [%  ELSIF searchfield %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %];[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% item %]</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %]&[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% item %]</a></li>
 [%  ELSE %]
 <li class="list-group-item">[% item %]</li>
 [%  END %]

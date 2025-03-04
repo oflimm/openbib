@@ -15,7 +15,7 @@
         <div class="jumbotron">
           <h1 class="display-4">[% msg.maketext("Sind sie sicher?") %]</h1>
           <p class="lead">[% msg.maketext("Möchten Sie wirklich die Organisationseinheit <b>[_1]</b> löschen?",orgunitinfo.orgunitname) %]</p>
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profilename %]/[% config.get('orgunits_loc') %]/id/[% orgunitinfo.orgunitname %]?_method=DELETE;confirm=0">[% msg.maketext("Ja") %]</a>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profilename %]/[% config.get('orgunits_loc') %]/id/[% orgunitinfo.orgunitname %]?_method=DELETE&confirm=0">[% msg.maketext("Ja") %]</a>
 
 &nbsp;&nbsp;
 

@@ -57,7 +57,7 @@
 [% IF kmb_has_sub.${syssubid} %]
 <a class="inturl ms-3" href="[% path_prefix %]/[% config.get('browse_loc') %]/kmb/id/[% syssubid %].html?l=[% lang %]">[% kmb_desc.${syssubid} %]</a> <i class="fas fa-sort-down"></i>
 [% ELSE %]
-<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft1004=[% syssubid %]*;srt=mark_asc;profile=[% kmb_profileid %];l=[% lang%]">[% kmb_desc.${syssubid} %]</a>
+<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft1004=[% syssubid %]*&srt=mark_asc&profile=[% kmb_profileid %]&l=[% lang%]">[% kmb_desc.${syssubid} %]</a>
 [% END%]
 </td>
 </tr>

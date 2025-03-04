@@ -96,7 +96,7 @@ B&uuml;cher der Richter-Bibliothek indentifiziert werden konnten.
 
 <table class="ym-full">
 [% FOREACH item IN browselist %]
-<tr><td>[% IF cgiapp.get_searchprefix %]<a href="[% path_prefix %]/[% config.get('search_loc') %]?db=[% database %];[% cgiapp.get_searchprefix %]=[% uri_escape(item) %]">[% item %]</a>[% ELSE %][% item %][% END %]</td></tr>
+<tr><td>[% IF cgiapp.get_searchprefix %]<a href="[% path_prefix %]/[% config.get('search_loc') %]?db=[% database %]&[% cgiapp.get_searchprefix %]=[% uri_escape(item) %]">[% item %]</a>[% ELSE %][% item %][% END %]</td></tr>
 [% END %]
 </table>
 

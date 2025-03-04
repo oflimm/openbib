@@ -102,7 +102,7 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% path_prefix %]/[% config.get('search_loc') %].mobile?page=1;[% queryoptions.to_cgi_params({exclude = ['profile','page','db']}) %];[% searchprefix %]=[% item %];db=[% database %]" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% path_prefix %]/[% config.get('search_loc') %].mobile?page=1&[% queryoptions.to_cgi_params({exclude = ['profile','page','db']}) %]&[% searchprefix %]=[% item %]&db=[% database %]" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

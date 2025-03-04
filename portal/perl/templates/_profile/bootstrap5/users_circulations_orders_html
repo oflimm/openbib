@@ -39,7 +39,7 @@
 [% order.label %]</td>
 <td>[% order.starttime %]</td>
 <td>[% order.status %]</td>
-<td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/orders?_method=DELETE;confirm=1;unit=[% order.department.id %];unitname=[% order.department.about | uri %];titleid=[% order.edition %];holdingid=[% order.item | uri %];date=[% order.starttime |uri %];validtarget=[% database %]" title="Bestellung l&ouml;schen" class="btn btn-primary">Bestellung l&ouml;schen</a></td>
+<td><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('circulations_loc') %]/id/orders?_method=DELETE&confirm=1&unit=[% order.department.id %]&unitname=[% order.department.about | uri %]&titleid=[% order.edition %]&holdingid=[% order.item | uri %]&date=[% order.starttime |uri %]&validtarget=[% database %]" title="Bestellung l&ouml;schen" class="btn btn-primary">Bestellung l&ouml;schen</a></td>
 </tr>
 [% END %]
 </tbody>

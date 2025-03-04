@@ -60,7 +60,7 @@
 <tr>
 
 <td>
-<img style="vertical-align: bottom;" src="[% config.get_icon('search_small',view,sysprofile) %]" alt="Search Icon"/>&nbsp;<a class="inturl" href="[% path_prefix%]/[% config.get('search_loc')%].html?l=[% lang %];[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %];page=1;[% query.to_cgi_querystring %][% IF add_option %];[% add_option %][% END %]">
+<img style="vertical-align: bottom;" src="[% config.get_icon('search_small',view,sysprofile) %]" alt="Search Icon"/>&nbsp;<a class="inturl" href="[% path_prefix%]/[% config.get('search_loc')%].html?l=[% lang %]&[% queryoptions.to_cgi_querystring({ exclude = ['page','sb','novrp'] }) %]&page=1&[% query.to_cgi_querystring %][% IF add_option %]&[% add_option %][% END %]">
 [%- used_fields = [] ;
     FOREACH field IN query.get_searchquery.keys ;
 

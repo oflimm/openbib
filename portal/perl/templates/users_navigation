@@ -58,17 +58,17 @@
 [%    IF layout_param.active_subsubmenu == "tags_names" %]
        <li class="nav-item active"><strong>[% msg.maketext("nach Tagnamen") %]</strong></li>
 [%    ELSE %]
-       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/names.html?l=[% lang %];format=cloud">[% msg.maketext("nach Tagnamen") %]</a></li>
+       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/names.html?l=[% lang %]&format=cloud">[% msg.maketext("nach Tagnamen") %]</a></li>
 [%    END %]
 [%    IF layout_param.active_subsubmenu == "tags_titles" %]
        <li class="nav-item active"><strong>[% msg.maketext("nach Titeln") %]</strong></li>
 [%    ELSE %]
-       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags.html?l=[% lang %];num=[% qopts.get_option('num') %];srt=title_asc">[% msg.maketext("nach Titeln") %]</a></li>
+       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags.html?l=[% lang %]&num=[% qopts.get_option('num') %]&srt=title_asc">[% msg.maketext("nach Titeln") %]</a></li>
 [%    END %]
      </ul>
 </li>
 [% ELSE %]
-  <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/names.html?l=[% lang %];format=cloud">[% msg.maketext("Tags") %]</a></li>
+  <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/tags/names.html?l=[% lang %]&format=cloud">[% msg.maketext("Tags") %]</a></li>
 [% END %]
 [% IF config.get('reviews') %]
 [%   IF layout_param.active_submenu == "userreviews" %]

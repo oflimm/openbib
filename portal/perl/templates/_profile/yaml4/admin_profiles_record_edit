@@ -87,7 +87,7 @@
 [% IF profileinfo.viewinfos.size <= 0%]
 &nbsp;&nbsp;&nbsp;
 
-<a class="ob_button" href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="ob_button" href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]?_method=DELETE&confirm=1">[% msg.maketext("Löschen") %]</a>
 [% END %]
 </div>
 

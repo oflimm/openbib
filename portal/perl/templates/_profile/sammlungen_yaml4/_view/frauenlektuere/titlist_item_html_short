@@ -277,12 +277,12 @@
 [% IF tagname %]
       <a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="ob-tags">[% tagname %]</a>
 [% END %]
-[% IF record.id && record.database %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get('listofinterest_small_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />[% msg.maketext("Merken") %]</a>&nbsp;&nbsp;<a class="ob-bibsonomy" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><img src="[% config.get('share_small_img') %]" alt="Share this"/>BibSonomy</a>[% END %]
+[% IF record.id && record.database %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get('listofinterest_small_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />[% msg.maketext("Merken") %]</a>&nbsp;&nbsp;<a class="ob-bibsonomy" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %]/to_bibsonomy" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy"><img src="[% config.get('share_small_img') %]" alt="Share this"/>BibSonomy</a>[% END %]
 [% IF user_owns_litlist %]
 &nbsp;&nbsp;<a class="ob-delete" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="/images/openbib/cancel-16px.png" alt="[% msg.maketext("Entfernen") %]" />[% msg.maketext("L&ouml;schen") %]</a>
 [% END %]
 [% IF parameter.private_tags %]
-&nbsp;&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="/images/openbib/cancel-16px.png" alt="[% msg.maketext("Entfernen") %]" />[% msg.maketext("L&ouml;schen") %]</a>
+&nbsp;&nbsp;<a class="ob-collection" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.id %]&dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><img src="/images/openbib/cancel-16px.png" alt="[% msg.maketext("Entfernen") %]" />[% msg.maketext("L&ouml;schen") %]</a>
 [% END %]
       </div>
     </div>

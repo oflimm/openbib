@@ -64,12 +64,12 @@
 	   
            <li class="nav-item dropdown d-md-none"><a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">[% msg.maketext("Register") %]</a>
              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0425.html?l=[% lang %];page=1">[% msg.maketext("Jahre") %]</a></li>
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Aussteller") %]</a></li>
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0101.html?l=[% lang %];page=1">[% msg.maketext("Empfänger") %]</a></li>
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0410.html?l=[% lang %];page=1">[% msg.maketext("Ausstellungsorte") %]</a></li>
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0200.html?l=[% lang %];page=1">[% msg.maketext("Archive") %]</a></li>
-               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0590.html?l=[% lang %];page=1">[% msg.maketext("Druckpublikationen") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0425.html?l=[% lang %]&page=1">[% msg.maketext("Jahre") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0100.html?l=[% lang %]&page=1">[% msg.maketext("Aussteller") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0101.html?l=[% lang %]&page=1">[% msg.maketext("Empfänger") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0410.html?l=[% lang %]&page=1">[% msg.maketext("Ausstellungsorte") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0200.html?l=[% lang %]&page=1">[% msg.maketext("Archive") %]</a></li>
+               <li><a class="dropdown-item" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/gentzdigital/titles/fields/id/0590.html?l=[% lang %]&page=1">[% msg.maketext("Druckpublikationen") %]</a></li>
              </ul>
 	   </li>
 <!--           <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %]">[% msg.maketext("Merkliste") %]</a></li> -->
@@ -86,7 +86,7 @@
 [%    END %]
 
                <li class="nav-item">		
-                   <div class="nav-link text-nowrap text-white"><a class="[% IF lang == 'de' %] active[% END %]" href="[% path %]?[% IF cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% cgiapp.to_cgi_querystring({ exclude = ['l']}) %];l=de[% ELSE %]l=de[% END %]">de</a> | <a class="[% IF lang == 'en' %] active[% END %]" href="[% path %]?[% IF cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% cgiapp.to_cgi_querystring({ exclude = ['l']}) %];l=en[% ELSE %]l=en[% END %]">en</a>  <img class="pr-1" src="/images/openbib/Globus_fuer_Sprache_24px.png" alt="Sprach-Icon" /></div>
+                   <div class="nav-link text-nowrap text-white"><a class="[% IF lang == 'de' %] active[% END %]" href="[% path %]?[% IF cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% cgiapp.to_cgi_querystring({ exclude = ['l']}) %]&l=de[% ELSE %]l=de[% END %]">de</a> | <a class="[% IF lang == 'en' %] active[% END %]" href="[% path %]?[% IF cgiapp.to_cgi_querystring({ exclude = ['l']}) %][% cgiapp.to_cgi_querystring({ exclude = ['l']}) %]&l=en[% ELSE %]l=en[% END %]">en</a>  <img class="pr-1" src="/images/openbib/Globus_fuer_Sprache_24px.png" alt="Sprach-Icon" /></div>
                </li>    		
             </ul>
   

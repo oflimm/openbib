@@ -235,7 +235,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event,'ta
 
 <p>
 [% FOREACH thistag IN private_tags_of_tit %]
-<a href="[% path_prefix %]/[% config.get('tags_loc') %]/id/[% thistag.id %]?_method=DELETE;redirect_to=[% uri_escape(location) %]" class="ob_button">[% thistag.tagname %]</a>&nbsp;
+<a href="[% path_prefix %]/[% config.get('tags_loc') %]/id/[% thistag.id %]?_method=DELETE&redirect_to=[% uri_escape(location) %]" class="ob_button">[% thistag.tagname %]</a>&nbsp;
 [% END %]
 </p>
 
@@ -416,7 +416,7 @@ $(document).ready(function(){
 <p/>
 [% END %]
       <h5>Aus Bibsonomy</h5>
-<span id="ob-bibsonomy_tags_content"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].html?l=[% lang %];bibkey=[% record.to_bibkey %];subjects=[% record.to_tags | uri %]">Suchen?</a></span>
+<span id="ob-bibsonomy_tags_content"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/bibsonomy/[% config.get('subjects_loc') %].html?l=[% lang %]&bibkey=[% record.to_bibkey %]&subjects=[% record.to_tags | uri %]">Suchen?</a></span>
 <p/>
 </div>
 </div>
@@ -449,7 +449,7 @@ $(document).ready(function(){
     <div id="collapseSimilarPersons" class="collapse" aria-labelledby="headingSimilarPersons" data-parent="#ob-similar_persons">
       <div class="card-body">
 
-<span id="ob-similar_persons_content"><a href="[% path_prefix %]/[% config.get('connector_similarpersons_loc') %].html?l=[% lang %];db=[% record.database%];type=tit;id=[% record.get_encoded_id %]">Anzeigen?</a></span>
+<span id="ob-similar_persons_content"><a href="[% path_prefix %]/[% config.get('connector_similarpersons_loc') %].html?l=[% lang %]&db=[% record.database%]&type=tit&id=[% record.get_encoded_id %]">Anzeigen?</a></span>
 </div>
 <p/>
 </div>
@@ -482,7 +482,7 @@ $(document).ready(function(){
     <div id="collapseSimilarSubjects" class="collapse" aria-labelledby="headingSimilarSubjects" data-parent="#ob-similar_subjects">
       <div class="card-body">
 
-<span id="ob-similar_subjects_content"><a href="[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %].html?l=[% lang %];db=[% record.database%];type=tit;id=[% record.get_encoded_id %]">Anzeigen?</a></span>
+<span id="ob-similar_subjects_content"><a href="[% path_prefix %]/[% config.get('connector_similarsubjects_loc') %].html?l=[% lang %]&db=[% record.database%]&type=tit&id=[% record.get_encoded_id %]">Anzeigen?</a></span>
 </div>
 <p/>
 </div>

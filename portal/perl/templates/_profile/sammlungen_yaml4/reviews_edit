@@ -196,12 +196,12 @@
       </div>
       <div class="ob-titlemark">[% signatur | truncate(config.get('maxlength_mark')) %]</div>
       <div class="ob-titleactions">
-<a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]?action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
+<a class="ob-collection" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?action=insert&database=[% item.database %]&singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.get('listofinterest_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('bibsonomy_loc') %]?action=add_title&id=[% record.id %]&database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.get('share_img') %]" alt="Share this"/></a>
 [% IF user_owns_litlist %]
 &nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/litlist/id/[% litlist.properties.id %]/item/[% item.database %]/[% item.id %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
 [% END %]
 [% IF parameter.private_tags %]
-&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('tags_loc') %]?&do_del=1;tags=[% parameter.tag %];titleid=[% item.id %];dbname=[% item.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
+&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('tags_loc') %]?&do_del=1&tags=[% parameter.tag %]&titleid=[% item.id %]&dbname=[% item.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.get('delete_img') %]" alt="[% msg.maketext("Entfernen") %]" /></a>
 [% END %]
       </div>
 

@@ -164,14 +164,14 @@ thiscirculation.Signatur = thiscirculation.Signatur.replace('^ARCH/','');
 <td><strong>[% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur %][% thiscirculation.Exemplar %][% ELSE %][% thiscirculation.Signatur %][% END %]</strong>
 [% provenances = record.get_provenances_of_media(thiscirculation.Mediennr) %]
 [% IF provenances.size > 0 %]
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% thiscirculation.Mediennr %]">Provenienzen</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %]&mnr=[% thiscirculation.Mediennr %]">Provenienzen</a>
 [% END %]
 </td>
 <td><strong>[%- IF thiscirculation.Status == 'bestellbar' -%]ausleihbar[% ELSIF
 thiscirculation.Status == 'entliehen' && thiscirculation.Rueckgabe != '31.12.9999' && thiscirculation.Rueckgabe != '1.1.1753' %]entliehen<br/>bis [% thiscirculation.Rueckgabe %][%- ELSE -%][% thiscirculation.Status %][%- END -%]</strong>
 [% IF thiscirculation.Standort.match('^KMB') %]
 <p class="pt-2">
-<!--          <a href="/IPS?SERVICE=TEMPLATE&amp;SUBSERVICE=ORDERFORM&amp;FUNC=SHOWFORM&amp;SID=IPS3:ed23b095f7e36560e180ea0e164b650e&amp;LOCATION=KMB&amp;VIEW=KMB:Kataloge&amp;HITROOT=%2FSEARCH_KUGKUBI%2FSESSION%5B%40id%3D%27ID_229%27%5D%2FFORMAT%5B%40id%3D%27Full%27%5D%2FPART%5B%40id%3D%271%27%5D%2FHIT&amp;TYPE=KMB&amp;ZWEIGABTEIL=Kunst-%20und%20Museumsbibliothek%20der%20Stadt%20K%C3%B6ln%20%2F%20KMB" class="imagelink" target="IPSorderform"><button type="button" title="" onclick="openMsgWin('/IPS?SERVICE=TEMPLATE&amp;SUBSERVICE=ORDERFORM&amp;FUNC=SHOWFORM&amp;SID=IPS3:ed23b095f7e36560e180ea0e164b650e&amp;LOCATION=KMB&amp;VIEW=KMB:Kataloge&amp;HITROOT=%2FSEARCH_KUGKUBI%2FSESSION%5B%40id%3D%27ID_229%27%5D%2FFORMAT%5B%40id%3D%27Full%27%5D%2FPART%5B%40id%3D%271%27%5D%2FHIT&amp;TYPE=KMB&amp;ZWEIGABTEIL=Kunst-%20und%20Museumsbibliothek%20der%20Stadt%20K%C3%B6ln%20%2F%20KMB','IPSorderform',screen.availWidth*50/100,screen.availHeight*75/100,'yes','yes');return true;">In den Lesesaal bestellen</button></a> -->
+<!--          <a href="/IPS?SERVICE=TEMPLATE&amp&SUBSERVICE=ORDERFORM&amp&FUNC=SHOWFORM&amp&SID=IPS3:ed23b095f7e36560e180ea0e164b650e&amp&LOCATION=KMB&amp&VIEW=KMB:Kataloge&amp&HITROOT=%2FSEARCH_KUGKUBI%2FSESSION%5B%40id%3D%27ID_229%27%5D%2FFORMAT%5B%40id%3D%27Full%27%5D%2FPART%5B%40id%3D%271%27%5D%2FHIT&amp&TYPE=KMB&amp&ZWEIGABTEIL=Kunst-%20und%20Museumsbibliothek%20der%20Stadt%20K%C3%B6ln%20%2F%20KMB" class="imagelink" target="IPSorderform"><button type="button" title="" onclick="openMsgWin('/IPS?SERVICE=TEMPLATE&amp;SUBSERVICE=ORDERFORM&amp;FUNC=SHOWFORM&amp;SID=IPS3:ed23b095f7e36560e180ea0e164b650e&amp;LOCATION=KMB&amp;VIEW=KMB:Kataloge&amp;HITROOT=%2FSEARCH_KUGKUBI%2FSESSION%5B%40id%3D%27ID_229%27%5D%2FFORMAT%5B%40id%3D%27Full%27%5D%2FPART%5B%40id%3D%271%27%5D%2FHIT&amp;TYPE=KMB&amp;ZWEIGABTEIL=Kunst-%20und%20Museumsbibliothek%20der%20Stadt%20K%C3%B6ln%20%2F%20KMB','IPSorderform',screen.availWidth*50/100,screen.availHeight*75/100,'yes','yes');return true;">In den Lesesaal bestellen</button></a> -->
           <a href="[% path_prefix %]/[% config.get("locations_loc") %]/id/DE-Kn3/mailorders.html?l=[% lang %];dbname=[% database %];titleid=[% record.id %];mnr=[% uri_escape(thiscirculation.Mediennr) %];mark=[% uri_escape(thiscirculation.Signatur) %]" class="btn btn-primary" title="" >In den Lesesaal bestellen</a>
 </p>
          
@@ -186,13 +186,13 @@ thiscirculation.Status == 'entliehen' && thiscirculation.Rueckgabe != '31.12.999
 <td class="circurl">
 [%
      IF thiscirculation.Ausleihurl %]
-   <img style="vertical-align:bottom" src="[% config.get_icon("follow",view,sysprofile) %]" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550;url=[% uri_escape(thiscirculation.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
+   <img style="vertical-align:bottom" src="[% config.get_icon("follow",view,sysprofile) %]" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=550&url=[% uri_escape(thiscirculation.Ausleihurl) %]">[% msg.maketext("Weiter") %]</a>
 [%   ELSE %]
 [%      IF thiscirculation.Statuscode != 0 ;
             IF thiscirculation.Gruppe.Name.match("Handapparat") %]
                 keine Vormerkung m&ouml;glich<br/>(in [% thiscirculation.Entleiher.Name %])
 [%#          ELSIF thiscirculation.Vormerkbarkeit  %]
-<!--     <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=make_reservation;mnr=[% thiscirculation.Mediennr %];zst=[% thiscirculation.Zweigstelle %];aort=[% thiscirculation.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;([% thiscirculation.Vormerkungen+1 %]. Stelle) -->
+<!--     <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=make_reservation&mnr=[% thiscirculation.Mediennr %]&zst=[% thiscirculation.Zweigstelle %]&aort=[% thiscirculation.Ausgabeort %]&validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;([% thiscirculation.Vormerkungen+1 %]. Stelle) -->
 [%          ELSE %]            
                 keine Vormerkung m&ouml;glich
 [%          END %]

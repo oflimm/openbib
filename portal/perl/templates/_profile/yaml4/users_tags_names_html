@@ -108,7 +108,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit dem Tag </span><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names/id/[% item %].html?l=[% lang %];num=[% qopts.get_option('num') %];srt=title_asc" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit dem Tag </span><a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('tags_loc') %]/names/id/[% item %].html?l=[% lang %]&num=[% qopts.get_option('num') %]&srt=title_asc" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
 [%     END %]
 </ol>
 [%   ELSIF format == 'list' %]

@@ -23,11 +23,11 @@
 <p class="alert alert-info">
 [% msg.maketext("Anzahl") %]
 &nbsp;
-<a [% IF qopts.get_option('num') == 100 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverid %]/updates.html?l=[% lang %];num=100">100</a>
+<a [% IF qopts.get_option('num') == 100 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverid %]/updates.html?l=[% lang %]&num=100">100</a>
 &nbsp;|&nbsp;
-<a  [% IF qopts.get_option('num') == 200 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverid %]/updates.html?l=[% lang %];num=200">200</a>
+<a  [% IF qopts.get_option('num') == 200 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverid %]/updates.html?l=[% lang %]&num=200">200</a>
 &nbsp;|&nbsp;
-<a  [% IF qopts.get_option('num') == 400 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverid %]/updates.html?l=[% lang %];num=400">400</a>
+<a  [% IF qopts.get_option('num') == 400 %]class="ob-selected_item"[% END %] href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverid %]/updates.html?l=[% lang %]&num=400">400</a>
 </p>
 
 <div class="table-responsive">

@@ -165,7 +165,7 @@ thiscirculation.Signatur = thiscirculation.Signatur.replace('^ARCH/','');
 <td><strong>[% IF thiscirculation.Signatur.match('#$') && thiscirculation.Exemplar %][% thiscirculation.Signatur %][% thiscirculation.Exemplar %][% ELSE %][% thiscirculation.Signatur %][% END %]</strong>
 [% provenances = record.get_provenances_of_media(thiscirculation.Mediennr) %]
 [% IF provenances.size > 0 %]
-<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %];mnr=[% thiscirculation.Mediennr %]">Provenienzen</a>
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %]&mnr=[% thiscirculation.Mediennr %]">Provenienzen</a>
 [% END %]
 </td>
 <td class="circurl">
@@ -177,7 +177,7 @@ thiscirculation.Signatur = thiscirculation.Signatur.replace('^ARCH/','');
             IF thiscirculation.Gruppe.Name.match("Handapparat") %]
                 keine Vormerkung m&ouml;glich<br/>(in [% thiscirculation.Entleiher.Name %])
 [%#          ELSIF thiscirculation.Vormerkbarkeit  %]
-<!--     <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=make_reservation;mnr=[% thiscirculation.Mediennr %];zst=[% thiscirculation.Zweigstelle %];aort=[% thiscirculation.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;([% thiscirculation.Vormerkungen+1 %]. Stelle) -->
+<!--     <a href="[% path_prefix %]/[% config.get('circulation_loc') %]?action=make_reservation&mnr=[% thiscirculation.Mediennr %]&zst=[% thiscirculation.Zweigstelle %]&aort=[% thiscirculation.Ausgabeort %]&validtarget=[% database %]" title="Titel vormerken">Vormerken</a>&nbsp;([% thiscirculation.Vormerkungen+1 %]. Stelle) -->
 [%          ELSE %]            
                 keine Vormerkung m&ouml;glich
 [%          END %]

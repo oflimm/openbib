@@ -87,7 +87,7 @@
    properties = thisitem.properties;
    itemclass  = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Nutzer verwendeten die Literaturliste</span><a href="[% path_prefix %]/[% config.get('litlists_loc') %]?&action=show;litlistid=[% id %];do_showlitlist=1" title="[% itemcount %] Nutzer verwendeten  
+<li class="[% itemclass %]"><span>[% itemcount %] Nutzer verwendeten die Literaturliste</span><a href="[% path_prefix %]/[% config.get('litlists_loc') %]?&action=show&litlistid=[% id %]&do_showlitlist=1" title="[% itemcount %] Nutzer verwendeten  
 die Literaturliste [% item %]">[% item %] ([% properties.itemcount %])</a></li>
 [% END %]
 </ol>

@@ -291,7 +291,7 @@
       </div>
       <div class="ob-titlemark"><span>[% record.id %]</span></div>
       <div class="ob-titleactions">
-[% IF record.id && record.database %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get('listofinterest_small_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />[% msg.maketext("Merken") %]</a>[% END %]
+[% IF record.id && record.database %]<a class="ob-collection" href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img class="ob-collection-image" src="[% config.get('listofinterest_small_img') %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" />[% msg.maketext("Merken") %]</a>[% END %]
       </div>
     </div>
 <!-- Ende einzelner Treffer -->

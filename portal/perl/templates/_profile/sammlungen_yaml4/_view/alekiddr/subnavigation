@@ -36,12 +36,12 @@
 [% IF active_submenu == "register_T0200" %]
   <li class="active"><strong>Ort der Inschrift</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('indexes_loc') %]/database/richter/title/0200.html?l=[% lang %];page=1">Ort der Inschrift</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('indexes_loc') %]/database/richter/title/0200.html?l=[% lang %]&page=1">Ort der Inschrift</a></li>
 [% END %]
 [% IF active_submenu == "register_T0720" %]
   <li class="active"><strong>Provenienzen</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('indexes_loc') %]/database/richter/title/0720.html?l=[% lang %];page=1">Provenienzen</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('indexes_loc') %]/database/richter/title/0720.html?l=[% lang %]&page=1">Provenienzen</a></li>
 [% END %]
  </ul>
 </nav>

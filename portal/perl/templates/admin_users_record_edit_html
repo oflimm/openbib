@@ -116,12 +116,12 @@
 <button class="btn btn-primary mb-2 mt-4" type="submit">[% msg.maketext("&Auml;ndern") %]</button>
 
 [% IF user.has_right({ scope => 'admin_users', right => 'right_update' });%]
-<a class="btn btn-primary mb-2 mt-4" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]?_method=POST;login_failure=0">[% msg.maketext("Anmeldefehlversuche zurücksetzen") %]</a>
+<a class="btn btn-primary mb-2 mt-4" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]?_method=POST&login_failure=0">[% msg.maketext("Anmeldefehlversuche zurücksetzen") %]</a>
 [% END %]
 
 [% IF authenticator.type == 'self' %]
 [%   IF userinfo.username != 'admin' %]
-<a class="btn btn-primary mb-2 mt-4" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Kennung l&ouml;schen") %]</a>
+<a class="btn btn-primary mb-2 mt-4" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]?_method=DELETE&confirm=1">[% msg.maketext("Kennung l&ouml;schen") %]</a>
 [%   END %]
 [% END %]
 

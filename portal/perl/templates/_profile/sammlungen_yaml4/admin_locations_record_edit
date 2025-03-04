@@ -174,7 +174,7 @@ END ;-%]
 
 &nbsp;&nbsp;
 
-<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.identifier %]?_method=DELETE;confirm=1" class="ob_button">[% msg.maketext("Löschen") %]</a>
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.identifier %]?_method=DELETE&confirm=1" class="ob_button">[% msg.maketext("Löschen") %]</a>
 
 </div>
 

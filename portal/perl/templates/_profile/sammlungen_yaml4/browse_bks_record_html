@@ -86,7 +86,7 @@ bklist = bklist.sort;
 <ul class="topiclist">
 [% FOREACH bk IN bklist %]
 [% NEXT IF NOT thisbklist.${bk} %]
-<li>[% bk %] / <a href="[% path_prefix %]/[% config.get('search_loc') %]?l=[% lang %];profile=[% searchprofileid_of_view %];ft4100=[% bk %]">[% bks.${bk} %]</a></li>
+<li>[% bk %] / <a href="[% path_prefix %]/[% config.get('search_loc') %]?l=[% lang %]&profile=[% searchprofileid_of_view %]&ft4100=[% bk %]">[% bks.${bk} %]</a></li>
 [% END %]
 </ul>
 

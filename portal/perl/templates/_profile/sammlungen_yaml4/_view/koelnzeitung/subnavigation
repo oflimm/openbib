@@ -24,12 +24,12 @@
 [% IF active_submenu == "register_0710" %]
   <li class="active"><strong>[% msg.maketext("Schlagworte") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kapsel/titles/fields/id/0710.html?l=[% lang %];page=1">[% msg.maketext("Schlagworte") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kapsel/titles/fields/id/0710.html?l=[% lang %]&page=1">[% msg.maketext("Schlagworte") %]</a></li>
 [% END %]
 [% IF active_submenu == "register_0100" %]
   <li class="active"><strong>[% msg.maketext("Personen") %]</strong></li>
 [% ELSE %]
-  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kapsel/titles/fields/id/0100.html?l=[% lang %];page=1">[% msg.maketext("Personen") %]</a></li>
+  <li><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kapsel/titles/fields/id/0100.html?l=[% lang %]&page=1">[% msg.maketext("Personen") %]</a></li>
 [% END %]
  </ul>
 </nav>

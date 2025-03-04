@@ -87,7 +87,7 @@ $("#[% facet_prefix %]_database_[% database %]_toggle").click(function(){
                    END ;
 %]
 [%# USE dumper;dumper.dump(category_map) %]
-<li class="ob-facet-item d-flex"><a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %];[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSIF filter.field == "floc" %][% locinfo.get('identifier').${filter.term}.description %][% ELSE %][% filter.term %][% END %]</li>
+<li class="ob-facet-item d-flex"><a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %]?[% facets_query_args_base %]&[% searchquery.to_cgi_querystring({ exclude_filter = [ filter.val ] }) %]" title="[% msg.maketext("Entfernen") %]"><img style="vertical-align:bottom" src="[% config.get_icon('delete_small',view,sysprofile) %]" alt="[% msg.maketext("Entfernen") %]" /></a>&nbsp;[% filter_prefix_map.${filter.field} %]: [% IF filter.field == "fdb" %][% dbinfo.get('dbnames').${filter.term}.short %][% ELSIF filter.field == "floc" %][% locinfo.get('identifier').${filter.term}.description %][% ELSE %][% filter.term %][% END %]</li>
 [%             END %]
 </ul>
 <p/>
@@ -110,7 +110,7 @@ $("#[% facet_prefix %]_database_[% database %]_toggle").click(function(){
     searchprefix  = config.get('searchfield').dbstring.prefix;
     filterstring  = "${searchprefix}:${searchterm}";
 -%]
-<li class="ob-facet-item [% IF facets.mediatype.size > 5 && loop.count > 5 %]hidden[% END %]"><a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].html?[% facets_query_args_base %];[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %];f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1 %]</span></li>
+<li class="ob-facet-item [% IF facets.mediatype.size > 5 && loop.count > 5 %]hidden[% END %]"><a href="[% path_prefix %]/[% config.get('authority_loc') %]/[% config.get('search_loc') %].html?[% facets_query_args_base %]&[% searchquery.to_cgi_querystring %][% IF NOT have_filter.${filterstring} %]&f[[% searchprefix %]]=[% uri_escape(searchterm) %][% END %]">[% dbinfo.get('dbnames').${termitem.0}.short %]</a> <span class="badge badge-pill badge-secondary ms-auto">[% termitem.1 %]</span></li>
 [%             END %]
 [% IF facets.database.size > 5 %]
 <li class="ob-facet-item ob-more_button"><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></li>

@@ -39,7 +39,7 @@
 [%  ELSE %]
 <tr>
 <th style="font-weight:bold;font-size:1.2em;" width="5%">[% lbssubid %]</th>
-<td><a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft1002=[% lbssubid %];srt=mark_asc;profile=[% lbs_profileid %];l=[% lang%]">[% usblbs.${lbsid}.sub.${lbssubid}.desc %]</a> ([% lbs_counter.${lbssubid} %])</td>
+<td><a class="inturl ms-3" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft1002=[% lbssubid %]&srt=mark_asc&profile=[% lbs_profileid %]&l=[% lang%]">[% usblbs.${lbsid}.sub.${lbssubid}.desc %]</a> ([% lbs_counter.${lbssubid} %])</td>
 </tr>
 [%  END %]
 [% END %]

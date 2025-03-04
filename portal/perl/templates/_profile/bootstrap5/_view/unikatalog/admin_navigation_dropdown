@@ -222,9 +222,9 @@
 <li class="active"><span style="padding-left:35px">[% templateinfo.id %]</span>
     <ul>
 [%       IF user.has_right({scope = 'admin_templates', right = 'right_update'}) %]
-      <li class="[% IF layout_param.active_subsubmenu == "admin_templates_record_main" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %];numrev=3">[% msg.maketext("Allgemein") %]</a></li>
+      <li class="[% IF layout_param.active_subsubmenu == "admin_templates_record_main" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]/edit.html?l=[% lang %]&numrev=3">[% msg.maketext("Allgemein") %]</a></li>
 [%       ELSIF user.has_right({scope = 'admin_templates', right = 'right_read'}) %]
-      <li class="[% IF layout_param.active_subsubmenu == "admin_templates_record_main" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %];numrev=3">[% msg.maketext("Allgemein") %]</a></li>
+      <li class="[% IF layout_param.active_subsubmenu == "admin_templates_record_main" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %].html?l=[% lang %]&numrev=3">[% msg.maketext("Allgemein") %]</a></li>
 [%       END %]
     </ul>
 </li>

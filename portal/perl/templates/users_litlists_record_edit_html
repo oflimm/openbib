@@ -95,9 +95,9 @@
   </button>
 
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuSortCartitems">
-    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'tstamp_desc' || session_sort == 'tstamp_desc' %]text-strong[% END %]" href="[% this_loc %].html?[% sort_args %];srt=tstamp_desc" title="[% msg.maketext("Zuletzt hinzugefügt") %]">[% msg.maketext("Zuletzt hinzugefügt") %]</a></li>
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'tstamp_desc' || session_sort == 'tstamp_desc' %]text-strong[% END %]" href="[% this_loc %].html?[% sort_args %]&srt=tstamp_desc" title="[% msg.maketext("Zuletzt hinzugefügt") %]">[% msg.maketext("Zuletzt hinzugefügt") %]</a></li>
 
-    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'tstamp_asc' || session_sort == 'tstamp_asc' %]text-strong[% END %]" href="[% this_loc %].html?[% sort_args %];srt=tstamp_asc" title="[% msg.maketext("Zuerst hinzugefügt") %]">[% msg.maketext("Zuerst hinzugefügt") %]</a></li>
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'tstamp_asc' || session_sort == 'tstamp_asc' %]text-strong[% END %]" href="[% this_loc %].html?[% sort_args %]&srt=tstamp_asc" title="[% msg.maketext("Zuerst hinzugefügt") %]">[% msg.maketext("Zuerst hinzugefügt") %]</a></li>
   </ul>
 </div>    
 
@@ -177,12 +177,12 @@
 	  <i class="fas fa-quote-right"></i><span class="d-none d-sm-inline ps-2">[% msg.maketext("Zitat") %]</span>
 	</button>
 	<ul class="dropdown-menu text-black" aria-labelledby="citationMenuButton">
-	  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=apa" title="[% msg.maketext("APA") %]">[% msg.maketext("APA") %]</a></li>
-	  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=harvard" title="[% msg.maketext("Harvard") %]">[% msg.maketext("Harvard") %]</a></li>
-	  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=mla" title="[% msg.maketext("MLA") %]">[% msg.maketext("MLA") %]</a></li>
+	  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %]&format=apa" title="[% msg.maketext("APA") %]">[% msg.maketext("APA") %]</a></li>
+	  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %]&format=harvard" title="[% msg.maketext("Harvard") %]">[% msg.maketext("Harvard") %]</a></li>
+	  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %]&format=mla" title="[% msg.maketext("MLA") %]">[% msg.maketext("MLA") %]</a></li>
 	  <li><hr class="dropdown-divider"></li>
-	  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=BibTeX" title="[% msg.maketext("BibTeX") %]">[% msg.maketext("BibTeX") %]</a></li>
-	  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %];format=EndNote" title="[% msg.maketext("EndNote") %]">[% msg.maketext("EndNote") %]</a></li>
+	  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %]&format=BibTeX" title="[% msg.maketext("BibTeX") %]">[% msg.maketext("BibTeX") %]</a></li>
+	  <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('litlists_loc') %]/id/[% litlist.id %].include?l=[% lang %]&format=EndNote" title="[% msg.maketext("EndNote") %]">[% msg.maketext("EndNote") %]</a></li>
 	</ul>
       </div>
     </div>

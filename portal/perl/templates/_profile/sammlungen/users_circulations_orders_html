@@ -91,7 +91,7 @@
 [% IF is_ill %]
 [% msg.maketext("Fernleihbestellung nicht stornierbar!") %]
 [% ELSE %]
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders?_method=DELETE;confirm=1;requestid=[% order.requestid %];unit=[% order.department.id %];unitname=[% unitname | uri %];titleid=[% order.edition %];holdingid=[% order.label | uri %];date=[% order.starttime |uri %];validtarget=[% database %]" title="Bestellung l&ouml;schen" class="btn btn-primary">[% msg.maketext("Stornieren") %]</a>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders?_method=DELETE&confirm=1&requestid=[% order.requestid %]&unit=[% order.department.id %]&unitname=[% unitname | uri %]&titleid=[% order.edition %]&holdingid=[% order.label | uri %]&date=[% order.starttime |uri %]&validtarget=[% database %]" title="Bestellung l&ouml;schen" class="btn btn-primary">[% msg.maketext("Stornieren") %]</a>
 [% END %]
 </td>
 </tr>

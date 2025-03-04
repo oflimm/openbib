@@ -31,7 +31,7 @@
 <ul class="list-group">
 [% FOREACH item IN browselist %]
 [%  IF searchfield %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %];[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% item %]</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %]&[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% item %]</a></li>
 [%  ELSE %]
 <li class="list-group-item">[% item %]</li>
 [%  END %]

@@ -266,7 +266,7 @@
 </div>
 
 <div>
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %];authenticatorid=[% available_authenticator_types.${"self"} %]">[% msg.maketext("Passwort vergessen oder Konto gesperrt?") %]</a>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('registrations_loc') %].html">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% path_prefix %]/[% config.get('users_loc') %]/[% config.get('passwords_loc') %].html?l=[% lang %]&authenticatorid=[% available_authenticator_types.${"self"} %]">[% msg.maketext("Passwort vergessen oder Konto gesperrt?") %]</a>
 </div>
 
 <p/>

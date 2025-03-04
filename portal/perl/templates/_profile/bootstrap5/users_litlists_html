@@ -83,7 +83,7 @@
 </td>
 <td>[%- FOREACH topic IN litlist.topics -%][% topic.name %]<br/>[%- END -%]</td>
 <td>[% litlist.tstamp | truncate(19,'') %]</td>
-<td><a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]?_method=DELETE;confirm=1" title="[% msg.maketext("Entfernen") %]" class="ob_button">[% msg.maketext("Löschen") %]</a></td></tr>
+<td><a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.id %]?_method=DELETE&confirm=1" title="[% msg.maketext("Entfernen") %]" class="ob_button">[% msg.maketext("Löschen") %]</a></td></tr>
 [% END %]
 </tbody>
 </table>

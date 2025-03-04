@@ -74,7 +74,7 @@
 [% FOREACH bkinfo IN thisbklist %]
 [%   thisdb    = bkinfo.key %]
 [%   thiscount = bkinfo.value %]
-<tr><th><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=[% thisdb %];ft4100=[% bkid %]">[% dbinfo.get('dbnames').${thisdb}.short %]</a></th><td align="right"><b>[% thiscount%]</b> Titel</td></tr>
+<tr><th><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&db=[% thisdb %]&ft4100=[% bkid %]">[% dbinfo.get('dbnames').${thisdb}.short %]</a></th><td align="right"><b>[% thiscount%]</b> Titel</td></tr>
 [% END %]
 </table>
 

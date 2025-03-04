@@ -84,7 +84,7 @@
 
 <table class="ym-full">
 [% FOREACH item IN browselist %]
-<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=[% database %];[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% item %]</a></td></tr>
+<tr><td><a href="[% path_prefix %]/[% config.get('search_loc') %]?db=[% database %]&[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]">[% item %]</a></td></tr>
 [% END %]
 </table>
 

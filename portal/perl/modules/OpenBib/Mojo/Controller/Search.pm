@@ -4,7 +4,7 @@
 #
 #  ehemals VirtualSearch.pm
 #
-#  Dieses File ist (C) 1997-2021 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2025 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -42,6 +42,8 @@ use DBI;
 use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
+#use Mojo::AsyncAwait;
+#use Mojo::Promise;
 use Storable ();
 use String::Tokenizer;
 use Search::Xapian;
@@ -111,7 +113,7 @@ sub show_search {
 	return $self->print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."));
     }
 
-    #$self->render_later;
+    $self->render_later;
     
     $logger->debug("Getting search header");
     $self->show_search_header();

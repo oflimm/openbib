@@ -426,13 +426,14 @@ sub authenticate {
 
     # Success!
     if ($self->stash('representation') eq "html"){
-        $logger->debug("Redirecting to $redirecturl");
+        $logger->debug("Authentication success: Redirecting to $redirecturl");
 
         # TODO GET?
         $self->header_add('Content-Type' => 'text/html');
         return $self->redirect($redirecturl);
     }
     else {
+        $logger->debug("Authentication success: Returning JSON");	
 	return $self->print_json($result_ref);
     }
     

@@ -65,11 +65,11 @@ sub startup ($app){
     $app->secrets($config->{mojo}{secrets});
     $app->config(hypnotoad => $config->{mojo}{hypnotoad});
 
-    # Sessions
-    $app->sessions->cookie_name('openbib');
+    # Sessions setup
+    $app->sessions->cookie_name($config->{mojo}{cookie_name});
     $app->sessions->cookie_path($config->{base_loc});
-    #$app->sessions->cookie_domain($app->req->url->to_abs->host);
-    $app->sessions->default_expiration(3600);
+    $app->sessions->default_expiration(86400);
+    $app->sessions->samesite('Strict');
 
     # Renderer Path (for mojo default ep templates
     push @{$app->renderer->paths}, $config->{'tt_include_path'};
@@ -130,6 +130,9 @@ sub startup ($app){
 	$logger->debug("Mojo - Route: ".$c->match);
 	$logger->debug("Mojo - Format: ".$c->stash('format'));
 	$logger->debug("Mojo - Repraesentation: ".$c->stash('representation'));
+
+	# Ggf Personalisiere URI
+	&personalize_uri($c);
 	
 	return $next->();
 	       });
@@ -154,13 +157,14 @@ sub _register_routes {
         my $controller = $item->{controller};
         my $action     = $item->{action};
         my $method     = $item->{method} || 'GET'; # Default: GET
+        my $args       = $item->{args};
 
 	if ($method eq "GET"){
 	    if (defined $item->{representations}){
-		$routes->get($rule => [ format => $item->{representations} ])->to(controller => $controller, action => $action );
+		$routes->get($rule => [ format => $item->{representations} ])->to(controller => $controller, action => $action, dispatch_args => $args );
 	    }
 	    else {
-		$routes->get($rule)->to(controller => $controller, action => $action );
+		$routes->get($rule)->to(controller => $controller, action => $action, args => $args );
 	    }
 	    
 	    # # Representations in #-Wildcard, dann Mojo Automatismus mit format
@@ -276,7 +280,7 @@ sub _before_dispatch($c){
     $c->stash('servername',$servername);
     #$c->app->sessions->cookie_domain($r->url->to_abs->host);
 
-    my $sessionID    = $c->cookie('sessionID');
+    my $sessionID    = $c->session('sessionID');
 
     my $session      = OpenBib::Session->new({ sessionID => $sessionID , view => $view, config => $config });
     
@@ -287,7 +291,20 @@ sub _before_dispatch($c){
     $logger->debug('Path'.$r->url->path);
     # Neuer Cookie?, dann senden
     if ($sessionID ne $session->{ID} ){
-	$c->cookie('sessionID' => $session->{ID}, {domain => $c->stash('servername'), path => '/portal'}) ;
+	# $logger->debug("New cookie: Setting sessionID to ".$session->{ID});
+	# my $cookie_args = {
+	#     domain   => $c->stash('servername'),
+	#     path     => $config->{base_loc},
+	#     httponly => 1,
+	#     samesite => "Strict",	    	    
+	# };
+	
+	# if ($logger->is_debug){
+	#     $logger->debug("Args for cookie ".$session->{ID}." : ".YAML::Dump($cookie_args));
+	# }
+
+	# $c->cookie('sessionID' => $session->{ID}, $cookie_args ) ;
+	$c->session({'sessionID' => $session->{ID}}) ;
     }
 
     my $normalizer   = OpenBib::Normalizer->new();
@@ -358,7 +375,7 @@ sub _before_dispatch($c){
     }
     
     # Ggf Personalisiere URI
-    &personalize_uri($c);
+#    &personalize_uri($c);
 
     if ($config->{benchmark}) {
         $btime=new Benchmark;
@@ -517,7 +534,7 @@ sub _before_dispatch($c){
     }        
     
     # Cookie-Header ausgeben
-    &finalize_cookies($c);
+    #&finalize_cookies($c);
 
     $logger->debug("Existing _before_dispatch");        
     
@@ -542,7 +559,7 @@ sub _before_routes($c) {
     $logger->debug("Mojo - Path: ".$r->url->path);
     $logger->debug("Mojo - Route: ".$c->match);
     $logger->debug("Mojo - Format: ".$c->stash('format'));
-
+    
     return;
 }
 
@@ -798,9 +815,9 @@ sub negotiate_content($c) {
                         $logger->debug("Sprache definiert durch Session: ".$session->{lang});
                         $c->stash('lang',&cleanup_lang($c,$session->{lang}));
                     }
-		    elsif ($c->cookie('lang')){
+		    elsif ($c->session('lang')){
                         $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
-                        $c->stash('lang',$r->cookies->{lang});
+                        $c->stash('lang',$c->session('lang'));
 		    }
                     else {
                         &negotiate_language($c);
@@ -896,14 +913,23 @@ sub alter_negotiated_language($c) {
     
     my $r       = $c->stash('r');
     my $session = $c->stash('session');
+    my $config  = $c->stash('config');
 
     # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Stasheter 'l'
     if ($r->param('l')){
         $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$r->param('l'));
         $c->stash('lang',&cleanup_lang($c,$r->param('l')));
         
-        # Setzen als Cookie
-        &set_cookie($c,'lang',$c->stash('lang'));
+        # # Setzen als Cookie
+	# my $cookie_args = {
+	#     expires  => '+24h',
+	#     path     => $config->{base_loc},
+	#     domain   => $c->stash('servername'),
+	#     httponly => 1,
+	#     samesite => "Strict",	    
+	# };
+	# $c->cookie('lang' => $c->stash('lang'), $cookie_args ) ;
+	$c->session({'lang' => $c->stash('lang')}) ;
     }
     # alterantiv Korrektur der ausgehandelten Sprache wenn durch cookie festgelegt
     elsif ($session->{lang}){
@@ -986,10 +1012,18 @@ sub personalize_uri($c) {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $r = $c->stash('r');
+    my $r        = $c->stash('r');
+    my $args_ref = $c->stash('dispatch_args');
+
+    if (defined $args_ref && $logger->is_debug){
+	$logger->debug("Using dispatch args :".YAML::Dump($args_ref));
+    }
+    else {
+	$logger->debug("No dispatch args available");
+    }
     
     # Personalisierte URIs
-    if ($c->stash('users_loc')){
+    if ($args_ref->{'users_loc'}){
         my $dispatch_url = ""; #$c->param('scheme')."://".$c->param('servername');   
         
         my $user           = $c->stash('user');
@@ -1005,7 +1039,7 @@ sub personalize_uri($c) {
         # Eine Weiterleitung haengt vom angemeldeten Nutzer ab
         # und gilt immer nur fuer Repraesentationen.
         if ($user->{ID} && $representation){
-            my $loc = $c->stash('users_loc');
+            my $loc = $args_ref->{'users_loc'};
             $logger->debug("Replacing $path_prefix/$loc with $path_prefix/users/$user->{ID}/$loc");
             my $old_loc = "$path_prefix/$loc";
             my $new_loc = "$path_prefix/users/id/$user->{ID}/$loc";
@@ -1030,7 +1064,7 @@ sub personalize_uri($c) {
             }   
         }   
     }
-    elsif ($c->stash('admin_loc')){
+    elsif ($args_ref->{'admin_loc'}){
         my $dispatch_url = ""; #$c->stash('scheme')."://".$c->stash('servername');   
         
         my $user           = $c->stash('user');

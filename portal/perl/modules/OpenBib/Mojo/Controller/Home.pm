@@ -81,10 +81,6 @@ sub show ($self) {
     my $ttdata={
     };
     
-    $self->print_page($config->{'tt_home_tname'},$ttdata);
-
-    return;
-    
     if ($viewstartpage){
         my $redirecturl = $viewstartpage.".".$self->stash('representation')."?l=".$self->stash('lang');
 

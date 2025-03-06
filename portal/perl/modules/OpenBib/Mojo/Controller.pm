@@ -1207,6 +1207,8 @@ sub redirect {
         return;
     }
 
+    $logger->debug("Redirecting to $url with code $status");
+    
 #    $self->stash('status',$status);
 
 #     if ($url=~/\?/){
@@ -1218,16 +1220,10 @@ sub redirect {
 #         $query = join(";",@query_args);
 #         $url = $base."?".$query;
 #     }
-    
-    $self->header_type('redirect');
-    $self->header_add('Location' => $url);
-    $self->header_add('Status' => $status);
 
-    #if ($logger->is_debug){
-    #    $logger->debug("Redirect-Headers: ".YAML::Syck::Dump($self->{__HEADER_PROPS}));
-    #}
+    $self->res->code($status);
     
-    return;
+    return $self->redirect_to($url);
 }
 
 sub print_authorization_error {

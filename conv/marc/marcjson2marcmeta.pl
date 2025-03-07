@@ -168,7 +168,6 @@ my $enrichment_field_mapping_ref = {
     'ITM' => '1944', # Items Enrichment
     'POF' => '1945', # Portfolios Enrichment
     'DIV' => '1946', # Digital Inventory Enrichment
-    'SUP' => '1947', # Supplemental Management Information
 };
 
 while (<DAT>){
@@ -329,6 +328,7 @@ while (<DAT>){
 	    foreach my $subfield_ref (@$subfields_ref){
 		foreach my $subfield_code (keys %$subfield_ref){
 		    my $content = $normalizer->cleanup($subfield_ref->{$subfield_code});
+
 		    push @{$title_ref->{'fields'}{$field_nr}}, {
 			subfield => $subfield_code,
 			content  => $content,

@@ -60,7 +60,7 @@
 [% END %]
   <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [%- FOREACH record IN recordlist.get_records -%]
-[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=0 %] 
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=0 database=record.database %] 
 [%- END -%]
     <div class="ob-footer">
 [% query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}); # "${request_base};${searchquery.to_cgi_params}" %]

@@ -46,9 +46,9 @@ use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
 
-use Mojo::Base 'OpenBib::Mojo::Controller', -signatures;
+use Mojo::Base 'OpenBib::Mojo::Controller', -signatures, -async_await;
 
-sub show ($self) {
+async sub show ($self) {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -93,7 +93,7 @@ sub show ($self) {
         my $ttdata={
         };
         
-        $self->print_page($config->{'tt_home_tname'},$ttdata);
+        await $self->print_page($config->{'tt_home_tname'},$ttdata);
     }
 }
 

@@ -68,7 +68,7 @@ use OpenBib::Normalizer;
 
 use Scalar::Util;
 
-use Mojo::Base 'Mojolicious::Controller', -signatures;
+use Mojo::Base 'Mojolicious::Controller', -signatures, -async_await;
 
 sub set_paging {
     my $self = shift;
@@ -294,7 +294,7 @@ sub print_json {
     return encode_json($json_ref);
 }
 
-sub print_page {
+async sub print_page {
     my ($self,$templatename,$ttdata)=@_;
 
     # Log4perl logger erzeugen
@@ -386,7 +386,7 @@ sub print_page {
             $logger->info("Total time until stage 1 is ".timestr($timeall));
         }
         
-        $template->process($templatename, $ttdata) || do {
+        await $template->process($templatename, $ttdata) || do {
             $logger->fatal($template->error()." url: $url");
             return "Fehler";
         };
@@ -396,7 +396,7 @@ sub print_page {
         $logger->fatal($@." url: $url");
     }
     
-    $self->render(text => $content);
+    await $self->render(text => $content);
 
     $logger->debug("Template processed with content $content");
 }
@@ -1084,12 +1084,12 @@ sub parse_valid_input {
             }
             # sonst array
             elsif ($type eq "array") {
-                if ($r->param($param)){
+                if ($r->every_param($param)){
 		    if ($no_escape){
-			@{$input_params_ref->{$param}} = $r->param($param);
+			@{$input_params_ref->{$param}} = @{$r->every_param($param)};
 		    }
 		    else {
-			@{$input_params_ref->{$param}} = map { $_=escape_html($_) } $r->param($param);
+			@{$input_params_ref->{$param}} = map { $_=escape_html($_) } @{$r->every_param($param)};
 		    }
                 }
                 else {
@@ -1164,6 +1164,10 @@ sub parse_valid_input {
             }
 
         }
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Input Params: ".YAML::Dump($input_params_ref));
     }
     
     return $input_params_ref;
@@ -1247,10 +1251,8 @@ sub print_authorization_error {
     if ($self->stash('representation') eq "html"){
         # Aufruf-URL
 	
-	my $uri    = $r->request_uri;
-	
 	if ($logger->is_debug){
-	    $logger->debug("Tunnelling: path $path - uri $uri - url $url");
+	    $logger->debug("Tunnelling: path $path - url $url");
 	    $logger->debug("Tunnelling to path $path");    	
 	    $logger->debug("Tunnelling to path $path_prefix");    	
 	    $logger->debug("Tunnelling to base location $location");
@@ -1397,10 +1399,8 @@ sub tunnel_through_authenticator {
     my $path_prefix = $self->stash('path_prefix');
     my $args        = $self->to_cgi_querystring;
 
-    my $uri    = $r->request_uri;
-
     if ($logger->is_debug){
-	$logger->debug("Tunnelling: path $path - uri $uri - url $url");
+	$logger->debug("Tunnelling: path $path - url $url");
 	$logger->debug("Tunnelling to path $path");    	
 	$logger->debug("Tunnelling to path $path_prefix");    	
 	$logger->debug("Tunnelling to base location $location");

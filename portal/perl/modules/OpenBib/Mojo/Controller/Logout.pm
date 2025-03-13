@@ -72,14 +72,14 @@ sub show {
 
     my $purge_private_userinfo = $r->param('purge_private_userinfo');
     
-    my $cookie = CGI::Cookie->new($r,
-                                      -name    => "sessionID",
-                                      -value   => "",
-                                      -path    => '/',
-                                      -expires => 'now',
-                                  );
+    # my $cookie = CGI::Cookie->new($r,
+    #                                   -name    => "sessionID",
+    #                                   -value   => "",
+    #                                   -path    => '/',
+    #                                   -expires => 'now',
+    #                               );
     
-    $self->header_add('Set-Cookie', $cookie);
+    # $self->header_add('Set-Cookie', $cookie);
 
     if ($user->{ID}) {
         # Authentifiziert-Status der Session loeschen
@@ -90,7 +90,9 @@ sub show {
     }
 
     $session->clear_data();
-  
+
+    $self->session(expires => 1);
+    
     # Dann loeschen der Session in der Datenbank
 
     if ($self->stash('representation') eq "html"){

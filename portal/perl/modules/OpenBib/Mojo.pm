@@ -49,7 +49,6 @@ use OpenBib::User;
 use OpenBib::Normalizer;
 use Scalar::Util;
 
-
 our $VERSION = 'pre-4.0';
 
 # init web app
@@ -66,10 +65,10 @@ sub startup ($app){
     $app->config(hypnotoad => $config->{mojo}{hypnotoad});
 
     # Sessions setup
-    $app->sessions->cookie_name($config->{mojo}{cookie_name});
+    $app->sessions->cookie_name($config->{mojo}{cookie}{name});
     $app->sessions->cookie_path($config->{base_loc});
-    $app->sessions->default_expiration(86400);
-    $app->sessions->samesite('Strict');
+    $app->sessions->default_expiration($config->{mojo}{cookie}{expiration});
+    $app->sessions->samesite($config->{mojo}{cookie}{samesite});
 
     # Renderer Path (for mojo default ep templates
     push @{$app->renderer->paths}, $config->{'tt_include_path'};
@@ -165,29 +164,7 @@ sub _register_routes {
 	    }
 	    else {
 		$routes->get($rule)->to(controller => $controller, action => $action, args => $args );
-	    }
-	    
-	    # # Representations in #-Wildcard, dann Mojo Automatismus mit format
-	    # if ($rule=~m{\#[a-z]+$}){
-	    # 	$logger->debug("Mojo - Last path element is wildcard");
-	    # 	$logger->debug("Mojo - Adding rule: $rule -> $action - $controller ($method)");
-	    # 	$routes->get($rule)->to(controller => $controller, action => $action )
-	    # }
-	    # else {
-	    # 	$logger->debug("Mojo - Last path element is NOT wildcard: $rule");
-	    # 	if (@representations){
-	    # 	    foreach my $representation (@representations){
-	    # 		my $subrule = $rule;
-	    # 		if ($representation eq "none"){
-	    # 		    $representation = '';
-	    # 		}
-
-	    # 		$subrule = $subrule.".".$representation;
-	    # 		$logger->debug("Mojo - Adding rule: $subrule -> $action - $controller ($method)");
-	    # 		$routes->get($subrule)->to(controller => $controller, action => $action );
-	    # 	    }
-	    # 	}
-	    # }
+	    }	    
 	}
 	elsif ($method eq "POST"){
 	    $routes->post($rule)->to(controller => $controller, action => $action )
@@ -238,7 +215,6 @@ sub _before_dispatch($c){
     $logger->debug("Mojo - Format: ".$c->stash('format'));
     $logger->debug("Mojo - View regexp: ".$view);
 
-    
     my $config       = OpenBib::Config->new;
 
     $c->stash('view',$view);    
@@ -278,7 +254,6 @@ sub _before_dispatch($c){
 
     $c->stash('remote_ip',$remote_ip);
     $c->stash('servername',$servername);
-    #$c->app->sessions->cookie_domain($r->url->to_abs->host);
 
     my $sessionID    = $c->session('sessionID');
 
@@ -291,19 +266,6 @@ sub _before_dispatch($c){
     $logger->debug('Path'.$r->url->path);
     # Neuer Cookie?, dann senden
     if ($sessionID ne $session->{ID} ){
-	# $logger->debug("New cookie: Setting sessionID to ".$session->{ID});
-	# my $cookie_args = {
-	#     domain   => $c->stash('servername'),
-	#     path     => $config->{base_loc},
-	#     httponly => 1,
-	#     samesite => "Strict",	    	    
-	# };
-	
-	# if ($logger->is_debug){
-	#     $logger->debug("Args for cookie ".$session->{ID}." : ".YAML::Dump($cookie_args));
-	# }
-
-	# $c->cookie('sessionID' => $session->{ID}, $cookie_args ) ;
 	$c->session({'sessionID' => $session->{ID}}) ;
     }
 
@@ -469,7 +431,6 @@ sub _before_dispatch($c){
     }
 
     # Session abgelaufen?
-    #$session->is_expired;
     if (0 == 1 && $session->is_expired){
 	if ($c->stash('representation') eq "html"){
 
@@ -517,25 +478,16 @@ sub _before_dispatch($c){
 
     # Wenn default_runmode gesetzt, dann ausschliesslich in diesen wechseln
     if ($c->stash('default_runmode')){
-	
-	# Zum default_runmode muss eine Methode in
-	# diesem Modul definiert sein, denn default_runmodes werden immer in
-	# OpenBib::Handler::PSGI definiert!
-	
 	if (OpenBib::Mojo::Controller->can($c->stash('default_runmode'))){
 	    $c->run_modes(
 		$c->stash('default_runmode')  => $c->stash('default_runmode'),
 		);
-	    #	       $c->prerun_mode($c->stash('default_runmode'));
 	}
 	else {
 	    $logger->error("Invalid default runmode ".$c->stash('default_runmode'));
 	}
     }        
     
-    # Cookie-Header ausgeben
-    #&finalize_cookies($c);
-
     $logger->debug("Existing _before_dispatch");        
     
     if ($config->{benchmark}) {
@@ -582,11 +534,10 @@ sub process_uri($c) {
     my $complete_path_prefix = "$path_prefix/$view";
     
     # Letztes Pfad-Element bestimmen
-    my $uri    = $r->url->base;
-    my $path   = $r->url->path;
-    my $scheme = $r->url->scheme || 'http';
+    my $uri      = $r->url->base;
+    my $path     = $r->url->path;
+    my $scheme   = $r->url->scheme || 'http';
     my $args_ref = $r->url->query;
-#    my $args   = &to_cgi_querystring($c);
 
     my $forwarded_proto = $r->headers->header('X-Forwarded-Proto');
 
@@ -601,10 +552,6 @@ sub process_uri($c) {
     
     my ($location_uri,$last_uri_element) = $path =~m/^(.+?)\/([^\/]+)$/;
  
-    # if ($logger->is_debug && defined $path && defined $last_uri_element && defined $r->escaped_args){
-    # 	$logger->debug("Full Internal Path: $path - Last URI Element: $last_uri_element - Args: ".$r->escaped_args);
-    # }
-    
     if (! $config->strip_view_from_uri($view)){
         $path_prefix = $complete_path_prefix;
     }
@@ -626,7 +573,6 @@ sub process_uri($c) {
     my $id;
 
     if ($last_uri_element){
-#    my ($id) = $last_uri_element =~m/^(.+?)\.($suffixes)$/;
 	($id) = $last_uri_element =~m/^(.+?)\.($suffixes)$/;
     }
     
@@ -804,10 +750,6 @@ sub negotiate_content($c) {
                 
                 &negotiate_type($c);
                 
-                # Pfade sind immer mit base_loc und view
-                #my $baseloc    = $config->get('base_loc');
-                #$path =~s{^$baseloc/[^/]+}{$path_prefix};
-
                 # Zusaetzlich auch Sprache verhandeln
                 my $args="";
                 if (!$r->param('l')){
@@ -849,10 +791,6 @@ sub negotiate_content($c) {
             # dann muss dieser verhandelt werden.
             if (!$r->param('l') ){
                 $logger->debug("Specific representation given, but without language - negotiating");
-                
-                # Pfade sind immer mit base_loc und view
-                #my $baseloc    = $config->get('base_loc');
-                #$path =~s{^$baseloc/[^/]+}{$path_prefix};
                 
                 if ($session->{lang}){
                     $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
@@ -920,15 +858,6 @@ sub alter_negotiated_language($c) {
         $logger->debug("Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter: ".$r->param('l'));
         $c->stash('lang',&cleanup_lang($c,$r->param('l')));
         
-        # # Setzen als Cookie
-	# my $cookie_args = {
-	#     expires  => '+24h',
-	#     path     => $config->{base_loc},
-	#     domain   => $c->stash('servername'),
-	#     httponly => 1,
-	#     samesite => "Strict",	    
-	# };
-	# $c->cookie('lang' => $c->stash('lang'), $cookie_args ) ;
 	$c->session({'lang' => $c->stash('lang')}) ;
     }
     # alterantiv Korrektur der ausgehandelten Sprache wenn durch cookie festgelegt
@@ -953,58 +882,6 @@ sub cleanup_lang {
     }
 
     return (defined $is_valid_ref->{$lang} && $is_valid_ref->{$lang})?$lang:'de';
-}
-
-sub set_cookie {
-    my $c = shift;
-    my $name = shift;
-    my $value = shift;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = $c->stash('config');
-    my $servername = $c->stash('servername');
-
-    # Strip port from servername
-    $servername =~s/:\d+$//;
-    
-    if (!($name || $value)){
-        $logger->debug("Invalid cookie stasheters for cookie: $name / value: $value");
-        return;
-    }   
-
-    my $cookie_jar_ref = (defined $c->stash('cookie_jar'))?$c->stash('cookie_jar'):[];
-
-    $logger->debug("Adding cookie $name to $value for domain $servername");
-    
-    my $cookie = CGI::Cookie->new(
-        -name     => $name,
-        -value    => $value,
-        -expires  => '+24h',
-        -path     => $config->{base_loc},
-	-domain   => $servername,
-	-httponly => 1,
-	-samesite => "Strict",
-    );
-    
-    push @$cookie_jar_ref, $cookie;
-    
-    $c->stash('cookie_jar',$cookie_jar_ref);
-    
-    return;
-}
-
-sub finalize_cookies($c) {
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-#    if (defined $c->stash('cookie_jar')){
-#	$c->tx->res->content->headers('Set-Cookie', $c->stash('cookie_jar'));
-#    }
-    
-    return;
 }
 
 sub personalize_uri($c) {
@@ -1032,10 +909,6 @@ sub personalize_uri($c) {
         my $path           = $c->stash('path');
         my $representation = $c->stash('representation');
         
-#        # Interne Pfade sind immer mit base_loc und view
-#        my $baseloc    = $config->get('base_loc');
-#        $path =~s{^$baseloc/[^/]+}{$path_prefix};
-
         # Eine Weiterleitung haengt vom angemeldeten Nutzer ab
         # und gilt immer nur fuer Repraesentationen.
         if ($user->{ID} && $representation){
@@ -1073,10 +946,6 @@ sub personalize_uri($c) {
         my $path           = $c->stash('path');
         my $representation = $c->stash('representation');
         
-#        # Interne Pfade sind immer mit base_loc und view
-#        my $baseloc    = $config->get('base_loc');
-#        $path =~s{^$baseloc/[^/]+}{$path_prefix};
-
         # Eine Weiterleitung haengt vom angemeldeten Nutzer ab
         # und gilt immer nur fuer Repraesentationen.
         if ($user->is_admin && $representation){
@@ -1129,7 +998,7 @@ sub check_http_basic_authentication($c) {
     # Wenn beim Aufruf ein Username und ein Passwort uebergeben wird, dann
     # wird der Nutzer damit authentifiziert und die Session automatisch authorisiert
     
-    # Es interessiert nicht der per so in der PSGI-Konfiguration portal.psgi definierte Authentifizierungstyp,
+    # Es interessiert nicht der per se in der Konfiguration portal.mojo definierte Authentifizierungstyp,
     # sondern der etwaig mit dem aktuellen Request gesendete Typ!
     my $http_authtype = "";
     

@@ -850,7 +850,7 @@ while (my $jsonline = <$input_io>){
 		    if ($year=~m/(\d\d\d\d)/){
 			push @{$title_ref->{fields}{'1008'}}, {
 			    mult     => $publ_mult,
-			    subfield => 'c',
+			    subfield => 'a',
 			    content => $1,
 			};
 		    }

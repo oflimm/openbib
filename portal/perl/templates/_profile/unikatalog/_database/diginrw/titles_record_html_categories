@@ -1324,31 +1324,9 @@ FOREACH field IN singular_normdata;
 	    END;
          END;
 
-         thisfulltext_availability  = "";
-         thisfulltext_icon = config.get('ezb_unknown_img');
-         thisfulltext_desc  = "Volltext";
-
-         IF item.subfield == "g";
            thisfulltext_availability = "lawngreen";
            thisfulltext_icon = config.get('ezb_green_img');
            thisfulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
-         ELSIF item.subfield == "y";
-           thisfulltext_availability = "yellow";
-           thisfulltext_icon = config.get('ezb_yellow_img');
-           thisfulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
-         ELSIF item.subfield == "l";
-           thisfulltext_availability = "yellowred";	 
-           thisfulltext_icon = config.get('ezb_yellow_red_img');
-           thisfulltext_desc = msg.maketext("Volltext mit eingeschränkten Zugang");;
-         ELSIF item.subfield == "f";
-           thisfulltext_availability = "greenyellow";	 
-           thisfulltext_icon = config.get('ezb_green_yellow_img');
-           thisfulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
-         ELSIF item.subfield == "n";
-           thisfulltext_availability = "de";	 
-           thisfulltext_icon = config.get('dbis_de_img');
-           thisfulltext_desc = msg.maketext("Volltext über Nationallizenz");;
-         END;
 
 	 ampel =  "<img src=\"${thisfulltext_icon}\" alt=\"${thisfulltext_desc}\" />" ;
 

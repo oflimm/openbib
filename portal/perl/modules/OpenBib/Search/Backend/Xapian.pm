@@ -860,7 +860,7 @@ sub get_records {
     }
 
     if ($logger->is_debug){
-	$logger->debug("Result-Recordlist: ".YAML::Dump($recordlist->to_list))
+	$logger->debug("Result-Recordlist: ".YAML::Dump($recordlist->to_ids))
     }
 
     return $recordlist;

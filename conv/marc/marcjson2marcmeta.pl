@@ -328,6 +328,7 @@ while (<DAT>){
 	    foreach my $subfield_ref (@$subfields_ref){
 		foreach my $subfield_code (keys %$subfield_ref){
 		    my $content = $normalizer->cleanup($subfield_ref->{$subfield_code});
+
 		    push @{$title_ref->{'fields'}{$field_nr}}, {
 			subfield => $subfield_code,
 			content  => $content,

@@ -16,7 +16,7 @@ my %mmsid2doi         = ();
 tie %mmsid2doi,             'MLDBM', "./mmsid2doi.db"
     or die "Could not tie mmsid2doi.\n";
 
-open $mapping,"<","/opt/openbib/autoconv/filter/_common/alma/db_export_mono.csv";
+open $mapping,"<","/opt/openbib/autoconv/filter/_common/alma/output_enriched_permalink_doi_mono.csv";
 
 my $csv_options = {
   'eol'         => "\n",
@@ -35,23 +35,6 @@ $csv->bind_columns (\@{$row}{@cols});
 while ($csv->getline ($mapping)){
     my $identifier = $row->{identifier};
     my $mmsid = $row->{mms_id};
-
-    $mmsid2doi{$mmsid} = $identifier if ($mmsid && $identifier);
-}    
-
-close $mapping;
-
-open $mapping,"<","/opt/openbib/autoconv/filter/_common/alma/zdb_db_export_extended.csv";
-
-my $csv2 = Text::CSV_XS->new($csv_options);
-
-my @cols2 = @{$csv2->getline ($mapping)};
-my $row2 = {};
-$csv2->bind_columns (\@{$row2}{@cols2});
-
-while ($csv2->getline ($mapping)){
-    my $identifier = $row2->{identifier};
-    my $mmsid = $row2->{mms_id_print};
 
     $mmsid2doi{$mmsid} = $identifier if ($mmsid && $identifier);
 }    
@@ -78,7 +61,7 @@ while (<>){
 	
 	my $mult   = $last024idx + 1;	
 	my $doi_id = $mmsid2doi{$titleid};
-        my $doi    = "10.58016/".$doi_id;
+        my $doi    = $doi_id;
 	
 	# DOI setzen
 	push @{$title_ref->{fields}{'0024'}}, {
@@ -98,11 +81,11 @@ while (<>){
 	# Volltextlink setzen
 	my $url = "https://doi.org/$doi_id";
 
-	# $title_ref->{fields}{'4120'} = [{
-	#     mult     => 1,
-	#     subfield => 'g',
-	#     content  => $url,
-	# }];	
+	$title_ref->{fields}{'4120'} = [{
+	    mult     => 1,
+	    subfield => 'g',
+	    content  => $url,
+	}];	
     }
    
     print encode_json $title_ref, "\n";

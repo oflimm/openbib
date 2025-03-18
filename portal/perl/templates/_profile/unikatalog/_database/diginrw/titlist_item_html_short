@@ -457,32 +457,10 @@
        fulltext = "${path_prefix}/databases/id/ezb/titles/id/zdb:${matchresult.first}";
     END;
 
-    fulltext_availability  = "";
-    fulltext_icon = config.get('ezb_unknown_img');
-    fulltext_desc  = "Volltext";
-
-    IF fields.${'T4120'}.first.subfield == "g";
       fulltext_availability = "lawngreen";
       fulltext_icon = config.get('ezb_green_img');
       fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
       availability = "online";
-    ELSIF fields.${'T4120'}.first.subfield == "y";
-      fulltext_availability = "yellow";
-      fulltext_icon = config.get('ezb_yellow_img');
-      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
-      availability = "online";      
-    ELSIF fields.${'T4120'}.first.subfield == "l";
-      fulltext_icon = config.get('ezb_yellow_red_img');
-      fulltext_desc = msg.maketext("Volltext mit eingeschränkten Zugang");;
-      availability = "online";            
-    ELSIF fields.${'T4120'}.first.subfield == "f";
-      fulltext_icon = config.get('ezb_green_yellow_img');
-      fulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
-      availability = "online";      
-    ELSE ;
-      fulltext_icon = config.get('ezb_unknown_img');
-      fulltext_desc = msg.maketext("Unbekannter Zugang");;
-    END;
 
     IF item.tags ;
       tags = [];

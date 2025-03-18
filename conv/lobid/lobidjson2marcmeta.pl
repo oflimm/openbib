@@ -800,55 +800,73 @@ while (my $jsonline = <$input_io>){
     }
     
     if (defined $record_ref->{publication}){
+	my $publ_mult = 1;
+	
 	foreach my $pub_ref (@{$record_ref->{publication}}){
+  	    my $is_publication_event = 0;
+  	    my $is_secondary_publication_event = 0;
 
+	    if (defined $pub_ref->{type} && ref $pub_ref->{type} eq "ARRAY"){
+		$is_publication_event = 1 if (grep /^PublicationEvent$/, @{$pub_ref->{type}});
+		$is_secondary_publication_event = 1 if (grep /^SecondaryPublicationEvent$/, @{$pub_ref->{type}});
+	    }
+	    
 	    # location -> 0410/260$a Verlagsort
 	    if (defined $pub_ref->{location}){
-		push @{$title_ref->{fields}{'0260'}}, {
-		    mult     => 1,
+		push @{$title_ref->{fields}{'0264'}}, {
+		    mult     => $publ_mult,
 		    subfield => 'a',
 		    content => join(" ; ",@{$pub_ref->{location}}),
-		};
+		} if ($is_publication_event);
 	    }
 
 	    # publishedBy -> 0412/260$b Verlag
 	    if (defined $pub_ref->{publishedBy} && ref $pub_ref->{publishedBy} eq "ARRAY"){
-		my $verlag_mult = 1;
-		foreach my $verlag (@{$pub_ref->{publishedBy}}){
-		    push @{$title_ref->{fields}{'0260'}}, {
-			mult     => $verlag_mult++,
-			subfield => 'b',
-			content => join(" ; ",@{$pub_ref->{publishedBy}}),
-		    };
-		    last; # Only first publisher
-		}
+		# Only first publisher
+		push @{$title_ref->{fields}{'0264'}}, {
+		    mult     => $publ_mult,
+		    subfield => 'b',
+		    content => $pub_ref->{publishedBy}[0],
+		} if ($is_publication_event);
 	    }
 	    elsif (defined $pub_ref->{publishedBy}){
-		push @{$title_ref->{fields}{'0260'}}, {
-		    mult     => 1,
+		push @{$title_ref->{fields}{'0264'}}, {
+		    mult     => $publ_mult,
 		    subfield => 'b',
 		    content => $pub_ref->{publishedBy},
-		};
+		} if ($is_publication_event);
 	    }
 
 	    # startDate -> 0425/260$c Erscheinungsjahr
 	    if (defined $pub_ref->{startDate}){
-		push @{$title_ref->{fields}{'0260'}}, {
-		    mult     => 1,
-		    subfield => 'c',
-		    content => $pub_ref->{startDate},
-		};
+		if ($is_publication_event){
+		    my $year = $pub_ref->{startDate};
+		    push @{$title_ref->{fields}{'0264'}}, {
+			mult     => $publ_mult,
+			subfield => 'c',
+			content => $year,
+		    };
+
+		    if ($year=~m/(\d\d\d\d)/){
+			push @{$title_ref->{fields}{'1008'}}, {
+			    mult     => $publ_mult,
+			    subfield => 'a',
+			    content => $1,
+			};
+		    }
+		}
 	    }
 
 	    # publicationHistory -> 0405/362$a Erscheinungsverlauf
 	    if (defined $pub_ref->{publicationHistory}){
 		push @{$title_ref->{fields}{'0362'}}, {
-		    mult     => 1,
+		    mult     => $publ_mult,
 		    subfield => 'a',
 		    content => $pub_ref->{publicationHistory},
-		};
+		} if ($is_publication_event);;
 	    }
-	    
+
+	    $publ_mult++;
 	}
     }
 

@@ -458,7 +458,7 @@
     END;
 
     fulltext_availability  = "";
-    fulltext_icon = config.get('ezb_unknown_img');
+    fulltext_icon = config.get('ezb_green_img');
     fulltext_desc  = "Volltext";
 
     IF fields.${'T4120'}.first.subfield == "g";

@@ -839,14 +839,22 @@ while (my $jsonline = <$input_io>){
 
 	    # startDate -> 0425/260$c Erscheinungsjahr
 	    if (defined $pub_ref->{startDate}){
-		if (defined $pub_ref->{type} && ref $pub_ref->{type} eq "ARRAY"){
+		if ($is_publication_event){
+		    my $year = $pub_ref->{startDate};
+		    push @{$title_ref->{fields}{'0264'}}, {
+			mult     => $publ_mult,
+			subfield => 'c',
+			content => $year,
+		    };
+
+		    if ($year=~m/(\d\d\d\d)/){
+			push @{$title_ref->{fields}{'1008'}}, {
+			    mult     => $publ_mult,
+			    subfield => 'c',
+			    content => $1,
+			};
+		    }
 		}
-		
-		push @{$title_ref->{fields}{'0264'}}, {
-		    mult     => $publ_mult,
-		    subfield => 'c',
-		    content => $pub_ref->{startDate},
-		} if ($is_publication_event);
 	    }
 
 	    # publicationHistory -> 0405/362$a Erscheinungsverlauf

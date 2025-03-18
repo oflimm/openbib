@@ -287,7 +287,7 @@ for (var i = 0; i < libraries.length; i++) {
 
 <!-- Lernraeme der Wiso als ein statischer Eintrag -->
 
-	<li><a class="inturl" href="https://wiso.uni-koeln.de/de/fakultaet/wiso-library-and-campus-service/lernplaetze" target="_blank">WiSo Lern- und Arbeitsräume</a></li>
+	<li><a class="inturl" href="https://wiso.uni-koeln.de/de/fakultaet/wiso-library-and-campus-service/lernplaetze" target="_blank">WiSo Learning Centre</a></li>
 
 [% FOREACH desc IN institution_map.keys.sort %]
      [% NEXT IF desc.match('^Lern') %]

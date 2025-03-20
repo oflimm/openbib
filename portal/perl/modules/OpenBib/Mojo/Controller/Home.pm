@@ -48,7 +48,7 @@ use OpenBib::Session;
 
 use Mojo::Base 'OpenBib::Mojo::Controller', -signatures, -async_await;
 
-async sub show ($self) {
+sub show ($self) {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -72,6 +72,7 @@ async sub show ($self) {
     $logger->debug("Home-sID: $session->{ID}");
     $logger->debug("View: ".$view);
     $logger->debug("Path-Prefix: ".$path_prefix);
+    $logger->debug("Config: ".(ref $config));
 
     my $viewstartpage = $self->strip_suffix($config->get_startpage_of_view($view));
 
@@ -93,7 +94,11 @@ async sub show ($self) {
         my $ttdata={
         };
         
-        await $self->print_page($config->{'tt_home_tname'},$ttdata);
+        $self->print_page($config->{'tt_home_tname'},$ttdata);
+	# $config->DESTROY;
+	# $session->DESTROY;
+	# $user->DESTROY;
+	# $queryoptions->DESTROY;
     }
 }
 

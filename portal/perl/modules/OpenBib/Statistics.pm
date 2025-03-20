@@ -1291,6 +1291,7 @@ sub connectDB {
     else {
         eval {        
             $self->{schema} = OpenBib::Schema::Statistics->connect("DBI:Pg:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},$config->{statisticsdboptions}) or $logger->error_die($DBI::errstr);
+	    $self->{schema}->storage->debug(1) if ($config->{statisticsdbdebug});
             
         };
         
@@ -1311,7 +1312,7 @@ sub disconnectDB {
 
     if (defined $self->{schema}){
         eval {
-            $self->{schema}->storage->dbh->disconnect;
+            $self->{schema}->storage->disconnect;
         };
 
         if ($@){

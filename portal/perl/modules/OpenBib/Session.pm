@@ -59,6 +59,9 @@ sub new {
     my ($class,$arg_ref) = @_;
 
     # Set defaults
+    my $schema   = exists $arg_ref->{schema}
+        ? $arg_ref->{schema}                : undef;
+    
     my $sessionID   = exists $arg_ref->{sessionID}
         ? $arg_ref->{sessionID}             : undef;
 
@@ -66,7 +69,7 @@ sub new {
         ? $arg_ref->{view}                  : undef;
 
     my $config     = exists $arg_ref->{config}
-        ? $arg_ref->{config}                : OpenBib::Config->new;
+        ? $arg_ref->{config}                : undef;
 
     my $remote_ip  = exists $arg_ref->{remote_ip}
         ? $arg_ref->{remote_ip}             : undef;
@@ -78,6 +81,10 @@ sub new {
 
     bless ($self, $class);
 
+    unless (defined $config){
+	$config = (defined $schema)?OpenBib::Config->new({ schema => $schema }):OpenBib::Config->new();
+    }
+    
     $self->{_config} = $config;
     
     my ($atime,$btime,$timeall)=(0,0,0);
@@ -161,7 +168,7 @@ sub new {
     }
 
     if ($logger->is_debug){
-	$logger->debug("Session-Object created: ".YAML::Dump($self));
+	$logger->debug("Session-Object created: SessionID=".$self->{sid}." View=".$self->{view});
     }
     
     return $self;
@@ -2157,7 +2164,8 @@ sub connectDB {
     else {
         eval {        
             $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$config->{systemdbname};host=$config->{systemdbhost};port=$config->{systemdbport}", $config->{systemdbuser}, $config->{systemdbpasswd},$config->{systemdboptions}) or $logger->error_die($DBI::errstr);
-            
+	    $self->{schema}->storage->debug(1) if ($config->{systemdbdebug});
+
         };
         
         if ($@){

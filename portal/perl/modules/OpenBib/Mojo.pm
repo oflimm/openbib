@@ -10,11 +10,6 @@ use Mojo::Base 'Mojolicious', -signatures;
 use Log::Log4perl qw(get_logger :levels);
 use YAML::Syck;
 
-use OpenBib::Config;
-use OpenBib::Template::Provider;
-use OpenBib::Mojo::Controller;
-
-
 use Log::Log4perl qw(get_logger :levels);
 use List::MoreUtils qw(none any);
 use Benchmark ':hireswallclock';
@@ -34,6 +29,8 @@ use YAML ();
 
 # From PSGI.pm
 use OpenBib::Config;
+use OpenBib::Mojo::Controller;
+use OpenBib::Config::File;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Config::LocationInfoTable;
 use OpenBib::Common::Util;
@@ -41,6 +38,9 @@ use OpenBib::Container;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::RecordList::Title;
+use OpenBib::Schema::System;
+use OpenBib::Schema::Enrichment;
+use OpenBib::Schema::Statistics;
 use OpenBib::Session;
 use OpenBib::SearchQuery;
 use OpenBib::Search::Factory;
@@ -54,24 +54,24 @@ our $VERSION = 'pre-4.0';
 # init web app
 sub startup ($app){
 
-    my $config = OpenBib::Config->new;
+    my $configfile = OpenBib::Config::File->instance;
     
-    Log::Log4perl->init($config->{log4perl_path});
+    Log::Log4perl->init($configfile->{log4perl_path});
 
     my $logger = get_logger();
     
     # Register app secret and hypnotoad config
-    $app->secrets($config->{mojo}{secrets});
-    $app->config(hypnotoad => $config->{mojo}{hypnotoad});
+    $app->secrets($configfile->{mojo}{secrets});
+    $app->config(hypnotoad => $configfile->{mojo}{hypnotoad});
 
     # Sessions setup
-    $app->sessions->cookie_name($config->{mojo}{cookie}{name});
-    $app->sessions->cookie_path($config->{base_loc});
-    $app->sessions->default_expiration($config->{mojo}{cookie}{expiration});
-    $app->sessions->samesite($config->{mojo}{cookie}{samesite});
+    $app->sessions->cookie_name($configfile->{mojo}{cookie}{name});
+    $app->sessions->cookie_path($configfile->{base_loc});
+    $app->sessions->default_expiration($configfile->{mojo}{cookie}{expiration});
+    $app->sessions->samesite($configfile->{mojo}{cookie}{samesite});
 
     # Renderer Path (for mojo default ep templates
-    push @{$app->renderer->paths}, $config->{'tt_include_path'};
+    push @{$app->renderer->paths}, $configfile->{'tt_include_path'};
     
     # Types (eg. include)
     $app->types->type('include' => 'text/html');
@@ -83,6 +83,29 @@ sub startup ($app){
     my $r = $app->routes;
     $app->_register_routes($r);
 
+    # Helpers
+    {
+	my $systemdb = OpenBib::Schema::System->connect("DBI:Pg:dbname=$configfile->{systemdbname};host=$configfile->{systemdbhost};port=$configfile->{systemdbport}", $configfile->{systemdbuser}, $configfile->{systemdbpasswd},$configfile->{systemdboptions}) or $logger->error_die($DBI::errstr);
+	$systemdb->storage->debug(1) if ($configfile->{systemdbdebug});
+	
+	$app->helper(systemdb => sub { return $systemdb; });
+    }
+
+    {
+	my $enrichmntdb = OpenBib::Schema::Enrichment->connect("DBI:Pg:dbname=$configfile->{enrichmntdbname};host=$configfile->{enrichmntdbhost};port=$configfile->{enrichmntdbport}", $configfile->{enrichmntdbuser}, $configfile->{enrichmntdbpasswd},$configfile->{enrichmntdboptions}) or $logger->error_die($DBI::errstr);
+	$enrichmntdb->storage->debug(1) if ($configfile->{enrichmntdbdebug});
+	
+	$app->helper(enrichmentdb => sub { return $enrichmntdb; });
+    }
+
+    {
+	my $statisticsdb = OpenBib::Schema::Statistics->connect("DBI:Pg:dbname=$configfile->{statisticsdbname};host=$configfile->{statisticsdbhost};port=$configfile->{statisticsdbport}", $configfile->{statisticsdbuser}, $configfile->{statisticsdbpasswd},$configfile->{statisticsdboptions}) or $logger->error_die($DBI::errstr);
+	$statisticsdb->storage->debug(1) if ($configfile->{statisticsdbdebug});
+	
+	$app->helper(statisticsdb => sub { return $statisticsdb; });
+    }
+
+    
     # Pre-processeing mit Hooks
     #
     # Abarbeitungsreihenfolge der Hooks
@@ -112,6 +135,8 @@ sub startup ($app){
 	);    
 
     $app->hook(around_action => sub ($next, $c, $action, $last) {
+	# Zu diesem Zeitpunkt ist die Route bereits ausgewaehlt worden
+	
 	# Log4perl logger erzeugen
 	my $logger = get_logger();
 	
@@ -130,11 +155,38 @@ sub startup ($app){
 	$logger->debug("Mojo - Format: ".$c->stash('format'));
 	$logger->debug("Mojo - Repraesentation: ".$c->stash('representation'));
 
+	# content_type, representation und lang durch content-Negotiation bestimmen
+	# und ggf. zum konkreten Repraesenations-URI redirecten
+	# Setzt: content_type,represenation,lang
+	&negotiate_content($c);
+	
 	# Ggf Personalisiere URI
 	&personalize_uri($c);
+
+	# Bearbeitung HTTP Basic Authentication als Shortcut
+	# Setzt ggf: basic_auth_failure (auf 1)
+	&check_http_basic_authentication($c);
+	
+	# Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l' oder cookie
+	&alter_negotiated_language($c);
 	
 	return $next->();
-	       });
+
+	       }
+	);
+
+    $app->hook(after_render => sub ($c,$output,$format){
+
+	# DB Cleanup
+ 	$c->stash->{'config'}->DESTROY if (defined $c->stash->{'config'});
+	$c->stash->{'session'}->DESTROY if (defined $c->stash->{'session'});
+	$c->stash->{'user'}->DESTROY if (defined $c->stash->{'user'});
+	$c->stash->{'qopts'}->DESTROY if (defined $c->stash->{'qopts'});
+	$c->stash->{'dbinfo'}->DESTROY if (defined $c->stash->{'dbinfo'});
+	$c->stash->{'locinfo'}->DESTROY if (defined $c->stash->{'locinfo'});
+	       }
+	);    
+    
 }
 
 sub _register_routes {
@@ -163,17 +215,17 @@ sub _register_routes {
 		$routes->get($rule => [ format => $item->{representations} ])->to(controller => $controller, action => $action, dispatch_args => $args );
 	    }
 	    else {
-		$routes->get($rule)->to(controller => $controller, action => $action, args => $args );
+		$routes->get($rule)->to(controller => $controller, action => $action, dispatch_args => $args );
 	    }	    
 	}
 	elsif ($method eq "POST"){
-	    $routes->post($rule)->to(controller => $controller, action => $action )
+	    $routes->post($rule)->to(controller => $controller, action => $action, dispatch_args => $args )
 	}
 	elsif ($method eq "PUT"){
-	    $routes->put($rule)->to(controller => $controller, action => $action )
+	    $routes->put($rule)->to(controller => $controller, action => $action, dispatch_args => $args )
 	}
 	elsif ($method eq "DELETE"){
-	    $routes->delete($rule)->to(controller => $controller, action => $action )
+	    $routes->delete($rule)->to(controller => $controller, action => $action, dispatch_args => $args )
 	}
     }
 
@@ -212,10 +264,10 @@ sub _before_dispatch($c){
     $logger->debug("Mojo - View c: ".YAML::Dump($c->param('view')));
     $logger->debug("Mojo - Path: ".$r->url->path);
     $logger->debug("Mojo - Route: ".$c->match);
-    $logger->debug("Mojo - Format: ".$c->stash('format'));
+    #$logger->debug("Mojo - Format: ".$c->stash('format'));
     $logger->debug("Mojo - View regexp: ".$view);
 
-    my $config       = OpenBib::Config->new;
+    my $config       = OpenBib::Config->new({ schema => $c->app->systemdb });
 
     $c->stash('view',$view);    
     $c->stash('config',$config);
@@ -328,7 +380,7 @@ sub _before_dispatch($c){
     # content_type, representation und lang durch content-Negotiation bestimmen
     # und ggf. zum konkreten Repraesenations-URI redirecten
     # Setzt: content_type,represenation,lang
-    &negotiate_content($c);
+#    &negotiate_content($c);
     
     if ($config->{benchmark}) {
         $btime=new Benchmark;
@@ -347,10 +399,10 @@ sub _before_dispatch($c){
 
     # Bearbeitung HTTP Basic Authentication als Shortcut
     # Setzt ggf: basic_auth_failure (auf 1)
-    &check_http_basic_authentication($c);
+#    &check_http_basic_authentication($c);
 
     # Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l' oder cookie
-    &alter_negotiated_language($c);
+#    &alter_negotiated_language($c);
 
     if ($config->{benchmark}) {
         $btime=new Benchmark;
@@ -397,7 +449,7 @@ sub _before_dispatch($c){
 	    
 	    my $redirect_to = $scheme."://".$c->stash('servername').$c->stash('url');
 	    
-	    my $dispatch_url = $scheme."://".$c->stash('servername').$c->stash('path_prefix')."/".$config->get('login_loc')."?l=".$c->stash('lang').";redirect_to=".uri_escape($redirect_to);
+	    my $dispatch_url = $scheme."://".$c->stash('servername').$c->stash('path_prefix')."/".$config->get('login_loc')."?l=".$c->stash('lang')."&redirect_to=".uri_escape($redirect_to);
 	    
 	    $logger->debug("force_login URLs: $redirect_to - ".$c->stash('url')." - ".$dispatch_url);
 	    
@@ -507,10 +559,10 @@ sub _before_routes($c) {
     return if ($path !~m{^/portal/});
 
     $logger->debug("Mojo - Entering _before_routes");
-    $logger->debug("Mojo - View: ".$c->param('view'));
+    #$logger->debug("Mojo - View: ".$c->param('view'));
     $logger->debug("Mojo - Path: ".$r->url->path);
     $logger->debug("Mojo - Route: ".$c->match);
-    $logger->debug("Mojo - Format: ".$c->stash('format'));
+    #$logger->debug("Mojo - Format: ".$c->stash('format'));
     
     return;
 }
@@ -632,7 +684,9 @@ sub negotiate_type($c) {
     
     my $r              = $c->stash('r');
     my $config         = $c->stash('config');
+    my $args_ref       = $c->stash('dispatch_args');
 
+    return if ($args_ref->{'disable_content_negotiation'});
     
     my $content_type = $r->headers->header('Content-Type') || '';
     my $accept       = $r->headers->header('Accept') || '';
@@ -694,6 +748,9 @@ sub negotiate_language($c) {
     
     my $r              = $c->stash('r');
     my $config         = $c->stash('config');
+    my $args_ref       = $c->stash('dispatch_args');
+
+    return if ($args_ref->{'disable_content_negotiation'});
     
     my $lang           = $r->headers->header('Accept-Language') || '';
     my @accepted_languages  = map { ($_)=$_=~/^(..)/} map { (split ";", $_)[0] } split /\*s,\*s/, $lang;
@@ -727,111 +784,107 @@ sub negotiate_content($c) {
     my $view       = $c->stash('view');
 
     # Shared Args
-    my $r       = $c->stash('r');
-    my $config  = $c->stash('config');
-    my $session = $c->stash('session');
+    my $r        = $c->stash('r');
+    my $config   = $c->stash('config');
+    my $session  = $c->stash('session');
+    my $args_ref = $c->stash('dispatch_args');
+
+    if ($logger->is_debug){
+	$logger->debug("Dispatch Args: ".YAML::Dump($args_ref));
+    }
+    
+    return if ($args_ref->{'disable_content_negotiation'});
     
     if ($logger->is_debug){
 	$logger->debug("r-Method: ".$r->method);
     }
     
-    if (!$c->stash('disable_content_negotiation')){
-        $logger->debug("Doing content negotiation");
+    $logger->debug("Doing content negotiation");
+    
+    # Wird keine konkrete Reprasentation angesprochen, dann
+    # - Typ verhandeln
+    # - Sprache verhandeln
+    if ($r->method eq "GET"){
+	if (!$c->stash('representation') && !$c->stash('content_type')){
 
-        # Wird keine konkrete Reprasentation angesprochen, dann
-        # - Typ verhandeln
-        # - Sprache verhandeln
-        if ($r->method eq "GET"){
-            if (!$c->stash('representation') && !$c->stash('content_type')){
+	    $logger->debug("No specific representation given - negotiating content and language");
 
-                $logger->debug("No specific representation given - negotiating content and language");
+	    $logger->debug("Path: ".$c->stash('path'));
+	    
+	    &negotiate_type($c);
+	    
+	    # Zusaetzlich auch Sprache verhandeln
+	    my $args="";
+	    if (!$r->param('l')){
+		if ($session->{lang}){
+		    $logger->debug("Sprache definiert durch Session: ".$session->{lang});
+		    $c->stash('lang',&cleanup_lang($c,$session->{lang}));
+		}
+		elsif ($c->session('lang')){
+		    $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
+		    $c->stash('lang',$c->session('lang'));
+		}
+		else {
+		    &negotiate_language($c);
+		}
 
-                $logger->debug("Path: ".$c->stash('path'));
-                
-                &negotiate_type($c);
-                
-                # Zusaetzlich auch Sprache verhandeln
-                my $args="";
-                if (!$r->param('l')){
-                    if ($session->{lang}){
-                        $logger->debug("Sprache definiert durch Session: ".$session->{lang});
-                        $c->stash('lang',&cleanup_lang($c,$session->{lang}));
-                    }
-		    elsif ($c->session('lang')){
-                        $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
-                        $c->stash('lang',$c->session('lang'));
-		    }
-                    else {
-                        &negotiate_language($c);
-                    }
-
-		    # language nun in stash lang
-		    my $existing_args = $r->url->query->merge(l => $c->stash('lang'));
-		    $logger->debug("Args with added language: ".$existing_args->to_string);
-		    $args = "?".$existing_args->to_string;
-                }
-                else {
-                    $args="?".$r->url->query;
-                }
-
-                my $path = "";
-
-                $c->stash('path',$c->stash('path').".".$c->stash('representation'));
-
-                my $dispatch_url = $c->stash('scheme')."://".$c->stash('servername').$c->stash('path').$args;
-
-                $c->stash('dispatch_url',$dispatch_url);
-                
-                $logger->debug("Negotiating type -> Dispatching to $dispatch_url");
-
-                return;
-            }
-
-            # Wenn eine konkrete Repraesentation angesprochen wird, jedoch ohne Sprach-Stasheter,
-            # dann muss dieser verhandelt werden.
-            if (!$r->param('l') ){
-                $logger->debug("Specific representation given, but without language - negotiating");
-                
-                if ($session->{lang}){
-                    $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
-                    $c->stash('lang',&cleanup_lang($c,$session->{lang}));
-                }
-                else {
-                    &negotiate_language($c);
-                }
-                
 		# language nun in stash lang
 		my $existing_args = $r->url->query->merge(l => $c->stash('lang'));
 		$logger->debug("Args with added language: ".$existing_args->to_string);
-		my $args = "?".$existing_args->to_string;
+		$args = "?".$existing_args->to_string;
+	    }
+	    else {
+		$args="?".$r->url->query;
+	    }
 
-                my $dispatch_url = $c->stash('scheme')."://".$c->stash('servername').$c->stash('path').$args;
+	    my $path = "";
+
+	    $c->stash('path',$c->stash('path').".".$c->stash('representation'));
+
+	    my $dispatch_url = $c->stash('scheme')."://".$c->stash('servername').$c->stash('path').$args;
+
+	    $c->stash('dispatch_url',$dispatch_url);
+	    
+	    $logger->debug("Negotiating type -> Dispatching to $dispatch_url");
+
+	    return;
+	}
+
+	# Wenn eine konkrete Repraesentation angesprochen wird, jedoch ohne Sprach-Stasheter,
+	# dann muss dieser verhandelt werden.
+	if (!$r->param('l') ){
+	    $logger->debug("Specific representation given, but without language - negotiating");
+	    
+	    if ($session->{lang}){
+		$logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
+		$c->stash('lang',&cleanup_lang($c,$session->{lang}));
+	    }
+	    else {
+		&negotiate_language($c);
+	    }
+	    
+	    # language nun in stash lang
+	    my $existing_args = $r->url->query->merge(l => $c->stash('lang'));
+	    $logger->debug("Args with added language: ".$existing_args->to_string);
+	    my $args = "?".$existing_args->to_string;
+
+	    my $dispatch_url = $c->stash('scheme')."://".$c->stash('servername').$c->stash('path').$args;
             
-                $logger->debug("Negotiated language -> Dispatching to $dispatch_url");
+	    $logger->debug("Negotiated language -> Dispatching to $dispatch_url");
 
-                $c->stash('dispatch_url',$dispatch_url);
+	    $c->stash('dispatch_url',$dispatch_url);
 
-                return ;
-            }
-        }
-        # CUD-operations always use the resource-URI, so no redirect neccessary
-        elsif ($r->method eq "POST" || $r->method eq "PUT" || $r->method eq "DELETE"){
-            &negotiate_type($c);
-            &negotiate_language($c);
-        }
-        else {
-            $logger->debug("No additional negotiation necessary");
-            $logger->debug("Current URL is ".$c->stash('path')." with args ".$r->url->query);
-        }
+	    return ;
+	}
+    }
+    # CUD-operations always use the resource-URI, so no redirect neccessary
+    elsif ($r->method eq "POST" || $r->method eq "PUT" || $r->method eq "DELETE"){
+	&negotiate_type($c);
+	&negotiate_language($c);
     }
     else {
-	# Respektiere und verarbeite ggf. mitgegebene Repraesentation fuer API-Zugriff
-	my $content_type = $r->headers->header('Content-Type') || '';
-	
-	if ($config->{content_type_map}{$content_type}){
-            $c->stash('content_type',$content_type);
-            $c->stash('representation',$config->{content_type_map}->{$content_type});
-        }
+	$logger->debug("No additional negotiation necessary");
+	$logger->debug("Current URL is ".$c->stash('path')." with args ".$r->url->query);
     }
 
     if ($logger->is_debug && defined $c->stash('representation')){

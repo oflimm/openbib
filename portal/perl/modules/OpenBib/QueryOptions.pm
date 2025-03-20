@@ -378,7 +378,8 @@ sub connectDB {
     else {
         eval {        
             $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$configfile->{systemdbname};host=$configfile->{systemdbhost};port=$configfile->{systemdbport}", $configfile->{systemdbuser}, $configfile->{systemdbpasswd},$configfile->{systemdboptions}) or $logger->error_die($DBI::errstr);
-            
+	    $self->{schema}->storage->debug(1) if ($configfile->{systemdbdebug});
+
         };
         
         if ($@){

@@ -61,7 +61,6 @@ sub show {
     my $logger = get_logger();
 
     # Shared Args
-    my $query        = $self->query();
     my $r            = $self->stash('r');
     my $config       = $self->stash('config');
     my $session      = $self->stash('session');
@@ -80,7 +79,7 @@ sub show {
 
         unless ( exists $config->{unAPI_formats}->{$format} ) {
             $logger->error("Format $format not acceptable");
-            $self->header_add( 'Status', 406 );    # not acceptable
+            $self->res->code(406);    # not acceptable
             return;
         }
 
@@ -152,7 +151,7 @@ sub show {
 
             if ( !$record || !$record->record_exists ) {
 		$logger->debug("Record $database / $idn not found!");
-                $self->header_add( 'Status', 404 );    # not found
+		$self->res->code(404);  # not found
                 return;
             }
 
@@ -216,14 +215,14 @@ sub show {
             #     return "Der Katkey $idn existiert nicht";
             # }
             if ( $format_info{$format} ) {
-                $self->header_add( 'Content-Type', $format_info{$format} );
+                $self->res->headers->content_type($format_info{$format});
             }
             else {
-                $self->header_add( 'Content-Type', 'application/xml' );
+                $self->res->headers->content_type('application/xml');
             }
             $template->process( $config->{$templatename}, $ttdata ) || do {
                 $logger->error( $template->error() );
-                $self->header_add( 'Status', 400 );    # server error
+                $self->res->code(400);    # server error
                 return;
             };
 
@@ -274,14 +273,14 @@ sub show {
         );
 
         # Dann Ausgabe des neuen Headers
-        $self->header_add( 'Content-Type', 'application/xml' );
+        $self->res->headers->content_type('application/xml');
 
         $template->process( $templatename, $ttdata ) || do {
             $logger->error( $template->error() );
-            $self->header_add( 'Status', 400 );    # server error
+            $self->res->code(400);    # server error
         };
 
-        return $content;
+        $self->render( text => $content );
     }
 }
 

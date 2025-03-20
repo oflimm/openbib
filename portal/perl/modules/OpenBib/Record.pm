@@ -106,7 +106,7 @@ sub disconnectDB {
     if (defined $self->{schema}){
         eval {
             $logger->debug("Disconnect from Catalog-DB now $self");
-            $self->{schema}->storage->dbh->disconnect;
+            $self->{schema}->storage->disconnect;
             delete $self->{schema};
         };
 
@@ -129,7 +129,7 @@ sub disconnectEnrichmentDB {
     if (defined $self->{enrich_schema}){
         eval {
             $logger->debug("Disconnect from Catalog-DB now $self");
-            $self->{enrich_schema}->storage->dbh->disconnect;
+            $self->{enrich_schema}->storage->disconnect;
             delete $self->{enrich_schema};
         };
 
@@ -671,7 +671,7 @@ sub DESTROY {
     if (defined $self->{enrich_schema}){
         eval {
 #            $self->{enrich_schema}->sth->finish;
-            $self->{enrich_schema}->storage->disconnect;
+            $self->{enrich_schema}->storage->dbh->disconnect;
         };
         
         if ($@){

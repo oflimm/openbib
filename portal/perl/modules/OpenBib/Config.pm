@@ -68,7 +68,11 @@ my $chars_to_replace = join '|',
 $chars_to_replace = qr/$chars_to_replace/;
 
 sub new {
-    my $class = shift;
+    my ($class,$arg_ref) = @_;
+
+    # Set defaults
+    my $schema   = exists $arg_ref->{schema}
+        ? $arg_ref->{schema}               : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -88,6 +92,8 @@ sub new {
     
     $self->connectMemcached();
 
+    $self->{schema} = $schema if (defined $schema);
+    
     $logger->debug("Creating Config-Object $self");
         
     return $self;
@@ -3332,7 +3338,7 @@ sub connectDB {
     else {
         eval {        
             $self->{schema} = OpenBib::Schema::System->connect("DBI:Pg:dbname=$self->{systemdbname};host=$self->{systemdbhost};port=$self->{systemdbport}", $self->{systemdbuser}, $self->{systemdbpasswd},$self->{systemdboptions}) or $logger->error_die($DBI::errstr);
-            
+            $self->{schema}->storage->debug(1) if ($self->{systemdbdebug});
         };
         
         if ($@){

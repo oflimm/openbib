@@ -294,7 +294,7 @@ sub print_json {
     return encode_json($json_ref);
 }
 
-async sub print_page {
+sub print_page {
     my ($self,$templatename,$ttdata)=@_;
 
     # Log4perl logger erzeugen
@@ -323,7 +323,9 @@ async sub print_page {
     my $url            = $self->stash('url');
 
     $logger->debug("Entering print_page with template $templatename and representation $representation");
-        
+
+    $logger->debug("Config: ".(ref $config));
+
     if (!$config->view_is_active($view)){
 	$logger->error("View $view doesn't exist");	
 	$self->header_add('Status' => 404); # Not found
@@ -386,7 +388,7 @@ async sub print_page {
             $logger->info("Total time until stage 1 is ".timestr($timeall));
         }
         
-        await $template->process($templatename, $ttdata) || do {
+        $template->process($templatename, $ttdata) || do {
             $logger->fatal($template->error()." url: $url");
             return "Fehler";
         };
@@ -396,7 +398,7 @@ async sub print_page {
         $logger->fatal($@." url: $url");
     }
     
-    await $self->render(text => $content);
+    $self->render(text => $content);
 
     $logger->debug("Template processed with content $content");
 }

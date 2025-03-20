@@ -259,7 +259,6 @@ sub load_full_record {
     my $similar_records = $record->get_similar_records;
     my $related_records = $record->get_related_records;
 
-
     $logger->debug("Setting data from Backend");
     
     # Location aus 4230 setzen    
@@ -390,14 +389,12 @@ sub enrich_content {
         $atime=new Benchmark;
     }
     
-    if (!exists $self->{enrich_schema}){
-        $self->connectEnrichmentDB;
-        if ($logger->is_debug){            
-            $self->{enrich_schema}->storage->debug(1);
-        }
-    }
-
     return $self unless ($self->{database} && $self->{id});
+
+    $self->connectEnrichmentDB;
+    if ($logger->is_debug){            
+	$self->{enrich_schema}->storage->debug(1);
+    }
     
     # ISBNs aus Anreicherungsdatenbank als subquery
     my $this_isbns = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
@@ -619,6 +616,8 @@ sub enrich_content {
         undef $timeall;
     }
 
+    $self->disconnectEnrichmentDB;
+    
     return;
 }
 
@@ -700,11 +699,10 @@ sub enrich_related_records {
     # }
     
     
-    if (!exists $self->{enrich_schema}){
-        $self->connectEnrichmentDB;
-        if ($logger->is_debug){            
-            $self->{enrich_schema}->storage->debug(1);
-        }
+    $self->connectEnrichmentDB;
+    
+    if ($logger->is_debug){            
+	$self->{enrich_schema}->storage->debug(1);
     }
 
     my @filter_databases = ($orgunitname && $profilename)?$config->get_orgunitdbs($profilename,$orgunitname):($profilename)?$config->get_profiledbs($profilename):($viewname)?$config->get_viewdbs($viewname):();
@@ -879,6 +877,8 @@ sub enrich_related_records {
         undef $timeall;
     }
 
+    $self->disconnectEnrichmentDB;
+    
     return $self;
 }
 
@@ -902,11 +902,10 @@ sub enrich_similar_records_old {
         $atime=new Benchmark;
     }
     
-    if (!exists $self->{enrich_schema}){
-        $self->connectEnrichmentDB;
-        if ($logger->is_debug){            
-            $self->{enrich_schema}->storage->debug(1);
-        }
+    $self->connectEnrichmentDB;
+
+    if ($logger->is_debug){            
+	$self->{enrich_schema}->storage->debug(1);
     }
 
     my @filter_databases = ($profilename)?$config->get_profiledbs($profilename):
@@ -1020,6 +1019,8 @@ sub enrich_similar_records_old {
         $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles ist ".timestr($timeall));
     }
 
+    $self->disconnectEnrichmentDB;
+    
     return $self;
 }
 
@@ -1085,11 +1086,10 @@ sub enrich_similar_records {
         }
     }
     
-    if (!exists $self->{enrich_schema}){
-        $self->connectEnrichmentDB;
-        if ($logger->is_debug){            
-            $self->{enrich_schema}->storage->debug(1);
-        }
+    $self->connectEnrichmentDB;
+
+    if ($logger->is_debug){            
+	$self->{enrich_schema}->storage->debug(1);
     }
 
     my @filter_databases = ($orgunitname && $profilename)?$config->get_orgunitdbs($profilename,$orgunitname):($profilename)?$config->get_profiledbs($profilename):($viewname)?$config->get_viewdbs($viewname):();
@@ -1216,6 +1216,8 @@ sub enrich_similar_records {
         $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles ist ".timestr($timeall));
     }
 
+    $self->disconnectEnrichmentDB;
+    
     return $self;
 }
 
@@ -1284,11 +1286,10 @@ sub enrich_same_records {
         $logger->debug("No memcached available");
     }
     
-    if (!exists $self->{enrich_schema}){
-        $self->connectEnrichmentDB;
-        if ($logger->is_debug){            
-            $self->{enrich_schema}->storage->debug(1);
-        }
+    $self->connectEnrichmentDB;
+
+    if ($logger->is_debug){            
+	$self->{enrich_schema}->storage->debug(1);
     }
 
     my @filter_databases = ($orgunitname && $profilename)?$config->get_orgunitdbs($profilename,$orgunitname):($profilename)?$config->get_profiledbs($profilename):($viewname)?$config->get_viewdbs($viewname):();
@@ -1411,6 +1412,8 @@ sub enrich_same_records {
         $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles ist ".timestr($timeall));
     }
 
+    $self->disconnectEnrichmentDB;
+    
     return $self;
 }
 

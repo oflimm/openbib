@@ -890,6 +890,7 @@ sub connectDB {
         eval {        
 #            $self->{schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$self->{enrichmntdbname};host=$self->{enrichmntdbhost};port=$self->{enrichmntdbport}", $self->{enrichmntdbuser}, $self->{enrichmntdbpasswd}) or $logger->error_die($DBI::errstr);
             $self->{schema} = OpenBib::Schema::Enrichment::Singleton->connect("DBI:Pg:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd},$config->{enrichmntdboptions}) or $logger->error_die($DBI::errstr);
+	    $self->{schema}->storage->debug(1) if ($config->{enrichmntdbdebug});
             
         };
         
@@ -926,7 +927,7 @@ sub disconnectDB {
 
     if (defined $self->{schema}){
         eval {
-            $self->{schema}->storage->dbh->disconnect;
+            $self->{schema}->storage->disconnect;
         };
 
         if ($@){

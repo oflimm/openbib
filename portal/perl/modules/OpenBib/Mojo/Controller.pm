@@ -1071,7 +1071,7 @@ sub parse_valid_input {
 	    my $no_escape = (defined $valid_input_params_ref->{$param}{no_escape})?$valid_input_params_ref->{$param}{no_escape}:0;
             
 	    if ($type eq "scalar"){
-		my $value = ($r->param($param))?decode_utf8($r->param($param)):$default;
+		my $value = ($r->param($param))?$r->param($param):$default;
 		unless ($no_escape){
 		    $value = escape_html($value);
 		}

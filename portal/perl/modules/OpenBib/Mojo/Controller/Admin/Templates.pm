@@ -260,6 +260,10 @@ sub delete_record {
         return $self->print_warning($msg->maketext("Es existiert kein Template unter dieser ID"));
     }
 
+    if ($self->param('confirm')){
+	return $self->confirm_delete_record;
+    }
+    
     $logger->debug("Deleting template record $templateid");
     
     $config->del_template({ id => $templateid });
@@ -267,7 +271,7 @@ sub delete_record {
     return unless ($self->stash('representation') eq "html");
 
     $self->res->headers->content_type('text/html');
-    return $self->redirect("$path_prefix/$config->{templates_loc}");
+    return $self->redirect("$path_prefix/$config->{templates_loc}.html");
 }
 
 sub get_input_definition {

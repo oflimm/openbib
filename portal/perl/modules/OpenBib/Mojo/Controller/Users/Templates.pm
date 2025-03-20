@@ -91,6 +91,7 @@ sub show_record_form {
     my $config         = $self->stash('config');
     my $user           = $self->stash('user');
     my $msg            = $self->stash('msg');
+    my $lang           = $self->stash('lang');
 
     # CGI Args
     my $numrev         = $r->param('numrev');
@@ -124,7 +125,6 @@ sub update_record {
     my $logger = get_logger();
     
     my $r              = $self->stash('r');
-
     
     my $view           = $self->stash('view')           || '';
     my $templateid     = $self->stash('templateid')     || '';
@@ -163,10 +163,10 @@ sub update_record {
         $self->res->headers->content_type('text/html');
 
         if ($user->is_admin){ 
-            return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{templates_loc}");
+            return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{templates_loc}.html");
         }
         else {
-            return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{templates_loc}");
+            return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{templates_loc}.html");
         }       
     }
     else {

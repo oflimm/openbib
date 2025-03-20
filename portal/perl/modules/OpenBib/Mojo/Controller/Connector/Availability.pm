@@ -80,16 +80,16 @@ sub show_collection {
 
     my $response = "";
     if ($id_type eq "isbn"){
-        $response = $self->show_collection_by_isbn;
+        $self->show_collection_by_isbn;
     }
     elsif ($id_type eq "bibkey"){
-        $response = $self->show_collection_by_bibkey;
+        $self->show_collection_by_bibkey;
     }
     else {
-        $response = $self->show_collection_by_isbn;
+        $self->show_collection_by_isbn;
     }        
 
-    return $response;
+    return;
 }
 
 sub show_collection_by_isbn {

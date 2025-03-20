@@ -83,7 +83,7 @@ sub show_via_sql {
     my $title      = decode_utf8($r->param('title'))      || '';
     my $database   = $r->param('database')   || '';
 
-    return 200 unless (defined $base); # ok
+    #return 200 unless (defined $base); # ok
 
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
@@ -285,7 +285,7 @@ sub show_via_searchengine {
     my $title      = decode_utf8($r->param('title'))      || '';
     my $database   = $r->param('database')   || '';
 
-    return 200 unless (defined $base); # ok
+    #return 200 unless (defined $base); # ok
 
     #####################################################################
     # Verbindung zum Suchindex herstellen

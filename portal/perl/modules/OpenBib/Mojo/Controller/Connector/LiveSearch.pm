@@ -145,6 +145,7 @@ sub show {
     });
     
     # Start der Ausgabe mit korrektem Header
+    $self->res->headers->content_type("text/plain");
     # $r->content_type($ttdata->{content_type});
     
     # Es kann kein Datenbankabhaengiges Template geben
@@ -167,8 +168,9 @@ sub show {
     };
 
     $logger->debug("Printed: $content");
-    
-    return $content;
+
+    $self->render( text => $content );
+    return;
     
     my $viewdb_lookup_ref = {};
     foreach my $viewdb ($config->get_viewdbs($view)){

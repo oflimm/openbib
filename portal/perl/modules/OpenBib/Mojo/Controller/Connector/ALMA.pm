@@ -81,7 +81,8 @@ sub create_record {
     unless ( $self->check_signature({ signature => $signature, body => $body })) {
     	$logger->error("No Challenge secret given");
     	$self->res->code( 401 );    # Invalid Signature
-    	return encode_json({ errorMessage => 'Invalid Signature'});
+    	$self->render( text => encode_json({ errorMessage => 'Invalid Signature'}) );
+	return;
     }
     
     eval {
@@ -92,7 +93,7 @@ sub create_record {
     };
 
     # No response content, just status 200    
-    return;
+    $self->render( text => '' );
 }
 
 sub challenge {
@@ -125,7 +126,7 @@ sub challenge {
     
     my $response_ref = { challenge => $challenge_secret };
 
-    return encode_json $response_ref;
+    $self->render( text => encode_json $response_ref );
 }
 
 sub check_signature {

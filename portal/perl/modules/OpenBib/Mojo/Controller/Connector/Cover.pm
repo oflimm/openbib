@@ -111,7 +111,7 @@ sub process_vlb {
     if (defined $isbn_is_invalid_ref->{$isbn->{isbn10}} || defined $isbn_is_invalid_ref->{$isbn->{isbn13}}){
 	$logger->debug("Kein Cover zur ISBN $id");
 	$self->redirect($redirect_url);
-	return '';
+	return;
     }
     
     my $api_config_ref = $config->{'covers'}{'vlb'};
@@ -141,12 +141,14 @@ sub process_vlb {
         }
         else {
 	    $logger->info("ISBN $isbn->{isbn13} found in VLB");
-	    $self->stash('content_type','image/jpeg');
-	    return $response->content();
+	    $self->res->headers->content_type('image/jpeg');
+	    $self->render( data => $response->content());
         }
     }
 
-    return '';
+    $self->redirect($redirect_url);
+
+    return;
 }
 
 sub id2isbnX {

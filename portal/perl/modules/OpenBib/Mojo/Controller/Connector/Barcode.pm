@@ -77,7 +77,10 @@ sub show {
 
     $self->res->headers->content_type('image/png');
 
-    return unless ($code);
+    unless ($code){
+	$self->res->code(404);
+	return;
+    }
     
     $self->render( data => $code->plot( NoText => 1)->png );
 }

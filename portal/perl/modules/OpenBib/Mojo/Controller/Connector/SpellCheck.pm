@@ -71,7 +71,10 @@ sub show {
     # CGI Args
     my $word = $r->param('q') || '';
 
-    return if (!$word || $word=~/\d/);
+    if (!$word || $word=~/\d/){
+	$self->render( text => '' );
+	return;
+    }
     
     # Blacklist von unterdrueckten Worten, die leider in den entsprechenden Aspell-Dictionaries vorhanden sind
     # ToDo: Entfernung auf dem Dictionary-Level. Hier kann es aber zu Lizenzproblemen kommen, wenn diese geaendert werden.

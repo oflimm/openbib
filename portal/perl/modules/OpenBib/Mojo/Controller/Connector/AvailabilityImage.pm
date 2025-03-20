@@ -138,7 +138,7 @@ sub process_gbs {
 
     $self->redirect($redirect_url);
 
-    return '';
+    return;
 }
 
 sub process_bibsonomy {

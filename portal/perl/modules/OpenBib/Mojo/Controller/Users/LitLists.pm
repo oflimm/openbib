@@ -797,7 +797,7 @@ sub mail_record_send {
     
     $datatemplate->process($datatemplatename, $ttdata) || do {
         $logger->error($datatemplate->error());
-        $self->header_add('Status',400); # server error
+        $self->res->code(400); # server error
         return;
     };
   

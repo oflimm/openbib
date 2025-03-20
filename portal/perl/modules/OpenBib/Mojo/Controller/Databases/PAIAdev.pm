@@ -89,14 +89,14 @@ sub authenticate {
 	};
 	
 	if ($suppressresponsecodes){
-	    $self->header_add('Status' => 200); # ok
+	    $self->res->code(200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 501); # invalid request
+	    $self->res->code(501); # invalid request
 	    
 	}
 
-	return decode_utf8(encode_json $response_ref);
+	$self->render( text => decode_utf8(encode_json $response_ref) );
     }
         
     return;
@@ -137,14 +137,14 @@ sub core_get_services {
 	};
 	
 	if ($suppressresponsecodes){
-	    $self->header_add('Status' => 200); # ok
+	    $self->res->code(200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 422); # invalid request
+	    $self->res->code(422); # invalid request
 	    
 	}
 
-	return decode_utf8(encode_json $response_ref);
+	$self->render( text => decode_utf8(encode_json $response_ref) );
     }
         
     return;
@@ -185,14 +185,14 @@ sub core_post_services {
 	};
 	
 	if ($suppressresponsecodes){
-	    $self->header_add('Status' => 200); # ok
+	    $self->res->code(200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 422); # invalid request
+	    $self->res->code(422); # invalid request
 	    
 	}
 
-	return decode_utf8(encode_json $response_ref);
+	$self->render( text => decode_utf8(encode_json $response_ref) );
     }
         
     return;
@@ -243,13 +243,14 @@ sub patron {
 	};
 	
 	if ($suppressresponsecodes){
-	    $self->header_add('Status' => 200); # ok
+	    $self->res->code(200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 403); # forbidden
+	    $self->res->code(403); # forbidden
 	}
 
-	return decode_utf8(encode_json $response_ref);
+	$self->render( text => decode_utf8(encode_json $response_ref) );
+	return;
     }
 
     my $ua = LWP::UserAgent->new();
@@ -276,14 +277,15 @@ sub patron {
 	};
 	
 	if ($suppressresponsecodes){
-	    $self->header_add('Status' => 200); # ok
+	    $self->res->code(200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 422); # invalid request
+	    $self->res->code(422); # invalid request
 	    
 	}
 
-	return decode_utf8(encode_json $response_ref);
+	$self->render( text => decode_utf8(encode_json $response_ref) );
+	return;
     }
 
     $self->header_add('X-Accepted-OAuth-Scopes' => 'read_patron');
@@ -363,13 +365,14 @@ sub logout {
 	};
 	
 	if ($suppressresponsecodes){
-	    $self->header_add('Status' => 200); # ok
+	    $self->res->code(200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 403); # forbidden
+	    $self->res->code(403); # forbidden
 	}
 
-	return decode_utf8(encode_json $response_ref);
+	$self->render( text => decode_utf8(encode_json $response_ref) );
+	return;
     }    
     else {    
 	$valid_paia->delete;
@@ -431,14 +434,14 @@ sub login {
 	};
 	
 	if ($suppressresponsecodes){
-	    $self->header_add('Status' => 200); # ok
+	    $self->res->code(200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 422); # invalid request
-	    
+	    $self->res->code(422); # invalid request	    
 	}
 
-	return decode_utf8(encode_json $response_ref);
+	$self->render( text => decode_utf8(encode_json $response_ref) );
+	return;
     }    
 
     $logger->debug("Authenticate info via USB Authentication-Service");
@@ -466,14 +469,15 @@ sub login {
 	};
 	
 	if ($suppressresponsecodes){
-	    $self->header_add('Status' => 200); # ok
+	    $self->res->code(200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 422); # invalid request
+	    $self->res->code(422); # invalid request
 	    
 	}
 
-	return decode_utf8(encode_json $response_ref);
+	$self->render( text => decode_utf8(encode_json $response_ref) );
+	return;
     }
 
     $logger->debug($response->content);
@@ -546,10 +550,10 @@ sub login {
 	};
 	
 	if ($suppressresponsecodes){
-	    $self->header_add('Status' => 200); # ok
+	    $self->res->code(200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 403); # forbidden
+	    $self->res->code(403); # forbidden
 	}
     }
     
@@ -569,7 +573,7 @@ sub login {
     
     $logger->debug("Returnvalue: ".$returnvalue);
     
-    return $returnvalue;
+    $self->render( text => $returnvalue );
 }
 
 sub update_patron { # to be implemented
@@ -591,9 +595,9 @@ sub update_patron { # to be implemented
     };
     
     
-    $self->header_add('Status' => 501); 
+    $self->res->code(501); 
 
-    return decode_utf8(encode_json $response_ref);
+    $self->render( text => decode_utf8(encode_json $response_ref) );
 }
 
 sub items {
@@ -639,13 +643,14 @@ sub items {
 	};
 	
 	if ($suppressresponsecodes){
-	    $self->header_add('Status' => 200); # ok
+	    $self->res->code(200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 403); # forbidden
+	    $self->res->code(403); # forbidden
 	}
 
-	return decode_utf8(encode_json $response_ref);
+	$self->render( text => decode_utf8(encode_json $response_ref) );
+	return;
     }    
 
 
@@ -732,13 +737,14 @@ sub fees {  # to be implemented
 	};
 	
 	if ($suppressresponsecodes){
-	    $self->header_add('Status' => 200); # ok
+	    $self->res->code(200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 403); # forbidden
+	    $self->res->code(403); # forbidden
 	}
 
-	return decode_utf8(encode_json $response_ref);
+	$self->render( text => decode_utf8(encode_json $response_ref) );
+	return;
     }    
 
 
@@ -791,9 +797,9 @@ sub notifications {  # to be implemented
     };
     
     
-    $self->header_add('Status' => 501); 
+    $self->res->code(501); 
 
-    return decode_utf8(encode_json $response_ref);
+    $self->render( text => decode_utf8(encode_json $response_ref) );
 }
 
 # order or reservation
@@ -840,13 +846,14 @@ sub request {
 	};
 	
 	if ($suppressresponsecodes){
-	    $self->header_add('Status' => 200); # ok
+	    $self->res->code(200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 403); # forbidden
+	    $self->res->code(403); # forbidden
 	}
 
-	return decode_utf8(encode_json $response_ref);
+	$self->render( text => decode_utf8(encode_json $response_ref) );
+	return;
     }    
 
     my $json_input=$self->read_json_input();
@@ -867,13 +874,14 @@ sub request {
 		"error_description" => "Malformed request",
 	};
 	if ($suppressresponsecodes){
-	    $self->header_add('Status' => 200); # ok
+	    $self->res->code(200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 400); # malformed
+	    $self->res->code(400); # malformed
 	}
 
-	return decode_utf8(encode_json $response_ref);
+	$self->render( text => decode_utf8(encode_json $response_ref) );
+	return;
     }
 
     my $titles_ref = [];
@@ -953,13 +961,14 @@ sub request {
 			    };
 			    
 			    if ($suppressresponsecodes){
-				$self->header_add('Status' => 200); # ok
+				$self->res->code(200); # ok
 			    }
 			    else {
-				$self->header_add('Status' => 403); # forbidden
+				$self->res->code(403); # forbidden
 			    }
 			    
-			    return decode_utf8(encode_json $response_ref);
+			    $self->render( text => decode_utf8(encode_json $response_ref) );
+			    return;
 			}
 		    }
 		}	
@@ -972,13 +981,14 @@ sub request {
 		    };
 		    
 		    if ($suppressresponsecodes){
-			$self->header_add('Status' => 200); # ok
+			$self->res->code(200); # ok
 		    }
 		    else {
-			$self->header_add('Status' => 403); # forbidden
+			$self->res->code(403); # forbidden
 		    }
 		    
-		    return decode_utf8(encode_json $response_ref);
+		    $self->render( text => decode_utf8(encode_json $response_ref) );
+		    return;
 		}
 		else {
 		    # more then one location and without confirm request
@@ -1050,13 +1060,14 @@ sub request {
 			    };
 			    
 			    if ($suppressresponsecodes){
-				$self->header_add('Status' => 200); # ok
+				$self->res->code(200); # ok
 			    }
 			    else {
-				$self->header_add('Status' => 403); # forbidden
+				$self->res->code(403); # forbidden
 			    }
 			    
-			    return decode_utf8(encode_json $response_ref);
+			    $self->render( text => decode_utf8(encode_json $response_ref) );
+			    return;
 			}
 		    }
 		    else {
@@ -1114,15 +1125,15 @@ sub request {
 	$returnvalue = encode_json $response_ref;    
 
 	if ($suppressresponsecodes){
-	    $self->header_add('Status' => 200); # ok
+	    $self->res->code(200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 400); # malformed
+	    $self->res->code(400); # malformed
 	}
     }
     $logger->debug("Returnvalue: ".$returnvalue);
     
-    return $returnvalue;
+    $self->render( text => $returnvalue);
 }
 
 sub renew {  # to be implemented
@@ -1144,9 +1155,9 @@ sub renew {  # to be implemented
     };
     
     
-    $self->header_add('Status' => 501); 
+    $self->res->code(501); 
 
-    return decode_utf8(encode_json $response_ref);
+    $self->render( text => decode_utf8(encode_json $response_ref) );
 }
 
 sub cancel {  # to be implemented
@@ -1168,9 +1179,9 @@ sub cancel {  # to be implemented
     };
     
     
-    $self->header_add('Status' => 501); 
+    $self->res->code(501); 
 
-    return decode_utf8(encode_json $response_ref);
+    $self->render( text => decode_utf8(encode_json $response_ref) );
 }
 
 sub user_has_valid_token {

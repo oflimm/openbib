@@ -334,7 +334,7 @@ sub create_record {
         my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{searchprofiles_loc}/id/$profileid/edit";
 
         # TODO Get?
-        $self->header_add('Content-Type' => 'text/html');
+        $self->res->headers->content_type('text/html');
         $self->redirect($new_location);
     }
     else {
@@ -423,7 +423,7 @@ sub return_baseurl {
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{searchprofiles_loc}.html?l=$lang";
 
     # TODO Get?
-    $self->header_add('Content-Type' => 'text/html');
+    $self->res->headers->content_type('text/html');
     return $self->redirect($new_location);
 }
 

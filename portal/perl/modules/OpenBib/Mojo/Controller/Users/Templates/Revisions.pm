@@ -100,7 +100,7 @@ sub revert_record {
     $config->update_template($input_data_ref);
 
     if ($self->stash('representation') eq "html"){
-        $self->header_add('Content-Type' => 'text/html');
+        $self->res->headers->content_type('text/html');
         
         if ($user->is_admin){ 
             return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{templates_loc}");
@@ -112,7 +112,7 @@ sub revert_record {
     else {
         $logger->debug("Weiter zum Record");
         $logger->debug("Weiter zur ID $templateid");
-        $self->header_add('Content-Type' => 'text/html');
+        $self->res->headers->content_type('text/html');
 
         return $self->redirect("$path_prefix/$config->{templates_loc}/id/$templateid");
     }
@@ -148,7 +148,7 @@ sub delete_record {
 
     return unless ($self->stash('representation') eq "html");
     
-    $self->header_add('Content-Type' => 'text/html');
+    $self->res->headers->content_type('text/html');
     
     if ($user->is_admin){
         

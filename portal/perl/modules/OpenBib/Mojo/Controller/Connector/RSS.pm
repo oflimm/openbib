@@ -255,7 +255,7 @@ sub show {
             
             $itemtemplate->process($itemtemplatename, $ttdata) || do {
                 $logger->error($itemtemplate->error());
-                $self->header_add('Status',400); # server error
+                $self->res->code(400); # server error
                 return;
             };
             
@@ -283,7 +283,7 @@ sub show {
         $logger->debug("Verwende Eintrag aus RSS-Cache");
     }
 
-    $self->header_add('Content-Type' => 'application/xml');
+    $self->res->headers->content_type('application/xml');
 
     # Aufruf des Feeds loggen
     $session->log_event({
@@ -291,7 +291,7 @@ sub show {
         content   => "$database:$type:$subtype",
     });
 
-    return $rss_content;
+    $self->render( text => $rss_content);
 
 }
 

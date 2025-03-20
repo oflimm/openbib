@@ -237,7 +237,7 @@ sub show {
 
             $logger->debug( "Template-Output: " . $content );
 
-            return $content;
+	    $self->render( text => $content );
         }
         else {
         }

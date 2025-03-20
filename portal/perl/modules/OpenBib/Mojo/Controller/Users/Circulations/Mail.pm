@@ -582,7 +582,7 @@ sub mail_handset {
 
     $maintemplate->process($config->{tt_users_circulations_mail_handset_mail_body_tname}, $ttdata ) || do { 
         $logger->error($maintemplate->error());
-        $self->header_add('Status',400); # server error
+        $self->res->code(400); # server error
         return;
     };
 
@@ -720,7 +720,7 @@ sub mail_kmb {
 
     $maintemplate->process($config->{tt_users_circulations_mail_kmb_mail_body_tname}, $ttdata ) || do { 
         $logger->error($maintemplate->error());
-        $self->header_add('Status',400); # server error
+        $self->res->code(400); # server error
         return;
     };
 
@@ -864,7 +864,7 @@ sub mail_testothek {
 
     $maintemplate->process($config->{tt_users_circulations_mail_testothek_mail_body_tname}, $ttdata ) || do { 
         $logger->error($maintemplate->error());
-        $self->header_add('Status',400); # server error
+        $self->res->code(400); # server error
         return;
     };
 
@@ -1001,7 +1001,7 @@ sub mail_default {
 
     $maintemplate->process($config->{tt_users_circulations_mail_default_mail_body_tname}, $ttdata ) || do { 
         $logger->error($maintemplate->error());
-        $self->header_add('Status',400); # server error
+        $self->res->code(400); # server error
         return;
     };
 

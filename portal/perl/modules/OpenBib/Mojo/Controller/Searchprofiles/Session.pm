@@ -148,7 +148,7 @@ sub update_collection {
     my $new_location = "$path_prefix/$config->{searchforms_loc}/session.html?l=$lang";
 
     # TODO GET?
-    $self->header_add('Content-Type' => 'text/html');
+    $self->res->headers->content_type('text/html');
     $self->redirect($new_location);
 
     return;

@@ -160,7 +160,7 @@ sub update_record {
     $config->update_template($input_data_ref);
 
     if ($self->stash('representation') eq "html"){
-        $self->header_add('Content-Type','text/html');
+        $self->res->headers->content_type('text/html');
 
         if ($user->is_admin){ 
             return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{templates_loc}");

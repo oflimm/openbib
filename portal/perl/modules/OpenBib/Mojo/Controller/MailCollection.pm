@@ -156,7 +156,7 @@ sub show {
 
     $datatemplate->process($datatemplatename, $ttdata) || do {
         $logger->error($datatemplate->error());
-        $self->header_add('Status',400); # server error
+        $self->res->code(400); # server error
         return;
     };
   
@@ -183,7 +183,7 @@ sub show {
 
     $maintemplate->process($config->{tt_mailcollection_mail_main_tname}, $mainttdata ) || do { 
         $logger->error($maintemplate->error());
-        $self->header_add('Status',400); # server error
+        $self->res->code(400); # server error
         return;
     };
 

@@ -243,7 +243,7 @@ sub mail_confirmation {
     
     $maintemplate->process($templatename, $mainttdata ) || do { 
         $logger->error($maintemplate->error());
-        $self->header_add('Status','400'); # Server Error
+        $self->res->code('400'); # Server Error
         return;
     };
 

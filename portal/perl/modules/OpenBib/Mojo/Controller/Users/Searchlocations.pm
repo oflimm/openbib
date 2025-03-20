@@ -275,7 +275,7 @@ sub return_baseurl {
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{preferences_loc}.html?l=$lang";
 
     # TODO Get?
-    $self->header_add('Content-Type' => 'text/html');
+    $self->res->headers->content_type('text/html');
     return $self->redirect($new_location);
 }
 

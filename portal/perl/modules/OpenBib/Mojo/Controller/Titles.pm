@@ -540,7 +540,7 @@ sub redirect_to_bibsonomy {
         });
 
         # TODO GET?
-        $self->header_add('Content-Type' => 'text/html; charset=UTF-8');
+        $self->res->headers->content_type('text/html; charset=UTF-8');
         return $self->redirect($bibsonomy_url);
     }
     else {

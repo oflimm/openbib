@@ -83,7 +83,8 @@ sub show {
     my $exact = $r->param('exact') || '';
     
     if (!$word || $word=~/\d/){
-        $self->header_add('Status',200); # ok
+        $self->res->code(200); # ok
+	$self->render( text => '');
         return;
     }
 
@@ -161,7 +162,7 @@ sub show {
 
     $itemtemplate->process($templatename, $ttdata) || do {
         $logger->error("Process error for resultitem: ".$itemtemplate->error());
-        $self->header_add('Status',400); # server error
+        $self->res->code(400); # server error
         return;
     };
 
@@ -214,10 +215,10 @@ sub show {
 
     $logger->debug("LiveSearch for word $word and type $type");
     
-    $self->header_add('Content-Type',"text/plain");
+    $self->res->headers->content_type("text/plain");
     
     if (@livesearch_suggestions){
-        return join("\n",map {decode_utf8($_)} @livesearch_suggestions);
+        $self->render( text => join("\n",map {decode_utf8($_)} @livesearch_suggestions));
     }
     else {
         $logger->debug("No suggestions");

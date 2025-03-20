@@ -94,7 +94,7 @@ sub show_collection {
     }
 
     unless ($database_in_view || $user->is_admin){
-        $self->header_add('Status' => 404); # NOT_FOUND
+        $self->res->code(404); # NOT_FOUND
         return;
     }
     
@@ -191,7 +191,7 @@ sub show_record {
     }
 
     unless ($database_in_view || $user->is_admin){
-        $self->header_add('Status' => 404); # NOT_FOUND
+        $self->res->code(404); # NOT_FOUND
         return;
     }
     

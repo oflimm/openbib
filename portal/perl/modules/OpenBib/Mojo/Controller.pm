@@ -285,7 +285,7 @@ sub print_json {
     my $config         = $self->stash('config');
 
     # Dann Ausgabe des neuen Headers
-    $self->header_add('Content-Type' => 'application/json');
+    $self->res->headers->content_type('application/json');
 
     #if ($logger->is_debug()){
     #    $logger->debug(YAML::Dump($json_ref))
@@ -328,7 +328,7 @@ sub print_page {
 
     if (!$config->view_is_active($view)){
 	$logger->error("View $view doesn't exist");	
-	$self->header_add('Status' => 404); # Not found
+	$self->res->code(404); # Not found
         return;
     }
     
@@ -353,8 +353,8 @@ sub print_page {
     
     # Location- und Content-Location-Header setzen    
    # $self->header_type('header');
-    $self->header_add('Status' => $status) if ($status);
-    $self->header_add('Content-Type' => $content_type) if ($content_type);
+    $self->res->code($status) if ($status);
+    $self->res->headers->content_type($content_type) if ($content_type);
     $self->header_add('Content-Location' => $location) if ($location);
 
 
@@ -1287,7 +1287,7 @@ sub print_authorization_error {
     }
     else {
         $logger->debug("Authorization error");
-        $self->header_add('Status' => 403); # FORBIDDEN
+        $self->res->code(403); # FORBIDDEN
         return;
     }
 }
@@ -1435,173 +1435,6 @@ sub tunnel_through_authenticator {
     my $new_location = "$path_prefix/$config->{login_loc}?authenticatorid=$authenticatorid;redirect_to=$redirect_uri";
     
     return $self->redirect($new_location,303);
-}
-
-sub set_cookieXX {
-    my ($self,$name,$value)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = $self->stash('config');
-
-    if (!($name || $value)){
-        $logger->debug("Invalid cookie parameters for cookie: $name / value: $value");
-        return;
-    }   
-
-    $logger->debug("Adding cookie $name to $value");
-    
-    my $cookie = CGI::Cookie->new(
-        -name    => $name,
-        -value   => $value,
-        -expires => '+24h',
-        -path    => $config->{base_loc},
-	-httponly => 1,
-    );
-    
-    my $cookie_string = $cookie->as_string();
-     
-    $self->header_add('Set-Cookie', $cookie_string) if ($cookie_string);
-    
-    return;
-}
-
-
-# return a 2 element array modeling the first PSGI redirect values: status code and arrayref of header pairs
-sub _send_psgi_headersXX {
-	my $self = shift;
-	my $q    = $self->query;
-	my $type = $self->header_type;
-
-        # Log4perl logger erzeugen
-        my $logger = get_logger();
-
-        #if ($logger->is_debug){
-        #    $logger->debug("Query-Object: ".ref($q));
-        #    $logger->debug("Type: $type - ".YAML::Dump($self->header_props));
-        #}
-        
-    return
-        $type eq 'redirect' ? $q->psgi_redirect( $self->header_props )
-      : $type eq 'header'   ? $q->psgi_header  ( $self->header_props )
-      : $type eq 'none'     ? ''
-      : $logger->error( "Invalid header_type '$type'");
-
-}
-
-# Umdefinition von SUPER::run, damit diese Methode um Code-Refs fuer PSGI erweitert wird
-# vgl. https://github.com/markstos/CGI--Application/blob/master/lib/CGI/Application.pm#L201
-
-sub run {
-    my $self = shift;
-    my $q = $self->query();
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $rm_param = $self->mode_param();
-    
-    my $rm = $self->__get_runmode($rm_param);
-    
-    # Set get_current_runmode() for access by user later
-    $self->{__CURRENT_RUNMODE} = $rm;
-    
-    # Allow prerun_mode to be changed
-    delete($self->{__PRERUN_MODE_LOCKED});
-    
-    # Call PRE-RUN hook, now that we know the run mode
-    # This hook can be used to provide run mode specific behaviors
-    # before the run mode actually runs.
-    $self->call_hook('prerun', $rm);
-    
-    # Lock prerun_mode from being changed after cgiapp_prerun()
-    $self->{__PRERUN_MODE_LOCKED} = 1;
-    
-    # If prerun_mode has been set, use it!
-    my $prerun_mode = $self->prerun_mode();
-    if (length($prerun_mode)) {
-        $rm = $prerun_mode;
-        $self->{__CURRENT_RUNMODE} = $rm;
-    }
-
-    $logger->debug("pre body");    
-
-
-    # Process run mode!
-    my $body = $self->__get_body($rm);
-
-    # Support scalar-ref for body return
-    $body = $$body if ref $body eq 'SCALAR';
-
-    # Call cgiapp_postrun() hook
-    $self->call_hook('postrun', \$body);
-    
-    my $return_value;
-    if ($self->{__IS_PSGI}) {
-        my ($status, $headers) = $self->send_psgi_headers();
-        
-        if (ref($body) eq 'GLOB' || (Scalar::Util::blessed($body) && $body->can('getline'))) {
-            # body a file handle - return it
-            $return_value = [ $status, $headers, $body];
-        }
-        elsif (ref($body) eq 'CODE') {
-            
-            # body is a subref, or an explicit callback method is set
-            $return_value = $body;
-        }
-        else {
-            
-            $return_value = [ $status, $headers, [ $body ]];
-        }
-    }
-    else {
-        # Set up HTTP headers non-PSGI responses
-        my $headers = $self->_send_headers();
-        
-        # Build up total output
-        $return_value  = $headers.$body;
-        print $return_value unless $ENV{CGI_APP_RETURN_ONLY};
-    }
-    
-    # clean up operations
-    $self->call_hook('teardown');
-    
-    return $return_value;
-}
-
-sub send_psgi_headers {
-    my $self = shift;
-
-    return $self->_send_psgi_headers();
-}
-
-sub teardown {
-    my $self = shift;
-
-    # Disconnect from Systemdb
-
-    my $queryoptions = $self->stash('qopts');
-    if (defined $queryoptions){
-        $queryoptions->DESTROY;
-    }
-    
-    my $session = $self->stash('session');
-    if (defined $session){
-        $session->DESTROY;
-    }
-    
-    my $user = $self->stash('user');
-    if (defined $user){
-        $user->DESTROY;
-    }
-    
-    my $config = $self->stash('config');
-    if (defined $config){
-        $config->DESTROY;
-    }
-    
-    return;
 }
 
 # de/encode_id corresponds to OpenBib::Record::get_encoded_id, so keep encoding/decoding mechanism in these methods synchronized!
@@ -1754,7 +1587,7 @@ sub verify_gpg_data {
 sub header_add {
     my ($self,$header,$value) = @_;
     if ($header =~/status/i){
-	$self->res->headers->status($value);
+	$self->res->code($value);
     }
     else {
 	$self->res->headers->header($header, $value);

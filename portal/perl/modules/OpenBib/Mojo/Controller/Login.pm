@@ -256,7 +256,7 @@ sub authenticate {
 	    $logger->debug("Redirecting to $redirecturl");
 	    
 	    # TODO GET?
-	    $self->header_add('Content-Type' => 'text/html');
+	    $self->res->headers->content_type('text/html');
 	    return $self->redirect($redirecturl);
 	}
 	else {
@@ -403,6 +403,7 @@ sub authenticate {
     
     # Wenn Return_url existiert, dann wird dorthin gesprungen
     if ($redirect_to){
+	$logger->debug("Redirect to: $redirect_to");
 	# Resource finger URL -> replace me with userid
 	if ($redirect_to=~m{/users/id/me}){
 	    $redirect_to=~s{/users/id/me}{/users/id/$userid};
@@ -410,6 +411,7 @@ sub authenticate {
 	# Hashed escapen
 	$redirect_to=~s{#}{%23}g;
         $redirecturl=$redirect_to;
+	$logger->debug("Processed redirect to: $redirect_to");
     }
     
     # Fehlerbehandlung
@@ -429,7 +431,7 @@ sub authenticate {
         $logger->debug("Authentication success: Redirecting to $redirecturl");
 
         # TODO GET?
-        $self->header_add('Content-Type' => 'text/html');
+        $self->res->headers->content_type('text/html');
         return $self->redirect($redirecturl);
     }
     else {

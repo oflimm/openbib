@@ -372,7 +372,7 @@ sub delete_record {
             my $new_location = $r->param('redirect_to');
 
             # TODO: Get?
-            $self->header_add('Content-Type','text/html');
+            $self->res->headers->content_type('text/html');
             $self->redirect($new_location);
         }
         else {

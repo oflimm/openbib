@@ -247,7 +247,7 @@ sub create_record {
 
     $maintemplate->process($config->{tt_users_circulations_suggestions_mail_body_tname}, $ttdata ) || do { 
         $logger->error($maintemplate->error());
-        $self->header_add('Status',400); # server error
+        $self->res->code(400); # server error
         return;
     };
 

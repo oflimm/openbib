@@ -108,9 +108,9 @@ sub show {
 
                                     );
 
-    $self->header_add('Content-Type' => 'image/png');
+    $self->res->headers->content_type('image/png');
 
-    return $code->plot->png;
+    $self->render( data => $code->plot->png );
 }
 
 1;

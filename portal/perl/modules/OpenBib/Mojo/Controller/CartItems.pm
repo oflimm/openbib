@@ -196,7 +196,7 @@ sub show_collection_count {
     my $anzahl = $self->get_number_of_items_in_collection();
     
     # Start der Ausgabe mit korrektem Header
-    $self->header_add('Content-Type','text/plain');
+    $self->res->headers->content_type('text/plain');
 
     return $anzahl;
 }

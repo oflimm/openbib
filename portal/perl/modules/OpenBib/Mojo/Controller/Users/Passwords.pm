@@ -242,7 +242,7 @@ sub create_token {
     
     $maintemplate->process($templatename, $mainttdata ) || do {
         $logger->error($maintemplate->error());
-        $self->header_add('Status',400); # Server Error
+        $self->res->code(400); # Server Error
         return;
     };
         
@@ -265,7 +265,7 @@ sub create_token {
     
     if ($self->stash('representation') eq "html"){
 	# TODO GET?
-	$self->header_add('Content-Type' => 'text/html');
+	$self->res->headers->content_type('text/html');
 	return $self->print_page($templatename,$ttdata);
     }
     else {
@@ -581,7 +581,7 @@ sub reset_password_default {
     
     $maintemplate->process($templatename, $mainttdata ) || do {
         $logger->error($maintemplate->error());
-        $self->header_add('Status',400); # Server Error
+        $self->res->code(400); # Server Error
         return;
     };
         
@@ -607,7 +607,7 @@ sub reset_password_default {
     
     if ($self->stash('representation') eq "html"){
 	# TODO GET?
-	$self->header_add('Content-Type' => 'text/html');
+	$self->res->headers->content_type('text/html');
 	return $self->print_page($templatename,$ttdata);
     }
     else {

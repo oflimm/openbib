@@ -116,13 +116,14 @@ sub show {
         $logger->debug("Found corrections for $word in language $aspell_language: ".join(',',@aspell_suggestions));
     }
 
-    $self->header_add('Content-Type','text/plain');
+    $self->res->headers->content_type('text/plain');
     
     if (@aspell_suggestions){
-        return join("\n",map {decode_utf8($_)} @aspell_suggestions);
+        $self->render( text => join("\n",map {decode_utf8($_)} @aspell_suggestions));
     }
     else {
         $logger->debug("Found $word in dictionary or no suggestions");
+	$self->render( text => '');
     }
 
     return;

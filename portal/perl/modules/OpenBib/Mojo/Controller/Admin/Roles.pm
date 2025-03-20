@@ -306,7 +306,7 @@ sub delete_record {
     #TODO GET?
     return unless ($self->stash('representation') eq "html");
 
-    $self->header_add('Content-Type' => 'text/html');
+    $self->res->headers->content_type('text/html');
 
     return $self->redirect("$path_prefix/$config->{roles_loc}");
 }

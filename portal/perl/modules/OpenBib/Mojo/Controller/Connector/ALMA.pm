@@ -80,7 +80,7 @@ sub create_record {
 
     unless ( $self->check_signature({ signature => $signature, body => $body })) {
     	$logger->error("No Challenge secret given");
-    	$self->header_add( 'Status', 401 );    # Invalid Signature
+    	$self->res->code( 401 );    # Invalid Signature
     	return encode_json({ errorMessage => 'Invalid Signature'});
     }
     
@@ -119,7 +119,7 @@ sub challenge {
 
     unless ( $challenge_secret ) {
 	$logger->error("No Challenge secret given");
-	$self->header_add( 'Status', 406 );    # not acceptable
+	$self->res->code( 406 );    # not acceptable
 	return;
     }
     

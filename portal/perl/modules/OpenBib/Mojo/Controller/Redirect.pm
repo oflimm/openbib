@@ -82,7 +82,7 @@ sub show {
     }
 
     if ($referer_host ne $servername){
-	$self->header_add('Status' => 403); # 403 FORBIDDEN
+	$self->res->code(403); # 403 FORBIDDEN
         return;
     }
     
@@ -122,7 +122,7 @@ sub show {
         });
 
         # TODO GET?
-        $self->header_add('Content-Type' => 'text/html');
+        $self->res->headers->content_type('text/html');
         $self->redirect($url);
 
         return;

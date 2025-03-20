@@ -352,7 +352,7 @@ sub mail_collection_send {
     
     $datatemplate->process($datatemplatename, $ttdata, undef, {binmode => ':utf8'}) || do {
         $logger->error($datatemplate->error());
-        $self->header_add('Status',400); # server error
+        $self->res->code(400); # server error
         return;
     };
   
@@ -422,7 +422,7 @@ sub return_baseurl {
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{cartitems_loc}.html?l=$lang";
 
     # TODO GET?
-    $self->header_add('Content-Type' => 'text/html');
+    $self->res->headers->content_type('text/html');
     $self->redirect($new_location);
 
     return;

@@ -321,7 +321,7 @@ sub return_baseurl {
     my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/reviews.html";
 
     # TODO GET?
-    $self->header_add('Content-Type' => 'text/html');
+    $self->res->headers->content_type('text/html');
     $self->redirect($new_location);
 
     return;

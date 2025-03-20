@@ -380,7 +380,7 @@ sub create_record {
         my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{titles_loc}/database/$input_data_ref->{dbname}/id/$input_data_ref->{titleid}.html?l=$lang;no_log=1";
 
         # TODO Get?
-        $self->header_add('Content-Type' => 'text/html');
+        $self->res->headers->content_type('text/html');
         $self->redirect($new_location);
     }
     
@@ -436,7 +436,7 @@ sub delete_record {
     my $new_location = "$path_prefix/$config->{users_loc}/id/$userid/$config->{titles_loc}/database/$database/id/$titleid.html?l=$lang;no_log=1";
 
     # TODO Get?
-    $self->header_add('Content-Type' => 'text/html');
+    $self->res->headers->content_type('text/html');
     return $self->redirect($new_location);
 }
 
@@ -454,7 +454,7 @@ sub return_baseurl {
     my $new_location = "$path_prefix/$config->{users_loc}/id/$user->{ID}/$config->{tags_loc}/names.html";
 
     # TODO Get?
-    $self->header_add('Content-Type' => 'text/html');
+    $self->res->headers->content_type('text/html');
     return $self->redirect($new_location);
 }
 

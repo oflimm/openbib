@@ -347,7 +347,7 @@ sub show_search_header {
         
     $starttemplate->process($starttemplatename, $startttdata) || do {
         $logger->error($starttemplate->error());
-        $self->header_add('Status',400); # Server error
+        $self->res->code(400); # Server error
         return;
     };
 
@@ -486,7 +486,7 @@ sub show_search_footer {
     
     $endtemplate->process($endtemplatename, $endttdata) || do {
         $logger->error($endtemplate->error());
-        $self->header_add('Status',400); # server error
+        $self->res->code(400); # server error
         return;
     };
 
@@ -1221,7 +1221,7 @@ sub print_resultitem {
     
     $itemtemplate->process($templatename, $ttdata) || do {
         $logger->error("Process error for resultitem: ".$itemtemplate->error());
-        $self->header_add('Status',400); # server error
+        $self->res->code(400); # server error
         return;
     };
 

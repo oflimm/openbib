@@ -75,11 +75,11 @@ sub show {
     binmode STDOUT;
     my $code =  GD::Barcode::Code39->new('*'.$text.'*');
 
-    $self->header_add('Content-Type' => 'image/png');
+    $self->res->headers->content_type('image/png');
 
     return unless ($code);
     
-    return $code->plot( NoText => 1)->png;
+    $self->render( data => $code->plot( NoText => 1)->png );
 }
 
 1;

@@ -102,14 +102,15 @@ sub show {
 	};
 	
 	if ($suppressresponsecodes){
-	    $self->header_add('Status' => 200); # ok
+	    $self->res->code(200); # ok
 	}
 	else {
-	    $self->header_add('Status' => 422); # invalid request
+	    $self->res->code(422); # invalid request
 	    
 	}
 
-	return decode_utf8(encode_json $response_ref);
+	$self->render( text => decode_utf8(encode_json $response_ref));
+	return;
     }    
 
     my @request_ids = ();

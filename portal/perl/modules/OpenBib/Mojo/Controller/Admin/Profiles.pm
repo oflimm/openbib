@@ -316,6 +316,10 @@ sub delete_record {
         return $self->print_warning($msg->maketext("Es existiert kein Profil unter diesem Namen"));
     }
 
+    if ($self->param('confirm')){
+	return $self->confirm_delete_record;
+    }
+
     $config->del_profile($profilename);
 
     return unless ($self->stash('representation') eq "html");

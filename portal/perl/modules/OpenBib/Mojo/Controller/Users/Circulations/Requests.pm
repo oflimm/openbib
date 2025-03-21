@@ -341,6 +341,10 @@ sub delete_record {
         }
     }
 
+    if ($self->param('confirm')){
+	return $self->confirm_delete_record;
+    }
+    
     my ($username,$password,$access_token) = $user->get_credentials();
 
     my $database              = $sessionauthenticator;

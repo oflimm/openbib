@@ -252,6 +252,10 @@ sub delete_record {
         return;
     }
 
+    if ($self->param('confirm')){
+	return $self->confirm_delete_record;
+    }
+    
     $user->wipe_account();
 
     if ($self->stash('representation') eq "html"){

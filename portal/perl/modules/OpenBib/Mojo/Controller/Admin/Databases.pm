@@ -351,6 +351,10 @@ sub delete_record {
         return $self->print_warning($msg->maketext("Es existiert kein Katalog unter diesem Namen"));
     }
 
+    if ($self->param('confirm')){
+	return $self->confirm_delete_record;
+    }
+    
     $logger->debug("Deleting database record $dbname");
     
     $config->del_databaseinfo($dbname);

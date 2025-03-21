@@ -288,6 +288,10 @@ sub delete_record {
         return $self->print_authorization_error();
     }
 
+    if ($self->param('confirm')){
+	return $self->confirm_delete_record;
+    }
+    
     $config->del_cluster({id => $clusterid});
 
     # TODO GET?

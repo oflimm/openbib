@@ -393,6 +393,10 @@ sub delete_record {
         return $self->print_warning($msg->maketext("Es existiert keine Organisationseinheit unter diesem Namen in diesem Profil"));
     }
 
+    if ($self->param('confirm')){
+	return $self->confirm_delete_record;
+    }
+    
     $config->del_orgunit($profilename,$orgunitname);
 
     return unless ($self->stash('representation') eq "html");

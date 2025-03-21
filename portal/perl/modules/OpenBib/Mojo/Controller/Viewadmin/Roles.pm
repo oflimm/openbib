@@ -338,6 +338,10 @@ sub delete_record {
         return $self->print_authorization_error();
     }
 
+    if ($self->param('confirm')){
+	return $self->confirm_delete_record;
+    }
+    
     $config->delete_role($roleid);
 
     #TODO GET?

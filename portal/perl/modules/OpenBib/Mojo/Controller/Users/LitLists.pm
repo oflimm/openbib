@@ -591,6 +591,10 @@ sub delete_record {
         return $self->print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."));
     }
 
+    if ($self->param('confirm')){
+	return $self->confirm_delete_record;
+    }
+    
     $self->stash('userid',$user->{ID});    
 
     $user->del_litlist({ litlistid => $litlistid});

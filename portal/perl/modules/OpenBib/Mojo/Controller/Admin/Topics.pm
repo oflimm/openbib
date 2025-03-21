@@ -312,6 +312,10 @@ sub delete_record {
         return $self->print_authorization_error();
     }
 
+    if ($self->param('confirm')){
+	return $self->confirm_delete_record;
+    }
+    
     $user->del_topic({ id => $topicid });
 
     return unless ($self->stash('representation') eq "html");

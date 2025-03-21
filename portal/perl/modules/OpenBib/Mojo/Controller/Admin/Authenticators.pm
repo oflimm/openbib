@@ -352,6 +352,10 @@ sub delete_record {
 
     $logger->debug("Server: ".$r->get_server_name);
 
+    if ($self->param('confirm')){
+	return $self->confirm_delete_record;
+    }
+
     $config->delete_authenticator($authenticatorid);
 
     return unless ($self->stash('representation') eq "html");

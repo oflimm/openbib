@@ -142,6 +142,10 @@ sub delete_record {
         return $self->print_warning($msg->maketext("Es existiert keine Template-Revision mit dieser ID"));
     }
 
+    if ($self->param('confirm')){
+	return $self->confirm_delete_record;
+    }
+    
     $logger->debug("Deleting revision record $revisionid");
     
     $config->del_templaterevision({ id => $revisionid });

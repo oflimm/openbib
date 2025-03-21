@@ -359,10 +359,12 @@ sub delete_record {
     
     $config->del_databaseinfo($dbname);
 
-    return unless ($self->stash('representation') eq "html");
-    
-    # TODO GET?
-    return $self->redirect("$path_prefix/$config->{databases_loc}");
+    return $self->render( json => { success => 1, id => $dbname }) unless ($self->stash('representation') eq "html");
+
+    $self->res->headers->content_type('text/html');    
+    $self->redirect("$path_prefix/$config->{databases_loc}");
+
+    return;
 }
 
 sub get_input_definition {

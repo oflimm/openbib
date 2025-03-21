@@ -322,8 +322,11 @@ sub delete_record {
     
     $config->delete_locationinfo($locationid);
 
-    # TODO GET?
-    return $self->redirect("$path_prefix/$config->{locations_loc}");
+    return $self->render( json => { success => 1, id => $locationid }) unless ($self->stash('representation') eq "html");
+
+    $self->res->headers->content_type('text/html');    
+    $self->redirect("$path_prefix/$config->{locations_loc}.html");
+    return;
 }
 
 sub get_input_definition {

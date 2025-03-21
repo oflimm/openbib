@@ -240,6 +240,9 @@ sub delete_record {
     
     $user->delete_searchlocation;
 
+    return $self->render( json => { success => 1, id => $userid }) unless ($self->stash('representation') eq "html");
+
+    $self->res->headers->content_type('text/html');                
     return $self->return_baseurl;
 }
 

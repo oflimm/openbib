@@ -283,6 +283,7 @@ sub delete_record {
     # Shared Args
     my $config         = $self->stash('config');
     my $path_prefix    = $self->stash('path_prefix');
+    my $lang           = $self->stash('lang');
 
     if (!$self->authorization_successful('right_delete')){
         return $self->print_authorization_error();
@@ -294,8 +295,12 @@ sub delete_record {
     
     $config->del_cluster({id => $clusterid});
 
-    # TODO GET?
-    return $self->redirect("$path_prefix/$config->{clusters_loc}");
+    return $self->render( json => { success => 1, id => $clusterid }) unless ($self->stash('representation') eq "html");
+
+    $self->res->headers->content_type('text/html');    
+    $self->redirect("$path_prefix/$config->{clusters_loc}.html?l=$lang");
+
+    return;
 }
 
 sub get_input_definition {

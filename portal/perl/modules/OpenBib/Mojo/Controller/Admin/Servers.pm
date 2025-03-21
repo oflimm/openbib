@@ -267,12 +267,12 @@ sub delete_record {
     
     $config->del_server({id => $serverid});
 
-    #TODO GET?
-    return unless ($self->stash('representation') eq "html");
+    return $self->render( json => { success => 1, id => $serverid }) unless ($self->stash('representation') eq "html");
 
-    $self->res->headers->content_type('text/html');
+    $self->res->headers->content_type('text/html');    
+    $self->redirect("$path_prefix/$config->{servers_loc}");
 
-    return $self->redirect("$path_prefix/$config->{servers_loc}");
+    return;
 }
 
 sub get_input_definition {

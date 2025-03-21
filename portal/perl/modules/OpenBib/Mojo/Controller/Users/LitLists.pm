@@ -599,6 +599,9 @@ sub delete_record {
 
     $user->del_litlist({ litlistid => $litlistid});
 
+    return $self->render( json => { success => 1, id => $litlistid }) unless ($self->stash('representation') eq "html");
+
+    $self->res->headers->content_type('text/html');        
     return $self->return_baseurl;
 }
 

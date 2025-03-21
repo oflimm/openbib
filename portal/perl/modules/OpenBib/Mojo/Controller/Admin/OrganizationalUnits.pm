@@ -399,10 +399,12 @@ sub delete_record {
     
     $config->del_orgunit($profilename,$orgunitname);
 
-    return unless ($self->stash('representation') eq "html");
+    return $self->render( json => { success => 1, id => $orgunitname, profileid => $profilename }) unless ($self->stash('representation') eq "html");
 
-    # TODO GET?
-    return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$profilename/edit.html?l=$lang");
+    $self->res->headers->content_type('text/html');    
+    $self->redirect("$path_prefix/$config->{admin_loc}/$config->{profiles_loc}/id/$profilename/edit.html?l=$lang");
+
+    return;
 }
 
 sub get_input_definition {

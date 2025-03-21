@@ -358,10 +358,12 @@ sub delete_record {
 
     $config->delete_authenticator($authenticatorid);
 
-    return unless ($self->stash('representation') eq "html");
+    return $self->render( json => { success => 1, id => $authenticatorid }) unless ($self->stash('representation') eq "html");
 
-    # TODO GET?
-    return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{authenticators_loc}.html?l=$lang");
+    $self->res->headers->content_type('text/html');    
+    $self->redirect("$path_prefix/$config->{admin_loc}/$config->{authenticators_loc}.html?l=$lang");
+
+    return;
 }
 
 sub get_input_definition {

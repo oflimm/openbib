@@ -268,7 +268,7 @@ sub delete_record {
     
     $config->del_template({ id => $templateid });
 
-    return unless ($self->stash('representation') eq "html");
+    return $self->render( json => { success => 1, id => $templateid }) unless ($self->stash('representation') eq "html");
 
     $self->res->headers->content_type('text/html');
     return $self->redirect("$path_prefix/$config->{templates_loc}.html");

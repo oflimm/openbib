@@ -296,6 +296,7 @@ sub delete_record {
     # Shared Args
     my $config         = $self->stash('config');
     my $path_prefix    = $self->stash('path_prefix');
+    my $lang           = $self->stash('lang');
 
     if (!$self->authorization_successful('right_delete')){
         return $self->print_authorization_error();
@@ -307,12 +308,11 @@ sub delete_record {
     
     $config->delete_role($roleid);
 
-    #TODO GET?
-    return unless ($self->stash('representation') eq "html");
+    return $self->render( json => { success => 1, id => $roleid }) unless ($self->stash('representation') eq "html");
 
-    $self->res->headers->content_type('text/html');
-
-    return $self->redirect("$path_prefix/$config->{roles_loc}");
+    $self->res->headers->content_type('text/html');    
+    $self->redirect("$path_prefix/$config->{roles_loc}.html?l=$lang");
+    return;
 }
 
 sub get_input_definition {

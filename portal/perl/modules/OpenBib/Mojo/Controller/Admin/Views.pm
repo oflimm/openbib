@@ -348,9 +348,9 @@ sub delete_record {
     
     $config->del_view($viewname);
 
-    return unless ($self->stash('representation') eq "html");
+    return $self->render( json => { success => 1, id => $viewname }) unless ($self->stash('representation') eq "html");
 
-    # TODO GET?
+    $self->res->headers->content_type('text/html');    
     $self->redirect("$path_prefix/$config->{admin_loc}/$config->{views_loc}.html?l=$lang");
 
     return;

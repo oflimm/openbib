@@ -258,9 +258,10 @@ sub delete_record {
     
     $user->wipe_account();
 
-    if ($self->stash('representation') eq "html"){
-        $self->redirect("$path_prefix/$config->{home_loc}");
-    }
+    return $self->render( json => { success => 1, id => $userid }) unless ($self->stash('representation') eq "html");
+
+    $self->res->headers->content_type('text/html');
+    $self->redirect("$path_prefix/$config->{home_loc}.html");
 
     return;
 }

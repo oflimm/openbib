@@ -344,12 +344,10 @@ sub delete_record {
     
     $config->delete_role($roleid);
 
-    #TODO GET?
-    return unless ($self->stash('representation') eq "html");
+    return $self->render( json => { success => 1, id => $roleid }) unless ($self->stash('representation') eq "html");
 
     $self->res->headers->content_type('text/html');
-
-    return $self->redirect("$path_prefix/$config->{viewadmin_loc}/$config->{roles_loc}");
+    return $self->redirect("$path_prefix/$config->{viewadmin_loc}/$config->{roles_loc}.html");
 }
 
 sub get_input_definition {

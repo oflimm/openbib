@@ -150,12 +150,10 @@ sub delete_record {
     
     $config->del_templaterevision({ id => $revisionid });
 
-    return unless ($self->stash('representation') eq "html");
-    
-    $self->res->headers->content_type('text/html');
-    
-    if ($user->is_admin){
-        
+    return $self->render( json => { success => 1, id => $revisionid }) unless ($self->stash('representation') eq "html");
+
+    $self->res->headers->content_type('text/html');            
+    if ($user->is_admin){        
         return $self->redirect("$path_prefix/$config->{admin_loc}/$config->{templates_loc}/id/${templateid}/edit");
     }
     else {

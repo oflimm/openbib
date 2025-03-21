@@ -322,10 +322,10 @@ sub delete_record {
 
     $config->del_profile($profilename);
 
-    return unless ($self->stash('representation') eq "html");
+    return $self->render( json => { success => 1, id => $profilename }) unless ($self->stash('representation') eq "html");
 
-    # TODO GET?
-    $self->redirect("$path_prefix/$config->{profiles_loc}");
+    $self->res->headers->content_type('text/html');
+    $self->redirect("$path_prefix/$config->{profiles_loc}.html");
 
     return;
 }

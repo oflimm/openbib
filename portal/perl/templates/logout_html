@@ -18,5 +18,5 @@
 
    <p class="lead">[% msg.maketext("Vielen Dank für Ihren Besuch.") %]</p>
 
-   <a class="btn btn-primary mb-2" href="https://[% servername %][% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Weiter") %]</a>
+   <a class="btn btn-primary mb-2" href="[% scheme %]://[% servername %][% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Weiter") %]</a>
 </div>

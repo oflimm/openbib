@@ -128,6 +128,9 @@ sub startup ($app){
         after_build_tx => sub ($tx,$app) {
             weaken $tx;
 
+	    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
+	    # zu verwenden
+	    
             $tx->req->content->on(method => sub {
                 my $req = $tx->req;
 
@@ -172,24 +175,11 @@ sub startup ($app){
 	$logger->debug("Mojo - Format: ".$c->stash('format'));
 	$logger->debug("Mojo - Repraesentation: ".$c->stash('representation'));
 
-	my $method          = ($r->param('_method'))?escape_html($r->param('_method')):'';
-	my $confirm         = ($r->param('confirm'))?escape_html($r->param('confirm')):0;
-    
-	if ($method eq "DELETE" || $r->method eq "DELETE"){
-	    $logger->debug("Deletion shortcut");
-	    
-	    # if ($confirm){
+	# Wenn default_runmode gesetzt, dann ausschliesslich in diesen wechseln
+	if ($c->stash('default_runmode') eq "show_warning"){
+	    return $c->print_warning($c->stash('warning_message'));
+	}        
 		
-	    # 	$c->stash('action',"confirm_delete_record")
-	    # 	    #$c->prerun_mode('confirm_delete_record');
-	    # }
-	    # else {
-	    # 	$c->stash('action',"delete_record")
-	    # 	    #	    $c->routes->continue("#delete_record")	       
-	    # 	    #               $c->prerun_mode('delete_record');
-	    # }
-	}
-	
 	# content_type, representation und lang durch content-Negotiation bestimmen
 	# und ggf. zum konkreten Repraesenations-URI redirecten
 	# Setzt: content_type,represenation,lang
@@ -205,14 +195,20 @@ sub startup ($app){
 	# Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l' oder cookie
 	&alter_negotiated_language($c);
 
-    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-    # zu verwenden
-    	
+	# Wenn dispatch_url, dann Runmode dispatch_to_representation mit externem Redirect	    
+	if ($c->stash('dispatch_url')){
+	    $logger->debug("Dispatching to representation ".$c->stash('dispatch_url'));
+	    $c->res->code(303);
+	    return $c->redirect_to($c->stash('dispatch_url'));
+	}    
+	
 	return $next->();
 
 	       }
 	);
 
+    # $app->hook(after_render => sub ($c,$args){});
+    
     $app->hook(after_render => sub ($c,$output,$format){
 
 	# DB Cleanup
@@ -250,7 +246,10 @@ sub _register_routes {
 
 	if ($method eq "GET"){
 	    if (defined $item->{representations}){
+		# Route zur Repraesentation
 		$routes->get($rule => [ format => $item->{representations} ])->to(controller => $controller, action => $action, dispatch_args => $args );
+		# Route zur Resource
+		$routes->get($rule)->to(controller => $controller, action => $action, dispatch_args => $args );
 	    }
 	    else {
 		$routes->get($rule)->to(controller => $controller, action => $action, dispatch_args => $args );
@@ -268,7 +267,7 @@ sub _register_routes {
     }
 
     # Add Catchall-Route to Homepage
-    $self->routes->any('/portal/*')->to(controller => 'Home', action => 'print_warning' );
+    #$self->routes->any('/portal/*')->to(controller => 'Home', action => 'print_warning' );
     
     return $routes;
 }
@@ -477,7 +476,7 @@ sub _before_dispatch($c){
 	my $do_dispatch = 1;
 	
 	foreach my $allowed_path (@always_allowed_paths){
-	    if ($c->stash('url') =~ m/$allowed_path/){
+	    if ($c->stash('path') =~ m/$allowed_path/){
 		$do_dispatch = 0;
 	    }
 	}
@@ -486,9 +485,10 @@ sub _before_dispatch($c){
 	if ($c->stash('representation') eq "html"){
 	    my $scheme = ($config->get('use_https'))?'https':$c->stash('scheme');
 	    
-	    my $redirect_to = $scheme."://".$c->stash('servername').$c->stash('url');
+#	    my $redirect_to = $scheme."://".$c->stash('servername').$c->stash('path');
+	    my $redirect_to = $c->stash('url');
 	    
-	    my $dispatch_url = $scheme."://".$c->stash('servername').$c->stash('path_prefix')."/".$config->get('login_loc')."?l=".$c->stash('lang')."&redirect_to=".uri_escape($redirect_to);
+	    my $dispatch_url = $scheme."://".$c->stash('servername').$c->stash('path_prefix')."/".$config->get('login_loc').".html?l=".$c->stash('lang')."&redirect_to=".uri_escape($redirect_to);
 	    
 	    $logger->debug("force_login URLs: $redirect_to - ".$c->stash('url')." - ".$dispatch_url);
 	    
@@ -537,30 +537,9 @@ sub _before_dispatch($c){
 	    $c->stash('default_runmode','show_warning');
 	    $c->stash('warning_message',$msg->maketext("Sitzung abgelaufen."));
 	}
-    }
-    
-    
-    # Wenn dispatch_url, dann Runmode dispatch_to_representation mit externem Redirect
-    if ($c->stash('dispatch_url')){
-	$logger->debug("Dispatching to representation ".$c->stash('dispatch_url'));
-	$c->res->code(303);
-	$c->redirect_to($c->stash('dispatch_url'));
-    }
-    
-
-    # Wenn default_runmode gesetzt, dann ausschliesslich in diesen wechseln
-    if ($c->stash('default_runmode')){
-	if (OpenBib::Mojo::Controller->can($c->stash('default_runmode'))){
-	    $c->run_modes(
-		$c->stash('default_runmode')  => $c->stash('default_runmode'),
-		);
-	}
-	else {
-	    $logger->error("Invalid default runmode ".$c->stash('default_runmode'));
-	}
-    }        
-    
-    $logger->debug("Existing _before_dispatch");        
+    }    
+        
+    $logger->debug("Exiting _before_dispatch");        
     
     if ($config->{benchmark}) {
         $btime=new Benchmark;
@@ -583,6 +562,8 @@ sub _before_routes($c) {
     $logger->debug("Mojo - Path: ".$r->url->path);
     $logger->debug("Mojo - Route: ".$c->match);
     #$logger->debug("Mojo - Format: ".$c->stash('format'));
+
+    $logger->debug("Mojo - Exiting _before_routes");
     
     return;
 }
@@ -668,7 +649,9 @@ sub process_uri($c) {
     $c->stash('path',$path);
     $c->stash('scheme',$scheme);
 
-    my $url = $r->url->base;
+    my $url = $r->url;
+
+    $logger->debug("url: $url");
     
     $c->stash('url',$url);
 }
@@ -974,14 +957,16 @@ sub personalize_uri($c) {
     
     # Personalisierte URIs
     if ($args_ref->{'users_loc'}){
-        my $dispatch_url = ""; #$c->param('scheme')."://".$c->param('servername');   
+        my $dispatch_url   = $c->stash('scheme')."://".$c->stash('servername');   
         
         my $user           = $c->stash('user');
         my $config         = $c->stash('config');
         my $path_prefix    = $c->stash('path_prefix');
         my $path           = $c->stash('path');
         my $representation = $c->stash('representation');
-        
+
+	$logger->debug("dispatch_url base: $dispatch_url");
+	
         # Eine Weiterleitung haengt vom angemeldeten Nutzer ab
         # und gilt immer nur fuer Repraesentationen.
         if ($user->{ID} && $representation){
@@ -1011,7 +996,7 @@ sub personalize_uri($c) {
         }   
     }
     elsif ($args_ref->{'admin_loc'}){
-        my $dispatch_url = ""; #$c->stash('scheme')."://".$c->stash('servername');   
+        my $dispatch_url   = $c->stash('scheme')."://".$c->stash('servername');   
         
         my $user           = $c->stash('user');
         my $config         = $c->stash('config');

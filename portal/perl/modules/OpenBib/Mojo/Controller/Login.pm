@@ -92,6 +92,7 @@ sub show_form {
     my $type        = ($r->param('type'))?$r->param('type'):'';
     my $redirect_to = $r->param('redirect_to'); # || "$path_prefix/$config->{searchform_loc}?l=$lang";
 
+    $logger->debug("Redirecting to: $redirect_to");
     
     # Wenn die Session schon authentifiziert ist, dann wird
     # in die Benutzereinstellungen gesprungen

@@ -1009,6 +1009,10 @@ sub parse_valid_input {
 
     my $r     = $self->stash('r');
 
+    $logger->debug("r: ".ref $r);
+    $logger->debug("r Params: ".$r->params);    
+    $logger->debug("c username: ".$self->param('username'));    
+    
     my $valid_input_params_ref = {};
 
     if ($method){
@@ -1069,9 +1073,14 @@ sub parse_valid_input {
             my $encoding  = $valid_input_params_ref->{$param}{encoding};
             my $default   = $valid_input_params_ref->{$param}{default};
 	    my $no_escape = (defined $valid_input_params_ref->{$param}{no_escape})?$valid_input_params_ref->{$param}{no_escape}:0;
-            
+
+	    $logger->debug("Processing parameter $param of type $type");
+	    
 	    if ($type eq "scalar"){
 		my $value = ($r->param($param))?$r->param($param):$default;
+
+		$logger->debug("$param -> $value");
+		
 		unless ($no_escape){
 		    $value = escape_html($value);
 		}

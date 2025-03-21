@@ -39,11 +39,10 @@
 
 <form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded">
 
-[% IF redirect_to %]
-<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
-[% ELSE %]
-<input type="hidden" name="redirect_to" value="[% path_prefix %]/[% config.get("home_loc") %]">
+[% IF NOT redirect_to %]
+[%   redirect_to = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}" %]
 [% END %]
+<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
 
 <p/>
 
@@ -88,11 +87,10 @@
 <div role="tabpanel" class="tab-pane fade-in p-3" id="ob-login_selfreg">
 <form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
 
-[% IF redirect_to %]
-<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
-[% ELSE %]
-<input type="hidden" name="redirect_to" value="[% path_prefix %]/[% config.get("home_loc") %]">
+[% IF NOT redirect_to %]
+[%   redirect_to = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}" %]
 [% END %]
+<input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
 
 [%- FOREACH authenticator IN authenticators -%]
 [%-   IF authenticator.type == 'self' -%]

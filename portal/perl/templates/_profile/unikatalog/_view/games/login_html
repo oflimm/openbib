@@ -12,7 +12,6 @@
 #
 #######################################################################
 -%]
-
 [%
 
   available_authenticators = config.get_authenticators_by_view(view);
@@ -21,8 +20,6 @@
   FOREACH authenticator IN available_authenticators ;
      available_authenticator_types.${authenticator.type} = authenticator.id;
   END;
-
-  redirect_to = "${path_prefix}/home";
   
   #USE dumper;dumper.dump(available_authenticators);dumper.dump(available_authenticator_types);
 %]

@@ -1297,6 +1297,7 @@ sub print_authorization_error {
     else {
         $logger->debug("Authorization error");
         $self->res->code(403); # FORBIDDEN
+	$self->render( json => { error => 1, msg => $msg->maketext("Forbidden") } );
         return;
     }
 }

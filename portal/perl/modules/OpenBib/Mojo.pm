@@ -20,6 +20,7 @@ use HTTP::Negotiate;
 use HTTP::BrowserDetect;
 use JSON::XS;
 use MIME::Base64;
+use Mojo::Util qw(secure_compare);
 use Template;
 use URI::Escape;
 use XML::RSS;
@@ -207,7 +208,7 @@ sub startup ($app){
 	       }
 	);
 
-    # $app->hook(after_render => sub ($c,$args){});
+    # $app->hook(before_render => sub ($c,$args){});
     
     $app->hook(after_render => sub ($c,$output,$format){
 
@@ -1064,19 +1065,14 @@ sub check_http_basic_authentication($c) {
         ($http_authtype) = $r->headers->header('Authorization') =~/^(\S+)\s+/; #  $r->ap_auth_type(); 
     }
     
-    $logger->debug("HTTP Authtype: $http_authtype");
+    $logger->debug("HTTP Authtype: '$http_authtype'");
     
     # Nur wenn konkrete Authentifizierungsinformationen geliefert wurden, wird per shortcut
     # und HTTP Basic Authentication authentifiziert, ansonsten gilt die Cookie based authentication
     if ($http_authtype eq "Basic"){
+        my ($http_user, $password) = $c->req->url->to_abs->userinfo =~m/^([^:]+):(.*)$/;
         
-        my ($status, $http_user, $password) = $r->get_basic_auth_credentials;
-        
-        $logger->debug("get_basic_auth: Status $status");
-        
-        return $status unless $status == 200; # OK
-        
-        $logger->debug("Authentication Shortcut for user $http_user : Status $status / Password: $password");
+        $logger->debug("Authentication Shortcut for user $http_user / Password: XXX");
         
         my $userid   = $user->authenticate_self_user({ username => $http_user, password => $password, viewname => $view });
         

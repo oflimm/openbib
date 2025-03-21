@@ -123,6 +123,22 @@ sub startup ($app){
     #    after_dispatch.
     #
     # see https://docs.mojolicious.org/Mojolicious#HOOKS
+
+    $app->hook(
+        after_build_tx => sub ($tx,$app) {
+            weaken $tx;
+
+            $tx->req->content->on(method => sub {
+                my $req = $tx->req;
+
+		my $method = $req->param('_method');
+
+                if ($method and $method =~ /^(DELETE|PUT)$/) {
+                    $req->method($method);
+                }
+            });
+        }
+    );
     
     $app->hook(before_dispatch => sub ($c){
 	\&_before_dispatch($c)
@@ -151,10 +167,29 @@ sub startup ($app){
 	
 	$logger->debug("Mojo - View: ".$c->param('view'));
 	$logger->debug("Mojo - Path: ".$r->url->path);
+	$logger->debug("Mojo - Method: ".$r->method);
 	$logger->debug("Mojo - Route: ".$c->match);
 	$logger->debug("Mojo - Format: ".$c->stash('format'));
 	$logger->debug("Mojo - Repraesentation: ".$c->stash('representation'));
 
+	my $method          = ($r->param('_method'))?escape_html($r->param('_method')):'';
+	my $confirm         = ($r->param('confirm'))?escape_html($r->param('confirm')):0;
+    
+	if ($method eq "DELETE" || $r->method eq "DELETE"){
+	    $logger->debug("Deletion shortcut");
+	    
+	    # if ($confirm){
+		
+	    # 	$c->stash('action',"confirm_delete_record")
+	    # 	    #$c->prerun_mode('confirm_delete_record');
+	    # }
+	    # else {
+	    # 	$c->stash('action',"delete_record")
+	    # 	    #	    $c->routes->continue("#delete_record")	       
+	    # 	    #               $c->prerun_mode('delete_record');
+	    # }
+	}
+	
 	# content_type, representation und lang durch content-Negotiation bestimmen
 	# und ggf. zum konkreten Repraesenations-URI redirecten
 	# Setzt: content_type,represenation,lang
@@ -169,7 +204,10 @@ sub startup ($app){
 	
 	# Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l' oder cookie
 	&alter_negotiated_language($c);
-	
+
+    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
+    # zu verwenden
+    	
 	return $next->();
 
 	       }
@@ -272,6 +310,7 @@ sub _before_dispatch($c){
     $c->stash('view',$view);    
     $c->stash('config',$config);
     $c->stash('r',$r);
+    $c->stash('lang','de'); # Setting default Language to de
     
     my ($atime,$btime,$timeall)=(0,0,0);
 
@@ -500,25 +539,6 @@ sub _before_dispatch($c){
 	}
     }
     
-
-    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-    # zu verwenden
-    
-    my $method          = ($r->param('_method'))?escape_html($r->param('_method')):'';
-    my $confirm         = ($r->param('confirm'))?escape_html($r->param('confirm')):0;
-    
-    if ($method eq "DELETE" || $r->method eq "DELETE"){
-	$logger->debug("Deletion shortcut");
-	
-	if ($confirm){
-	    $c->routes->continue("#confirm_delete_record")
-		#$c->prerun_mode('confirm_delete_record');
-	}
-	else {
-	    $c->routes->continue("#delete_record")	       
-		#               $c->prerun_mode('delete_record');
-	}
-    }
     
     # Wenn dispatch_url, dann Runmode dispatch_to_representation mit externem Redirect
     if ($c->stash('dispatch_url')){

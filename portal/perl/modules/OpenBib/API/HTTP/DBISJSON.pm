@@ -362,6 +362,9 @@ sub get_titles_record {
     $record->set_field({field => 'T0511', subfield => '', mult => 1, content => $instruction}) if ($instruction);
 
     $record->set_field({field => 'T0510', subfield => '', mult => 1, content => $hints}) if ($hints);
+
+    # Gesamtresponse in dbisjson_source
+    $record->set_field({field => 'dbisjson_source', subfield => '', mult => 1, content => $json_ref});
     
     $record->set_holding([]);
     $record->set_circulation([]);

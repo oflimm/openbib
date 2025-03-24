@@ -350,7 +350,7 @@ sub get_titles_record {
     my $subjects_ref = [];
 
     foreach my $subject_node (@subjects_nodes){
-        push @{$subjects_ref}, $subject_node->textContent;
+        push @{$subjects_ref}, $subject_node->textContent if ($subject_node->findvalue('@collection') ne 'true');
     }
 
     my @keywords_nodes =  $root->findnodes('/dbis_page/details/keywords/keyword');

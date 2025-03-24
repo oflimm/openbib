@@ -1,0 +1,198 @@
+[%-
+  IF container.get('classifications_dbis') ;
+    classifications =  container.get('classifications_dbis');
+  END;
+  
+  denylist_cln = {
+    '39' = 1 # Sport
+    '27' = 1 # Militaerwissenschaft
+    '23' = 1 # Maschinenbau
+    '11' = 1 # Elektrotechnik
+    '42' = 1 # Werkstoffwissenschaften
+    '1' = 1 # Agrar
+    '7' = 1 # Architektur
+  };
+
+  with_status = 0;
+  
+-%]
+
+[% IF dbis_alert %]
+<div class="card mb-3">
+
+<div class="card-header">[% msg.maketext("Eingeschränkte Funktionalität") %]</div>
+<div class="card-body">
+<p>Wegen einer Schnittstellenänderung von DBIS im Zuge eines Relaunchs funktionieren bisherige API-Anfragen von uns nicht mehr korrekt oder liefern unvollständige Informationen.</p>
+
+<p>Wir hoffen, dass DBIS die Probleme bald korrigiert.</p>
+
+<p class="fs-5">Nutzen Sie bitte alternativ <a class="exturl" href="[% config.get('dbis_exturl') %]" target="_blank">DBIS</a> direkt.</p>
+
+</div>
+</div>
+
+[% END %]
+
+<div class="card">
+
+<div class="card-header">[% msg.maketext("Suche nach Datenbanken") %]</div>
+<div class="card-body">
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %]">
+<input type="hidden" name="db"        value="dbisjson" />
+<input type="hidden" name="l"         value="[% lang %]" />
+<input type="hidden" name="sm"        value="seq" />
+<input type="hidden" name="page"      value="1" />
+<input type="hidden" name="num"       value="20" />
+
+[% classification_name = searchquery.get_searchfield('classification').val %]
+
+<div class="form-floating mb-3">
+<input class="form-control" id="dbis_name_fs_[% sidebar_suffix %]" class="fs_field" type="text" name="fs" title="[% msg.maketext("Freie Suche") %]" value="" size="13" maxlength="200" />
+<label for="dbis_name_fs_[% sidebar_suffix %]">[% msg.maketext("Freie Suche") %]</label>
+</div>
+
+<span data-bs-toggle="collapse" data-bs-target="#more_fields" aria-expanded="false" onclick="this.style.display = 'none';">[% msg.maketext("Mehr Suchfelder") %] &gt;&gt;</span>
+
+<div class="collapse p-0" id="more_fields">
+
+<div class="form-floating mb-3 mt-2">
+<input class="form-control" id="dbis_name[% sidebar_suffix %]" class="fs_field" type="text" name="tit" title="[% msg.maketext("Name der Datenbank") %]" value="" size="13" maxlength="200" />
+<label for="dbis_name[% sidebar_suffix %]">[% msg.maketext("Name der Datenbank") %]</label>
+</div>
+
+<div class="form-floating mb-3 mt-2">
+<input class="form-control" id="dbis_name_ftit_[% sidebar_suffix %]" class="fs_field" type="text" name="ftit" title="[% msg.maketext("Titelanfang") %]" value="" size="13" maxlength="200" />
+<label for="dbis_name_ftit_[% sidebar_suffix %]">[% msg.maketext("Titelanfang") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="dbis_name_publ_[% sidebar_suffix %]" class="fs_field" type="text" name="publ" title="[% msg.maketext("Verlag") %]" value="" size="13" maxlength="200" />
+<label for="dbis_name_publ_[% sidebar_suffix %]">[% msg.maketext("Verlag") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="dbis_name_issn_[% sidebar_suffix %]" class="fs_field" type="text" name="subj" title="[% msg.maketext("Schlagwort") %]" value="" size="13" maxlength="200" />
+<label for="dbis_name_subj_[% sidebar_suffix %]">[% msg.maketext("Schlagwort") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="dbis_name_content_[% sidebar_suffix %]" class="fs_field" type="text" name="cnt" title="[% msg.maketext("Inhalt") %]" value="" size="13" maxlength="200" />
+<label for="dbis_name_content_[% sidebar_suffix %]">[% msg.maketext("Inhalt") %]</label>
+</div>
+
+</div>
+
+[% IF with_status %]
+<div class="form-check mt-2">
+  <input class="form-check-input" id="access_green[% sidebar_suffix %]" type="checkbox" title="[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]" name="access_green" value="1" checked="checked" />
+  <label class="form-check-label" for="access_green[% sidebar_suffix %]"><img src="[% config.get('dbis_green_img') %]" alt="green"/>&nbsp;[% msg.maketext("mit frei zugänglichen Volltextartikeln") %]</label>
+</div>
+
+<div class="form-check">
+  <input class="form-check-input" id="access_yellow[% sidebar_suffix %]" type="checkbox" title="[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]" name="access_yellow" value="1" checked="checked" />
+  <label class="form-check-label" for="access_yellow[% sidebar_suffix %]"><img src="[% config.get('dbis_yellow_img') %]" alt="yellow"/>&nbsp;[% msg.maketext("mit Volltextartikeln, die nur im Uni-Netz zugänglich sind") %]</label>
+</div>
+
+<div class="form-check mb-3">
+  <input class="form-check-input" id="access_national[% sidebar_suffix %]" type="checkbox" title="[% msg.maketext("deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)") %]" name="access_national" value="1" checked="checked" />
+  <label class="form-check-label" for="access_national[% sidebar_suffix %]"><img src="[% config.get('dbis_de_img') %]" alt="Nationallizenzen"/>&nbsp;[% msg.maketext("deutschlandweit frei zugänglich (DFG-geförderte Nationallizenz)") %]</label>
+</div>
+[% ELSE %]
+<input type="hidden" name="access_green" value="1"/>
+<input type="hidden" name="access_yellow" value="1"/>
+<input type="hidden" name="access_national" value="1"/>
+[% END %]
+
+<div class="form-floating mb-3">
+  <select class="form-select" id="cln[% sidebar_suffix %]" name="cln"><option value="" [% IF classification_name == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>
+[%- FOREACH classification IN classifications -%]
+[%    NEXT IF denylist_cln.${classification.name} %]
+<option value="[% classification.name %]" [% IF classification_name == classification.name %]selected="selected"[% END %]>[% classification.desc | truncate(25) %]</option>
+[%- END -%]
+  </select>
+  <label for="cln[% sidebar_suffix %]"><b>[% msg.maketext("Fachgebiet") %]</b></label>
+</div>
+
+[% current_type = searchquery.get_searchfield('mediatype').val %]
+
+<div class="form-floating mb-3">
+  <select class="form-select" id="typ[% sidebar_suffix %]" name="typ">
+<option value="" [% IF NOT current_type %]selected="selected"[% END %]>Alle</option>
+<option value="1" [% IF current_type == 1 %]selected="selected"[% END %]>Address- und Firmenverzeichnis</option>
+<option value="2" [% IF current_type == 2 %]selected="selected"[% END %]>Allgemeines Auskunftmittel</option>
+<option value="3" [% IF current_type == 3 %]selected="selected"[% END %]>Aufsatzdatenbank</option>
+<option value="4" [% IF current_type == 4 %]selected="selected"[% END %]>Bestandsverzeichnis</option>
+<option value="6" [% IF current_type == 6 %]selected="selected"[% END %]>Biographische Datenbank</option>
+<option value="7" [% IF current_type == 7 %]selected="selected"[% END %]>Buchhandelsverzeichnis</option>
+<option value="17" [% IF current_type == 17 %]selected="selected"[% END %]>Disziplinäre Forschungsdatenepositorien</option>
+<option value="8" [% IF current_type == 8 %]selected="selected"[% END %]>Disziplinäre Repositorien</option>
+<option value="9" [% IF current_type == 9 %]selected="selected"[% END %]>Fachbibliographie</option>
+<option value="10" [% IF current_type == 10 %]selected="selected"[% END %]>Faktendatenbank</option>
+<option value="11" [% IF current_type == 11 %]selected="selected"[% END %]>National-, Regionalbibliographie</option>
+<option value="12" [% IF current_type == 12 %]selected="selected"[% END %]>Portal</option>
+<option value="5" [% IF current_type == 5 %]selected="selected"[% END %]>Sammlung Nicht-Textueller-Materialien</option>
+<option value="13" [% IF current_type == 13 %]selected="selected"[% END %]>Volltextdatenbank</option>
+<option value="14" [% IF current_type == 14 %]selected="selected"[% END %]>Wörterbuch, Enzyklopädie, Nachschlagwerk</option>
+<option value="15" [% IF current_type == 15 %]selected="selected"[% END %]>Zeitung</option>
+<option value="16" [% IF current_type == 16 %]selected="selected"[% END %]>Zeitungs-, Zeitschriftenbibliographie</option>
+
+<!-- old DBIS
+<option value="1" [% IF current_type == 1 %]selected="selected"[% END %]>Adress- und Firmenverzeichnis</option>
+<option value="15" [% IF current_type == 15 %]selected="selected"[% END %]>Allgemeines Auskunftsmittel</option>
+<option value="9" [% IF current_type == 9 %]selected="selected"[% END %]>Aufsatzdatenbank</option>
+<option value="7" [% IF current_type == 7 %]selected="selected"[% END %]>Bestandsverzeichnis</option>
+<option value="16" [% IF current_type == 16 %]selected="selected"[% END %]>Bilddatenbank</option>
+<option value="3" [% IF current_type == 3 %]selected="selected"[% END %]>Biographische Datenbank</option>
+<option value="6" [% IF current_type == 6 %]selected="selected"[% END %]>Buchhandelsverzeichnis</option>
+<option value="13" [% IF current_type == 13 %]selected="selected"[% END %]>Dissertationsverzeichnis</option>
+<option value="11" [% IF current_type == 11 %]selected="selected"[% END %]>Fachbibliographie</option>
+<option value="17" [% IF current_type == 17 %]selected="selected"[% END %]>Faktendatenbank</option>
+<option value="12" [% IF current_type == 12 %]selected="selected"[% END %]>National-, Regionalbibliographie</option>
+<option value="14" [% IF current_type == 14 %]selected="selected"[% END %]>Portal</option>
+<option value="4" [% IF current_type == 4 %]selected="selected"[% END %]>Volltextdatenbank</option>
+<option value="5" [% IF current_type == 5 %]selected="selected"[% END %]>Wörterbuch, Enzyklopädie, Nachschlagewerk</option>
+<option value="8" [% IF current_type == 8 %]selected="selected"[% END %]>Zeitung</option>
+<option value="10" [% IF current_type == 10 %]selected="selected"[% END %]>Zeitungs-, Zeitschriftenbibliographie</option>
+-->
+  </select>
+  <label for="typ[% sidebar_suffix %]"><b>[% msg.maketext("Datenbank-Typ") %]</b></label>
+</div>
+
+<p>
+<small>* [% msg.maketext("Es muss mindestens ein Name, ein Fachgebiet oder ein Typ verwendet werden") %]</small>
+</p>
+
+<button class="btn btn-primary mb-2" type="submit" name="search">[% msg.maketext("Suchen") %]</button>
+
+</form>
+</div>
+</div>
+<p/>
+
+[% IF layout_param.main_template != 'classifications_html' && classifications %]
+<div class="card">
+<div class="card-header">[% msg.maketext("Gesamtübersicht") %]</div>
+
+<div class="card-body">
+<ul class="list-group">
+[% FOREACH classification IN classifications ;
+   searchterm    = classification.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
+
+   NEXT IF denylist_cln.${searchterm};
+ %]
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbisjson;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% IF classification_name == classification.name %]<b>[% classification.desc %]</b>[% ELSE %][% classification.desc %][% END %]</a><!-- ([% classification.count %])--></li>
+[% END %]
+</ul>
+</div>
+</div>
+[% END %]
+
+<div class="alert alert-secondary mt-2">
+        
+Ansprechpartner:<br><a href="mailto:dbfragen@ub.uni-koeln.de">Team Datenbanken</a><br>
+        
+ <span style="font-size:0.8em;">
+   Powered by  <a class="exturl" href="[% config.get('dbis_exturl') %]" target="_blank">DBIS</a>
+ </span>
+</div>

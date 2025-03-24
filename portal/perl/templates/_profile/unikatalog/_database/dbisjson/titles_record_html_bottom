@@ -1,0 +1,16 @@
+<div class="alert alert-info">
+  
+  <h5>[% msg.maketext("Lizenzrechtliche Hinweise") %]</h5> 
+  <p> 
+    Bitte beachten Sie die <a class="exturl" href="[% cms_links.vpn %]">Nutzungsbedingungen</a> des Verlages bzw. Herausgebers.
+  </p>
+  <div class="powered">
+    
+    Ansprechpartner:<br/><a href="mailto:dbfragen@ub.uni-koeln.de">Team Datenbanken</a><br/>
+    
+    <span style="font-size:0.8em;">
+      Powered by  <a class="exturl" href="[% config.get('dbis_exturl') %]"  target="IPSdbis">DBIS</a>
+    </span>
+  </div>
+</div>
+

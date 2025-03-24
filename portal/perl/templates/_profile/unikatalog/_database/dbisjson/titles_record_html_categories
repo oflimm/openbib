@@ -1,0 +1,778 @@
+[%#-
+#######################################################################
+#
+# Templatename: titles_record_html_categories
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe von bibliographischen Daten fuer einen
+# einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%-
+
+   #USE dumper;dumper.dump(normdata);
+   bklookup    = config.load_bk;
+
+   topic_map = {};
+   FOREACH topic IN user.get_topics;
+      topic_map.${topic.id} = topic.name;
+   END;
+
+   catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
+
+   access_icon = "";
+   
+   access_icon_ref = {
+      'g' = config.get('dbis_green_img')
+      'y' = config.get('dbis_yellow_img')
+      'n' = config.get('dbis_de_img')
+      'l' = config.get('dbis_yellow_red_img')
+      'r' = config.get('dbis_red_img')
+   };
+
+   IF normdata.${"T4120"} ;
+     access = normdata.${"T4120"}.first.subfield;
+
+     IF access_icon_ref.${access};
+        access_icon = access_icon_ref.${access};
+
+        access_icon = "<img src=\"${access_icon}\"  alt=\"${access_icon}\" />";
+     END;
+
+   END;
+
+   # Preprocessing lizensiert, OA oder Nationallizens
+
+   # Lizensierter Volltext oder OA? (Ausgabe Zugriffshinweis)
+   is_licensed = 0;
+   is_oa = 0;
+   is_national = 0;
+
+   FOREACH item IN normdata.${'T4120'} ;
+      IF item.subfield == "g";
+         is_oa = 1;
+         LAST;
+      ELSIF item.subfield == "y";
+         is_licensed = 1;
+         LAST;
+      ELSIF item.subfield == "n";
+         is_national = 1;
+         LAST;
+      END;
+   END;
+
+-%]
+
+[% IF format == "full" %]
+
+
+[%   PROCESS common/subtemplate name="titles_record_html_sammlungslinks" %]
+
+[%# USE dumper;dumper.dump(categories)%]
+[%# USE dumper;dumper.dump(normdata)%]
+
+<script>
+$(document).on("click", ".ob-more_button", function () {
+const supplemental_collection = document.getElementsByClassName("ob-field_supplemental");
+Array.prototype.forEach.call(supplemental_collection, function(element) {
+  $(element.tagName).prop("hidden", false);
+});
+$(this).prop("hidden", true)
+
+const wikipedia_articles = document.getElementById("ob-title_wikipedia_articles");
+$(wikipedia_articles).prop("hidden", false)
+
+});
+</script>
+
+[% IF NOT is_supplemental %]
+<h2 class="mb-3">[% IF access_icon %][% access_icon %][% END %] [% normdata.${"T0331"}.first.content %]
+</h2>
+[%   is_supplemental = 1; %]
+[% END %]
+
+<div class="table-responsive">
+<table class="table table-striped ob-title_fields">
+
+[%-
+
+    session_sort = "year_desc";
+    IF qopts.get_option('srt') && NOT qopts.get_option('srt').match('_') && qopts.get_option('srto') ;
+      session_sort = "${qopts.get_option('srt')}_${qopts.get_option('srto')}";
+    END;
+
+   request_base = "page=1;num=20;";
+   request_base = "l=${lang};profile=${current_profile};srt=${session_sort};${request_base}";
+
+   IF NOT viewdbs ;
+       viewdbs = config.get_dbs_of_view(view);
+   END ;
+
+   IF NOT searchprofileid_of_database ;
+      searchprofileid_of_database = config.get_searchprofile_of_database(record.database) ;
+   END ;
+
+   IF 0 == 1 && normdata.${'T4400'}.first.content == 'online' && NOT normdata.${"T4662"}.first.content ;
+     currently_unavailable = 1;
+   END;
+
+globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
+swt_done          = {};
+extsubj_done      = {};
+
+#USE dumper;dumper.dump(normdata);
+
+
+   laender_map = {
+     'EG' = 'Ägypten',
+     'AD' = 'Andorra',
+     'AR' = 'Argentinien',
+     'AM' = 'Armenien',
+     'AU' = 'Australien',
+     'BE' = 'Belgien',
+     'BO' = 'Bolivien',
+     'BR' = 'Brasilien',
+     'BG' = 'Bulgarien',
+     'CL' = 'Chile',
+     'CN' = 'China',
+     'DK' = 'Dänemark',
+     'DE' = 'Deutschland',
+     'DXDE' = 'Deutschland',
+     'EE' = 'Estland',
+     'FI' = 'Finnland',
+     'FR' = 'Frankreich',
+     'GE' = 'Georgien',
+     'GI' = 'Gibraltar',
+     'GD' = 'Grenada',
+     'GR' = 'Griechenland',
+     'GB' = 'Großbritannien',
+     'HK' = 'Hongkong',
+     'IN' = 'Indien',
+     'IQ' = 'Irak',
+     'IR' = 'Iran',
+     'IE' = 'Irland',
+     'IS' = 'Island',
+     'IL' = 'Israel',
+     'IT' = 'Italien',
+     'YUCS' = 'Jugoslawien',
+     'CA' = 'Kanada',
+     'CO' = 'Kolumbien',
+     'QV' = 'Kosovo',
+     'HR' = 'Kroatien',
+     'LV' = 'Lettland',
+     'LI' = 'Liechtenstein',
+     'LT' = 'Litauen',
+     'LU' = 'Luxemburg',
+     'MT' = 'Malta',
+     'MX' = 'Mexiko',
+     'MC' = 'Monaco',
+     'MD' = 'Moldawien',
+     'MC' = 'Monaco',
+     'ME' = 'Montenegro',
+     'NL' = 'Niederlande',
+     'NO' = 'Norwegen',
+     'AT' = 'Österreich',
+     'AAAT' = 'Österreich',
+     'PK' = 'Pakistan',
+     'PO' = 'Polen',
+     'PT' = 'Portugal',
+     'RO' = 'Rumänien',
+     'RU' = 'Russland',
+     'SM' = 'San Marino',
+     'SH' = 'Sankt Helena',
+     'SE' = 'Schweden',
+     'CH' = 'Schweiz',
+     'RS' = 'Serbien',
+     'SK' = 'Slowakei',
+     'SI' = 'Slowenien',
+     'SUHH' = 'Sowjetunion',
+     'ES' = 'Spanien',
+     'SY' = 'Syrien',
+     'CSHH' = 'Tschechoslowakei',
+     'TR' = 'Türkei',
+     'UA' = 'Ukraine',
+     'HU' = 'Ungarn',
+     'US' = 'USA',
+     'VA' = 'Vatikanstadt',
+     'BY' = 'Weißrussland',
+     'CY' = 'Zypern',
+     'ZZ' = 'Land unbekannt',
+   };
+
+   lang_map = {
+        "ara"      => msg.maketext("Arabisch"),
+        "arm"      => msg.maketext("Armenisch"),
+        "arab."    => msg.maketext("Arabisch"),
+        "ces"      => msg.maketext("Tschechisch"),
+        "chi"      => msg.maketext("Chinesisch"),
+        "cop"      => msg.maketext(""),
+        "cze"      => msg.maketext("Tschechisch"),
+        "de"       => msg.maketext("Deutsch"),
+        "dt."      => msg.maketext("Deutsch"),
+        "dut"      => msg.maketext("Niederländisch"),
+        "dut."     => msg.maketext("Niederländisch"),
+        "ell"      => msg.maketext("Neu-Griechisch"),
+        "en"       => msg.maketext("Englisch"),
+        "eng"      => msg.maketext("Englisch"),
+        "engl."    => msg.maketext("Englisch"),
+        "fin"      => msg.maketext("Finnisch"),
+        "finn."    => msg.maketext("Finnisch"),
+        "fr"       => msg.maketext("Französisch"),
+        "franz."       => msg.maketext("Französisch"),
+        "fre"      => msg.maketext("Französisch"),
+        "ger"      => msg.maketext("Deutsch"),
+        "gre"      => msg.maketext("Neu-Griechisch"),
+        "grc"      => msg.maketext("Alt-Griechisch"),
+        "griech."  => msg.maketext("Griechisch"),
+        "grk"      => msg.maketext("Griechisch"),
+        "he"       => msg.maketext("Hebräisch"),
+        "heb"      => msg.maketext("Hebräisch"),
+        "hun"      => msg.maketext("Ungarisch"),
+        "ice"      => msg.maketext("Isländisch"),
+        "islaend." => msg.maketext("Isländisch"),
+        "ita"      => msg.maketext("Italienisch"),
+        "ital."    => msg.maketext("Italienisch"),
+        "jpn"      => msg.maketext("Japanisch"),
+        "lat"      => msg.maketext("Latein"),
+        "lat."     => msg.maketext("Latein"),
+        "lats"     => msg.maketext("Latein"),
+        "nds"      => msg.maketext("Niederdeutsch"),
+        "neugriech."   => msg.maketext("Neu-Griechisch"),
+        "niederlaend." => msg.maketext("Niederländisch"),
+        "pol"      => msg.maketext("Polnisch"),
+        "rus"      => msg.maketext("Russisch"),
+        "russ."    => msg.maketext("Russisch"),
+        "spa"      => msg.maketext("Spanisch"),
+        "span."    => msg.maketext("Spanisch"),
+        "swe"      => msg.maketext("Schwedisch"),
+        "syc"      => msg.maketext("Alt-Syrisch"),
+        "tschech." => msg.maketext("Tschechisch"),
+        "tur"      => msg.maketext("Türkisch"),
+        "ungar."   => msg.maketext("Ungarisch"),
+    };
+
+
+# Preprocessing
+
+# Angaben zum Inhalt 0517/0521 in 0517 zusammenfuehren
+
+IF normdata.defined('T0521');
+  IF NOT normdata.defined('T0517');
+    normdata.${'T0517'} = [] ;
+  END;
+
+  FOREACH item IN normdata.${'T0521'} ;
+    normdata.${'T0517'}.push(item);
+  END;
+END;
+
+# Switching processed links
+
+IF normdata.defined('T4662');
+   normdata.${'T0662'} = normdata.${'T4662'};
+   normdata.${'T0663'} = normdata.${'T4663'};
+   normdata.${'T2662'} = [];
+   normdata.${'T2662'}.delete;
+   normdata.${'T2663'} = [];
+   normdata.${'T2663'}.delete;   
+ELSIF record.database != 'eds'; # EDS hat kein Preprocessing von Links
+   normdata.${'T0662'} = [];
+   normdata.${'T0663'} = [];
+   normdata.${'T2662'} = [];
+   normdata.${'T2663'} = [];
+   normdata.${'T0662'}.delete;
+   normdata.${'T0663'}.delete;
+   normdata.${'T2662'}.delete;
+   normdata.${'T2663'}.delete;
+END;
+
+# Preprocessing lizensiert, OA oder Nationallizens
+
+# Lizensierter Volltext oder OA? (Ausgabe Zugriffshinweis)
+is_licensed = 0;
+is_oa = 0;
+is_national = 0;
+
+FOREACH item IN normdata.${'T4120'} ;
+   IF item.subfield == "g";
+      is_oa = 1;
+      LAST;
+   ELSIF item.subfield == "y";
+      is_licensed = 1;
+      LAST;
+   ELSIF item.subfield == "n";
+      is_national = 1;
+      LAST;
+   END;
+END;
+
+# Preprocessing der lizensierten und OA Pakete fuer die Anzeige entsprechender Hinweise
+
+# Paketnamen entsprechend: https://intern.ub.uni-koeln.de/usbwiki/index.php/Anreicherung_von_IMX-Importdateien
+
+licensed_pakete = [
+   'ZDB-2-SWI',
+   'ZDB-2-SNA',
+   'ZDB-2-STI',
+   'ZDB-2-SGR',
+   'ZDB-2-SEP',
+   'ZDB-2-SBE',
+   'ZDB-2-CMS',
+   'ZDB-2-PHA',
+   'ZDB-2-SMA',
+   'ZDB-2-MGE',
+   'ZDB-2-SZR',
+   'ZDB-2-BUM',
+   'ZDB-2-ECF',
+   'ZDB-2-SCS',
+   'ZDB-2-ESA',
+   'ZDB-5-WEB',
+   'ZDB-5-WMS',
+   'ZDB-5-WMW',
+   'ZDB-13-SOC',
+   'ZDB-14-DLO',
+   'ZDB-18-BEO',
+   'ZDB-18-BOH',
+   'ZDB-18-BST',
+   'ZDB-15-ACM',
+   'ZDB-16-Hanser-EBA',
+   'hbzebo_ebahanser',
+   'ZDB-18-Nomos-NRW',
+   'ZDB-18-Nomos-VDI-NRW',
+   'hbzebo_nrwnomos',
+   'ZDB-149-HCB',
+   'ZDB-162-Bloom-EBA',
+   'hbzebo_ebabloomsbury',
+   'ZDB-605-Preselect',
+   'hbzebo_preselect',
+   'ZDB-196-Meiner-EBA',
+   'hbzebo_ebameiner',
+   'ZDB-23-DGG-eba',
+   'ZDB-54-Duncker-EBA',
+   'hbzebo_ebaduncker',
+   'ZDB-2-BSP',
+   'ZDB-2-SBL',
+   'ZDB-2-BUM',
+   'ZDB-2-CMS',
+   'ZDB-2-SCS',
+   'ZDB-2-EES',
+   'ZDB-2-ECF',
+   'ZDB-2-EDA',
+   'ZDB-2-ENE',
+   'ZDB-2-ENG',
+   'ZDB-2-HTY',
+   'ZDB-2-INR',
+   'ZDB-2-LCR',
+   'ZDB-2-LCM',
+   'ZDB-2-SMA',
+   'ZDB-2-SME',
+   'ZDB-2-PHA',
+   'ZDB-2-POS',
+   'ZDB-2-CWD',
+   'ZDB-2-REP',
+   'ZDB-2-SLS'
+   ];
+
+oa_pakete = ['ZDB-2-SOB','ZDB-23-GOA'];
+
+FOREACH item IN normdata.${'T0078'} ;
+  FOREACH paket IN licensed_pakete ;
+    IF item.content.match(paket);
+      is_licensed = 1;
+    END;
+  END;
+  FOREACH paket IN oa_pakete ;
+    IF item.content.match(paket);
+      is_oa = 1;
+    END;
+  END;
+END;
+
+FOREACH item IN normdata.${'T1209'} ;
+  FOREACH paket IN licensed_pakete ;
+    IF item.content.match(paket);
+      is_licensed = 1;
+    END;
+  END;
+  FOREACH paket IN oa_pakete ;
+    IF item.content.match(paket);
+      is_oa = 1;
+    END;
+  END;
+END;
+
+content_map = {};
+
+# Preprocessing der RSWK Schlagworte
+
+FOREACH field IN [ "T0902", "T0907", "T0912", "T0917", "T0922", "T0927", "T0932", "T0937", "T0942", "T0947" ];
+
+    rswk_data = [];
+
+    IF normdata.defined(field);
+
+      FOREACH item IN normdata.${field} ;
+         thisid     = item.id;
+
+         thiscontent = item.content;
+
+         searchterm    = uri_escape(item.content);
+         searchprefix  = config.get('searchfield').subjectstring.prefix;
+
+         resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('subjects_loc')}/id/${thisid}";
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         normdataicon = "";
+
+         IF thisid && catalog_has_authorities;
+            normdataicon = "&nbsp;<a href=\"${resourceurl}.html\" title=\"Schlagwort-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\"><img src=\"${config.get_icon('info',view,sysprofile)}\" alt=\"Info-Bild\" /></a>";
+         END;
+
+         content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement} ${normdataicon}";
+	 rswk_data.push(content);
+      END;
+
+    IF rswk_data ;
+      IF NOT content_map.${'T0710'} ;
+        content_map.${'T0710'} = [];
+      END;
+
+      new_swtstring = rswk_data.join(' / ');
+
+      content_map.${'T0710'}.push(new_swtstring);
+    END ;
+    END;
+
+
+END;
+
+# Preprocessing spezielle Kategorien
+
+have_doi = {};
+
+FOREACH field IN normdata;
+
+  category = field.key ;
+
+  FOREACH item IN field.value;
+    content      = item.content;
+
+    SWITCH category;
+
+    CASE "T0331";
+         content   = "<b>${highlightquery(searchquery,content)}</b>";
+
+         IF NOT content_map.${'Titel'} ;
+	    content_map.${'Titel'} = [];
+	 END;
+         content_map.${'Titel'}.push(content);
+
+    CASE "T0370";
+         content   = "<b>${highlightquery(searchquery,content)}</b>";
+
+         IF NOT content_map.${'Weitere Titel'} ;
+	    content_map.${'Weitere Titel'} = [];
+	 END;
+         content_map.${'Weitere Titel'}.push(content);
+
+    CASE "T4120";
+         thiscontent   = msg.maketext("Datenbankrecherche starten");
+	 #content       = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(content)}" ;
+	 content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\"><b>${thiscontent}</b></a>";
+
+         IF NOT content_map.${'Zugang'} ;
+	    content_map.${'Zugang'} = [];
+	 END;
+         content_map.${'Zugang'}.push(content);
+
+    CASE "T0501";
+    	 content    = item.content;
+	 content    = "<b>${content}</b>";
+
+         IF NOT content_map.${'Verfügbarkeit'} ;
+	    content_map.${'Verfügbarkeit'} = [];
+	 END;
+         content_map.${'Verfügbarkeit'}.push(content);
+
+    CASE "T0510";
+
+         IF NOT content_map.${'Hinweise'} ;
+	    content_map.${'Hinweise'} = [];
+	 END;
+         content_map.${'Hinweise'}.push(content);
+
+    CASE "T0600";
+    	 content    = item.content;
+	 content    = "<b>${content}</b>";
+
+         IF NOT content_map.${'Weitere Hinweise'} ;
+	    content_map.${'Weitere Hinweise'} = [];
+	 END;
+         content_map.${'Weitere Hinweise'}.push(content);
+
+    CASE "T0750";
+
+         content_map.${'Inhalt'} = [];	 
+         content_map.${'Inhalt'}.push(content);
+	 IF lang == 'en' && normdata.defined("T0751");
+	   content_eng = normdata.${"T0751"}.first.content;
+           content_map.${'Inhalt'} = [];
+           content_map.${'Inhalt'}.push(content_eng);
+	 END;
+	 
+    CASE "T0511";
+
+         IF NOT content_map.${'Anleitung'} ;
+	    content_map.${'Anleitung'} = [];
+	 END;
+         content_map.${'Anleitung'}.push(content);
+
+
+    CASE "T0700";
+	 
+         IF NOT content_map.${'Fachgebiete'} ;
+	    content_map.${'Fachgebiete'} = [];
+	 END;
+         content_map.${'Fachgebiete'}.push(content);
+
+    CASE "T0710";
+	 
+         IF NOT content_map.${'Schlagwörter'} ;
+	    content_map.${'Schlagwörter'} = [];
+	 END;
+         content_map.${'Schlagwörter'}.push(content);
+
+    CASE "T0508";
+	 
+         IF NOT content_map.${'Erscheinungsform'} ;
+	    content_map.${'Erscheinungsform'} = [];
+	 END;
+         content_map.${'Erscheinungsform'}.push(content);
+
+    CASE "T0523";
+	 
+         IF NOT content_map.${'Berichtszeitraum'} ;
+	    content_map.${'Berichtszeitraum'} = [];
+	 END;
+         content_map.${'Berichtszeitraum'}.push(content);
+
+    CASE "T0412";
+	 
+         IF NOT content_map.${'Verlag'} ;
+	    content_map.${'Verlag'} = [];
+	 END;
+         content_map.${'Verlag'}.push(content);
+
+    CASE "T0800";
+	 
+         IF NOT content_map.${'Datenbank-Typ'} ;
+	    content_map.${'Datenbank-Typ'} = [];
+	 END;
+         content_map.${'Datenbank-Typ'}.push(content);
+
+    CASE "T0540";
+	 
+         IF NOT content_map.${'ISBN'} ;
+	    content_map.${'ISBN'} = [];
+	 END;
+         content_map.${'ISBN'}.push(content);
+
+    CASE "T0425";
+	 
+         IF NOT content_map.${'Erscheinungsjahr'} ;
+	    content_map.${'Erscheinungsjahr'} = [];
+	 END;
+         content_map.${'Erscheinungsjahr'}.push(content);
+
+    CASE ;
+         content   = highlightquery(searchquery,item.content);
+   END;
+  END;
+END;
+
+# Lokale JOP Druckausgaben hinzufuegen
+IF jop_print_locations ;
+    content_map.${'Druckausgabe'} = [];
+    FOREACH jop_print_location IN jop_print_locations;
+      content_map.${'Druckausgabe'}.push(jop_print_location);
+    END ;
+END;
+
+display_types = {
+   'T0501' => 'list',
+   'T0662' => 'list',
+   'T0710' => 'list',
+   'T0700' => 'list',
+   'Hinweise' => 'list',
+   'Druckausgabe' => 'list',
+#   'Schlagwörter' => 'list',
+#   'Fachgebiete' => 'list',   
+   
+};
+
+FOREACH category IN categories;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+   IF content_map.${category}.first;
+      IF display_types.${category} == 'list' ;
+        IF content_map.${category}.size > 1 ;
+          content = "<ul>";
+          FOREACH thiscontent IN content_map.${category};
+	    content="${content}<li>${thiscontent}</li>";
+	  END;
+	  content = "${content}</ul>";
+	ELSE ;
+	  content = content_map.${category}.first;
+	END;
+      ELSE ;
+        content = content_map.${category}.join(' ; ');
+      END;
+
+      # Titel hervorheben
+      IF category == "T0331";
+        content = "<span class=\"ob-title\">${content}</span>";
+      END;
+-%]
+<tr><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+[%
+   END;
+END;
+-%]
+[%- IF currently_unavailable -%]
+<tr><th class="ob-field">[% msg.maketext("Volltext")%]</th><td>derzeit nicht verf&uuml;gbar (z.B. noch im Erwerbungsvorgang)</td></tr>
+[%- END -%]
+
+[%-
+
+  show_more = 0;
+
+  IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} ;
+    show_more = 1;
+  END;
+  
+  FOREACH category IN supplemental_categories;
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+   IF content_map.${category}.first;
+      IF display_types.${category} == 'list' ;
+        IF content_map.${category}.size > 1 ;
+          content = "<ul>";
+          FOREACH thiscontent IN content_map.${category};
+	    content="${content}<li>${thiscontent}</li>";
+	  END;
+	  content = "${content}</ul>";
+	ELSE ;
+	  content = content_map.${category}.first;
+	END;
+      ELSE ;
+        content = content_map.${category}.join(' ; ');
+      END;
+
+      # Titel hervorheben
+      IF category == "T0331";
+        content = "<span class=\"ob-title\">${content}</span>";
+      END;
+
+      show_more = 1;
+-%]
+<tr class="ob-field_supplemental" hidden><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+[%
+   END;
+END;
+-%]
+[% IF show_more %]
+<tr class="ob-field ob-more_button"><th><span class="w-100">[% msg.maketext("Mehr") %] <i class="fa fa-arrow-down"></i></span></th><td></td></tr>
+[% END %]
+</table>
+
+[%- IF normdata.${"E4200"} || normdata.${"E4201"} || normdata.${"E4202"} %]
+<div id="ob-title_wikipedia_articles" class="ob-title_wikipedia_articles" hidden>
+<p><i class="fab fa-wikipedia-w"></i> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:</p>
+<p class="wikipediamashup">
+[%-   IF normdata.${"E4200"} %]
+[%-     FOREACH item IN normdata.${"E4200"}-%]
+[%-       NEXT IF item.content.match('^Vorlage') -%]
+[%        redirect_url = "http://de.wikipedia.org/wiki/${item.content}" %]
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END %]
+[%-   IF normdata.${"E4201"} %]
+[%-     FOREACH item IN normdata.${"E4201"}-%]
+[%-       NEXT IF item.content.match('^Vorlage') -%]
+[%        redirect_url = "http://en.wikipedia.org/wiki/${item.content}" %]
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END %]
+[%-   IF normdata.${"E4202"} %]
+[%-     FOREACH item IN normdata.${"E4202"}-%]
+[%-       NEXT IF item.content.match('^Vorlage') -%]
+[%        redirect_url = "http://fr.wikipedia.org/wiki/${item.content}" %]
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=522;url=[% uri_escape(redirect_url) %]" class="ext" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END -%]
+</p>
+</div>
+[% END %]
+
+</div>
+[%# USE dumper;dumper.dump(content_map) %]
+[% ELSIF format == "BibTeX" %]
+<div>
+<pre>
+[% record.to_bibtex %]
+</pre>
+</div>
+[% ELSIF format == "Text" %]
+<pre>
+[% FOREACH category IN categories;
+    FOREACH item IN normdata.$category;
+    content = item.content;
+
+    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+    # in Config.pm fuer die entsprechende Datenbank definiert
+    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+    # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+-%]
+[% msg.maketext("${thiscategory}") | format("%- 24s") %]: [% content %]
+[% END -%]
+[%- END -%]
+[%- IF holding.size > 0 -%]
+[%- FOREACH thisholding IN holding -%]
+[% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% thisholding.${"X4000"}.content.full %]
+[% msg.maketext("Standort             ") %] [% loop.count %] : [% thisholding.${"X0016"}.content %]
+[% msg.maketext("Lokale Signatur      ") %] [% loop.count %] : [% thisholding.${"X0014"}.content %]
+[% msg.maketext("Inventarnummer       ") %] [% loop.count %] : [% thisholding.${"X0005"}.content %]
+[% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% thisholding.${"X1204"}.content %]
+[% END %]
+
+[% END %]
+</pre>
+[% ELSIF format == "EndNote" %]
+<pre>
+[% record.to_endnote %]
+</pre>
+[% END %]

@@ -1,0 +1,65 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_titles_combined_rdf
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes als LinkedData
+#
+#######################################################################
+-%]
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:bibo="http://purl.org/ontology/bibo/"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:libris="http://libris.kb.se/vocabulary/experimental#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" >
+[%-
+   FOREACH record IN recordlist.get_records ;
+      normset         = record.get_fields;
+-%]
+
+  <rdf:Description rdf:about="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[%- record.database -%]/[% config.get('titles_loc') %]/id/[%- record.id -%]">
+[%- FOREACH category IN [ "P0100" "P0101" "P0102" "P0103"] -%]
+[%-   FOREACH item IN normset.${category} %]
+     <dc:creator>[% item.content%]</dc:creator>
+[%-   END -%]
+[%- END -%]
+[%- FOREACH item IN normset.${"T0331"} %]
+     <dc:title>[% item.content %]</dc:title>
+[%- END -%]
+[%- FOREACH item IN normset.${"T0412"} %]
+     <dc:publisher>[% item.content %]</dc:publisher>
+[%- END -%]
+[%- FOREACH item IN normset.${"T0425"} %]
+     <dc:date>[% item.content %]</dc:date>
+[%- END -%]
+[%- FOREACH category IN [ "T0540" "T0553" ] -%]
+[%-   FOREACH item IN normset.${category} ;
+        isbn = item.content.replace('-','') ; %]
+     <dc:identifier rdf:resource="URN:ISBN:[% isbn %]"/>
+[%-      IF isbn.length == 10 %]
+     <bibo:isbn10>[% isbn %]</bibo:isbn10>
+[%-      ELSIF isbn.length == 13 %]
+     <bibo:isbn13>[% isbn %]</bibo:isbn13>
+[%-      END -%]
+[%-   END -%]
+[%- END -%]
+[%- FOREACH category IN [ "T0710" "T0902" "T0907" "T0912"] -%]
+[%-   FOREACH item IN normset.${category} %]
+     <dc:subject>[% item.content%]</dc:subject>
+[%-   END -%]
+[%- END %]
+     <rdf:type rdf:resource="http://purl.org/ontology/bibo/Book"/>
+     <dc:type>text</dc:type>
+     <rdfs:isDefinedBy rdf:resource="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].rdf"/>
+[%- FOREACH similar_record IN similar_records.get_records %]
+     <libris:frbr_related rdf:resource="http://[% servername %][% path_prefix %]/[% config.get('databases_loc') %]/id/[%- similar_record.record.database -%]/[% config.get('titles_loc') %]/id/[%- similar_record.id-%]"/>
+[%- END %]
+  </rdf:Description>
+[%- END %]
+</rdf:RDF>

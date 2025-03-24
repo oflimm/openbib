@@ -1,0 +1,540 @@
+[%#-
+#######################################################################
+#
+# Templatename: titlist_item
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Einzelner Eintrag in einer Liste (Kurztitel)
+#
+#
+# Erhaelt neben Default-Objekten (config, session usw.)
+#
+# record
+# dbinfo 
+#
+#######################################################################
+-%]
+<!-- Anfang einzelner Treffer -->
+[%- PROCESS common/subtemplate name="titles_record_preprocess" -%]
+[%-
+     ebook_i18n      = msg.maketext("E-Book");
+     toc_i18n        = msg.maketext("Inhaltsverzeichnis");
+     popularity_i18n = msg.maketext("Popularität");
+     
+     item   = record.get_fields;
+     listid = record.listid;
+     all_locations = record.get_locations;
+
+     # USE dumper;dumper.dump(item);
+     # USE dumper;dumper.dump(record.generic_attributes);     
+     
+     # Filter locations
+     locations = [];
+
+     is_licensed = 0;
+     is_free = 0;
+
+     FOREACH loc IN all_locations ;
+       IF loc.match('^DE-38$') ;
+          locations.push(loc);
+       ELSIF loc.match('^DE-38-[0-9][0-9][0-9]') ;
+          locations.push(loc);
+         ELSIF loc.match('^freemedia') ;
+          is_free = 1;
+       ELSIF loc.match('^emedien') ;
+          is_licensed = 1;
+       ELSIF NOT loc.match('^DE-38-[a-zA-Z]');   
+            locations.push(loc);
+       END;
+     END;
+
+     # E-Medien gehen vor
+     IF is_free ;
+        locations = ['freemedia'];
+     ELSIF is_licensed ;
+        locations = ['emedien'];
+     END;
+
+     super = "";
+     # 1. Ueberordnung?
+     IF item.${'T5005'}.first.content;
+        super = from_json(item.${'T5005'}.first.content);
+     END;
+
+     # Verfasser konstruieren
+     persons = [] ;
+
+     personslength = 0 ;
+     truncatepers  = 0 ;
+
+     FOREACH part IN item.${'P0100'} ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         searchterm    = uri_escape(part.content);
+         searchprefix  = config.get('searchfield').personstring.prefix;
+
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         #persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         persons.push(part.content);
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+     FOREACH part IN item.${'T0100'} ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         persons.push(part.content);
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+     FOREACH part IN item.${'P0101'}  ;
+       thiscontent = part.content;
+       IF part.supplement ;
+          thiscontent = "${thiscontent} ${part.supplement}" ;
+       END ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         searchterm    = uri_escape(part.content);
+         searchprefix  = config.get('searchfield').personstring.prefix;
+
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         persons.push(part.content);
+         #persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+     FOREACH part IN item.${'T0101'} ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         persons.push(part.content);
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+     FOREACH part IN item.${'T1800'} ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         persons.push(part.content);
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+     FOREACH part IN item.${'C0200'}  ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         searchterm    = uri_escape(part.content);
+         searchprefix  = config.get('searchfield').corporatebodystring.prefix;
+
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         persons.push(part.content);
+         #persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+     FOREACH part IN item.${'T0200'} ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         persons.push(part.content);
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+     FOREACH part IN item.${'C0201'}  ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         searchterm    = uri_escape(part.content);
+         searchprefix  = config.get('searchfield').corporatebodystring.prefix;
+
+         globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         persons.push(part.content);
+         #persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+     FOREACH part IN item.${'T0201'} ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         persons.push(part.content);
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+     FOREACH part IN item.${'T1802'} ;
+       thislength = part.content.length ;
+       IF (thislength+personslength) < config.get('maxlength_person') ;
+         persons.push(part.content);
+         personslength = personslength+thislength ;
+       ELSE ;
+         truncatepers = 1 ;
+       END ;
+     END ;
+     person = persons.join(' ; ') ;
+     IF truncatepers ;
+       person = "$person [...]" ;
+     END ;
+
+     # Keine Person, dann aus Ueberordnung
+     IF super && NOT person ;
+       FOREACH part IN super.fields.${'0100'} ;
+         thislength = part.content.length ;
+         IF (thislength+personslength) < config.get('maxlength_person') ;
+           searchterm    = uri_escape(part.content);
+           searchprefix  = config.get('searchfield').personstring.prefix;
+
+           globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+           persons.push(part.content);
+           #persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+           personslength = personslength+thislength ;
+         ELSE ;
+           truncatepers = 1 ;
+         END ;
+       END ;
+       FOREACH part IN super.fields.${'0101'}  ;
+         thiscontent = part.content;
+         IF part.supplement ;
+            thiscontent = "${thiscontent} ${part.supplement}" ;
+         END ;
+         thislength = part.content.length ;
+         IF (thislength+personslength) < config.get('maxlength_person') ;
+           searchterm    = uri_escape(part.content);
+           searchprefix  = config.get('searchfield').personstring.prefix;
+
+           globalurl = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+           persons.push(part.content);
+           #persons.push("<a href=\"${globalurl}\">${part.content}</a>");
+           personslength = personslength+thislength ;
+         ELSE ;
+           truncatepers = 1 ;
+         END ;
+       END ;
+
+       person = persons.join(' ; ') ;
+       IF truncatepers ;
+         person = "$person [...]" ;
+       END ;
+     END ;
+
+     # Titel konstruieren
+     title = item.${'T0331'}.first.content;
+     IF item.${'T0310'}.first.content;
+         title = item.${'T0310'}.first.content;
+     END;
+
+     is_schriftenreihe = 0;
+     is_mehrbaendig    = 0;
+
+     IF item.${'T0089'}.first.content;
+       is_mehrbaendig = 1;
+     ELSIF item.${'T0451'}.first.content;
+       is_schriftenreihe = 1;
+     END;
+
+     zaehlung = "";
+     
+     # Zaehlung Anfang Titel
+     IF is_mehrbaendig;
+       IF item.${'T0090'}.first.content;
+          zaehlung = item.${'T0090'}.first.content;
+	  IF zaehlung == title ;
+	     title = "";
+	  END;
+          title = "${zaehlung}. ${title}";
+       ELSIF item.${'T0089'}.first.content;
+          zaehlung = item.${'T0089'}.first.content;
+	  IF zaehlung == title ;
+	     title = "";
+	  END;
+          title = "${zaehlung}. ${title}";
+       END;     
+     END;
+
+     super_title = "";
+
+     # Uebergeordneter Titel in Klammern (super_title)
+     IF is_schriftenreihe;
+       IF item.${'T0451'}.first.content;
+          super_title = item.${'T0451'}.first.content;
+       ELSIF super;
+         IF super.fields.${'0331'} ;
+            super_title   = super.fields.${'0331'}.first.content;
+         ELSIF super.fields.${'0451'} ;
+            super_title   = super.fields.${'0451'}.first.content;
+         END;
+       END;
+     ELSIF is_mehrbaendig;
+       IF super;
+         IF super.fields.${'0331'} ;
+            super_title   = super.fields.${'0331'}.first.content;
+	 END;
+       END;
+     END;
+
+     IF title && super_title ;
+        title = "${title} (${super_title})";
+     END;
+
+     # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?
+     IF NOT title ;
+       title = "Keine Titelangabe vorhanden";
+     END;
+ 
+     # Auflage konstruieren
+     edition = item.${'T0403'}.first.content;
+
+     # Verlage konstruieren
+     publisher = item.${'T0412'}.first.content;
+
+     # Ejahr konstruieren
+     yearofpub = item.${'T0425'}.first.content;
+
+     # DBIS ist immer Online
+     availability = 'online';
+
+     # Signaturen konstruieren
+     signaturen = [];
+     FOREACH part IN item.${'X0014'};
+         signaturen.push("${part.content}");
+     END;
+     signatur = signaturen.sort.unique.join(' ; ');
+     isbn     = item.${"T0540"}.first.content.replace('-','') || item.${"T0553"}.first.content.replace('-','');
+     dbdesc   = dbinfo.get('dbnames').${record.database}.full;
+     dburl    = dbinfo.get('urls').${record.database};
+
+
+    titleinfos = [] ;
+
+# Testtitel
+#
+#    item.${'T4120'} = [
+#      {
+#         mult = 1
+#         subfield = 'y'
+#         content = "http://www.ub.uni-koeln.de/usbportal?service=dbinfo&id=5660"
+
+#}
+#    ];
+
+    # E-Book/Inhaltsverzeichnis vorhanden
+    fulltext      = item.${'T4120'}.first.content ;
+    fulltext_type = item.${'T4120'}.first.subfield ;    
+    toc           = item.${'T4110'}.first.content ;
+
+    # DBIS/EZB? Dann umleiten
+
+    IF fulltext.match('usbportal\?service=dbinfo&.*?id=\d+');
+       matchresult = fulltext.match('usbportal\?service=dbinfo&.*?id=(\d+)');
+       fulltext = "${path_prefix}/databases/id/dbis/titles/id/${matchresult.first}.html?l=${lang}";
+    ELSIF fulltext.match('usbportal\?service=ejinfo&id=\d+');
+       matchresult = fulltext.match('usbportal\?service=ejinfo&id=(zdb:\d+\-?\d)');
+       fulltext = "${path_prefix}/databases/id/ezb/titles/id/${matchresult.first}";
+    ELSIF fulltext.match('frontdoor.phtml\?id=\d+');
+       matchresult = fulltext.match('frontdoor.phtml\?id=(\d+)');
+       fulltext = "${path_prefix}/databases/id/ezb/titles/id/zdb:${matchresult.first}";
+    END;
+
+    fulltext_availability  = "";
+    fulltext_icon = config.get('dbis_green_yellow_red_img');
+    fulltext_desc  = "Unbekannter Zugriff";
+
+    IF fulltext_type == 'g';
+      fulltext_availability = "lawngreen";
+      fulltext_icon = config.get('dbis_green_img');
+      fulltext_desc = msg.maketext("Volltext mit freiem Zugang");
+    ELSIF fulltext_type == 'y';
+      fulltext_availability = "yellow";
+      fulltext_icon = config.get('dbis_yellow_img');
+      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+    
+    ELSIF record.generic_attributes.access.desc_short == 'frei im Web' ;
+      fulltext_availability = "lawngreen";
+      fulltext_icon = config.get('dbis_green_img');
+      fulltext_desc = msg.maketext("Volltext mit freiem Zugang");
+    ELSIF record.generic_attributes.access.desc_short.match('Uninetz') || record.generic_attributes.access.desc_short.match('Uni-Netz') ;
+      fulltext_availability = "yellow";
+      fulltext_icon = config.get('dbis_yellow_img');
+      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+    ELSIF record.generic_attributes.access.desc_short == 'eingeschr&auml;nkt' ;
+      fulltext_icon = config.get('dbis_yellow_red_img');
+      fulltext_desc = msg.maketext("Eingeschränkter Zugriff");
+    ELSIF record.generic_attributes.access.desc_short == 'Nationallizenz' ;
+      fulltext_icon = config.get('dbis_de_img');
+      fulltext_desc = msg.maketext("Nationallizenz");
+    ELSIF record.generic_attributes.access.desc_short == '' ;
+      fulltext_icon = config.get('dbis_red_img');
+      fulltext_desc = record.generic_attributes.color.desc ;      
+    ELSIF record.generic_attributes.color.code == 5 ;
+      fulltext_icon = config.get('dbis_green_green_red_img') ;
+      fulltext_desc = record.generic_attributes.color.desc ;
+    ELSIF record.generic_attributes.color.code == 6 ;
+      fulltext_icon = config.get('dbis_yellow_red_img');
+      fulltext_desc = record.generic_attributes.color.desc ;
+    ELSE ;
+      fulltext_icon = config.get('dbis_green_yellow_red_img') ;
+      fulltext_desc = record.generic_attributes.color.desc ;
+    END;
+
+    IF item.tags ;
+      tags = [];
+      FOREACH tag IN item.tags ;
+         searchterm    = tag.tag;
+         searchprefix  = config.get('searchfield').tag.prefix;
+
+         tags_url = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}" ;
+         tags.push("<a href=\"${tags_url}\">${tag.tag}</a>");
+      END ;
+      titleinfos.push("Tags: ${tags.join(' ')}") ;
+    END ;
+
+#    IF item.popularity ;
+#      titleinfos.push("${popularity_i18n}: ${item.popularity}") ;
+#    END ;
+
+    titleinfo = titleinfos.join(" | ");
+-%]
+    <div class="ob-item d-flex flex-row[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+    
+[% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]
+
+      <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
+[% IF 0 == 1 %]      
+      <div class="ob-thumbnail pt-1 ps-5 pe-5 me-0 d-none d-md-block">
+    [% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
+    [% coverapi = config.get('covers').vlb %]
+    [%# USE dumper;dumper.dump(coverapi)%]
+    <a href="[% coverapi.credits_url %]" target="_blank"><img src="[% path_prefix %]/[% config.get('connector_cover_loc') %]/vlb/[% isbn %]?size=s" title="[% coverapi.credits_text %]" /></a>[% ELSE %]&nbsp;[% END %]
+      </div>
+[% END %]      
+      <div class="ob-brieftitle ps-4">
+[%# USE dumper;dumper.dump(dbinfo) %]
+        <div class="ob-titleinfo ps-2 mt-4">
+	
+[% IF record_exists %]
+
+[% IF NOT hide_hit %]	
+         <span class="ob-person">[% person %]</span>
+	 <!-- <img src="[% fulltext_icon %]" /> --> <strong><span class="ob-title"><a href="[% detail_url %]">[% title %]</a></span></strong>
+[%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%][% IF publisher %], <span class="ob-publisher">[% publisher %]</span>[% END %] <span class="ob-yearofpub">[% yearofpub %]</span>
+[% ELSE %]
+         <strong><span class="ob-title">[% hide_hit_msg %]</span></strong>
+[% END %]
+[% IF multiple_dbs == 1 %]
+         <br /><i class="fas fa-map-marker-alt"></i>
+[%-  IF locations.size >= 1 -%]
+[%      IF locations.size == 1 %]
+         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].html?l=[% lang %]">[% locinfo.identifier.${locations.first}.description %]</a>
+[%      ELSIF locations.size > 1 %]
+         [% msg.maketext('Verschiedene Standorte') %]
+[%      END %]
+[%-  ELSE %]
+[%-   IF dburl -%]
+[%-     IF dbinfo.get('locationid').${record.database} %]
+          <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">
+[%-     ELSE -%]
+          <a href="[% dburl %]" target="_blank">
+[%-     END -%]
+[%    END %]
+[%    dbdesc | truncate(config.get('maxlength_dbname')) %][% IF dburl %]</a>[% END %]
+[%   END %]
+&nbsp;[%- IF titleinfo -%][ [% titleinfo %] ][%- END -%]
+[% ELSE %]
+[%- IF titleinfo -%]<br />[ [% titleinfo %] ][%- END -%]
+[% END %]
+
+[% IF record.get_date %]<br /><i class="far fa-calendar-alt"></i> [% msg.maketext("hinzugefügt") %] [% record.get_date.replace('\.\d+$','') %][% END %]
+
+[% IF record_from_cache %]
+          <br/><i class="fas fa-exclamation"></i><b class="ps-2">[% msg.maketext("Der Titel wurde im Katalog gelöscht. Sie sehen die ursprünglichen Informationen.") %]</b>
+[% END %]
+	
+[% ELSE # record_exists %]
+
+<div class="alert alert-info mt-5">[% msg.maketext("Dieser Titel existiert nicht mehr im Katalog!") %]</div>
+
+[% END # record_exists %]
+        </div> <!-- end: titleinfo -->
+        <div class="ob-titlemark ps-2 d-flex d-none d-md-block">[% IF signatur %][% msg.maketext("Signatur") %]: <span>[% signatur | truncate(config.get('maxlength_mark')) %]</span>[% END %]
+        </div>
+
+	<div class="ps-2 d-flex">
+          <div class="d-flex flex-wrap ob-titleactions">
+[% IF record_exists && record.id && record.database %]
+[%   IF NOT record_from_cache %]
+            <div class="pe-1 pb-1">
+              <a class="btn btn-primary pe-2" href="[% IF NOT hide_detail && NOT hide_hit %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]">[% IF hide_detail %]<i class="fas fa-ban"></i>[% ELSE %]<i class="fas fa-eye"></i>[% END %] <span>Details</span></a>
+            </div>
+[%   END # record_from_cache %]	    
+[% IF NOT with_cartitems_delete && NOT hide_hit && NOT record_from_cache %]
+	    <div class="pe-1 pb-1">
+              <a  class="btn btn-primary pe-2" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span>[% msg.maketext("Merken") %]</span></a>
+	    </div>
+[% END %]
+
+[% IF fulltext && fulltext.match('warpto') %]
+	    <div class="pe-1 pb-1">	    
+              <a class="btn btn-primary pe-2" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
+	    </div>
+[% END %]
+
+[% IF toc %]
+	    <div class="pe-1 pb-1">	    
+              <a class="btn btn-primary pe-2" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span class="d-none d-sm-inline">[% toc_i18n %]</span></a>
+	    </div>
+[% END %]
+
+
+[% END # id / database%]
+
+
+[% IF tagname %]
+	    <div class="pe-1 pb-1">	    
+              <a href="[% path_prefix %]/[% config.get('tags_loc') %]/names/id/[% tagname %]" class="ob-tags">[% tagname %]</a>
+	    </div>
+[% END %]
+	
+[% IF user_owns_litlist %]
+	    <div class="pe-1 pb-1">
+	      <a class="btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('litlists_loc') %]/id/[% litlist.properties.id %]/items/id/[% listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><i class="fas fa-trash"></i> <span>[% msg.maketext("Löschen") %]</span></a>
+	    </div>
+[% END %]
+[% IF parameter.private_tags %]
+	    <div class="pe-1 pb-1">
+	      <a class="ob-collection btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('tags_loc') %]/[% parameter.tag %]?titleid=[% record.get_encoded_id %];dbname=[% record.database %]" title="[% msg.maketext("Entfernen") %]"><i class="fas fa-trash"></i> <span>[% msg.maketext("Löschen") %]</span></a>
+	    </div>
+[% END %]
+[% IF with_cartitems_delete %]
+	    <div class="pe-1 pb-1"><a class="btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('cartitems_loc') %]/id/[% record.listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><i class="fas fa-trash"></i> <span>[% msg.maketext("Löschen") %]</span></a>
+	    </div>
+[% END %]
+          </div><!-- end ob-titleactions -->
+
+[% IF record_exists && record.id && record.database %]
+	   <div class="ms-auto ob-availability">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 me-1 pe-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="ps-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% ELSE %]<span id="availability_[% record.database %]_[% record.get_encoded_id %]" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/availability?l=[% lang %]" hx-trigger="revealed"></span>[% END %]
+	   </div>
+[% END # record_exists %]	   
+	</div><!-- end: flex -->
+	
+    </div><!-- end: ob-brieftitle -->
+</div><!-- end: ob-item -->
+<!-- Ende einzelner Treffer -->

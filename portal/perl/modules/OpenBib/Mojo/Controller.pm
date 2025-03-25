@@ -294,7 +294,7 @@ sub print_json {
     return encode_json($json_ref);
 }
 
-sub print_page {
+async sub print_page {
     my ($self,$templatename,$ttdata)=@_;
 
     # Log4perl logger erzeugen
@@ -367,6 +367,7 @@ sub print_page {
     my $content = "";
 
     $ttdata->{representation} = $representation;
+
     
     eval {
         my $template = Template->new({ 
@@ -388,7 +389,7 @@ sub print_page {
             $logger->info("Total time until stage 1 is ".timestr($timeall));
         }
         
-        $template->process($templatename, $ttdata) || do {
+        await $template->process($templatename, $ttdata) || do {
             $logger->fatal($template->error()." url: $url");
             return "Fehler";
         };

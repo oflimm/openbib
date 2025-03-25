@@ -173,14 +173,17 @@ sub startup ($app){
 	$logger->debug("Mojo - Path: ".$r->url->path);
 	$logger->debug("Mojo - Method: ".$r->method);
 	$logger->debug("Mojo - Route: ".$c->match);
-	$logger->debug("Mojo - Format: ".$c->stash('format'));
-	$logger->debug("Mojo - Repraesentation: ".$c->stash('representation'));
+	$logger->debug("Mojo - Format: ".$c->stash('format')) if (defined $c->stash('format'));
+	$logger->debug("Mojo - Repraesentation: ".$c->stash('representation')) if (defined $c->stash('representation'));
 
 	# Wenn default_runmode gesetzt, dann ausschliesslich in diesen wechseln
-	if ($c->stash('default_runmode') eq "show_warning"){
+	if (defined $c->stash('default_runmode') && $c->stash('default_runmode') eq "show_warning"){
 	    return $c->print_warning($c->stash('warning_message'));
 	}        
-		
+
+	# Always render later
+	$c->render_later;
+	
 	# content_type, representation und lang durch content-Negotiation bestimmen
 	# und ggf. zum konkreten Repraesenations-URI redirecten
 	# Setzt: content_type,represenation,lang
@@ -322,21 +325,21 @@ sub _before_dispatch($c){
         $logger->error("No Request");
     }
 
-    my $remote_ip = ''; # cgiapp: $r->remote_host || '';
+    my $remote_ip = '';
     
     my $forwarded_for = $r->headers->header('X-Forwarded-For') || '';
     my $xclientip     = $r->headers->header('X-Client-IP')     || '';
-    my $servername    = $r->url->to_abs->host;
-    my $port          = $r->url->to_abs->port;
+    my $servername    = $r->url->to_abs->host || '';
+    my $port          = $r->url->to_abs->port || '';
 
     if ($port){
 	$servername = "$servername:$port";
     }
     
     if ($logger->is_debug){
+	$logger->debug("Servername: $servername");
 	$logger->debug("X-Forwarded-For: $forwarded_for");
 	$logger->debug("X-Client-IP: $xclientip");
-	$logger->debug("Servername: $servername");
     }
     
     if (defined $xclientip && $xclientip =~ /([^,\s]+)$/) {
@@ -346,7 +349,7 @@ sub _before_dispatch($c){
     $c->stash('remote_ip',$remote_ip);
     $c->stash('servername',$servername);
 
-    my $sessionID    = $c->session('sessionID');
+    my $sessionID    = $c->session('sessionID') || '';
 
     my $session      = OpenBib::Session->new({ sessionID => $sessionID , view => $view, config => $config });
     
@@ -640,6 +643,7 @@ sub process_uri($c) {
     }
 
     my $location = "$scheme://$servername$location_uri";
+    
     if (@$args_ref){
 	my $args = join('&',@$args_ref);
         $location.="?$args";

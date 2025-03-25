@@ -72,7 +72,7 @@ sub new {
         ? $arg_ref->{config}                : undef;
 
     my $remote_ip  = exists $arg_ref->{remote_ip}
-        ? $arg_ref->{remote_ip}             : undef;
+        ? $arg_ref->{remote_ip}             : '';
     
     # Log4perl logger erzeugen
     my $logger = get_logger();

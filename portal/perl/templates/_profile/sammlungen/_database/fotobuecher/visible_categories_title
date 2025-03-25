@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: visible_categories_title
+# Templatename: visible_categories_titset
 #
 # Typ         : Subtemplate
 #
@@ -13,25 +13,24 @@
 -%]
 [%-# Ausgabekategorien -%]
 [%- categories = [
-                'T0310', # msg.maketext("T0310") AST  
-                'T0331', # msg.maketext("T0331") HST
+                'T0310', # msg.maketext("T0310") AST
+		'Band',  # msg.maketext("Band") Bandangabe
+                'Titel', # msg.maketext("Titel") HST
                 #'T0335', # msg.maketext("T0335") Zusatz zum HST
                 'T0089', # msg.maketext("T0089") Bandangabe  
-                'T0304', # msg.maketext("T0304") EST 
-                'T0370', # msg.maketext("T0370") WST
+                'Originaltitel', # msg.maketext("Originaltitel") EST 
+                'Weitere Titel', # msg.maketext("Weitere Titel") WST
+                'Enthaltener Titel', # msg.maketext("Enthaltener Titel") 505 80 $t
                 'T0341', # msg.maketext("T0341") PSTVorlage
-                'T0100', # msg.maketext("T0100") Verfasser
-                'T0101', # msg.maketext("T0101") Person
-                'T0103', # msg.maketext("T0103") Gefeierte Person
-                'T0200', # msg.maketext("T0200") Urheber
-                'T0201', # msg.maketext("T0201") Koerperschaft
-                'T0403', # msg.maketext("T0403") Auflage
-                'T0410', # msg.maketext("T0410") Verlagsort
-                'T0412', # msg.maketext("T0412") Verlag
-                'T0425', # msg.maketext("T0425") ErschJahr
-                #'T0424', # msg.maketext("T0424") ErschJahr/Ansetzung
-                'T0405', # msg.maketext("T0405") Erscheinungsverlauf
-                'T0523', # msg.maketext("T0523") Erscheinungsweise
+                'Person', # msg.maketext("Person") Verfasser
+                'Institution', # msg.maketext("Institution") Koerperschaft
+                'Ausgabe', # msg.maketext("Ausgabe") Auflage T250a
+                #'T0410', # msg.maketext("T0410") Verlagsort
+                'Ort/Verlag/Jahr', # msg.maketext("Ort/Verlag/Jahr") T260a/b/c
+                #'Jahr', # msg.maketext("Jahr") T260c
+                'T0424', # msg.maketext("T0424") ErschJahr/Ansetzung
+                'Erscheinungsverlauf', # msg.maketext("Erscheinungsverlauf") Erscheinungsverlauf
+                'Erscheinungsweise', # msg.maketext("Erscheinungsweise") Erscheinungsweise
                 'T0591', # msg.maketext("T0591") Verfasser Quelle
                 'T0594', # msg.maketext("T0594") ErschOrt Quelle
                 'T0595', # msg.maketext("T0595") ErschJahr Quelle
@@ -39,24 +38,24 @@
                 'T0413', # msg.maketext("T0413") Drucker
 #                'T0035', # msg.maketext("T0035") ErschLand
                 'T0508', # msg.maketext("T0508") Quelle
-                'T0433', # msg.maketext("T0433") Kollation
+                'Umfang', # msg.maketext("Umfang") T300a/b
 #                'T0434', # msg.maketext("T0434") Sonst. Angaben
 #                'T0437', # msg.maketext("T0437") Begleitmat.
                 'T0334', # msg.maketext("T0334") Material
-                'T0540', # msg.maketext("T0540") ISBN
+                'ISBN', # msg.maketext("ISBN") T020/9
                 'T0553', # msg.maketext("T0553") ArtikelNr. als 13-stellige ISBN
-                'T0543', # msg.maketext("T0543") ISSN
-                'T0552', # msg.maketext("T0552") Identifier/DOI
+                'ISSN', # msg.maketext("ISSN") ISSN
                 'T0652', # msg.maketext("T0652") EDV Material
                 'T0655', # msg.maketext("T0655") EDV Adress
-                'T0451', # msg.maketext("T0451") GesTit Vorl
+                'Gesamttitel', # msg.maketext("Gesamttitel") GesTit Vorl 830
+                'Überordnung', # msg.maketext("Überordnung") Ueberordnung 773
                 'T0590', # msg.maketext("T0590") HSTQuelle
-                'T0662', # msg.maketext("T0662") EDVurl
+                'URL', # msg.maketext("URL") EDVurl
                 'T1664', # msg.maketext("T1664") Provenienz
                 'T2662', # msg.maketext("T2662") USB EDVurl
                 'T2663', # msg.maketext("T2663") USB URLInfo
                 #'T5100', # msg.maketext("T5100") Allg. Zaehlung
-                'T5005', # msg.maketext("T5005") Uebergeordn. Werke
+#                'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 ]
 

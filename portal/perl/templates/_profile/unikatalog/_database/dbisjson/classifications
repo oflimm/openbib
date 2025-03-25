@@ -1,0 +1,57 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%- IF representation == '' || representation == 'html' ;
+
+    katalogname = dbinfo.get('dbnames').${database}.short ;
+    
+    layout_param = {
+
+      'main_template' = 'classifications_html'
+      'sidebar_template' = 'classifications_sidebar'
+      #'sidebar_template_description' = msg.maketext("Spezifische Suche")
+      'sidebar_button_in_main_template' = 1
+
+      'without_navigation_search' = 1
+      
+      'database' = database
+
+      'active_menu' = 'dbis'
+      
+      'jump_top' = 1
+
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Kataloge')
+	     url  = "${path_prefix}/${config.get('databases_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = "DBIS"
+	     url  = "#"
+	  },
+	  {
+	     desc = msg.maketext('Fachgruppen')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}/classifications.json?l=${lang}"
+	  }
+       ]
+
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="classifications_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="classifications_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

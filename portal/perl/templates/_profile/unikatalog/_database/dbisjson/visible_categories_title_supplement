@@ -1,0 +1,28 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_titset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%-# Ausgabekategorien -%]
+[%- supplemental_categories = [
+                'Fachgebiete', # msg.maketext("Fachgebiete") Fachgebiete 0700
+                'Schlagwörter', # msg.maketext("Schlagwörter") Schlagwoerter 0710
+                'Erscheinungsform', # msg.maketext("Erscheinungsform") Erscheinungsform 0508
+                'Erscheinungsjahr', # msg.maketext("Erscheinungsjahr") Erscheinungsjahr 0425
+		'Datenbank-Typ', # msg.maketext("Datenbank-Typ") Datenbanktyp 0800
+		'Verlag', # msg.maketext("Verlag") Verlag 0412
+		'ISBN', # msg.maketext("ISBN") Verlag 0425
+		'Berichtszeitraum', # msg.maketext("Berichtszeitraum") Berichtszeitraum 0523
+		'Weitere Hinweise', # msg.maketext("Weitere Hinweise") Weitere Hinweise 0600
+
+                ]
+
+-%]

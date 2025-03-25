@@ -305,7 +305,7 @@ sub output {
 	}
     }
     else {
-	open(OUTPUT,">:raw",$outputfile);
+	open(OUTPUT,">:utf8",$outputfile);
 	
 	$logger->info($description);
 
@@ -532,32 +532,80 @@ sub _cdm_process_item {
     output($record_ref,"Dumping item $id in collection $collection as record.json done");
 
     my $is_cover = 1;
-    foreach my $page_ref (@{$record_ref->{structure}{node}{node}}){
-	if (defined $page_ref->{page} && ref $page_ref->{page} eq "ARRAY"){
-	    foreach my $thispage_ref (@{$page_ref->{page}}){
+    if (defined $record_ref->{structure}{node}{node} && ref $record_ref->{structure}{node}{node} eq "ARRAY"){
+	foreach my $page_ref (@{$record_ref->{structure}{node}{node}}){
+	    if (defined $page_ref->{page} && ref $page_ref->{page} eq "ARRAY"){
+		foreach my $thispage_ref (@{$page_ref->{page}}){
+		    my $format = "jpg";
+		    if ($thispage_ref->{pagefile} =~m/\.tif/){
+			$format = "tif";
+		    }
+		    elsif ($thispage_ref->{pagefile} =~m/\.pdf/){
+			$format = "pdf";
+		    }
+		    my $filename = $thispage_ref->{pageptr}.".$format";
+		    my $png      = $thispage_ref->{pageptr}.".png";
+		    my $jpeg     = $thispage_ref->{pageptr}.".jpg";
+		    my $webview  = $thispage_ref->{pageptr}."_web.jpg";
+		    my $thumb    = $thispage_ref->{pageptr}."_thumb.jpg";
+		    my $cover    = "cover.jpg";
+		    
+		    if (-e "$new_dir/$filename"){
+			$logger->info("File $filename already exists. Ignoring");
+		    }
+		    else {
+			my $cdm_url = "https://${host}/cgi-bin/showfile.exe?CISOROOT=/${collection}&CISOPTR=".$thispage_ref->{pageptr};
+			
+			$logger->info("Getting $filename from $cdm_url");		
+			
+			system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'") unless($offline);
+		    }
+
+		    my $convertargs = ($format eq "tif")?'-flatten':'';
+		    
+		    # Generate Thumbs und Webview
+		    if ($format eq "tif" && !-e "$new_dir/$png"){
+			system("convert $convertargs $new_dir/$filename $new_dir/$png");
+		    }
+
+		    if ($is_cover && !-e "$new_dir/$cover"){
+			system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$cover");
+			$is_cover = 0;
+		    }
+		    
+		    if (!-e "$new_dir/$webview"){
+			system("convert $convertargs -resize '900x900>' $new_dir/$filename $new_dir/$webview");
+		    }
+		    
+		    if (!-e "$new_dir/$thumb"){
+			system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
+		    }
+		}
+	    }
+	    elsif (defined $page_ref->{page} && ref $page_ref->{page} eq "HASH"){
 		my $format = "jpg";
-		if ($thispage_ref->{pagefile} =~m/\.tif/){
+		if ($page_ref->{page}{pagefile} =~m/\.tif/){
 		    $format = "tif";
 		}
-		elsif ($thispage_ref->{pagefile} =~m/\.pdf/){
+		elsif ($page_ref->{page}{pagefile} =~m/\.pdf/){
 		    $format = "pdf";
 		}
-		my $filename = $thispage_ref->{pageptr}.".$format";
-		my $png      = $thispage_ref->{pageptr}.".png";
-		my $jpeg     = $thispage_ref->{pageptr}.".jpg";
-		my $webview  = $thispage_ref->{pageptr}."_web.jpg";
-		my $thumb    = $thispage_ref->{pageptr}."_thumb.jpg";
+		my $filename = $page_ref->{page}{pageptr}.".$format";
+		my $jpeg     = $page_ref->{page}{pageptr}.".jpg";
+		my $png      = $page_ref->{page}{pageptr}.".png";
+		my $webview  = $page_ref->{page}{pageptr}."_web.jpg";
+		my $thumb    = $page_ref->{page}{pageptr}."_thumb.jpg";
 		my $cover    = "cover.jpg";
 		
 		if (-e "$new_dir/$filename"){
 		    $logger->info("File $filename already exists. Ignoring");
 		}
 		else {
-		    my $cdm_url = "https://${host}/cgi-bin/showfile.exe?CISOROOT=/${collection}&CISOPTR=".$thispage_ref->{pageptr};
+		    my $cdm_url = "https://${host}/cgi-bin/showfile.exe?CISOROOT=/${collection}&amp;CISOPTR=".$page_ref->{page}{pageptr};
 		    
 		    $logger->info("Getting $filename from $cdm_url");		
 		    
-		    system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'");
+		    system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'") unless ($offline);
 		}
 
 		my $convertargs = ($format eq "tif")?'-flatten':'';
@@ -571,7 +619,7 @@ sub _cdm_process_item {
 		    system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$cover");
 		    $is_cover = 0;
 		}
-		
+
 		if (!-e "$new_dir/$webview"){
 		    system("convert $convertargs -resize '900x900>' $new_dir/$filename $new_dir/$webview");
 		}
@@ -581,44 +629,46 @@ sub _cdm_process_item {
 		}
 	    }
 	}
-	elsif (defined $page_ref->{page} && ref $page_ref->{page} eq "HASH"){
+    }
+    elsif (defined $record_ref->{structure}{node}{node}{page} && ref $record_ref->{structure}{node}{node}{page} eq "ARRAY"){
+	foreach my $thispage_ref (@{$record_ref->{structure}{node}{node}{page}}){
 	    my $format = "jpg";
-	    if ($page_ref->{page}{pagefile} =~m/\.tif/){
+	    if ($thispage_ref->{pagefile} =~m/\.tif/){
 		$format = "tif";
 	    }
-	    elsif ($page_ref->{page}{pagefile} =~m/\.pdf/){
+	    elsif ($thispage_ref->{pagefile} =~m/\.pdf/){
 		$format = "pdf";
 	    }
-	    my $filename = $page_ref->{page}{pageptr}.".$format";
-	    my $jpeg     = $page_ref->{page}{pageptr}.".jpg";
-	    my $png      = $page_ref->{page}{pageptr}.".png";
-	    my $webview  = $page_ref->{page}{pageptr}."_web.jpg";
-	    my $thumb    = $page_ref->{page}{pageptr}."_thumb.jpg";
+	    my $filename = $thispage_ref->{pageptr}.".$format";
+	    my $png      = $thispage_ref->{pageptr}.".png";
+	    my $jpeg     = $thispage_ref->{pageptr}.".jpg";
+	    my $webview  = $thispage_ref->{pageptr}."_web.jpg";
+	    my $thumb    = $thispage_ref->{pageptr}."_thumb.jpg";
 	    my $cover    = "cover.jpg";
 	    
 	    if (-e "$new_dir/$filename"){
 		$logger->info("File $filename already exists. Ignoring");
 	    }
 	    else {
-		my $cdm_url = "https://${host}/cgi-bin/showfile.exe?CISOROOT=/${collection}&amp;CISOPTR=".$page_ref->{page}{pageptr};
+		my $cdm_url = "https://${host}/cgi-bin/showfile.exe?CISOROOT=/${collection}&CISOPTR=".$thispage_ref->{pageptr};
 		
 		$logger->info("Getting $filename from $cdm_url");		
 		
-		system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'");
+		system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'") unless ($offline);
 	    }
-
+	    
 	    my $convertargs = ($format eq "tif")?'-flatten':'';
 	    
 	    # Generate Thumbs und Webview
 	    if ($format eq "tif" && !-e "$new_dir/$png"){
 		system("convert $convertargs $new_dir/$filename $new_dir/$png");
 	    }
-
+	    
 	    if ($is_cover && !-e "$new_dir/$cover"){
 		system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$cover");
 		$is_cover = 0;
 	    }
-
+	    
 	    if (!-e "$new_dir/$webview"){
 		system("convert $convertargs -resize '900x900>' $new_dir/$filename $new_dir/$webview");
 	    }
@@ -653,7 +703,7 @@ sub _cdm_process_item {
 		
 		$logger->info("Getting $filename from $cdm_url");		
 		
-		system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'");
+		system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'") unless ($offline);
 	    }
 	    
 	    my $convertargs = ($format eq "tif")?'-flatten':'';
@@ -705,7 +755,7 @@ sub _cdm_process_item {
 		
 		$logger->info("Getting $filename from $cdm_url");		
 		
-		system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'");
+		system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'") unless ($offline);
 	    }
 
 	    if ($format eq "pdf"){
@@ -780,7 +830,7 @@ sub _cdm_process_item {
 	    
 	    my $new_url = $viewerurl."/$collection/$id/$img_name";
 	    
-	    system("wget --quiet --no-check-certificate -O $new_dir/$img_name '$cdm_imgurl'");
+	    system("wget --quiet --no-check-certificate -O $new_dir/$img_name '$cdm_imgurl'") unless ($offline);
 	    $logger->info("Dumping $cdm_imgurl -> $img_name");
 	    
 	    $link_node->setAttribute('xlink:href' => $new_url);

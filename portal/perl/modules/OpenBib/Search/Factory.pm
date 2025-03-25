@@ -35,6 +35,7 @@ use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Config;
 use OpenBib::Search::Backend::BibSonomy;
 use OpenBib::Search::Backend::DBIS;
+use OpenBib::Search::Backend::DBISJSON;
 use OpenBib::Search::Backend::ElasticSearch;
 use OpenBib::Search::Backend::Solr;
 use OpenBib::Search::Backend::EZB;
@@ -86,6 +87,9 @@ sub create_searcher {
         elsif ($system eq "Backend: DBIS"){
             $sb = "dbis";
         }
+        elsif ($system eq "Backend: DBIS-JSON"){
+            $sb = "dbisjson";
+        }
         elsif ($system eq "Backend: BibSonomy"){
             $sb = "bibsonomy";
         }
@@ -113,6 +117,9 @@ sub create_searcher {
     }
     elsif ($sb eq "dbis"){        
         return new OpenBib::Search::Backend::DBIS($arg_ref);
+    }
+    elsif ($sb eq "dbisjson"){        
+        return new OpenBib::Search::Backend::DBISJSON($arg_ref);
     }
     elsif ($sb eq "bibsonomy"){        
         return new OpenBib::Search::Backend::BibSonomy($arg_ref);

@@ -1,0 +1,49 @@
+[%-
+
+   records = [];
+
+   FOREACH record IN classifications ;
+
+      thisrecord = {
+           link = {
+                    rel = 'self'
+                    href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/dbis/${config.get('classifications_loc')}/id/${record.name}.json"
+           }
+           id       = record.name
+           database = {
+                link = {
+                       rel = 'self'
+                       href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/dbis.json"
+                }
+                id                = 'dbis'
+                description       = dbinfo.get('dbnames').dbis.full
+                description_short = dbinfo.get('dbnames').dbis.short
+           }
+           fields      = {
+	     name  = record.name
+	     desc  = record.desc
+	     count = record.count
+	   }
+      };
+      records.push(thisrecord);
+      
+     END;
+
+     classifications = {
+        link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/dbis/${config.get('classifications_loc')}.json"
+        }
+
+        meta = {
+	  source = "Datenbank-Infosystem (DBIS) Regensburg"
+	  source_url = "https://dbis.ur.de//index.php?ref=about"
+	}
+
+        records = records
+     
+     };
+     
+     to_json(classifications);
+
+-%]

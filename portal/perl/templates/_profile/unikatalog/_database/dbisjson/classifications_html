@@ -1,0 +1,106 @@
+[%#-
+#######################################################################
+#
+# Templatename: classification_collection_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der DBIS Fachgruppen
+#
+#######################################################################
+-%]
+
+[%-
+
+  denylist_cln = {
+    '39' = 1 # Sport
+    '27' = 1 # Militaerwissenschaft
+    '23' = 1 # Maschinenbau
+    '11' = 1 # Elektrotechnik
+    '42' = 1 # Werkstoffwissenschaften
+    '1' = 1 # Agrar
+    '7' = 1 # Architektur
+  };
+
+  with_cloud = 1;
+
+-%]
+
+<h3 class="pt-2">[% msg.maketext("Datenbanken der Universität zu Köln") %]</h3>
+
+<p/>
+
+<h5>[% msg.maketext("Fachgebiete") %]</h5>
+
+    <div class="row flex-md-row-reverse">
+      <div class="col-md-3 d-none d-md-block">
+        [% PROCESS common/subtemplate name=layout_param.sidebar_template %]
+      </div>
+      <div class="col-md-9 ps-3" >
+
+<ul class="nav nav-tabs" role="tablist">
+<li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#ob-dbis_list">[% msg.maketext("Liste") %]</a></li>
+[% IF with_cloud %]
+<li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#ob-dbis_cloud">[% msg.maketext("Wolke") %]</a></li>
+[% END %]
+</ul>
+
+<div class="tab-content pt-3 mb-2">
+
+<div role="tabpanel" class="tab-pane fade-in active" id="ob-dbis_list">
+
+<ul class="list-group">
+[% FOREACH classification IN classifications;
+   searchterm    = classification.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
+
+   NEXT IF denylist_cln.${searchterm};
+%]
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbisjson;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% classification.desc %] ([% classification.count %])</a></li>
+[% END %]
+</ul>
+</div>
+
+[% IF with_cloud %]
+<div role="tabpanel" class="tab-pane fade-in" id="ob-dbis_cloud">
+
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+<ol class="ob-cloud">
+[% FOREACH classification IN classifications %]
+[%-
+   classnr       = classification.class;
+   itemclass     = css_classes.$classnr;
+   searchterm    = classification.name;
+   searchprefix  = config.get('searchfield').classification.prefix;
+
+   NEXT IF denylist_cln.${searchterm};
+-%]
+<li class="[% itemclass %]"><span>[% classification.count %] Titel sind in der Fachgruppe</span><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbisjson;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]"  class="tag" title="[% classification.count %] Zeitschriften sind in der Fachgruppe [% classification.desc %]">[% classification.desc %]</a></li>
+[% END %]
+</ol>
+<!-- Ende Tag-Cloud -->
+
+</div>
+[% END %]
+
+</div><!-- End: Tabcontent -->
+
+<button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" title="[% msg.maketext("Suchen") %]"><i class="fas fa-search fa-2x"></i></button>
+
+      </div>
+    </div>
+
+<a class="btn btn-primary mt-3 mb-3" href="https://dbis.ur.de/USBK" target="_blank"><i class="fas fa-globe me-2"></i> [% msg.maketext("Direkt in DBIS recherchieren") %]</a>

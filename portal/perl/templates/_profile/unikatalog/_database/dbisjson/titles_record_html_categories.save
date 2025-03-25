@@ -1,0 +1,328 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_categories
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe von bibliographischen Daten fuer einen
+# einzelnen Titelsatz
+#
+# Anpassungen: Keine Suchverlinkung der Normdaten
+#
+#######################################################################
+-%]
+[%-
+
+   bklookup    = config.load_bk;
+
+   topic_map = {};
+   FOREACH topic IN user.get_topics;
+      topic_map.${topic.id} = topic.name;
+   END;
+
+   catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
+
+   access_icon = "";
+   
+   access_icon_ref = {
+      'g' = config.get('dbis_green_img')
+      'y' = config.get('dbis_yellow_img')
+      'n' = config.get('dbis_de_img')
+      'l' = config.get('dbis_yellow_red_img')
+      'r' = config.get('dbis_red_img')
+   };
+
+   IF normdata.${"T4120"} ;
+     access = normdata.${"T4120"}.first.subfield;
+
+     IF access_icon_ref.${access};
+        access_icon = access_icon_ref.${access};
+
+        access_icon = "<img src=\"${access_icon}\"  alt=\"${access_icon}\" />";
+     END;
+
+   END;
+
+   # Preprocessing lizensiert, OA oder Nationallizens
+
+   # Lizensierter Volltext oder OA? (Ausgabe Zugriffshinweis)
+   is_licensed = 0;
+   is_oa = 0;
+   is_national = 0;
+
+   FOREACH item IN normdata.${'T4120'} ;
+      IF item.subfield == "g";
+         is_oa = 1;
+         LAST;
+      ELSIF item.subfield == "y";
+         is_licensed = 1;
+         LAST;
+      ELSIF item.subfield == "n";
+         is_national = 1;
+         LAST;
+      END;
+   END;
+
+-%]
+[% IF format == "full" %]
+[% IF NOT is_supplemental %]
+<h2 class="mb-3">[% IF access_icon %][% access_icon %][% END %] [% normdata.${"T0331"}.first.content %]
+</h2>
+[%   is_supplemental = 1; %]
+[% END %]
+
+<div class="table-responsive">
+<table class="table table-striped table-hover ob-title_fields">
+[%-
+   request_base = config.get('search_defaultparams');
+   request_base = "l=${lang};${request_base}";
+
+   IF NOT viewdbs ;
+       viewdbs = config.get_dbs_of_view(view);
+   END ;
+
+   IF NOT searchprofileid_of_database ;
+      searchprofileid_of_database = config.get_searchprofile_of_database(record.database) ;
+   END ;
+   IF NOT searchprofileid_of_sysprofile ;
+      searchprofileid_of_sysprofile = config.get_searchprofile_of_systemprofile(view);
+   END ;
+
+   IF normdata.${'T4400'}.first.content == 'online' && NOT normdata.${"T0662"}.first.content && NOT normdata.${"T2662"}.first.content;
+     currently_unavailable = 1;
+   END;
+
+searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
+globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
+rswkswt_done      = {};
+
+#USE dumper;dumper.dump(normdata);
+
+content_map = {};
+
+FOREACH field IN normdata;
+
+  category = field.key ;
+
+  FOREACH item IN field.value;
+    content      = item.content;
+
+    SWITCH category;
+
+    CASE "T0331";
+         content   = "<b>${highlightquery(searchquery,content)}</b>";
+
+         IF NOT content_map.${'Titel'} ;
+	    content_map.${'Titel'} = [];
+	 END;
+         content_map.${'Titel'}.push(content);
+
+    CASE "T0370";
+         content   = "<b>${highlightquery(searchquery,content)}</b>";
+
+         IF NOT content_map.${'Weitere Titel'} ;
+	    content_map.${'Weitere Titel'} = [];
+	 END;
+         content_map.${'Weitere Titel'}.push(content);
+
+    CASE "T4120";
+         thiscontent   = msg.maketext("Datenbankrecherche starten");
+	 #content       = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(content)}" ;
+	 content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\"><b>${thiscontent}</b></a>";
+
+         IF NOT content_map.${'Zugang'} ;
+	    content_map.${'Zugang'} = [];
+	 END;
+         content_map.${'Zugang'}.push(content);
+
+    CASE "T0501";
+    	 content    = item.content;
+	 content    = "<b>${content}</b>";
+
+         IF NOT content_map.${'Verfügbarkeit'} ;
+	    content_map.${'Verfügbarkeit'} = [];
+	 END;
+         content_map.${'Verfügbarkeit'}.push(content);
+
+    CASE "T0510";
+
+         IF NOT content_map.${'Hinweise'} ;
+	    content_map.${'Hinweise'} = [];
+	 END;
+         content_map.${'Hinweise'}.push(content);
+
+    CASE "T0750";
+
+         content_map.${'Inhalt'} = [];	 
+         content_map.${'Inhalt'}.push(content);
+	 IF lang == 'en' && normdata.defined("T0751");
+	   content_eng = normdata.${"T0751"}.first.content;
+           content_map.${'Inhalt'} = [];
+           content_map.${'Inhalt'}.push(content_eng);
+	 END;
+	 
+    CASE "T0511";
+
+         IF NOT content_map.${'Anleitung'} ;
+	    content_map.${'Anleitung'} = [];
+	 END;
+         content_map.${'Anleitung'}.push(content);
+
+
+    CASE "T0700";
+	 
+         IF NOT content_map.${'Fachgebiete'} ;
+	    content_map.${'Fachgebiete'} = [];
+	 END;
+         content_map.${'Fachgebiete'}.push(content);
+
+    CASE "T0710";
+	 
+         IF NOT content_map.${'Schlagwörter'} ;
+	    content_map.${'Schlagwörter'} = [];
+	 END;
+         content_map.${'Schlagwörter'}.push(content);
+
+    CASE "T0508";
+	 
+         IF NOT content_map.${'Erscheinungsform'} ;
+	    content_map.${'Erscheinungsform'} = [];
+	 END;
+         content_map.${'Erscheinungsform'}.push(content);
+
+    CASE "T0523";
+	 
+         IF NOT content_map.${'Berichtszeitraum'} ;
+	    content_map.${'Berichtszeitraum'} = [];
+	 END;
+         content_map.${'Berichtszeitraum'}.push(content);
+
+    CASE "T0412";
+	 
+         IF NOT content_map.${'Verlag'} ;
+	    content_map.${'Verlag'} = [];
+	 END;
+         content_map.${'Verlag'}.push(content);
+
+    CASE "T0800";
+	 
+         IF NOT content_map.${'Datenbank-Typ'} ;
+	    content_map.${'Datenbank-Typ'} = [];
+	 END;
+         content_map.${'Datenbank-Typ'}.push(content);
+
+    CASE "T0540";
+	 
+         IF NOT content_map.${'ISBN'} ;
+	    content_map.${'ISBN'} = [];
+	 END;
+         content_map.${'ISBN'}.push(content);
+
+    CASE "T0425";
+	 
+         IF NOT content_map.${'Erscheinungsjahr'} ;
+	    content_map.${'Erscheinungsjahr'} = [];
+	 END;
+         content_map.${'Erscheinungsjahr'}.push(content);
+
+    CASE ;
+         content   = highlightquery(searchquery,item.content);
+   END;
+  END;
+END;
+
+display_types = {
+   'Schlagwörter' => 'list',
+   'Fachgebiete' => 'list',   
+};
+
+
+FOREACH category IN categories;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+   IF content_map.${category}.first;
+      IF display_types.${category} == 'list' ;
+        IF content_map.${category}.size > 1 ;
+          content = "<ul>";
+          FOREACH thiscontent IN content_map.${category};
+	    content="${content}<li>${thiscontent}</li>";
+	  END;
+	  content = "${content}</ul>";
+	ELSE ;
+	  content = content_map.${category}.first;
+	END;
+      ELSE ;
+        content = content_map.${category}.join(' ; ');
+      END;
+
+      # Titel hervorheben
+      IF category == "T0331";
+        content = "<span class=\"ob-title\">${content}</span>";
+      END;
+-%]
+<tr><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+[%
+   END;
+END;
+-%]
+
+[%- IF currently_unavailable -%]
+<tr><th class="ob-field">[% msg.maketext("Volltext")%]</th><td>derzeit nicht verf&uuml;gbar (z.B. noch im Erwerbungsvorgang)</td></tr>
+[%- END -%]
+[%- IF bibkey -%]
+<tr><th class="ob-field">bibkey</th><td>[% bibkey %]</td></tr>
+[%- END -%]
+</table>
+</div>
+[% ELSIF format == "BibTeX" %]
+<div>
+<pre>
+[% record.to_bibtex %]
+</pre>
+</div>
+[% ELSIF format == "Text" %]
+<pre>
+[% FOREACH category IN categories;
+    FOREACH item IN normdata.$category;
+    content = item.content;
+
+    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+    # in Config.pm fuer die entsprechende Datenbank definiert
+    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+    # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+-%]
+[% msg.maketext("${thiscategory}") | format("%- 24s") %]: [% content %]
+[% END -%]
+[%- END -%]
+[%- IF holding.size > 0 -%]
+[%- FOREACH thisholding IN holding -%]
+[% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% thisholding.${"X4000"}.content.full %]
+[% msg.maketext("Standort             ") %] [% loop.count %] : [% thisholding.${"X0016"}.content %]
+[% msg.maketext("Lokale Signatur      ") %] [% loop.count %] : [% thisholding.${"X0014"}.content %]
+[% msg.maketext("Inventarnummer       ") %] [% loop.count %] : [% thisholding.${"X0005"}.content %]
+[% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% thisholding.${"X1204"}.content %]
+[% END %]
+
+[% END %]
+</pre>
+[% ELSIF format == "EndNote" %]
+<pre>
+[% record.to_endnote %]
+</pre>
+[% END %]

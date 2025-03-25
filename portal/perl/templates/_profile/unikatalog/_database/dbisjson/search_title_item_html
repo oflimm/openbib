@@ -1,0 +1,197 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+<!-- begin: result item -->
+[%- dbdesc   = dbinfo.get('dbnames').${database}.full ;
+    dburl    = dbinfo.get('urls').${database} ;
+    request_base    = [] ;#num=${hitrange};srt=${sorttype};srto=${sortorder};" ;
+
+    IF searchquery.get_option('num') ;
+       request_base.push("num=${searchquery.get_option('num')}");
+    END;
+    IF searchquery.get_option('srt') ;
+       request_base.push("srt=${searchquery.get_option('srt')}");
+    END;
+    IF searchquery.get_option('srto') ;
+       request_base.push("srto=${searchquery.get_option('srto')}");
+    END;
+    FOREACH thisdb IN db ;
+       request_base.push("db=${thisdb}");
+    END;
+
+    request_base = request_base.join(";");
+
+    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = nav.current_page*queryoptions.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+-%]
+
+[%- # DBIS 
+
+    allsubjects = {};
+
+    FOREACH record IN recordlist.get_records;
+      FOREACH subject  IN record.generic_attributes.subjects;
+        allsubjects.${subject} = 1;
+      END ;
+    END ;
+
+    IF container.get('classifications_dbis') ;
+      classifications =  container.get('classifications_dbis');
+    END;
+
+    classification_name = searchquery.get_searchfield('classification').val ;
+    is_title_search     = searchquery.get_searchfield('title').val ;
+
+    classification_desc = "";
+
+    FOREACH classification IN classifications ;
+      IF classification_name == classification.name ; 
+        classification_desc = classification.desc ;
+      END;
+    END;
+
+    IF container.get("popular_dbis_records_${classification_name}") ;
+      popular_records = container.get("popular_dbis_records_${classification_name}");
+    END;
+
+    # USE dumper;dumper.dump(popular_records);
+-%]
+
+[%# USE dumper;dumper.dump(nav)%]
+[%# nav.current_page()%]
+
+[%# USE dumper;dumper.dump(recordlist.generic_attributes)%]
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title" id="offcanvasSidebarLabel">[% msg.maketext("Suchen") %]</h3>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+
+        [% PROCESS common/subtemplate database="dbis" name="classifications_sidebar" %]
+
+    </div>
+    
+    <div class="offcanvas-footer">
+      <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar">[% msg.maketext("Schließen") %]</button>
+    </div>
+  </div>
+</div>
+
+<div class="row flex-md-row"><!-- Wrapper for centered pagination -->
+
+<div class="row flex-md-row p-2">
+  <div class="col-md-9">
+<h2>[% msg.maketext("Datenbanken der Universität zu Köln") %]</h2>
+
+[% IF classification_desc %]
+<h3>[% msg.maketext("Fachgebiet:") %] [% classification_desc %]</h3>
+[% END %]
+
+[% IF NOT is_title_search && nav.current_page == 1 &&  popular_records.size > 0 %]
+<div class="mt-3 mb-3">
+<h4>[% msg.maketext("TOP-Datenbanken") %]</h4>
+<ul class="list-group mt-1">
+[% FOREACH record IN popular_records %]
+[%-
+
+    detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}.html?l=${lang}";
+
+    title  = record.fields.${"T0331"}.first.content;
+    access = record.fields.${"T4120"}.first.subfield;
+
+    fulltext_availability  = "";
+    fulltext_icon = config.get('dbis_green_yellow_red_img');
+    fulltext_desc  = "Unbekannter Zugriff";
+
+    dont_show = 0;
+    
+    IF access == "g" ;
+      fulltext_availability = "lawngreen";
+      fulltext_icon = config.get('dbis_green_img');
+      fulltext_desc = msg.maketext("Volltext mit freiem Zugang");
+    ELSIF access == "y";
+      fulltext_availability = "yellow";
+      fulltext_icon = config.get('dbis_yellow_img');
+      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+    ELSIF access == "n";
+      fulltext_icon = config.get('dbis_de_img');
+      fulltext_desc = msg.maketext("Nationallizenz");
+    ELSE;
+      dont_show = 1;
+    END;
+-%]
+<li class="list-group-item">[% IF NOT dont_show %]<img src="[% fulltext_icon %]" alt="Zugriff: [% fulltext_desc %]"/>[% END %]<span class="ms-3"><a href="[% detail_url %]">[% title %]</a></span></li>
+[% END %]
+</ul>
+</div>
+[% END %]
+
+[% IF recordlist.get_size > 0 %]
+
+
+<div class="ob-resultlist">
+  <div class="ob-resultheader">
+    <div class="left">
+[% msg.maketext("Gesamtangebot") %]: [% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% hits %]
+    </div><!-- /.ob-hits -->
+  </div><!-- /.ob-resultheader -->
+
+  <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=0 %] 
+[%- END -%]
+    <div class="ob-footer">
+      <div class="ob-resulttime">
+in: [% resulttime %] [% msg.maketext("Sekunden") %]
+      </div><!-- /.ob-resulttime -->
+    </div><!-- /.ob-footer -->
+  </div><!-- /.ob-resultitems -->
+  <div class="ob-resultfooter">
+&nbsp;
+  </div><!-- /.ob-resultfooter -->
+</div><!-- /.ob-resultlist -->
+
+[% ELSE %]
+  <div class="ob-no_hits">
+    <h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>
+
+    [% PROCESS common/subtemplate name="search_more_tips" %]
+   
+  </div>  
+[% END %]
+
+   </div>
+   <div class="col-md-3 d-none d-md-block">
+
+        [% PROCESS common/subtemplate database="dbis" name="classifications_sidebar" %]
+
+  </div>
+
+</div>
+<p/>
+<!-- end: result item -->
+
+<button class="ob-floating_sidebar_button_left ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar" title="[% msg.maketext("Suchen") %]"><i class="fas fa-search fa-2x"></i></button>
+
+[% query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}); # "${request_base};${searchquery.to_cgi_params}" %]
+[% PROCESS common/subtemplate name="pagination" %]
+
+</div>

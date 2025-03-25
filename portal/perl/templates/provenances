@@ -57,7 +57,7 @@
 <div class="table-responsive">
 <table class="table table-striped">
 <thead>
-<tr align="center"><th>[% msg.maketext("Provenienz") %]</th>[% IF has_4310 %]<th>[% msg.maketext("Merkmal") %]</th>[% END %][% IF has_4317 %]<th>[% msg.maketext("Bemerkung") %]</th>[% END %][% IF has_4316 %]<th>[% msg.maketext("Zugangsjahr") %]</th>[% END %][% IF has_4311 %]<th>[% msg.maketext("Sigel") %]</th>[% END %]<th>[% msg.maketext("Mediennummer") %]</th>[% IF has_4314 %]<th>[% msg.maketext("Hist. Signatur/Aufstellung") %]</th>[% END %][% IF has_4312 %]<th>[% msg.maketext("Selektionskennzeichen") %]</th>[% END %][% IF has_4315 %]<th>[% msg.maketext("Scan") %]</th>[% END %]</tr>
+<tr align="center"><th>[% msg.maketext("Provenienz") %]</th>[% IF has_4310 %]<th>[% msg.maketext("Merkmal") %]</th>[% END %][% IF has_4317 %]<th>[% msg.maketext("Bemerkung") %]</th>[% END %][% IF has_4316 %]<th>[% msg.maketext("Zugangsjahr") %]</th>[% END %][% IF has_4311 %]<th>[% msg.maketext("Sigel") %]</th>[% END %]<th>[% msg.maketext("Signatur") %]</th>[% IF has_4314 %]<th>[% msg.maketext("Hist. Signatur/Aufstellung") %]</th>[% END %][% IF has_4312 %]<th>[% msg.maketext("Selektionskennzeichen") %]</th>[% END %][% IF has_4315 %]<th>[% msg.maketext("Scan") %]</th>[% END %]</tr>
 </thead>
 <tbody>
 

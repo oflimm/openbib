@@ -36,18 +36,18 @@
    <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/person.html?l=[% lang %]" title="Personen">[% msg.maketext("Personen") %]</a></li>
 [%   END %]
 [% END %]
-[% IF config.datacache_exists({ id => "${database}-0412", type => 14 }) %]
-[%   IF layout_param.active_submenu == "clouds_0412" %]
+[% IF config.datacache_exists({ id => "${database}-0264:b", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_publisher" %]
   <li class="navbar-item active"><strong>[% msg.maketext("Verlage") %]</strong></li>
 [%   ELSE %]
-   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/0412.html?l=[% lang %]" title="[% msg.maketext("Verlage") %]">[% msg.maketext("Verlage") %]</a></li>
+   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/publisherprinter.html?l=[% lang %]" title="[% msg.maketext("Verlage") %]">[% msg.maketext("Verlage") %]</a></li>
 [%   END %]
 [% END %]
-[% IF config.datacache_exists({ id => "${database}-0410", type => 14 }) %]
-[%   IF layout_param.active_submenu == "clouds_0410" %]
+[% IF config.datacache_exists({ id => "${database}-0264:a", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_placeofpublication" %]
   <li class="navbar-item active"><strong>[% msg.maketext("Verlagsort") %]</strong></li>
 [%   ELSE %]
-   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/0410.html?l=[% lang %]" title="[% msg.maketext("Verlagsorte") %]">[% msg.maketext("Verlagsorte") %]</a></li>
+   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/placeofpublication.html?l=[% lang %]" title="[% msg.maketext("Verlagsorte") %]">[% msg.maketext("Verlagsorte") %]</a></li>
 [%   END %]
 [% END %]
 [% IF config.datacache_exists({ id => database, type => 3 }) %]

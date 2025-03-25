@@ -57,7 +57,7 @@
         <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/fotobuecher/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">
           <i class="fas fa-cloud"></i> [% msg.maketext("Wortwolken") %]
         </a>
-        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/fotobuecher/[% config.get('titles_loc') %].html?srt=title_asc&l=[% lang %]">
+        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/fotobuecher/[% config.get('titles_loc') %].html?srt=title_asc;l=[% lang %]">
           <i class="fas fa-th-list"></i> [% msg.maketext("Alle Digitalisate") %]
         </a>
       </div>

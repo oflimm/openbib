@@ -152,7 +152,7 @@ $(document).ready(function(){
 [% IF spelling_suggestion.resultlist %]
 [%    suggestion = searchquery.get_spelling_suggestion %]
 [%     IF suggestion%]
-[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% escape_html(query.param('num')) %]&srt=year_desc&st=[% escape_html(query.param('st')) %]fs=[% suggestion %]">[% suggestion %]</a></b>
+[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% escape_html(query.param('num')) %];srt=year_desc;st=[% escape_html(query.param('st')) %]fs=[% suggestion %]">[% suggestion %]</a></b>
 [%     END %]
 [% END %]
 

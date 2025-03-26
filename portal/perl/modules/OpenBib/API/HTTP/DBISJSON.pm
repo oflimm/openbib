@@ -234,7 +234,13 @@ sub get_titles_record {
     my $response = $ua->get($url)->result;
 
     if ($response->is_success){
-	$json_ref = $response->json;
+	eval {
+	    $json_ref = decode_json $response->body;
+	};
+	if ($@){
+	    $logger->error('Decoding error: '.$@);
+	    return $record;
+	}	
     }
     else {        
 	$logger->info($response->code . ' - ' . $response->message);
@@ -422,11 +428,17 @@ sub get_classifications {
     my $response = $ua->get($url)->result;
 
     if ($response->is_success){
-	$json_ref = $response->json;
+	eval {
+	    $json_ref = decode_json $response->body;
+	};
+	if ($@){
+	    $logger->error('Decoding error: '.$@);
+	    return $json_ref;
+	}	
     }
     else {        
 	$logger->info($response->code . ' - ' . $response->message);
-	return;
+	return $json_ref;
     }
     
     my $maxcount=0;

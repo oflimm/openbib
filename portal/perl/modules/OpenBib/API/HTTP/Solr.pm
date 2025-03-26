@@ -6,7 +6,7 @@
 #
 #  basiert auf OpenBib::API::HTTP::EDS
 #
-#  Dieses File ist (C) 2020- Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2020-2025 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -38,7 +38,7 @@ use Benchmark ':hireswallclock';
 use DBI;
 use Encode qw/decode_utf8 encode_utf8/;
 use Log::Log4perl qw(get_logger :levels);
-use LWP::UserAgent;
+use Mojo::UserAgent;
 use Storable;
 use JSON::XS;
 use URI::Escape;
@@ -73,9 +73,10 @@ sub new {
 
     bless ($self, $class);
     
-    my $ua = LWP::UserAgent->new();
-    $ua->agent('USB Koeln/1.0');
-    $ua->timeout(30);
+    my $ua = Mojo::UserAgent->new();
+    $ua->transactor->name('USB Koeln/1.0');
+    $ua->connect_timeout(30);
+    $ua->max_redirects(2);
 
     $self->{client}        = $ua;
         
@@ -112,45 +113,53 @@ sub send_retrieve_request {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-
     my $url = $config->get('solr')->{'search_url'};
-
-    my $header = ['Content-Type' => 'application/json; charset=UTF-8'];
-    my $json_query_ref = {
-	'query' => { bool => { must => ["fullid:($database\\:$id)"]}},
-    };
-
-    my $encoded_json = encode_utf8(encode_json($json_query_ref));
-
-    $logger->debug("Solr JSON Query: $encoded_json");
-    
-    my $request = HTTP::Request->new('POST',$url,$header,$encoded_json);
-    
-    my $response = $ua->request($request);
-
-    if ($logger->is_debug()){
-	$logger->debug("Request URL: $url");
-    }
-    
-    if ($logger->is_debug){
-	$logger->debug("Response: ".$response->content);
-    }
-    
-    if (!$response->is_success && $response->code != 400) {
-	$logger->info($response->code . ' - ' . $response->message);
-	return;
-    }
+       
+    my $header_ref = {'Content-Type' => 'application/json; charset=UTF-8'};
 
     my $json_result_ref = {};
+
+    my $json_request_ref = {
+	'query' => { bool => { must => ["fullid:($database\\:$id)"]}},
+    };
     
+    my $body = "";
+
     eval {
-	$json_result_ref = decode_json $response->content;
+	$body = encode_json($json_request_ref); 
     };
     
     if ($@){
-	$logger->error('Decoding error: '.$@);
+	$logger->error('Encoding error: '.$@);
+	return $json_result_ref;
     }
     
+    if ($logger->is_debug()){
+	$logger->debug("Request URL: $url");
+	$logger->debug("Solr JSON Query: $body");	
+    }
+        
+    my $response = $ua->post($url => $header_ref, $body)->result;
+
+    if ($response->is_success){
+	eval {
+	    $json_result_ref = decode_json $response->body;
+	};
+	
+	if ($@){
+	    $logger->error('Decoding error: '.$@);
+	    return $json_result_ref;
+	}
+    }
+    else {        
+	$logger->info($response->code . ' - ' . $response->message);
+	return $json_result_ref;
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->body);
+    }
+        
     return $json_result_ref;
 }
 
@@ -251,8 +260,11 @@ sub send_search_request {
     # Restrict search to catalogs by a filter
     push @$filter_ref, "db:(".join(' OR ',@databases).")";
     
-    my $header = ['Content-Type' => 'application/json; charset=UTF-8'];
-    my $json_query_ref = {
+    my $header_ref = {'Content-Type' => 'application/json; charset=UTF-8'};
+
+    my $json_result_ref = {};
+    
+    my $json_request_ref = {
 	'query' => $query_ref,
 	    'limit' => $num,
 	    'offset' => $from,	    
@@ -260,28 +272,56 @@ sub send_search_request {
 
     # Filter hinzufuegen
     if (@$filter_ref){
-	$json_query_ref->{filter} = $filter_ref;
+	$json_request_ref->{filter} = $filter_ref;
     }
 
     # Facetten aktivieren
     if (keys %$json_facets_ref){
-	$json_query_ref->{facet} = $json_facets_ref;
+	$json_request_ref->{facet} = $json_facets_ref;
     }
 
     # Sortierung
     if ($sorttype ne "relevance") { # default
-	$json_query_ref->{sort} = "sort_$sorttype $sortorder";
+	$json_request_ref->{sort} = "sort_$sorttype $sortorder";
+    }
+
+    my $body = "";
+
+    eval {
+	$body = encode_json($json_request_ref); 
+    };
+    
+    if ($@){
+	$logger->error('Encoding error: '.$@);
+	return $json_result_ref;
+    }
+
+    if ($logger->is_debug()){
+	$logger->debug("Request URL: $url");
+	$logger->debug("Solr JSON Query: $body");	
     }
     
-    my $encoded_json = encode_utf8(encode_json($json_query_ref));
+    my $response = $ua->post($url => $header_ref, $body)->result;
 
-    $logger->debug("Solr JSON Query: $encoded_json");
-    
-    my $request = HTTP::Request->new('POST',$url,$header,$encoded_json);
-    
-    my $response = $ua->request($request);
+    if ($response->is_success){
+	eval {
+	    $json_result_ref = decode_json $response->body;
+	};
+	
+	if ($@){
+	    $logger->error('Decoding error: '.$@);
+	    return $json_result_ref;
+	}
+    }
+    else {        
+	$logger->info($response->code . ' - ' . $response->message);
+	return $json_result_ref;
+    }
 
-  
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->body);
+    }
+
     if ($config->{benchmark}) {
 	my $stime        = new Benchmark;
 	my $stimeall     = timediff($stime,$atime);
@@ -289,23 +329,6 @@ sub send_search_request {
 	$searchtime      =~s/(\d+\.\d+) .*/$1/;
 	
 	$logger->info("Zeit fuer Solr HTTP-Request $searchtime");
-    }
-    
-    if (!$response->is_success && $response->code != 400) {
-	$logger->info($response->code . ' - ' . $response->message);
-	return;
-    }
-    
-    $logger->info('ok - '.$response->content);
-
-    my $json_result_ref = {};
-    
-    eval {
-	$json_result_ref = decode_json $response->content;
-    };
-    
-    if ($@){
-	$logger->error('Decoding error: '.$@);
     }
     
     return $json_result_ref;

@@ -4,7 +4,7 @@
 #
 #  Objektorientiertes Interface zum EDS API
 #
-#  Dieses File ist (C) 2020- Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2020-2025 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -37,7 +37,7 @@ use DBI;
 use Encode 'decode_utf8';
 use HTML::Entities;
 use Log::Log4perl qw(get_logger :levels);
-use LWP::UserAgent;
+use Mojo::UserAgent;
 use Storable;
 use JSON::XS;
 use URI::Escape;
@@ -84,9 +84,10 @@ sub new {
 
     bless ($self, $class);
     
-    my $ua = LWP::UserAgent->new();
-    $ua->agent('USB Koeln/1.0');
-    $ua->timeout(40);
+    my $ua = Mojo::UserAgent->new();
+    $ua->transactor->name('USB Koeln/1.0');
+    $ua->connect_timeout(10);
+    $ua->max_redirects(2);
 
     $self->{client}        = $ua;
         
@@ -132,13 +133,7 @@ sub send_retrieve_request {
     my $ua     = $self->get_client;
 
     my ($edsdatabase,$edsid)=$id=~m/^(.+?)::(.+)$/;    
-    
-    if ($logger->is_debug){
-	$logger->debug("Setting default header with x-authenticationToken: ".$self->{authtoken}." and x-sessionToken: ".$self->{sessiontoken});
-    }
-
-    $ua->default_header('x-authenticationToken' => $self->{authtoken}, 'x-sessionToken' => $self->{sessiontoken});
-    
+        
     my $url = $config->get('eds')->{'retrieve_url'};
 
     $logger->debug("DB - ID: $edsdatabase - $edsid");
@@ -151,10 +146,33 @@ sub send_retrieve_request {
 
     my $threshold_starttime=new Benchmark;
 
-    my $request = HTTP::Request->new('GET' => $url);
-    $request->content_type('application/json');
+    my $header_ref = {'Content-Type' => 'application/json', 'x-authenticationToken' => $self->{authtoken}, 'x-sessionToken' => $self->{sessiontoken}};
+
+    if ($logger->is_debug){
+	$logger->debug("Setting default header with x-authenticationToken: ".$self->{authtoken}." and x-sessionToken: ".$self->{sessiontoken});
+    }
     
-    my $response = $ua->request($request);
+    my $json_result_ref = {};
+    
+    my $response = $ua->get($url => $header_ref)->result;
+
+    if ($response->is_success){
+	eval {
+	    $json_result_ref = decode_json $response->body;
+	};
+	if ($@){
+	    $logger->error('Decoding error: '.$@);
+	    return $json_result_ref;
+	}
+    }
+    else {        
+	$logger->info($response->code . ' - ' . $response->message);
+	return $json_result_ref;
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->body);
+    }
 
     my $threshold_endtime      = new Benchmark;
     my $threshold_timeall    = timediff($threshold_endtime,$threshold_starttime);
@@ -165,25 +183,6 @@ sub send_retrieve_request {
     if (defined $config->get('eds')->{'api_logging_threshold'} && $threshold_resulttime > $config->get('eds')->{'api_logging_threshold'}){
 	$url =~s/\?.+$//; # Don't log args
 	$logger->error("EDS API call $url took $threshold_resulttime ms");
-    }
-
-    if ($logger->is_debug){
-	$logger->debug("Response: ".$response->content);
-    }
-    
-    if (!$response->is_success && $response->code != 400) {
-	$logger->info($response->code . ' - ' . $response->message);
-	return;
-    }
-
-    my $json_result_ref = {};
-    
-    eval {
-	$json_result_ref = decode_json $response->content;
-    };
-    
-    if ($@){
-	$logger->error('Decoding error: '.$@);
     }
     
     return $json_result_ref;
@@ -221,12 +220,6 @@ sub send_search_request {
         $atime=new Benchmark;
     }
     
-    if ($logger->is_debug){
-	$logger->debug("Setting default header with x-authenticationToken: ".$self->{authtoken}." and x-sessionToken: ".$self->{sessiontoken});
-    }
-
-    $ua->default_header('x-authenticationToken' => $self->{authtoken}, 'x-sessionToken' => $self->{sessiontoken});
-
     my $url = $config->get('eds')->{'search_url'};
 
     # search options
@@ -277,10 +270,33 @@ sub send_search_request {
 
     my $threshold_starttime=new Benchmark;
 
-    my $request = HTTP::Request->new('GET' => $url);
-    $request->content_type('application/json');
+    my $json_result_ref = {};
+
+    my $header_ref = {'Content-Type' => 'application/json', 'x-authenticationToken' => $self->{authtoken}, 'x-sessionToken' => $self->{sessiontoken}};
     
-    my $response = $ua->request($request);
+    if ($logger->is_debug){
+	$logger->debug("Setting default header with x-authenticationToken: ".$self->{authtoken}." and x-sessionToken: ".$self->{sessiontoken});
+    }
+    
+    my $response = $ua->get($url => $header_ref)->result;
+
+    if ($response->is_success){
+	eval {
+	    $json_result_ref = decode_json $response->body;
+	};
+	if ($@){
+	    $logger->error('Decoding error: '.$@);
+	    return $json_result_ref;
+	}
+    }
+    else {        
+	$logger->info($response->code . ' - ' . $response->message);
+	return $json_result_ref;
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->body);
+    }
 
     my $threshold_endtime      = new Benchmark;
     my $threshold_timeall    = timediff($threshold_endtime,$threshold_starttime);
@@ -301,24 +317,7 @@ sub send_search_request {
 	
 	$logger->info("Zeit fuer EDS HTTP-Request $searchtime");
     }
-    
-    if (!$response->is_success && $response->code != 400) {
-	$logger->info($response->code . ' - ' . $response->message);
-	return;
-    }
-    
-    $logger->info('ok');
-
-    my $json_result_ref = {};
-    
-    eval {
-	$json_result_ref = decode_json $response->content;
-    };
-    
-    if ($@){
-	$logger->error('Decoding error: '.$@);
-    }
-    
+        
     return $json_result_ref;
 }
 
@@ -1289,59 +1288,70 @@ sub _create_authtoken {
     my $database = $self->get_database;
     
     my $memc_key = "eds:authtoken:$database";
+
+    my $url = $config->get('eds')->{auth_url};
     
-    my $request = HTTP::Request->new('POST' => $config->get('eds')->{auth_url});
-    $request->content_type('application/json');
+    my $header_ref = {'Content-Type' => 'application/json'};
+    
+    my $json_result_ref = {};
 
     my $json_request_ref = {
 	'UserId'   => $self->{api_user},
 	'Password' => $self->{api_password},
     };
-    
-    $request->content(encode_json($json_request_ref));
 
     if ($logger->is_debug){
 	$logger->info("JSON-Request: ".encode_json($json_request_ref));
     }
-    
-    my $response = $ua->request($request);
 
-    if ($response->is_success) {
-	if ($logger->is_debug()){
-	    $logger->debug($response->content);
-	}
-	
-	my $json_result_ref = {};
-	
+    my $body = "";
+
+    eval {
+	$body = encode_json($json_request_ref); 
+    };
+    
+    if ($@){
+	$logger->error('Encoding error: '.$@);
+	return $json_result_ref;
+    }
+    
+    my $response = $ua->post($url => $header_ref, $body)->result;
+
+    if ($response->is_success){
 	eval {
-	    $json_result_ref = decode_json $response->content;
+	    $json_result_ref = decode_json $response->body;
 	};
-	
 	if ($@){
 	    $logger->error('Decoding error: '.$@);
+	    return;
+	}
+    }
+    else {        
+	$logger->info($response->code . ' - ' . $response->message);
+	return;
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->body);
+    }    
+	
+    if ($json_result_ref->{AuthToken}){
+	$config->connectMemcached;
+	
+	if ($config->{memc}){
+	    $config->{memc}->set($memc_key,$json_result_ref->{AuthToken},$self->{memcached_expiration}{$memc_key});
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Saved eds authtoken ".$json_result_ref->{AuthToken}." to key $memc_key in memcached");
+	    }
 	}
 	
-	if ($json_result_ref->{AuthToken}){
-	    $config->connectMemcached;
-
-	    if ($config->{memc}){
-		$config->{memc}->set($memc_key,$json_result_ref->{AuthToken},$self->{memcached_expiration}{$memc_key});
-		
-		if ($logger->is_debug){
-		    $logger->debug("Saved eds authtoken ".$json_result_ref->{AuthToken}." to key $memc_key in memcached");
-		}
-	    }
-	    
-	    $config->disconnectMemcached;
-	    
-	    return $json_result_ref->{AuthToken};
-	}
-	else {
-	    $logger->error('No AuthToken received'.$response->content);
-	}
-    } 
+	$config->disconnectMemcached;
+	
+	return $json_result_ref->{AuthToken};
+    }
     else {
-	$logger->error('Error in Request: '.$response->code.' - '.$response->message);
+	$logger->error('No AuthToken received'.$response->body);
     }
     
     return;
@@ -1360,63 +1370,70 @@ sub _create_sessiontoken {
     
     my $guest = 'n';
 
-    my $request = HTTP::Request->new('POST' => $config->get('eds')->{session_url});
-    $request->content_type('application/json');
-
     my $json_request_ref = {
 	'Profile' => $self->{api_profile},
 	'Guest'   => $guest,
     };
 
-    my $json = encode_json $json_request_ref;
-    
-    $request->content($json);
-
     if ($logger->is_debug){
 	$logger->info("JSON-Request: ".encode_json($json_request_ref));
     }
+        
+    my $url = $config->get('eds')->{session_url};
 
-    $ua->default_header('x-authenticationToken' => $self->{authtoken});
+    my $header_ref = {'Content-Type' => 'application/json', 'x-authenticationToken' => $self->{authtoken}};
     
-    my $response = $ua->request($request);
+    my $json_result_ref = {};
 
-    if ($response->is_success) {
-	if ($logger->is_debug()){
-	    $logger->debug($response->content);
-	}
+    my $body = "";
 
-	my $json_result_ref = {};
+    eval {
+	$body = encode_json($json_request_ref); 
+    };
+    
+    if ($@){
+	$logger->error('Encoding error: '.$@);
+	return $json_result_ref;
+    }
+    
+    my $response = $ua->post($url => $header_ref, $body)->result;
 
+    if ($response->is_success){
 	eval {
-	    $json_result_ref = decode_json $response->content;
+	    $json_result_ref = decode_json $response->body;
 	};
-	
 	if ($@){
 	    $logger->error('Decoding error: '.$@);
+	    return;
+	}
+    }
+    else {        
+	$logger->info($response->code . ' - ' . $response->message);
+	return;
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->body);
+    }
+    
+	
+    if ($json_result_ref->{SessionToken}){
+	if ($config->{memc} && defined $self->{sessionID}){
+	    my $memc_key = "eds:sessiontoken:".$self->{sessionID};
+	    
+	    $config->{memc}->set($memc_key,$json_result_ref->{SessionToken},$self->{memcached_expiration}{'eds:sessiontoken'});
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Saved eds sessiontoken ".$json_result_ref->{SessionToken}." to key $memc_key in memcached");
+	    }
 	}
 	
-	if ($json_result_ref->{SessionToken}){
-	    if ($config->{memc} && defined $self->{sessionID}){
-		my $memc_key = "eds:sessiontoken:".$self->{sessionID};
-
-		$config->{memc}->set($memc_key,$json_result_ref->{SessionToken},$self->{memcached_expiration}{'eds:sessiontoken'});
-
-		if ($logger->is_debug){
-		    $logger->debug("Saved eds sessiontoken ".$json_result_ref->{SessionToken}." to key $memc_key in memcached");
-		}
-	    }
-
-	    $config->disconnectMemcached;
-	    
-	    return $json_result_ref->{SessionToken};
-	}
-	else {
-	    $logger->error('No SessionToken received'.$response->content);
-	}
-
-    } 
+	$config->disconnectMemcached;
+	
+	return $json_result_ref->{SessionToken};
+    }
     else {
-	$logger->error('Error in Request: '.$response->code.' - '.$response->message);
+	$logger->error('No SessionToken received'.$response->body);
     }
 
     $config->disconnectMemcached;

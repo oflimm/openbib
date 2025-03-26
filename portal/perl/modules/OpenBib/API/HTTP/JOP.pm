@@ -9,7 +9,7 @@
 #  Daher keine Verwendung als OpenBib Search Backend moeglich!
 #  Eigene Suchparameter, eigenes Suchergebnis
 #
-#  Dieses File ist (C) 2021- Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2021-2025 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -39,9 +39,9 @@ use utf8;
 
 use Benchmark ':hireswallclock';
 use DBI;
-use Encode 'decode_utf8';
+use Encode qw/decode decode_utf8/;
 use Log::Log4perl qw(get_logger :levels);
-use LWP::UserAgent;
+use Mojo::UserAgent;
 use Storable;
 use XML::LibXML;
 use JSON::XS;
@@ -81,9 +81,10 @@ sub new {
 
     bless ($self, $class);
     
-    my $ua = LWP::UserAgent->new();
-    $ua->agent('USB Koeln/1.0');
-    $ua->timeout(30);
+    my $ua = Mojo::UserAgent->new();
+    $ua->transactor->name('USB Koeln/1.0');
+    $ua->connect_timeout(30);
+    $ua->max_redirects(2);
 
     $self->{client}        = $ua;
         
@@ -120,24 +121,27 @@ sub search {
     $logger->debug("Request: $url");
 
     my $ua      = $self->get_client;
-    
-    my $request = HTTP::Request->new('GET' => $url);
-    
-    my $response = $ua->request($request);
 
-    if ($logger->is_debug){
-	$logger->debug("Response: ".$response->content);
-    }
+    my $response = $ua->get($url)->result;
     
-    if (!$response->is_success) {
+    my $xmlresponse = "";
+    
+    if ($response->is_success){
+	$xmlresponse = $response->body;
+    }
+    else {        
 	$logger->info($response->code . ' - ' . $response->message);
 	return;
     }
-
+    
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->body);
+    }
+    
     # Parse result and collect information in intermediate fields
     
     my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response->content);
+    my $tree   = $parser->parse_string($xmlresponse);
     my $root   = $tree->getDocumentElement;
 
     my $result_ref = [];

@@ -4,7 +4,7 @@
 #
 #  Objektorientiertes Interface zum EZB XML-API
 #
-#  Dieses File ist (C) 2008- Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2025 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,9 +34,9 @@ use utf8;
 
 use Benchmark ':hireswallclock';
 use DBI;
-use Encode 'decode_utf8';
+use Encode qw/decode decode_utf8/;
 use Log::Log4perl qw(get_logger :levels);
-use LWP::UserAgent;
+use Mojo::UserAgent;
 use Storable;
 use XML::LibXML;
 use JSON::XS;
@@ -130,10 +130,11 @@ sub new {
     
     $self->{database}      = $database;
 
-    my $ua = LWP::UserAgent->new();
-    $ua->agent('USB Koeln/1.0');
-    $ua->timeout(5);
-
+    my $ua = Mojo::UserAgent->new();
+    $ua->transactor->name('USB Koeln/1.0');
+    $ua->connect_timeout(5);
+    $ua->max_redirects(2);
+    
     $self->{client}        = $ua;
         
     $self->{sessionID} = $sessionID;
@@ -208,21 +209,24 @@ sub get_titles_record {
 	
 	    $logger->debug("Lookup-URL: $url");
 	    
-	    my $request = HTTP::Request->new('GET' => $url);
+	    my $response = $ua->get($url)->result;
 	    
-	    my $response = $ua->request($request);
+	    my $xmlresponse = "";
+	    
+	    if ($response->is_success){
+		$xmlresponse = $response->body;
+	    }
+	    else {        
+		$logger->info($response->code . ' - ' . $response->message);
+		return;
+	    }
 	    
 	    if ($logger->is_debug){
-		$logger->debug("Response: ".$response->content);
+		$logger->debug("Response: ".$response->body);
 	    }
-	    
-	    if (!$response->is_success) {
-		$logger->info($response->code . ' - ' . $response->message);
-		return $record;
-	    }
-	    
+    
 	    my $parser = XML::LibXML->new();
-	    my $tree   = $parser->parse_string($response->content);
+	    my $tree   = $parser->parse_string($xmlresponse);
 	    my $root   = $tree->getDocumentElement;
 	    
 	    foreach my $journal_node ($root->findnodes('/ezb_page/ezb_alphabetical_list_searchresult/alphabetical_order/journals/journal')){
@@ -268,30 +272,31 @@ sub get_titles_record {
     }
     
     $logger->debug("Request: $url");
-
-    my $request = HTTP::Request->new('GET' => $url);
     
-    my $response = $ua->request($request);
-
-    if ($logger->is_debug){
-	$logger->debug("Response: ".$response->content);
+    my $response = $ua->get($url)->result;
+    
+    my $xmlresponse = "";
+    
+    if ($response->is_success){
+	$xmlresponse = $response->body;
     }
-    
-    if (!$response->is_success) {
+    else {        
 	$logger->info($response->code . ' - ' . $response->message);
-	return $record;
+	return;
     }
+    
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->body);
+    }
+    
+    $xmlresponse =~s/^.+?<\?xml/<\?xml/sm;
 
     eval {
-	my $content = $response->content;
-
-	$content =~s/^.+?<\?xml/<\?xml/sm;
-
 	if ($logger->is_debug){
-	    $logger->debug("Cleanedup content: $content");
+	    $logger->debug("Cleanedup content: $xmlresponse");
 	}
 	my $parser = XML::LibXML->new();
-	my $tree   = $parser->parse_string($content);
+	my $tree   = $parser->parse_string($xmlresponse);
 	my $root   = $tree->getDocumentElement;
 	
 	my $title     =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/title');
@@ -567,30 +572,29 @@ sub _get_readme {
 
     $logger->debug("Request: $url");
 
-    my $request = HTTP::Request->new('GET' => $url);
+    my $response = $ua->get($url)->result;
     
-    my $response = $ua->request($request);
-
-    if ($logger->is_debug){
-	$logger->debug("Response: ".$response->content);
+    my $xmlresponse = "";
+    
+    if ($response->is_success){
+	$xmlresponse = $response->body;
     }
-    
-    if (!$response->is_success) {
+    else {        
 	$logger->info($response->code . ' - ' . $response->message);
 	return;
     }
     
-    # Fehlermeldungen im XML entfernen
-
-    $response = $response->content;
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->body);
+    }
     
-    $response=~s/^.*?<\?xml/<?xml/smx;
+    $xmlresponse =~s/^.*?<\?xml/<?xml/smx;
 
-    $logger->debug("gereinigte Response: $response");
+    $logger->debug("gereinigte Response: $xmlresponse");
     
     my $parser = XML::LibXML->new();
     $parser->recover(1);
-    my $tree   = $parser->parse_string($response);
+    my $tree   = $parser->parse_string($xmlresponse);
     my $root   = $tree->getDocumentElement;
 
     my $location =  $root->findvalue('/ezb_page/ezb_readme_page/location');
@@ -674,21 +678,24 @@ sub get_classifications {
     
     $logger->debug("Request: $url");
 
-    my $request = HTTP::Request->new('GET' => $url);
+    my $response = $ua->get($url)->result;
     
-    my $response = $ua->request($request);
-
-    if ($logger->is_debug){
-	$logger->debug("Response: ".$response->content);
+    my $xmlresponse = "";
+    
+    if ($response->is_success){
+	$xmlresponse = $response->body;
     }
-    
-    if (!$response->is_success) {
+    else {        
 	$logger->info($response->code . ' - ' . $response->message);
 	return $classifications_ref;
     }
     
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->body);
+    }
+    
     my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response->content);
+    my $tree   = $parser->parse_string($xmlresponse);
     my $root   = $tree->getDocumentElement;
 
     my $maxcount=0;
@@ -790,22 +797,24 @@ sub search {
 
     my $ua      = $self->get_client;
     
-    my $request = HTTP::Request->new('GET' => $url);
+    my $response = $ua->get($url)->result;
     
-    my $response = $ua->request($request);
-
-    if ($logger->is_debug){
-	$logger->debug("Response: ".$response->content);
+    my $xmlresponse = "";
+    
+    if ($response->is_success){
+	$xmlresponse = $response->body;
     }
-    
-    if (!$response->is_success) {
+    else {        
 	$logger->info($response->code . ' - ' . $response->message);
 	return;
     }
-
+    
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->body);
+    }
     
     my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response->content);
+    my $tree   = $parser->parse_string($xmlresponse);
     my $root   = $tree->getDocumentElement;
 
     my $current_page_ref = {};

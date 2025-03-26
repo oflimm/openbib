@@ -35,12 +35,11 @@ use base qw(OpenBib::ILS);
 use Benchmark ':hireswallclock';
 use Cache::Memcached::Fast;
 use Encode qw(decode_utf8 encode_utf8);
-use HTTP::Cookies;
-use HTTP::Request;
 use JSON::XS qw/decode_json encode_json/;
 use List::MoreUtils qw(none);
 use Log::Log4perl qw(get_logger :levels);
-use LWP::UserAgent;
+use Mojo::UserAgent;
+use Mojo::UserAgent::CookieJar;
 use MLDBM qw(DB_File Storable);
 use Net::LDAP;
 use SOAP::Lite;
@@ -81,9 +80,10 @@ sub new {
 
     bless ($self, $class);
 
-    my $ua = LWP::UserAgent->new();
-    $ua->agent('USB Koeln/1.0');
-    $ua->timeout($config->get('alma')->{api_timeout});
+    my $ua = Mojo::UserAgent->new();
+    $ua->transactor->name('USB Koeln/1.0');
+    $ua->connect_timeout($config->get('alma')->{api_timeout});
+    $ua->max_redirects(2);
 
     # Only valid and defined languages. Fallback 'de'
     $lang = "de" if (none { $_ eq $lang } @{$config->get('lang')});
@@ -2482,48 +2482,81 @@ sub update_sis {
 	    
 	    $logger->debug("Updating $type via SIS API for Alma");
 
-	    my $authcookies = HTTP::Cookies->new();
+	    my $authcookies = Mojo::UserAgent::CookieJar->new;
 	    
 	    $ua->cookie_jar($authcookies);   
-	    
-	    my $authdata_ref = {
-		username => $config->get('sis')->{'api_user'},
-		password => $config->get('sis')->{'api_password'},
-	    };
-	    
-	    my $auth_url = $config->get('sis')->{'api_authurl'};
 
-	    if ($logger->is_debug()){
-		$logger->debug("Request URL: $auth_url");
-	    }
-	    
-	    my $authrequest = HTTP::Request->new('POST', $auth_url, [ 'Accept' => 'application/json', 'Content-Type' => 'application/json' ]);
-	    my $authinfo = encode_json($authdata_ref);
-
-	    if ($logger->is_debug){
-		$logger->debug("Auth Info: ".$authinfo);
-	    }
-	    
-	    $authrequest->content($authinfo);
-
-	    my $authresponse = $ua->request($authrequest);
-	    
-	    if ($logger->is_debug){
-		$logger->debug("Auth Response Headers: ".$authresponse->headers_as_string);
-		$logger->debug("Auth Response: ".$authresponse->content);
-		$logger->debug("Auth Response Code: ".$authresponse->code);
-	    }
-	    
-	    if (!$authresponse->is_success) {
-		$logger->info($authresponse->code . ' - ' . $authresponse->message);
-		$response_ref = {
-		    "code" => 405,
-			"error" => "authentication error",
-			"error_description" => "Interner SIS-API Authentifizierungsfehler",
+	    {
+		my $url = $config->get('sis')->{'api_authurl'};
+		
+		my $header_ref = { 'Accept' => 'application/json', 'Content-Type' => 'application/json' };
+		
+		my $json_request_ref = {
+		    username => $config->get('sis')->{'api_user'},
+		    password => $config->get('sis')->{'api_password'},
 		};
 		
-		return $response_ref;
+		my $body = "";
+		
+		eval {
+		    $body = encode_json($json_request_ref); 
+		};
+		
+		if ($@){
+		    $logger->error('Encoding error: '.$@);
+		    $response_ref = {
+			"code" => 405,
+			    "error" => "authentication error",
+			    "error_description" => "Interner SIS-API Authentifizierungsfehler",
+		    };
+		    
+		    return $response_ref;
+		}
+		
+		if ($logger->is_debug()){
+		    $logger->debug("Request URL: $url");
+		    $logger->debug("Request Body: $body");	
+		}
+		
+		my $response = $ua->post($url => $header_ref, $body)->result;
+		
+		if ($response->is_success){
+		    eval {
+			$json_result_ref = decode_json $response->body;
+		    };
+		    
+		    if ($@){
+			$logger->error('Decoding error: '.$@);
+			
+			$response_ref = {
+			    "code" => 405,
+				"error" => "authentication error",
+				"error_description" => "Interner SIS-API Authentifizierungsfehler",
+			};
+			
+			return $response_ref;
+		    }
+		}
+		else {        
+		    $logger->info($response->code . ' - ' . $response->message);
+		    
+		    $response_ref = {
+			"code" => 405,
+			    "error" => "authentication error",
+			    "error_description" => "Interner SIS-API Authentifizierungsfehler",
+		    };
+		    
+		    return $response_ref;
+		}
+		
+		if ($logger->is_debug){
+		    $logger->debug("Auth Response Headers: ".$response->headers->to_string);
+		    $logger->debug("Auth Response: ".$response->body);
+		    $logger->debug("Auth Response Code: ".$response->code);
+		}
 	    }
+
+	    my $json_result_ref = {};
 	    
 	    my $api_call_ref = {
 		'email'    => "/setEmail/",
@@ -2537,24 +2570,55 @@ sub update_sis {
 		$logger->debug("Request URL: $url");
 	    }
 
-	    my $data_ref = {
+	    my $header_ref = { 'Accept' => 'application/json', 'Content-Type' => 'application/json' };
+	    
+	    my $json_request_ref = {
 		uid => $uid,
 		$type => $new_data,
 	    };
+
+	    my $body = "";
 	    
-	    my $request = HTTP::Request->new('PUT', $url, [ 'Accept' => 'application/json', 'Content-Type' => 'application/json' ]);
-	    my $datainfo = encode_json($data_ref);
-	    $request->content($datainfo);
+	    eval {
+		$body = encode_json($json_request_ref); 
+	    };
 	    
-	    my $response = $ua->request($request);
-	    
-	    if ($logger->is_debug){
-		$logger->debug("Response Code: ".$response->code);				
-		$logger->debug("Response Headers: ".$response->headers_as_string);
-		$logger->debug("Response: ".$response->content);
+	    if ($@){
+		$logger->error('Encoding error: '.$@);
+		$response_ref = {
+		    "code" => 400,
+		    "error" => "error",
+		    "error_description" => "Fehler bei Aktualisierung der Kontoinformationen",
+		};
+		
+		return $response_ref;
 	    }
 	    
-	    if (!$response->is_success) {
+	    if ($logger->is_debug()){
+		$logger->debug("Request URL: $url");
+		$logger->debug("Request Body: $body");	
+	    }
+	    
+	    my $response = $ua->put($url => $header_ref, $body)->result;
+
+	    if ($response->is_success){
+		eval {
+		    $json_result_ref = decode_json $response->body if ($response->code == 200);
+		};
+		
+		if ($@){
+		    $logger->error('Decoding error: '.$@);
+		    
+		    $response_ref = {
+			"code" => 400,
+			    "error" => "error",
+			    "error_description" => "Fehler bei Aktualisierung der Kontoinformationen",
+		    };
+		    
+		    return $response_ref;
+		}
+	    }
+	    else {        
 		$logger->info($response->code . ' - ' . $response->message);
 		
 		$response_ref = {
@@ -2566,30 +2630,26 @@ sub update_sis {
 		return $response_ref;
 	    }
 	    
-	    if ($response->code == 200){
-		eval {
-		    $json_result_ref = decode_json $response->content;
-		};
-		
-		if ($@){
-		    $logger->error('Decoding error: '.$@);
-		}
-		
-		if ($logger->is_debug){
-		    $response_ref->{debug} = $json_result_ref;
-		}
-
-		my $success_message = $msg->maketext("Kontoinformationen erfolgreich aktualisiert.");
-
-		$logger->info("User $username: ".$success_message);
-		
-		$response_ref = {
-		    "successful" => 1,
-			"message" => $success_message,
-		};
-		
-		return $response_ref;
+	    if ($logger->is_debug){
+		$logger->debug("Response Code: ".$response->code);				
+		$logger->debug("Response Headers: ".$response->headers->to_string);
+		$logger->debug("Response: ".$response->body);
 	    }
+	    
+	    if ($logger->is_debug){
+		$response_ref->{debug} = $json_result_ref;
+	    }
+	    
+	    my $success_message = $msg->maketext("Kontoinformationen erfolgreich aktualisiert.");
+	    
+	    $logger->info("User $username: ".$success_message);
+	    
+	    $response_ref = {
+		"successful" => 1,
+		    "message" => $success_message,
+	    };
+	    
+	    return $response_ref;
 	}
     }
 
@@ -2644,14 +2704,31 @@ sub send_alma_api_call {
 	}
 
 	my $atime=new Benchmark;
-	
-	my $request = HTTP::Request->new($method, $url, [ 'Accept' => 'application/json', 'Content-Type' => 'application/json' ]);
+
+	my $header_ref = {'Accept' => 'application/json', 'Content-Type' => 'application/json'};
+
+	my $response;
 	
 	if ($method eq "POST" && defined $post_data_ref){
-	    $request->content(encode_json($post_data_ref));
+	    my $body = "";
+	    
+	    eval {
+		$body = encode_json($post_data_ref); 
+	    };
+	    
+	    if ($@){
+		$logger->error('Encoding error: '.$@);
+		return $api_result_ref;
+	    }
+
+	    $response = $ua->post($url => $header_ref, $body)->result;
 	}
-	
-	my $response = $ua->request($request);
+	elsif ($method eq "DELETE") {
+	    $response = $ua->delete($url => $header_ref)->result;	    
+	}
+	else {
+	    $response = $ua->get($url => $header_ref)->result;	    
+	}
 	
 	$api_result_ref->{'http_status_code'}    = $response->code();
 	$api_result_ref->{'http_status_message'} = $response->message();	
@@ -2668,10 +2745,9 @@ sub send_alma_api_call {
 	}
 
 	if ($logger->is_debug){
-	    $logger->debug("Response Headers: ".$response->headers_as_string);
-	    $logger->debug("Response: ".$response->content);
+	    $logger->debug("Response Headers: ".$response->headers->to_string);
+	    $logger->debug("Response: ".$response->body);
 	    $logger->debug("Status Code: ".$api_result_ref->{'http_status_code'});
-
 	}
 
 	# $api_result_ref->{'http_status_code'} = 429; # Testfall concurrent AP request limit reached see: https://developers.exlibrisgroup.com/alma/apis/
@@ -2708,7 +2784,7 @@ sub send_alma_api_call {
 	}	    
 	
 	eval {
-	    $api_result_ref->{'data'} = decode_json $response->content;
+	    $api_result_ref->{'data'} = decode_json $response->body;
 	};
 	
 	if ($@){

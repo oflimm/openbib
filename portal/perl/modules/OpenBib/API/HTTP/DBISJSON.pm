@@ -146,6 +146,7 @@ sub new {
     my $ua = Mojo::UserAgent->new();
     $ua->transactor->name('USB Koeln/1.0');
     $ua->connect_timeout(30);
+    $ua->max_redirects(2);
 
     $self->{client}        = $ua;
         

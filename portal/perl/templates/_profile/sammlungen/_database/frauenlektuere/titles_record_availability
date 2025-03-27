@@ -1,0 +1,80 @@
+[%#-
+#######################################################################
+#
+# Templatename: titles_record_availability
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Zugriffsstatus
+#
+#######################################################################
+-%]
+
+[% overall_mediastatus = {} %]
+
+[% IF sru_status.size > 0 ;
+
+   FOREACH this_item IN sru_status ;
+     IF this_item.availability_status == "unavailable";
+        overall_mediastatus.${"lent"} = 1;
+     ELSIF this_item.availability_status == "loan";
+        overall_mediastatus.${"lendable"} = 1;
+     ELSIF this_item.availability_status == "presence" ;
+        overall_mediastatus.${"presence"} = 1;
+     END;
+   END;
+%]
+
+
+[% IF overall_mediastatus.${"lendable"} == 1%]
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_lendable mb-1 me-1 pe-2"><img src="[% config.get_icon('lendable',view,sysprofile) %]" alt="[% msg.maketext("ausleihbar") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("ausleihbar") %]</span></a>
+[% ELSIF overall_mediastatus.${"presence"} == 1 %]
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_presence mb-1 me-1 pe-2"><img src="[% config.get_icon('presence',view,sysprofile) %]" alt="[% msg.maketext("einsehbar") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("einsehbar") %]</span></a>
+[%  ELSIF overall_mediastatus.${"lent"} == 1 %]
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_borrowed mb-1 me-1 pe-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("entliehen") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("entliehen") %]</span></a>
+[%  END %]
+
+[% ELSE %]
+
+[%- circulation     = record.get_circulation -%] 
+[% has_circulation_error = record.has_circulation_error %]
+
+[% IF has_circulation_error %]
+
+  <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_error mb-1 me-1 ps-1 pe-1"><i class="fas fa-exclamation-triangle"></i> <span class="ps-1 d-none d-sm-inline text-nowrap">[% msg.maketext("Alma Problem") %]</span></a>
+
+[% ELSE %]
+
+[%
+   FOREACH thiscirculation IN circulation ;
+     IF thiscirculation.availability == "lent" || thiscirculation.availability == "ordered";
+        overall_mediastatus.${"lent"} = 1;
+     ELSIF thiscirculation.availability == "loan" || thiscirculation.availability == "order" || ( thiscirculation.availability == 'loan' && thiscirculation.availability_info.limitation.first.content == "nur Wochenende" ) ;
+        overall_mediastatus.${"lendable"} = 1;
+     ELSIF thiscirculation.availability == "missing" ;
+        overall_mediastatus.${"missing"} = 1;
+     ELSIF thiscirculation.availability == "temporarily unavailable" ;
+        overall_mediastatus.${"temporarily_unavailable"} = 1;
+     ELSIF thiscirculation.availability == "presence" || ( thiscirculation.availability == order && ( thiscirculation.availability_info.limitation.first.content == "nur in Lesesaal bestellbar" || thiscirculation.availability_info.limitation.first.content == "nur in bes. Lesesaal bestellbar" ) );
+        overall_mediastatus.${"presence"} = 1;
+     END;
+   END;
+%]
+
+[% IF overall_mediastatus.${"lendable"} == 1%]
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_lendable mb-1 me-1 pe-2"><img src="[% config.get_icon('lendable',view,sysprofile) %]" alt="[% msg.maketext("ausleihbar") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("ausleihbar") %]</span></a>
+[% ELSIF overall_mediastatus.${"presence"} == 1 %]
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_presence mb-1 me-1 pe-2"><img src="[% config.get_icon('presence',view,sysprofile) %]" alt="[% msg.maketext("einsehbar") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("einsehbar") %]</span></a>
+[% ELSIF overall_mediastatus.${"lent"} == 1 %]
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_borrowed mb-1 me-1 pe-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("entliehen") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("entliehen") %]</span></a>
+[% ELSIF overall_mediastatus.${"missing"} == 1 %]
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_borrowed mb-1 me-1 pe-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("vermisst") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("vermisst") %]</span></a>
+[% ELSIF overall_mediastatus.${"temporarily_unavailable"} == 1 %]
+<a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.id %].html?l=de#ob-additional_title_info" class="btn btn-primary ob-availability_borrowed mb-1 me-1 pe-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("vermisst") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("nicht verfügbar") %]</span></a>
+[% END %]
+
+[% END # else has_circulation_error %]
+
+[% END %]

@@ -1,0 +1,369 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+[%- PROCESS common/subtemplate name="local_config" -%] 
+
+[%
+# IF idsuffix == '_books' ;
+#   separate_facets = 1 ;
+# END;
+ separate_facets = 0 ;
+
+ session_sort = "year_desc";
+ IF qopts.get_option('srt') && NOT qopts.get_option('srt').match('_') && qopts.get_option('srto') ;
+    session_sort = "${qopts.get_option('srt')}_${qopts.get_option('srto')}";
+ END;
+ 
+%]
+<p/>
+
+<div class="mb-3">
+<div class="card border-0 sticky-top" style="min-width: 100%!important;">
+
+<form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+
+<input type="hidden" name="num"        value="20" />
+<input type="hidden" name="page"       value="1" />
+<input type="hidden" name="l"          value="[% lang %]" />
+
+<input type="hidden" name="srt"        value="[% session_sort %]" />
+<input type="hidden" name="st"         value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+        <div class="card-header p-0 border-0">
+	  
+          <div id="search_wrapper_top" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
+            <div class="input-group">
+              <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
+                <span class="input-group-btn ps-1">
+                    <button class="btn btn-primary fas fa-search" style="height: 36px;" type="submit"></button>
+                    <span class="btn btn-primary fas fa-cog" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>
+                </span>
+            </div>
+
+          </div>
+        </div>
+
+	<div class="row pb-0">     
+	  <div class="col collapse p-0 bg-white" id="search_options">
+            <ul class="list-group flex-row flex-wrap justify-content-center">
+              <li class="list-group-item pe-1 pt-3" style="border: none" >
+		<a href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-indicator=".spinner-border" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">[% msg.maketext("Erweiterte Suche") %]</a>
+	      </li>      	  
+              <li class="list-group-item pe-1 pt-3" style="border: none" >
+		<a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	      </li>
+            </ul>
+	  </div><!-- col -->
+	</div><!-- row -->
+
+</form>
+<!-- </nav> -->
+</div><!-- End: sticky-top -->
+</div><!-- End: d-md-none -->
+
+
+<style>
+[data-bs-toggle="collapse"] {
+  cursor: pointer;
+}
+
+//@media screen and (min-width:768px) { #ob-sidebar { display: block!important;visibility:visible!important; } }
+
+</style>
+
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar[% idsuffix %]" aria-labelledby="offcanvasSidebarLabel">
+
+  <div class="offcanvas-header">
+    <h3 class="offcanvas-title" id="offcanvasSidebarLabel[% idsuffix %]">[% msg.maketext("Suchergebnis filtern") %]</h3>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div>
+[% IF hits > 0 %]
+
+[% PROCESS common/subtemplate name="search_facet" facet_prefix="sidebar" offcanvas=1 %]
+
+[% ELSE %]
+[%   IF viewdbs.size == 1 %]  
+<div class="ob-facets">
+  [% PROCESS common/subtemplate name="search_radius" %]
+</div>
+[%   END %]
+[% END %]
+    </div>
+    
+    <div class="offcanvas-footer">
+      <button type="button" class="btn btn-primary text-end"  data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar[% idsuffix %]">[% msg.maketext("Schließen") %]</button>
+    </div>
+  </div>
+</div>
+
+
+[% IF hits > 0 %]
+<div id="ob-searchresult[% idsuffix %]" class="row flex-md-row">
+  
+  <div id="ob-search_refine[% idsuffix %]" class="col-xs-6 col-md-3 d-none d-md-block ">
+
+[% IF hits > 0 %]
+[% IF separate_facets %]
+<script>
+$(document).ready(function(){
+   $.get("[% path_prefix %]/[% config.get('search_loc') %]/facets.include?[% cgiapp.to_cgi_querystring({ exclude = ['page','facets','num','page']}) %];facets=location,availability,person,year,subject;facet_prefix=main",
+     function (txt){
+        $("#ob-separate_facets_main").html(txt);
+   });
+});
+</script>
+<div id="ob-separate_facets_main">
+<h4 class="d-none d-md-block">[% msg.maketext("Suchergebnis filtern") %]</h4>
+
+<h5>[% msg.maketext("Die Filter-Kriterien werden bestimmt") %]</h5>
+
+<div class="text-center">
+<i class="fas fa-circle-notch fa-spin fa-4x"></i>
+</div>
+</div>
+[% ELSE %]
+[% PROCESS common/subtemplate name="search_facet" facet_prefix="main" offcanvas=0%]
+[% END %]
+[% ELSE %]
+[%   IF viewdbs.size == 1 %]  
+<div class="ob-facets">
+[% PROCESS common/subtemplate name="search_radius" %]
+</div>
+[%   END %]
+[% END %]
+
+  </div><!-- End: sidebar -->
+  
+  
+  <div class="col-md-9">
+
+[% IF spelling_suggestion.resultlist %]
+[%    suggestion = searchquery.get_spelling_suggestion %]
+[%     IF suggestion%]
+[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% escape_html(query.param('num')) %]&srt=year_desc&st=[% escape_html(query.param('st')) %]fs=[% suggestion %]">[% suggestion %]</a></b>
+[%     END %]
+[% END %]
+
+[% IF hits > 0 %]
+<!-- Beginn Result Item -->
+[%-
+    request_base    = "num=${queryoptions.get_option('num')};profile=${current_profile};srt=${session_sort};page=1;" ;
+    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = nav.current_page*queryoptions.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
+
+<div class="ob-resultlist">
+  <div class="ob-resultheader pb-4">
+    <div class="left">
+      <div class="navbar navbar-default">
+        <div class="container-fluid d-block d-md-none ps-0 mt-0" style="z-index: 1"><!-- only visible in xs-->
+          <button class="btn btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar[% idsuffix %]">
+            <i class="fa fa-sliders-h"></i> [% msg.maketext("Filtern") %]
+          </button>
+	</div>
+        <div class="d-none d-lg-block mt-2"	>
+[% msg.maketext("Treffer") %]&nbsp;<b>[% start_range.chunk(-3).join('.') %]-[% end_range.chunk(-3).join('.') %]</b>&nbsp;[% msg.maketext("von") %]&nbsp;<b id="numhits[% idsuffix %]">[% hits.chunk(-3).join('.') %]</b>
+        </div>
+      </div>
+    </div>
+    <div class="right mt-2">
+
+[% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') %]
+
+    </div>
+  </div>
+  <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[%- FOREACH record IN recordlist.get_records -%]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database %] 
+[%- END -%]
+<div class="ob-footer">
+
+<div class="ob-resulttime">
+in: [% resulttime %] [% msg.maketext("Sekunden") %]
+</div>
+</div><!-- End: ob-footer -->
+  </div>
+
+  <div class="ob-resultfooter">
+    [% PROCESS common/subtemplate name="search_more_tips" %]
+   
+  </div>
+</div>
+
+<p/>
+[% END %]
+
+  </div><!-- End: col -->
+</div><!-- End: row -->
+
+[% PROCESS common/subtemplate name="search_pagination" %]
+
+[% ELSE %]
+  <div class="ob-no_hits pt-5">
+    <h1>[% msg.maketext("Zu Ihrer Suchanfrage konnten keine Treffer gefunden werden.") %]</h1>
+
+  </div>
+
+  <div class="ps-5 pe-5">
+    [% PROCESS common/subtemplate name="search_more_tips" %]
+  </div>
+
+[% END %]
+<template id="lendable-template">
+  <a href="" class="btn btn-primary avail-js ob-availability_lendable mb-1 me-1 pe-2"><img src="[% config.get_icon('lendable',view,sysprofile) %]" alt="[% msg.maketext("ausleihbar") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("ausleihbar") %]</span></a>
+</template>
+<template id="presence-template">
+  <a href="" class="btn btn-primary avail-js ob-availability_presence mb-1 me-1 pe-2"><img src="[% config.get_icon('presence',view,sysprofile) %]" alt="[% msg.maketext("einsehbar") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("einsehbar") %]</span></a>
+</template>
+<template id="lent-template">
+  <a href="" class="btn btn-primary avail-js ob-availability_borrowed mb-1 me-1 pe-2"><img src="[% config.get_icon('borrowed',view,sysprofile) %]" alt="[% msg.maketext("entliehen") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("entliehen") %]</span></a>
+</template>
+
+<script>
+$(document).ready(function(){
+        var numhits_[% current_tab %] = $("#numhits_[% current_tab %]").text();
+        if (numhits_[% current_tab %]){
+            $("#ob-searchresult_[% current_tab %]_count").html(" ("+numhits_[% current_tab %]+")");
+        }
+        else {
+            $("#ob-searchresult_[% current_tab %]_count").html(" (0)");
+        }
+});
+
+
+async function processAvailData(alma_sru_url, circ_table) {
+  try {
+    const response = await fetch(alma_sru_url);
+
+    if (!response.ok) {
+      throw new Error(`Error fetching data: ${response.status} - ${response.statusText}`);
+    }
+
+    const xml_str = await response.text();
+    const xml_doc = new DOMParser().parseFromString(xml_str, 'application/xml');
+    const avail_data = [];
+    const ava_infos = xml_doc.querySelectorAll('datafield[tag="AVA"]');
+    
+    ava_infos.forEach((ava_info) => {
+      try {
+        const library_code = ava_info.querySelector('subfield[code="b"]').textContent;
+        const location_code = ava_info.querySelector('subfield[code="j"]').textContent;
+        const availability = ava_info.querySelector('subfield[code="e"]').textContent;
+        const avail_single = get_avail_info(circ_table, library_code, location_code, availability)
+
+        avail_data.push(avail_single);
+      } catch (error) {
+        console.error('Error processing availability info:', error);
+      }
+    });
+    return avail_data;
+  } catch (error) {
+    console.error('Error fetching or processing data:', error);
+    return []; // Return an empty array in case of an error
+  }
+}
+
+if ("[% current_tab %]" === "books" && !document.getElementById("ob-searchresult_books")?.dataset?.avail_loaded) {
+   [%
+     alma_circ = config.load_alma_circulation_config;
+   %]
+   const circ_table = JSON.parse('[% to_json(alma_circ) %]');
+
+   let entry_elems_[% current_tab %] = document.querySelectorAll("[data-catalog]");
+   Array.from(entry_elems_[% current_tab %]).forEach((entry_elem, index) => {
+   let mms_id = entry_elem.dataset.id;
+   let catalog = entry_elem.dataset.catalog;
+   const alma_sru_url = `https://hbz-ubk.alma.exlibrisgroup.com/view/sru/49HBZ_UBK?version=1.2&operation=searchRetrieve&recordSchema=marcxml&query=alma.mms_id=${mms_id}`;
+   processAvailData(alma_sru_url, circ_table)
+     .then((avail_data) => {
+       if (avail_data.length > 0) {
+         let overall_mediastatus = {};
+         for (let avail_item of avail_data) {
+          if (avail_item.availability_status == "unavailable"){
+            overall_mediastatus["lent"] = true;
+          }else if (avail_item.availability_status == "loan") {
+            overall_mediastatus["lendable"] = true;
+          }else if (avail_item.availability_status == "presence") {
+            overall_mediastatus["presence"] = true;
+          }
+         }
+         let template_elem = "";
+         if (overall_mediastatus["lendable"] == true){
+           template_elem = document.getElementById('lendable-template');
+         }
+         else if (overall_mediastatus["presence"] == true) {
+           template_elem = document.getElementById('presence-template');
+         }
+         else if (overall_mediastatus["lent"] == true) {
+           template_elem = document.getElementById('lent-template');
+         }   
+   
+         if (template_elem !== "") {
+	   const clonedTemplate = document.importNode(template_elem.content, true);
+           clonedTemplate.querySelector('.avail-js').href = create_href(catalog,mms_id);
+           entry_elem.appendChild(clonedTemplate);
+         }
+       }
+      })
+      .catch((error) => {
+        console.error('Error processing entry element:', error);
+      });
+  });
+  const searchResultBooksElement = document.getElementById("ob-searchresult_books");
+  //Check if the element exists
+  if (searchResultBooksElement) {
+  // Set the data attribute
+  searchResultBooksElement.setAttribute("data-avail_loaded", "true");
+  }
+}
+
+function create_href(database, mms_id){
+  return `[% path_prefix %]/[% config.get('databases_loc') %]/id/${database}/[% config.get('titles_loc') %]/id/${mms_id}.html?l=de#ob-additional_title_info`;
+}
+
+
+function get_avail_info(circ_table, library_code, location_code, availability){
+   
+     let circ_config = {};
+     if (circ_table[library_code] !== undefined &&
+         circ_table[library_code][location_code] !== undefined){
+            circ_config = circ_table[library_code][location_code];
+     }
+     let availability_status = "unavailable";
+
+     if (availability === "available" && circ_config["loan"] !== undefined && circ_config["order"] !== undefined){
+        availability_status = "loan";
+     }
+     else if (availability === "unavailable" && circ_config["loan"] == undefined && circ_config["order"] == undefined){
+        availability_status = "";
+     } 
+
+     else if (availability === "available"){
+        availability_status = "presence";
+     }
+     
+     else if (availability === "check_holdings"){
+        availability_status = "";
+     }
+     
+     return {"library_code": library_code, "location_code": location_code, "availability_status": availability_status}
+
+}
+</script>

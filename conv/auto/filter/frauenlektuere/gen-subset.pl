@@ -75,7 +75,7 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $subset = new OpenBib::Catalog::Subset("inst001",$pool);
+my $subset = new OpenBib::Catalog::Subset("uni",$pool);
 $subset->identify_by_mark('^323/CF/.*HF$');
 $subset->write_set;
 

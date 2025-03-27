@@ -1,0 +1,290 @@
+[%- searchfield = config.get('searchfield') -%]
+
+[%# USE dumper;dumper.dump(available_searchfields)%]
+
+[% IF available_searchfields.freesearch.active %]
+[%- cgiparam = searchfield.freesearch.prefix ;
+    this_searchfield = 'freesearch';
+-%]
+<div class="form-floating mb-3">
+<input class="form-control" id="to_focus_advanced" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="to_focus_advanced">[% msg.maketext("Freie Suche") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.person.active %]
+[%- cgiparam = searchfield.person.prefix;
+    this_searchfield = 'person';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Person") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.title.active %]
+[%- cgiparam = searchfield.title.prefix;
+    this_searchfield = 'title';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Titelworte") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.year.active %]
+[%- cgiparam      = searchfield.year.prefix;
+    this_searchfield = 'year';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="4" maxlength="4" />
+<label for="[% cgiparam %]">[% msg.maketext("Erscheinungsjahr") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.subject.active %]
+[%- cgiparam = searchfield.subject.prefix;
+    this_searchfield = 'subject';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Schlagwörter") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.isbn.active %]
+[%- cgiparam = searchfield.isbn.prefix;
+    this_searchfield = 'isbn';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("ISBN") %]</label>
+</div>
+[% END %]
+
+<p>
+<a data-bs-toggle="collapse" href="#collapseAdditionalSearchOptions" role="button" aria-expanded="false" aria-controls="collapseAdditionalSearchOptions">
+    [% msg.maketext("Mehr Suchfelder") %] >>
+</a>
+</p>
+
+<div class="collapse" id="collapseAdditionalSearchOptions">
+
+[%- cgiparam      = searchfield.year.prefix -%]
+[%- cgiparam_from = "${cgiparam}_from";
+    this_searchfield_from = 'year_from';
+ -%]
+[%- cgiparam_to   = "${cgiparam}_to";
+    this_searchfield_to = 'year_to';
+   -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam_from %]" type="search" name="[% cgiparam_from %]" value="[% searchquery.cgiparam_from.val | html %]" size="4" maxlength="4" />
+<label for="[% cgiparam_from %]">[% msg.maketext("Zeitraum") %] [% msg.maketext("von") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam_to %]" type="search" name="[% cgiparam_to %]" value="[% searchquery.cgiparam_to.val | html %]" size="4" maxlength="4" />
+<label for="[% cgiparam_to %]">[% msg.maketext("Zeitraum") %] [% msg.maketext("bis") %]</label>
+</div>
+
+[% IF available_searchfields.titlestring.active %]
+[%- cgiparam = searchfield.titlestring.prefix;
+    this_searchfield = 'titlestring';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Kompletter Titel") %]</label>
+</div>
+[% END %]
+
+[%- cgiparam = searchfield.personstring.prefix;
+    this_searchfield = 'personstring';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Exakte Person in Ansetzungsform") %]</label>
+</div>
+
+[% IF available_searchfields.toc.active %]
+[%- cgiparam = searchfield.toc.prefix;
+    this_searchfield = 'toc';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Inhaltsverzeichnis") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.source.active %]
+[%- cgiparam = searchfield.source.prefix;
+    this_searchfield = 'source';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Reihe/Band/Quelle") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.markstring.active %]
+[%- cgiparam = searchfield.markstring.prefix;
+    this_searchfield = 'markstring';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Signatur") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.classification.active %]
+[%- cgiparam = searchfield.classificationstring.prefix;
+    this_searchfield = 'classificationstring';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Notation") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.issn.active %]
+[%- cgiparam = searchfield.issn.prefix;
+    this_searchfield = 'issn';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("ISSN") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.corporatebody.active %]
+[%- cgiparam = searchfield.corporatebody.prefix;
+    this_searchfield = 'corporatebody';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.publisher.active %]
+[%- cgiparam = searchfield.publisher.prefix;
+    this_searchfield = 'publisher';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Verlag") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.mediatype.active %]
+[%- cgiparam = searchfield.mediatypestring.prefix;
+    this_searchfield = 'mediatypestring';
+ -%]
+<div class="form-floating mb-3">
+<select class="form-select" id="[% cgiparam %]" name="[% cgiparam %]">
+<option value="" selected="selected">[% msg.maketext("Keiner ausgewählt") %]</option>
+<option value="Digital">[% msg.maketext("Digital") %]</option>
+<option value="Open Educational Resource">[% msg.maketext("Open Educational Resource") %]</option>
+<option value="Zeitschrift/Serie">[% msg.maketext("Zeitschrift/Serie") %]</optio<option value="Aufsatz">[% msg.maketext("Aufsatz") %]</option>
+<option value="Hochschulschrift">[% msg.maketext("Hochschulschrift") %]</option>
+</select>
+<label for="[% cgiparam %]">[% msg.maketext("Typ") %]</label>
+</div>
+[% END %]
+
+[%- cgiparam = searchfield.reg.prefix;
+    this_searchfield = 'reg';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Register") %]</label>
+</div>
+
+[% IF available_searchfields.content.active %]
+[%- cgiparam = searchfield.content.prefix;
+    this_searchfield = 'content';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Abstrakt/Inhalt") %]</label>
+</div>
+[% END %]
+
+[%- cgiparam = searchfield.provenance.prefix;
+    this_searchfield = 'provenance';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Provenienz") %]</label>
+</div>
+
+[%# IF available_searchfields.topic.active %]
+[%- cgiparam = searchfield.topic.prefix;
+    this_searchfield = 'topic';
+ -%]
+<div class="form-floating mb-3">
+<select class="form-select" id="[% cgiparam %]" name="[% cgiparam %]">
+<option value="" selected="selected">[% msg.maketext("Keines ausgewählt") %]</option>
+[% FOREACH topic IN user.get_topics %]
+<option value="[% topic.id %]">[% topic.name %]</option>
+[% END %]
+</select>
+<label for="[% cgiparam %]">[% msg.maketext("Themengebiet") %]</label>
+</div>
+[%# END %]
+
+[%- cgiparam = searchfield.gnd.prefix;
+    this_searchfield = 'gnd';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">GND</label>
+</div>
+
+[%- cgiparam = searchfield.zdbid.prefix;
+    this_searchfield = 'zdbid';
+ -%]
+<div class="form-floating mb-3 d-none">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">ZDB-ID</label>
+</div>
+
+[% IF available_searchfields.hss.active %]
+[%- cgiparam = searchfield.hss.prefix;
+    this_searchfield = 'hss';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("T0519") %]</label>
+</div>
+[% END %]
+
+<!-- <tr><td class="ob-field">[% msg.maketext("Eingrenzung auf Gesamttitel (Serien)") %]</td><td class="ob-field">und</td><td><input class="form-control" id="[% cgiparam %]" type="checkbox" name="serien" /></td><td></td></tr> -->
+
+</div>
+
+[%-
+   IF NOT searchprofileid_of_portal ;
+      searchprofileid_of_portal  = config.get_searchprofile_of_database('frauenlektuere') ;
+   END ;
+-%]
+
+<input type="hidden" name="profile" value="[% searchprofileid_of_portal %]" />
+
+[% IF 0 == 1 %]
+
+<hr/>
+
+<div class="form-floating mb-3">
+[% PROCESS common/subtemplate name="searchforms_record_profile" %]
+<label for="profile">[% msg.maketext("Suchprofil") %]</label>
+</div>
+[% END %]
+<p/>
+
+<div class="d-flex ob-fulltitle_actions mb-3">
+
+<div class="pe-1">
+<button class="btn btn-primary" type="submit">[% msg.maketext("Suchen") %]</button>
+</div>
+
+</div>

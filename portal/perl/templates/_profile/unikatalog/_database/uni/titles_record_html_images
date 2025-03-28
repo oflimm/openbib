@@ -42,7 +42,7 @@ END;
 
 [% IF iiif_id %]
 <p>
-  <a href="[% normdata.${'T4120'}.first.content %]" target="_blank"><center><img src="http://api-digital.ub.uni-koeln.de/iiif/thumbnail?manifest_id=[% iiif_id %]&size=300" title="IIIF-Viewer" alt="[% msg.maketext("IIIF-Viewer") %]" /></a></center>
+  <a href="[% normdata.${'T4120'}.first.content %]" target="_blank"><center><img id="cover_full" src="http://api-digital.ub.uni-koeln.de/iiif/thumbnail?manifest_id=[% iiif_id %]&size=300" title="IIIF-Viewer" alt="[% msg.maketext("IIIF-Viewer") %]" /></a></center>
 </p>
 <p>
   <center><a class="exturl" href="[% normdata.${'T4120'}.first.content %]" target="_blank">[Online lesen]</a></center>

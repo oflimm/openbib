@@ -60,12 +60,17 @@ while (<>){
 
 	foreach my $umult (sort keys %$url_info_ref){
 	    if (defined $url_info_ref->{$umult}{'u'}){
-		my $url      = $url_info_ref->{$umult}{'u'};
-		my $note     = $url_info_ref->{$umult}{'z'};
-		my $material = $url_info_ref->{$umult}{'3'};
+		my $url             = $url_info_ref->{$umult}{'u'};
+		my $note            = $url_info_ref->{$umult}{'z'};
+		my $non_public_note = $url_info_ref->{$umult}{'z'};
+		my $material        = $url_info_ref->{$umult}{'3'};
 
 		my $description = "Open Educational Resource";
 
+		if ($non_public_note){
+		    $description = $non_public_note;
+		}
+		
 		my $mult = $mult_ref->{'4662'}++;
 
 		# URL schon ueber Portfolios verarbeitet? Dann ignorieren

@@ -28,52 +28,32 @@ FOREACH item IN normdata.${"T0020"};
     isbn = item.content ;
     last;
   END;
-END
+END;
+
+iiif_id = "";
+
+FOREACH item IN normdata.${"T0024"};
+  IF item.content.match(10.58016);
+    iiif_id = item.content.replace('10.58016/','');
+  END;
+END;
 
 -%]
 
-[% IF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
+[% IF iiif_id %]
+<p>
+  <a href="[% normdata.${'T4120'}.first.content %]" target="_blank"><center><img src="http://api-digital.ub.uni-koeln.de/iiif/thumbnail?manifest_id=[% iiif_id %]&size=300" title="IIIF-Viewer" alt="[% msg.maketext("IIIF-Viewer") %]" /></a></center>
+</p>
+<p>
+  <center><a class="exturl" href="[% normdata.${'T4120'}.first.content %]" target="_blank">[Online lesen]</a></center>
+</p>
+
+[% ELSIF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
 <p>
 [% coverapi = config.get('covers').vlb %]
 [%# USE dumper;dumper.dump(coverapi)%]
 <a href="[% coverapi.credits_url %]" target="_blank"><img src="[% path_prefix %]/[% config.get('connector_cover_loc') %]/vlb/[% isbn %]?size=m" title="[% coverapi.credits_text %]" alt="[% msg.maketext("Cover-Scan") %]"/></a>
 </p>
-[% ELSE %]
-[%
-     katkey = 0;
-
-     IF normdata.defined('T1001');
-       FOREACH item IN normdata.${'T1001'};
-         IF item.subfield == 'u';
-	    katkey = item.content;
-	 END;
-       END;
-     END;
-
-     IF katkey ;
-        cdm_json_url = "https://services.ub.uni-koeln.de/cdm4/json_gateway.php?collection=all&start=1&maxrecs=10&field0=identi&mode0=exact&string0=${katkey}";
-
-        cdm = record.enrich_cdm(bezeichner,cdm_json_url) ;
-
-#       USE dumper;dumper.dump(cdm);
-%]
-[%      IF cdm.total > 0 ;
-
-          cdmrecord = cdm.records.first ;
-          cdm_url       = "https://services.ub.uni-koeln.de/cdm/compoundobject/collection${cdmrecord.collection}/id/${cdmrecord.pointer}";
-          cdm_imgurl    = "https://services.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=${cdmrecord.collection}&CISOPTR=${cdmrecord.pointer}";
-%]
-<p>
-<a href="[% cdm_url %]" target="_blank"><img id="cover_full" src="[% cdm_imgurl %]"/></a>
-</p>
-
-<p>
-<a href="[% cdm_url %]" class="exturl" target="_blank">Zum Digitalisat in ContentDM</a>
-</p>
-
-[%       END %]
-[%    END %]
-
 [% END %]
 [%- IF 0 == 1 && isbn # disabled -%]
 <p>

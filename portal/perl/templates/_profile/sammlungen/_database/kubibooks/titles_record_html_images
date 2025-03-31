@@ -25,9 +25,11 @@
 
 -%]
 
+[% IF iiif_id %]
 <p>
 <a href="[% normdata.${'T4120'}.first.content %]" target="_blank"><center><img src="http://api-digital.ub.uni-koeln.de/iiif/thumbnail?manifest_id=[% iiif_id %]&size=300" title="IIIF-Viewer" alt="[% msg.maketext("IIIF-Viewer") %]" /><br/>[Online lesen im IIIF-Viewer]</center></a>
 </p>
+[% END %]
 
 [% IF cgiapp.is_authenticated('admin') || cgiapp.is_authenticated('librarian') %]
 <p>

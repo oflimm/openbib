@@ -734,7 +734,11 @@
       <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
 
       <div class="ob-thumbnail pt-1 ps-5 pe-5 me-0 d-none d-md-block">
+[% IF iiif_id %]      
       <img src="http://api-digital.ub.uni-koeln.de/iiif/thumbnail?manifest_id=[% iiif_id %]&size=120" title="Thumbnail"/>
+[% ELSE %]
+      <i class="pt-3 fas fa-book fa-6x"></i>
+[% END %]      
       </div>
 
       <div class="ob-brieftitle ps-4">

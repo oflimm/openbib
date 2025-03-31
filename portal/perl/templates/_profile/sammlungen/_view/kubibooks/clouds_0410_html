@@ -1,0 +1,78 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von katalogspezifischen Wortwolken
+#
+#######################################################################
+-%]
+[%
+      funcargs = { id => "${database}-0410", type => 14 } ;
+      resultlist = config.get_datacache(funcargs);
+%]
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+<h3>[% msg.maketext("Verlagsort") %]</h3>
+
+<div class="row">
+<div class="col-md-9">
+
+<div class="card">
+<div class="card-header">[% msg.maketext("Wolke der häufigsten Begriffe") %]</div>
+<div class="card-body">
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%- IF resultlist.size > 5 -%]
+[%- searchprefix  = config.get('searchfield').ft0410.prefix -%]
+[%- default_query_options = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) -%]
+
+<ol class="ob-cloud">
+[%- FOREACH thisitem IN resultlist -%]
+[% item      = thisitem.item;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind verkn&uuml;pft mit </span><a href="[% path_prefix %]/[% config.get('search_loc') %]?page=1;[% IF default_query_options %][% default_query_options %];[% END %]profile=[% config.get_searchprofile_of_database(database) %];[% searchprefix %]=[% uri_escape(item) %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+[% msg.maketext("Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;ufige Begriffe diese Kategorie anbieten.") %]
+[% END %]
+</div>
+</div>
+
+
+</div><!-- col-md-9 -->
+
+<div class="col-md-3 d-none d-md-block">
+
+[% PROCESS common/subtemplate name=layout_param.sidebar_template %]
+
+</div><!-- col-md-6 -->
+
+</div>
+
+<button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>

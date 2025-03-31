@@ -1,0 +1,30 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_mitarbeiter_html
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+<div class="row">
+<div class="col-md-9 ps-3">
+
+[% config.get_templatetext('info_mitarbeiter',view,lang) %]
+
+</div>
+
+<div class="col-md-3 d-none d-md-block">
+
+[% PROCESS common/subtemplate name=layout_param.sidebar_template %]
+
+</div>
+
+</div>
+
+<button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
+

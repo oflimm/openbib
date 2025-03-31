@@ -1,0 +1,53 @@
+[%#-
+#######################################################################
+#
+# Templatename: breadcrumbs
+#
+# Typ         : Subtemplage       
+#
+# Aufgabe:
+#
+# Ausgabe der Kruemelpfad-Navigation
+#
+#######################################################################
+-%]
+
+<!-- start: breadcrumb navigation -->
+[% IF layout_param.breadcrumb %]
+<div class="ob-breadcrumb bg-white">
+<ol class="list-group list-group-horizontal">
+   <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">[% msg.maketext("Start") %]</a></li>
+   <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/[% config.get('titles_loc') %]/fields/id/0100:a.html?l=[% lang %]">[% msg.maketext("Register") %]</a></li>
+   <li class="list-group-item ob-navitem"><a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kubibooks/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">[% msg.maketext("Wortwolken") %]</a></li>
+
+[% IF layout_param.representations %]
+<li class="ob-representation list-group-item ms-auto d-none d-md-block">
+[%- FOREACH this_representation IN layout_param.representations ;
+
+      IF this_representation.type == 'csv'
+      -%]
+<a class="ob-representation_csv ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext(" Ressource im CSV-Format") %]" href="[% this_representation.url %]">CSV</a>&nbsp;
+      [%-
+      ELSIF this_representation.type == 'json'
+      -%]
+<a class="ob-representation_json ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext("Ressource im JSON-Format") %]" href="[% this_representation.url %]">{JSON}</a>&nbsp;
+      [%-
+      ELSIF this_representation.type == 'rss' ;
+      -%]
+<a class="ob-representation_rss ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext("Ressource als RSS-Feed") %]" href="[% this_representation.url %]"><i class="fas fa-rss"></i></a>
+      [%-
+      ELSIF this_representation.type == 'dfg' ;
+      -%]
+<a class="ob-reprensentation_dfg ps-2" data-bs-toggle="tooltip" data-bs-placement="top" title="[% msg.maketext("Anzeige der Ressource im DFG-Viewer") %]" href="[% this_representation.url %]" target="dfgviewer"><img src="/images/openbib/dfgviewer.png" alt="DFG-Viewer" /></a>
+      [%-
+      END ; 
+   END -%]
+</li>
+[% END %]
+
+</ol>
+</div>
+[% ELSE %]
+<!-- no breadcrumb navigation -->
+[% END %]
+<!-- end: breadcrumb navigation -->

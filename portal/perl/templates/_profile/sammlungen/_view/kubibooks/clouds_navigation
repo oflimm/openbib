@@ -50,7 +50,7 @@
    <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/placeofpublication.html?l=[% lang %]" title="[% msg.maketext("Verlagsorte") %]">[% msg.maketext("Verlagsorte") %]</a></li>
 [%   END %]
 [% END %]
-[% IF config.datacache_exists({ id => database, type => 3 }) %]
+[% IF 0 == 1 && config.datacache_exists({ id => database, type => 3 }) %]
 [%   IF layout_param.active_submenu == "clouds_subject" %]
   <li class="navbar-item active"><strong>[% msg.maketext("Schlagwort") %]</strong></li>
 [%   ELSE %]

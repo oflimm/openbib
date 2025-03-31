@@ -108,12 +108,12 @@
 </div>
 
 [%-
-   IF NOT searchprofileid_of_books ;
-      searchprofileid_of_books  = config.get_searchprofile_of_orgunit('unikatalog','books') ;
+   IF NOT searchprofileid_of_view ;
+      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
    END ;
 -%]
 
-<input type="hidden" name="profile" value="[% searchprofileid_of_books %]" />
+<input type="hidden" name="profile" value="[% searchprofileid_of_view %]" />
 
 <p/>
 

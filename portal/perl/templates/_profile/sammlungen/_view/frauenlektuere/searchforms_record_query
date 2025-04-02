@@ -263,12 +263,12 @@
 </div>
 
 [%-
-   IF NOT searchprofileid_of_portal ;
-      searchprofileid_of_portal  = config.get_searchprofile_of_database('frauenlektuere') ;
+   IF NOT searchprofileid_of_view ;
+      searchprofileid_of_view  = config.get_searchprofile_of_view(view) ;
    END ;
 -%]
 
-<input type="hidden" name="profile" value="[% searchprofileid_of_portal %]" />
+<input type="hidden" name="profile" value="[% searchprofileid_of_view %]" />
 
 [% IF 0 == 1 %]
 

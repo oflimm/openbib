@@ -1718,11 +1718,11 @@ convtab:
           index:
             'publisher': 1
             'publisherstring': 1
-        # 'c': # Jahr 
-        #   index:
-        #     'year': 1
-        #     'yearstring': 1
-        #     'freesearch': 1
+        'c': # Jahr 
+          index:
+            'year': 1
+            'yearstring': 1
+            'freesearch': 1
         #   facet:
         #     'year': 1
       '0490': # 1. GT

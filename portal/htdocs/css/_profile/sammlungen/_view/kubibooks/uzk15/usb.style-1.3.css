@@ -1,0 +1,136 @@
+/* Ueberlagerung des Portallinks (Schriftzug der UB) verhindern. */
+.uzk15__content {
+    z-index: 10
+}
+.uzk15__mainnavigation ul.uzk15__firstlevellinks {
+    padding-right:15%;
+}
+.uzk15__headerwrapper .uzk15__partnerlogo {
+    margin-top:2.5rem;
+}
+
+.uzk15__akkordeon .partner .uzk15__rightside ul {
+    margin-left:0 !important;
+}
+
+/* Menüpunkte für Anmelden/Logout, Konto u. Merkliste in der Desktop-Version der Kopfzeile */
+.uzk15__sticky .uzk15__backtomain {
+    margin-top: -0.3em;
+}
+.uzk15_ipslogin {
+    margin: 0.18em 0.8em 1.4em 0;
+}
+@media screen and (min-width:768px) {
+    .uzk15_ipslogin {
+        margin: 0 1.5em 1.4em 0;
+    }
+}
+.uzk15__sticky .uzk15_ipslogin {
+    margin-bottom: 0;
+}
+.uzk15_ipslogin a {
+    display: block;
+    float:left;
+    line-height: 1.4em;
+    font-size: 0.875em;
+    text-decoration: none;
+    color: #fff;
+    outline: none;
+}
+/*
+.uzk15_ipslogin a:hover .uzk15__atext {
+    text-decoration: underline;
+}
+*/
+.uzk15_ipslogin a.uzk15__cartlink {
+    padding-right: 0.95em;
+}
+.uzk15_ipslogin a.uzk15__cartlink span.uzk15__atext {
+    line-height: 1.15em;
+}
+.uzk15_ipslogin .uzk15__cartcounter {
+    font-size: 1.3em;
+    font-family: OpenSansBold,Arial,Helvetica,sans-serif;
+    padding-left: 0.2em;
+}
+.uzk15_ipslogin .uzk15__icon {
+    padding-bottom: 0;
+}
+.uzk15_ipslogin .uzk15__atext {
+    display: block;
+    float: left;
+    padding-top: 0.25em;
+    padding-right: 0.75em;
+}
+.uzk15_ipslogin .uzk15__svg-linkedin {
+    width: 1.875em;
+    height: 1.875em;
+    fill: #fff;
+}
+.uzk15_ipslogin .uzk15__svg-linkedin.uzk15__svg-logout {
+    fill: orange;
+}    
+.uzk15__headermobile  .uzk15_ipslogin .uzk15__svg-linkedin {
+    padding-bottom: 0;
+}
+
+/* Suchschlitz in der Kopfzeile für Zwischengrößen (Tablets etc.) ausblenden, da der Platz nicht ausreicht */
+@media screen and (min-width:768px) and (max-width:1100px) {
+    form.uzk15__searchform.uzk15__standardsearchform.uzk15__webforms {
+        display: none;
+    }
+}
+
+/* Menüpunkte für Anmelden/Logout, Konto u. Merkliste in der mobilen Version der Kopfzeile */
+.uzk15__mobilepersonal-toggle .uzk15__svg-personal.uzk15__svg-logout {
+    fill: orange !important;
+}
+ul.uzk15__personalnavigationlist {
+    margin-bottom: .625em;
+}
+.uzk15__personalnavigationlist a {
+    color: #fff;
+    font-size: .9375em;
+}
+
+/* Footer: Anpassng, damit Links bei column-count auch im Chrome funktionieren */
+.uzk15__mainfooter * {
+    -webkit-transform: none !important;
+}
+
+/* Footer: Anpassungen, da die CSS-Klasse des USB-Blocks von uzk15__footersection2 auf uzk15__footersection3 geändert wurde */
+.uzk15__footersection3.usb__footersection2 {
+    background-color: #3e566c;
+}
+.usb__footersection2 h2.uzk15__triggerhead {
+    display: none;
+}
+@media screen and (min-width:768px) {
+    .usb__footersection2 h2.uzk15__triggerhead {
+	display: inline-block;
+    }
+}
+.uzk15__partner {
+width: 6em;
+height: 100%;
+fill: #fff;
+float: left;
+}
+.uzk15__bottom {
+position: relative;
+padding-left: 1em;
+top: 1em;
+left: 1em;
+}
+
+.uzk15__sozpartner img {
+  border-radius: 7px;
+  background: white;
+}
+
+.uzk15__sozpartner img:hover{
+  border-radius: 7px;
+  border: 1px solid white;
+  fill: #253746;
+  -webkit-filter: invert(100%) !important;
+}

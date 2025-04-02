@@ -40,7 +40,8 @@ while (<>){
 	    }
 	}
     }
-    elsif ($year_from_26x && (!$field_1008_has_a || !defined $title_ref->{fields}{'1008'})){
+
+    if ($year_from_26x && (!$field_1008_has_a || !defined $title_ref->{fields}{'1008'})){
 	push @{$title_ref->{fields}{'1008'}}, {
 	    mult => 1,
 	    subfield => 'a',

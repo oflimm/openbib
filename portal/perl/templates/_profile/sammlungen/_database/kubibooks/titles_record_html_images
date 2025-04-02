@@ -1,0 +1,41 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_images
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe des "Bilder"-Bereichs fuer einen
+# einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%# USE dumper;dumper.dump(normdata)%]
+[%-
+
+  iiif_id = "";
+
+  FOREACH thisnormdata IN normdata.${"T0024"};
+    IF thisnormdata.content.match(10.58016);
+      iiif_id = thisnormdata.content.replace('10.58016/','');
+    END;
+  END;
+
+-%]
+
+[% IF iiif_id %]
+<p>
+<a href="[% normdata.${'T4120'}.first.content %]" target="_blank"><center><img src="http://api-digital.ub.uni-koeln.de/iiif/thumbnail?manifest_id=[% iiif_id %]&size=300" title="IIIF-Viewer" alt="[% msg.maketext("IIIF-Viewer") %]" /><br/>[Online lesen im IIIF-Viewer]</center></a>
+</p>
+[% END %]
+
+[% IF cgiapp.is_authenticated('admin') || cgiapp.is_authenticated('librarian') %]
+<p>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %]&flush_cache=1" >[% msg.maketext("Titel ohne Cache") %]</a>
+</p>
+<p>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/searchindex.html?l=[% lang %]" >[% msg.maketext("Zum Suchindex") %]</a>
+</p>
+[% END %]

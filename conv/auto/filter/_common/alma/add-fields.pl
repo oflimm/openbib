@@ -8,7 +8,8 @@ use Storable ();
 use DB_File;
 use List::MoreUtils qw/ uniq /;
 use POSIX qw(strftime);
-
+use YAML;
+    
 my $thisyear = strftime "%Y", localtime;
 
 open(HOLDING,"./meta.holding");
@@ -215,31 +216,51 @@ while (<>){
 
     my $latest_year_of_death = 0;
 
+    my $latest_year_of_death_ref = {};
+    
     if (defined $title_ref->{fields}{'0100'}){
+	foreach my $item_ref (@{$title_ref->{fields}{'0100'}}){
+	    $latest_year_of_death_ref->{'0100-'.$item_ref->{mult}} = 0;
+	}
+	
 	foreach my $item_ref (@{$title_ref->{fields}{'0100'}}){
 	    if ($item_ref->{subfield} eq "d" && $item_ref->{content}=~m/-(\d+)$/){
 		my $year_of_death = $1;
 
-		if ($year_of_death > $latest_year_of_death){
-		    $latest_year_of_death = $year_of_death;		    
-		}
+		$latest_year_of_death_ref->{'0100-'.$item_ref->{mult}} = $year_of_death;		    
 	    }
 	}
     }
 
     if (defined $title_ref->{fields}{'0700'}){
 	foreach my $item_ref (@{$title_ref->{fields}{'0700'}}){
+	    $latest_year_of_death_ref->{'0700-'.$item_ref->{mult}} = 0;
+	}
+	
+	foreach my $item_ref (@{$title_ref->{fields}{'0700'}}){
 	    if ($item_ref->{subfield} eq "d" && $item_ref->{content}=~m/-(\d\d\d\d)$/){
 		my $year_of_death = $1;
-
-		if ($year_of_death > $latest_year_of_death){
-		    $latest_year_of_death = $year_of_death;		    
-		}
+		
+		$latest_year_of_death_ref->{'0700-'.$item_ref->{mult}} = $year_of_death;		    
 	    }
 	}
     }
+    
+    # Fuer alle Verfasser muss ein Sterbejahr definiert sein!
+    my $all_authors_with_year_of_death = 1;
 
-    if ($latest_year_of_death && $latest_year_of_death + 70 <= $thisyear){
+    foreach my $key (keys %{$latest_year_of_death_ref}){
+	# Ein undefiniertes Sterbejahr bei einem Verfasser verunmoeglicht Auswertung
+	if (!$latest_year_of_death_ref->{$key}){
+	    $all_authors_with_year_of_death = 0;
+	}
+	# sonst ggf. Hochsetzen des letzten Sterbejahrs
+	elsif ($latest_year_of_death_ref->{$key} > $latest_year_of_death) {
+	    $latest_year_of_death = $latest_year_of_death_ref->{$key};	    
+	}
+    }
+    
+    if ($all_authors_with_year_of_death && $latest_year_of_death && $latest_year_of_death + 70 <= $thisyear){
 	push @{$title_ref->{fields}{'1008'}}, {
 	    mult     => 1,
 	    subfield => 'o',

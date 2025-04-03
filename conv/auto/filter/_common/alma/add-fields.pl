@@ -7,6 +7,9 @@ use MLDBM qw(DB_File Storable);
 use Storable ();
 use DB_File;
 use List::MoreUtils qw/ uniq /;
+use POSIX qw(strftime);
+
+my $thisyear = strftime "%Y", localtime;
 
 open(HOLDING,"./meta.holding");
 
@@ -206,6 +209,42 @@ while (<>){
 	    subfield => 'a',
 	    content => $year_from_26x,	    
 	};
+    }
+
+    # Analyse von 100/700 $d wg. Urheberrechtsfreiheit (juengstes Sterbejahr plus 70 Jahre) und Anreicherung in 1008$o(penaccess)
+
+    my $latest_year_of_death = 0;
+
+    if (defined $title_ref->{fields}{'0100'}){
+	foreach my $item_ref (@{$title_ref->{fields}{'0100'}}){
+	    if ($item_ref->{subfield} eq "d" && $item_ref->{content}=~m/-(\d+)$/){
+		my $year_of_death = $1;
+
+		if ($year_of_death > $latest_year_of_death){
+		    $latest_year_of_death = $year_of_death;		    
+		}
+	    }
+	}
+    }
+
+    if (defined $title_ref->{fields}{'0700'}){
+	foreach my $item_ref (@{$title_ref->{fields}{'0700'}}){
+	    if ($item_ref->{subfield} eq "d" && $item_ref->{content}=~m/-(\d\d\d\d)$/){
+		my $year_of_death = $1;
+
+		if ($year_of_death > $latest_year_of_death){
+		    $latest_year_of_death = $year_of_death;		    
+		}
+	    }
+	}
+    }
+
+    if ($latest_year_of_death && $latest_year_of_death + 70 <= $thisyear){
+	push @{$title_ref->{fields}{'1008'}}, {
+	    mult     => 1,
+	    subfield => 'o',
+	    content  => "urheberrechtsfrei seit ".($latest_year_of_death + 70),
+	};	
     }
     
     ### KMB-Medientypen zusaetzlich vergeben

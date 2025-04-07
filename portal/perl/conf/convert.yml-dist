@@ -1699,6 +1699,12 @@ convtab:
           index:
             'publisher': 1
             'publisherstring': 1
+      '0247':
+        'a': # Frueherer Titel
+          index:
+            'title': 1
+            'titlestring': 1
+            'freesearch': 30
       '0249':       # Vorlage beigefuegtes Werk
         'a':
           index:

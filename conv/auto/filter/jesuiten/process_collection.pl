@@ -16,8 +16,8 @@ while (<>){
     my $new_fields_ref = [];
 
     # Signaturlose Historische Systematik in 4314$b vereinigen
-    if (defined $title_ref->{fields}{$field}){
-	foreach my $item_ref (@{$title_ref->{fields}{$field}}){
+    if (defined $title_ref->{fields}{'4314'}){
+	foreach my $item_ref (@{$title_ref->{fields}{'4314'}}){
 	    my $content = $item_ref->{'content'};
 		
 	    if ($content =~m/^(.+?)\s*\;.+?$/ || $content =~m/^(.+?)\s*[A-Z][A-Z]*?\d+$/){

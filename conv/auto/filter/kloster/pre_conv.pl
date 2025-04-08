@@ -64,7 +64,7 @@ system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/gen_lo
 
 print "### $pool: Sammlungsspezifisches Processing - Stage 4\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/process_collection.pl | $rootdir/filter/$pool/restrict_kloster.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/restrict_kloster.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Anreicherung der Exemplarinformationen\n";
 

@@ -19,7 +19,6 @@
 		'Band',  # msg.maketext("Band") Bandangabe
                 'Originaltitel', # msg.maketext("Originaltitel") EST 
                 'Weitere Titel', # msg.maketext("Weitere Titel") WST
-                'Enthaltener Titel', # msg.maketext("Enthaltener Titel") 505 80 $t
                 'T0341', # msg.maketext("T0341") PSTVorlage
                 'Person', # msg.maketext("Person") Verfasser
                 'T0101', # msg.maketext("T0101") Person
@@ -41,13 +40,12 @@
                 'T0552', # msg.maketext("T0552") Identifier/DOI
                 'T0652', # msg.maketext("T0652") EDV Material
                 'T0655', # msg.maketext("T0655") EDV Adress
-                'Gesamttitel', # msg.maketext("Gesamttitel") GesTit Vorl 830
-                'Überordnung', # msg.maketext("Überordnung") Ueberordnung 773
+                'Gesamttitel', # msg.maketext("Gesamttitel") GesTit Vorl
                 'T0662', # msg.maketext("T0662") EDVurl
                 'URL', # msg.maketext("URL") EDVurl
                 'T2663', # msg.maketext("T2663") USB URLInfo
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung
-#                'T5005', # msg.maketext("T5005") Uebergeordn. Werke
+                'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 ]
 

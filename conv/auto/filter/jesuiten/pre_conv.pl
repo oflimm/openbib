@@ -54,9 +54,13 @@ print "### $pool: Erweiterung um Standortinformationen, weiteres Processing - St
 
 system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/remove_duplicates_in_nz.pl | $rootdir/filter/_common/alma/remove_empty_portfolio.pl | $rootdir/filter/_common/alma/remove_ill.pl | $rootdir/filter/_common/alma/fix-linkage.pl   > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
-print "### $pool: Erweiterung um Standortinformationen, weiteres Processing - Stage 2\n";
+print "### $pool: Erweiterung um Standortinformationen - Stage 2\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/gen_local_topic.pl | $rootdir/filter/_common/alma/process_urls.pl | $rootdir/filter/_common/alma/add-locationid.pl | $rootdir/filter/_common/alma/process_ids.pl | $rootdir/filter/_common/alma/volume2year.pl | $rootdir/filter/_common/alma/process_provenances.pl | $rootdir/filter/$pool/process_collection.pl | $rootdir/filter/$pool/restrict_jesuiten.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/add-locationid.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+
+print "### $pool: Weiteres Processing - Stage 3\n";
+
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/gen_local_topic.pl | $rootdir/filter/_common/alma/process_urls.pl | $rootdir/filter/_common/alma/process_ids.pl | $rootdir/filter/_common/alma/volume2year.pl | $rootdir/filter/_common/alma/process_provenances.pl | $rootdir/filter/$pool/process_collection.pl | $rootdir/filter/$pool/restrict_jesuiten.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Anreicherung der Exemplarinformationen\n";
 

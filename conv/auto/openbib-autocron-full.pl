@@ -516,7 +516,7 @@ sub threadB {
     
     # autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['digisoz','provenienzen','jesuiten','rheinabt', 'usbhwa','usbsab', 'dissertationen','usbphil'] });
 
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['usblbs','usbls'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, sync => 1, databases => ['usblbs','usbls','jesuiten','digisoz','provenienzen'] });
 
     ##############################
 

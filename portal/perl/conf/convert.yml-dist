@@ -2129,6 +2129,9 @@ convtab:
             'provenancestring': 20
           facet:
             'provenance': 1
+        'g':         # GND-ID Provenienzen Koerperschaften
+          index:
+            'gnd': 20
       '4307':         # Provenienzen Koerperschaften
         'a':
           index:
@@ -2152,6 +2155,9 @@ convtab:
             'provenancestring': 20
           facet:
             'provenance': 1
+        'g':         # GND-ID Provenienzen Koerperschaften
+          index:
+            'gnd': 20
       '4308':         # Provenienzen Person
         'a':
           index:
@@ -2175,6 +2181,9 @@ convtab:
             'provenancestring': 20
           facet:
             'provenance': 1
+        'g':         # GND-ID Provenienzen Koerperschaften
+          index:
+            'gnd': 20
       '4310':         # T-PRO Besitzkennzeichen
         'a':
           index:

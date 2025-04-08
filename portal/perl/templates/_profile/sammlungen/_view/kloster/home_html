@@ -126,7 +126,7 @@ var librariesmap = L.map('libraries_mapid', {
     scrollWheelZoom: false,
     dragging: !L.Browser.mobile,
     tap: false
-}).setView([50.933777, 6.939545], 11);
+}).setView([50.933777, 6.939545], 12);
 L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 18,
         attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'

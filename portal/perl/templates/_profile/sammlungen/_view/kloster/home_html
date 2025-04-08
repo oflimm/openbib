@@ -1,0 +1,118 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_simple
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der einfachen Suchmaske
+#
+#######################################################################
+-%]
+[%-
+
+   session_sort = "year_desc";
+   IF qopts.get_option('srt') && NOT qopts.get_option('srt').match('_') && qopts.get_option('srto') ;
+     session_sort = "${qopts.get_option('srt')}_${qopts.get_option('srto')}";
+   END;
+
+-%]
+
+<div class="jumbotron jumbotron-fluid mb-0 landing-page-img">
+  <div class="container container-fluid d-none d-md-block">
+    
+    <div class="card border-0" style="min-width: 100%!important;">
+      <form method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+	
+	<input type="hidden" name="num"        value="20" />
+	<input type="hidden" name="page"       value="1" />
+	<input type="hidden" name="l"          value="[% lang %]" />
+	
+	<input type="hidden" name="srt"        value="relevance_desc" />
+	<input type="hidden" name="st"         value="1" />
+	<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+        <div class="card-header p-0 border-0">
+	  
+          <div id="search_wrapper" class="input-group input-group-lg shadow-sm" style="min-width: 100%">
+            <input id="freetext-input" class="form-control" type="text" name="fs" value="" title="[% searchquery.get_searchfield('freesearch').val | html %]" placeholder="[% msg.maketext("Suchbegriff...") %]" required="" />
+            <div class="input-group-prepend">
+              <button type="submit" class="input-group-text ob-bg ob-border">
+                <i class="fas fa-search fa-2x text-white"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="d-md-flex justify-content-end d-none bg-transparent" style="width: 91%">
+      <div class="btn-group btn-group-sm d-none d-md-block">
+        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-indicator=".spinner-border" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('searchforms_loc') %]/id/advanced.include?l=[% lang %]">
+          <i class="fas fa-search-plus"></i> [% msg.maketext("Erweiterte Suche") %]
+        </a>
+        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kloster/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">
+          <i class="fas fa-cloud"></i> [% msg.maketext("Wortwolken") %]
+        </a>
+        <a class="btn btn-sm ob-bg-secondary ob-border-secondary text-white" style="border-top-right-radius: 0!important; border-top-left-radius: 0!important; border-bottom-right-radius: 0!important;" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kloster/[% config.get('titles_loc') %].html?l=[% lang %]">
+          <i class="fas fa-th-list"></i> [% msg.maketext("Alle Titel") %]
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container pb-5">
+  <div class="row">
+    <div class="col-md-3 ps-1 pe-1 pb-5">
+      <div class="card mt-5 h-100">
+	<div class="card-header pt-4 pb-2 text-center"><i class="fas fa-bible fa-2x"></i></div>
+	<div class="card-body pb-0">
+	  <h4 class="card-subtitle pb-1 text-center">[% msg.maketext("Die Klöster im Kölner Raum") %]</h4>
+	  <p class="card-text">[% msg.maketext("Viele Klöster sind rund um Köln zu finden.") %]</p>
+	</div>
+	<div class="card-footer pb-3">	
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/einleitung.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
+	</div>
+      </div>
+    </div>  
+    <div class="col-md-3 ps-1 pe-1 pb-5">
+      <div class="card mt-5 h-100">
+	<div class="card-header pt-4 pb-2 text-center"><i class="fas fa-info fa-2x"></i></div>
+	<div class="card-body pb-0">
+	  <h4 class="card-subtitle pb-1 text-center">[% msg.maketext("Das Klosterprojekt der USB Köln") %]</h4>
+	  <p class="card-text">[% msg.maketext("Das Klosterprojekt verzeichnet Provenienzen, Informationen zum ehemaligen Standort der Bücher und vieles mehr!") %]</p>
+        </div>
+	<div class="card-footer pb-3">		
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
+	</div>
+      </div>
+    </div>
+    <div class="col-md-3 ps-1 pe-1 pb-5">
+      <div class="card mt-5 h-100">
+	<div class="card-header pt-4 pb-2 text-center"><i class="fas fa-archway fa-2x"></i></div>
+	<div class="card-body pb-0">
+	  <h4 class="card-subtitle pb-1 text-center">[% msg.maketext("Die Klosterbibliotheken") %]</h4>
+	  <p class="card-text">[% msg.maketext("Die Kölner Klöster legten eine große Büchersammlung an, von denen einige in der USB Köln aufbewahrt werden.") %]</p>
+	</div>
+	<div class="card-footer pb-3">			  
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
+	</div>
+      </div>
+    </div>
+    <div class="col-md-3 ps-1 pe-1 pb-5">
+      <div class="card mt-5 h-100">
+	<div class="card-header pt-4 pb-2 text-center"><i class="fas fa-list-ul fa-2x"></i></div>
+	<div class="card-body pb-0">
+	  <h4 class="card-subtitle pb-1 text-center">[% msg.maketext("Register") %]</h4>
+	  <p class="card-text">[% msg.maketext("Hier in die Sammlung einsteigen: Register zu verschiedenen Kategorien rund um die Klosterbibliotheken!") %]</p>
+	</div>
+	<div class="card-footer pb-3">
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kloster/[% config.get('titles_loc') %]/fields/id/0100:a.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
+	</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+[% config.get_templatetext('home',view,lang) %]

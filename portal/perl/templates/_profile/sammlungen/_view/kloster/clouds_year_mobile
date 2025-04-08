@@ -1,0 +1,117 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von katalogspezifischen Wortwolken
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+[%
+      funcargs = { id => database, type => 9 } ;
+      resultlist = config.get_datacache(funcargs);
+%]
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+<style>
+.ob-cloud {
+  margin:0;
+  padding:0;
+}
+.ob-cloud li {
+  margin:0;
+  padding:0;
+  display: inline;
+}
+.ob-cloud span {
+  position: absolute;
+  left: -999px;
+  width: 990px;
+}
+.ob-cloud .fast-nicht-genutzt {
+  font-size: 0.7em;
+}
+.ob-cloud .nicht-sehr-genutzt {
+  font-size: 1.0em;
+}
+.ob-cloud .etwas-genutzt {
+  font-size: 1.3em;
+}
+.ob-cloud .genutzt {
+  font-size: 1.5em;
+}
+.ob-cloud .sehr-viel-genutzt {
+  font-size: 1.9em;
+}
+.ob-cloud .ultra-genutzt {
+  font-size: 2.2em;
+}
+.ob-cloud .am-meisten-genutzt {
+  font-size: 2.4em;
+}
+</style>
+
+<div data-role="page">
+
+       <div  data-role="header">
+           <a data-role="button" data-direction="reverse"  data-icon="arrow-u" href="[% path_prefix %]/[% config.get('home_loc') %].mobile?l=de" >[% msg.maketext("Home") %]</a>
+	   <h1>&Uuml;bersicht - Jahre</h1> 
+       </div> 
+
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="cloud" %]
+
+       <div data-role="content">
+
+<h1>Erscheinungsjahre</h1>
+<table width="100%">
+<tr><th>[% msg.maketext("Wolke der h&auml;ufigsten Erscheinungsjahre") %]</th></tr>
+<tr><td class="boxedclear">
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%- IF resultlist.size > 5 -%]
+[%- searchprefix  = config.get('searchfield').yearstring.prefix -%]
+
+<ol class="ob-cloud">
+[%- FOREACH thisitem IN resultlist -%]
+[% item      = thisitem.item;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% path_prefix %]/[% config.get('search_loc') %].mobile?page=1;[% queryoptions.to_cgi_params({exclude = ['profile','page','db']}) %];[% searchprefix %]=[% item %];db=[% database %]" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+[% msg.maketext("Leider k&ouml;nnen wir Ihnen für diesen Katalog keine
+Wolke der Erscheinungsjahre anbieten.") %]
+[% END %]
+</td></tr>
+</table>
+
+        </div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

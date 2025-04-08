@@ -60,7 +60,7 @@ system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/add-lo
 
 print "### $pool: Weiteres Processing - Stage 3\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/gen_local_topic.pl | $rootdir/filter/_common/alma/process_urls.pl | $rootdir/filter/_common/alma/process_ids.pl | $rootdir/filter/_common/alma/volume2year.pl | $rootdir/filter/_common/alma/process_provenances.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/gen_local_topic.pl | $rootdir/filter/_common/alma/process_urls.pl | $rootdir/filter/_common/alma/process_ids.pl | $rootdir/filter/_common/alma/volume2year.pl | $rootdir/filter/_common/alma/process_provenances.pl | $rootdir/filter/_common/alma/add-iiifdoi.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Sammlungsspezifisches Processing - Stage 4\n";
 

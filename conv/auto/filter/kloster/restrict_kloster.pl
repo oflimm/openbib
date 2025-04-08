@@ -15,7 +15,11 @@ while (<>){
     my $titleid = $title_ref->{id};
 
     my $allowed_gnd_ref  = {
-	'16216710-6' => 1, # Jesuiten
+	'4275651-0' => 1, # Kloster Sankt Barbara Köln
+	    '3072615-3' => 1, # Karmeliterkloster Köln
+	    '4253823-3' => 1, # Kloster Brauweiler
+	    '6102582-3' => 1, # Kloster Heilig Kreuz Köln
+	    '1704954-4' => 1, # Kloster St. Pantaleon Köln
     };
     
     my $allowed_mark_ref = {};

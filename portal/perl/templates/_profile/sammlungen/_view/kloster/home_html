@@ -115,4 +115,67 @@
   </div>
 </div>
 
-[% config.get_templatetext('home',view,lang) %]
+<div class="container">
+
+<p>
+<div id="libraries_mapid" style="width: 100%; height: 500px; position:relative;"></div>
+</p>
+
+<script type="text/javascript">
+var librariesmap = L.map('libraries_mapid', {
+    scrollWheelZoom: false,
+    dragging: !L.Browser.mobile,
+    tap: false
+}).setView([50.933777, 6.939545], 11);
+L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+      }).addTo(librariesmap);
+
+
+[%
+
+   librariesloc = {
+     '50.92679239656631,6.952674935173897' = [{
+        description = 'Karmeliterkloster Köln'
+	id          = '3072615-3'
+     }]
+     '50.96128562204029,6.782212154219232' = [{
+        description = 'Kloster Brauweiler'
+	id          = '4253823-3'
+     }]
+     '50.928631837963124,6.947613535445491' = [{
+        description = 'Kloster St. Pantaleon Köln'
+	id          = '1704954-4'
+     }]
+   };
+
+%]
+
+var libraries = [
+[% FOREACH coordinates IN librariesloc.keys %]
+              [[[% coordinates %]],[ 
+
+[%   FOREACH thisitem IN librariesloc.${coordinates} %]
+[ '[% thisitem.description.replace("'",'"') %]','[% thisitem.id %]' ],
+[%   END %]
+]],
+[% END %]
+            ];
+	    
+for (var i = 0; i < libraries.length; i++) {
+  var marker = L.marker(libraries[i][0]).addTo(librariesmap);
+  var markerstring = "";
+  for (var j = 0; j < libraries[i][1].length; j++) {
+     markerstring = markerstring + '<a href="[% path_prefix%]/[% config.get('search_loc') %].html?gnd='+libraries[i][1][j][1]+'&l=[% lang %]">'+libraries[i][1][j][0]+'</a>'
+     if (j < libraries[i][1].length -1){
+        markerstring = markerstring + ',<br/> ';
+     }
+  }
+  marker.bindPopup(markerstring);
+}
+</script>
+
+
+</div>
+

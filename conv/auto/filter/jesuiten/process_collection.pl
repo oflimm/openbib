@@ -12,21 +12,23 @@ while (<>){
     my $title_ref = decode_json $_;
 
     my $titleid = $title_ref->{id};
+    
+    my $new_fields_ref = [];
 
     # Signaturlose Historische Systematik in 4314$b vereinigen
-    if (defined $title_ref->{fields}{'4314'}){
-	foreach my $item_ref (@{$title_ref->{fields}{'4314'}}){
+    if (defined $title_ref->{fields}{$field}){
+	foreach my $item_ref (@{$title_ref->{fields}{$field}}){
 	    my $content = $item_ref->{'content'};
-	    
+		
 	    if ($content =~m/^(.+?)\s*\;.+?$/ || $content =~m/^(.+?)\s*[A-Z][A-Z]*?\d+$/){
-		push @{$title_ref->{fields}{'4314'}}, {
+		push @{$new_fields_ref}, {
 		    content  => $1,
 		    subfield => 'b',
 		    mult     => $item_ref->{'mult'},
 		};
 	    }
 	    else {
-		push @{$title_ref->{fields}{'4314'}}, {
+		push @{$new_fields_ref}, {
 		    content  => $content,
 		    subfield => 'b',
 		    mult     => $item_ref->{'mult'},
@@ -34,6 +36,10 @@ while (<>){
 	    }
 	}
     }
-
+    
+    if (@$new_fields_ref){
+	push @{$title_ref->{fields}{'4314'}}, @$new_fields_ref;
+    }
+  
     print encode_json $title_ref, "\n";
 }

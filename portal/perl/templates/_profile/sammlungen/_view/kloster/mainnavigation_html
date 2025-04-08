@@ -137,7 +137,7 @@
  
   <span class="navbar-brand">
    <a class="text-white" href="[% path_prefix%]/[% config.get('home_loc') %].html?l=[% lang %]">
-     <img src="/images/openbib/views/jesuiten/Ihs-Logo-40px.png" class="img-fluid d-sm-inline pe-3"  />[% msg.maketext("Klosterbibliotheken") %]
+     <img src="/images/openbib/views/kloster/logo-40px.png" class="img-fluid d-sm-inline pe-3"  />[% msg.maketext("Klosterbibliotheken") %]
    </a>
   </span>
 

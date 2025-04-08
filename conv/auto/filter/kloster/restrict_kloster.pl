@@ -20,6 +20,7 @@ while (<>){
 	    '4253823-3' => 1, # Kloster Brauweiler
 	    '6102582-3' => 1, # Kloster Heilig Kreuz Köln
 	    '1704954-4' => 1, # Kloster St. Pantaleon Köln
+	    '16278243-3' => 1, # Benediktinerkloster Groß Sankt Martin
     };
     
     my $allowed_mark_ref = {};

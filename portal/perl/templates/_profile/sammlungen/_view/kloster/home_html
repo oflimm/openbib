@@ -148,6 +148,14 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         description = 'Kloster St. Pantaleon Köln'
 	id          = '1704954-4'
      }]
+     '50.938623287947,6.961650069620919' = [{
+        description = 'Benediktinerkloster Groß Sankt Martin'
+	id          = '16278243-3'
+     }]
+     '50.933787717434186, 6.936360683112719' = [{
+        description = 'Kloster Heilig Kreuz Köln'
+	id          = '6102582-3'
+     }]
    };
 
 %]

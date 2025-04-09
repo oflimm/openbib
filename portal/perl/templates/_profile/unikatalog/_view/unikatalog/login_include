@@ -56,7 +56,7 @@
 
 <div class="form-floating mb-3">
 <input class="form-control" type="text" name="username" id="username_ils" value="[% username %]" />
-<label for="username_ils">[% msg.maketext("Benutzernummer") %]</label>
+<label for="username_ils">[% msg.maketext("Bibliotheksausweisnummer") %]</label>
 </div>
 
 <div class="form-floating mb-3">

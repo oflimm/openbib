@@ -23,7 +23,6 @@
 		'Band',  # msg.maketext("Band") Bandangabe
                 'Originaltitel', # msg.maketext("Originaltitel") EST 
                 'Weitere Titel', # msg.maketext("Weitere Titel") WST
-                'Enthaltener Titel', # msg.maketext("Enthaltener Titel") 505 80 $t
                 'T0341', # msg.maketext("T0341") PSTVorlage
                 'T0200', # msg.maketext("T0200") Urheber
                 'Institution', # msg.maketext("Institution") Koerperschaft
@@ -63,9 +62,7 @@
                 'E4110', # msg.maketext("E4110") Inhaltsverzeichnis
                 'E4120', # msg.maketext("E4120") Ebook-URL		
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung
-                'Gesamttitel', # msg.maketext("Gesamttitel") GesTit Vorl 830
-                'Überordnung', # msg.maketext("Überordnung") Ueberordnung 773
-#                'T5005', # msg.maketext("T5005") Uebergeordn. Werke
+                'T5005', # msg.maketext("T5005") Uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 ]
 

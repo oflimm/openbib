@@ -1,0 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von katalogspezifischen Wortwolken
+#
+#######################################################################
+-%]
+[%-
+      funcargs = { id => database, type => 9 } ;
+      resultlist = config.get_datacache(funcargs);
+-%]
+[% to_json(resultlist) %]

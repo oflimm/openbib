@@ -1,0 +1,87 @@
+[%#-
+#######################################################################
+#
+# Templatename: subnavigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Unternavigations-Menu fuer Tabs
+#
+# Parameter active_menu zur Kennzeichnung aktiver Menupunkte:
+#
+# searchmask
+# cloud
+# info
+#
+#######################################################################
+-%]
+<div class="card">
+<div class="card-header">[% msg.maketext("&Uuml;bersichten") %]</div>
+<div class="card-body">
+ <nav class="navbar bg-light">
+ <ul class="navbar-nav">
+[% IF config.datacache_exists({ id => database, type => 9 }) %]
+[%   IF layout_param.active_submenu == "clouds_year" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Erscheinungsjahr") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"><a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]" title="Jahr">[% msg.maketext("Erscheinungsjahr") %]</a></li>
+[%   END %]
+[% END %]
+[% IF config.datacache_exists({ id => "jesuiten-4316", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_yearofaddition" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Zugangsjahr") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/jesuiten/[% config.get('clouds_loc') %]/id/yearofaddition.html?l=[% lang %]" title="[% msg.maketext("Zugangsjahr") %]">[% msg.maketext("Zugangsjahr") %]</a></li>
+[%   END %]
+[% END %]
+[% IF config.datacache_exists({ id => "jesuiten-264:a", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_placeofpublication" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Erscheinungsort") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kloster/[% config.get('clouds_loc') %]/id/placeofpublication.html?l=[% lang %]" title="[% msg.maketext("Erscheinungsort") %]">[% msg.maketext("Erscheinungsort") %]</a></li>
+[%   END %]
+[% END %]   
+[% IF config.datacache_exists({ id => "kloster-264:b", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_publisherprinter" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Verlag/Drucker") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kloster/[% config.get('clouds_loc') %]/id/publisherprinter.html?l=[% lang %]" title="[% msg.maketext("Verlag/Drucker") %]">[% msg.maketext("Verlag/Drucker") %]</a></li>
+[%   END %]
+[% END %]   
+[% IF config.datacache_exists({ id => "kloster-4308:a", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_provenanceperson" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Provenienz/Person") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kloster/[% config.get('clouds_loc') %]/id/provenanceperson.html?l=[% lang %]" title="[% msg.maketext("Provenienz/Person") %]">[% msg.maketext("Provenienz/Person") %]</a></li>
+[%   END %]
+[% END %]   
+[% IF config.datacache_exists({ id => "kloster-4307:a", type => 14 }) %]
+[%   IF layout_param.active_submenu == "clouds_provenancecorporatebody" %]
+  <li class="navbar-item active"><strong>[% msg.maketext("Provenienz/Körperschaft") %]</strong></li>
+[%   ELSE %]
+   <li class="navbar-item"> <a class="navbar-link" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kloster/[% config.get('clouds_loc') %]/id/provenancecorporatebody.html?l=[% lang %]" title="[% msg.maketext("Provenienz/Körperschaft") %]">[% msg.maketext("Provenienz/Körperschaft") %]</a></li>
+[%   END %]
+[% END %]   
+
+</ul>
+</nav>
+
+<!-- 
+[% IF layout_param.active_submenu == 'clouds_choice' %]
+<p/>
+
+<div class="alert alert-info">
+[% msg.maketext("W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine
+<b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten
+Normdaten-Eintr&auml;ge f&uuml;r Schlagworte,
+Systematiken/Notationen, K&ouml;rperschaften/Institutionen sowie Personen</b> in der Form einer
+Wortwolke ([_1]&nbsp;[_2]) zu erhalten. Je mehr Titel mit
+einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der zugehörige Normdaten-Eintrag dargestellt.","<img src=\"${config.get_icon('wikipedia',view,sysprofile)}\" alt=\"Mashup mit
+Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_blank\">engl. tag cloud</a>") %]
+</div>
+[% END %]
+-->
+</div>
+</div>

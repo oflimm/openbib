@@ -654,6 +654,26 @@ FOREACH field IN normdata;
            content_map.${'Weitere Titel'}.push(content);
 	 END;
 
+    CASE [ "T0247" ]; # Frueherer Titel
+         content = thisfield.${'a'} ;
+         note    = thisfield.${'f'} ;	 
+	 ind     = thisfield.${'ind'} ;
+
+         IF content ;
+	    content = "Früherer Titel: ${content}";
+
+            IF ind.match('.0$') && note ;
+	       content = "${content} (${note})";
+	    END;
+	 END;
+
+         IF content;
+           IF NOT content_map.${'Hinweis'} ;
+	     content_map.${'Hinweis'} = [];
+	   END;
+           content_map.${'Hinweis'}.push(content);
+	 END;
+
     CASE "T0250"; # Auflage
          content = thisfield.${'a'} ;
 

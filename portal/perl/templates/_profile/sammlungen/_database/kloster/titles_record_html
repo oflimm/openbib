@@ -1,0 +1,584 @@
+[%#-
+#######################################################################
+#
+# Templatename: titles_html
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes
+#
+#######################################################################
+-%]
+[%-
+
+  toc_i18n        = msg.maketext("Inhaltsverzeichnis");
+
+  request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) ;
+  normdata        = record.get_fields ;
+  holding         = record.get_holding ;
+  circulation     = record.load_circulation.get_circulation ; 
+
+  # Interimsloesung: Fehlende Volltextlinks aus NZ-Publishing
+   nz_fulltext_links_from_fields = 0;
+
+   IF nz_fulltext_links_from_fields && record.database == 'uni' && record.id.match('6441$') && normdata.defined('T1945') && NOT normdata.defined('T4120') ;
+
+   custom_normdata = record.to_custom_field_scheme_1;
+   
+   pakete = [];
+
+   IF custom_normdata.defined('T0912') || custom_normdata.defined('T0962');
+      FOREACH thisitem IN custom_normdata.${'T0912'};
+         IF thisitem.defined('a');
+           pakete.push(thisitem.${'a'});
+	 END;
+      END;
+
+      FOREACH thisitem IN custom_normdata.${'T0962'};
+         IF thisitem.defined('e');
+           pakete.push(thisitem.${'e'});
+        END;
+      END;
+   END;
+
+   paketstring = "";
+
+   IF pakete ;
+     paketstring = pakete.join('; ');
+   END;
+
+   IF custom_normdata.${'T1945'}.first.defined('e') ; # Static URL
+      static_url = custom_normdata.${'T1945'}.first.${'e'};
+      online_access = 'f';
+      online_text = "Volltext";
+
+      IF paketstring.match('(ZDB-2-SWI|ZDB-2-SNA|ZDB-2-STI|ZDB-2-SGR|ZDB-2-SGRSpringer|ZDB-2-SEP|ZDB-2-SBE|ZDB-2-CMS|ZDB-2-PHA|ZDB-2-SMA|ZDB-2-MGE|ZDB-2-SZR|ZDB-2-BUM|ZDB-2-ECF|ZDB-2-SCS|ZDB-2-ESA|ZDB-5-WEB|ZDB-5-WMS|ZDB-5-WMW|ZDB-13-SOC|ZDB-14-DLO|ZDB-18-BEO|ZDB-18-BOH|ZDB-18-BST|ZDB-15-ACM|ZDB-16-Hanser-EBA|hbzebo_ebahanser|ZDB-18-Nomos-NRW|ZDB-18-Nomos-VDI-NRW|hbzebo_nrwnomos|ZDB-149-HCB|ZDB-162-Bloom-EBA|hbz_ebabloomsbury|ZDB-605-Preselect|hbzebo_preselect|ZDB-196-Meiner-EBA|hbzebo_ebameiner|ZDB-23-DGG|ZDB-98-IGB|ZDB-23-DGG-eba|ZDB-54-Duncker-EBA|hbzebo_ebaduncker|ZDB-2-BSP|ZDB-2-SBL|ZDB-2-BUM|ZDB-2-CMS|ZDB-2-SCS|ZDB-2-EES|ZDB-2-ECF|ZDB-2-EDA|ZDB-2-ENE|ZDB-2-ENG|ZDB-2-HTY|ZDB-2-INR|ZDB-2-LCR|ZDB-2-LCM|ZDB-2-SMA|ZDB-2-SME|ZDB-2-PHA|ZDB-2-POS|ZDB-2-CWD|ZDB-2-REP|ZDB-2-SLS|ZDB-41-UTB-EBA|ZDB-7-taylorfra-EBA|ZDB-71-Narr-EBA)');
+        online_access = 'y';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-2-SOB|ZDB-23-GOA)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-185-STD|ZDB-185-SDI)');
+        online_access = 'y';
+	online_text   = 'Dossier im Volltext';
+      ELSIF paketstring.match('(ZDB-101-VTB)');
+        online_access = 'y';
+	online_text   = 'Video';
+      END;
+      
+      normdata.${'T4120'} = [{
+	  mult  = 1
+	  subfield = online_access
+	  content = static_url
+      }];
+
+   ELSIF custom_normdata.${'T1945'}.first.defined('2') ; # Dynamic URL
+      resolver_url = custom_normdata.${'T1945'}.first.${'2'};
+      online_access = 'f';
+      online_text = "Volltext";
+
+      IF paketstring.match('(ZDB-2-SWI|ZDB-2-SNA|ZDB-2-STI|ZDB-2-SGR|ZDB-2-SGRSpringer|ZDB-2-SEP|ZDB-2-SBE|ZDB-2-CMS|ZDB-2-PHA|ZDB-2-SMA|ZDB-2-MGE|ZDB-2-SZR|ZDB-2-BUM|ZDB-2-ECF|ZDB-2-SCS|ZDB-2-ESA|ZDB-5-WEB|ZDB-5-WMS|ZDB-5-WMW|ZDB-13-SOC|ZDB-14-DLO|ZDB-18-BEO|ZDB-18-BOH|ZDB-18-BST|ZDB-15-ACM|ZDB-16-Hanser-EBA|hbzebo_ebahanser|ZDB-18-Nomos-NRW|ZDB-18-Nomos-VDI-NRW|hbzebo_nrwnomos|ZDB-149-HCB|ZDB-162-Bloom-EBA|hbz_ebabloomsbury|ZDB-605-Preselect|hbzebo_preselect|ZDB-196-Meiner-EBA|hbzebo_ebameiner|ZDB-23-DGG|ZDB-98-IGB|ZDB-23-DGG-eba|ZDB-54-Duncker-EBA|hbzebo_ebaduncker|ZDB-2-BSP|ZDB-2-SBL|ZDB-2-BUM|ZDB-2-CMS|ZDB-2-SCS|ZDB-2-EES|ZDB-2-ECF|ZDB-2-EDA|ZDB-2-ENE|ZDB-2-ENG|ZDB-2-HTY|ZDB-2-INR|ZDB-2-LCR|ZDB-2-LCM|ZDB-2-SMA|ZDB-2-SME|ZDB-2-PHA|ZDB-2-POS|ZDB-2-CWD|ZDB-2-REP|ZDB-2-SLS|ZDB-41-UTB-EBA|ZDB-7-taylorfra-EBA|ZDB-71-Narr-EBA)');
+        online_access = 'y';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-2-SOB|ZDB-23-GOA)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)');
+        online_access = 'g';
+	online_text   = 'E-Book im Volltext';
+      ELSIF paketstring.match('(ZDB-185-STD|ZDB-185-SDI)');
+        online_access = 'y';
+	online_text   = 'Dossier im Volltext';
+      ELSIF paketstring.match('(ZDB-101-VTB)');
+        online_access = 'y';
+	online_text   = 'Video';
+      END;
+      
+      normdata.${'T4120'} = [{
+	  mult  = 1
+	  subfield = online_access
+	  content = resolver_url
+      }];
+
+    END;
+  END;
+
+
+  # Provenienzen vorhanden?
+  have_provenance_for = {};
+
+  IF normdata.defined("T4309") ;
+    FOREACH item IN normdata.${"T4309"};
+      have_provenance_for.${item.content} = 1;
+    END;
+  END;
+
+  all_locations = record.get_locations;
+
+  # Filter locations
+  locations = [];
+
+  is_freemedia = 0;
+  is_licensedmedia = 0;
+  
+  FOREACH loc IN all_locations ;
+    IF loc.match('^DE-38$') ;
+       locations.push(loc);
+    ELSIF loc.match('^DE-38-[0-9][0-9][0-9]') ;
+       locations.push(loc);
+    ELSIF NOT loc.match('^DE-38-[a-zA-Z]');   
+       locations.push(loc);
+    END;
+    IF loc.match('emedien') ;
+       is_licensedmedia = 1;
+    ELSIF loc.match('freemedia') ;
+       is_freemedia = 1;
+    END;
+  END;
+
+   # Andere Locations aus Aufsatzkatalog entfernen
+   IF locations.grep('aufsaetze').size > 0;
+      locations = ['aufsaetze'];
+    END;
+   
+   bibkey = record.to_bibkey ;
+   isbn   = normdata.${"T0540"}.first.content.replace('-','') ;
+   IF NOT isbn ;
+      isbn   = normdata.${"T0553"}.first.content.replace('-','') ;
+   END ;
+
+
+   # Enrich unpaywall
+   
+   doi = "";
+
+   IF normdata.defined("T0552") ;
+     doi = normdata.${"T0552"}.first.content;
+   END ;
+   
+   unpaywall = {};
+
+   thanks_to_unpaywall = 0;
+   
+   IF doi ;
+     unpaywall = record.enrich_unpaywall(doi);
+
+     IF unpaywall.green_url ;
+       thanks_to_unpaywall = 1;
+       normdata.${"T4120"} = [{
+           content = unpaywall.green_url
+	   subfield = 'g'
+	   mult = 1
+       }] ;
+     END;
+   END;
+
+    # Query Parameter q_ fuer JOP und OpenURL bestimmen
+
+    q_journal = "";
+    q_title   = "";
+    q_volume  = "";
+    q_issue   = "";
+    q_year    = "";
+    q_issn    = "";
+    q_isbn    = "";
+    q_doi     = "";
+    q_person  = "";
+    q_aufirst = "";    
+    q_aulast  = "";    
+    q_pages   = "";
+    q_spage   = "";
+    q_openurltype = "article";
+    
+    IF normdata.${"T0100"} ;
+      q_person = normdata.${"T0100"}.first.content ;
+      personparts = q_person.split(', ');
+      q_aulast = personparts.first;
+      IF personparts ;
+        q_aufirst = personparts.pop;
+      END;
+    END;
+
+    IF normdata.${"T0331"} ;
+      q_title = normdata.${"T0331"}.first.content ;
+    END;
+
+    IF normdata.${"T0585"} ;
+      q_issn   = normdata.${"T0585"}.first.content ;
+    ELSIF normdata.defined("T0543");
+      q_issn   = normdata.${"T0543"}.first.content ;
+    END;
+
+    IF normdata.${"T0586"} ;
+      q_isbn   = normdata.${"T0586"}.first.content ;
+    ELSIF normdata.${"T0540"} ;
+      q_isbn   = normdata.${"T0540"}.first.content ;
+    END;
+
+    IF normdata.${"T0089"} ;
+       q_volume = normdata.${"T0089"}.first.content ;
+    END;
+
+    IF normdata.${"T0376"} ;
+       q_journal = normdata.${"T0376"}.first.content ;
+    END;
+
+    IF normdata.${"T0425"} ;
+       q_year = normdata.${"T0425"}.first.content ;
+    END;
+
+    IF normdata.${"T0596"} ;
+      FOREACH item IN normdata.${"T0596"} ;
+        IF item.subfield == 'h';
+	   q_issue = item.content ;
+	END;
+        IF item.subfield == 's';
+   	   IF item.content.match('-');
+	      q_pages = item.content ;
+	      q_pages = q_pages.replace('S. ','');
+              q_spage = q_pages.split('-').first;
+	   ELSE ;
+	      q_spage = item.content ;
+	      q_spage = spage.replace('S. ','');	      
+	   END ;
+	END;
+      END;
+    END;
+
+   # Enrich jop
+
+   best_color = "";
+
+   jop_print_locations = [];
+   
+   IF q_issn && record.database == "eds";
+     jop_args = {
+        issn   = q_issn
+	volume = q_volume
+	issue  = q_issue
+	pages  = q_pages
+	year   = q_year
+     };
+
+     IF q_journal ;
+        jop_args.genre = "article";
+     ELSE; 
+        jop_args.genre = "journal";
+     END;
+
+     jop = record.enrich_jop(jop_args);
+
+     joplist = jop.to_serialized_reference ;
+
+     FOREACH joprecord IN joplist ;
+        jop_source = joprecord.fields.jop_source.first.content;
+
+        # Electronic: Find best access level to specify fulltext link in 4120
+	IF jop_source.type == "online";
+          IF jop_source.access ;
+	     journal_color = jop_source.access ;
+	  END ;
+
+	  IF journal_color    == "green" ;
+	     best_color = "g";
+          ELSIF journal_color == "yellow" && best_color != "g";
+	     best_color = "y";
+          END ;
+	# Print: Collect all print locations for output
+        ELSIF jop_source.type == 'print' ;
+	   print_locations = [];
+	   IF jop_source.location ;
+	     print_locations.push(jop_source.location);
+	   END ;
+	   IF jop_source.location_mark ;
+	     this_signatur = jop_source.location_mark ;
+	     this_signatur = "Signatur: ${this_signatur}";
+	     print_locations.push(this_signatur);
+	   END ;
+	   IF jop_source.period ;
+	     this_bestand = jop_source.period ;
+	     this_bestand = "Bestand: ${this_bestand}";
+	     print_locations.push(this_bestand);
+	   END ;
+
+           jop_print_location = print_locations.join(', ');
+
+	   jop_print_locations.push(jop_print_location);
+	END ;
+     END ;
+   END; # End ISSN
+   
+  
+  # E-Book/Inhaltsverzeichnis vorhanden
+  fulltext  = normdata.${'T4120'}.first.content ;
+  toc       = normdata.${'T4110'}.first.content ;
+
+  # Fix digitool-URLs
+  IF toc.match('digitool.hbz-nrw.de:1801');
+    toc = toc.replace('digitool.hbz-nrw.de:1801','digitool.hbz-nrw.de');
+  END;
+
+  recordname = normdata.${'T0331'}.first.content;
+  IF normdata.${'PC0001'}.first.content ;
+     pc = normdata.${'PC0001'}.first.content ;
+     recordname = "${pc} - ${recordname}";
+  END ;
+  title      = msg.maketext("Titel-Information: [_1] in Katalog [_2]",recordname,dbdesc)
+
+    fulltext_availability  = "";
+    fulltext_icon = config.get('ezb_unknown_img');
+    fulltext_desc  = "Volltext";
+
+    IF normdata.${'T4120'}.first.subfield == "g" || best_color == "g";
+      fulltext_availability = "lawngreen";
+      fulltext_icon = config.get('ezb_green_img');
+      fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
+    ELSIF normdata.${'T4120'}.first.subfield == "y" || best_color == "y";
+      fulltext_availability = "yellow";
+      fulltext_icon = config.get('ezb_yellow_img');
+      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+    ELSIF normdata.${'T4120'}.first.subfield == "l";
+      fulltext_icon = config.get('ezb_yellow_red_img');
+      fulltext_desc = msg.maketext("Volltext mit eingeschränkten Zugang");;
+    ELSIF normdata.${'T4120'}.first.subfield == "f";
+      fulltext_icon = config.get('ezb_green_yellow_img');
+      fulltext_desc = msg.maketext("Volltext mit unbekanntem Zugang");;
+    ELSIF normdata.${'T4120'}.first.subfield == "n";
+      fulltext_icon = config.get('dbis_de_img');
+      fulltext_desc = msg.maketext("Volltext über Nationallizenz");;
+    ELSE ;
+      fulltext_icon = config.get('ezb_unknown_img');
+      fulltext_desc = msg.maketext("Unbekannter Zugang");;
+    END;
+
+
+-%]
+
+<!-- URI Location: [% location %] -->
+<script>
+$(document).ready(function(){
+    $("#ob-same_records_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-same_records_loading\" alt=\"[% msg.maketext("Inhalt wird geladen") %]\"/>"); 
+    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/same_records.include?l=[% lang %]",
+        function (txt){
+            $("#ob-same_records").html(txt);
+            $("#ob-same_records_loading").hide();
+        });
+
+    $("#ob-similar_records_li").append(" <img src=\"/images/openbib/loading.gif\" id=\"ob-similar_records_loading\"  alt=\"[% msg.maketext("Inhalt wird geladen") %]\"/>"); 
+    $.get("[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/similar_records.include?l=[% lang %]",
+        function (txt){
+            $("#ob-similar_records").html(txt);
+            $("#ob-similar_records_loading").hide();
+        });
+
+});
+
+</script>
+
+[% IF NOT hide_detail && NOT hide_hit %]
+
+<div class="content"><!-- Begin Fulltitle -->
+
+<div class="ob-category_header ob-bg text-white pt-1 pl-2 pr-2 mb-3">
+[% msg.maketext("Provenienzen") %]
+</div>
+
+<div class="jumbotron"><!-- Begin Provenienzen -->
+
+[% provenances = record.get_provenances(msg) %]
+
+[% PROCESS common/subtemplate name="provenances" with_modal=1 %]
+
+</div>
+
+<div class="ob-category_header ob-bg text-white pt-1 pl-2 pr-2 mb-3">
+[% msg.maketext("Titeldetails") %]
+</div>
+
+<div class="row flex-md-row-reverse"><!-- Begin Details -->
+
+<!-- <div class="col-xs-6 col-md-3 ob-titleimage"><!-- Begin Images -->
+<!-- Title begins here -->
+<!-- <div class="col-md-9 categories ob-title_record"><!-- Begin Categories -->
+<div class="col-md-12"><!-- Begin Categories -->
+
+<div class="ob-title_record">
+
+
+       <div class="d-md-none"><!-- Begin Images small screens-->
+        <div class="ob-titleimage text-center"><!-- Begin ob-titleimage -->
+[% PROCESS common/subtemplate name="titles_record_html_images" %]
+        </div><!-- End ob-titleimage -->
+       </div><!-- End Images -->
+	
+       <div id="MainInformationWrapper" class="d-flex flex-row-reverse justify-content-between">
+
+        <div class="d-none d-md-block"><!-- Begin Images big screens-->
+         <div class="ob-titleimage text-center ps-5 pe-2"><!-- Begin ob-titleimage -->
+[% PROCESS common/subtemplate name="titles_record_html_images" %]
+         </div><!-- End ob-titleimage -->
+        </div><!-- End Images -->
+	  
+	  
+	<div class="w-100"><!-- begin metadata left -->
+[% IF record_exists %]
+[%# USE dumper;dumper.dump(normdata)%]
+[%-
+     record_type = "" ; 
+     IF normdata.${'T4410'}.first.content.match('Monographie');
+       record_type = "mono";
+       PROCESS common/subtemplate name="visible_categories_title_mono";
+       PROCESS common/subtemplate name="visible_categories_title_mono_supplement";
+     ELSIF normdata.${'T4410'}.first.content.match('Zeitschrift/Serie');
+       record_type = "journal";        
+       PROCESS common/subtemplate name="visible_categories_title_journal";
+       PROCESS common/subtemplate name="visible_categories_title_journal_supplement";
+     ELSIF  normdata.${'T4410'}.first.content.match('Aufsatz');
+       record_type = "article";
+       PROCESS common/subtemplate name="visible_categories_title_article";
+       PROCESS common/subtemplate name="visible_categories_title_article_supplement";
+     ELSE;
+       record_type = "default";
+       PROCESS common/subtemplate name="visible_categories_title";
+       PROCESS common/subtemplate name="visible_categories_title_supplement";
+     END;
+-%]
+
+[%   PROCESS common/subtemplate name="titles_record_html_categories" %]
+
+[% IF is_oa %]
+<div class="alert alert-info">
+Open Access. Im Internet weltweit frei verfügbar [% IF thanks_to_unpaywall %](via <a class="exturl" href="https://unpaywall.org" target="_blank">Unpaywall</a>)[% END %]
+</div>
+[% ELSIF is_licensed %]
+<div class="alert alert-info">
+Zugriff nur im <a class="inturl" href="[% cms_links.vpn %]">Netz der Universität Köln</a> bzw. für autorisierte Benutzer. Die <a class="inturl" href="[% cms_links.druck_download %]">Druck- und Downloadmöglichkeiten</a> variieren je nach Anbieter.
+</div>
+[% ELSIF is_national %]
+<div class="alert alert-info">
+<h5>Nationallizenzen der Deutschen Forschungsgemeinschaft</h5>
+
+<p>
+Sie ermöglichen Studierenden, Wissenschaftler:innen und wissenschaftlich interessierten Privatpersonen den Zugang zu Datenbanken, elektronischen Zeitschriften und Zeitungen sowie E-Books.
+</p>
+<p>
+Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es auch Angebote, für die sich Einzelpersonen zur Nutzung registrieren können: <a class="exturl" href="https://www.nationallizenzen.de/ind_inform_registration">Infos zur Registrierung und Anmeldung von Privatpersonen</a>
+</p>
+</div>
+[% END %]
+
+<div class="d-flex flex-wrap ob-fulltitle_actions mt-4">
+
+   <div class="pe-1 pb-3">
+         <a  class="btn btn-primary text-nowrap" aria-described-by="[% msg.maketext("Zurück") %]" href="javascript:history.back()" title="[% msg.maketext("Zurück") %]"><i class="fas fa-arrow-circle-left"></i> <span>[% msg.maketext("Zurück") %]</span></a>
+  </div>
+
+   <div class="pe-1 pb-3">
+         <a  class="btn btn-primary text-nowrap" aria-described-by="[% msg.maketext("In die Merkliste") %]" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span>[% msg.maketext("Merken") %]</span></a>
+  </div>
+
+[% IF fulltext %]
+	    <div class="pe-1 pb-3">	    
+              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Volltext aufrufen") %]" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span>[% msg.maketext("Volltext") %]</span><img class="ps-2" src="[% fulltext_icon %]"  alt="[% msg.maketext("Volltext") %]"/></a>
+	    </div>
+[% END %]
+
+[% IF toc %]
+	    <div class="pe-1 pb-3">	    
+              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Inhaltsverzeichnis aufrufen") %]" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span>[% toc_i18n %]</span></a>
+	    </div>
+[% END %]
+
+	  <div class="pe-1 pb-3">
+	    <a class="btn btn-primary text-nowrap ps-2" aria-described-by="[% msg.maketext("Titeldaten exportieren") %]" title="[% msg.maketext("Export") %]" href="#" data-bs-toggle="modal" data-bs-target="#titleSaveModal"><i class="fas fa-file-export"></i> <span>[% msg.maketext("Export") %]</span></a>
+	  </div>
+
+	    <div class="pe-1 pb-3">
+ <div class="dropdown">
+   <button class="btn btn-primary text-nowrap dropdown-toggle" aria-described-by="[% msg.maketext("Titeldaten zitieren") %]" title="[% msg.maketext("Zitat") %]" type="button" id="citationMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <i class="fas fa-quote-right"></i> [% msg.maketext("Zitat") %]
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="citationMenuButton">
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#apaModal">[% msg.maketext("APA") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#harvardModal">[% msg.maketext("Harvard") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#mlaModal">[% msg.maketext("MLA") %]</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#bibtexModal">[% msg.maketext("BibTeX") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#endnoteModal">[% msg.maketext("EndNote") %]</a></li>
+    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#isbdModal">[% msg.maketext("ISBD") %]</a></li>
+  </ul>
+ </div>
+             </div>
+[% IF record.database == 'eds' || record.database == 'aufsaetze' # Verfuegbarkeit ermitteln %]
+[%
+    IF record.database == 'eds';
+     q_sid = "EBSCO:Academic%20Search%20Ultimate";
+    ELSIF record.database == 'aufsaetze';
+     q_sid = "UBK:Aufsaetze";
+    END;
+%]
+	    <div class="pe-1 pb-3">
+<!--              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="[% path_prefix %]/availability/search.html?issn=[% issn %];jrnl=[% journal %];vol=[% volume %];issue=[% issue %];tit=[% title %];per=[% person %]" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span class="d-none d-sm-inline">[% msg.maketext("Verfügbarkeit") %]</span></a> -->
+<!--              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('connector_openurl_loc') %]?genre=[% q_openurltype %]&isbn=[% q_isbn %]&issn=[% q_issn %]&title=[% q_journal |uri %]&volume=[% q_volume %]&issue=[% q_issue %]&date=[% q_year %]&atitle=[% q_title |uri %]&aufirst=[% q_aufirst %]&aulast=[% q_aulast |uri %]&spage=[% q_spage %]&pages=[% q_pages %]&sid=[% q_sid %]&pid=%3Clocation%3E038%3C%2Flocation%3E" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span>[% msg.maketext("Verfügbarkeit") %]</span></a>-->
+              <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Verfügbarkeit ermitteln") %]" href="https://usb-koeln.digibib.net/openurl?genre=[% q_openurltype %]&isbn=[% q_isbn %]&issn=[% q_issn %]&title=[% q_journal |uri %]&volume=[% q_volume %]&issue=[% q_issue %]&date=[% q_year %]&atitle=[% q_title |uri %]&aufirst=[% q_aufirst %]&aulast=[% q_aulast |uri %]&spage=[% q_spage %]&pages=[% q_pages %]&sid=[% q_sid %]&pid=%3Clocation%3E038%3C%2Flocation%3E" target="_blank" title="[% msg.maketext("Verfügbarkeit ermitteln") %]"><i class="fas fa-search"></i> <span>[% msg.maketext("Verfügbarkeit") %]</span></a>
+	    </div>
+[% END %]
+	     
+	     <div class="pe-1 pb-3">
+	       <button class="ob-sidebar_button sidebar-toggler d-none d-md-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-described-by="[% msg.maketext("Mehr Aktionen mit dem Titel") %]" title="[% msg.maketext("Titelaktionen") %]"><i class="fas fa-plus fa-2x"></i></button>     
+	     </div>
+
+
+       </div><!-- End ob-fulltitle_actions -->
+
+      </div><!-- End metadata left -->
+     </div><!-- End MainInformationWrapper -->
+
+   </div>
+  </div>
+ </div>
+</div><!-- End ob-title_record -->
+
+
+[% ELSE %]
+<h2>[% msg.maketext("Ein Titel mit dieser ID ist nicht (mehr) in diesem Katalog vorhanden.") %]</h2>
+[% END %]
+
+[% IF config.get('unAPI') %]
+<abbr class="unapi-id" title="[% record.database %]:[% record.get_encoded_id %]"></abbr>
+[% END %]
+
+
+
+</div><!-- End ob-fulltitle -->
+</div><!-- End Col Categories -->
+
+</div><!-- End Row Details -->
+
+<div class="ob-bottominfo"><!-- Begin Bottominfo -->
+[%   PROCESS common/subtemplate name="titles_record_html_bottom" database=record.database %]
+</div><!-- End: Bottom Info -->
+
+</div><!-- End Fulltitle -->
+
+<!--</div>--><!-- End record -->
+
+<button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar"  aria-control="offcanvasSidebar" title="[% msg.maketext("Titelaktionen") %]"><i class="fas fa-plus fa-2x"></i></button>
+
+[% ELSE %]
+[% detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.html?l=${lang}" %]
+        <div class="ob-jumbotron">
+         <h1 class="display-4">[% msg.maketext("Kein Zugriff") %]</h1>
+         <p class="lead">[% hide_detail_msg %]</p>
+         <p class="lead">
+            <a class="btn btn-primary btn-lg" href="[% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %]" role="button">[% msg.maketext('Weiter') %]</a>
+         </p>
+        </div><!-- End: ob-jumbotron -->
+[%  END %]
+
+<!-- Title ends here -->

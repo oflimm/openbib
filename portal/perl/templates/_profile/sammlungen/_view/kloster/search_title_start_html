@@ -1,0 +1,128 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_start
+#
+# Typ         : Mastertemplate (1/3)
+#
+# Aufgabe:
+#
+# Ausgabe des Anfangs der initialen Trefferliste
+#
+#######################################################################
+-%]
+
+[%- IF representation == 'html'-%]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+[%- request_base    = "l=${lang};num=${hitrange};srt=${sorttype}_${sortorder};"  -%]
+
+  <body>
+
+<!-- Modals -->
+[%   PROCESS common/subtemplate name="cartitems_html_modals" %]
+
+[%   PROCESS common/subtemplate name="litlists_html_modals" %]
+
+<div class="modal fade" id="genericModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="genericModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="genericModalLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="[% msg.maketext("Schließen") %]">
+      </div>
+      <div class="modal-body" id="generic_message">
+      <div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">[% msg.maketext("Schließen") %]</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Flushing existing content with pure JS
+
+  if (!document.getElementById('genericModal').getAttribute('data-initialized')){
+
+    const genericModal = document.getElementById('genericModal')
+    genericModal.setAttribute('data-initialized', true);
+    genericModal.addEventListener('hidden.bs.modal', event => {
+    // Update the modal's content.
+    const modalTitle = genericModal.querySelector('#genericModalLabel')
+    const modalBody  = genericModal.querySelector('#generic_message')
+
+    modalTitle.textContent = ''
+    modalBody.innerHTML    = '<div class="spinner-border" role="status" data-initialized="true"><span class="sr-only">Loading...</span></div>'
+    });
+   }
+</script>
+
+  <div class="wrapper container-fluid">
+
+[% PROCESS common/subtemplate name="corporate_banner" start=1 %]
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+[% PROCESS common/subtemplate name="search_title_field" %]
+
+[%-
+
+    cgi_querystring     = cgiapp.to_cgi_querystring;
+
+    topic_map = {};
+    FOREACH topic IN user.get_topics;
+      topic_map.${topic.id} = topic.name;
+    END;
+
+    used_fields = [] ;
+    FOREACH field IN searchquery.get_searchquery.keys ;
+       fieldname    = field_map.${field};
+       fieldcontent = searchquery.get_searchquery.${field}.val;
+       IF field == 'topic' && topic_map.${fieldcontent} ;
+          fieldcontent = topic_map.${fieldcontent} ;
+       END ;       
+       NEXT IF NOT fieldcontent ;
+       used_fields.push( "<b>${fieldname}</b>: ${fieldcontent}" );
+     END;
+
+    layout_param = {
+      'active_menu' = 'register'
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = "<span class=\"fas fa-search\"></span>&nbsp;${used_fields.join(' ; ')}"
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+
+    IF NOT qopts.get_option('sm');
+       layout_param.representations = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('search_loc')}.json?${cgi_querystring}"
+	  },
+	  {
+	     type = 'rss'
+	     url  = "${path_prefix}/${config.get('search_loc')}.rss?${cgi_querystring}"
+	  }
+
+       ];
+    END;
+
+-%]
+
+[% PROCESS common/subtemplate name="breadcrumbs" %] 
+
+[% IF config.get('deutsche_bibliotheksstatistik') %]
+<!-- DBS 'Zaehl-Pixel' USB - Kategorie: KUG-->
+<img src="http://dbspixel.hbz-nrw.de/count?id=AB038&amp;page=4" width="1" height="1" />
+[% END %]
+
+[%# USE dumper;dumper.dump(dbinfo)%]
+[%- END -%]

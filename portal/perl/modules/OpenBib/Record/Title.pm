@@ -4,7 +4,7 @@
 #
 #  Titel
 #
-#  Dieses File ist (C) 2007-2016 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2025 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -48,6 +48,10 @@ use SOAP::Lite;
 use Storable qw(freeze thaw);
 use XML::LibXML;
 use YAML ();
+
+use Mojo::Base -base, -strict, -signatures;
+use Mojo::Promise;
+use Mojo::IOLoop;
 
 use OpenBib::Catalog::Factory;
 use OpenBib::Config;
@@ -184,7 +188,7 @@ sub get_config {
     return $self->{_config};
 }
 
-sub load_full_record {
+sub load_full_record_p {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -196,7 +200,9 @@ sub load_full_record {
     my $logger = get_logger();
 
     my $config = $self->get_config;
-    
+
+    my $promise = Mojo::Promise->new;
+
     # (Re-)Initialisierung
     delete $self->{_fields}         if (exists $self->{_fields});
     delete $self->{_holding}        if (exists $self->{_holding});
@@ -216,7 +222,7 @@ sub load_full_record {
         ($self->{_fields},$self->{_holding},$self->{_circulation})=({},(),[]);
 
         $logger->error("Incomplete Record-Information Id: ".((defined $self->{id})?$self->{id}:'none')." Database: ".((defined $self->{database})?$self->{database}:'none'));
-        return $self;
+	return $promise->reject($self);
     }
         
     my $memc_key = "record:title:full:$self->{database}:$self->{id}";
@@ -240,58 +246,64 @@ sub load_full_record {
               $timeall=timediff($btime,$atime);
               $logger->info("Total time for fetching fields/holdings from memcached is ".timestr($timeall));
           }
-          
-          return $self;
+
+	  $promise->resolve($self);
+	  
+	  return $promise; 
       }
     }
     
     my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $self->{database}, sessionID => $self->{sessionID}, config => $config });
     
-    $record = $catalog->load_full_title_record({id => $id});
+    my $record_p = $catalog->load_full_title_record_p({id => $id});
+
+    $record_p->then(sub {
+	my $record = shift;
+	
+	if ($logger->is_debug){
+	    $logger->debug("Zurueck ".YAML::Dump($record->get_fields));
+	}
+	
+	my $fields          = $record->get_fields;
+	my $holdings        = $record->get_holding;
+	my $same_records    = $record->get_same_records;
+	my $similar_records = $record->get_similar_records;
+	my $related_records = $record->get_related_records;
+	
+	$logger->debug("Setting data from Backend");
+	
+	# Location aus 4230 setzen    
+	my $locations_ref = [];
+	
+	foreach my $item_ref (@{$fields->{'T4230'}}){
+	    push @{$locations_ref}, $item_ref->{content};
+	}
+	
+	$self->set_locations($locations_ref);
+	$self->set_fields($fields);
+	$self->set_holding($holdings);
+	$self->set_same_records($same_records);
+	$self->set_related_records($related_records);
+	$self->set_similar_records($similar_records);
+	
+	if ($config->{memc}){
+	    $config->{memc}->set($memc_key,{ fields => $fields, holdings => $holdings, locations => $locations_ref },$config->{memcached_expiration}{'record:title:full'});
+	    $logger->debug("Fetch record from db and store in memcached");
+	}
+	
+	if ($config->{benchmark}) {
+	    $btime=new Benchmark;
+	    $timeall=timediff($btime,$atime);
+	    $logger->info("Total time for is ".timestr($timeall));
+	}
+		    })->wait;
     
-    if ($logger->is_debug){
-        $logger->debug("Zurueck ".YAML::Dump($record->get_fields));
-    }
-
-    my $fields          = $record->get_fields;
-    my $holdings        = $record->get_holding;
-    my $same_records    = $record->get_same_records;
-    my $similar_records = $record->get_similar_records;
-    my $related_records = $record->get_related_records;
-
-    $logger->debug("Setting data from Backend");
-    
-    # Location aus 4230 setzen    
-    my $locations_ref = [];
-
-    foreach my $item_ref (@{$fields->{'T4230'}}){
-	push @{$locations_ref}, $item_ref->{content};
-    }
-
-    $self->set_locations($locations_ref);
-    $self->set_fields($fields);
-    $self->set_holding($holdings);
-    $self->set_same_records($same_records);
-    $self->set_related_records($related_records);
-    $self->set_similar_records($similar_records);
-
-    if ($config->{memc}){
-        $config->{memc}->set($memc_key,{ fields => $fields, holdings => $holdings, locations => $locations_ref },$config->{memcached_expiration}{'record:title:full'});
-        $logger->debug("Fetch record from db and store in memcached");
-    }
-    
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for is ".timestr($timeall));
-    }
-
     $logger->debug("Full record loaded");
-
-    return $self;
+    
+    return $promise->resolve($self); 
 }
 
-sub load_brief_record {
+sub load_brief_record_p {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -304,6 +316,8 @@ sub load_brief_record {
 
     my $config = $self->get_config;
 
+    my $promise = Mojo::Promise->new;
+    
     # (Re-)Initialisierung
     delete $self->{_fields}       if (exists $self->{_fields});
     delete $self->{_holding}        if (exists $self->{_holding});
@@ -319,7 +333,7 @@ sub load_brief_record {
         ($self->{_fields},$self->{_holding},$self->{_circulation})=({},(),[]);
 
         $logger->error("Incomplete Record-Information Id: ".((defined $self->{id})?$self->{id}:'none')." Database: ".((defined $self->{database})?$self->{database}:'none'));
-        return $self;
+        return $promise->reject($self);
     }
 
     my ($atime,$btime,$timeall)=(0,0,0);
@@ -330,38 +344,46 @@ sub load_brief_record {
 
     my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $self->{database}});
     
-    my $record = $catalog->load_brief_title_record({id => $id});
+    my $record_p = $catalog->load_brief_title_record_p({id => $id});
 
-    $fields_ref         = $record->get_fields;
-    $record_exists      = $record->record_exists;
+    $record_p->then(sub {
+	my $record = shift ;
+	
+	$fields_ref         = $record->get_fields;
+	$record_exists      = $record->record_exists;
+	
+	# Titel-ID und zugehoerige Datenbank setzen
+	
+	$fields_ref->{id      } = $id;
+	$fields_ref->{database} = $self->{database};
+	
+	# Location aus 4230 setzen
+	
+	my $locations_ref = [];
+	
+	foreach my $item_ref (@{$fields_ref->{'T4230'}}){
+	    push @{$locations_ref}, $item_ref->{content};
+	}
+	
+	if ($config->{benchmark}) {
+	    $btime=new Benchmark;
+	    $timeall=timediff($btime,$atime);
+	    my $timeall=timediff($btime,$atime);
+	    $logger->info("Zeit fuer : Bestimmung der gesamten Informationen         : ist ".timestr($timeall));
+	}
+	
+	if ($logger->is_debug){
+	    $logger->debug(YAML::Dump($fields_ref));
+	}
 
-    # Titel-ID und zugehoerige Datenbank setzen
+	$self->set_locations($locations_ref);
+	$self->set_fields($fields_ref);
+	$self->set_type('brief');
+	$self->set_record_exists if ($record_exists);
 
-    $fields_ref->{id      } = $id;
-    $fields_ref->{database} = $self->{database};
+		    })->wait;
 
-    # Location aus 4230 setzen
-    
-    my $locations_ref = [];
-
-    foreach my $item_ref (@{$fields_ref->{'T4230'}}){
-	push @{$locations_ref}, $item_ref->{content};
-    }
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        my $timeall=timediff($btime,$atime);
-        $logger->info("Zeit fuer : Bestimmung der gesamten Informationen         : ist ".timestr($timeall));
-    }
-
-    if ($logger->is_debug){
-        $logger->debug(YAML::Dump($fields_ref));
-    }
-
-    ($self->{_fields},$self->{_locations},$self->{_exists},$self->{_type})=($fields_ref,$locations_ref,$record_exists,'brief');
-
-    return $self;
+    return $promise->resolve($self); 
 }
 
 sub enrich_content {
@@ -382,20 +404,22 @@ sub enrich_content {
     
     my $config = $self->get_config;
 
-
     my ($atime,$btime,$timeall);
         
     if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
     
-    return $self unless ($self->{database} && $self->{id});
+    return unless ($self->{database} && $self->{id});
 
     $self->connectEnrichmentDB;
+    
     if ($logger->is_debug){            
 	$self->{enrich_schema}->storage->debug(1);
     }
-    
+
+    my $schema   = $self->{dbinfo}{schema}{$self->{database}} || '';
+
     # ISBNs aus Anreicherungsdatenbank als subquery
     my $this_isbns = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
         { 
@@ -411,7 +435,13 @@ sub enrich_content {
     my $bibkey    = $self->get_field({field => 'T5050', mult => 1})  if ($self->has_field('T5050'));
     
     my @issn_refs = ();
-    push @issn_refs, @{$self->get_field({field => 'T0543'})} if ($self->has_field('T0543'));                                           
+    if ($schema eq "mab2"){
+	push @issn_refs, @{$self->get_field({field => 'T0543'})} if ($self->has_field('T0543'));
+    }
+    else {
+	push @issn_refs, @{$self->get_field({field => 'T0022', subfield => 'a'})} if ($self->has_field('T0022'));
+
+    }
     
     if ($logger->is_debug){
         $logger->debug("Enrichment ISSN's ".YAML::Dump(\@issn_refs));
@@ -618,7 +648,7 @@ sub enrich_content {
 
     $self->disconnectEnrichmentDB;
     
-    return;
+    return $self;
 }
 
 sub enrich_related_records {
@@ -4476,6 +4506,16 @@ sub set_database {
 
     $self->{database}           = $database;
     $self->{_normset}{database} = $database;
+
+    return $self;
+}
+
+sub set_type {
+    my ($self,$type) = @_; # brief | full
+
+    if ($type =~m/^(full|brief)$/){
+	$self->{_type}       = $type;
+    }
 
     return $self;
 }

@@ -51,6 +51,9 @@ use Search::Tools;
 use Text::CSV_PP;
 use YAML ();
 
+use Mojo::Promise;
+use Mojo::IOLoop;
+
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Config::LocationInfoTable;
@@ -68,7 +71,7 @@ use OpenBib::Normalizer;
 
 use Scalar::Util;
 
-use Mojo::Base 'Mojolicious::Controller', -signatures, -async_await;
+use Mojo::Base 'Mojolicious::Controller', -signatures;
 
 sub set_paging {
     my $self = shift;
@@ -294,7 +297,39 @@ sub print_json {
     return encode_json($json_ref);
 }
 
-async sub print_page {
+sub print_page {
+    my ($self,$templatename,$ttdata)=@_;
+
+    # Dispatched Args
+    my $view           = $self->stash('view')           || '';
+    
+    # Shared Args
+    my $r              = $self->stash('r');
+    my $config         = $self->stash('config');
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (!$config->view_is_active($view)){
+	$logger->error("View $view doesn't exist");	
+	$self->res->code(404); # Not found
+        return;
+    }
+    
+    my $content_p = $self->print_page_p($templatename,$ttdata);
+
+    $content_p->then( sub {
+	my $content = shift;
+	
+	$self->res->code(200);
+	
+	$self->render(text => $content);
+		      })->wait;
+
+    return;
+}
+
+sub print_page_p {
     my ($self,$templatename,$ttdata)=@_;
 
     # Log4perl logger erzeugen
@@ -322,15 +357,12 @@ async sub print_page {
     my $location       = $self->stash('location');
     my $url            = $self->stash('url');
 
+    my $promise = Mojo::Promise->new;
+
     $logger->debug("Entering print_page with template $templatename and representation $representation");
 
     $logger->debug("Config: ".(ref $config));
 
-    if (!$config->view_is_active($view)){
-	$logger->error("View $view doesn't exist");	
-	$self->res->code(404); # Not found
-        return;
-    }
     
     my ($atime,$btime,$timeall)=(0,0,0);
 
@@ -389,19 +421,21 @@ async sub print_page {
             $logger->info("Total time until stage 1 is ".timestr($timeall));
         }
         
-        await $template->process($templatename, $ttdata) || do {
+        $template->process($templatename, $ttdata) || do {
             $logger->fatal($template->error()." url: $url");
-            return "Fehler";
+	    return $promise->reject($template->error()." url: $url");
         };
     };
 
     if ($@){
         $logger->fatal($@." url: $url");
+	return $promise->reject($@." url: $url");
     }
-    
-    $self->render(text => $content);
+
 
     $logger->debug("Template processed with content $content");
+
+    return $promise->resolve($content);
 }
 
 sub add_default_ttdata {

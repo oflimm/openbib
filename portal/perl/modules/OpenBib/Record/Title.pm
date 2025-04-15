@@ -188,6 +188,19 @@ sub get_config {
     return $self->{_config};
 }
 
+sub load_full_record {
+    my ($self, $arg_ref) = @_;
+
+    my $record_p = $self->load_full_record_p($arg_ref);
+
+    $record_p->then(sub {
+	my $record = shift;
+	
+	return $record;
+		    })->wait;
+}
+
+
 sub load_full_record_p {
     my ($self,$arg_ref) = @_;
 
@@ -389,6 +402,18 @@ sub load_brief_record_p {
 sub enrich_content {
     my ($self, $arg_ref) = @_;
 
+    my $enriched_record_p = $self->enrich_content_p($arg_ref);
+
+    $enriched_record_p->then(sub {
+	my $record = shift;
+	
+	return $record;
+			     })->wait;
+}
+
+sub enrich_content_p {
+    my ($self, $arg_ref) = @_;
+
     my $profilename = exists $arg_ref->{profilename}
         ? $arg_ref->{profilename}        : '';
     
@@ -404,13 +429,15 @@ sub enrich_content {
     
     my $config = $self->get_config;
 
+    my $promise = Mojo::Promise->new;
+    
     my ($atime,$btime,$timeall);
         
     if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
     
-    return unless ($self->{database} && $self->{id});
+    return $promise->reject($self) unless ($self->{database} && $self->{id});
 
     $self->connectEnrichmentDB;
     
@@ -648,10 +675,22 @@ sub enrich_content {
 
     $self->disconnectEnrichmentDB;
     
-    return $self;
+    return $promise->resolve($self);
 }
 
 sub enrich_related_records {
+    my ($self, $arg_ref) = @_;
+
+    my $related_records_p = $self->enrich_related_records_p($arg_ref);
+
+    $related_records_p->then(sub {
+	my $records = shift;
+
+	    return $records;
+			     })->wait;
+}
+
+sub enrich_related_records_p {
     my ($self, $arg_ref) = @_;
 
     my $profilename = exists $arg_ref->{profilename}
@@ -677,6 +716,8 @@ sub enrich_related_records {
     
     my $config = $self->get_config;
 
+    my $promise = Mojo::Promise->new;
+    
     my ($atime,$btime,$timeall);
         
     if ($config->{benchmark}) {
@@ -743,7 +784,7 @@ sub enrich_related_records {
         $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen vor Normdaten ".timestr($timeall));
     }
 
-    return $self unless ($self->{database} && $self->{id});
+    return $promise->reject($self) unless ($self->{database} && $self->{id});
     
     # ISBNs aus Anreicherungsdatenbank als subquery
     my $this_isbns = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
@@ -909,152 +950,22 @@ sub enrich_related_records {
 
     $self->disconnectEnrichmentDB;
     
-    return $self;
-}
-
-sub enrich_similar_records_old {
-    my ($self, $arg_ref) = @_;
-
-    my $profilename = exists $arg_ref->{profilename}
-        ? $arg_ref->{profilename}        : undef;
-    
-    my $viewname = exists $arg_ref->{viewname}
-        ? $arg_ref->{viewname}        : undef;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    my $config = $self->get_config;
-
-    my ($atime,$btime,$timeall);
-        
-    if ($config->{benchmark}) {
-        $atime=new Benchmark;
-    }
-    
-    $self->connectEnrichmentDB;
-
-    if ($logger->is_debug){            
-	$self->{enrich_schema}->storage->debug(1);
-    }
-
-    my @filter_databases = ($profilename)?$config->get_profiledbs($profilename):
-        ($viewname)?$config->get_viewdbs($viewname):();
-
-    
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen vor Normdaten ".timestr($timeall));
-    }
-
-    return $self unless ($self->{database} && $self->{id});
-    
-    # ISBNs aus Anreicherungsdatenbank als subquery
-    my $this_isbns = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
-        { 
-            dbname  => $self->{database},
-            titleid => $self->{id},
-        },
-        {
-            columns  => ['isbn'],
-            group_by => ['isbn'],
-        }
-    );
-    
-    
-    # Anreicherung mit 'aehnlichen' (=andere Auflage, Sprache) Titeln aus allen Katalogen
-    {
-        my $similar_recordlist = $self->get_similar_records;
-        
-        if ($logger->is_debug){
-            $logger->debug("Similar records via backend ".YAML::Dump($similar_recordlist));
-        }   
-        
-        # Alle Werke zu gegebenen ISBNs bestimmen
-        my $works = $self->{enrich_schema}->resultset('WorkByIsbn')->search_rs(
-            {
-                isbn    => { -in => $this_isbns->as_query },
-            },
-            {
-                columns => ['workid'],
-                group_by => ['workid'],
-            }
-        );
-        
-        my $similar_isbns = $self->{enrich_schema}->resultset('WorkByIsbn')->search_rs(
-            {
-                isbn      => { -not_in => $this_isbns->as_query },
-                workid    => { -in => $works->as_query },
-            },
-            {
-                columns => ['isbn'],
-                group_by => ['isbn'],
-            }
-        );
-            
-        my $where_ref = {
-            isbn    => { -in => $similar_isbns->as_query },
-        };
-        
-        if (@filter_databases){
-            $where_ref = {
-                isbn    => { -in => $similar_isbns->as_query },                            
-                dbname => \@filter_databases,
-            };
-        }
-        
-        my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
-            $where_ref,
-            {
-                group_by => ['dbname','isbn','location','tstamp','titleid','titlecache'],
-                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-            }
-        );
-        
-        while (my $titleitem = $titles->next) {
-            my $id         = $titleitem->{titleid};
-            my $database   = $titleitem->{dbname};
-            my $location   = $titleitem->{location};
-            my $titlecache = $titleitem->{titlecache};
-            
-            $logger->debug("Found Title with id $id in database $database");
-
-	    my $new_record;
-
-            if ($titlecache){
-                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
-            }
-            else {
-                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
-            }
-	    
-	    $new_record->set_locations([$location]);
-	    $similar_recordlist->add($new_record);
-	    
-        }
-        
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles w/o load_brief_records ist ".timestr($timeall));
-        }
-        
-        $self->set_similar_records($similar_recordlist);
-    }
-        
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles ist ".timestr($timeall));
-    }
-
-    $self->disconnectEnrichmentDB;
-    
-    return $self;
+    return $promise->resolve($self);
 }
 
 sub enrich_similar_records {
+    my ($self, $arg_ref) = @_;
+
+    my $similar_records_p = $self->enrich_similar_records_p($arg_ref);
+
+    $similar_records_p->then(sub {
+	my $records = shift;
+
+	    return $records;
+			     })->wait;
+}
+
+sub enrich_similar_records_p {
     my ($self, $arg_ref) = @_;
 
     my $profilename = exists $arg_ref->{profilename}
@@ -1074,6 +985,8 @@ sub enrich_similar_records {
     
     my $config = $self->get_config;
 
+    my $promise = Mojo::Promise->new;
+    
     my ($atime,$btime,$timeall);
         
     if ($config->{benchmark}) {
@@ -1112,7 +1025,7 @@ sub enrich_similar_records {
 
             $self->set_similar_records($similar_recordlist);
 
-            return $self;
+            return $promise->resolve($self);
         }
     }
     
@@ -1130,7 +1043,7 @@ sub enrich_similar_records {
         $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen vor Normdaten ".timestr($timeall));
     }
 
-    return $self unless ($self->{database} && $self->{id});
+    return $promise->reject($self) unless ($self->{database} && $self->{id});
     
     # Workkeys aus Anreicherungsdatenbank als subquery
     my $this_workkeys = $self->{enrich_schema}->resultset('AllTitleByWorkkey')->search_rs(
@@ -1248,10 +1161,22 @@ sub enrich_similar_records {
 
     $self->disconnectEnrichmentDB;
     
-    return $self;
+    return $promise->resolve($self);
 }
 
 sub enrich_same_records {
+    my ($self, $arg_ref) = @_;
+
+    my $same_records_p = $self->enrich_same_records_p($arg_ref);
+
+    $same_records_p->then(sub {
+	my $records = shift;
+
+	    return $records;
+			     })->wait;
+}
+
+sub enrich_same_records_p {
     my ($self, $arg_ref) = @_;
 
     my $profilename = exists $arg_ref->{profilename}
@@ -1271,6 +1196,8 @@ sub enrich_same_records {
     
     my $config = $self->get_config;
 
+    my $promise = Mojo::Promise->new;
+    
     my ($atime,$btime,$timeall);
         
     if ($config->{benchmark}) {
@@ -1309,7 +1236,7 @@ sub enrich_same_records {
 
             $self->set_same_records($same_recordlist);
 
-            return $self;
+            return $promise->resolve($self);
         }
     }
     else {
@@ -1330,7 +1257,7 @@ sub enrich_same_records {
         $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen vor Normdaten ".timestr($timeall));
     }
 
-    return $self unless ($self->{database} && $self->{id});
+    return $promise->reject($self) unless ($self->{database} && $self->{id});
     
     # ISBNs aus Anreicherungsdatenbank als subquery
     my $this_isbns = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
@@ -1444,10 +1371,23 @@ sub enrich_same_records {
 
     $self->disconnectEnrichmentDB;
     
-    return $self;
+    return $promise->resolve($self);
 }
 
 sub load_circulation {
+    my ($self, $arg_ref) = @_;
+
+    my $circulation_record_p = $self->load_circulation_p($arg_ref);
+
+    $circulation_record_p->then(sub {
+	my $record = shift;
+
+	    return $record;
+			     })->wait;
+}
+
+
+sub load_circulation_p {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -1460,6 +1400,8 @@ sub load_circulation {
 
     my $config        = $self->get_config;
 
+    my $promise       = Mojo::Promise->new;
+    
     my ($atime,$btime,$timeall)=(0,0,0);
 
     if ($config->{benchmark}) {
@@ -1484,7 +1426,7 @@ sub load_circulation {
 	    
             $self->set_circulation($circulation_ref);
 
-            return $self;
+            return $promise->resolve($self);
         }
     }
 
@@ -1517,7 +1459,7 @@ sub load_circulation {
 	if (defined $mediastatus_ref->{error}){
 	    $self->set_circulation_error($mediastatus_ref);
 	    $self->set_circulation($circulation_ref);
-	    return $self;
+	    return $promise->resolve($self);
 	}
 	
 	if (defined $mediastatus_ref->{items} && @{$mediastatus_ref->{items}}){
@@ -1593,7 +1535,7 @@ sub load_circulation {
         $logger->info("Total time for is ".timestr($timeall));
     }
 
-    return $self;
+    return $promise->resolve($self);
 }
 
 sub load_olwsviewer {

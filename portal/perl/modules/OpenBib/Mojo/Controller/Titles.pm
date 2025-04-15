@@ -317,6 +317,8 @@ sub show_record {
         return;
     }
 
+    $self->render_later;
+    
     my ($atime,$btime,$timeall)=(0,0,0);
 
     if ($config->{benchmark}) {
@@ -339,155 +341,161 @@ sub show_record {
         $logger->debug("ID: $titleid - DB: $database");
 
         $logger->debug("1");        
-        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config})->load_full_record;
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config});
 
-        $logger->debug("2");        
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time until stage 0 is ".timestr($timeall));
-        }
+	my $record_p = $record->load_full_record_p;
 
-        my $poolname=$dbinfotable->get('dbnames')->{$database};
+	$record_p->then(sub {
 
-        # if ($queryid){
-        #     $searchquery->load({sid => $session->{sid}, queryid => $queryid});
-        # }
+	    my $record = shift;
 
-        my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
-            session    => $session,
-            database   => $database,
-            titleid    => $titleid,
-            view       => $view,
-            session    => $session,
-        });
+	    $logger->debug("1");        	    
 
-        my $active_feeds = $config->get_activefeeds_of_db($database);
-        
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time until stage 1 is ".timestr($timeall));
-        }
-        $logger->debug("3");        
-        # Literaturlisten finden
-
-        my $litlists_ref = $user->get_litlists_of_tit({titleid => $titleid, dbname => $database, view => $view});
-
-        # Anreicherung mit OLWS-Daten
-        if (defined $r->param('olws') && $r->param('olws') eq "Viewer"){
-            if (defined $circinfotable->get($database) && defined $circinfotable->get($database)->{circcheckurl}){
-                $logger->debug("Endpoint: ".$circinfotable->get($database)->{circcheckurl});
-                my $soapresult;
-                eval {
-                    my $soap = SOAP::Lite
-                        -> uri("urn:/Viewer")
-                            -> proxy($circinfotable->get($database)->{circcheckurl});
-                
-                    my $result = $soap->get_item_info(
-                        SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                            SOAP::Data->name(collection => $circinfotable->get($database)->{circdb})->type('string'),
-                            SOAP::Data->name(item       => $titleid)->type('string'))));
-                    
-                    unless ($result->fault) {
-                        $soapresult=$result->result;
-                    }
-                    else {
-                        if ($logger->is_debug){
-                            $logger->error("SOAP Viewer Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-                        }
-                    }
-                };
-                
-                if ($@){
-                    $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
-                }
-                
-                $record->{olws}=$soapresult;
-            }
-        }
-
-        my $sysprofile= $config->get_profilename_of_view($view);
-
-        if ($logger->is_debug){
-            $logger->debug("Vor Enrichment:".YAML::Dump($record->get_fields));
-        }
-        
-        $record->enrich_content({ profilename => $sysprofile });
-
-        if ($logger->is_debug){
-            $logger->debug("Nach Enrichment:".YAML::Dump($record->get_fields));
-        }
-        
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time until stage 2 is ".timestr($timeall));
-        }
-
-        # TT-Data erzeugen
-        my $ttdata={
-            database    => $database, # Zwingend wegen common/subtemplate
-            userid      => $userid,
-            poolname    => $poolname,
-            prevurl     => $prevurl,
-            nexturl     => $nexturl,
-#            qopts       => $queryoptions->get_options,
-            queryid     => $searchquery->get_id,
-            record      => $record,
-            titleid      => $titleid,
-
-            format      => $format,
-
-            searchquery => $searchquery,
-            activefeed  => $active_feeds,
-            
-            authenticatordb => $authenticatordb,
-            
-            litlists          => $litlists_ref,
-            highlightquery    => \&highlightquery,
-	    sort_circulation => \&sort_circulation,
-        };
-
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time until stage 3 is ".timestr($timeall));
-        }
-
-        # Log Event
-
-        my $isbn;
-
-        my $abstract_fields_ref = $record->to_abstract_fields;
-	
-        if (defined $abstract_fields_ref->{isbn} && $abstract_fields_ref->{isbn}){
-            $isbn = $abstract_fields_ref->{isbn};
-            $isbn =~s/ //g;
-            $isbn =~s/-//g;
-            $isbn =~s/X/x/g;
-        }
-        
-        if (!$no_log){
-            $session->log_event({
-                type      => 10,
-                content   => {
-                    id       => $titleid,
-                    database => $database,
-                    isbn     => $isbn,
-#		    fields   => $abstract_fields_ref,
-                },
-                serialize => 1,
-            });
-        }
-
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time for show_record is ".timestr($timeall));
-        }
-
-        return $self->print_page($config->{tt_titles_record_tname},$ttdata);
+	    if ($config->{benchmark}) {
+		$btime=new Benchmark;
+		$timeall=timediff($btime,$atime);
+		$logger->info("Total time until stage 0 is ".timestr($timeall));
+	    }
+	    
+	    my $poolname=$dbinfotable->get('dbnames')->{$database};
+	    
+	    # if ($queryid){
+	    #     $searchquery->load({sid => $session->{sid}, queryid => $queryid});
+	    # }
+	    
+	    my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
+		session    => $session,
+		database   => $database,
+		titleid    => $titleid,
+		view       => $view,
+		session    => $session,
+										});
+	    
+	    my $active_feeds = $config->get_activefeeds_of_db($database);
+	    
+	    if ($config->{benchmark}) {
+		$btime=new Benchmark;
+		$timeall=timediff($btime,$atime);
+		$logger->info("Total time until stage 1 is ".timestr($timeall));
+	    }
+	    $logger->debug("3");        
+	    # Literaturlisten finden
+	    
+	    my $litlists_ref = $user->get_litlists_of_tit({titleid => $titleid, dbname => $database, view => $view});
+	    
+	    # Anreicherung mit OLWS-Daten
+	    if (defined $r->param('olws') && $r->param('olws') eq "Viewer"){
+		if (defined $circinfotable->get($database) && defined $circinfotable->get($database)->{circcheckurl}){
+		    $logger->debug("Endpoint: ".$circinfotable->get($database)->{circcheckurl});
+		    my $soapresult;
+		    eval {
+			my $soap = SOAP::Lite
+			    -> uri("urn:/Viewer")
+			    -> proxy($circinfotable->get($database)->{circcheckurl});
+			
+			my $result = $soap->get_item_info(
+			    SOAP::Data->name(parameter  =>\SOAP::Data->value(
+						 SOAP::Data->name(collection => $circinfotable->get($database)->{circdb})->type('string'),
+						 SOAP::Data->name(item       => $titleid)->type('string'))));
+			
+			unless ($result->fault) {
+			    $soapresult=$result->result;
+			}
+			else {
+			    if ($logger->is_debug){
+				$logger->error("SOAP Viewer Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+			    }
+			}
+		    };
+		    
+		    if ($@){
+			$logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+		    }
+		    
+		    $record->{olws}=$soapresult;
+		}
+	    }
+	    
+	    
+	    my $sysprofile= $config->get_profilename_of_view($view);
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Vor Enrichment:".YAML::Dump($record->get_fields));
+	    }
+	    
+	    $record->enrich_content({ profilename => $sysprofile });
+	    
+	    if ($config->{benchmark}) {
+		$btime=new Benchmark;
+		$timeall=timediff($btime,$atime);
+		$logger->info("Total time until stage 2 is ".timestr($timeall));
+	    }
+	    
+	    # TT-Data erzeugen
+	    my $ttdata={
+		database    => $database, # Zwingend wegen common/subtemplate
+		userid      => $userid,
+		poolname    => $poolname,
+		prevurl     => $prevurl,
+		nexturl     => $nexturl,
+		#            qopts       => $queryoptions->get_options,
+		queryid     => $searchquery->get_id,
+		record      => $record,
+		titleid      => $titleid,
+		
+		format      => $format,
+		
+		searchquery => $searchquery,
+		activefeed  => $active_feeds,
+		
+		authenticatordb => $authenticatordb,
+		
+		litlists          => $litlists_ref,
+		highlightquery    => \&highlightquery,
+		sort_circulation => \&sort_circulation,
+	    };
+	    
+	    if ($config->{benchmark}) {
+		$btime=new Benchmark;
+		$timeall=timediff($btime,$atime);
+		$logger->info("Total time until stage 3 is ".timestr($timeall));
+	    }
+	    
+	    # Log Event
+	    
+	    my $isbn;
+	    
+	    my $abstract_fields_ref = $record->to_abstract_fields;
+	    
+	    if (defined $abstract_fields_ref->{isbn} && $abstract_fields_ref->{isbn}){
+		$isbn = $abstract_fields_ref->{isbn};
+		$isbn =~s/ //g;
+		$isbn =~s/-//g;
+		$isbn =~s/X/x/g;
+	    }
+	    
+	    if (!$no_log){
+		$session->log_event({
+		    type      => 10,
+		    content   => {
+			id       => $titleid,
+			database => $database,
+			isbn     => $isbn,
+			#		    fields   => $abstract_fields_ref,
+		    },
+		    serialize => 1,
+				    });
+	    }
+	    
+	    if ($config->{benchmark}) {
+		$btime=new Benchmark;
+		$timeall=timediff($btime,$atime);
+		$logger->info("Total time for show_record is ".timestr($timeall));
+	    }
+	    
+	    return $self->print_page($config->{tt_titles_record_tname},$ttdata);
+	    
+			})->wait;
     }
     else {
         if ($config->{benchmark}) {

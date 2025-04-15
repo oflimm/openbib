@@ -39,6 +39,10 @@ use JSON::XS;
 use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 
+use Mojo::Base -base, -strict, -signatures;
+use Mojo::Promise;
+use Mojo::IOLoop;
+
 use OpenBib::Conv::Config;
 use OpenBib::Config::File;
 use OpenBib::Config::DatabaseInfoTable;
@@ -293,7 +297,7 @@ sub get_recent_titles_of_subject {
     return $recordlist;
 }
 
-sub load_full_title_record {
+sub load_full_title_record_p {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -306,6 +310,8 @@ sub load_full_title_record {
     
     my $config        = OpenBib::Config::File->instance;
 
+    my $promise = Mojo::Promise->new;
+    
     my ($atime,$btime,$timeall)=(0,0,0);
     
     if ($config->{benchmark}) {
@@ -641,6 +647,7 @@ sub load_full_title_record {
 
     if ($@){
         $logger->fatal($@);
+	return $promise->reject($@);
     }
 
     if ($config->{benchmark}) {
@@ -652,8 +659,10 @@ sub load_full_title_record {
     if ($logger->is_debug){
         $logger->debug(YAML::Dump($title_record->get_fields));
     }
+
+    $promise->resolve($title_record);
     
-    return $title_record;
+    return $promise; 
 }
 
 sub load_brief_title_record {

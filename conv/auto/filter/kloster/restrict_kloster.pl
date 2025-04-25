@@ -15,12 +15,25 @@ while (<>){
     my $titleid = $title_ref->{id};
 
     my $allowed_gnd_ref  = {
-	'4275651-0' => 1, # Kloster Sankt Barbara Köln
-	    '3072615-3' => 1, # Karmeliterkloster Köln
-	    '4253823-3' => 1, # Kloster Brauweiler
-	    '6102582-3' => 1, # Kloster Heilig Kreuz Köln
+	'16246584-1' => 1, # Augustinerkloster Köln
+	    '1331108772' => 1, # Augustinerinnenkloster Zum Kleinen Lämmchen, Köln
+	    '16248828-2' => 1, # Kapuzinerkloster Köln 
+	    '3072615-3' => 1, # Kloster der Beschuhten Karmeliter Köln
+	    '129480037X' => 1, # Kloster der Unbeschuhten Karmeliter Köln
+	    '4275651-0' => 1, # Kölner Kartause 
+	    '6507074-4' => 1, # Franziskanerkloster zu den Oliven Köln
+	    '16245368-1' => 1, # Kloster Groß Sankt Martin Köln 
+	    '6102582-3' => 1, # Dominikanerkloster Heilig Kreuz Köln 
+	    '7562565-9' => 1, # Johanniter, Kommende Köln
+	    '1156561094' => 1, # Kölner Kreuzbrüder 
+	    '16245592-6' => 1, # Minoritenkloster Köln
+	    '4337111-5' => 1, # Kloster Marienspiegel Köln
+	    '4378125-1' => 1, # Stift Sankt Aposteln Köln
+	    '4253823-3' => 1, # Abtei Brauweiler 
 	    '1704954-4' => 1, # Kloster St. Pantaleon Köln
-	    '16278243-3' => 1, # Benediktinerkloster Groß Sankt Martin
+	    '1363747274' => 1, # Collegium Norbertinum, Köln
+	    '16277855-7' => 1, # Benediktinerabtei Sankt Vitus, Gladbach    
+	    '7764949-7' => 1, # Fraterhaus St. Michael am Weidenbach  
     };
     
     my $allowed_mark_ref = {};

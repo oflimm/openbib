@@ -66,10 +66,10 @@
   <div class="row">
     <div class="col-md-3 ps-1 pe-1 pb-5">
       <div class="card mt-5 h-100">
-	<div class="card-header pt-4 pb-2 text-center"><i class="fas fa-bible fa-2x"></i></div>
+	<div class="card-header pt-4 pb-2 text-center"><i class="fas fa-church fa-2x"></i></div>
 	<div class="card-body pb-0">
-	  <h4 class="card-subtitle pb-1 text-center">[% msg.maketext("Die Klöster im Kölner Raum") %]</h4>
-	  <p class="card-text">[% msg.maketext("Viele Klöster sind rund um Köln zu finden.") %]</p>
+	  <h4 class="card-subtitle pb-1 text-center">[% msg.maketext("Klöster im Kölner Raum") %]</h4>
+	  <p class="card-text">[% msg.maketext("Von Benediktinerabteien über Bettelorden bis zu Chorherrenstiften - in Köln und der Umgebung der Stadt blühte die Klosterkultur.") %]</p>
 	</div>
 	<div class="card-footer pb-3">	
 	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/einleitung.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
@@ -81,7 +81,7 @@
 	<div class="card-header pt-4 pb-2 text-center"><i class="fas fa-info fa-2x"></i></div>
 	<div class="card-body pb-0">
 	  <h4 class="card-subtitle pb-1 text-center">[% msg.maketext("Das Klosterprojekt der USB Köln") %]</h4>
-	  <p class="card-text">[% msg.maketext("Das Klosterprojekt verzeichnet Provenienzen, Informationen zum ehemaligen Standort der Bücher und vieles mehr!") %]</p>
+	  <p class="card-text">[% msg.maketext("Das Projekt erschließt die Buchbestände der ehemaligen Klöster, um sie digital zugänglich und durchsuchbar zu machen.") %]</p>
         </div>
 	<div class="card-footer pb-3">		
 	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/project.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
@@ -90,10 +90,10 @@
     </div>
     <div class="col-md-3 ps-1 pe-1 pb-5">
       <div class="card mt-5 h-100">
-	<div class="card-header pt-4 pb-2 text-center"><i class="fas fa-archway fa-2x"></i></div>
+	<div class="card-header pt-4 pb-2 text-center"><i class="fas fa-bible fa-2x"></i></div>
 	<div class="card-body pb-0">
 	  <h4 class="card-subtitle pb-1 text-center">[% msg.maketext("Die Klosterbibliotheken") %]</h4>
-	  <p class="card-text">[% msg.maketext("Die Kölner Klöster legten eine große Büchersammlung an, von denen einige in der USB Köln aufbewahrt werden.") %]</p>
+	  <p class="card-text">[% msg.maketext("Bibliotheken gab es in vielen Klöstern, doch sie hatten unterschiedliche Formen und Funktionen – die Bücher tragen bis heute Spuren davon!") %]</p>
 	</div>
 	<div class="card-footer pb-3">			  
 	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
@@ -155,6 +155,87 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
      '50.933787717434186, 6.936360683112719' = [{
         description = 'Kloster Heilig Kreuz Köln'
 	id          = '6102582-3'
+     }]
+     # Neu
+     ' ' = [{
+     	description = 'Augustinerkloster Köln'
+	id          = '16246584-1'
+     }]
+     ' ' = [{
+     	description = 'Augustinerinnenkloster Zum Kleinen Lämmchen, Köln'
+	id          = '1331108772'
+     }]
+     ' ' = [{
+     	description = 'Kapuzinerkloster Köln'
+	id          = '16248828-2'
+     }]
+     ' ' = [{
+     	description = 'Kloster der Beschuhten Karmeliter Köln'
+	id          = '3072615-3'
+     }]
+     ' ' = [{
+     	description = 'Kloster der Unbeschuhten Karmeliter Köln'
+	id          = '129480037X'
+     }]
+     ' ' = [{
+     	description = 'Kölner Kartause'
+	id          = '4275651-0'
+     }]
+     ' ' = [{
+     	description = 'Franziskanerkloster zu den Oliven Köln'
+	id          = '6507074-4'
+     }]
+     ' ' = [{
+     	description = 'Kloster Groß Sankt Martin Köln'
+	id          = '16245368-1'
+     }]
+     ' ' = [{
+     	description = 'Dominikanerkloster Heilig Kreuz Köln'
+	id          = '6102582-3'
+     }]
+     ' ' = [{
+     	description = 'Johanniter, Kommende Köln'
+	id          = '7562565-9'
+     }]
+     ' ' = [{
+     	description = 'Kölner Kreuzbrüder '
+	id          = '1156561094'
+     }]
+     ' ' = [{
+     	description = 'Minoritenkloster Köln'
+	id          = '16245592-6'
+     }]
+     ' ' = [{
+     	description = 'Kloster Marienspiegel Köln'
+	id          = '4337111-5'
+     }]
+     ' ' = [{
+     	description = 'Stift Sankt Aposteln Köln'
+	id          = '4378125-1'
+     }]
+     ' ' = [{
+     	description = 'Abtei Brauweiler'
+	id          = '4253823-3'
+     }]
+     ' ' = [{
+     	description = 'Kloster St. Pantaleon Köln'
+	id          = '1704954-4'
+     }]
+     ' ' = [{
+     	description = 'Collegium Norbertinum, Köln'
+	id          = '1363747274'
+     }]
+     ' ' = [{
+     	description = 'Benediktinerabtei Sankt Vitus, Gladbach'
+	id          = '16277855-7'
+     }]
+     ' ' = [{
+     	description = 'Fraterhaus St. Michael am Weidenbach'
+	id          = '7764949-7'
+     }]
+     ' ' = [{
+     	description = ''
+	id          = ''
      }]
    };
 

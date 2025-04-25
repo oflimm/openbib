@@ -13,29 +13,27 @@
 -%]
 <![CDATA[
 [%# Verfasser konstruieren %]
-[%- item = record.to_hash.fields -%]
-[%- person = item.${'PC0001'}.first.content -%]
+[%- item         = record.to_abstract_fields -%]
+[%- item_holding = record.get_fields -%]
+[%- person = item.authors.join(' ; ') -%]
 [%# Titel konstruieren %]
-[%- title = item.${'T0331'}.first.content -%]
-[%- IF item.${'T0310'}.first.content -%]
-[%- title = item.${'T0310'}.first.content -%]
-[%- END -%]
+[%- title = item.title -%]
 
 [%# Verlage konstruieren %]
-[%- publisher = item.${'T0412'}.first.content -%]
+[%- publisher = item.publisher -%]
 
 [%# Ejahr konstruieren %]
-[%- yearofpub = item.${'T0425'}.first.content -%]
+[%- yearofpub = item.year -%]
 
 [%# Ausgabe konstruieren %]
-[%- ausgabe   = item.${'T0403'}.first.content -%]
+[%- ausgabe   = item.edition -%]
 
 [%# GT konstruieren %]
-[%- gt        = item.${'T0451'}.first.content -%]
+[%- gt        = item.series -%]
 
 [%# Signaturen konstruieren %]
 [%- signaturen = [] -%]
-[%- FOREACH part IN item.${'X0014'} -%]
+[%- FOREACH part IN item_holding.${'X0014'} -%]
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
 [%- signatur = signaturen.sort.unique.join(' ; ') -%]

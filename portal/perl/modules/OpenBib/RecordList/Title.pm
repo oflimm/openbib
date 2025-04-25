@@ -41,6 +41,10 @@ use Storable;
 use XML::RSS;
 use YAML ();
 
+use Mojo::Base -base, -strict, -signatures;
+use Mojo::Promise;
+use Mojo::IOLoop;
+
 use OpenBib::Config;
 use OpenBib::Common::Util;
 use OpenBib::QueryOptions;
@@ -340,7 +344,16 @@ sub load_brief_records {
     my ($self) = @_;
 
     foreach my $record ($self->get_records) {
-        $record->load_brief_record;
+        my $record_p = $record->load_brief_record_p;
+
+	$record_p->then( sub {
+	    my $this_record = shift;
+
+	    $record->set_fields($this_record->get_fields);
+	    $record->set_locations($this_record->get_locations);
+	    $record->set_type('brief');
+	    $record->set_record_exists;
+			 })->wait;
     }
 
     return $self;

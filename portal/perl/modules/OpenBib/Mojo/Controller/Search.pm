@@ -43,8 +43,9 @@ use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
 #use Mojo::AsyncAwait;
-#use Mojo::Promise;
-use Mojo::IOLoop;
+
+use Mojo::Promise;
+
 use Storable ();
 use String::Tokenizer;
 use Search::Xapian;
@@ -72,7 +73,7 @@ use OpenBib::Session;
 use OpenBib::Template::Provider;
 use OpenBib::User;
 
-use Mojo::Base 'OpenBib::Mojo::Controller', -signatures, -async_await;
+use Mojo::Base 'OpenBib::Mojo::Controller', -signatures;
 
 sub show_search {
     my $self = shift;
@@ -118,19 +119,45 @@ sub show_search {
     $self->render_later;
 
     $logger->debug("Getting search header");
-    $self->show_search_header();
+    my $header_p = $self->show_search_header_p();
     $logger->debug("Getting search header done");
-    
+
     $logger->debug("Getting search result");
-    $self->show_search_result();
+    my $searchresult_p = $self->show_search_result_p();
     $logger->debug("Getting search result done");
     
     $logger->debug("Getting search footer");
-    $self->show_search_footer();
+    my $footer_p = $self->show_search_footer_p();
     $logger->debug("Getting search footer done");
 
+    $header_p->then(sub {
+	my $content_header = shift;
+	$self->write_chunk(encode_utf8($content_header)) if ($content_header);
+
+	return $searchresult_p;
+		    })->then(sub {
+			my $content_searchresult = shift;
+			$self->write_chunk(encode_utf8($content_searchresult));
+
+			return $footer_p;
+			})->then(sub {
+			my $content_footer = shift;
+			
+			$self->write_chunk(encode_utf8($content_footer)) if ($content_footer);
+			$self->finish;
+			     }); #->catch(sub {
+			#	 my $error = shift;
+			#	 $logger->error($error);
+			#	 $self->print_warning($error);
+			#	       });
+	
+    $logger->debug("Getting search result");
+#    $self->show_search_result();
+    $logger->debug("Getting search result done");
+    
+
     # Finalize with empty chunk
-    $self->finish;
+
     
 #     # Sequential search aka traditional meta search
 #     if (defined $r->param('sm') && $r->param('sm') eq "seq"){
@@ -178,7 +205,7 @@ sub show_search {
     
 }
 
-sub show_search_header {
+sub show_search_header_p {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -205,6 +232,8 @@ sub show_search_header {
     my $content_type   = $self->stash('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
 
     my $query          = $r;
+
+    my $promise = Mojo::Promise->new;
     
     # CGI Args
     my $sb        = $r->param('sb') || $config->get_searchengine_of_view($view) || $config->{default_local_search_backend};
@@ -354,11 +383,11 @@ sub show_search_header {
 #    $self->render_later(text => encode_utf8($content_header) );
 #    $self->render_later(text => $content_header );
 
-#    $self->write_chunk(encode_utf8($content_header)) if ($content_header);
-    $self->write_chunk(encode_utf8($content_header)) if ($content_header);    
+    #    $self->write_chunk(encode_utf8($content_header)) if ($content_header);
+    return $promise->resolve($content_header);
 }
 
-async sub show_search_single_catalogue {
+sub show_search_single_catalogue_p {
     my ($self,$arg_ref) = @_;
 
     # Log4perl logger erzeugen
@@ -374,17 +403,27 @@ async sub show_search_single_catalogue {
         ? $arg_ref->{type}                : 'joined';
     
     my $config = $self->stash('config');
+
+    my $promise = Mojo::Promise->new;
+
+    my $searchresult = "";
     
-    my $result_ref = $self->search({database => $database});
+    eval {
+	my $result_ref = $self->search({database => $database});
+	
+	my $templatename = ($type eq "sequential")?$config->{tt_search_title_item_tname}:$config->{tt_search_title_combined_tname};
+	
+	$searchresult = $self->print_resultitem({templatename => $templatename, result => $result_ref});
+    };
 
-    my $templatename = ($type eq "sequential")?$config->{tt_search_title_item_tname}:$config->{tt_search_title_combined_tname};
+    if ($@){
+	return $promise->reject($@);
+    }
 
-    my $searchresult = $self->print_resultitem({templatename => $templatename, result => $result_ref});
-
-    $self->write_chunk(encode_utf8($searchresult));
+    return $promise->resolve($searchresult);
 }
 
-sub show_search_result {
+sub show_search_result_p {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -392,13 +431,15 @@ sub show_search_result {
 
     # Shared Args
     my $r              = $self->stash('r');
+
+    my $promise = Mojo::Promise->new;
     
     # Alternativ: getrennte Suche uber alle Kataloge
     if (defined $r->param('sm') && $r->param('sm') eq "seq"){
         # BEGIN Anfrage an Datenbanken schicken und Ergebnisse einsammeln
         #
 
-        $self->sequential_search;
+        return $self->sequential_search_p;
 
         ######################################################################
         #
@@ -410,17 +451,17 @@ sub show_search_result {
         # Gesamtdatenbank aus allen ausgewaehlten Recherche-Datenbanken schicken und Ergebniss ausgeben
         #
 
-        $self->joined_search;
+        return $self->joined_search_p;
 
         ######################################################################
         #
         # ENDE Anfrage an Datenbanken schicken und Ergebnisse einsammeln
     }
 
-    return;
+    $promise->resolve;
 }
 
-sub show_search_footer {
+sub show_search_footer_p {
     my $self = shift;
 
     # Log4perl logger erzeugen
@@ -441,6 +482,8 @@ sub show_search_footer {
     my $user           = $self->stash('user');
     my $msg            = $self->stash('msg');
 
+    my $promise = Mojo::Promise->new;
+    
     # Jetzt update der Trefferinformationen, wenn keine ID
     $searchquery->save({sid => $session->{sid}});
 
@@ -522,8 +565,8 @@ sub show_search_footer {
 #    $self->render(text => encode_utf8($content_footer) );
 #    $self->render_later(text => $content_footer );
     
-#    $self->write_chunk(encode_utf8($content_footer)) if ($content_footer);
-    $self->write_chunk(encode_utf8($content_footer)) if ($content_footer);
+    #    $self->write_chunk(encode_utf8($content_footer)) if ($content_footer);
+    return $promise->resolve($content_footer);
 }
 
 # Auf Grundlage der <form>-Struktur im Template searchform derzeit nicht verwendet
@@ -911,7 +954,7 @@ sub xxxget_modified_querystring {
     return 'blabla';
 }
 
-async sub joined_search {
+sub joined_search_p {
     my ($self,$arg_ref) = @_;
 
     # Log4perl logger erzeugen
@@ -923,32 +966,40 @@ async sub joined_search {
     
     $logger->debug("Starting joined search");
 
-    my $joined_searchresult = await &show_search_single_catalogue($self,{ type => 'joined'});
-    
-#    $self->write_chunk(encode_utf8($content_searchresult));
-#    $self->write_chunk(encode_utf8($joined_searchresult));
+    return $self->show_search_single_catalogue_p({ type => 'joined'});
 
-    # Etwaige Kataloge, die nicht lokal vorliegen und durch ein API angesprochen werden
-    # if (0 == 1){ # deaktiviert
-    # 	foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
-    # 	    my $system = $config->get_system_of_db($database);
+#     r
+#     $joined_searchresult->then(sub {
+# 	my $content_searchresult = shift;
+# 	$logger->debug("Promise searchresult: $content_searchresult");
+# 	$self->write_chunk(encode_utf8($content_searchresult));
+	
+# 			       });
+
+#     $logger->debug("Starting joined search done");    
+# #    $self->write_chunk(encode_utf8($joined_searchresult));
+
+#     # Etwaige Kataloge, die nicht lokal vorliegen und durch ein API angesprochen werden
+#     # if (0 == 1){ # deaktiviert
+#     # 	foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
+#     # 	    my $system = $config->get_system_of_db($database);
 	    
-    # 	    if ($system =~ /^Backend/){
-    # 		$self->stash('database',$database);
+#     # 	    if ($system =~ /^Backend/){
+#     # 		$self->stash('database',$database);
 		
-    # 		$self->search({database => $database});
+#     # 		$self->search({database => $database});
 		
-    # 		my $seq_content_searchresult = $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
+#     # 		my $seq_content_searchresult = $self->print_resultitem({templatename => $config->{tt_search_title_item_tname}});
 		
-    # 		$writer->write(encode_utf8($seq_content_searchresult));
-    # 	    }
-    # 	}
-    # }
+#     # 		$writer->write(encode_utf8($seq_content_searchresult));
+#     # 	    }
+#     # 	}
+#     # }
     
-    return; # $content_searchresult;
+#     return; # $content_searchresult;
 }
 
-async sub sequential_search {
+sub sequential_search_p {
     my ($self,$arg_ref) = @_;
 
     # Log4perl logger erzeugen
@@ -965,15 +1016,9 @@ async sub sequential_search {
 
     $logger->debug("Starting sequential search");
 
-    foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
-	my $seq_content_searchresult = await &show_search_single_catalogue($self,{database => $database, type => 'sequential'});
-	
-        $logger->debug("Result: $seq_content_searchresult");
-#	$self->write_chunk(encode_utf8($seq_content_searchresult)) if ($seq_content_searchresult);
-	#$self->render_later(text => encode_utf8($seq_content_searchresult) );	
-    }
+    my @all_searches = map { $self->show_search_single_catalogue_p({database => $_, type => 'sequential'}) } $config->get_databases_of_searchprofile($searchquery->get_searchprofile);
 
-    return;
+    return @all_searches;
 }
 
 sub search {

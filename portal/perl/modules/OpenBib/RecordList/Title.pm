@@ -261,19 +261,9 @@ sub to_rss {
 
     foreach my $record ($self->get_records){
         my $desc  = "";
-        my $title = $record->get_field({field => 'T0331'});
-
-        if (ref $title eq "ARRAY"){
-            $title=$title->[0];
-        }
-
-        my $ast   = $record->get_field({field => 'T0310'});
-
-        if (ref $ast eq "ARRAY"){
-            $ast=$ast->[0];
-        }
-
-        $title = $ast if ($ast);
+	my $fields_ref = $record->to_abstract_fields;
+	
+        my $title = $fields_ref->{title} || $msg->maketext("Keine Titelangabe vorhanden");
 
         my $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
             view         => $view,

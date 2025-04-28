@@ -45,6 +45,8 @@ use String::Tokenizer;
 use Search::Xapian;
 use YAML ();
 
+use Mojo::Promise;
+
 use OpenBib::Container;
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
@@ -79,8 +81,21 @@ sub show_search {
     my $view           = $self->param('view');
 
     # Shared Args
+    my $r              = $self->stash('r');
     my $config         = $self->stash('config');
-    
+    my $session        = $self->stash('session');
+    my $user           = $self->stash('user');
+    my $msg            = $self->stash('msg');
+    my $lang           = $self->stash('lang');
+    my $queryoptions   = $self->stash('qopts');
+    my $stylesheet     = $self->stash('stylesheet');
+    my $useragent      = $self->stash('useragent');
+    my $servername     = $self->stash('servername');
+    my $path_prefix    = $self->stash('path_prefix');
+    my $path           = $self->stash('path');
+    my $representation = $self->stash('representation');
+    my $content_type   = $self->stash('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
+
     my $availability_search_ref = $config->get('availability_search');
 
     # Abfangen von Portalen ohne Verfuegbarkeitsrecherche
@@ -89,11 +104,60 @@ sub show_search {
     }
     
     $logger->debug("Verfuegbarkeitsrecherche exisitiert fuer diesen View");
+    
+    $logger->debug("Content-Type $content_type");
+    
+    my $searchquery = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session, config => $config});
 
-    $self->SUPER::show_search;
+    $self->stash('searchquery',$searchquery);
+
+    # No Searchterms? Warning!
+
+    unless ($searchquery->have_searchterms){
+	return $self->print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."));
+    }
+
+    # Start der Ausgabe mit korrektem Header
+    $self->res->code(200);
+    $self->res->headers->content_type($content_type);
+    
+    $self->render_later;
+
+    $logger->debug("Getting search header");
+    my $header_p = $self->show_search_header_p();
+    $logger->debug("Getting search header done");
+
+    $logger->debug("Getting search result");
+    my $searchresult_p = $self->show_search_result_p();
+    $logger->debug("Getting search result done");
+    
+    $logger->debug("Getting search footer");
+    my $footer_p = $self->show_search_footer_p();
+    $logger->debug("Getting search footer done");
+
+    $header_p->then(sub {
+	my $content_header = shift;
+	$self->write_chunk(encode_utf8($content_header)) if ($content_header);
+
+	return $searchresult_p;
+		    })->then(sub {
+			my $content_searchresult = shift;
+			$self->write_chunk(encode_utf8($content_searchresult));
+
+			return $footer_p;
+			})->then(sub {
+			my $content_footer = shift;
+			
+			$self->write_chunk(encode_utf8($content_footer)) if ($content_footer);
+			$self->finish;
+			     }); #->catch(sub {
+			#	 my $error = shift;
+			#	 $logger->error($error);
+			#	 $self->print_warning($error);
+			#	       });	    
 }
 
-sub show_search_result {
+sub show_search_result_p {
     my ($self,$arg_ref) = @_;
 
     # Log4perl logger erzeugen
@@ -106,15 +170,15 @@ sub show_search_result {
     my $session     = $self->stash('session');
     my $writer      = $self->stash('writer');
 
+    my $promise = Mojo::Promise->new;
+    
     ######################################################################
     # Schleife ueber alle Datenbanken 
 
     ######################################################################
 
-    $logger->debug("Starting sequential search");
+    $logger->debug("Starting sequential availability search");
 
-    my $content_searchresult = "";
-    
     my $availability_search_ref = $config->get('availability_search');
     
     # Recherche ueber einzelne Datenbanken
@@ -128,46 +192,46 @@ sub show_search_result {
 	    my $mediatype = $searchquery->get_searchfield('mediatype')->{val};
 	    $type = $mediatype if (defined $availability_search_ref->{$view}{$mediatype});
 	}
+
+	# Array aus Promises fuer die Ergebnisse aller Recherchen	
+	my @all_searches = ();
 	
 	foreach my $target_ref (@{$availability_search_ref->{$view}{$type}}) {
-	    $self->stash('viewname',''); # Entfernen fuer dieses Target
-	    $self->stash('database',''); # Entfernen fuer dieses Target
-	    
 	    if ($target_ref->{type} eq "database"){
-		my $database = $target_ref->{name};
+		my $this_searchquery = $self->rewrite_searchterms({ database => $target_ref->{name}});
+		my $this_promise = $self->show_search_single_target_p({ database => $target_ref->{name}, searchquery => $this_searchquery, templatename => $config->{tt_availability_search_item_tname}});
+		push @all_searches, $this_promise;
 		
-		$self->stash('database',$database);
-		
-		$self->rewrite_searchterms();
-		
-		$logger->debug("Searching in DB $database");
-		
-		$self->search({database => $database});
-		
-		$logger->debug("Searching in DB $database done");
+		$logger->debug("Adding DB ".$target_ref->{name});
 	    }
 	    elsif ($target_ref->{type} eq "view"){
-		my $searchprofile_of_view = $config->get_searchprofile_of_view($target_ref->{name});
-		
-		$self->rewrite_searchterms();
-
-		my $searchquery = $self->stash('searchquery');
-		$searchquery->set_searchprofile($searchprofile_of_view);
-		$self->stash('searchquery',$searchquery);
-
-		$self->stash('viewname',$target_ref->{name});
-		
-		$self->search();
-	    }
-	    
-	    my $seq_content_searchresult = $self->print_resultitem({templatename => $config->{tt_availability_search_item_tname}});
-	    
-	    $logger->debug("Result: $seq_content_searchresult");
-	    $writer->write(encode_utf8($seq_content_searchresult));
+		my $this_searchquery = $self->rewrite_searchterms({ database => $target_ref->{name}});
+		my $this_promise = $self->show_search_single_target_p({ viewname => $target_ref->{name}, searchquery => $this_searchquery, templatename => $config->{tt_availability_search_item_tname}});
+		push @all_searches, $this_promise;
+		$logger->debug("Adding View ".$target_ref->{name});
+	    }	    
 	}
+	
+	return $promise->reject("No searchtarget") unless (@all_searches);
+	
+	my $searchresult = Mojo::Promise->all(@all_searches)->then(sub {
+	    my @searchresults = map { $_->[0] } @_;
+	    my $all_searchresults = join('',@searchresults);
+	    
+	    $logger->debug("Joined sequential results: $all_searchresults");
+	    return $all_searchresults;
+	    
+								   });
+	
+	if ($logger->is_debug){
+	    $logger->debug("Sequential result ref: ".ref($searchresult));	
+	    $logger->debug("Sequential result: $searchresult");
+	}
+	
+	return $promise->resolve($searchresult);
     }
     
-    return; #   $content_searchresult;
+    return $promise->reject("Search error");
 }
 
 sub search {
@@ -179,21 +243,26 @@ sub search {
     my $database           = exists $arg_ref->{database}
         ? $arg_ref->{database}            : undef;
 
+    my $viewname           = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}            : undef;
+
+    my $searchquery         = exists $arg_ref->{searchquery}
+        ? $arg_ref->{searchquery}         : $self->stash('searchquery');
+    
     my $authority          = exists $arg_ref->{authority}
         ? $arg_ref->{authority}           : undef;
 
-    my $query        = $self->query();
+    my $r            = $self->stash('r');
     my $view         = $self->stash('view');
     my $config       = $self->stash('config');
     my $queryoptions = $self->stash('qopts');
-    my $searchquery  = $self->stash('searchquery');
     my $session      = $self->stash('session');
 
     # Keine Suche durchfuehren, wenn Suchparameter ajax != 0
     # Dann wird die Suche ueber die Include-Repraesentation in den Templates
     # getriggert
     return if ($queryoptions->get_option('ajax'));
-	       
+
     my $atime=new Benchmark;
     my $timeall;
     
@@ -206,7 +275,7 @@ sub search {
     my $search_args_ref = {};
     $search_args_ref->{options}      = $self->query2hashref;
     $search_args_ref->{database}     = $database if (defined $database);
-    $search_args_ref->{view}         = $view if (defined $view);
+    $search_args_ref->{view}         = $viewname if (defined $viewname);
     $search_args_ref->{authority}    = $authority if (defined $authority);
     $search_args_ref->{searchquery}  = $searchquery if (defined $searchquery);
     $search_args_ref->{config}       = $config if (defined $config);
@@ -237,6 +306,9 @@ sub search {
         $timeall=timediff($btime,$atime);
         $logger->info("Total time for stage 2 is ".timestr($timeall));
     }
+
+    my $facets_ref = $searcher->get_facets;
+    $searchquery->set_results($facets_ref->{8}) unless (defined $database); # Verteilung nach Datenbanken
     
     my $btime   = new Benchmark;
     $timeall    = timediff($btime,$atime);
@@ -263,12 +335,16 @@ sub search {
 
     my $total_hits  = $self->stash('total_hits') || 0 ;
     my $resultcount = $searcher->get_resultcount || 0 ;
-    
-    $self->stash('searchtime',$resulttime);
-    $self->stash('recordlist',$recordlist);
-    $self->stash('hits',$searcher->get_resultcount);
-    $self->stash('total_hits',$total_hits + $resultcount);
 
+    return {
+	searchtime => $resulttime,
+	nav => $nav,
+	facets => $facets_ref,
+	recordlist => $recordlist,
+	hits => $resultcount,
+	total_hits => $total_hits + $resultcount,	    
+    };
+    
     return;
 }
 
@@ -289,20 +365,22 @@ sub get_end_templatename {
 }
 
 sub rewrite_searchterms {
-    my $self = shift;
+    my ($self,$arg_ref) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-        
+
+    my $database           = exists $arg_ref->{database}
+        ? $arg_ref->{database}            : undef;
+
+    my $viewname            = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}            : undef;
+    
     my $searchquery   = $self->stash('searchquery');
-    my $database      = $self->stash('database');
-    my $searchprofile = $self->stash('searchprofile');
     
     my $new_searchquery = new OpenBib::SearchQuery;
     
-    $new_searchquery->set_searchprofile($searchprofile);
-
-    if ($database eq "eds"){
+    if (defined $database && $database eq "eds"){
 	my @src = ();
 	if ($searchquery->get_searchfield('journal')){
 	    push @src, $searchquery->get_searchfield('journal')->{val};
@@ -352,13 +430,68 @@ sub rewrite_searchterms {
 	}
 	
 	if ($logger->is_debug){
-	    $logger->debug($new_searchquery->to_json);
+	    $logger->debug("Rewriting searchquery: ".$new_searchquery->to_json);
 	}
     }
     
-    $self->stash('searchquery',$new_searchquery);
+    return $new_searchquery;
+}
 
-    return;
+sub show_search_single_target_p {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $database           = exists $arg_ref->{database}
+        ? $arg_ref->{database}            : undef;
+
+    my $viewname            = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}            : undef;
+
+    my $searchquery         = exists $arg_ref->{searchquery}
+        ? $arg_ref->{searchquery}         : $self->stash('searchquery');
+    
+    my $authority          = exists $arg_ref->{authority}
+        ? $arg_ref->{authority}           : undef;
+    
+    my $templatename       = exists $arg_ref->{templatename}
+        ? $arg_ref->{templatename}           : undef;
+
+    my $type               = exists $arg_ref->{type}
+        ? $arg_ref->{type}                : 'joined';
+    
+    my $config = $self->stash('config');
+
+    my $promise = Mojo::Promise->new;
+
+    my $searchresult = "";
+    
+    eval {
+	my $result_ref = (defined $viewname)?$self->search({view => $viewname}):$self->search({database => $database, searchquery => $searchquery});
+
+	if ($logger->is_debug){
+	    $logger->debug("Searchresult result_ref: ".YAML::Dump($result_ref));
+	}
+	
+	unless ($templatename) {
+	    $templatename = ($type eq "sequential")?$config->{tt_search_title_item_tname}:$config->{tt_search_title_combined_tname} 
+	}
+	
+	$searchresult = $self->print_resultitem({templatename => $templatename, database => $database, result => $result_ref});
+
+    };
+
+    if ($@){
+	$logger->error("Searchresult error: $@");
+    
+	
+	return $promise->reject($@);
+    }
+
+    $logger->debug("Searchresult: $searchresult");
+        
+    return $promise->resolve($searchresult);
 }
 
 1;

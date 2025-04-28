@@ -170,7 +170,7 @@ sub show_search {
 # 	$logger->debug("Starting sequential search");
 
 # 	foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
-# 	    my $seq_searchresult = await &show_search_single_catalogue($self,{database => $database, type => 'sequential'});
+# 	    my $seq_searchresult = await &show_search_single_target($self,{database => $database, type => 'sequential'});
 	    	    
 # 	    $logger->debug("Result for db $database: $seq_searchresult XXX".YAML::Dump($seq_searchresult));
 # #	    $self->write_chunk($seq_searchresult) if ($seq_searchresult);
@@ -192,7 +192,7 @@ sub show_search {
 # 	$logger->debug("Getting search header done");
 	
 # 	$logger->debug("Getting search result");
-# 	my $joined_searchresult = $self->show_search_single_catalogue({ type => 'joined'});
+# 	my $joined_searchresult = $self->show_search_single_target({ type => 'joined'});
 # 	$self->write_chunk($joined_searchresult);
 # 	$logger->debug("Getting search result done");
 	
@@ -388,7 +388,7 @@ sub show_search_header_p {
     return $promise->resolve($content_header);
 }
 
-sub show_search_single_catalogue_p {
+sub show_search_single_target_p {
     my ($self,$arg_ref) = @_;
 
     # Log4perl logger erzeugen
@@ -397,8 +397,17 @@ sub show_search_single_catalogue_p {
     my $database           = exists $arg_ref->{database}
         ? $arg_ref->{database}            : undef;
 
+    my $viewname            = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}            : undef;
+
+    my $searchquery         = exists $arg_ref->{searchquery}
+        ? $arg_ref->{searchquery}         : $self->stash('searchquery');
+    
     my $authority          = exists $arg_ref->{authority}
         ? $arg_ref->{authority}           : undef;
+    
+    my $templatename       = exists $arg_ref->{templatename}
+        ? $arg_ref->{templatename}           : undef;
 
     my $type               = exists $arg_ref->{type}
         ? $arg_ref->{type}                : 'joined';
@@ -410,9 +419,9 @@ sub show_search_single_catalogue_p {
     my $searchresult = "";
     
     eval {
-	my $result_ref = $self->search({database => $database});
-	
-	my $templatename = ($type eq "sequential")?$config->{tt_search_title_item_tname}:$config->{tt_search_title_combined_tname};
+	my $result_ref = (defined $viewname)?$self->search({view => $viewname}):$self->search({database => $database, searchquery => $searchquery});
+
+	$templatename = ($type eq "sequential")?$config->{tt_search_title_item_tname}:$config->{tt_search_title_combined_tname} unless ($templatename);
 	
 	$searchresult = $self->print_resultitem({templatename => $templatename, database => $database, result => $result_ref});
 
@@ -973,7 +982,7 @@ sub joined_search_p {
     
     $logger->debug("Starting joined search");
 
-    return $self->show_search_single_catalogue_p({ type => 'joined'});
+    return $self->show_search_single_target_p({ type => 'joined'});
 
 #     r
 #     $joined_searchresult->then(sub {
@@ -1026,7 +1035,7 @@ sub sequential_search_p {
     my $promise = Mojo::Promise->new;
 
     # Array aus Promises fuer die Ergebnisse aller Recherchen
-    my @all_searches = map { $self->show_search_single_catalogue_p({database => $_, type => 'sequential'}) } $config->get_databases_of_searchprofile($searchquery->get_searchprofile);
+    my @all_searches = map { $self->show_search_single_target_p({database => $_, type => 'sequential'}) } $config->get_databases_of_searchprofile($searchquery->get_searchprofile);
 
     my $searchresult = Mojo::Promise->all(@all_searches)->then(sub {
 	my @searchresults = map { $_->[0] } @_;

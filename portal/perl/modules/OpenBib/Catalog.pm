@@ -39,6 +39,8 @@ use Log::Log4perl qw(get_logger :levels);
 use MLDBM qw(DB_File Storable);
 use Storable ();
 
+use Mojo::Promise;
+
 use OpenBib::Config;
 use OpenBib::Config::File;
 use OpenBib::Schema::DBI;
@@ -241,24 +243,26 @@ sub have_field_content {
     return $have_field;
 }
 
-sub load_full_title_record {
+sub load_full_title_record_p {
     my ($self,$arg_ref) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $promise = Mojo::Promise->new;
+    
     my $record = $self->get_api->get_titles_record($arg_ref);
     
-    return $record;
+    return $promise->resolve($record);
 }
 
-sub load_brief_title_record {
+sub load_brief_title_record_p {
     my ($self,$arg_ref) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return $self->load_full_title_record($arg_ref);
+    return $self->load_full_title_record_p($arg_ref);
 }
 
 sub get_classifications {

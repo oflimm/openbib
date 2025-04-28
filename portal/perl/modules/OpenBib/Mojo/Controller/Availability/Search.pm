@@ -104,57 +104,8 @@ sub show_search {
     }
     
     $logger->debug("Verfuegbarkeitsrecherche exisitiert fuer diesen View");
-    
-    $logger->debug("Content-Type $content_type");
-    
-    my $searchquery = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session, config => $config});
 
-    $self->stash('searchquery',$searchquery);
-
-    # No Searchterms? Warning!
-
-    unless ($searchquery->have_searchterms){
-	return $self->print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."));
-    }
-
-    # Start der Ausgabe mit korrektem Header
-    $self->res->code(200);
-    $self->res->headers->content_type($content_type);
-    
-    $self->render_later;
-
-    $logger->debug("Getting search header");
-    my $header_p = $self->show_search_header_p();
-    $logger->debug("Getting search header done");
-
-    $logger->debug("Getting search result");
-    my $searchresult_p = $self->show_search_result_p();
-    $logger->debug("Getting search result done");
-    
-    $logger->debug("Getting search footer");
-    my $footer_p = $self->show_search_footer_p();
-    $logger->debug("Getting search footer done");
-
-    $header_p->then(sub {
-	my $content_header = shift;
-	$self->write_chunk(encode_utf8($content_header)) if ($content_header);
-
-	return $searchresult_p;
-		    })->then(sub {
-			my $content_searchresult = shift;
-			$self->write_chunk(encode_utf8($content_searchresult));
-
-			return $footer_p;
-			})->then(sub {
-			my $content_footer = shift;
-			
-			$self->write_chunk(encode_utf8($content_footer)) if ($content_footer);
-			$self->finish;
-			     }); #->catch(sub {
-			#	 my $error = shift;
-			#	 $logger->error($error);
-			#	 $self->print_warning($error);
-			#	       });	    
+    $self->SUPER::show_search;
 }
 
 sub show_search_result_p {

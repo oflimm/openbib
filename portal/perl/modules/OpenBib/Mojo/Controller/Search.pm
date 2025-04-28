@@ -377,7 +377,8 @@ sub show_search_header_p {
     $starttemplate->process($starttemplatename, $startttdata) || do {
         $logger->error($starttemplate->error());
         $self->res->code(400); # Server error
-        return;
+        return $promise->reject("Templating error for template $starttemplatename");
+
     };
 
 #    $self->render_later(text => encode_utf8($content_header) );
@@ -413,13 +414,19 @@ sub show_search_single_catalogue_p {
 	
 	my $templatename = ($type eq "sequential")?$config->{tt_search_title_item_tname}:$config->{tt_search_title_combined_tname};
 	
-	$searchresult = $self->print_resultitem({templatename => $templatename, result => $result_ref});
+	$searchresult = $self->print_resultitem({templatename => $templatename, database => $database, result => $result_ref});
+
     };
 
     if ($@){
+	$logger->error("Searchresult error: $@");
+    
+	
 	return $promise->reject($@);
     }
 
+    $logger->debug("Searchresult: $searchresult");
+        
     return $promise->resolve($searchresult);
 }
 
@@ -530,7 +537,7 @@ sub show_search_footer_p {
     $endtemplate->process($endtemplatename, $endttdata) || do {
         $logger->error($endtemplate->error());
         $self->res->code(400); # server error
-        return;
+        return $promise->reject("Templating error for template $endtemplatename");;
     };
 
     $logger->debug("Template processed");
@@ -1016,9 +1023,26 @@ sub sequential_search_p {
 
     $logger->debug("Starting sequential search");
 
+    my $promise = Mojo::Promise->new;
+
+    # Array aus Promises fuer die Ergebnisse aller Recherchen
     my @all_searches = map { $self->show_search_single_catalogue_p({database => $_, type => 'sequential'}) } $config->get_databases_of_searchprofile($searchquery->get_searchprofile);
 
-    return @all_searches;
+    my $searchresult = Mojo::Promise->all(@all_searches)->then(sub {
+	my @searchresults = map { $_->[0] } @_;
+	my $all_searchresults = join('',@searchresults);
+
+	$logger->debug("Joined sequential results: $all_searchresults");
+	return $all_searchresults;
+	
+					    });
+
+    if ($logger->is_debug){
+	$logger->debug("Sequential result ref: ".ref($searchresult));	
+	$logger->debug("Sequential result: $searchresult");
+    }
+    
+    $promise->resolve($searchresult);
 }
 
 sub search {

@@ -58,8 +58,7 @@ sub show {
     my $logger = get_logger();
 
     # Shared Args
-    my $query        = $self->query();
-    my $r            = $self->stash('r');
+    my $query        = $self->stash('r');
     my $config       = $self->stash('config');
     my $session      = $self->stash('session');
     my $user         = $self->stash('user');
@@ -120,10 +119,10 @@ sub show {
     foreach my $field (keys %$openbib_searchargs_ref){
 	my @this_searchargs = @{$openbib_searchargs_ref->{$field}}; 
 	if ($#this_searchargs == 0 ){
-	    $searchargs.=";".$searchfield_ref->{$field}{prefix}."=".$this_searchargs[0];
+	    $searchargs.="&".$searchfield_ref->{$field}{prefix}."=".$this_searchargs[0];
 	}
 	else {
-	    $searchargs.=";".$searchfield_ref->{$field}{prefix}."=".join(' ',@this_searchargs);
+	    $searchargs.="&".$searchfield_ref->{$field}{prefix}."=".join(' ',@this_searchargs);
 	}
     }
 

@@ -38,7 +38,7 @@ use Benchmark;
 use DBI;
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
-use LWP::UserAgent;
+use Mojo::UserAgent;
 use Template;
 use XML::LibXML;
 use YAML::Syck;
@@ -73,7 +73,7 @@ sub process_vlb {
     my $path_prefix    = $self->stash('path_prefix');
 
     my $client_ip="";
-    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
+    if ($r->headers->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
         $client_ip=$1;
     }
 
@@ -110,8 +110,7 @@ sub process_vlb {
     # Kein Cover bei 'problematischen' ISBNs
     if (defined $isbn_is_invalid_ref->{$isbn->{isbn10}} || defined $isbn_is_invalid_ref->{$isbn->{isbn13}}){
 	$logger->debug("Kein Cover zur ISBN $id");
-	$self->redirect($redirect_url);
-	return;
+	return $self->redirect($redirect_url);
     }
     
     my $api_config_ref = $config->{'covers'}{'vlb'};
@@ -121,34 +120,43 @@ sub process_vlb {
     }
     
     if ($isbn->{isbn13}){
-        my $ua       = LWP::UserAgent->new();
+        my $ua       = Mojo::UserAgent->new();
 
-        $ua->agent($api_config_ref->{'agent_id'});
-        $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
+	$ua->transactor->name($api_config_ref->{'agent_id'});
+	$ua->connect_timeout(10);
+	$ua->max_redirects(2);
+
+	my $headers_ref = {};
+        $headers_ref->{'X-Forwarded-For'} = $client_ip if ($client_ip);
 
         my $url      = $api_config_ref->{'api_url'}."/".$isbn->{isbn13}."/$size?access_token=".$api_config_ref->{'api_token'};
 
 	$logger->info("Trying to get cover from $url");
 
-        my $request  = HTTP::Request->new('GET', $url);
-        my $response = $ua->request($request);
+	my $response_p = $ua->get_p($url => $headers_ref);
 
-        if ( $response->is_error() ) {
-            $logger->info("ISBN $isbn->{isbn13} NOT found in VLB");
-            $logger->debug("Error-Code:".$response->code());
-            $logger->debug("Fehlermeldung:".$response->message());
+	$response_p->then( sub {
+	    my $response = shift;
+	    
+	    if ( $response->is_error() ) {
+		$logger->info("ISBN $isbn->{isbn13} NOT found in VLB");
+		$logger->debug("Error-Code:".$response->code());
+		$logger->debug("Fehlermeldung:".$response->message());
+		$self->redirect($redirect_url);
+	    }
+	    else {
+		$logger->info("ISBN $isbn->{isbn13} found in VLB");
+		$self->res->headers->content_type('image/jpeg');
+		$self->render( data => $response->content());
+	    }
+			   
 	    $self->redirect($redirect_url);
-        }
-        else {
-	    $logger->info("ISBN $isbn->{isbn13} found in VLB");
-	    $self->res->headers->content_type('image/jpeg');
-	    $self->render( data => $response->content());
-        }
+			   })->catch(sub {
+			       return $self->redirect($redirect_url);
+				     })->wait;
     }
 
-    $self->redirect($redirect_url);
-
-    return;
+    return $self->redirect($redirect_url);
 }
 
 sub id2isbnX {

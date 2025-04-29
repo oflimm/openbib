@@ -104,7 +104,7 @@ sub new {
 
     if ($r){
         $self->{r} = $r;
-        $self->set_from_psgi_request;
+        $self->set_from_request;
     }
 
     $logger->debug("Object created");
@@ -118,7 +118,7 @@ sub get_config {
     return $self->{_config};
 }
 
-sub set_from_psgi_request {
+sub set_from_request {
     my ($self)=@_;
     
     # Log4perl logger erzeugen
@@ -1365,7 +1365,7 @@ neben der eingegebenen Form vol auch die Normierung norm, der
 zugehörige Bool'sche Verknüpfungsparameter bool sowie die ausgewählten
 Datenbanken speichern.
 
-=item set_from_psgi_request($r,$searchprofile)
+=item set_from_request($r,$searchprofile)
 
 Setzen der Suchbegriffe direkt aus dem PSGI-Request samt übergebener
 Suchoptionen und zusätzlicher Normierung der Suchbegriffe.

@@ -183,12 +183,12 @@ sub show_record {
     my $logger = get_logger();
 
     # Dispatched Args
-    my $r              = $self->param('r');
     my $view           = $self->param('view');
     my $cloudid        = $self->strip_suffix($self->param('cloudid'));
     my $database       = $self->param('database');
     
     # Shared Args
+    my $r              = $self->stash('r');
     my $config         = $self->stash('config');
     my $session        = $self->stash('session');
     my $user           = $self->stash('user');

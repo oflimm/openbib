@@ -47,6 +47,7 @@ use XML::LibXML;
 use JSON::XS;
 use URI::Escape;
 use YAML ();
+use Mojo::Base -strict, -signatures;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;

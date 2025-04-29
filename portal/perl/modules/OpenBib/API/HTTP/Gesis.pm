@@ -44,6 +44,7 @@ use JSON::XS;
 use URI::Escape;
 use WWW::Curl::Easy;
 use YAML ();
+use Mojo::Base -strict, -signatures;
 
 use OpenBib::Config;
 use OpenBib::SearchQuery;

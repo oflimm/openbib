@@ -42,6 +42,7 @@ use XML::LibXML;
 use JSON::XS;
 use URI::Escape;
 use YAML ();
+use Mojo::Base -strict, -signatures;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -240,7 +241,7 @@ sub get_titles_record {
 	$logger->debug("Response: ".$response->body);
     }
     
-    $xmlresponse = decode('latin1',$xmlresponse);
+    $xmlresponse = decode('utf8',$xmlresponse);
     $xmlresponse =~s/^.*?<\?xml/<\?xml/ms;
     
     my $parser = XML::LibXML->new();
@@ -492,7 +493,7 @@ sub get_classifications {
 	$logger->debug("Response: ".$response->body);
     }
     
-    $xmlresponse = decode('latin1',$xmlresponse);
+    $xmlresponse = decode('utf8',$xmlresponse);
     $xmlresponse =~s/^.*?<\?xml/<\?xml/ms;
     
     my $parser = XML::LibXML->new();
@@ -788,7 +789,7 @@ sub get_popular_records {
 	$logger->debug("Response: ".$response->body);
     }
     
-    $xmlresponse = decode('latin1',$xmlresponse);
+    $xmlresponse = decode('utf8',$xmlresponse);
     $xmlresponse =~s/^.*?<\?xml/<\?xml/ms;
     
     my $parser = XML::LibXML->new();

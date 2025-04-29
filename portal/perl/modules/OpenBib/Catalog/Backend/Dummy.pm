@@ -82,7 +82,7 @@ sub new {
     return $self;
 }
 
-sub load_full_title_record {
+sub load_full_title_record_p {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -92,6 +92,8 @@ sub load_full_title_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $promise = Mojo::Promise->new;
+    
     # Retrieve information
 
     # ...
@@ -103,10 +105,10 @@ sub load_full_title_record {
 
     # ...
     
-    return $record;
+    return $promise->resolve($record);
 }
 
-sub load_brief_title_record {
+sub load_brief_title_record_p {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -116,7 +118,7 @@ sub load_brief_title_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
+    
     return $self->load_full_title_record($arg_ref);
 }
 

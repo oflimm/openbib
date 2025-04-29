@@ -41,6 +41,7 @@ use Storable;
 use URI::Escape;
 use XML::LibXML;
 use YAML ();
+use Mojo::Base -strict, -signatures;
 
 use OpenBib::API::HTTP::EZB;
 use OpenBib::Common::Util;

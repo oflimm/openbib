@@ -660,12 +660,10 @@ sub load_full_title_record_p {
         $logger->debug(YAML::Dump($title_record->get_fields));
     }
 
-    $promise->resolve($title_record);
-    
-    return $promise; 
+    return $promise->resolve($title_record);    
 }
 
-sub load_brief_title_record {
+sub load_brief_title_record_p {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -678,6 +676,8 @@ sub load_brief_title_record {
 
     my $config = OpenBib::Config::File->instance;
 
+    my $promise = Mojo::Promise->new;
+    
     my $title_record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
     
     eval {
@@ -717,10 +717,10 @@ sub load_brief_title_record {
     };
 
     if ($@){
-        $logger->fatal($@);
+        $logger->fatal($@);	
     }
     
-    return $title_record;
+    return $promise->resolve($title_record);
 }
 
 sub load_conv_config {

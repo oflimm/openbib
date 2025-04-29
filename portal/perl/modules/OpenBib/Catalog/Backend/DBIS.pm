@@ -40,6 +40,7 @@ use Log::Log4perl qw(get_logger :levels);
 use Storable;
 use XML::LibXML;
 use YAML ();
+use Mojo::Base -strict, -signatures;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;

@@ -41,11 +41,14 @@ use Log::Log4perl qw(get_logger :levels);
 use Storable;
 use JSON::XS;
 use YAML ();
+use Mojo::Base -strict, -signatures;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::API::HTTP::LobidGND;
 use OpenBib::Record::Title;
+
+use Mojo::Promise;
 
 use base qw(OpenBib::Catalog);
 
@@ -77,7 +80,7 @@ sub new {
     return $self;
 }
 
-sub load_full_title_record {
+sub load_full_title_record_p {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -90,11 +93,13 @@ sub load_full_title_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $promise = Mojo::Promise->new;
+    
     $id = OpenBib::Common::Util::decode_id($id);
 
     my $record = $self->get_api->get_titles_record({ database => $database, id => $id});
 
-    return $record;
+    return $promise->resolve($record);
 }
 
 1;

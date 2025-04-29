@@ -45,6 +45,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Record::Title;
 use OpenBib::API::HTTP::DBISJSON;
+use Mojo::Base -strict, -signatures;
 
 use base qw(OpenBib::Catalog);
 

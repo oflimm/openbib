@@ -200,7 +200,6 @@ sub load_full_record {
 		    })->wait;
 }
 
-
 sub load_full_record_p {
     my ($self,$arg_ref) = @_;
 
@@ -316,6 +315,18 @@ sub load_full_record_p {
     return $promise->resolve($self); 
 }
 
+sub load_brief_record {
+    my ($self, $arg_ref) = @_;
+
+    my $record_p = $self->load_brief_record_p($arg_ref);
+
+    $record_p->then(sub {
+	my $record = shift;
+	
+	return $record;
+		    })->wait;
+}
+
 sub load_brief_record_p {
     my ($self,$arg_ref) = @_;
 
@@ -332,7 +343,7 @@ sub load_brief_record_p {
     my $promise = Mojo::Promise->new;
     
     # (Re-)Initialisierung
-    delete $self->{_fields}       if (exists $self->{_fields});
+    delete $self->{_fields}         if (exists $self->{_fields});
     delete $self->{_holding}        if (exists $self->{_holding});
     delete $self->{_circulation}    if (exists $self->{_circulation});
 

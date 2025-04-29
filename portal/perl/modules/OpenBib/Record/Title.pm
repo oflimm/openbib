@@ -1386,19 +1386,6 @@ sub enrich_same_records_p {
 }
 
 sub load_circulation {
-    my ($self, $arg_ref) = @_;
-
-    my $circulation_record_p = $self->load_circulation_p($arg_ref);
-
-    $circulation_record_p->then(sub {
-	my $record = shift;
-
-	    return $record;
-			     })->wait;
-}
-
-
-sub load_circulation_p {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -1411,10 +1398,8 @@ sub load_circulation_p {
 
     my $config        = $self->get_config;
 
-    my $promise       = Mojo::Promise->new;
-    
-    my ($atime,$btime,$timeall)=(0,0,0);
-
+    my ($atime,$btime,$timeall);
+        
     if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
@@ -1437,7 +1422,7 @@ sub load_circulation_p {
 	    
             $self->set_circulation($circulation_ref);
 
-            return $promise->resolve($self);
+            return $self;
         }
     }
 
@@ -1470,7 +1455,7 @@ sub load_circulation_p {
 	if (defined $mediastatus_ref->{error}){
 	    $self->set_circulation_error($mediastatus_ref);
 	    $self->set_circulation($circulation_ref);
-	    return $promise->resolve($self);
+	    return $self;
 	}
 	
 	if (defined $mediastatus_ref->{items} && @{$mediastatus_ref->{items}}){
@@ -1546,8 +1531,172 @@ sub load_circulation_p {
         $logger->info("Total time for is ".timestr($timeall));
     }
 
-    return $promise->resolve($self);
+    return $self;
 }
+
+# sub load_circulation {
+#     my ($self, $arg_ref) = @_;
+
+#     my $circulation_record_p = $self->load_circulation_p($arg_ref);
+
+#     $circulation_record_p->then(sub {
+# 	my $record = shift;
+
+# 	    return $record;
+# 			     })->wait;
+# }
+
+
+# sub load_circulation_p {
+#     my ($self,$arg_ref) = @_;
+
+#     # Set defaults
+#     my $id                = exists $arg_ref->{id}
+#         ? $arg_ref->{id}                :
+#             (exists $self->{id})?$self->{id}:undef;
+
+#     # Log4perl logger erzeugen
+#     my $logger = get_logger();
+
+#     my $config        = $self->get_config;
+
+#     my $promise       = Mojo::Promise->new;
+    
+#     my ($atime,$btime,$timeall)=(0,0,0);
+
+#     if ($config->{benchmark}) {
+#         $atime=new Benchmark;
+#     }
+
+#     my $memc_key = "record:title:circulation:$self->{database}:$self->{id}";
+    
+#     if ($config->{memc} && length ($memc_key) < 250 ){
+#         my $circulation_ref = $config->{memc}->get($memc_key);
+                
+#         if ($config->{benchmark}) {
+#             $btime=new Benchmark;
+#             $timeall=timediff($btime,$atime);
+#             $logger->info("Total time for is ".timestr($timeall));
+#         }
+
+#         if ($circulation_ref){
+# 	    if ($logger->is_debug){
+# 		$logger->debug("Got circulation for key $memc_key from memcached: ".YAML::Dump($circulation_ref));
+# 	    }
+	    
+#             $self->set_circulation($circulation_ref);
+
+#             return $promise->resolve($self);
+#         }
+#     }
+
+#     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+#     if ($logger->is_debug){
+#         $logger->debug(YAML::Dump($circinfotable->{circinfo}));
+#     }
+    
+#     # Ausleihinformationen der Exemplare
+
+#     my $circulation_ref = [];
+
+
+#     # Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
+#     # in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
+#     # titelbasierten Exemplardaten
+    
+#     # Anreichern mit Bibliotheksinformationen
+#     if ($circinfotable->has_circinfo($self->{database}) && defined $circinfotable->get($self->{database})->{circ}) {
+	
+# 	my $ils = OpenBib::ILS::Factory->create_ils({ database => $self->{database} });
+	
+# 	my $mediastatus_ref = $ils->get_mediastatus($self->{id});
+
+# 	if ($logger->is_debug){
+# 	    $logger->debug("Result: ".YAML::Dump($mediastatus_ref));
+# 	}
+
+# 	if (defined $mediastatus_ref->{error}){
+# 	    $self->set_circulation_error($mediastatus_ref);
+# 	    $self->set_circulation($circulation_ref);
+# 	    return $promise->resolve($self);
+# 	}
+	
+# 	if (defined $mediastatus_ref->{items} && @{$mediastatus_ref->{items}}){
+#             for (my $i=0; $i < scalar(@{$mediastatus_ref->{items}}); $i++) {
+# 		my $department     = $mediastatus_ref->{items}[$i]{department}{content};
+# 		my $department_id  = $mediastatus_ref->{items}[$i]{department}{id};
+# #		my $department_url = $mediastatus_ref->{items}[$i]{department}{href};
+
+# 		my $storage            = $mediastatus_ref->{items}[$i]{storage}{content};
+
+# 		my $storage_id         = $mediastatus_ref->{items}[$i]{storage}{id};
+		
+# 		my $barcode            = $mediastatus_ref->{items}[$i]{barcode};
+		
+# 		my $boundcollection    = $mediastatus_ref->{items}[$i]{boundcollection};
+# 		my $remark             = $mediastatus_ref->{items}[$i]{remark}; # z.B. Exemplarfussnote wie "Sachgruppe 22"
+
+# 		my $availability_ref   = $mediastatus_ref->{items}[$i]{available};
+# 		my $unavailability_ref = $mediastatus_ref->{items}[$i]{unavailable};
+
+# 		# Valid values: lent|missing|loan|order|presence
+# 		my $availability     = $self->get_availability($availability_ref,$unavailability_ref);
+
+# 		# unknown should not be returned, so have to log response
+# 		if ($availability eq "unknown"){
+
+# 		    if ($logger->is_error){
+# 			$logger->error("Ausleihstatus konnte nicht bestimmt werden. Daten: ".YAML::Dump($mediastatus_ref->{items}[$i]{debug}));
+# 		    }
+# 		}
+		
+# 		my $location_mark    = $mediastatus_ref->{items}[$i]{label};
+# 		my $holdingid         = $mediastatus_ref->{items}[$i]{id};
+
+# 		my $this_item_ref = {
+# 		    # Legacy
+# 		    Zweigstelle    => $department_id,
+# 		    Signatur       => $location_mark,
+# 		    Standort       => $department." / ".$storage,
+
+# 		    # ILS analog DAIA
+# 		    department     => $department,
+# 		    department_id  => $department_id,
+# #		    department_url => $department_url,
+# 		    location_mark  => $location_mark,
+# 		    storage        => $storage,
+# 		    storage_id     => $storage_id,
+# 		    availability   => $availability,
+# 		    availability_info   => $availability_ref,
+# 		    unavailability_info => $unavailability_ref,
+# 		    holdingid           => $holdingid,
+# 		    boundcollection     => $boundcollection,
+# 		    remark              => $remark,
+# 		    barcode             => $barcode,
+# 		};
+
+# 		push @$circulation_ref, $this_item_ref;
+#             }
+# 	}
+#     }
+
+#     if ($config->{memc}){
+#         $logger->debug("Fetch circulation from db and store in memcached");
+#         $config->{memc}->set($memc_key,$circulation_ref,$config->{memcached_expiration}{'record:title:circulation'});
+#     }
+    
+
+#     $self->set_circulation($circulation_ref);
+
+#     if ($config->{benchmark}) {
+#         $btime=new Benchmark;
+#         $timeall=timediff($btime,$atime);
+#         $logger->info("Total time for is ".timestr($timeall));
+#     }
+
+#     return $promise->resolve($self);
+# }
 
 sub load_olwsviewer {
     my ($self,$arg_ref) = @_;

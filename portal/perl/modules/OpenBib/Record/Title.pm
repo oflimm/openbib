@@ -140,6 +140,11 @@ sub new {
     my $dbinfotable        = OpenBib::Config::DatabaseInfoTable->new;
 
     $self->{dbinfo}        = $dbinfotable->{dbinfo};
+
+    $self->{_fields}      = {};
+    $self->{_holdings}    = [];
+    $self->{_circulation} = [];
+    $self->{_locations}   = [];
     
     if (defined $database){
         $self->{database} = $database;
@@ -194,10 +199,10 @@ sub load_full_record {
     my $record_p = $self->load_full_record_p($arg_ref);
 
     $record_p->then(sub {
-	my $record = shift;
-	
-	return $record;
-		    })->wait;
+	$self = shift;
+		    });
+
+    return $self;
 }
 
 sub load_full_record_p {
@@ -1399,6 +1404,27 @@ sub load_circulation {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $circulation_record_p = $self->load_circulation_p($arg_ref);
+
+    my $record;
+    
+    $circulation_record_p->then(sub {
+	my $circulation_ref = shift;
+
+	if ($logger->is_debug){
+	    $logger->debug("circulation_ref ".YAML::Dump($circulation_ref));
+	}
+	
+	$self->set_circulation($circulation_ref);
+	
+				})->catch(sub {
+				    my $error_ref = shift;
+
+				    $logger->error(YAML::Dump($error_ref));
+						   
+				    $self->set_circulation([]);
+					  });
+
     return $self;
 }
 
@@ -1473,7 +1499,7 @@ sub load_circulation_p {
 	if (defined $mediastatus_ref->{error}){
 	    #		$self->set_circulation_error($mediastatus_ref);
 	    #		$self->set_circulation($circulation_ref);
-	    return  Mojo::Promise->resolve($mediastatus_ref);
+	    return  Mojo::Promise->reject($mediastatus_ref);
 	}
 	
 	if (defined $mediastatus_ref->{items} && @{$mediastatus_ref->{items}}){

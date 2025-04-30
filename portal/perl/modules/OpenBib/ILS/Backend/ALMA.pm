@@ -2699,6 +2699,149 @@ sub update_sis {
     return $response_ref;
 }
 
+sub send_alma_api_call {
+    my ($self,$arg_ref) = @_;
+
+    # Returns either 'response' for immediate response or 'data' for further processing
+    
+    # Set defaults
+    my $url        = exists $arg_ref->{url}
+        ? $arg_ref->{url}                     : undef;
+
+    my $method     = exists $arg_ref->{method}
+        ? $arg_ref->{method}                  : undef;
+    
+    my $post_data_ref  = exists $arg_ref->{post_data}
+        ? $arg_ref->{post_data}               : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config      = $self->get_config;
+    my $database    = $self->get_database;
+    my $ua          = $self->get_client;
+    my $circ_config = $self->get_circulation_config;
+    my $msg         = $self->get_msg;
+    my $lang        = $self->get('lang');
+
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+
+    my $api_result_ref = {};
+
+    my $http_status_code;
+    
+    if ($circinfotable->has_circinfo($database) && defined $circinfotable->get($database)->{circ}) {
+	
+	if ($logger->is_debug()){
+	    $logger->debug("Request URL: $url");
+	    $logger->debug("Request POST body data: ".YAML::Dump($post_data_ref));
+
+	}
+
+	my $atime=new Benchmark;
+
+	my $header_ref = {'Accept' => 'application/json', 'Content-Type' => 'application/json'};
+
+	my $response;
+	
+	if ($method eq "POST" && defined $post_data_ref){
+	    my $body = "";
+	    
+	    eval {
+		$body = encode_json($post_data_ref); 
+	    };
+	    
+	    if ($@){
+		$logger->error('Encoding error: '.$@);
+		return $api_result_ref;
+	    }
+
+	    $response = $ua->post($url => $header_ref, $body)->result;
+	}
+	elsif ($method eq "DELETE") {
+	    $response = $ua->delete($url => $header_ref)->result;	    
+	}
+	else {
+	    $response = $ua->get($url => $header_ref)->result;	    
+	}
+	
+	$api_result_ref->{'http_status_code'}    = $response->code();
+	$api_result_ref->{'http_status_message'} = $response->message();	
+
+	my $btime      = new Benchmark;
+	my $timeall    = timediff($btime,$atime);
+	my $resulttime = timestr($timeall,"nop");
+	$resulttime    =~s/(\d+\.\d+) .*/$1/;
+	$resulttime = $resulttime * 1000.0; # to ms
+
+	if ($resulttime > $config->get('alma')->{'api_logging_threshold'}){
+	    $url =~s/\?.+$//; # Don't log args
+	    $logger->error("Alma API call $url took $resulttime ms");
+	}
+
+	if ($logger->is_debug){
+	    $logger->debug("Response Headers: ".$response->headers->to_string);
+	    $logger->debug("Response: ".$response->body);
+	    $logger->debug("Status Code: ".$api_result_ref->{'http_status_code'});
+	}
+
+	# $api_result_ref->{'http_status_code'} = 429; # Testfall concurrent AP request limit reached see: https://developers.exlibrisgroup.com/alma/apis/
+	
+	# Concurrent API-Limit reached
+	if ($api_result_ref->{'http_status_code'} == 429){
+	    $logger->fatal("Alma concurrent API request limit reached");
+	    
+	    $api_result_ref->{'response'} = {
+		"code" => $api_result_ref->{'http_status_code'},
+		    "error" => "error",
+		    "error_description" => $msg->maketext("Ihre Anfrage konnte nicht bearbeitet werden, da das Cloud-Bibliothekssystem Alma derzeit überlastet ist und keine Anfragen mehr annimmt. Bitte versuchen Sie es später noch einmal."),
+	    };
+	    
+	    return $api_result_ref;
+	}
+
+	# Timeout reached
+	if ($api_result_ref->{'http_status_code'} == 500 && $api_result_ref->{'http_status_message'} eq "read timeout"){
+	    $logger->fatal("Timeout reached");
+	    
+	    $api_result_ref->{'response'} = {
+		"code" => $api_result_ref->{'http_status_code'},
+		    "error" => "error",
+		    "error_description" => $msg->maketext("Ihre Anfrage konnte nicht bearbeitet werden, da das Cloud-Bibliothekssystem Alma derzeit zu langsam antwortet und der Timeout erreicht wurde."),
+	    };
+	    
+	    return $api_result_ref;
+	}
+	
+	if (!$response->is_success && $response->code != 400) {
+	    $logger->info($response->code . ' - ' . $response->message);
+	    return $api_result_ref;
+	}	    
+	
+	eval {
+	    $api_result_ref->{'data'} = decode_json $response->body;
+	};
+	
+	if ($@){
+	    $logger->error('Decoding error: '.$@);
+	}
+    }
+    
+    # Allgemeine Fehler
+    if (defined $api_result_ref->{'data'}{'errorsExist'} && $api_result_ref->{'data'}{'errorsExist'} eq "true" ){
+	$api_result_ref->{'response'} = {
+	    "code" => 400,
+		"error" => "error",
+		"error_description" => $api_result_ref->{'data'}{'errorList'}{'error'}[0]{'errorMessage'},
+		"error_code" => $api_result_ref->{'data'}{'errorList'}{'error'}[0]{'errorCode'},
+	};
+	
+	return $api_result_ref;
+    }
+
+    return $api_result_ref;
+}
+
 sub send_alma_api_call_p {
     my ($self,$arg_ref) = @_;
 

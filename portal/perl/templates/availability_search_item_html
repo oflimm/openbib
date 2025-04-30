@@ -11,6 +11,7 @@
 #
 #######################################################################
 -%]
+[% IF hits > 0 %]
 [%- PROCESS common/subtemplate name="local_config" -%] 
 <!-- begin: result item -->
 [%-
@@ -50,3 +51,4 @@
 </div><!-- /.ob-resultlist -->
 <p/>
 <!-- end: result item -->
+[% END %]

@@ -2220,7 +2220,7 @@ sub renew_single_loan {
 # Mediastatus
 ######################################################################
 
-sub get_mediastatus {
+sub get_mediastatus_p {
     my ($self,$titleid) = @_;
     
     # Log4perl logger erzeugen
@@ -2238,7 +2238,7 @@ sub get_mediastatus {
 	    error       => "missing parameters",	    
 	};
 	
-	return $response_ref;
+	return Mojo::Promise->resolve($response_ref);
     }
     
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
@@ -2280,7 +2280,7 @@ sub get_mediastatus {
 			error_description => $result->faultstring,
 		    };
 		    
-		    return $response_ref;		    
+		    return Mojo::Promise->resolve($response_ref);  
 		}
 	    };
 	    
@@ -2292,7 +2292,7 @@ sub get_mediastatus {
 		    error_description => "Problem bei der Verbindung zum Ausleihsystem",
 		};
 		
-		return $response_ref;		
+		return Mojo::Promise->resolve($response_ref);		
 	    }
 	    
 	}
@@ -2313,7 +2313,7 @@ sub get_mediastatus {
 		$response_ref->{debug} = $circexlist;
 	    }
 	    
-	    return $response_ref	
+	    return Mojo::Promise->resolve($response_ref);	
 	}
 	
 	# Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
@@ -2532,7 +2532,7 @@ sub get_mediastatus {
 	$logger->debug("Circ: ".YAML::Dump($response_ref));
     }
     
-    return $response_ref;
+    return Mojo::Promise->resolve($response_ref);
 }
 
 ######################################################################

@@ -54,7 +54,7 @@ while (<>){
 
     # Signaturen merken
     if (defined $title_ref->{fields}{'4309'}){
-	foreach my $item_ref (@{$title_ref->{fields}{'4307'}}){
+	foreach my $item_ref (@{$title_ref->{fields}{'4309'}}){
 	    my $content  = $item_ref->{'content'};
 	    my $subfield = $item_ref->{'subfield'};
 	    my $mult     = $item_ref->{'mult'};

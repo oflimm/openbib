@@ -38,6 +38,11 @@ use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS qw/decode_json encode_json/;
 use List::MoreUtils qw(none);
 use Log::Log4perl qw(get_logger :levels);
+
+use Mojo::Base -strict, -signatures;
+use Mojo::IOLoop;
+use Mojo::Promise;
+
 use Mojo::UserAgent;
 use Mojo::UserAgent::CookieJar;
 use MLDBM qw(DB_File Storable);
@@ -1442,6 +1447,27 @@ sub get_mediastatus {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $mediastatus_p = $self->get_mediastatus_p($titleid);
+
+    $logger->debug();
+    
+    $mediastatus_p->then(sub {
+	my $mediastatus_ref = shift;
+
+	return $mediastatus_ref;
+			 })->catch(sub {
+			     my $error = shift;
+			     $logger->error($error);
+			     return {};
+				   })->wait;
+}
+
+sub get_mediastatus_p {
+    my ($self,$titleid) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
     my $config      = $self->get_config;
     my $database    = $self->get_database;
     my $ua          = $self->get_client;
@@ -1450,7 +1476,7 @@ sub get_mediastatus {
     my $lang        = $self->get('lang');
     
     my $response_ref = {};
-    
+
     unless ($database && $titleid){
 	$response_ref = {
 	    timestamp   => $self->get_timestamp,
@@ -1458,7 +1484,7 @@ sub get_mediastatus {
 	    error       => "missing parameters",	    
 	};
 	
-	return $response_ref;
+	return  Mojo::Promise->resolve($response_ref);
     }
     
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
@@ -1467,16 +1493,21 @@ sub get_mediastatus {
     my $items_ref = [];
 
     # Ausleihinformationen der Exemplare
-    {
-	my $json_result_ref = {};
+    
+    my $json_result_ref = {};
+    
+    $logger->debug("Getting Circulation info via ALMA API");
+    
+    my $api_key = $config->get('alma')->{'api_key'};
+    
+    my $url     = $config->get('alma')->{'api_baseurl'}."/bibs/$titleid/holdings/ALL/items?limit=100&offset=0&expand=due_date,due_date_policy,requests&view=brief&lang=$lang&apikey=$api_key&order_by=library,location,enum_a,enum_b&direction=asc";
+    
+    my $api_result_p = $self->send_alma_api_call_p({ method => 'GET', url => $url });
 
-	$logger->debug("Getting Circulation info via ALMA API");
-	
-	my $api_key = $config->get('alma')->{'api_key'};
-	
-	my $url     = $config->get('alma')->{'api_baseurl'}."/bibs/$titleid/holdings/ALL/items?limit=100&offset=0&expand=due_date,due_date_policy,requests&view=brief&lang=$lang&apikey=$api_key&order_by=library,location,enum_a,enum_b&direction=asc";
-	
-	my $api_result_ref = $self->send_alma_api_call({ method => 'GET', url => $url });
+    $logger->debug("api_result_p ".YAML::Dump($api_result_p));
+    
+    return $api_result_p->then(sub {
+	my $api_result_ref = shift;
 
 	if ($logger->is_debug){
 	    $logger->debug("api_result_ref: ".YAML::Dump($api_result_ref));
@@ -1484,20 +1515,22 @@ sub get_mediastatus {
 	
 	# Preprocessed response? Return it
 	if (defined $api_result_ref->{'response'}){
-
+	    
 	    $logger->debug("XXX".$api_result_ref->{'data'}{'errorList'}{'error'}[0]{'errorCode'});
-
+	    
 	    # MMSID not valid = NZ MSSID, then ignore and return no items
 	    if ($api_result_ref->{'response'}{'error_code'} == 402203){
-		return {
+		$response_ref = {
 		    id          => $titleid,
 		    database    => $database,
 		    items       => [],
 		    timestamp   => $self->get_timestamp,
-		    };
+		};
+		return  Mojo::Promise->resolve($response_ref);
 	    }
-	    
-	    return $api_result_ref->{'response'}
+
+	    $response_ref = $api_result_ref->{'response'};
+	    return  Mojo::Promise->resolve($api_result_ref->{'response'});
 	}
 	
 	# Result data? Use it for further processing
@@ -1511,7 +1544,7 @@ sub get_mediastatus {
 	    foreach my $circ_ref (@{$json_result_ref->{'item'}}){
 		
 		if ($logger->is_debug){    
-		    $logger->debug(YAML::Dump($circ_ref));
+		    $logger->debug("Item: ".YAML::Dump($circ_ref));
 		}
 		
 		# Umwandeln
@@ -1520,25 +1553,25 @@ sub get_mediastatus {
 		if ($config->get('debug_ils')){
 		    $item_ref->{debug} = $json_result_ref
 		}
-
+		
 		# Spezialanpassungen USB Koeln
-
+		
 		# Ende Spezialanpassungen
 		
 		$item_ref->{'label'}           = $circ_ref->{'holding_data'}{'call_number'} || $circ_ref->{'item_data'}{'alternative_call_number'} || $circ_ref->{'item_data'}{'barcode'}; # Signatur
 		$item_ref->{'barcode'}         = $circ_ref->{'item_data'}{'barcode'}; # Mediennummer Neu fuer Alma
 		$item_ref->{'id'}              = $circ_ref->{'holding_data'}{'holding_id'}."|".$circ_ref->{'item_data'}{'pid'}; # holdingid|itemid
-
+		
 		my @remarks = ();
-
+		
 		if ($circ_ref->{'item_data'}{'description'}){
 		    push @remarks, $circ_ref->{'item_data'}{'description'};
 		}
-
+		
 		if($circ_ref->{'item_data'}{'public_note'}){
 		    push @remarks, $circ_ref->{'item_data'}{'public_note'};
 		}
-
+		
 		$item_ref->{'remark'} = '';
 		
 		if (@remarks){
@@ -1546,7 +1579,7 @@ sub get_mediastatus {
 		}
 		
 		$item_ref->{'boundcollection'} = ""; # In Alma gibt es keine Bindeeinheiten
-
+		
 		my $process_type  = $circ_ref->{'item_data'}{'process_type'}{'value'};
 		
 		my $department    = $circ_ref->{'item_data'}{'library'}{'desc'};
@@ -1777,20 +1810,22 @@ sub get_mediastatus {
 	    }
 	    
 	}	    
-    }
+
     
-    $response_ref = {
-	id          => $titleid,
-	database    => $database,
-	items       => $items_ref,
-	timestamp   => $self->get_timestamp,
-    };
-    
-    if ($logger->is_debug){    
-	$logger->debug("Circ: ".YAML::Dump($response_ref));
-    }
-            
-    return $response_ref;
+	$response_ref = {
+	    id          => $titleid,
+	    database    => $database,
+	    items       => $items_ref,
+	    timestamp   => $self->get_timestamp,
+	};
+	
+	if ($logger->is_debug){    
+	    $logger->debug("Finalized Circ: ".YAML::Dump($response_ref));
+	}
+
+	return Mojo::Promise->resolve($response_ref);
+	
+			       });
 }
 
 sub check_request {
@@ -2664,7 +2699,7 @@ sub update_sis {
     return $response_ref;
 }
 
-sub send_alma_api_call {
+sub send_alma_api_call_p {
     my ($self,$arg_ref) = @_;
 
     # Returns either 'response' for immediate response or 'data' for further processing
@@ -2718,16 +2753,36 @@ sub send_alma_api_call {
 	    
 	    if ($@){
 		$logger->error('Encoding error: '.$@);
-		return $api_result_ref;
+		return  Mojo::Promise->resolve($api_result_ref);
 	    }
 
 	    $response = $ua->post($url => $header_ref, $body)->result;
 	}
 	elsif ($method eq "DELETE") {
-	    $response = $ua->delete($url => $header_ref)->result;	    
+	    $response = $ua->delete($url => $header_ref)->result;
 	}
 	else {
-	    $response = $ua->get($url => $header_ref)->result;	    
+	    $response = $ua->get($url => $header_ref)->result;
+	}
+
+# 	unless (defined $ua_promise){
+# 	    $logger->error("No promise defined");
+# 	    return  Mojo::Promise->resolve($api_result_ref);
+# 	}
+	
+# 	my $response = $ua_promise->then(sub {
+# 	    my $tx = shift;
+# 	    return $tx->result;
+# 					 })->catch(sub {
+# 					     my $error = shift;
+# 					     $logger->debug($error);
+# 						   })->wait;
+	
+# #	my $response = $tx->result;
+
+	unless (defined $response){
+	    $logger->error("No response defined");
+	    return  Mojo::Promise->resolve($api_result_ref);
 	}
 	
 	$api_result_ref->{'http_status_code'}    = $response->code();
@@ -2762,7 +2817,7 @@ sub send_alma_api_call {
 		    "error_description" => $msg->maketext("Ihre Anfrage konnte nicht bearbeitet werden, da das Cloud-Bibliothekssystem Alma derzeit überlastet ist und keine Anfragen mehr annimmt. Bitte versuchen Sie es später noch einmal."),
 	    };
 	    
-	    return $api_result_ref;
+	    return  Mojo::Promise->resolve($api_result_ref);
 	}
 
 	# Timeout reached
@@ -2775,12 +2830,12 @@ sub send_alma_api_call {
 		    "error_description" => $msg->maketext("Ihre Anfrage konnte nicht bearbeitet werden, da das Cloud-Bibliothekssystem Alma derzeit zu langsam antwortet und der Timeout erreicht wurde."),
 	    };
 	    
-	    return $api_result_ref;
+	    return  Mojo::Promise->resolve($api_result_ref);
 	}
 	
 	if (!$response->is_success && $response->code != 400) {
 	    $logger->info($response->code . ' - ' . $response->message);
-	    return $api_result_ref;
+	    return  Mojo::Promise->resolve($api_result_ref);
 	}	    
 	
 	eval {
@@ -2801,10 +2856,14 @@ sub send_alma_api_call {
 		"error_code" => $api_result_ref->{'data'}{'errorList'}{'error'}[0]{'errorCode'},
 	};
 	
-	return $api_result_ref;
+	return  Mojo::Promise->resolve($api_result_ref);
     }
 
-    return $api_result_ref;
+    if ($logger->is_debug){
+	$logger->debug("Successful result: ".YAML::Dump($api_result_ref));
+    }
+    
+    return  Mojo::Promise->resolve($api_result_ref);
 }
 
 sub connectMemcached {

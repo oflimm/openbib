@@ -36,7 +36,7 @@ while (<>){
 
     # Signaturen merken
     if (defined $title_ref->{fields}{'4309'}){
-	foreach my $item_ref (@{$title_ref->{fields}{'4307'}}){
+	foreach my $item_ref (@{$title_ref->{fields}{'4309'}}){
 	    my $content  = $item_ref->{'content'};
 	    my $subfield = $item_ref->{'subfield'};
 	    my $mult     = $item_ref->{'mult'};
@@ -58,7 +58,8 @@ while (<>){
 		$allowed_mult_ref->{$mult} = 1;
 	    }
 	}
-    }    
+    }
+    
 
     # Alles bis auf erlaubte mult entfernen
     foreach my $field ('4306','4307','4308','4309','4310','4311','4312','4313','4314','4315','4316','4317'){

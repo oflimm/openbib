@@ -657,7 +657,7 @@ sub load_full_title_record_p {
     }
 
     if ($logger->is_debug){
-        $logger->debug(YAML::Dump($title_record->get_fields));
+        $logger->debug(YAML::Dump($title_record->to_hash));
     }
 
     return $promise->resolve($title_record);    
@@ -1337,9 +1337,6 @@ sub _get_holding {
     # sonst wird der Datenbankname zur Findung des Sigels herangezogen
     else {
         $sigel=$dbinfotable->get('dbases')->{$self->{database}};
-        if ($logger->is_debug){
-            $logger->debug("Sigel: $sigel ".YAML::Dump($dbinfotable));
-        }
         if (defined $sigel && defined $dbinfotable->get('sigel')->{$sigel}) {
             $fields_ref->{X4000}{content}=$dbinfotable->get('sigel')->{$sigel};
         }

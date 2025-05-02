@@ -52,7 +52,7 @@ system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl
 
 print "### $pool: Erweiterung um Standortinformationen, weiteres Processing\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/remove_ill.pl | $rootdir/filter/_common/alma/fix-linkage.pl | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/_common/alma/process_urls.pl | $rootdir/filter/$pool/process_ids.pl | $rootdir/filter/_common/alma/volume2year.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/_common/alma/remove_ill.pl | $rootdir/filter/_common/alma/fix-linkage.pl | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/$pool/process_urls.pl | $rootdir/filter/$pool/process_ids.pl | $rootdir/filter/_common/alma/volume2year.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");
 
 print "### $pool: Korrektur der Exemplarinformationen\n";
 

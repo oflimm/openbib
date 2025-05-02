@@ -196,11 +196,20 @@ sub get_config {
 sub load_full_record {
     my ($self, $arg_ref) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     my $record_p = $self->load_full_record_p($arg_ref);
 
     $record_p->then(sub {
-	$self = shift;
-		    });
+	my $record = shift;
+	$self->set_fields($record->get_fields);
+	$self->set_items($record->get_items);		
+	$self->set_circulation($record->get_circulation);	
+	$self->set_locations($record->get_locations);
+	
+	$logger->debug("Record load_full_title: ".YAML::Dump($record->to_hash));
+		    })->wait;
 
     return $self;
 }

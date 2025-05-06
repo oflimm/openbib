@@ -204,12 +204,12 @@ sub load_full_record {
     $record_p->then(sub {
 	my $record = shift;
 	$self->set_fields($record->get_fields);
-	$self->set_items($record->get_items);		
+	$self->set_holding($record->get_holding);		
 	$self->set_circulation($record->get_circulation);	
 	$self->set_locations($record->get_locations);
 	
 	$logger->debug("Record load_full_title: ".YAML::Dump($record->to_hash));
-		    })->wait;
+		    });
 
     return $self;
 }

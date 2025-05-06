@@ -145,64 +145,12 @@ sub show_search {
 			
 			$self->write_chunk(encode_utf8($content_footer)) if ($content_footer);
 			$self->finish;
-			     }); #->catch(sub {
-			#	 my $error = shift;
-			#	 $logger->error($error);
-			#	 $self->print_warning($error);
-			#	       });
-	
-    $logger->debug("Getting search result");
-#    $self->show_search_result();
-    $logger->debug("Getting search result done");
-    
-
-    # Finalize with empty chunk
-
-    
-#     # Sequential search aka traditional meta search
-#     if (defined $r->param('sm') && $r->param('sm') eq "seq"){
-# 	$logger->debug("Getting search header");
-# 	my $header = $self->show_search_header();
-# 	$self->write_chunk($header);
-# 	$logger->debug("Getting search header done");
-
-# 	$logger->debug("Getting search result");
-# 	$logger->debug("Starting sequential search");
-
-# 	foreach my $database ($config->get_databases_of_searchprofile($searchquery->get_searchprofile)) {
-# 	    my $seq_searchresult = await &show_search_single_target($self,{database => $database, type => 'sequential'});
-	    	    
-# 	    $logger->debug("Result for db $database: $seq_searchresult XXX".YAML::Dump($seq_searchresult));
-# #	    $self->write_chunk($seq_searchresult) if ($seq_searchresult);
-# 	}
-#         #$self->sequential_search();
-# 	$logger->debug("Getting search result done");
-	
-# 	$logger->debug("Getting search footer");
-# 	my $footer = $self->show_search_footer();
-# 	$self->write_chunk($footer);
-# 	$logger->debug("Getting search footer done");
-# 	$self->finish;
-#     }
-#     # Joined search in one concatenated index
-#     else {
-# 	$logger->debug("Getting search header");
-# 	my $header = $self->show_search_header();
-# 	$self->write_chunk($header);
-# 	$logger->debug("Getting search header done");
-	
-# 	$logger->debug("Getting search result");
-# 	my $joined_searchresult = $self->show_search_single_target({ type => 'joined'});
-# 	$self->write_chunk($joined_searchresult);
-# 	$logger->debug("Getting search result done");
-	
-# 	$logger->debug("Getting search footer");
-# 	my $footer = $self->show_search_footer();
-# 	$self->write_chunk($footer);
-# 	$logger->debug("Getting search footer done");
-# 	$self->finish;
-#     }
-    
+			     })->catch(sub {
+				 my $error = shift;
+				 $logger->error($error);
+				 $self->write_chunk(encode_utf8("<p class=\"ms-2 display-5\">$error</div>")) if ($error);
+				 $self->finish;
+				       });	    
 }
 
 sub show_search_header_p {
@@ -1209,6 +1157,9 @@ sub print_resultitem {
     my $database     = exists $arg_ref->{database}
         ? $arg_ref->{database}           : undef;
 
+    my $viewname     = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}           : $self->stash('viewname');
+    
     my $result_ref   = exists $arg_ref->{result}
         ? $arg_ref->{result}             : undef;
 
@@ -1230,8 +1181,7 @@ sub print_resultitem {
     my $path           = $self->stash('path');
     my $representation = $self->stash('representation');
     my $content_type   = $self->stash('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
-#    my $database       = $self->stash('database') || '';
-    my $viewname       = $self->stash('viewname') || '';        
+
     my $searchquery    = $self->stash('searchquery');
 
     # TT-Data erzeugen

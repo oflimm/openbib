@@ -2,7 +2,7 @@
 #
 #  OpenBib::Mojo::Controller::Search::Availability::Search.pm
 #
-#  Dieses File ist (C) 2022 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2022-2025 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -156,30 +156,22 @@ sub show_search_result_p {
 		$logger->debug("Adding DB ".$target_ref->{name});
 	    }
 	    elsif ($target_ref->{type} eq "view"){
-		my $this_searchquery = $self->rewrite_searchterms({ database => $target_ref->{name}});
+		my $this_searchquery = $self->rewrite_searchterms({ viewname => $target_ref->{name}});
 		my $this_promise = $self->show_search_single_target_p({ viewname => $target_ref->{name}, searchquery => $this_searchquery, templatename => $config->{tt_availability_search_item_tname}});
 		push @all_searches, $this_promise;
 		$logger->debug("Adding View ".$target_ref->{name});
 	    }	    
 	}
 	
-	return $promise->reject("No searchtarget") unless (@all_searches);
+	return $promise->reject("No searchtargets") unless (@all_searches);
 	
-	my $searchresult = Mojo::Promise->all(@all_searches)->then(sub {
+	return Mojo::Promise->all(@all_searches)->then(sub {
 	    my @searchresults = map { $_->[0] } @_;
 	    my $all_searchresults = join('',@searchresults);
 	    
 	    $logger->debug("Joined sequential results: $all_searchresults");
 	    return $all_searchresults;
-	    
-								   });
-	
-	if ($logger->is_debug){
-	    $logger->debug("Sequential result ref: ".ref($searchresult));	
-	    $logger->debug("Sequential result: $searchresult");
-	}
-	
-	return $promise->resolve($searchresult);
+						       });	
     }
     
     return $promise->reject("Search error");
@@ -272,6 +264,13 @@ sub search {
     
     if ($searcher->have_results) {
 
+        $nav = Data::Pageset->new({
+            'total_entries'    => $searcher->get_resultcount,
+            'entries_per_page' => $queryoptions->get_option('num'),
+            'current_page'     => $queryoptions->get_option('page'),
+            'mode'             => 'slide',
+        });
+        	
         $logger->debug("Results found #".$searcher->get_resultcount);
                 
         $recordlist = $searcher->get_records();
@@ -328,10 +327,18 @@ sub rewrite_searchterms {
         ? $arg_ref->{viewname}            : undef;
     
     my $searchquery   = $self->stash('searchquery');
+    my $config        = $self->stash('config');
     
     my $new_searchquery = new OpenBib::SearchQuery;
+
+    if ($viewname){
+	my $profileid = $config->get_searchprofile_of_view($viewname);
+	$new_searchquery->set_searchprofile($profileid);
+    }
     
     if (defined $database && $database eq "eds"){
+	$logger->debug("Trying to use EDS search params");
+
 	my @src = ();
 	if ($searchquery->get_searchfield('journal')){
 	    push @src, $searchquery->get_searchfield('journal')->{val};
@@ -363,6 +370,8 @@ sub rewrite_searchterms {
 	}	
     }
     else {
+	$logger->debug("Trying to restrict searchquery to issn/isbn (DB: $database / View: $viewname)");
+
 	if ($searchquery->get_searchfield('journal') || $searchquery->get_searchfield('volume')){
 	    if ($searchquery->get_searchfield('issn')){
 		$new_searchquery->set_searchfield('issn',$searchquery->get_searchfield('issn')->{val});
@@ -384,7 +393,7 @@ sub rewrite_searchterms {
 	    $logger->debug("Rewriting searchquery: ".$new_searchquery->to_json);
 	}
     }
-    
+
     return $new_searchquery;
 }
 
@@ -419,7 +428,7 @@ sub show_search_single_target_p {
     my $searchresult = "";
     
     eval {
-	my $result_ref = (defined $viewname)?$self->search({view => $viewname}):$self->search({database => $database, searchquery => $searchquery});
+	my $result_ref = (defined $viewname)?$self->search({view => $viewname, searchquery => $searchquery}):$self->search({database => $database, searchquery => $searchquery});
 
 	if ($logger->is_debug){
 	    $logger->debug("Searchresult result_ref: ".YAML::Dump($result_ref));
@@ -428,8 +437,21 @@ sub show_search_single_target_p {
 	unless ($templatename) {
 	    $templatename = ($type eq "sequential")?$config->{tt_search_title_item_tname}:$config->{tt_search_title_combined_tname} 
 	}
-	
-	$searchresult = $self->print_resultitem({templatename => $templatename, database => $database, result => $result_ref});
+
+	my $args_ref = {
+	    templatename => $templatename,
+	    result => $result_ref,
+	};
+
+	if ($database){
+	    $args_ref->{database} = $database;
+	}
+
+	if ($viewname){
+	    $args_ref->{viewname} = $viewname;
+	}
+
+	$searchresult = $self->print_resultitem($args_ref);
 
     };
 

@@ -21,6 +21,8 @@
     ELSIF database ;
        headerdesc = dbinfo.get('dbnames').${database}.full;
     END;
+
+    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
 -%]
 
 <div class="ob-resultlist">

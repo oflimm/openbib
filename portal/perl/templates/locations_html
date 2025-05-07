@@ -21,7 +21,11 @@
 [%-
 
    is_denied = {
-     'DE-Kn3-MAK' = 1,
+     'DE-Kn3-MAK' = 1
+     'DE-Kn3-SL' = 1
+     'DE-Kn41' = 1
+     'DE-38M' = 1,
+     'DE-832' = 1,
      'FMT' = 1
    };
 

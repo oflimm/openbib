@@ -86,7 +86,7 @@ for (var i = 0; i < libraries.length; i++) {
 
 <div class="mt-3">
 
-<p>Hier finden sie eine Liste der Bibliotheken, deren Bestände Sie im Unikatalog durchsuchen können. Neben der USB als zentraler Hochschulbibliothek sind das ca. 150 selbständige Campusbibliotheken, die den Instituten der Universität angeschlossen sind. Zusätzlich sind die Kataloge einiger benachbarter Bibliotheken ausserhalb der Universität zu Köln recherchierbar, deren Bestand thematisch ebenso relevant ist.</p>
+<p>[% msg.maketext("Hier finden sie eine Liste der Bibliotheken, deren Bestände Sie im Unikatalog durchsuchen können. Neben der USB als zentraler Hochschulbibliothek sind das ca. 150 selbständige Campusbibliotheken, die den Instituten der Universität angeschlossen sind.") %]</p>
 
 </div>
 

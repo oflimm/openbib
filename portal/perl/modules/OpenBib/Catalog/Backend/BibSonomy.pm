@@ -93,6 +93,34 @@ sub get_client {
     return $self->{client};
 }
 
+sub load_full_title_record {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id = exists $arg_ref->{id}
+        ? $arg_ref->{id}     : '';
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Retrieve information
+
+    $logger->debug("Loading Record with id $id");
+    
+    my $recordlist = OpenBib::API::HTTP::BibSonomy->new()->get_posts({ start => 0, end => 20 , bibkey => $id});
+
+    # Record is fully qualified, so get first record in recordlist
+    
+    my @records = $recordlist->get_records;
+    my $record = $records[0];
+    
+    if ($logger->is_debug){
+        $logger->debug("Adding Record with ".YAML::Dump($record->get_fields));
+    }
+    
+    return $record;
+}
+
 sub load_full_title_record_p {
     my ($self,$arg_ref) = @_;
 
@@ -121,6 +149,20 @@ sub load_full_title_record_p {
     }
     
     return $promise->resolve($record);
+}
+
+sub load_brief_title_record {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->load_full_title_record($arg_ref);
 }
 
 sub load_brief_title_record_p {

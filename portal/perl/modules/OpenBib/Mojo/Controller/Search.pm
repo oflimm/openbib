@@ -1182,6 +1182,7 @@ sub print_resultitem {
     my $representation = $self->stash('representation');
     my $content_type   = $self->stash('content_type') || $config->{'content_type_map_rev'}{$representation} || 'text/html';
 
+
     my $searchquery    = $self->stash('searchquery');
 
     # TT-Data erzeugen

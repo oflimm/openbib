@@ -80,6 +80,26 @@ sub new {
     return $self;
 }
 
+sub load_full_title_record {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id = exists $arg_ref->{id}
+        ? $arg_ref->{id}     : '';
+
+    my $database = exists $arg_ref->{database}
+        ? $arg_ref->{database}     : '';
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $id = OpenBib::Common::Util::decode_id($id);
+
+    my $record = $self->get_api->get_titles_record({ database => $database, id => $id});
+
+    return $record;
+}
+
 sub load_full_title_record_p {
     my ($self,$arg_ref) = @_;
 

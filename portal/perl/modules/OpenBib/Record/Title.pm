@@ -194,22 +194,109 @@ sub get_config {
 }
 
 sub load_full_record {
-    my ($self, $arg_ref) = @_;
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $record_p = $self->load_full_record_p($arg_ref);
 
-    $record_p->then(sub {
-	my $record = shift;
-	$self->set_fields($record->get_fields);
-	$self->set_holding($record->get_holding);		
-	$self->set_circulation($record->get_circulation);	
-	$self->set_locations($record->get_locations);
-	
-	$logger->debug("Record load_full_title: ".YAML::Dump($record->to_hash));
-		    });
+    my $config = $self->get_config;
+    
+    # (Re-)Initialisierung
+    delete $self->{_fields}         if (exists $self->{_fields});
+    delete $self->{_holding}        if (exists $self->{_holding});
+    delete $self->{_circulation}    if (exists $self->{_circulation});
+
+    my $fields_ref   = {};
+
+    $self->{id      }        = $id;
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    unless (defined $self->{id} && defined $self->{database}){
+        ($self->{_fields},$self->{_holding},$self->{_circulation})=({},(),[]);
+
+        $logger->error("Incomplete Record-Information Id: ".((defined $self->{id})?$self->{id}:'none')." Database: ".((defined $self->{database})?$self->{database}:'none'));
+        return $self;
+    }
+        
+    my $memc_key = "record:title:full:$self->{database}:$self->{id}";
+
+    my $record;
+
+    if ($config->{memc} && length ($memc_key) < 250 ){
+      $record = $config->{memc}->get($memc_key);
+
+      if ($logger->is_debug){
+          $logger->debug("Got record from memcached: ".YAML::Dump($record));
+      }
+
+      if (defined $record->{fields} && defined $record->{holdings} && defined $record->{locations}){
+          $self->set_fields($record->{fields});
+          $self->set_holding($record->{holdings});
+	  $self->set_locations($record->{locations});
+          
+          if ($config->{benchmark}) {
+              $btime=new Benchmark;
+              $timeall=timediff($btime,$atime);
+              $logger->info("Total time for fetching fields/holdings from memcached is ".timestr($timeall));
+          }
+          
+          return $self;
+      }
+    }
+    
+    my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $self->{database}, sessionID => $self->{sessionID}, config => $config });
+    
+    $record = $catalog->load_full_title_record({id => $id});
+    
+    if ($logger->is_debug){
+        $logger->debug("Zurueck ".YAML::Dump($record->get_fields));
+    }
+
+    my $fields          = $record->get_fields;
+    my $holdings        = $record->get_holding;
+    my $same_records    = $record->get_same_records;
+    my $similar_records = $record->get_similar_records;
+    my $related_records = $record->get_related_records;
+
+
+    $logger->debug("Setting data from Backend");
+    
+    # Location aus 4230 setzen    
+    my $locations_ref = [];
+
+    foreach my $item_ref (@{$fields->{'T4230'}}){
+	push @{$locations_ref}, $item_ref->{content};
+    }
+
+    $self->set_locations($locations_ref);
+    $self->set_fields($fields);
+    $self->set_holding($holdings);
+    $self->set_same_records($same_records);
+    $self->set_related_records($related_records);
+    $self->set_similar_records($similar_records);
+
+    if ($config->{memc}){
+        $config->{memc}->set($memc_key,{ fields => $fields, holdings => $holdings, locations => $locations_ref },$config->{memcached_expiration}{'record:title:full'});
+        $logger->debug("Fetch record from db and store in memcached");
+    }
+    
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Total time for is ".timestr($timeall));
+    }
+
+    $logger->debug("Full record loaded");
 
     return $self;
 }
@@ -348,15 +435,76 @@ sub load_full_record_p {
 }
 
 sub load_brief_record {
-    my ($self, $arg_ref) = @_;
+    my ($self,$arg_ref) = @_;
 
-    my $record_p = $self->load_brief_record_p($arg_ref);
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
 
-    $record_p->then(sub {
-	my $record = shift;
-	
-	return $record;
-		    })->wait;
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+
+    # (Re-)Initialisierung
+    delete $self->{_fields}       if (exists $self->{_fields});
+    delete $self->{_holding}        if (exists $self->{_holding});
+    delete $self->{_circulation}    if (exists $self->{_circulation});
+
+    my $record_exists = 0;
+
+    my $fields_ref   = {};
+
+    $self->{id      }        = $id;
+
+    unless (defined $self->{id} && defined $self->{database}){
+        ($self->{_fields},$self->{_holding},$self->{_circulation})=({},(),[]);
+
+        $logger->error("Incomplete Record-Information Id: ".((defined $self->{id})?$self->{id}:'none')." Database: ".((defined $self->{database})?$self->{database}:'none'));
+        return $self;
+    }
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+    
+    if ($config->{benchmark}) {
+        $atime  = new Benchmark;
+    }
+
+    my $catalog = OpenBib::Catalog::Factory->create_catalog({ database => $self->{database}});
+    
+    my $record = $catalog->load_brief_title_record({id => $id});
+
+    $fields_ref         = $record->get_fields;
+    $record_exists      = $record->record_exists;
+
+    # Titel-ID und zugehoerige Datenbank setzen
+
+    $fields_ref->{id      } = $id;
+    $fields_ref->{database} = $self->{database};
+
+    # Location aus 4230 setzen
+    
+    my $locations_ref = [];
+
+    foreach my $item_ref (@{$fields_ref->{'T4230'}}){
+	push @{$locations_ref}, $item_ref->{content};
+    }
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        my $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung der gesamten Informationen         : ist ".timestr($timeall));
+    }
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($fields_ref));
+    }
+
+    ($self->{_fields},$self->{_locations},$self->{_exists},$self->{_type})=($fields_ref,$locations_ref,$record_exists,'brief');
+
+    return $self;
 }
 
 sub load_brief_record_p {
@@ -440,16 +588,270 @@ sub load_brief_record_p {
     return  Mojo::Promise->resolve($self); 
 }
 
+
 sub enrich_content {
     my ($self, $arg_ref) = @_;
 
-    my $enriched_record_p = $self->enrich_content_p($arg_ref);
+    my $profilename = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}        : '';
+    
+    my $viewname = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}        : '';
 
-    $enriched_record_p->then(sub {
-	my $record = shift;
-	
-	return $record;
-			     })->wait;
+    my $normalizer    = exists $arg_ref->{normalizer}
+    ? $arg_ref->{normalizer}          :
+	($self->{_normalizer})?$self->{_normalizer}:OpenBib::Normalizer->new;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = $self->get_config;
+
+    my ($atime,$btime,$timeall);
+        
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
+    return  $self unless ($self->{database} && $self->{id});
+
+    $self->connectEnrichmentDB;
+    
+    if ($logger->is_debug){            
+	$self->{enrich_schema}->storage->debug(1);
+    }
+
+    my $schema   = $self->{dbinfo}{schema}{$self->{database}} || '';
+
+    # ISBNs aus Anreicherungsdatenbank als subquery
+    my $this_isbns = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+        { 
+            dbname  => $self->{database},
+            titleid => $self->{id},
+        },
+        {
+            columns  => ['isbn'],
+            group_by => ['isbn'],
+        }
+    );
+    
+    my $bibkey    = $self->get_field({field => 'T5050', mult => 1})  if ($self->has_field('T5050'));
+    
+    my @issn_refs = ();
+    if ($schema eq "mab2"){
+	push @issn_refs, @{$self->get_field({field => 'T0543'})} if ($self->has_field('T0543'));
+    }
+    else {
+	push @issn_refs, $self->get_field({field => 'T0022', subfield => 'a'}) if ($self->has_field('T0022'));
+
+    }
+    
+    if ($logger->is_debug){
+        $logger->debug("Enrichment ISSN's ".YAML::Dump(\@issn_refs));
+    }
+    
+    my %seen_content = ();            
+    
+    my $mult_map_ref = {};
+    
+    if ($this_isbns){
+        my @filter_databases = ($profilename)?$config->get_profiledbs($profilename):
+            ($viewname)?$config->get_viewdbs($viewname):();
+
+
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen vor Normdaten ".timestr($timeall));
+        }
+
+        if ($logger->is_debug){
+            $logger->debug("Filtern Profile: $profilename / View: $viewname nach Datenbanken ".YAML::Dump(\@filter_databases));
+        }
+                
+        # Anreicherung der Normdaten
+        {
+            # DBI "select distinct category,content from normdata where isbn=? order by category,indicator";
+            my $enriched_contents = $self->{enrich_schema}->resultset('EnrichedContentByIsbn')->search_rs(
+                {
+                    isbn    => { -in => $this_isbns->as_query },
+                },
+                {
+                    group_by => ['isbn','field','content','origin','subfield'],
+                    order_by => ['field','content'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+                }
+            );
+            
+            while (my $item = $enriched_contents->next) {
+                my $field      = "E".sprintf "%04d",$item->{field};
+                my $subfield   =                    $item->{subfield};
+                my $content    =                    $item->{content};
+                
+                if ($seen_content{$content}) {
+                    next;
+                }
+                else {
+                    $seen_content{$content} = 1;
+                }
+                my $mult = ++$mult_map_ref->{$field};
+                $self->set_field({
+                    field      => $field,
+                    subfield   => $subfield,
+                    mult       => $mult,
+                    content    => $content,
+                });
+            }
+        }
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten ist ".timestr($timeall));
+        }
+        
+    }
+    elsif ($bibkey){
+        # DBI "select category,content from normdata where isbn=? order by category,indicator";
+        my $enriched_contents = $self->{enrich_schema}->resultset('EnrichedContentByBibkey')->search_rs(
+            {
+                bibkey => $bibkey,
+            },
+            {                        
+                group_by => ['field','content','bibkey','origin','subfield'],
+                order_by => ['field','content'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+        );
+        
+        while (my $item = $enriched_contents->next) {
+            my $field      = "E".sprintf "%04d",$item->{field};
+            my $subfield   =                    $item->{subfield};
+            my $content    =                    $item->{content};
+            
+            if ($seen_content{$content}) {
+                next;
+            }
+            else {
+                $seen_content{$content} = 1;
+            }                    
+            
+            my $mult = ++$mult_map_ref->{$field};
+            
+            $self->set_field({
+                field      => $field,
+                subfield   => $subfield,
+                mult       => $mult,
+                content    => $content,
+            });
+        }
+    }
+    elsif (@issn_refs){
+        my @issn_refs_tmp = ();
+        # Normierung
+        
+        foreach my $issn_ref (@issn_refs){
+            my $thisissn = $issn_ref->{content};
+            
+            push @issn_refs_tmp, $normalizer->normalize({
+                field => 'T0543',
+                content  => $thisissn,
+            });
+            
+        }
+        
+        # Dubletten Bereinigen
+        my %seen_issns = ();
+        
+        @issn_refs = grep { ! $seen_issns{$_} ++ } @issn_refs_tmp;
+        
+        if ($logger->is_debug){
+            $logger->debug("ISSN: ".YAML::Dump(\@issn_refs));
+        }
+        
+        # DBI "select category,content from normdata where isbn=? order by category,indicator"
+        my $enriched_contents = $self->{enrich_schema}->resultset('EnrichedContentByIssn')->search_rs(
+            {
+                issn => \@issn_refs,
+            },
+            {                        
+                group_by => ['field','content','issn','origin','subfield'],
+                order_by => ['field','content'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+        );
+        
+        while (my $item = $enriched_contents->next) {
+            my $field      = "E".sprintf "%04d",$item->{field};
+            my $subfield   =                    $item->{subfield};
+            my $content    =                    $item->{content};
+            
+            if ($seen_content{$content}) {
+                next;
+            } else {
+                $seen_content{$content} = 1;
+            }                    
+            
+            my $mult = ++$mult_map_ref->{$field};
+            
+            $self->set_field({
+                field      => $field,
+                subfield   => $subfield,
+                mult       => $mult,
+                content    => $content,
+            });
+        }
+    }
+
+    # Anreicherung mit spezifischer Titel-ID und Datenbank
+
+    {
+	my $enriched_contents = $self->{enrich_schema}->resultset('EnrichedContentByTitle')->search_rs(
+            {
+                dbname  => $self->{database},
+		titleid => $self->{id},
+            },
+            {                        
+                group_by => ['field','content','dbname','titleid','origin','subfield'],
+                order_by => ['field','content'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+	    );
+        
+        while (my $item = $enriched_contents->next) {
+            my $field      = "E".sprintf "%04d",$item->{field};
+            my $subfield   =                    $item->{subfield};
+            my $content    =                    $item->{content};
+            
+            if ($seen_content{$content}) {
+                next;
+            } else {
+                $seen_content{$content} = 1;
+            }                    
+            
+            my $mult = ++$mult_map_ref->{$field};
+            
+            $self->set_field({
+                field      => $field,
+                subfield   => $subfield,
+                mult       => $mult,
+                content    => $content,
+            });
+        }
+    }
+    
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen ist ".timestr($timeall));
+        undef $atime;
+        undef $btime;
+        undef $timeall;
+    }
+
+    $self->disconnectEnrichmentDB;
+    
+    return  $self;
 }
 
 sub enrich_content_p {
@@ -505,7 +907,7 @@ sub enrich_content_p {
 	push @issn_refs, @{$self->get_field({field => 'T0543'})} if ($self->has_field('T0543'));
     }
     else {
-	push @issn_refs, @{$self->get_field({field => 'T0022', subfield => 'a'})} if ($self->has_field('T0022'));
+	push @issn_refs, $self->get_field({field => 'T0022', subfield => 'a'}) if ($self->has_field('T0022'));
 
     }
     
@@ -993,13 +1395,197 @@ sub enrich_related_records_p {
 sub enrich_similar_records {
     my ($self, $arg_ref) = @_;
 
-    my $similar_records_p = $self->enrich_similar_records_p($arg_ref);
+    my $profilename = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}        : '';
 
-    $similar_records_p->then(sub {
-	my $records = shift;
+    my $orgunitname = exists $arg_ref->{orgunitname}
+        ? $arg_ref->{orgunitname}        : '';
+    
+    my $viewname = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}        : '';
 
-	    return $records;
-			     })->wait;
+    my $blacklisted_locations_ref = exists $arg_ref->{blacklisted_locations}
+        ? $arg_ref->{blacklisted_locations} : [];
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = $self->get_config;
+
+    my ($atime,$btime,$timeall);
+        
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $memc_key = "record:title:enrich_similar:$profilename:$viewname:$self->{database}:$self->{id}";
+    
+    if ($config->{memc} && length ($memc_key) < 250 ){
+        my $similar_recordlist = $self->get_similar_records;
+        
+        my $cached_records = $config->{memc}->get($memc_key);
+
+        if ($cached_records){
+
+	    if ($logger->is_debug){
+		$logger->debug("Got similar records for key $memc_key from memcached: ".YAML::Dump($cached_records));
+	    }
+	
+            if ($config->{benchmark}) {
+                my $btime=new Benchmark;
+                my $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+            }
+
+            $similar_recordlist->from_serialized_reference($cached_records);
+
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer : Bestimmung von cached Enrich-Informationen ist ".timestr($timeall));
+                undef $atime;
+                undef $btime;
+                undef $timeall;
+            }
+
+            $self->set_similar_records($similar_recordlist);
+
+            return $self;
+        }
+    }
+    
+    if (!exists $self->{enrich_schema}){
+        $self->connectEnrichmentDB;
+        if ($logger->is_debug){            
+            $self->{enrich_schema}->storage->debug(1);
+        }
+    }
+
+    my @filter_databases = ($orgunitname && $profilename)?$config->get_orgunitdbs($profilename,$orgunitname):($profilename)?$config->get_profiledbs($profilename):($viewname)?$config->get_viewdbs($viewname):();
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen vor Normdaten ".timestr($timeall));
+    }
+
+    return $self unless ($self->{database} && $self->{id});
+    
+    # Workkeys aus Anreicherungsdatenbank als subquery
+    my $this_workkeys = $self->{enrich_schema}->resultset('AllTitleByWorkkey')->search_rs(
+        { 
+            dbname  => $self->{database},
+            titleid => $self->{id},
+        },
+        {
+            columns  => ['workkey'],
+            group_by => ['workkey'],
+        }
+    );
+    
+    my $this_edition = $self->{enrich_schema}->resultset('AllTitleByWorkkey')->search_rs(
+        { 
+            dbname  => $self->{database},
+            titleid => $self->{id},
+        },
+        {
+            columns  => ['edition'],
+            group_by => ['edition'],
+        }
+    )->first;
+
+    my $edition = '0001';
+    
+    if ($this_edition){
+        $edition = $this_edition->edition;
+    }
+    
+    # Anreicherung mit 'aehnlichen' (=andere Auflage, Sprache) Titeln aus allen Katalogen
+    {
+        my $similar_recordlist = $self->get_similar_records;
+        
+        if ($logger->is_debug){
+            $logger->debug("Similar records via backend ".YAML::Dump($similar_recordlist));
+        }   
+        
+        my $where_ref = {
+            workkey    => { -in => $this_workkeys->as_query },
+            edition    => { '!=' => $edition },
+        };
+        
+        if (@filter_databases){
+            $where_ref = {
+                workkey    => { -in => $this_workkeys->as_query },
+                edition    => { '!=' => $edition },
+                dbname     => \@filter_databases,
+            };
+        }
+
+        if (@$blacklisted_locations_ref){
+            $where_ref->{location} = { -not_in => @$blacklisted_locations_ref
+            };
+        }       
+        
+        my $titles = $self->{enrich_schema}->resultset('AllTitleByWorkkey')->search_rs(
+            $where_ref,
+            {
+                order_by => ['edition DESC'],
+                group_by => ['id','dbname','workkey','edition','location','tstamp','titleid','titlecache'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+        );
+
+        my $have_title_ref = {};
+        while (my $titleitem = $titles->next) {
+            my $id         = $titleitem->{titleid};
+            my $database   = $titleitem->{dbname};
+            my $location   = $titleitem->{location};
+            my $titlecache = $titleitem->{titlecache};
+
+            next if (defined $have_title_ref->{"$database:$id"});
+            
+            $logger->debug("Found Title with location $location and id $id in database $database");
+            
+	    my $new_record;
+
+            if ($titlecache){
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
+            }
+            else {
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
+            }
+            
+	    $new_record->set_locations([$location]);
+	    $similar_recordlist->add($new_record);
+
+            $have_title_ref->{"$database:$id"} = 1;
+        }
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles w/o load_brief_records ist ".timestr($timeall));
+        }
+
+        if ($config->{memc}){
+            my $similar_records_ref = $similar_recordlist->to_serialized_reference;
+	    if ($logger->is_debug){
+		$logger->debug("Storing ".YAML::Dump($similar_records_ref));
+	    }
+	    
+            $config->{memc}->set($memc_key,$similar_records_ref,$config->{memcached_expiration}{'record:title:enrich_similar'});
+        }
+
+        $self->set_similar_records($similar_recordlist);
+    }
+        
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles ist ".timestr($timeall));
+    }
+
+    return $self;
 }
 
 sub enrich_similar_records_p {
@@ -1202,13 +1788,196 @@ sub enrich_similar_records_p {
 sub enrich_same_records {
     my ($self, $arg_ref) = @_;
 
-    my $same_records_p = $self->enrich_same_records_p($arg_ref);
+    my $profilename = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}        : '';
 
-    $same_records_p->then(sub {
-	my $records = shift;
+    my $orgunitname = exists $arg_ref->{orgunitname}
+        ? $arg_ref->{orgunitname}        : '';
+    
+    my $viewname = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}        : '';
 
-	    return $records;
-			     })->wait;
+    my $blacklisted_locations_ref = exists $arg_ref->{blacklisted_locations}
+        ? $arg_ref->{blacklisted_locations} : [];
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = $self->get_config;
+
+    my ($atime,$btime,$timeall);
+        
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $memc_key = "record:title:enrich_same:$profilename:$viewname:$self->{database}:$self->{id}";
+    
+    if ($config->{memc} && length ($memc_key) < 250 ){
+        my $same_recordlist = $self->get_same_records;
+
+        my $cached_records = $config->{memc}->get($memc_key);
+
+        if ($cached_records){
+
+	    if ($logger->is_debug){
+		$logger->debug("Got same records for key $memc_key from memcached: ".YAML::Dump($cached_records));
+	    }
+	
+            if ($config->{benchmark}) {
+                my $btime=new Benchmark;
+                my $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+            }
+
+            $same_recordlist->from_serialized_reference($cached_records);
+
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer : Bestimmung von cached Enrich-Informationen ist ".timestr($timeall));
+                undef $atime;
+                undef $btime;
+                undef $timeall;
+            }
+
+            $self->set_same_records($same_recordlist);
+
+            return $self;
+        }
+    }
+    else {
+        $logger->debug("No memcached available");
+    }
+    
+    if (!exists $self->{enrich_schema}){
+        $self->connectEnrichmentDB;
+        if ($logger->is_debug){            
+            $self->{enrich_schema}->storage->debug(1);
+        }
+    }
+
+    my @filter_databases = ($orgunitname && $profilename)?$config->get_orgunitdbs($profilename,$orgunitname):($profilename)?$config->get_profiledbs($profilename):($viewname)?$config->get_viewdbs($viewname):();
+    
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen vor Normdaten ".timestr($timeall));
+    }
+
+    return $self unless ($self->{database} && $self->{id});
+    
+    # ISBNs aus Anreicherungsdatenbank als subquery
+    my $this_isbns = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+        { 
+            dbname  => $self->{database},
+            titleid => $self->{id},
+        },
+        {
+            columns  => ['isbn'],
+            group_by => ['isbn'],
+        }
+    );
+    
+    # Anreicherung mit 'gleichen' (=gleiche ISBN) Titeln aus anderen Katalogen
+    {
+        # Same Records via Backend sind Grundlage.               
+        my $same_recordlist = $self->get_same_records;
+        
+        if ($logger->is_debug){
+            $logger->debug("Same records via backend ".YAML::Dump($same_recordlist));
+        }
+        
+        my $where_ref = {
+            isbn    => { -in => $this_isbns->as_query },
+            titleid => {'!=' => $self->{id} },
+            dbname  => {'!=' => $self->{database}}
+        };
+            
+        if (@filter_databases){
+            $where_ref = {
+                isbn    => { -in => $this_isbns->as_query },
+                titleid => {'!=' => $self->{id} },
+                -and => [
+                    {
+                        dbname  => {'!=' => $self->{database}}
+                    },
+                    {
+                        dbname => \@filter_databases,
+                    },
+                ]
+            };
+        }
+
+        if (@$blacklisted_locations_ref){
+            $where_ref->{location} = { -not_in => @$blacklisted_locations_ref
+            };
+        }       
+        
+        # DBI: "select distinct id,dbname from all_isbn where isbn=? and dbname != ? and id != ?";
+        my $same_titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+            $where_ref,
+            {
+                group_by => ['titleid','dbname','location','isbn','tstamp','titlecache'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+        );
+        
+        if ($logger->is_debug){            
+            $logger->debug("Found ".($same_titles->count)." records");
+        }
+
+        my $have_title_ref = {};
+
+        while (my $item = $same_titles->next) {
+            my $id         = $item->{titleid};
+            my $database   = $item->{dbname};
+            my $location   = $item->{location};
+            my $titlecache = $item->{titlecache};
+
+            next if (defined $have_title_ref->{"$database:$id:$location"});
+
+	    my $new_record;
+
+            if ($titlecache){
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
+            }
+            else {
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
+            }
+
+	    $new_record->set_locations([$location]);
+	    $same_recordlist->add($new_record);
+
+            $have_title_ref->{"$database:$id:$location"} = 1;
+        }
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles w/o load_brief_records ist ".timestr($timeall));
+        }
+
+        if ($config->{memc}){
+            my $same_records_ref = $same_recordlist->to_serialized_reference;
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Storing ".YAML::Dump($same_records_ref));
+	    }
+	    
+            $config->{memc}->set($memc_key,$same_records_ref,$config->{memcached_expiration}{'record:title:enrich_same'});
+        }
+        
+        $self->set_same_records($same_recordlist);
+    }
+    
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles ist ".timestr($timeall));
+    }
+
+    return $self;
 }
 
 sub enrich_same_records_p {

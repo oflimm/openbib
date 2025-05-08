@@ -243,6 +243,17 @@ sub have_field_content {
     return $have_field;
 }
 
+sub load_full_title_record {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $record = $self->get_api->get_titles_record($arg_ref);
+    
+    return $record;
+}
+
 sub load_full_title_record_p {
     my ($self,$arg_ref) = @_;
 
@@ -254,6 +265,15 @@ sub load_full_title_record_p {
     my $record = $self->get_api->get_titles_record($arg_ref);
     
     return $promise->resolve($record);
+}
+
+sub load_brief_title_record {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->load_full_title_record($arg_ref);
 }
 
 sub load_brief_title_record_p {

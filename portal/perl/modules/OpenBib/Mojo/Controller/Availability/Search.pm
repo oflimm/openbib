@@ -177,7 +177,7 @@ sub show_search_result_p {
     return $promise->reject("Search error");
 }
 
-sub search {
+sub search_p {
     my ($self,$arg_ref) = @_;
 
     # Log4perl logger erzeugen
@@ -200,11 +200,6 @@ sub search {
     my $config       = $self->stash('config');
     my $queryoptions = $self->stash('qopts');
     my $session      = $self->stash('session');
-
-    # Keine Suche durchfuehren, wenn Suchparameter ajax != 0
-    # Dann wird die Suche ueber die Include-Repraesentation in den Templates
-    # getriggert
-    return if ($queryoptions->get_option('ajax'));
 
     my $atime=new Benchmark;
     my $timeall;
@@ -286,16 +281,14 @@ sub search {
     my $total_hits  = $self->stash('total_hits') || 0 ;
     my $resultcount = $searcher->get_resultcount || 0 ;
 
-    return {
+    return Mojo::Promise->resolve({
 	searchtime => $resulttime,
 	nav => $nav,
 	facets => $facets_ref,
 	recordlist => $recordlist,
 	hits => $resultcount,
 	total_hits => $total_hits + $resultcount,	    
-    };
-    
-    return;
+    });
 }
 
 sub get_start_templatename {
@@ -427,9 +420,11 @@ sub show_search_single_target_p {
 
     my $searchresult = "";
     
-    eval {
-	my $result_ref = (defined $viewname)?$self->search({view => $viewname, searchquery => $searchquery}):$self->search({database => $database, searchquery => $searchquery});
-
+    my $result_p = (defined $viewname)?$self->search_p({view => $viewname, searchquery => $searchquery}):$self->search_p({database => $database, searchquery => $searchquery});
+    
+    return $result_p->then(sub {
+	my $result_ref = shift;
+	
 	if ($logger->is_debug){
 	    $logger->debug("Searchresult result_ref: ".YAML::Dump($result_ref));
 	}
@@ -437,34 +432,28 @@ sub show_search_single_target_p {
 	unless ($templatename) {
 	    $templatename = ($type eq "sequential")?$config->{tt_search_title_item_tname}:$config->{tt_search_title_combined_tname} 
 	}
-
+	
 	my $args_ref = {
 	    templatename => $templatename,
 	    result => $result_ref,
 	};
-
+	
 	if ($database){
 	    $args_ref->{database} = $database;
 	}
-
+	
 	if ($viewname){
 	    $args_ref->{viewname} = $viewname;
 	}
-
-	$searchresult = $self->print_resultitem($args_ref);
-
-    };
-
-    if ($@){
-	$logger->error("Searchresult error: $@");
-    
 	
-	return $promise->reject($@);
-    }
-
-    $logger->debug("Searchresult: $searchresult");
-        
-    return $promise->resolve($searchresult);
+	$searchresult = $self->print_resultitem($args_ref);
+	
+	$logger->debug("Searchresult: $searchresult");
+	
+	return $searchresult;
+	
+		    });
+    
 }
 
 1;

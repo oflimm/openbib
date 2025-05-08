@@ -297,6 +297,372 @@ sub get_recent_titles_of_subject {
     return $recordlist;
 }
 
+sub load_full_title_record {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config        = OpenBib::Config::File->instance;
+
+    my $promise = Mojo::Promise->new;
+    
+    my ($atime,$btime,$timeall)=(0,0,0);
+    
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+    
+    my $title_record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
+
+    eval {
+        # Titelkategorien
+        {
+                        
+            # DBI: select * from title where id = ?
+            my $title_fields = $self->get_schema->resultset('Title')->search(
+                {
+                    'me.id' => $id,
+                },
+                {
+                    select   => ['title_fields.field','title_fields.mult','title_fields.subfield','title_fields.ind','title_fields.content'],
+                    as       => ['thisfield','thismult','thissubfield','thisind','thiscontent'],
+                    join     => ['title_fields'],
+                    order_by => ['title_fields.mult ASC'],
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+                }
+            );
+            
+            while (my $item = $title_fields->next){
+                my $field    = "T".sprintf "%04d",$item->{thisfield};
+                my $subfield =                    $item->{thissubfield};
+                my $mult     =                    $item->{thismult};
+                my $ind      =                    $item->{thisind};
+                my $content  =                    $item->{thiscontent};
+                
+                $title_record->set_field({
+                    field     => $field,
+                    mult      => $mult,
+                    subfield  => $subfield,
+                    ind       => $ind,
+                    content   => $content,
+                });
+            }
+            
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer Bestimmung der Titeldaten ist ".timestr($timeall));
+            }
+        }
+
+        unless ($self->{'data_schema'} eq "marc21"){
+	    # Verknuepfte Normdaten
+	    {
+		my ($atime,$btime,$timeall)=(0,0,0);
+		
+		if ($config->{benchmark}) {
+		    $atime=new Benchmark;
+		}
+		
+		
+		# Personen
+		# DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+		my $title_persons = $self->get_schema->resultset('Title')->search(
+		    {
+			'me.id' => $id,
+		    },
+		    {
+			select   => ['title_people.field','title_people.mult','title_people.personid','title_people.supplement'],
+			as       => ['thisfield','thismult','thispersonid','thissupplement'],
+			join     => ['title_people'],
+			order_by => ['title_people.mult ASC'],
+			result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+		    }
+		    );
+
+		if ($title_persons){
+		    while (my $item = $title_persons->next){
+			next unless (defined $item->{thisfield});
+			
+			my $field      = "T".sprintf "%04d",$item->{thisfield};
+			my $mult       =                    $item->{thismult};
+			my $personid   =                    $item->{thispersonid};
+			my $supplement =                    $item->{thissupplement};
+
+			my $record = OpenBib::Record::Person->new({database => $self->{database}, schema => $self->get_schema});
+			$record->load_name({id => $personid});
+			my $content = $record->name_as_string;
+			
+			$title_record->set_field({                
+			    field      => $field,
+			    id         => $personid,
+			    content    => $content,
+			    supplement => $supplement,
+			    mult       => $mult,
+						 });
+		    }
+		}
+		
+		# Koerperschaften
+		# DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+		my $title_corporatebodies = $self->get_schema->resultset('Title')->search(
+		    {
+			'me.id' => $id,
+		    },
+		    {
+			select => ['title_corporatebodies.field','title_corporatebodies.mult','title_corporatebodies.corporatebodyid','title_corporatebodies.supplement'],
+			as     => ['thisfield','thismult','thiscorporatebodyid','thissupplement'],
+			join   => ['title_corporatebodies'],
+			order_by => ['title_corporatebodies.mult ASC'],
+			result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+		    }
+		    );
+
+		if ($title_corporatebodies){
+		    while (my $item = $title_corporatebodies->next){
+			next unless (defined $item->{thisfield});
+			my $field             = "T".sprintf "%04d",$item->{thisfield};
+			my $mult              =                    $item->{thismult};
+			my $corporatebodyid   =                    $item->{thiscorporatebodyid};
+			my $supplement        =                    $item->{thissupplement};
+			
+			my $record = OpenBib::Record::CorporateBody->new({database=>$self->{database}, schema => $self->get_schema});
+			$record->load_name({id=>$corporatebodyid});
+			my $content = $record->name_as_string;
+			
+			$title_record->set_field({                
+			    field      => $field,
+			    id         => $corporatebodyid,
+			    content    => $content,
+			    supplement => $supplement,
+			    mult       => $mult,
+						 });
+		    }
+		}
+		
+		# Schlagworte
+		# DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+		my $title_subjects = $self->get_schema->resultset('Title')->search(
+		    {
+			'me.id' => $id,
+		    },
+		    {
+			select => ['title_subjects.field','title_subjects.mult','title_subjects.subjectid','title_subjects.supplement'],
+			as     => ['thisfield','thismult','thissubjectid','thissupplement'],
+			join   => ['title_subjects'],
+			order_by => ['title_subjects.mult ASC'],
+			result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+		    }
+		    );
+
+		if ($title_subjects){
+		    my $mult = 1;
+		    while (my $item = $title_subjects->next){
+			next unless (defined $item->{thisfield});
+			my $field             = "T".sprintf "%04d",$item->{thisfield};
+			my $mult              =                    $item->{thismult};
+			my $subjectid         =                    $item->{thissubjectid};
+			my $supplement        =                    $item->{thissupplement};
+			
+			my $record = OpenBib::Record::Subject->new({database=>$self->{database}, schema => $self->get_schema});
+			$record->load_name({id=>$subjectid});
+			my $content = $record->name_as_string;
+			
+			$title_record->set_field({                
+			    field      => $field,
+			    id         => $subjectid,
+			    content    => $content,
+			    supplement => $supplement,
+			    mult       => $mult,
+						 });
+		    }
+		}
+		
+		# Klassifikationen
+		# DBI: select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)
+		my $title_classifications = $self->get_schema->resultset('Title')->search(
+		    {
+			'me.id' => $id,
+		    },
+		    {
+			select => ['title_classifications.field','title_classifications.mult','title_classifications.classificationid','title_classifications.supplement'],
+			as     => ['thisfield','thismult','thisclassificationid','thissupplement'],
+			join   => ['title_classifications'],
+			order_by => ['title_classifications.mult ASC'],
+			result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+		    }
+		    );
+
+		if ($title_classifications){
+		    while (my $item = $title_classifications->next){
+			next unless (defined $item->{thisfield});
+			my $field             = "T".sprintf "%04d",$item->{thisfield};
+			my $mult              =                    $item->{thismult};
+			my $classificationid  =                    $item->{thisclassificationid};
+			my $supplement        =                    $item->{thissupplement};
+			
+			my $record = OpenBib::Record::Classification->new({database=>$self->{database}, schema => $self->get_schema});
+			$record->load_name({id=>$classificationid});
+			my $content = $record->name_as_string;
+			
+			$title_record->set_field({                
+			    field      => $field,
+			    id         => $classificationid,
+			    content    => $content,
+			    supplement => $supplement,
+			    mult       => $mult,
+						 });
+		    }
+		    
+		    if ($config->{benchmark}) {
+			$btime=new Benchmark;
+			$timeall=timediff($btime,$atime);
+			$logger->info("Zeit fuer Bestimmung der verknuepften Normdaten : ist ".timestr($timeall));
+		    }
+		}
+	    }
+        } # Ende Normdatenbestimmung wenn nicht marc21
+	
+        # Verknuepfte Titel
+        {
+            my ($atime,$btime,$timeall)=(0,0,0);
+            
+            my $request;
+            my $res;
+            
+            # Unterordnungen
+            # Super wird durch meta2sql.pl im Kontext der Anreicherung mit
+            # Informationen der uebergeordneten Titelaufnahme erzeugt.
+
+            if ($config->{benchmark}) {
+                $atime=new Benchmark;
+            }
+            
+            my @sub = $self->get_connected_titles({ type => 'sub', id => $id });
+            
+            if (@sub){
+                
+                $title_record->set_field({                
+                    field      => 'T5001',
+                    content    => scalar(@sub),
+                    subfield   => 'a',
+                    mult       => 1,
+					 });
+                
+                foreach my $tt_ref (@sub){
+                    $title_record->set_field({
+                        field      => 'T5003',
+                        content    => $tt_ref->{id},
+                        subfield   => 'a',
+                        mult       => $tt_ref->{mult},
+					     });
+                }
+            }
+            
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer  ist ".timestr($timeall));
+            }
+            
+            # Ueberordnungen
+            # Super wird durch meta2sql.pl im Kontext der Anreicherung mit
+            # Informationen der uebergeordneten Titelaufnahme erzeugt.
+            
+            if ($config->{benchmark}) {
+                $atime=new Benchmark;
+            }
+
+
+            my @super = $self->get_connected_titles({ type => 'super', id => $id });
+            
+            if (@super){
+                $title_record->set_field({
+                    field      => 'T5002',
+                    content    => scalar(@super),
+                    subfield   => 'a',
+                    mult       => 1,
+                });
+                
+                foreach my $tt_ref (@super){
+                    $title_record->set_field({                
+                        field      => 'T5004',
+                        content    => $tt_ref->{id},
+                        subfield   => 'a',
+                        mult       => $tt_ref->{mult},
+                    });
+                }
+            }
+            
+            if ($config->{benchmark}) {
+                $btime=new Benchmark;
+                $timeall=timediff($btime,$atime);
+                $logger->info("Zeit ist ".timestr($timeall));
+            }
+            
+        }
+        
+        # Exemplardaten
+        my $holding_ref=[];
+        {
+            
+            # DBI: "select distinct targetid from conn where sourceid= ? and sourcetype=1 and targettype=6";
+            
+            my $title_holdings = $self->get_schema->resultset('TitleHolding')->search(
+                {
+                    'titleid' => $id,
+                },
+                {
+                    select   => ['holdingid'],
+                    as       => ['thisholdingid'],
+                    group_by => ['holdingid'], # = distinct holdingid
+                    order_by => { -asc => 'holdingid' },
+                    result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+                }
+            );
+            
+            while (my $item = $title_holdings->next()){
+                my $holdingid =                    $item->{thisholdingid};
+
+                $logger->debug("Got holdingid $holdingid for titleid $id");
+
+                push @$holding_ref, $self->_get_holding({
+                    id             => $holdingid,
+                });
+            }
+        }
+        
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($title_record->get_fields));
+        }
+        
+        $title_record->set_holding($holding_ref);
+    };
+
+    if ($@){
+        $logger->fatal($@);
+	return $title_record;
+    }
+
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer gesamte Bestimmung der Titeldaten ist ".timestr($timeall));
+    }
+
+    if ($logger->is_debug){
+        $logger->debug(YAML::Dump($title_record->to_hash));
+    }
+
+    return $title_record;
+}
+
 sub load_full_title_record_p {
     my ($self,$arg_ref) = @_;
 
@@ -661,6 +1027,66 @@ sub load_full_title_record_p {
     }
 
     return $promise->resolve($title_record);    
+}
+
+sub load_brief_title_record {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config::File->instance;
+
+    my $promise = Mojo::Promise->new;
+    
+    my $title_record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
+    
+    eval {
+        # Titel-ID und zugehoerige Datenbank setzen
+        
+        $self->connectDB($self->{database});
+        
+        my ($atime,$btime,$timeall)=(0,0,0);
+        
+        if ($config->{benchmark}) {
+            $atime  = new Benchmark;
+        }
+        
+        $logger->debug("Getting cached brief title for id $id");
+        
+        # DBI: "select listitem from title_listitem where id = ?"
+        my $record = $self->get_schema->resultset('Title')->single(
+            {
+                'id' => $id,
+            },
+        );
+        
+        my $record_exists = 0;
+
+        if ($record){
+            my $titlecache = $record->titlecache;
+            $title_record->set_fields_from_json($titlecache);
+            $record_exists = 1;
+        }
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            my $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung der gesamten Informationen         : ist ".timestr($timeall));
+        }
+    };
+
+    if ($@){
+        $logger->fatal($@);	
+    }
+    
+    return $title_record;
 }
 
 sub load_brief_title_record_p {

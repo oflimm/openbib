@@ -41,6 +41,8 @@ use NetAddr::IP;
 use Log::Log4perl qw(get_logger :levels);
 use YAML::Syck;
 
+use Mojo::Promise;
+
 use OpenBib::API::HTTP::BibSonomy;
 use OpenBib::Config;
 use OpenBib::Config::File;
@@ -4964,6 +4966,83 @@ sub get_litlists_of_tit {
     }
 
     return $litlists_ref;
+}
+
+sub get_single_item_in_collection {
+    my ($self,$listid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+    
+    my $cartitem = $self->get_schema->resultset('UserCartitem')->search_rs(
+        {
+            'cartitemid.id'  => $listid,
+            'userid.id'      => $self->{ID},
+        },
+        {
+            select => ['cartitemid.dbname','cartitemid.titleid','cartitemid.id','cartitemid.titlecache','cartitemid.tstamp','cartitemid.comment'],
+            as     => ['thisdbname','thistitleid','thisid','thistitlecache','thiststamp','thiscomment'],
+            join   => ['userid','cartitemid'],
+        }
+    )->single;
+
+    if ($cartitem){
+        my $database   = $cartitem->get_column('thisdbname');
+        my $titleid    = $cartitem->get_column('thistitleid');
+        my $listid     = $cartitem->get_column('thisid');
+        my $titlecache = $cartitem->get_column('thistitlecache');
+        my $tstamp     = $cartitem->get_column('thiststamp');
+        my $comment    = $cartitem->get_column('thiscomment');
+        
+        my $record = ($titleid && $database)?OpenBib::Record::Title->new({id =>$titleid, database => $database, listid => $listid, tstamp => $tstamp, comment => $comment, config => $config })->load_brief_record:OpenBib::Record::Title->new({ listid => $listid, config => $config })->set_fields_from_json($titlecache);
+
+        return $record;
+    }
+    
+    return;
+}
+
+sub get_litlists_of_tit_p {
+    my ($self,$arg_ref)=@_;
+
+    my $titleid               = exists $arg_ref->{titleid}
+        ? $arg_ref->{titleid}               : undef;
+    my $dbname                = exists $arg_ref->{dbname}
+        ? $arg_ref->{dbname}               : undef;
+    my $view                  = exists $arg_ref->{view}
+        ? $arg_ref->{view}                 : '';
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return Mojo::Promise->resolve([]) if (!$titleid || !$dbname);
+
+    # DBI: "select ll.* from litlistitem as lli, litlist as ll where ll.id=lli.litlistid and lli.titleid=? and lli.dbname=?") or $logger->error($DBI::errstr);
+
+    my $litlists = $self->get_schema->resultset('Litlistitem')->search_rs(
+        {
+            'me.titleid'       => $titleid,
+            'me.dbname'        => $dbname,
+        },
+        {
+            select => ['me.litlistid','litlistid.userid','litlistid.type'],
+            as     => ['thislitlistid','thisuserid','thistype'],
+            join   => ['litlistid']
+        }
+    );
+
+    my $litlists_ref = [];
+
+    foreach my $litlist ($litlists->all){
+        if ((defined $self->{ID} && defined $litlist->get_column('thisuserid') && $self->{ID} eq $litlist->get_column('thisuserid')) || (defined $litlist->get_column('thistype') && $litlist->get_column('thistype') eq "1")){
+            push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlist->get_column('thislitlistid'), view => $view});
+        };
+    }
+
+    return Mojo::Promise->resolve($litlists_ref);
 }
 
 sub get_single_item_in_collection {

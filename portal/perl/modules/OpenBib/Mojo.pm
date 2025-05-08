@@ -182,7 +182,7 @@ sub startup ($app){
 	}        
 
 	# Always render later
-#	$c->render_later;
+	$c->render_later;
 	
 	# content_type, representation und lang durch content-Negotiation bestimmen
 	# und ggf. zum konkreten Repraesenations-URI redirecten

@@ -326,6 +326,7 @@ sub show_record {
     }
     
     my $circinfotable = OpenBib::Config::CirculationInfoTable->new;
+    
     $logger->debug("Vor");
     my $searchquery   = OpenBib::SearchQuery->new({r => $r, view => $view, session => $session, config => $config});
 
@@ -342,46 +343,17 @@ sub show_record {
 
         $logger->debug("1");        
         my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config});
+	
+	my $record_p   = $record->load_full_record_p;
 
-	my $record_p = $record->load_full_record_p;
-
+	my $litlists_p = $user->get_litlists_of_tit_p({titleid => $titleid, dbname => $database, view => $view});
+	    	
 	$record_p->then(sub {
 
 	    my $record = shift;
 
-	    $logger->debug("1");        	    
-
-	    if ($config->{benchmark}) {
-		$btime=new Benchmark;
-		$timeall=timediff($btime,$atime);
-		$logger->info("Total time until stage 0 is ".timestr($timeall));
-	    }
-	    
-	    my $poolname=$dbinfotable->get('dbnames')->{$database};
-	    
-	    # if ($queryid){
-	    #     $searchquery->load({sid => $session->{sid}, queryid => $queryid});
-	    # }
-	    
-	    my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
-		session    => $session,
-		database   => $database,
-		titleid    => $titleid,
-		view       => $view,
-		session    => $session,
-										});
-	    
-	    my $active_feeds = $config->get_activefeeds_of_db($database);
-	    
-	    if ($config->{benchmark}) {
-		$btime=new Benchmark;
-		$timeall=timediff($btime,$atime);
-		$logger->info("Total time until stage 1 is ".timestr($timeall));
-	    }
 	    $logger->debug("3");        
 	    # Literaturlisten finden
-	    
-	    my $litlists_ref = $user->get_litlists_of_tit({titleid => $titleid, dbname => $database, view => $view});
 	    
 	    # Anreicherung mit OLWS-Daten
 	    if (defined $r->param('olws') && $r->param('olws') eq "Viewer"){
@@ -423,79 +395,116 @@ sub show_record {
 		$logger->debug("Vor Enrichment:".YAML::Dump($record->get_fields));
 	    }
 	    
-	    $record->enrich_content({ profilename => $sysprofile });
+	    my $enriched_record_p = $record->enrich_content_p({ profilename => $sysprofile });
 	    
-	    if ($config->{benchmark}) {
-		$btime=new Benchmark;
-		$timeall=timediff($btime,$atime);
-		$logger->info("Total time until stage 2 is ".timestr($timeall));
+	    return Mojo::Promise->all($enriched_record_p,$litlists_p);
+			})->then(sub {
+			    my $record = shift;
+			    my $litlists_ref = shift;
+
+			    $record = $record->[0];
+			    
+			    $logger->debug("1 - Ref Record: ".ref($record)." ".YAML::Dump($record));
+    			    $logger->debug("1 - Ref Litlist: ".ref($litlists_ref)." ".YAML::Dump($litlists_ref));        	    
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time until stage 0 is ".timestr($timeall));
+			    }
+			    
+			    my $poolname=$dbinfotable->get('dbnames')->{$database};
+			    
+			    # if ($queryid){
+			    #     $searchquery->load({sid => $session->{sid}, queryid => $queryid});
+			    # }
+			    
+			    my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
+				session    => $session,
+				database   => $database,
+				titleid    => $titleid,
+				view       => $view,
+				session    => $session,
+												});
+			    
+			    my $active_feeds = $config->get_activefeeds_of_db($database);
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time until stage 1 is ".timestr($timeall));
 	    }
-	    
-	    # TT-Data erzeugen
-	    my $ttdata={
-		database    => $database, # Zwingend wegen common/subtemplate
-		userid      => $userid,
-		poolname    => $poolname,
-		prevurl     => $prevurl,
-		nexturl     => $nexturl,
-		#            qopts       => $queryoptions->get_options,
-		queryid     => $searchquery->get_id,
-		record      => $record,
-		titleid      => $titleid,
-		
-		format      => $format,
-		
-		searchquery => $searchquery,
-		activefeed  => $active_feeds,
-		
-		authenticatordb => $authenticatordb,
-		
-		litlists          => $litlists_ref,
-		highlightquery    => \&highlightquery,
-		sort_circulation => \&sort_circulation,
-	    };
-	    
-	    if ($config->{benchmark}) {
-		$btime=new Benchmark;
-		$timeall=timediff($btime,$atime);
-		$logger->info("Total time until stage 3 is ".timestr($timeall));
-	    }
-	    
-	    # Log Event
-	    
-	    my $isbn;
-	    
-	    my $abstract_fields_ref = $record->to_abstract_fields;
-	    
-	    if (defined $abstract_fields_ref->{isbn} && $abstract_fields_ref->{isbn}){
-		$isbn = $abstract_fields_ref->{isbn};
-		$isbn =~s/ //g;
-		$isbn =~s/-//g;
-		$isbn =~s/X/x/g;
-	    }
-	    
-	    if (!$no_log){
-		$session->log_event({
-		    type      => 10,
-		    content   => {
-			id       => $titleid,
-			database => $database,
-			isbn     => $isbn,
-			#		    fields   => $abstract_fields_ref,
-		    },
-		    serialize => 1,
-				    });
-	    }
-	    
-	    if ($config->{benchmark}) {
-		$btime=new Benchmark;
-		$timeall=timediff($btime,$atime);
-		$logger->info("Total time for show_record is ".timestr($timeall));
-	    }
-	    
-	    return $self->print_page($config->{tt_titles_record_tname},$ttdata);
-	    
-			})->wait;
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time until stage 2 is ".timestr($timeall));
+			    }
+			    # TT-Data erzeugen
+			    my $ttdata={
+				database    => $database, # Zwingend wegen common/subtemplate
+				userid      => $userid,
+				poolname    => $poolname,
+				prevurl     => $prevurl,
+				nexturl     => $nexturl,
+				#            qopts       => $queryoptions->get_options,
+				queryid     => $searchquery->get_id,
+				record      => $record,
+				titleid      => $titleid,
+				
+				format      => $format,
+				
+				searchquery => $searchquery,
+				activefeed  => $active_feeds,
+				
+				authenticatordb => $authenticatordb,
+				
+				litlists          => $litlists_ref,
+				highlightquery    => \&highlightquery,
+				sort_circulation => \&sort_circulation,
+			    };
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time until stage 3 is ".timestr($timeall));
+			    }
+			    
+			    # Log Event
+			    
+			    my $isbn;
+			    
+			    my $abstract_fields_ref = $record->to_abstract_fields;
+			    
+			    if (defined $abstract_fields_ref->{isbn} && $abstract_fields_ref->{isbn}){
+				$isbn = $abstract_fields_ref->{isbn};
+				$isbn =~s/ //g;
+				$isbn =~s/-//g;
+				$isbn =~s/X/x/g;
+			    }
+			    
+			    if (!$no_log){
+				$session->log_event({
+				    type      => 10,
+				    content   => {
+					id       => $titleid,
+					database => $database,
+					isbn     => $isbn,
+					#		    fields   => $abstract_fields_ref,
+				    },
+				    serialize => 1,
+						    });
+			    }
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time for show_record is ".timestr($timeall));
+			    }
+			    
+			    return $self->print_page($config->{tt_titles_record_tname},$ttdata);
+			    
+				 });    
     }
     else {
         if ($config->{benchmark}) {
@@ -584,29 +593,52 @@ sub show_availability {
 	    my $record;
 	    my $sru_status_ref = [];
 
-	    # Alma und SRU?
-	    if ($thisdbinfo->get_column('circtype') eq "alma" && defined $config->get('alma')->{listitem_status} && $config->get('alma')->{listitem_status} eq "sru"){
-		$sru_status_ref = $self->get_status_via_alma_sru({ titleid => $titleid, database => $database });
-		$record = OpenBib::Record::Title->new({id => $titleid, database => $database, config => $config });
-
-	    }
-	    else {
-		$record = OpenBib::Record::Title->new({id => $titleid, database => $database, config => $config })->load_circulation;
-	    }
-	    
             # TT-Data erzeugen
             my $ttdata={
                 database       => $database, # Zwingend wegen common/subtemplate
-                record         => $record,
                 titleid        => $titleid,
-		sru_status     => $sru_status_ref,
             };
+	    
+	    # Alma und SRU?
+	    if ($thisdbinfo->get_column('circtype') eq "alma" && defined $config->get('alma')->{listitem_status} && $config->get('alma')->{listitem_status} eq "sru"){
+		my $sru_status_p = $self->get_status_via_alma_sru_p({ titleid => $titleid, database => $database });
+		$record = OpenBib::Record::Title->new({id => $titleid, database => $database, config => $config });
 
-            return $self->print_page($config->{tt_titles_record_availability_tname},$ttdata);
+		$ttdata->{record} = $record;		
+		
+		$sru_status_p->then(sub {
+		    my $sru_status_ref = shift;
+
+		    $ttdata->{sru_status} = $sru_status_ref;
+		    
+		    return $self->print_page($config->{tt_titles_record_availability_tname},$ttdata);
+				    });		
+
+	    }
+	    else {
+		my $record = OpenBib::Record::Title->new({id => $titleid, database => $database, config => $config });
+
+		my $circulation_p = $record->load_circulation_p;
+
+		$circulation_p->then(sub {
+		    my $circulation_ref = shift;
+		    
+		    $logger->debug("circulation_ref ".YAML::Dump($circulation_ref));
+		    
+		    $record->set_circulation($circulation_ref);
+		    
+		    $ttdata->{record} = $record;		
+
+		    return $self->print_page($config->{tt_titles_record_availability_tname},$ttdata);
+				});
+		
+	    }
+	    
+
         }
     }
 
-    return;
+    return; # $self->render( text => '' );
 }
 
 sub show_record_fields {
@@ -668,9 +700,17 @@ sub show_record_fields {
     if ($database && $titleid ){ # Valide Informationen etc.
         $logger->debug("ID: $titleid - DB: $database");
 
-        $logger->debug("1");        
-        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config})->load_full_record;
+        my $sysprofile= $config->get_profilename_of_view($view);
+	
+        $logger->debug("1");
+        
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config});
 
+	my $record_p     = $record->load_full_record_p;
+
+	$record_p->then(sub {
+	    my $record = shift;
+	    
         $logger->debug("2");        
         if ($config->{benchmark}) {
             $btime=new Benchmark;
@@ -678,114 +718,117 @@ sub show_record_fields {
             $logger->info("Total time until stage 0 is ".timestr($timeall));
         }
 
-        my $poolname=$dbinfotable->get('dbnames')->{$database};
 
         # if ($queryid){
         #     $searchquery->load({sid => $session->{sid}, queryid => $queryid});
         # }
 
-        my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
-            session    => $session,
-            database   => $database,
-            titleid    => $titleid,
-            view       => $view,
-            session    => $session,
-        });
-
-        my $active_feeds = $config->get_activefeeds_of_db($database);
-        
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time until stage 1 is ".timestr($timeall));
-        }
-        $logger->debug("3");        
-
-        my $sysprofile= $config->get_profilename_of_view($view);
 
         if ($logger->is_debug){
             $logger->debug("Vor Enrichment:".YAML::Dump($record->get_fields));
         }
-        
-        $record->enrich_content({ profilename => $sysprofile });
 
-        if ($logger->is_debug){
-            $logger->debug("Nach Enrichment:".YAML::Dump($record->get_fields));
-        }
-        
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time until stage 2 is ".timestr($timeall));
-        }
+	    	return $record->enrich_content_p({ profilename => $sysprofile });
+			})->then(sub {
 
-        # TT-Data erzeugen
-        my $ttdata={
-            database    => $database, # Zwingend wegen common/subtemplate
-            userid      => $userid,
-            poolname    => $poolname,
-            prevurl     => $prevurl,
-            nexturl     => $nexturl,
-#            qopts       => $queryoptions->get_options,
-            queryid     => $searchquery->get_id,
-            record      => $record,
-            titleid      => $titleid,
-
-            format      => $format,
-
-            searchquery => $searchquery,
-            activefeed  => $active_feeds,
-            
-            authenticatordb => $authenticatordb,
-            
-            highlightquery    => \&highlightquery,
-        };
-
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time until stage 3 is ".timestr($timeall));
-        }
-
-        # Log Event
-
-        my $isbn;
-        
-        if ($record->has_field("T0540") && $record->get_fields->{T0540}[0]{content}){
-            $isbn = $record->get_fields->{T0540}[0]{content};
-            $isbn =~s/ //g;
-            $isbn =~s/-//g;
-            $isbn =~s/X/x/g;
-        }
-        
-        if (!$no_log){
-            $session->log_event({
-                type      => 10,
-                content   => {
-                    id       => $titleid,
-                    database => $database,
-                    isbn     => $isbn,
-		    fields   => $record->get_fields,
-                },
-                serialize => 1,
-            });
-        }
-
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time for show_record is ".timestr($timeall));
-        }
-
-        return $self->print_page($config->{tt_titles_record_fields_tname},$ttdata);
+			    my $poolname=$dbinfotable->get('dbnames')->{$database};
+			    
+			    my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
+				session    => $session,
+				database   => $database,
+				titleid    => $titleid,
+				view       => $view,
+				session    => $session,
+												});
+			    
+			    my $active_feeds = $config->get_activefeeds_of_db($database);
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time until stage 1 is ".timestr($timeall));
+			    }
+			    $logger->debug("3");        
+			    
+			    
+			    if ($logger->is_debug){
+				$logger->debug("Nach Enrichment:".YAML::Dump($record->get_fields));
+			    }
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time until stage 2 is ".timestr($timeall));
+			    }
+			    
+			    # TT-Data erzeugen
+			    my $ttdata={
+				database    => $database, # Zwingend wegen common/subtemplate
+				userid      => $userid,
+				poolname    => $poolname,
+				prevurl     => $prevurl,
+				nexturl     => $nexturl,
+				#            qopts       => $queryoptions->get_options,
+				queryid     => $searchquery->get_id,
+				record      => $record,
+				titleid      => $titleid,
+				
+				format      => $format,
+				
+				searchquery => $searchquery,
+				activefeed  => $active_feeds,
+				
+				authenticatordb => $authenticatordb,
+				
+				highlightquery    => \&highlightquery,
+			    };
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time until stage 3 is ".timestr($timeall));
+			    }
+			    
+			    # Log Event
+			    
+			    my $isbn;
+			    
+			    if ($record->has_field("T0540") && $record->get_fields->{T0540}[0]{content}){
+				$isbn = $record->get_fields->{T0540}[0]{content};
+				$isbn =~s/ //g;
+				$isbn =~s/-//g;
+				$isbn =~s/X/x/g;
+			    }
+			    
+			    if (!$no_log){
+				$session->log_event({
+				    type      => 10,
+				    content   => {
+					id       => $titleid,
+					database => $database,
+					isbn     => $isbn,
+					fields   => $record->get_fields,
+				    },
+				    serialize => 1,
+						    });
+			    }
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time for show_record is ".timestr($timeall));
+			    }
+			    
+			    return $self->print_page($config->{tt_titles_record_fields_tname},$ttdata);
+				 });
     }
     else {
-        if ($config->{benchmark}) {
+	if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Total time for show_record is ".timestr($timeall));
         }
-
+	
         return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
 }
@@ -1089,7 +1132,7 @@ sub sort_circulation {
     return \@sorted;
 }
 
-sub get_status_via_alma_sru {
+sub get_status_via_alma_sru_p {
     my ($self,$arg_ref)=@_;
     
     # Set defaults
@@ -1102,7 +1145,7 @@ sub get_status_via_alma_sru {
     my $sru_status_ref = [];
 
     unless ($titleid && $titleid =~m/^\d+$/){
-	return $sru_status_ref;
+	return Mojo::Promise->resolve($sru_status_ref);
     }
 
     my $config         = $self->stash('config');
@@ -1224,7 +1267,7 @@ sub get_status_via_alma_sru {
 	$logger->debug("SRU Status: ".YAML::Dump($sru_status_ref));
     }
     
-    return $sru_status_ref;    
+    return Mojo::Promise->resolve($sru_status_ref);    
 }
 
 1;

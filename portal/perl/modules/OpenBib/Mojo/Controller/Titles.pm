@@ -1035,17 +1035,24 @@ sub show_record_related_records {
         
         my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config });
 
-        # TT-Data erzeugen
-        my $ttdata={
-            database        => $database, # Zwingend wegen common/subtemplate
-            record          => $record,
-            titleid         => $titleid,
-        };
+	# Todo: Excluded locations via Filter
+	my $enriched_record_p = $record->enrich_related_records_p({ viewname => $view });
 
-        return $self->print_page($config->{tt_titles_record_related_records_tname},$ttdata);
+	$enriched_records_p->then(sub {
+	    my $record = shift;
+	    
+	    # TT-Data erzeugen
+	    my $ttdata={
+		database        => $database, # Zwingend wegen common/subtemplate
+		record          => $record,
+		titleid         => $titleid,
+	    };
+	    
+	    return $self->print_page($config->{tt_titles_record_related_records_tname},$ttdata);
+				  });
     }
 
-    return;
+    return $self->print_warning($msg->maketext("Keine valide Anfrage"));
 }
 
 sub show_record_similar_records {

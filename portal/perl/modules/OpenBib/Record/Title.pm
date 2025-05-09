@@ -1122,13 +1122,261 @@ sub enrich_content_p {
 sub enrich_related_records {
     my ($self, $arg_ref) = @_;
 
-    my $related_records_p = $self->enrich_related_records_p($arg_ref);
+    my $profilename = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}           : '';
 
-    $related_records_p->then(sub {
-	my $records = shift;
+    my $orgunitname = exists $arg_ref->{orgunitname}
+        ? $arg_ref->{orgunitname}        : '';
+    
+    my $viewname = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}              : '';
 
-	    return $records;
-			     })->wait;
+    my $locations_ref = exists $arg_ref->{locations}
+        ? $arg_ref->{locations}             : [];
+    
+    my $blacklisted_locations_ref = exists $arg_ref->{blacklisted_locations}
+        ? $arg_ref->{blacklisted_locations} : [];
+
+    my $num      = exists $arg_ref->{num}
+        ? $arg_ref->{num}                : 20;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = $self->get_config;
+
+    my ($atime,$btime,$timeall);
+        
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $locationdigest = "";
+
+    if (@$locations_ref){
+	my $md5digest=Digest::MD5->new();
+	
+	$md5digest->add(join('', sort @$locations_ref));
+			
+	$locationdigest=$md5digest->hexdigest;
+    }
+    
+    # my $memc_key = "record:title:enrich_related:$locationdigest:$profilename:$viewname:$num:$self->{database}:$self->{id}";
+    
+    # if ($config->{memc}){
+    #     my $related_recordlist = $self->get_related_records;
+        
+    #     my $cached_records = $config->{memc}->get($memc_key);
+
+    #     if ($cached_records){
+    # 	    if ($logger->is_debug){
+    # 		$logger->debug("Got related records for key $memc_key from memcached ".YAML::Dump($cached_records));
+    # 	    }
+	                
+    #         if ($config->{benchmark}) {
+    #             my $btime=new Benchmark;
+    #             my $timeall=timediff($btime,$atime);
+    #             $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+    #         }
+
+    #         $related_recordlist->from_serialized_reference($cached_records);
+
+    #         if ($config->{benchmark}) {
+    #             $btime=new Benchmark;
+    #             $timeall=timediff($btime,$atime);
+    #             $logger->info("Zeit fuer : Bestimmung von cached Enrich-Informationen ist ".timestr($timeall));
+    #             undef $atime;
+    #             undef $btime;
+    #             undef $timeall;
+    #         }
+     
+    #         $self->set_related_records($related_recordlist);
+
+    #         return $self;
+    #     }
+    # }
+    
+    
+    if (!exists $self->{enrich_schema}){
+        $self->connectEnrichmentDB;
+        if ($logger->is_debug){            
+            $self->{enrich_schema}->storage->debug(1);
+        }
+    }
+
+    my @filter_databases = ($orgunitname && $profilename)?$config->get_orgunitdbs($profilename,$orgunitname):($profilename)?$config->get_profiledbs($profilename):($viewname)?$config->get_viewdbs($viewname):();
+        
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen vor Normdaten ".timestr($timeall));
+    }
+
+    return $self unless ($self->{database} && $self->{id});
+    
+    # ISBNs aus Anreicherungsdatenbank als subquery
+    my $this_isbns = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+        { 
+            dbname  => $self->{database},
+            titleid => $self->{id},
+        },
+        {
+            columns  => ['isbn'],
+            group_by => ['isbn'],
+        }
+    );
+    
+    
+    # Anreichern mit thematisch verbundenen Titeln (z.B. via Wikipedia) im gleichen Katalog(!)
+    {
+        my $ctime;
+        my $dtime;
+        if ($config->{benchmark}) {
+            $ctime=new Benchmark;
+        }
+        
+        my $related_recordlist = $self->get_related_records;
+        
+        if ($logger->is_debug){
+            $logger->debug("Related records via backend ".YAML::Dump($related_recordlist));
+        }
+        
+        my $titles_found_ref = {}; # Ein Titel kann ueber verschiedenen ISBNs erreicht werden. Das laesst sich nicht trivial via SQL loesen, daher haendisch                    
+        # Finde abstrakte ids fuer Wikipedia-Artikel, in denen die ISBNs des Titels genannt sind
+	my $related_ids = $self->{enrich_schema}->resultset('WikiarticleByIsbn')->search_rs(
+	    {
+		isbn    => { -in => $this_isbns->as_query },
+	    },
+	    {
+		columns => ['article'],
+		group_by => ['article'],
+	    }
+	    );
+        
+        if ($logger->is_debug){                        
+            $logger->debug("Found ".($related_ids->count)." related ids");
+        }
+	
+	# Finde alle thematisch zusammenhaengende ISBNs, die in den gefundenen Wikipedia-Artikeln (ueber die abstrakte ID) referenziert werden unter Auslassung der ISBNs des aktuellen Titelsatzes
+	my $related_isbns = $self->{enrich_schema}->resultset('WikiarticleByIsbn')->search_rs(
+	    {
+		isbn      => { -not_in => $this_isbns->as_query },
+		article   => { -in => $related_ids->as_query },
+	    },
+	    {
+		columns => ['isbn'],
+		group_by => ['isbn'],
+	    }
+	    );
+        
+        if ($logger->is_debug){            
+            $logger->debug("Found ".($related_isbns->count)." isbns");
+        }
+        
+        my $where_ref = {
+            isbn    => { -in => $related_isbns->as_query },
+        };
+
+	# Filtern nach Standortmarkierungen
+	if (@$locations_ref){
+            $where_ref = {
+                isbn      => { -in => $related_isbns->as_query },
+                location  => { -in => $locations_ref },
+            };
+	}
+
+	# Filtern nach Katalogen
+        if (@filter_databases){
+            $where_ref = {
+                isbn    => { -in => $related_isbns->as_query },
+                dbname  => { -in => \@filter_databases },
+            };
+        }
+
+        if (@$blacklisted_locations_ref){
+            $where_ref->{location} = { -not_in => @$blacklisted_locations_ref
+            };
+        }       
+        
+        my $titles = $self->{enrich_schema}->resultset('AllTitleByIsbn')->search_rs(
+            $where_ref,
+            {
+		select   => ['dbname','location','titleid','titlecache','isbn'],
+                group_by => ['dbname','location','titleid','titlecache','isbn'],
+                result_class => 'DBIx::Class::ResultClass::HashRefInflator',
+            }
+        );
+
+	if ($logger->is_debug){
+	    $logger->debug(YAML::Dump($where_ref));
+	}
+
+	my $count = 1;
+	
+        while (my $titleitem = $titles->next) {
+            my $id         = $titleitem->{titleid};
+            my $database   = $titleitem->{dbname};
+            my $location   = $titleitem->{location};
+            my $titlecache = $titleitem->{titlecache};
+
+            next if (defined $titles_found_ref->{"$database:$id"});
+            
+            my $ctime;
+            my $dtime;
+            if ($config->{benchmark}) {
+                $ctime=new Benchmark;
+            }
+
+	    my $new_record;
+
+            if ($titlecache){
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->set_fields_from_json($titlecache);
+            }
+            else {
+                $new_record = new OpenBib::Record::Title({ id => $id, database => $database, config => $config })->load_brief_record();
+            }
+	    
+	    $new_record->set_locations([$location]);
+	    $related_recordlist->add($new_record);
+            
+            if ($config->{benchmark}) {
+                $dtime=new Benchmark;
+                $timeall=timediff($dtime,$ctime);
+                    $logger->info("Zeit fuer : Bestimmung von Kurztitel-Information des Titels ist ".timestr($timeall));
+            }
+            
+            $titles_found_ref->{"$database:$id"} = 1;
+
+	    last if ($count >= $num);
+	    $count++;
+        }
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen / inkl Normdaten/Same Titles/Similar Titles/Related Titles w/o load_brief_records ist ".timestr($timeall));
+        }
+
+        # if ($config->{memc}){
+        #     my $related_records_ref = $related_recordlist->to_serialized_reference;
+        #     $logger->debug("Storing ".YAML::Dump($related_records_ref));
+        #     $config->{memc}->set($memc_key,$related_records_ref,$config->{memcached_expiration}{'record:title:enrich_related'});
+        # }
+        
+        $self->set_related_records($related_recordlist);
+
+    }
+    
+    if ($config->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen ist ".timestr($timeall));
+        undef $atime;
+        undef $btime;
+        undef $timeall;
+    }
+
+    return $self;
 }
 
 sub enrich_related_records_p {

@@ -47,6 +47,8 @@ use OpenBib::Search::Util;
 use OpenBib::Record::Title;
 use OpenBib::Template::Utilities;
 
+use base 'OpenBib::Mojo::Controller::Titles';
+
 use Mojo::Base 'OpenBib::Mojo::Controller', -signatures;
 
 sub show_popular {
@@ -190,9 +192,7 @@ sub create_record {
     $record->set_from_psgi_request($r);
 
     # TODO: GET?
-    $self->redirect("$path_prefix/$config->{titles_loc}/database/$database/new.html");
-
-    return;
+    return $self->redirect("$path_prefix/$config->{titles_loc}/database/$database/new.html");
 }
 
 sub show_record {
@@ -232,48 +232,11 @@ sub show_record {
     unless ($config->database_defined_in_view({ database => $database, view => $view }) && $config->db_is_active($database)){
 	return $self->print_warning("Der Katalog existiert nicht.");
     }
-    
-#     my $database_in_view = 0;
-
-#     my @dbs_in_view = $config->get_viewdbs($view);
-
-#     # Add 'special' databases of type api
-#     push @dbs_in_view, $config->get_apidbs;
-    
-#     foreach my $dbname (@dbs_in_view){
-#         if ($dbname eq $database){
-#             $database_in_view = 1;
-#             last;
-#         }
-#     }
-    
-#     # Databases with API are always considered
-# #     foreach my $dbname ($config->get_apidbs){
-# #         if ($dbname eq $database){
-# #             $database_in_view = 1;
-# #             last;
-# #         }
-# #     }
-    
-#     unless ($database_in_view || $user->is_admin){
-# 	if ($logger->is_debug){
-# 	    $logger->debug("Access denied for database $database. Viewdbs: ".YAML::Dump(@dbs_in_view));
-# 	}
-#         $self->header_add('Status' => 404); # NOT_FOUND
-#         return;
-#     }
-    
-#     if ($user->{ID} && !$userid){
-#         my $args = "?l=".$self->stash('lang');
-
-#         return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/title/database/$database/id/$titleid.$representation$args",'303 See Other');
-#     }
-    
+        
     if ($userid && !$self->is_authenticated('user',$userid)){
         $logger->debug("Testing authorization for given userid $userid");
-        return;
+        return  $self->print_warning($msg->maketext("Zugriff verboten"));
     }
-
 
     # Flush from memcached
     if ($flushcache){
@@ -297,139 +260,179 @@ sub show_record {
     if ($database && $titleid ){ # Valide Informationen etc.
         $logger->debug("ID: $titleid - DB: $database");
         
-        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config})->load_full_record;
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config});
 
-        my $poolname=$dbinfotable->get('dbnames')->{$database};
+	my $record_p   = $record->load_full_record_p;
 
-        # if ($queryid){
-        #     $searchquery->load({sid => $session->{sid}, queryid => $queryid});
-        # }
+	my $litlists_p = $user->get_litlists_of_tit_p({titleid => $titleid, dbname => $database, view => $view});
 
-        my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
-            session    => $session,
-            database   => $database,
-            titleid    => $titleid,
-            view       => $view,
-            session    => $session,
-        });
+	my $record_p   = $record->load_full_record_p;
 
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time until stage 1 is ".timestr($timeall));
-        }
+	my $litlists_p = $user->get_litlists_of_tit_p({titleid => $titleid, dbname => $database, view => $view});
+	    	
+	$record_p->then(sub {
 
-        # Literaturlisten finden
+	    my $record = shift;
 
-        my $litlists_ref = $user->get_litlists_of_tit({titleid => $titleid, dbname => $database, view => $view});
+	    $logger->debug("3");        
+	    # Literaturlisten finden
+	    
+	    # Anreicherung mit OLWS-Daten
+	    if (defined $r->param('olws') && $r->param('olws') eq "Viewer"){
+		if (defined $circinfotable->get($database) && defined $circinfotable->get($database)->{circcheckurl}){
+		    $logger->debug("Endpoint: ".$circinfotable->get($database)->{circcheckurl});
+		    my $soapresult;
+		    eval {
+			my $soap = SOAP::Lite
+			    -> uri("urn:/Viewer")
+			    -> proxy($circinfotable->get($database)->{circcheckurl});
+			
+			my $result = $soap->get_item_info(
+			    SOAP::Data->name(parameter  =>\SOAP::Data->value(
+						 SOAP::Data->name(collection => $circinfotable->get($database)->{circdb})->type('string'),
+						 SOAP::Data->name(item       => $titleid)->type('string'))));
+			
+			unless ($result->fault) {
+			    $soapresult=$result->result;
+			}
+			else {
+			    if ($logger->is_debug){
+				$logger->error("SOAP Viewer Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+			    }
+			}
+		    };
+		    
+		    if ($@){
+			$logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+		    }
+		    
+		    $record->{olws}=$soapresult;
+		}
+	    }
+	    
+	    
+	    my $sysprofile= $config->get_profilename_of_view($view);
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Vor Enrichment:".YAML::Dump($record->get_fields));
+	    }
+	    
+	    my $enriched_record_p = $record->enrich_content_p({ profilename => $sysprofile });
+	    
+	    return Mojo::Promise->all($enriched_record_p,$litlists_p);
+			})->then(sub {
+			    my $record = shift;
+			    my $litlists_ref = shift;
 
-        # Anreicherung mit OLWS-Daten
-        if (defined $r->param('olws') && $r->param('olws') eq "Viewer"){
-            if (defined $circinfotable->get($database) && defined $circinfotable->get($database)->{circcheckurl}){
-                $logger->debug("Endpoint: ".$circinfotable->get($database)->{circcheckurl});
-                my $soapresult;
-                eval {
-                    my $soap = SOAP::Lite
-                        -> uri("urn:/Viewer")
-                            -> proxy($circinfotable->get($database)->{circcheckurl});
-                
-                    my $result = $soap->get_item_info(
-                        SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                            SOAP::Data->name(collection => $circinfotable->get($database)->{circdb})->type('string'),
-                            SOAP::Data->name(item       => $titleid)->type('string'))));
-                    
-                    unless ($result->fault) {
-                        $soapresult=$result->result;
-                    }
-                    else {
-                        $logger->error("SOAP Viewer Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-                    }
-                };
-                
-                if ($@){
-                    $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
-                }
-                
-                $record->{olws}=$soapresult;
-            }
-        }
-
-        my $sysprofile= $config->get_profilename_of_view($view);
-        
-        $record->enrich_content({ profilename => $sysprofile });
-
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time until stage 2 is ".timestr($timeall));
-        }
-
-        # TT-Data erzeugen
-        my $ttdata={
-            database    => $database, # Zwingend wegen common/subtemplate
-            userid      => $userid,
-            poolname    => $poolname,
-            prevurl     => $prevurl,
-            nexturl     => $nexturl,
-            qopts       => $queryoptions->get_options,
-            queryid     => $searchquery->get_id,
-            record      => $record,
-            titleid      => $titleid,
-
-            format      => $format,
-
-            searchquery => $searchquery,
-            activefeed  => $config->get_activefeeds_of_db($self->{database}),
-            
-            authenticatordb => $authenticatordb,
-            
-            litlists          => $litlists_ref,
-            highlightquery    => \&highlightquery,
-	    sort_circulation => \&sort_circulation,
-        };
-
-        # Log Event
-
-        my $isbn;
-        
-        my $abstract_fields_ref = $record->to_abstract_fields;
+			    $record = $record->[0];
+			    
+			    $logger->debug("1 - Ref Record: ".ref($record)." ".YAML::Dump($record));
+    			    $logger->debug("1 - Ref Litlist: ".ref($litlists_ref)." ".YAML::Dump($litlists_ref));        	    
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time until stage 0 is ".timestr($timeall));
+			    }
+			    
+			    my $poolname=$dbinfotable->get('dbnames')->{$database};
+			    
+			    # if ($queryid){
+			    #     $searchquery->load({sid => $session->{sid}, queryid => $queryid});
+			    # }
+			    
+			    my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
+				session    => $session,
+				database   => $database,
+				titleid    => $titleid,
+				view       => $view,
+				session    => $session,
+												});
+			    
+			    my $active_feeds = $config->get_activefeeds_of_db($database);
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time until stage 1 is ".timestr($timeall));
+	    }
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time until stage 2 is ".timestr($timeall));
+			    }
+			    
+			    # TT-Data erzeugen
+			    my $ttdata={
+				database    => $database, # Zwingend wegen common/subtemplate
+				userid      => $userid,
+				poolname    => $poolname,
+				prevurl     => $prevurl,
+				nexturl     => $nexturl,
+				qopts       => $queryoptions->get_options,
+				queryid     => $searchquery->get_id,
+				record      => $record,
+				titleid      => $titleid,
+				
+				format      => $format,
+				
+				searchquery => $searchquery,
+				activefeed  => $config->get_activefeeds_of_db($self->{database}),
+				
+				authenticatordb => $authenticatordb,
+				
+				litlists          => $litlists_ref,
+				highlightquery    => \&highlightquery,
+				sort_circulation => \&sort_circulation,
+			    };
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time until stage 3 is ".timestr($timeall));
+			    }
+			    
+			    # Log Event
+			    
+			    my $isbn;
+			    
+			    my $abstract_fields_ref = $record->to_abstract_fields;
+			    
+			    if (defined $abstract_fields_ref->{isbn} && $abstract_fields_ref->{isbn}){
+				$isbn = $abstract_fields_ref->{isbn};
+				$isbn =~s/ //g;
+				$isbn =~s/-//g;
+				$isbn =~s/X/x/g;
+			    }
+			    
+			    if (!$no_log){
+				$session->log_event({
+				    type      => 10,
+				    content   => {
+					id       => $titleid,
+					database => $database,
+					isbn     => $isbn,
+					#		    fields   => $abstract_fields_ref,
+				    },
+				    serialize => 1,
+						    });
+			    }
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time for show_record is ".timestr($timeall));
+			    }
+			    
+			    return $self->print_page($config->{tt_titles_record_tname},$ttdata);
+			    
+				 });    
 	
-        if (defined $abstract_fields_ref->{isbn} && $abstract_fields_ref->{isbn}){
-            $isbn = $abstract_fields_ref->{isbn};
-            $isbn =~s/ //g;
-            $isbn =~s/-//g;
-            $isbn =~s/X/x/g;
-        }
-        
-        if (!$no_log){
-            $session->log_event({
-                type      => 10,
-                content   => {
-                    id       => $titleid,
-                    database => $database,
-                    isbn     => $isbn,
-#		    fields   => $abstract_fields_ref,
-                },
-                serialize => 1,
-            });
-        }
-        
-        return $self->print_page($config->{tt_titles_record_tname},$ttdata);
-
     }
     else {
         return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname/Id spezifiziert."));
     }
-
-    if ($config->{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Total time for show_record is ".timestr($timeall));
-    }
-
-    $logger->debug("Done showing record");
-
-    return;
 }
 
 sub show_record_searchindex {

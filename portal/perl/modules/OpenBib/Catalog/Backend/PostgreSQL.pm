@@ -129,6 +129,42 @@ sub get_recent_titles {
     return $recordlist;
 }
 
+sub get_recent_titles_p {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $recordlist = new OpenBib::RecordList::Title();
+
+    eval {
+        my $titles = $self->get_schema->resultset('Title')->search_rs(
+            undef,
+            {
+                order_by => ['tstamp_create DESC'],
+                rows     => $limit,
+            }
+        );
+        
+        while (my $title = $titles->next){
+            if ($logger->is_debug){
+                $logger->debug("Adding Title ".$title->id);
+            }
+            $recordlist->add(new OpenBib::Record::Title({ database => $self->{database} , id => $title->id, date => $title->tstamp_create}));
+        }
+    };
+        
+    if ($@){
+        $logger->fatal($@);
+    }
+    
+    return Mojo::Promise->resolve($recordlist);
+}
+
 sub get_recent_titles_of_person {
     my ($self,$arg_ref) = @_;
 

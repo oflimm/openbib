@@ -349,6 +349,26 @@ sub load_brief_records {
     return $self;
 }
 
+sub load_brief_records_p {
+    my ($self) = @_;
+
+    my $recordlist = OpenBib::RecordList::Title->new;
+
+    my @brief_records_p = map { $_->load_brief_record_p } $self->get_records;
+
+    Mojo::Promise->all(@brief_records_p)->then(sub {
+	my @records = @_;
+	
+	foreach my $record (@records) {
+	    $record->set_type('brief');
+	    $record->set_record_exists;
+	    $recordlist->add($record);
+	}
+			 });
+
+    return Mojo::Promise->resolve($recordlist);
+}
+
 sub load_full_records {
     my ($self) = @_;
 

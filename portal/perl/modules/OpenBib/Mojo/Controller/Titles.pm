@@ -2,7 +2,7 @@
 #
 #  OpenBib::Mojo::Controller::Titles.pm
 #
-#  Copyright 2009-2015 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2025 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -156,23 +156,31 @@ sub show_recent {
 
     my $catalog = OpenBib::Catalog::Factory->create_catalog({database => $database});
     
-    my $recordlist = $catalog->get_recent_titles({
+    my $recordlist_p = $catalog->get_recent_titles_p({
         limit    => 50,
-    })->load_brief_records;
+						     });
 
-    # TT-Data erzeugen
-    my $ttdata={
-        database      => $database,
-        recordlist    => $recordlist,
-        profile       => $profile,
-        viewdesc      => $viewdesc,
-        statistics    => $statistics,
-        utils         => $utils,
-    };
+    $recordlist_p->then(sub {
+	my $recordlist = shift;
 
-    my $templatename = "tt_titles_recent".(($database)?'_by_database':'')."_tname";
-
-    return $self->print_page($config->{$templatename},$ttdata);
+	return $recordlist->load_brief_records_p;
+			})->then(sub {
+			    my $recordlist = shift;
+	
+			    # TT-Data erzeugen
+			    my $ttdata={
+				database      => $database,
+				recordlist    => $recordlist,
+				profile       => $profile,
+				viewdesc      => $viewdesc,
+				statistics    => $statistics,
+				utils         => $utils,
+			    };
+			    
+			    my $templatename = "tt_titles_recent".(($database)?'_by_database':'')."_tname";
+			    
+			    return $self->print_page($config->{$templatename},$ttdata);
+				 });
 }
 
 sub show_collection {
@@ -300,6 +308,7 @@ sub show_record {
     my $queryid       = $r->param('queryid')   || '';
     my $format        = $r->param('format')    || 'full';
     my $no_log        = $r->param('no_log')    || '';
+    my $flushcache    = $r->param('flush_cache')    || '';
 
     # Katalog aktiv bzw. in View?
     unless ($config->database_defined_in_view({ database => $database, view => $view }) && $config->db_is_active($database)){
@@ -309,14 +318,21 @@ sub show_record {
     if ($user->{ID} && !$userid){
         my $args = "?l=".$self->stash('lang');
 
-        return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/title/database/$database/id/".$self->decode_id($titleid)."$representation$args",303);
+        return $self->redirect("$path_prefix/$config->{users_loc}/id/$user->{ID}/databases/id/$database/titles/id/".$self->decode_id($titleid)."$representation$args",303);
     }
     
     if ($userid && !$self->is_authenticated('user',$userid)){
+
         $logger->debug("Testing authorization for given userid $userid");
-        return;
+        return  $self->print_warning($msg->maketext("Zugriff verboten"));
     }
 
+    # Flush from memcached
+    if ($flushcache){
+	my $memc_key = "record:title:full:$database:$titleid";
+	$config->{memc}->delete($memc_key) if ($config->{memc});
+    }
+    
     $self->render_later;
     
     my ($atime,$btime,$timeall)=(0,0,0);
@@ -538,27 +554,35 @@ sub redirect_to_bibsonomy {
     my $dbinfotable    = $self->stash('dbinfo');
     
     if ($titleid && $database){
-        my $title_as_bibtex = OpenBib::Record::Title->new({id =>$titleid, database => $database, config => $config })->load_full_record->to_bibtex({utf8 => 1});
-        #        $title=~s/\n/ /g;
+        my $record = OpenBib::Record::Title->new({id =>$titleid, database => $database, config => $config });
 
-        $logger->debug("Title as BibTeX: $title_as_bibtex");
+	my $record_p = $record->load_full_record_p;
 
-        my $bibsonomy_url = "http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=".uri_escape_utf8("http://$servername$path_prefix/$config->{home_loc}")."&description=".uri_escape_utf8($config->get_viewdesc_from_viewname($view))."&encoding=UTF-8&selection=".uri_escape_utf8($title_as_bibtex);
-        
-        $logger->debug("Title as BibTeX: $title_as_bibtex");
-        
-        # my $redirect_url = "$path_prefix/$config->{redirect_loc}?type=510;url=".uri_escape_utf8($bibsonomy_url);
-        
-        $logger->debug($bibsonomy_url);
-
-        $session->log_event({
-            type      => 510,
-            content   => $bibsonomy_url
-        });
-
-        # TODO GET?
-        $self->res->headers->content_type('text/html; charset=UTF-8');
-        return $self->redirect($bibsonomy_url);
+	$record_p->then(sub {
+	    my $title_as_bibtex_record = shift;
+	    
+	    my $title_as_bibtex = $title_as_bibtex_record->to_bibtex({utf8 => 1});
+	    #        $title=~s/\n/ /g;
+	    
+	    $logger->debug("Title as BibTeX: $title_as_bibtex");
+	    
+	    my $bibsonomy_url = "http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=".uri_escape_utf8("http://$servername$path_prefix/$config->{home_loc}")."&description=".uri_escape_utf8($config->get_viewdesc_from_viewname($view))."&encoding=UTF-8&selection=".uri_escape_utf8($title_as_bibtex);
+	    
+	    $logger->debug("Title as BibTeX: $title_as_bibtex");
+	    
+	    # my $redirect_url = "$path_prefix/$config->{redirect_loc}?type=510;url=".uri_escape_utf8($bibsonomy_url);
+	    
+	    $logger->debug($bibsonomy_url);
+	    
+	    $session->log_event({
+		type      => 510,
+		content   => $bibsonomy_url
+				});
+	    
+	    # TODO GET?
+	    $self->res->headers->content_type('text/html; charset=UTF-8');
+	    return $self->redirect($bibsonomy_url);
+				 });
     }
     else {
         return $self->print_warning($msg->maketext("Es wurden zuwenige Parameter übergeben."));
@@ -730,7 +754,8 @@ sub show_record_fields {
 
 	    	return $record->enrich_content_p({ profilename => $sysprofile });
 			})->then(sub {
-
+			    my $record = shift;
+			    
 			    my $poolname=$dbinfotable->get('dbnames')->{$database};
 			    
 			    my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
@@ -877,7 +902,7 @@ sub show_record_holdings {
         $logger->debug("ID: $titleid - DB: $database");
 
         $logger->debug("1");        
-        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config})->load_full_record;
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config});
 
         $logger->debug("2");        
         if ($config->{benchmark}) {
@@ -886,43 +911,51 @@ sub show_record_holdings {
             $logger->info("Total time until stage 0 is ".timestr($timeall));
         }
 
-        my $poolname=$dbinfotable->get('dbnames')->{$database};
+	my $record_p = $record->load_full_record_p;
 
-        my $sysprofile= $config->get_profilename_of_view($view);
+	$record_p->then(sub {
+	    my $record = shift;
+	    
+	    my $sysprofile= $config->get_profilename_of_view($view);
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Vor Enrichment:".YAML::Dump($record->get_fields));
+	    }
 
-        if ($logger->is_debug){
-            $logger->debug("Vor Enrichment:".YAML::Dump($record->get_fields));
-        }
-        
-        $record->enrich_content({ profilename => $sysprofile });
+	    return $record->enrich_content_p({ profilename => $sysprofile });
+			})->then(sub {
+			    my $record = shift;
 
-        if ($logger->is_debug){
-            $logger->debug("Nach Enrichment:".YAML::Dump($record->get_fields));
-        }
-        
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time until stage 2 is ".timestr($timeall));
-        }
-
-        # TT-Data erzeugen
-        my $ttdata={
-            database    => $database, # Zwingend wegen common/subtemplate
-            userid      => $userid,
-            poolname    => $poolname,
-#            qopts       => $queryoptions->get_options,
-            record      => $record,
-            titleid      => $titleid,
-        };
-
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Total time for show_record is ".timestr($timeall));
-        }
-
-        return $self->print_page($config->{tt_titles_record_holdings_tname},$ttdata);
+			    my $poolname=$dbinfotable->get('dbnames')->{$database};
+			    
+			    if ($logger->is_debug){
+				$logger->debug("Nach Enrichment:".YAML::Dump($record->get_fields));
+			    }
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time until stage 2 is ".timestr($timeall));
+			    }
+			    
+			    # TT-Data erzeugen
+			    my $ttdata={
+				database    => $database, # Zwingend wegen common/subtemplate
+				userid      => $userid,
+				poolname    => $poolname,
+				#            qopts       => $queryoptions->get_options,
+				record      => $record,
+				titleid      => $titleid,
+			    };
+			    
+			    if ($config->{benchmark}) {
+				$btime=new Benchmark;
+				$timeall=timediff($btime,$atime);
+				$logger->info("Total time for show_record is ".timestr($timeall));
+			    }
+			    
+			    return $self->print_page($config->{tt_titles_record_holdings_tname},$ttdata);
+				 });
     }
     else {
         if ($config->{benchmark}) {
@@ -957,16 +990,22 @@ sub show_record_circulation {
     if ($database && $titleid ){ # Valide Informationen etc.
         $logger->debug("ID: $titleid - DB: $database");
         
-        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config})->load_circulation;
+        my $record = OpenBib::Record::Title->new({database => $database, id => $titleid, config => $config});
 
-        # TT-Data erzeugen
-        my $ttdata={
-            database        => $database, # Zwingend wegen common/subtemplate
-            record          => $record,
-            titleid         => $titleid,
-        };
+	my $record_p = $record->load_circulation_p;
 
-        return $self->print_page($config->{tt_titles_record_circulation_tname},$ttdata);
+	$record_p->then(sub {
+	    my $record = shift;
+	    
+	    # TT-Data erzeugen
+	    my $ttdata={
+		database        => $database, # Zwingend wegen common/subtemplate
+		record          => $record,
+		titleid         => $titleid,
+	    };
+	    
+	    return $self->print_page($config->{tt_titles_record_circulation_tname},$ttdata);
+			});
     }
 
     return;

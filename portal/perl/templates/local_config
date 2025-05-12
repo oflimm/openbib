@@ -35,7 +35,7 @@
     standort_ls_hp   = "https://ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/ausleihmoeglichkeiten/nur-vort-ort-einsehbar#c3716"
     standort_ls_hf   = "https://ub.uni-koeln.de/lernen-ausleihen/besuchen-ausleihen/ausleihmoeglichkeiten/nur-vort-ort-einsehbar#c3715"
     kurse            = "https://ub.uni-koeln.de/kurse-beratung"
-    fragen           = "https://ub.uni-koeln.de/kurse-beratung/information-beratung/information"
+    fragen           = "https://ub.uni-koeln.de/formulare/information-beratung"
     impressum        = "https://ub.uni-koeln.de/impressum"
     events           = "https://ub.uni-koeln.de/kulturprogramm"
     kultur           = "https://ub.uni-koeln.de/kulturprogramm/kulturpartner-foerderer"

@@ -1043,7 +1043,7 @@ FOREACH field IN normdata;
          ELSE ;
 	 IF thistitle && thiscat;
           IF thistitle ;
- 	    IF thisid.match('^[0-9]+$') ;
+ 	    IF thisid.match('6476$') ;
               localurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${thisid}.html?l=${lang}";
 	    
  	      thistitle = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";

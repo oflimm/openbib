@@ -983,6 +983,14 @@ FOREACH field IN normdata;
             localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
 
 	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
+	  ELSIF thisid.match('6476$') ;
+	    # thisid = thisid.replace('\(.+?\)','');
+            searchterm    = thisid;
+            searchprefix  = config.get('searchfield').id.prefix;
+
+            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+
+	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
 	  END;
 
           content = "${content} ${fullcontentstring}";

@@ -975,7 +975,7 @@ FOREACH field IN normdata;
             localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
 
 	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
-	  ELSIF thiszdbid ;
+	  ELSIF thiszdbid == '0' ; # Disable
 	    # thisid = thisid.replace('\(.+?\)','');
             searchterm    = thiszdbid;
             searchprefix  = config.get('searchfield').zdbid.prefix;

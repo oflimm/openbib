@@ -72,8 +72,7 @@
       <li><span>[% msg.maketext("Einzelne Übersichten") %]</span>
         <ul class="components">
           <li class="[% IF layout_param.active_submenu == "loans" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
-          <li class="[% IF layout_param.active_submenu == "orders" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% msg.maketext("Bestellungen") %]</a></li>
-          <li class="[% IF layout_param.active_submenu == "reservations" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a></li>
+          <li class="[% IF layout_param.active_submenu == "requests" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/requests.html?l=[% lang %]">[% msg.maketext("Aufträge") %]</a></li>
           <li class="[% IF layout_param.active_submenu == "fees" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/fees.html?l=[% lang %]">[% msg.maketext("Gebühren") %]</a></li>
 	</ul>
      </li>

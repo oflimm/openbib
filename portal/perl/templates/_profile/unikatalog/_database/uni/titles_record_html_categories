@@ -975,12 +975,20 @@ FOREACH field IN normdata;
             localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
 
 	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
-	  ELSIF thiszdbid ;
+	  ELSIF thiszdbid == '0' ; # Disable
 	    # thisid = thisid.replace('\(.+?\)','');
             searchterm    = thiszdbid;
             searchprefix  = config.get('searchfield').zdbid.prefix;
 
             localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
+
+	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
+	  ELSIF thisid.match('6476$') ;
+	    # thisid = thisid.replace('\(.+?\)','');
+            searchterm    = thisid;
+            searchprefix  = config.get('searchfield').id.prefix;
+
+            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
 
 	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
 	  END;
@@ -1001,6 +1009,10 @@ FOREACH field IN normdata;
          thistitle = thisfield.${'t'};
          thisid    = thisfield.${'w'};
          thismark  = thisfield.${'g'};
+         thispub   = thisfield.${'d'};
+	 thiscat   = thisfield.${'i'};
+	 thisisbn  = thisfield.${'z'};
+	 
          content   = "";
 	 
          # ggf. verlinken
@@ -1029,23 +1041,48 @@ FOREACH field IN normdata;
           END;
 	 # Wenn keine Bindeeeinheit
          ELSE ;
-	  IF thisid.match('^[0-9]+$') ;
-            localurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${thisid}.html?l=${lang}";
-
-            IF NOT thistitle;
-	      thistitle = msg.maketext("Zeige Überordnung");	      
-	    END;
+	 IF thistitle && thiscat;
+          IF thistitle ;
+ 	    IF thisid.match('6476$') ;
+              localurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${thisid}.html?l=${lang}";
 	    
- 	    content = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
-            	   
+ 	      thistitle = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+	    ELSIF thisisbn;
+              searchterm    = thisisbn;
+              searchprefix  = config.get('searchfield').freesearch.prefix;
 
-            IF content ;
-              IF NOT content_map.${'Überordnung'} ;
-	         content_map.${'Überordnung'} = [];
-	      END;
-              content_map.${'Überordnung'}.push(content);
+              localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+
+ 	      thistitle = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+
 	    END;
           END;
+
+          fullinfo = [];
+	  
+          IF thiscat;
+	    fullinfo.push("${thiscat}:");
+	  END;
+
+          IF thistitle;
+	    fullinfo.push(thistitle);
+          END;
+	    
+          IF thismark;
+            fullinfo.push("- ${thismark}");
+	  END;
+
+          IF fullinfo;
+	     content = fullinfo.join(' ');
+	  END;
+	  
+          IF content ;
+            IF NOT content_map.${'Hinweis'} ;
+	       content_map.${'Hinweis'} = [];
+	    END;
+            content_map.${'Hinweis'}.push(content);
+          END;
+	 END;
 	 END;
 
 

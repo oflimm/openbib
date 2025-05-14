@@ -635,7 +635,7 @@ sub threadC {
    
     # instzs wurde in eigenes Steuerscript ausgelagert, da die Lieferung des hbz erst Montag morgen erfolgt 
 
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['zbmed'] });
+#    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['zbmed'] });
 
     # autoconvert({ updatemaster => $updatemaster, denylist => $denylist_ref, sync => 1, databases => ['usbweb'] });
     

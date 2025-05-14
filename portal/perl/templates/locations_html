@@ -21,7 +21,12 @@
 [%-
 
    is_denied = {
-     'DE-Kn3-MAK' = 1,
+     'DE-Kn3-MAK' = 1
+     'DE-Kn3-SL' = 1
+     'DE-Kn41' = 1
+     'DE-38M' = 1
+     'DE-832' = 1
+     'DE-887' = 1
      'FMT' = 1
    };
 
@@ -86,7 +91,7 @@ for (var i = 0; i < libraries.length; i++) {
 
 <div class="mt-3">
 
-<p>Hier finden sie eine Liste der Bibliotheken, deren Bestände Sie im Unikatalog durchsuchen können. Neben der USB als zentraler Hochschulbibliothek sind das ca. 150 selbständige Campusbibliotheken, die den Instituten der Universität angeschlossen sind. Zusätzlich sind die Kataloge einiger benachbarter Bibliotheken ausserhalb der Universität zu Köln recherchierbar, deren Bestand thematisch ebenso relevant ist.</p>
+<p>[% msg.maketext("Hier finden sie eine Liste der Bibliotheken, deren Bestände Sie im Unikatalog durchsuchen können. Neben der USB als zentraler Hochschulbibliothek sind das ca. 150 selbständige Campusbibliotheken, die den Instituten der Universität angeschlossen sind.") %]</p>
 
 </div>
 
@@ -957,7 +962,7 @@ Mit der Schlagwortliste finden Sie Ihre Campusbibliothek. Die Schlagwörter basi
  <li>Medienpädagogik <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-323.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-323.include?l=[% lang %]">38/323</a></li>
  <li>Medienrecht <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-222.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-222.include?l=[% lang %]">38/222</a></li>
  <li>Medienwissenschaft <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-429.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-429.include?l=[% lang %]">38/429</a>, <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-448.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-448.include?l=[% lang %]">38/448</a></li>
-<li>Medizin <a class="exturl" href="https://www.zbmed.de/" target="_blank">DE-38M</a> (ZB MED)</li>
+<!-- <li>Medizin <a class="exturl" href="https://www.zbmed.de/" target="_blank">DE-38M</a> (ZB MED)</li> -->
  <li>Medizinrecht <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-238.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-238.include?l=[% lang %]">38/238</a></li>
  <li>Medizinsoziologie <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-328.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-328.include?l=[% lang %]">38/328</a></li>
  <li>Meister Eckhart <a class="inturl" href="[% scheme %]://[% servername %][% path_prefix %]/[% config.get('locations_loc')%]/id/DE-38-432.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix%]/[% config.get('locations_loc')%]/id/DE-38-432.include?l=[% lang %]">38/432</a></li>

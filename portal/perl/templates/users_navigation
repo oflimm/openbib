@@ -160,15 +160,10 @@
 [%   ELSE %]
       <li class="nav-item"><a class="nav-link ps-3" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
 [%   END %]
-[%   IF layout_param.active_submenu == "orders" %]
-      <li class="nav-item active"><strong class="ps-3">[% msg.maketext("Bestellungen") %]</strong></li>
+[%   IF layout_param.active_submenu == "requests" %]
+      <li class="nav-item active"><strong class="ps-3">[% msg.maketext("Aufträge") %]</strong></li>
 [%   ELSE %]
-      <li class="nav-item"><a class="nav-link ps-3" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/orders.html?l=[% lang %]">[% msg.maketext("Bestellungen") %]</a></li>
-[%   END %]
-[%   IF layout_param.active_submenu == "reservations" %]
-      <li class="nav-item active"><strong class="ps-3">[% msg.maketext("Vormerkungen") %]</strong></li>
-[%   ELSE %]
-      <li class="nav-item"><a class="nav-link ps-3" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/reservations.html?l=[% lang %]">[% msg.maketext("Vormerkungen") %]</a></li>
+      <li class="nav-item"><a class="nav-link ps-3" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/requests.html?l=[% lang %]">[% msg.maketext("Aufträge") %]</a></li>
 [%   END %]
 [%   IF layout_param.active_submenu == "fees" %]
       <li class="nav-item active"><strong class="ps-3">[% msg.maketext("Gebühren") %]</strong></li>

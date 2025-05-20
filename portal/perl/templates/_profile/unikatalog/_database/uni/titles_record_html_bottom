@@ -48,7 +48,7 @@
 [%# USE dumper;dumper.dump(holding)%]
 
 <ul class="nav nav-tabs">
-[%   IF is_printjournal > 0 %]
+[%   IF is_printjournal && holding.size > 0 %]
 <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
 [%   ELSIF circulation.size > 0 %]
 <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
@@ -67,7 +67,7 @@
 </ul>
 
 <div class="tab-content pt-3">
-[% IF is_printjournal > 0 %]
+[% IF is_printjournal > 0 && holding.size > 0 %]
 <div role="tabpanel" class="tab-pane fade-in active pb-3" id="ob-holding_info"><!-- Begin Journal-Bestand -->
 [% PROCESS common/subtemplate name="holding_journal" %]
 [% ELSIF circulation.size > 0 %]

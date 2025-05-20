@@ -63,7 +63,7 @@
 <td>
   <i>[% request.about %]</i>
 [% IF request.info || is_ill %] 
-<br/> ([% msg.maketext("Status") %]: [% IF is_ill %] [% request.ill_status.about %] <a class="exturl" target="_blank" href="https://usb-koeln.digibib.net/account/ill/books/requestlist"><i class="fas fa-arrow-right pe-2"></i>[% msg.maketext("Zum Fernleihkonto") %]</a>[% ELSIF request.info %] [% request.info %] [% IF request.status.match('abholbar') %]. [% msg.maketext("Leihfristende") %]: [% request.endtime %][% END %][% END %])
+<br/> ([% msg.maketext("Status") %]: [% IF is_ill %] [% request.ill_status.about %] <a class="exturl" target="_blank" href="https://usb-koeln.digibib.net/account/ill/books/orderlist"><i class="fas fa-arrow-right pe-2"></i>[% msg.maketext("Zum Fernleihkonto") %]</a>[% ELSIF request.info %] [% request.info %] [% IF request.status.match('abholbar') %]. [% msg.maketext("Leihfristende") %]: [% request.endtime %][% END %][% END %])
 [% END %]
 [% IF is_order %]
 <br/>

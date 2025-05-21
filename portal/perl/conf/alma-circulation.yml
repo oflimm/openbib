@@ -73,6 +73,9 @@
       - type: 'LIBRARY'
         id: 'Ausgabe'
         desc: 'Humanwiss. Abteilung: Ausgabe'
+      - type: 'CIRCULATION_DESK'
+        id: 'LS-Ausgabe'
+        desc: 'Humanwiss. Abteilung: Lesesaalausgabe'
   '38-HWA-AWM':
     'order': 1
     'loan': 0
@@ -93,6 +96,7 @@
     'order': 1
     'loan': 0
     'reservation': 1
+
 '38-006':
   '38-006-FHM':
     'order': 0

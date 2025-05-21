@@ -61,6 +61,20 @@
 </div>
 [%   END %]
 [%  END %]
+[% ELSIF unit == '38-HWA' && storage == '38-HWA-MAG' )%]
+[%  FOREACH pickup_location IN pickup_locations %]
+[%   IF limitation && limitation.match('Lesesaal') && pickup_location.name.match('LS-Ausgabe') %]
+<div class="form-check">
+<input class="form-check-input" type="radio" name="pickup_location" id="pickup_[% pickup_location.name %]" value="[% pickup_location.name %]" [% IF checked == 0%]checked[% checked = 1 ; END; %]/>
+<label class="form-check-label" for="pickup_[% pickup_location.name %]">[% pickup_location.about %]</label>
+</div>
+[%   ELSIF NOT limitation && NOT pickup_location.name.match('LS-Ausgabe')  %]
+<div class="form-check">
+<input class="form-check-input" type="radio" name="pickup_location" id="pickup_[% pickup_location.name %]" value="[% pickup_location.name %]" [% IF checked == 0%]checked[% checked = 1 ; END; %]/>
+<label class="form-check-label" for="pickup_[% pickup_location.name %]">[% pickup_location.about %]</label>
+</div>
+[%   END %]
+[%  END %]
 [% ELSE %]
 [%  FOREACH pickup_location IN pickup_locations %]
 <div class="form-check">

@@ -61,7 +61,7 @@
 </div>
 [%   END %]
 [%  END %]
-[% ELSIF unit == '38-HWA' && storage == '38-HWA-MAG' )%]
+[% ELSIF unit == '38-HWA' && storage == '38-HWA-MAG' %]
 [%  FOREACH pickup_location IN pickup_locations %]
 [%   IF limitation && limitation.match('Lesesaal') && pickup_location.name.match('LS-Ausgabe') %]
 <div class="form-check">

@@ -74,7 +74,7 @@
         id: 'Ausgabe'
         desc: 'Humanwiss. Abteilung: Ausgabe'
       - type: 'CIRCULATION_DESK'
-        id: 'LS-Ausgabe'
+        id: 'HWA-LSAUSG'
         desc: 'Humanwiss. Abteilung: Lesesaalausgabe'
   '38-HWA-AWM':
     'order': 1
@@ -84,6 +84,9 @@
       - type: 'LIBRARY'
         id: 'Ausgabe'
         desc: 'Humanwiss. Abteilung: Ausgabe'
+      - type: 'CIRCULATION_DESK'
+        id: 'HWA-LSAUSG'
+        desc: 'Humanwiss. Abteilung: Lesesaalausgabe'
   '38-HWA-ZMA':
     'order': 1
     'loan': 0
@@ -92,6 +95,9 @@
       - type: 'LIBRARY'
         id: 'Ausgabe'
         desc: 'Humanwiss. Abteilung: Ausgabe'
+      - type: 'CIRCULATION_DESK'
+        id: 'HWA-LSAUSG'
+        desc: 'Humanwiss. Abteilung: Lesesaalausgabe'
   '38-HWA-THF':
     'order': 1
     'loan': 0

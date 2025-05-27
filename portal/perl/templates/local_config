@@ -440,8 +440,8 @@
    END ;
 
    current_profile = "";
-   IF query.param('profile');
-     current_profile = escape_html(query.param('profile'));
+   IF searchquery.get_searchprofile;
+     current_profile = escape_html(searchquery.get_searchprofile);
    ELSIF searchprofileid_of_title == searchprofileid_of_articles ;
      current_profile = searchprofileid_of_articles ;
    ELSIF searchprofileid_of_title == searchprofileid_of_web ;

@@ -53,7 +53,7 @@
 [%- FOREACH loan = loans.items -%]
 [%-
 
-    IF loan.department.id == "38" ;
+    IF loan.department.id == "38" || loan.department.id == "38-HWA" ;
        IF loan.policy == "Lesesaalausleihe";
          loan.pickup_location = { about = "Lesesaalausgabe" };
        ELSE ;

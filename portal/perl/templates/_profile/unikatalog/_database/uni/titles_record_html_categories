@@ -1040,8 +1040,7 @@ FOREACH field IN normdata;
 	    END;
           END;
 	 # Wenn keine Bindeeeinheit
-         ELSE ;
-	 IF thistitle && thiscat;
+         ELSIF thistitle && thiscat;
           IF thistitle ;
  	    IF thisid.match('6476$') ;
               localurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${thisid}.html?l=${lang}";
@@ -1082,7 +1081,21 @@ FOREACH field IN normdata;
 	    END;
             content_map.${'Hinweis'}.push(content);
           END;
-	 END;
+	 ELSIF thisid.match('6476$') ;
+            localurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${thisid}.html?l=${lang}";
+
+            IF NOT thistitle;
+              thistitle = msg.maketext("Zeige Überordnung");          
+            END;
+            
+            content = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+	    
+            IF content ;
+              IF NOT content_map.${'Überordnung'} ;
+                 content_map.${'Überordnung'} = [];
+              END;
+              content_map.${'Überordnung'}.push(content);
+            END;
 	 END;
 
 

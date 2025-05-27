@@ -77,6 +77,8 @@ sammlungen = {
    'Sammlung Westerholt' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/westerholt'
    'Sammlung Wilhelm Alff' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/alff'
    'Sammlung Wilhelmine von Westerholt' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/westerholt'
+   'KMB-Sammlung Bibliothek Charlotte Zander' = 'https://museenkoeln.de/kunst-und-museumsbibliothek/default.aspx?s=8994'
+   'KMB-Sammlung Alte Bücher zur Kunst' = 'https://alte-buecher-zur-kunst.kubi-koeln.de/'
    };
 
 FOREACH sammlungsvermerk IN normdata.${"T4700"} ;

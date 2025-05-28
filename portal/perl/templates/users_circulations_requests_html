@@ -104,7 +104,7 @@
 [% IF is_ill %]
 [% msg.maketext("Fernleihbestellung nicht stornierbar!") %]
 [% ELSE %]
-<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/[% IF is_order %]orders[% ELSE %]reservations[% END %]?_method=DELETE&confirm=1&requestid=[% request.requestid %]&unit=[% request.department.id %]&unitname=[% unitname | uri %]&titleid=[% request.edition %]&holdingid=[% request.label | uri %]&date=[% request.starttime |uri %]&validtarget=[% database %]" title="Auftrag l&ouml;schen" class="btn btn-primary">[% msg.maketext("Stornieren") %]</a>
+<a href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/[% IF is_order %]orders[% ELSE %]reservations[% END %]?_method=DELETE&[% IF is_order %]confirm=1&[% END %]requestid=[% request.requestid %]&unit=[% request.department.id %]&unitname=[% unitname | uri %]&titleid=[% request.edition %]&holdingid=[% request.label | uri %]&date=[% request.starttime |uri %]&validtarget=[% database %]" title="Auftrag l&ouml;schen" class="btn btn-primary">[% msg.maketext("Stornieren") %]</a>
 [% END %]
 </td>
 </tr>

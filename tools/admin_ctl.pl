@@ -488,6 +488,11 @@ Delete database
    --do=delete
    --db=...             : Database name
 
+Check consistency of DBs-counts in Cluster
+   --scope=cluster
+   --do=check_consistency
+   --id=...              : Cluster id
+
 e.g:
 
 ./admin_ctl.pl --scope=view --do=list --view=unikatalog
@@ -505,6 +510,8 @@ e.g:
 ./admin_ctl.pl --scope=view --do=add_loc --view=unikatalog --loc=DE-38-123
 
 ./admin_ctl.pl --scope=view --do=delete_loc --view=unikatalog --loc=DE-38-123
+
+./admin_ctl.pl --scope=cluster --do=check_consistency --id=1
 
 ENDHELP
     exit;

@@ -36,13 +36,14 @@ use YAML;
 
 use OpenBib::Config;
 
-our ($do,$scope,$view,$db,$loc,$help,$loglevel,$logfile);
+our ($do,$scope,$view,$id,$db,$loc,$help,$loglevel,$logfile);
 
 &GetOptions("do=s"            => \$do,
 
 	    "scope=s"         => \$scope,
 	    "view=s"          => \$view,
 	    "db=s"            => \$db,
+	    "id=s"            => \$id,	    
 	    "loc=s"           => \$loc,	    
 	    
             "logfile=s"       => \$logfile,
@@ -393,6 +394,40 @@ sub database_delete {
     }
 
     my $result = $config->del_databaseinfo($db);
+
+}
+
+sub cluster_check_consistency {
+
+    if (!$id){
+	$logger->error("Missing arg (cluster)id");
+	exit;
+    }
+
+    $logger->info("Checking consistency of CLUSTER $id");       
+
+    my $config = new OpenBib::Config;
+
+    my $servers_ref = {};
+
+    my $serverids_ref = $config->get_serverids_of_cluster($id);
+
+    foreach my $serverid (@$serverids_ref){
+	$servers_ref->{$serverid} = $config->get_serverinfo_description($serverid);
+    }
+
+    my $differences_ref = $config->check_cluster_consistency($id);
+
+    foreach my $db_ref (@$differences_ref){
+	my @output = ();
+	foreach my $serverid (sort keys %{$db_ref->{server}}){
+	    push @output, $servers_ref->{$serverid}." (".$db_ref->{server}{$serverid}.")";
+	}
+
+	print $db_ref->{dbname}.": ", join(' - ',@output),"\n" if (@output);
+
+    }
+    
 
 }
 

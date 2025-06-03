@@ -82,17 +82,19 @@ ELSIF collection == 'zas';
     desc = page.pagetitle;
     cdmid = page.pageptr ;
   
-    min     = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
-    thumb   = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_thumb.jpg";
-    default = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.png";
+    min      = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_web.jpg";
+    thumb    = "${viewerurl}/${collection}/${record.info.id}/${cdmid}_thumb.jpg";
+    default  = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.png";
+    download = "${viewerurl}/${collection}/${record.info.id}/${cdmid}.png";
 
     # Upgrade urls to https
     thisimage = {
-      id      = cdmid
-      thumb   = thumb
-      min     = min
-      default = default
-      desc    = desc
+      id       = cdmid
+      thumb    = thumb
+      min      = min
+      default  = default
+      download = download
+      desc     = desc
     };
 
     images.push(thisimage);
@@ -369,6 +371,13 @@ END;
       </mets:file>
 [% END %]      
     </mets:fileGrp>
+    <mets:fileGrp USE="DOWNLOAD">
+[% FOREACH thisimage IN images %]      
+      <mets:file ID="download[% thisimage.id %]" MIMETYPE="image/[% IF thisimage.download.match('png') %]png[% ELSE %]jpeg[% END %]">
+	<mets:FLocat LOCTYPE="URL" xlink:href="[% thisimage.download %]"/>
+      </mets:file>
+[% END %]      
+    </mets:fileGrp>
     <mets:fileGrp USE="THUMBS">
 [% FOREACH thisimage IN images %]            
       <mets:file ID="imgthumb[% thisimage.id %]" MIMETYPE="image/jpeg">
@@ -402,10 +411,13 @@ END;
       <mets:fptr FILEID="pdfdownload[% record.info.id %]"/>
 [% END %]
 [% FOREACH thisimage IN images %]            
-      <mets:div ID="div[% thisimage.id %]" ORDER="[% thisimage.id %]" ORDERLABEL="[% thisimage.order_id %]" LABEL="[% thisimage.desc %]" TYPE="page">
+      <mets:div ID="div[% thisimage.id %]" ORDER="[% thisimage.id %]" ORDERLABEL="[% thisimage.desc %]" LABEL="[% thisimage.order_id %]" TYPE="page">
 	<mets:fptr FILEID="img[% thisimage.id %]"/>
 	<mets:fptr FILEID="imgthumb[% thisimage.id %]"/>
 	<mets:fptr FILEID="imgmin[% thisimage.id %]"/>
+[% IF thisimage.download %]	
+	<mets:fptr FILEID="download[% thisimage.id %]"/>
+[% END %]	
       </mets:div>
 [% END %]      
     </mets:div>

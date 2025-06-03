@@ -145,6 +145,14 @@
       - type: 'LIBRARY'
         id: 'Ausgabe'
         desc: 'WiSo Library: Ausgabe'
+  '38-101-BFH':
+    'order': 0
+    'loan': 1
+    'reservation': 1
+    'pickup_locations':
+      - type: 'LIBRARY'
+        id: 'Ausgabe'
+        desc: 'WiSo Library: Ausgabe'
   '38-101-VFH':
     'order': 0
     'loan': 1

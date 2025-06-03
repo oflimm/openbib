@@ -32,6 +32,7 @@ use utf8;
 
 use Encode qw(decode_utf8 encode_utf8 encode decode);
 use File::Path qw(make_path);
+use File::Slurp;
 use Getopt::Long;
 use JSON::XS qw/encode_json decode_json/;
 use Log::Log4perl qw(get_logger :levels);
@@ -42,7 +43,7 @@ use XML::LibXML;
 use XML::LibXML::XPathContext;
 use YAML;
 
-our ($do,$host,$collection,$id,$offline,$outputdir,$outputfile,$viewerurl,$stdout,$help,$loglevel,$logfile);
+our ($do,$host,$collection,$id,$offline,$outputdir,$outputfile,$noconv,$viewerurl,$stdout,$help,$loglevel,$logfile);
 
 &GetOptions("do=s"            => \$do,
 
@@ -55,6 +56,7 @@ our ($do,$host,$collection,$id,$offline,$outputdir,$outputfile,$viewerurl,$stdou
 	    "viewer-url=s"    => \$viewerurl,	    
 	    "stdout"          => \$stdout,
 	    "offline"         => \$offline,
+	    "no-conv"         => \$noconv,
 	    
             "logfile=s"       => \$logfile,
             "loglevel=s"      => \$loglevel,
@@ -249,6 +251,21 @@ sub dump_item4dfgviewer {
     my $manifest = _get_url($url);
     
     _cdm_process_item({ id => $id, type => 'dfgviewer'});
+}
+
+sub rebuild_item4dfgviewer {
+    if (!$outputdir || !$collection || !$id){
+	$logger->error("Missing args");
+	exit;
+    }
+
+    my $json_manifest_path = "$outputdir/$collection/$id/record.json";
+    
+    my $manifest = read_file($json_manifest_path);
+
+    my $manifest_ref = decode_json $manifest;
+    
+    _cdm_process_item({ id => $id, manifest => $manifest_ref, type => 'dfgviewer'});
 }
 
 sub dump_collection4dfgviewer {
@@ -495,12 +512,12 @@ sub _get_url {
 
 sub _cdm_process_item {
     my $arg_ref = shift;
-    my $id       = (defined $arg_ref->{id})?$arg_ref->{id}:undef;    
-    my $manifest = (defined $arg_ref->{manifest})?$arg_ref->{manifest}:'';
-    my $type     = (defined $arg_ref->{type})?$arg_ref->{type}:'dfgviewer';
+    my $id           = (defined $arg_ref->{id})?$arg_ref->{id}:undef;    
+    my $manifest_ref = (defined $arg_ref->{manifest})?$arg_ref->{manifest}:{};
+    my $type         = (defined $arg_ref->{type})?$arg_ref->{type}:'dfgviewer';
 
-    my $info_ref      = _cdm_get_iteminfo($collection,$id);
-    my $structure_ref = _cdm_get_structure($collection,$id);
+    my $info_ref      = ($manifest_ref && defined $manifest_ref->{info})?$manifest_ref->{info}:_cdm_get_iteminfo($collection,$id);
+    my $structure_ref = ($manifest_ref && defined $manifest_ref->{structure})?$manifest_ref->{structure}:_cdm_get_structure($collection,$id);
 
     # Not Compound Object?
     if (defined $info_ref->{fields}{'find'}){
@@ -529,7 +546,7 @@ sub _cdm_process_item {
 
     $outputfile = "$new_dir/record.json";
     $logger->info("Dumping JSON-Record to $outputfile");
-    output($record_ref,"Dumping item $id in collection $collection as record.json done");
+    output($record_ref,"Dumping item $id in collection $collection as record.json done") unless ($offline);
 
     my $is_cover = 1;
     if (defined $record_ref->{structure}{node}{node} && ref $record_ref->{structure}{node}{node} eq "ARRAY"){
@@ -553,7 +570,7 @@ sub _cdm_process_item {
 		    if (-e "$new_dir/$filename"){
 			$logger->info("File $filename already exists. Ignoring");
 		    }
-		    else {
+		    elsif (!$offline) {
 			my $cdm_url = "https://${host}/cgi-bin/showfile.exe?CISOROOT=/${collection}&CISOPTR=".$thispage_ref->{pageptr};
 			
 			$logger->info("Getting $filename from $cdm_url");		
@@ -564,20 +581,20 @@ sub _cdm_process_item {
 		    my $convertargs = ($format eq "tif")?'-flatten':'';
 		    
 		    # Generate Thumbs und Webview
-		    if ($format eq "tif" && !-e "$new_dir/$png"){
+		    if ($format eq "tif" && !-e "$new_dir/$png" && !$noconv){
 			system("convert $convertargs $new_dir/$filename $new_dir/$png");
 		    }
 
-		    if ($is_cover && !-e "$new_dir/$cover"){
+		    if ($is_cover && !-e "$new_dir/$cover" && !$noconv){
 			system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$cover");
 			$is_cover = 0;
 		    }
 		    
-		    if (!-e "$new_dir/$webview"){
+		    if (!-e "$new_dir/$webview" && !$noconv){
 			system("convert $convertargs -resize '900x900>' $new_dir/$filename $new_dir/$webview");
 		    }
 		    
-		    if (!-e "$new_dir/$thumb"){
+		    if (!-e "$new_dir/$thumb" && !$noconv){
 			system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
 		    }
 		}
@@ -600,7 +617,7 @@ sub _cdm_process_item {
 		if (-e "$new_dir/$filename"){
 		    $logger->info("File $filename already exists. Ignoring");
 		}
-		else {
+		elsif (!$offline) {
 		    my $cdm_url = "https://${host}/cgi-bin/showfile.exe?CISOROOT=/${collection}&amp;CISOPTR=".$page_ref->{page}{pageptr};
 		    
 		    $logger->info("Getting $filename from $cdm_url");		
@@ -611,20 +628,20 @@ sub _cdm_process_item {
 		my $convertargs = ($format eq "tif")?'-flatten':'';
 		
 		# Generate Thumbs und Webview
-		if ($format eq "tif" && !-e "$new_dir/$png"){
+		if ($format eq "tif" && !-e "$new_dir/$png" && !$noconv){
 		    system("convert $convertargs $new_dir/$filename $new_dir/$png");
 		}
 
-		if ($is_cover && !-e "$new_dir/$cover"){
+		if ($is_cover && !-e "$new_dir/$cover" && !$noconv){
 		    system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$cover");
 		    $is_cover = 0;
 		}
 
-		if (!-e "$new_dir/$webview"){
+		if (!-e "$new_dir/$webview" && !$noconv){
 		    system("convert $convertargs -resize '900x900>' $new_dir/$filename $new_dir/$webview");
 		}
 		
-		if (!-e "$new_dir/$thumb"){
+		if (!-e "$new_dir/$thumb" && !$noconv){
 		    system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
 		}
 	    }
@@ -649,7 +666,7 @@ sub _cdm_process_item {
 	    if (-e "$new_dir/$filename"){
 		$logger->info("File $filename already exists. Ignoring");
 	    }
-	    else {
+	    elsif (!$offline) {
 		my $cdm_url = "https://${host}/cgi-bin/showfile.exe?CISOROOT=/${collection}&CISOPTR=".$thispage_ref->{pageptr};
 		
 		$logger->info("Getting $filename from $cdm_url");		
@@ -660,20 +677,20 @@ sub _cdm_process_item {
 	    my $convertargs = ($format eq "tif")?'-flatten':'';
 	    
 	    # Generate Thumbs und Webview
-	    if ($format eq "tif" && !-e "$new_dir/$png"){
+	    if ($format eq "tif" && !-e "$new_dir/$png" && !$noconv){
 		system("convert $convertargs $new_dir/$filename $new_dir/$png");
 	    }
 	    
-	    if ($is_cover && !-e "$new_dir/$cover"){
+	    if ($is_cover && !-e "$new_dir/$cover" && !$noconv){
 		system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$cover");
 		$is_cover = 0;
 	    }
 	    
-	    if (!-e "$new_dir/$webview"){
+	    if (!-e "$new_dir/$webview" && !$noconv){
 		system("convert $convertargs -resize '900x900>' $new_dir/$filename $new_dir/$webview");
 	    }
 	    
-	    if (!-e "$new_dir/$thumb"){
+	    if (!-e "$new_dir/$thumb" && !$noconv){
 		system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
 	    }
 	}
@@ -698,7 +715,7 @@ sub _cdm_process_item {
 	    if (-e "$new_dir/$filename"){
 		$logger->info("File $filename already exists. Ignoring");
 	    }
-	    else {
+	    elsif (!$offline) {
 		my $cdm_url = "https://${host}/cgi-bin/showfile.exe?CISOROOT=/${collection}&CISOPTR=".$thispage_ref->{pageptr};
 		
 		$logger->info("Getting $filename from $cdm_url");		
@@ -709,20 +726,20 @@ sub _cdm_process_item {
 	    my $convertargs = ($format eq "tif")?'-flatten':'';
 
 	    # Generate Thumbs und Webview
-	    if ($format eq "tif" && !-e "$new_dir/$png"){
+	    if ($format eq "tif" && !-e "$new_dir/$png" && !$noconv){
 		system("convert $convertargs $new_dir/$filename $new_dir/$png");
 	    }
 	    
-	    if ($is_cover && !-e "$new_dir/$cover"){
+	    if ($is_cover && !-e "$new_dir/$cover" && !$noconv){
 		system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$cover");
 		$is_cover = 0;
 	    }
 	    
-	    if (!-e "$new_dir/$webview"){
+	    if (!-e "$new_dir/$webview" && !$noconv){
 		system("convert $convertargs -resize '900x900>' $new_dir/$filename $new_dir/$webview");
 	    }
 	    
-	    if (!-e "$new_dir/$thumb"){
+	    if (!-e "$new_dir/$thumb" && !$noconv){
 		system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
 	    }
 	}
@@ -750,7 +767,7 @@ sub _cdm_process_item {
 	    if (-e "$new_dir/$filename"){
 		$logger->info("File $filename already exists. Ignoring");
 	    }
-	    else {
+	    elsif (!$offline) {
 		my $cdm_url = "https://${host}/cgi-bin/showfile.exe?CISOROOT=/${collection}&CISOPTR=".$thispage_ref->{pageptr};
 		
 		$logger->info("Getting $filename from $cdm_url");		
@@ -758,7 +775,7 @@ sub _cdm_process_item {
 		system("wget --quiet --no-check-certificate -O $new_dir/$filename '$cdm_url'") unless ($offline);
 	    }
 
-	    if ($format eq "pdf"){
+	    if ($format eq "pdf" && !$noconv){
 		system("cd $new_dir ; pdftoppm -f 1 -l 1 $pdf ".$thispage_ref->{pageptr}." -jpeg");
 		system("cd $new_dir ; mv ".$thispage_ref->{pageptr}."-*1.jpg $jpeg");
 		$filename = $jpeg;
@@ -767,20 +784,20 @@ sub _cdm_process_item {
 	    my $convertargs = ($format eq "tif")?'-flatten':'';
 	    
 	    # Generate Thumbs und Webview
-	    if ($format eq "tif" && !-e "$new_dir/$png"){
+	    if ($format eq "tif" && !-e "$new_dir/$png" && !$noconv){
 		system("convert $convertargs $new_dir/$filename $new_dir/$png");
 	    }
 	    
-	    if ($is_cover && !-e "$new_dir/$cover"){
+	    if ($is_cover && !-e "$new_dir/$cover" && !$noconv){
 		system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$cover");
 		$is_cover = 0;
 	    }
 	    
-	    if (!-e "$new_dir/$webview"){
+	    if (!-e "$new_dir/$webview" && !$noconv){
 		system("convert $convertargs -resize '900x900>' $new_dir/$filename $new_dir/$webview");
 	    }
 	    
-	    if (!-e "$new_dir/$thumb"){
+	    if (!-e "$new_dir/$thumb" && !$noconv){
 		system("convert $convertargs -resize '150x150>' $new_dir/$filename $new_dir/$thumb");
 	    }
 	}
@@ -807,9 +824,9 @@ sub _cdm_process_item {
 	}
     }
     
-    if ( 0 == 1 && $manifest && $type eq "dfgviewer"){
+    if ( 0 == 1 && $manifest_ref && $type eq "dfgviewer"){
 	my $parser = XML::LibXML->new();
-	my $tree   = $parser->parse_string($manifest);
+	my $tree   = $parser->parse_string($manifest_ref);
 	my $xpc    = XML::LibXML::XPathContext->new($tree);
 	
 	$xpc->registerNs('mets',  'http://www.loc.gov/METS/');
@@ -939,6 +956,7 @@ e.g:
 ./cdm_ctl.pl --do=dump_item4dfgviewer --outputdir=/store/scans --collection=inkunabeln --id=209521  --viewer-url="https://search.ub.uni-koeln.de/scans"
 ./cdm_ctl.pl --do=dump_collection4dfgviewer --outputdir=/store/scans --collection=inkunab_tmp  --viewer-url="https://search.ub.uni-koeln.de/scans"
 ./cdm_ctl.pl -offline --do=dump_collection4dfgviewer --outputdir=/store/scans --collection=inkunab_tmp  --viewer-url="https://search.ub.uni-koeln.de/scans"
+./cdm_ctl.pl -offline --do=rebuild_item4dfgviewer --id=123 --outputdir=/store/scans --collection=zas  --viewer-url="https://search.ub.uni-koeln.de/scans"
 
 ENDHELP
     exit;

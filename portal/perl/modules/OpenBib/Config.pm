@@ -37,6 +37,7 @@ use Compress::LZ4;
 use Encode qw(decode_utf8 encode_utf8);
 use JSON::XS;
 use List::Compare;
+use List::MoreUtils qw(uniq);
 use Log::Log4perl qw(get_logger :levels);
 use LWP;
 use URI::Escape qw(uri_escape);
@@ -6084,9 +6085,13 @@ sub check_cluster_consistency {
     
     foreach my $dbinfo_ref ($self->get_active_database_names->all){
         my $count_ref = { dbname => $dbinfo_ref->dbname, dbid => $dbinfo_ref->id };
+
+	my @this_db_counts = ();
+	
         foreach my $serverid (@$serverids_of_cluster_ref){
             foreach my $result ($dbinfo_ref->search_related("updatelogs", { serverid => $serverid }, { rows => 1, order_by => 'tstamp_start DESC' } )->all){
                 $count_ref->{server}{$serverid} = $result->title_count;
+		push @this_db_counts, $result->title_count;
             }
         }
 
@@ -6094,20 +6099,31 @@ sub check_cluster_consistency {
             $logger->debug("Comparing ".YAML::Dump($count_ref));
         }
 
-        my $last_titlecount;
-        foreach my $thisserver (keys %{$count_ref->{server}}){
-            foreach my $titlecount ($count_ref->{server}{$thisserver}){
-                $logger->debug("Checking titlecount $titlecount of server $thisserver to previous count $last_titlecount");
-                if (defined $last_titlecount && $titlecount != $last_titlecount){
-                    push @$differences_ref, $count_ref;
+	my @uniq_db_counts = uniq @this_db_counts;
 
-                    $logger->debug("Found difference in database $count_ref->{dbname}");
-                }
-                $last_titlecount = $titlecount;
-            }
-        }
+	$logger->debug("DB: ".$dbinfo_ref->dbname." -> ".join(', ',@this_db_counts)." uniq: ".$#uniq_db_counts);
+	
+	# Mindestens ein Count weicht ab
+	if ($#uniq_db_counts){
+	    push @$differences_ref, $count_ref;
+	}
+	
+        # my $last_titlecount;
+        # foreach my $thisserver (keys %{$count_ref->{server}}){
+        #     foreach my $titlecount ($count_ref->{server}{$thisserver}){
+        #         $logger->debug("Checking titlecount $titlecount of server $thisserver to previous count $last_titlecount");
+        #         if (defined $last_titlecount && $titlecount != $last_titlecount){
+        #             push @$differences_ref, $count_ref;
+
+        #             $logger->debug("Found difference in database $count_ref->{dbname}");
+        #         }
+        #         $last_titlecount = $titlecount;
+        #     }
+        # }
     }
 
+    $logger->debug(YAML::Dump($differences_ref));
+    
     return $differences_ref;
 }
 

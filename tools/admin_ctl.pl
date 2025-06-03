@@ -36,13 +36,14 @@ use YAML;
 
 use OpenBib::Config;
 
-our ($do,$scope,$view,$db,$loc,$help,$loglevel,$logfile);
+our ($do,$scope,$view,$id,$db,$loc,$help,$loglevel,$logfile);
 
 &GetOptions("do=s"            => \$do,
 
 	    "scope=s"         => \$scope,
 	    "view=s"          => \$view,
 	    "db=s"            => \$db,
+	    "id=s"            => \$id,	    
 	    "loc=s"           => \$loc,	    
 	    
             "logfile=s"       => \$logfile,
@@ -396,6 +397,40 @@ sub database_delete {
 
 }
 
+sub cluster_check_consistency {
+
+    if (!$id){
+	$logger->error("Missing arg (cluster)id");
+	exit;
+    }
+
+    $logger->info("Checking consistency of CLUSTER $id");       
+
+    my $config = new OpenBib::Config;
+
+    my $servers_ref = {};
+
+    my $serverids_ref = $config->get_serverids_of_cluster($id);
+
+    foreach my $serverid (@$serverids_ref){
+	$servers_ref->{$serverid} = $config->get_serverinfo_description($serverid);
+    }
+
+    my $differences_ref = $config->check_cluster_consistency($id);
+
+    foreach my $db_ref (@$differences_ref){
+	my @output = ();
+	foreach my $serverid (sort keys %{$db_ref->{server}}){
+	    push @output, $servers_ref->{$serverid}." (".$db_ref->{server}{$serverid}.")";
+	}
+
+	print $db_ref->{dbname}.": ", join(' - ',@output),"\n" if (@output);
+
+    }
+    
+
+}
+
 
 sub print_help {
     print << "ENDHELP";
@@ -453,6 +488,11 @@ Delete database
    --do=delete
    --db=...             : Database name
 
+Check consistency of DBs-counts in Cluster
+   --scope=cluster
+   --do=check_consistency
+   --id=...              : Cluster id
+
 e.g:
 
 ./admin_ctl.pl --scope=view --do=list --view=unikatalog
@@ -470,6 +510,8 @@ e.g:
 ./admin_ctl.pl --scope=view --do=add_loc --view=unikatalog --loc=DE-38-123
 
 ./admin_ctl.pl --scope=view --do=delete_loc --view=unikatalog --loc=DE-38-123
+
+./admin_ctl.pl --scope=cluster --do=check_consistency --id=1
 
 ENDHELP
     exit;

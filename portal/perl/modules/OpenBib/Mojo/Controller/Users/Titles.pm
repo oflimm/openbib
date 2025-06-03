@@ -265,10 +265,6 @@ sub show_record {
 	my $record_p   = $record->load_full_record_p;
 
 	my $litlists_p = $user->get_litlists_of_tit_p({titleid => $titleid, dbname => $database, view => $view});
-
-	my $record_p   = $record->load_full_record_p;
-
-	my $litlists_p = $user->get_litlists_of_tit_p({titleid => $titleid, dbname => $database, view => $view});
 	    	
 	$record_p->then(sub {
 

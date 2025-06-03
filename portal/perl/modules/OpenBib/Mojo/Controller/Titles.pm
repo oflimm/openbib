@@ -1029,6 +1029,7 @@ sub show_record_related_records {
     my $path_prefix    = $self->stash('path_prefix');
     my $servername     = $self->stash('servername');
     my $dbinfotable    = $self->stash('dbinfo');
+    my $msg            = $self->stash('msg');
 
     if ($database && $titleid ){ # Valide Informationen etc.
         $logger->debug("ID: $titleid - DB: $database");
@@ -1038,7 +1039,7 @@ sub show_record_related_records {
 	# Todo: Excluded locations via Filter
 	my $enriched_record_p = $record->enrich_related_records_p({ viewname => $view });
 
-	$enriched_records_p->then(sub {
+	$enriched_record_p->then(sub {
 	    my $record = shift;
 	    
 	    # TT-Data erzeugen

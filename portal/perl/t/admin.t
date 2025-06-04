@@ -14,9 +14,11 @@ my $t = Test::Mojo->new('OpenBib::Mojo');
 
 $t->ua->max_redirects(5);
 
-$t->post_ok('/portal/unikatalog/login' => form => { 'l' => 'de', 'authenticatorid' => '4', 'username' => $adminuser, 'password' => 'wrong_password', 'redirect_to' => '%2Fportal%2Funikatalog%2Fhome.html%3Fl%3Dde' })->status_is(200)->content_like(qr/Sie konnten mit Ihrer angegebenen Benutzerkennung und Passwort nicht erfolgreich authentifiziert werden/);
+my $csrftoken = $t->ua->get( '/portal/unikatalog/login.html?l=de' )->res->dom->at('input[name=csrf_token]')->{'value'};
 
-$t->post_ok('/portal/unikatalog/login' => form => { 'l' => 'de', 'authenticatorid' => '4', 'username' => $adminuser, 'password' => $adminpw, 'redirect_to' => '%2Fportal%2Funikatalog%2Fhome.html%3Fl%3Dde' })->status_is(200)->content_like(qr/Administration/);
+$t->post_ok('/portal/unikatalog/login' => form => { 'l' => 'de', 'authenticatorid' => '4', 'username' => $adminuser, 'password' => 'wrong_password', 'redirect_to' => '%2Fportal%2Funikatalog%2Fhome.html%3Fl%3Dde', 'csrf_token' => $csrftoken })->status_is(200)->content_like(qr/Sie konnten mit Ihrer angegebenen Benutzerkennung und Passwort nicht erfolgreich authentifiziert werden/);
+
+$t->post_ok('/portal/unikatalog/login' => form => { 'l' => 'de', 'authenticatorid' => '4', 'username' => $adminuser, 'password' => $adminpw, 'redirect_to' => '%2Fportal%2Funikatalog%2Fhome.html%3Fl%3Dde', 'csrf_token' => $csrftoken })->status_is(200)->content_like(qr/Administration/);
 
 $t->get_ok('/portal/unikatalog/admin/clusters')->status_is(200)->content_like(qr/Bereits existierende Cluster/);
 

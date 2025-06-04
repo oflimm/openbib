@@ -841,9 +841,13 @@ sub parse_valid_input {
 
     my $r     = $self->stash('r');
 
-    $logger->debug("r: ".ref $r);
-    $logger->debug("r Params: ".$r->params);    
-    $logger->debug("c username: ".$self->param('username'));    
+    my $r_ref = ref $r || '';
+    my $r_params = $r->params || '';
+    my $c_username = $self->param('username') || '';
+    
+    $logger->debug("r: ".$r_ref);
+    $logger->debug("r Params: ".$r_params);    
+    $logger->debug("c username: ".$c_username);    
     
     my $valid_input_params_ref = {};
 

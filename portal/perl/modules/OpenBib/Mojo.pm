@@ -830,7 +830,7 @@ sub negotiate_content($c) {
 		    $c->stash('lang',&cleanup_lang($c,$session->{lang}));
 		}
 		elsif ($c->session('lang')){
-		    $logger->debug("Sprache definiert durch Cookie: ".$session->{lang});
+		    $logger->debug("Sprache definiert durch Cookie: ".$c->session('lang'));
 		    $c->stash('lang',$c->session('lang'));
 		}
 		else {

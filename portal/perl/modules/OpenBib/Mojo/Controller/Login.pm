@@ -90,7 +90,7 @@ sub show_form {
     my $code        = ($r->param('code'))?$r->param('code'):'1';
     my $validtarget = ($r->param('validtarget'))?$r->param('validtarget'):'none';
     my $type        = ($r->param('type'))?$r->param('type'):'';
-    my $redirect_to = $r->param('redirect_to'); # || "$path_prefix/$config->{searchform_loc}?l=$lang";
+    my $redirect_to = $r->param('redirect_to') || '';  # || "$path_prefix/$config->{searchform_loc}?l=$lang";
 
     $logger->debug("Redirecting to: $redirect_to");
     

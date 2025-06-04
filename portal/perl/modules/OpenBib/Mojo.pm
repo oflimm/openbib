@@ -314,6 +314,7 @@ sub _before_dispatch($c){
     $c->stash('config',$config);
     $c->stash('r',$r);
     $c->stash('lang','de'); # Setting default Language to de
+    $c->stash('csrf_token',$c->csrf_token);
     
     my ($atime,$btime,$timeall)=(0,0,0);
 
@@ -387,7 +388,7 @@ sub _before_dispatch($c){
     my $queryoptions = OpenBib::QueryOptions->new({ query => $r, session => $session });
 
     $c->stash('qopts',$queryoptions);
-
+    
     if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);

@@ -13,7 +13,7 @@
 -%]
 [%- normset         = record.get_fields -%]
 [%- mexnormset      = record.get_holding -%]
-[%- cirset          = record.load_circulation.get_circulation -%] 
+[%- cirset          = record.get_circulation -%] 
 [%- same_records    = record.enrich_same_records.get_same_records -%]
 [%- similar_records = record.enrich_similar_records.get_similar_records -%]
 [%- IF format == "rdf" -%]

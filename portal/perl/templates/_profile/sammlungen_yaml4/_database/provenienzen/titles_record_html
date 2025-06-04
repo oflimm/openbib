@@ -16,7 +16,7 @@
   request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) ;
   normdata        = record.get_fields ;
   holding         = record.get_holding ;
-  circulation     = record.load_circulation.get_circulation ; 
+  circulation     = record.get_circulation ; 
 
   IF record.record_exists;
     record_exists = 1;

@@ -18,7 +18,7 @@
   request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) ;
   normdata        = record.get_fields ;
   holding         = record.get_holding ;
-  circulation     = record.load_circulation.get_circulation ; 
+  circulation     = record.get_circulation ; 
 
   # Provenienzen vorhanden?
   have_provenance_for = {};

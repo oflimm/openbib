@@ -35,7 +35,7 @@
 [% database        = record.database %]
 [% normdata         = record.get_fields %]
 [% holding         = record.get_holding %]
-[% circulation         = record.load_circulation.get_circulation %] 
+[% circulation         = record.get_circulation %] 
 [%- bibkey = record.to_bibkey -%]
 [%- isbn   = normdata.${"T0540"}.first.content.replace('-','') -%]
 

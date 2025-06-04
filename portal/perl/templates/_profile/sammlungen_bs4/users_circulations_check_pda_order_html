@@ -35,7 +35,7 @@
 
   fields       = record.get_fields;
 #  holdings     = record.get_holding;
-#  circulations = record.load_circulation.get_circulation;
+#  circulations = record.get_circulation;
   
   title     = fields.${"T0331"}.first.content;
 

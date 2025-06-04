@@ -13,7 +13,7 @@
 -%]
 [%- normdata        = record.get_fields -%]
 [%- holding         = record.get_holding -%]
-[%- circulation     = record.load_circulation.get_circulation -%] 
+[%- circulation     = record.get_circulation -%] 
 [%- same_records    = record.enrich_same_records.get_same_records -%]
 [%- similar_records = record.enrich_similar_records.get_similar_records -%]
 <?xml version="1.0" encoding="UTF-8"?>

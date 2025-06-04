@@ -2,7 +2,7 @@
 
 circulation = [];
 
-FOREACH item IN record.load_circulation.get_circulation;
+FOREACH item IN record.get_circulation;
   item.delete('Entleiher','Gruppe','Signatur','Standort','Zweigstelle');
   circulation.push(item);
 END;

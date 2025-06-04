@@ -18,7 +18,7 @@
   request_base    = queryoptions.to_cgi_params({exclude = ['profile','page','db']}) ;
   normdata        = record.get_fields ;
   holding         = record.get_holding ;
-  circulation     = record.load_circulation.get_circulation ; 
+  circulation     = record.get_circulation ; 
 
   # Interimsloesung: Fehlende Volltextlinks aus NZ-Publishing
    nz_fulltext_links_from_fields = 0;

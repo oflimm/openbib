@@ -30,7 +30,7 @@
 [%- dburl    = dbinfo.get('urls').${record.database} -%]
 [% normdata     = record.get_fields %]
 [% holding     = record.get_holding  %]
-[% circulation = record.load_circulation.get_circulation %]
+[% circulation = record.get_circulation %]
 
 <h3>[% msg.maketext("Titelaufnahme") %]</h3>
 <!-- Title begins here -->

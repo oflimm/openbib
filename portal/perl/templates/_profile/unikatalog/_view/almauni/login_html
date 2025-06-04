@@ -48,6 +48,7 @@
 [% ELSE %]
 <input type="hidden" name="redirect_to" value="[% path_prefix %]/[% config.get("home_loc") %]">
 [% END %]
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 <p/>
 
@@ -94,6 +95,7 @@
 [% ELSE %]
 <input type="hidden" name="redirect_to" value="[% path_prefix %]/[% config.get("home_loc") %]">
 [% END %]
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 [%- FOREACH authenticator IN authenticators -%]
 [%-   IF authenticator.type == 'self' -%]

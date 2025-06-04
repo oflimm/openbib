@@ -43,6 +43,7 @@
 [%   redirect_to = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}" %]
 [% END %]
 <input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 <p/>
 
@@ -91,6 +92,7 @@
 [%   redirect_to = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}" %]
 [% END %]
 <input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 [%- FOREACH authenticator IN authenticators -%]
 [%-   IF authenticator.type == 'self' -%]

@@ -47,6 +47,7 @@
 [% IF redirect_to %]
           <input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
 [% END %]
+          <input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
           <p/>
 
@@ -95,6 +96,8 @@
 [% IF redirect_to %]
 <input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
 [% END %]
+
+          <input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 <p/>
 
@@ -153,6 +156,8 @@
 <input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
 [% END %]
 
+          <input type="hidden" name="csrf_token" value="[% csrf_token %]">
+
 <p/>
 
 <div class="form-floating mb-3">
@@ -201,6 +206,8 @@
 <input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
 [% END %]
 
+          <input type="hidden" name="csrf_token" value="[% csrf_token %]">
+
 <p/>
 
 <div class="form-floating mb-3">
@@ -247,6 +254,8 @@
 <form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded" target="_parent">
 
 <input type="hidden" name="redirect_to" value="[% uri_escape(redirect_to) %]">
+
+          <input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 [%- FOREACH authenticator IN authenticators -%]
 [%-   IF authenticator.type == 'self' -%]

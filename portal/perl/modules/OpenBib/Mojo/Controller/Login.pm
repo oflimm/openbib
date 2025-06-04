@@ -126,6 +126,7 @@ sub show_form {
         validtarget     => $validtarget,
         username        => $username,
         redirect_to     => $redirect_to,
+	csrf_token      => $self->stash('csrf_token'),
     };
     
     my $templatename = ($type)?"tt_login_".$type."_tname":"tt_login_tname";
@@ -176,7 +177,15 @@ sub authenticate {
         success => 0,
     };
 
-
+    $logger->debug("CSRF-Check: ".$self->validation->csrf_protect->has_error);
+    
+    # CSRF-Checking
+    if ($self->validation->csrf_protect->has_error('csrf_token')){
+	my $code   = -10;
+	my $reason = $self->get_error_message($code);
+	return $self->print_warning($reason,$code);
+    }
+    
     # Authentifizierung nur dann valide, wenn dem View das Anmeldeziel
     # authenticatorid zugeordnet ist.
     my @valid_authenticators = $config->get_viewauthenticators($view);
@@ -510,6 +519,8 @@ sub get_error_message {
         -8 => $msg->maketext("Die Anmeldung mit Ihrer angegebenen Benutzerkennung und Passwort ist zu oft fehlgeschlagen. Die Kennung ist gesperrt. Bitte wenden Sie sich an an den Schalter \"Bibliotheksausweise und Fernleihrückgabe\" in der USB, um sie zu entsperren. Danach können Sie sich im Ausweisportal (https://ausweis.ub.uni-koeln.de/) ein neues Passwort setzen."),
 
         -9 => $msg->maketext("Die eingegebene Benutzernummer ist ungültig. Benutzernummern bestehen aus Großbuchstaben, Zahlen und #, z.B. A123456789#B."),
+
+        -10 => $msg->maketext("Die Anmeldung ist wegen eines inkorrekten CSRF-Tokens gescheitert."),
 	
 	);
 

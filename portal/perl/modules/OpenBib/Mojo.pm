@@ -199,8 +199,8 @@ sub startup ($app){
 	# Korrektur der ausgehandelten Sprache bei direkter Auswahl via CGI-Parameter 'l' oder cookie
 	&alter_negotiated_language($c);
 
-	# Wenn dispatch_url, dann Runmode dispatch_to_representation mit externem Redirect	    
-	if ($c->stash('dispatch_url')){
+	# Wenn dispatch_url und keine HTTP (Basic) Authentication, dann Runmode dispatch_to_representation mit externem Redirect	    
+	if ($c->stash('dispatch_url') && ! $c->req->headers->authorization ){
 	    $logger->debug("Dispatching to representation ".$c->stash('dispatch_url'));
 	    $c->res->code(303);
 	    return $c->redirect_to($c->stash('dispatch_url'));
@@ -1048,11 +1048,12 @@ sub check_http_basic_authentication($c) {
     my $view       = $c->stash('view');
 
     # Shared Args
-    my $r       = $c->stash('r');
-    my $config  = $c->stash('config');
-    my $user    = $c->stash('user');
-    my $session = $c->stash('session');
-
+    my $r              = $c->stash('r');
+    my $config         = $c->stash('config');
+    my $user           = $c->stash('user');
+    my $session        = $c->stash('session');
+    my $representation = $c->stash('representation');
+    
 #    if ($logger->is_debug){
 #        $logger->debug("User Pre: ".YAML::Dump($user));
 #    }
@@ -1063,17 +1064,14 @@ sub check_http_basic_authentication($c) {
     
     # Es interessiert nicht der per se in der Konfiguration portal.mojo definierte Authentifizierungstyp,
     # sondern der etwaig mit dem aktuellen Request gesendete Typ!
-    my $http_authtype = "";
-    
-    if (defined $r->headers->header('Authorization')){
-        ($http_authtype) = $r->headers->header('Authorization') =~/^(\S+)\s+/; #  $r->ap_auth_type(); 
-    }
+
+    my $http_authtype = $c->req->headers->authorization || '';
     
     $logger->debug("HTTP Authtype: '$http_authtype'");
     
     # Nur wenn konkrete Authentifizierungsinformationen geliefert wurden, wird per shortcut
     # und HTTP Basic Authentication authentifiziert, ansonsten gilt die Cookie based authentication
-    if ($http_authtype eq "Basic"){
+    if ($http_authtype =~m/Basic/){
         my ($http_user, $password) = $c->req->url->to_abs->userinfo =~m/^([^:]+):(.*)$/;
         
         $logger->debug("Authentication Shortcut for user $http_user / Password: XXX");

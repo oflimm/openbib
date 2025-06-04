@@ -35,5 +35,7 @@ $t->get_ok('/portal/unikatalog/admin/views')->status_is(200)->content_like(qr/Be
 
 $t->get_ok('/portal/unikatalog/admin/views.json')->status_is(200)->json_is('/views/0/id' => 'abgleich_ebookpda');
 
+# Clear all cookies
+$t->reset_session;
 
 done_testing();

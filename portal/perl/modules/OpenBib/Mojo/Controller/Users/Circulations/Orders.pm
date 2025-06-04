@@ -84,7 +84,7 @@ sub show_collection {
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
     my $sessionuserid        = $user->get_userid_of_session($session->{ID});
 
-    if (!$self->authorization_successful || $userid ne $sessionuserid){
+    if (!$self->authorization_successful || ( $userid ne $sessionuserid && $userid ne 'me')){
         if ($self->stash('representation') eq "html"){
             return $self->tunnel_through_authenticator('GET');            
         }
@@ -485,7 +485,7 @@ sub confirm_delete_record {
 	$logger->debug("Auth successful: ".$self->authorization_successful." - Authenticator: $sessionauthenticator");
     }
     
-    if (!$self->authorization_successful || $userid ne $sessionuserid){
+    if (!$self->authorization_successful || ( $userid ne $sessionuserid && $userid ne 'me')){
         $logger->debug("Authenticator: $sessionauthenticator");
 
         if ($self->stash('representation') eq "html"){

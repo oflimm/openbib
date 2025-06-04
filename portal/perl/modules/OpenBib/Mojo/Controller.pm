@@ -222,7 +222,7 @@ sub is_authenticated {
     if ($role eq "admin" && $user->is_admin){
         return 1;
     }
-    elsif ($role eq "user" && ( $user->is_admin || $user->{ID} eq $userid )){
+    elsif ($role eq "user" && $user->{ID} && ( $user->is_admin || $user->{ID} eq $userid || $userid eq 'me') ){
         return 1;
     }
     else {

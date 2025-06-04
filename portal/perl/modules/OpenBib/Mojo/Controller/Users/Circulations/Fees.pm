@@ -86,7 +86,7 @@ sub show_collection {
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
     my $sessionuserid        = $user->get_userid_of_session($session->{ID});
 
-    if (!$self->authorization_successful || $userid ne $sessionuserid){
+    if (!$self->authorization_successful || ( $userid ne $sessionuserid && $userid ne 'me')){
         if ($self->stash('representation') eq "html"){
             return $self->tunnel_through_authenticator('GET');            
         }

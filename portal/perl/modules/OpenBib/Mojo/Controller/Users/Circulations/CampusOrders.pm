@@ -122,7 +122,7 @@ sub create_record {
 	$logger->debug("Auth successful: ".$self->authorization_successful." - Authenticator: $sessionauthenticator");
     }
     
-    if (!$self->authorization_successful || $userid ne $sessionuserid){
+    if (!$self->authorization_successful || ( $userid ne $sessionuserid && $userid ne 'me')){
         if ($self->stash('representation') eq "html"){
             return $self->tunnel_through_authenticator('POST');            
         }

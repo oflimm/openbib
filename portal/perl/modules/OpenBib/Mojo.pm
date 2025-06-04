@@ -1073,36 +1073,53 @@ sub check_http_basic_authentication($c) {
     # Nur wenn konkrete Authentifizierungsinformationen geliefert wurden, wird per shortcut
     # und HTTP Basic Authentication authentifiziert, ansonsten gilt die Cookie based authentication
     if ($http_authtype =~m/Basic/){
-        my ($http_user, $password) = $c->req->url->to_abs->userinfo =~m/^([^:]+):(.*)$/;
-        
-        $logger->debug("Authentication Shortcut for user $http_user / Password: XXX");
-        
-        my $userid   = $user->authenticate_self_user({ username => $http_user, password => $password, viewname => $view });
-        
-        my $authenticator   = $config->get_authenticator_self();
-        my $authenticatorid = $authenticator->{id};
 
-        $logger->debug("authenticatortarget: $authenticatorid");
-        
-        if ($userid > 0 && $authenticatorid){
-            $user->connect_session({
-                sessionID       => $session->{ID},
-                userid          => $userid,
-                authenticatorid => $authenticatorid,
-            });
-            $user->{ID} = $userid;
-        }
-        else {
-            $c->stash('basic_auth_failure',1);
-        }
+	my $authenticatorid = ($r->param('authenticatorid'))?$r->param('authenticatorid'):4;
+	
+	my @valid_authenticators = $config->get_viewauthenticators($view);
+	
+	my $authenticator_is_valid = 0;
+	
+	#check if the passed authentification type is valid for this view
+	foreach my $valid_authenticator (@valid_authenticators){
+	    if ($valid_authenticator == $authenticatorid){
+		$authenticator_is_valid = 1;
+		last;
+	    }
+	}
 
-        #if ($logger->is_debug){
-        #    $logger->debug("User post: ".YAML::Dump($user));
-        #}
-        
-        # User zurueckchreiben
-        $c->stash('user',$user);
-        
+	if ($authenticator_is_valid){
+	    $logger->debug("Authenticatorid $authenticatorid is valid for view $view");
+
+	    my ($username, $password) = $c->req->url->to_abs->userinfo =~m/^([^:]+):(.*)$/;
+	    
+	    my $authenticator = OpenBib::Authenticator::Factory->create_authenticator({ id => $authenticatorid, config => $config, session => $session});
+	    
+	    my $userid = $authenticator->authenticate({
+		username  => $username,
+		password  => $password,
+		viewname  => $view,
+						      });
+	    
+	    if ($userid > 0 && $authenticatorid){
+		$user->connect_session({
+		    sessionID       => $session->{ID},
+		    userid          => $userid,
+		    authenticatorid => $authenticatorid,
+				       });
+		$user->{ID} = $userid;
+	    }
+	    else {
+		$c->stash('basic_auth_failure',1);
+	    }
+
+	    #if ($logger->is_debug){
+	    #    $logger->debug("User post: ".YAML::Dump($user));
+	    #}
+	    
+	    # User zurueckchreiben
+	    $c->stash('user',$user);
+	}        
     }
 }
 

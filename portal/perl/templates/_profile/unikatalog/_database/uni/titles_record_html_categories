@@ -686,24 +686,30 @@ FOREACH field IN normdata;
 
     CASE [ "T0260" "T0264" ]; #
          original_language  = thisfield.${'original_language'};
+	 ind     = thisfield.${'ind'} ;
     
-         ortverlagjahr = [];
+         ortverlagjahr = "";
 
          IF thisfield.${'a'} ; # Ort
 	   ort = thisfield.${'a'};
-	   ortverlagjahr.push("${ort}: ");
+	   ortverlagjahr = "${ort}: ";
 	 END;
 
          IF thisfield.${'b'} ; # Verlag
-           ortverlagjahr.push(thisfield.${'b'});
+	   verlag = thisfield.${'b'};
+           ortverlagjahr = "${ortverlagjahr} ${verlag}";
          END;
 
 	 IF thisfield.${'c'} ; # Jahr
 	   jahr = thisfield.${'c'};
-           ortverlagjahr.push("(${jahr})");	 
+	   IF verlag ;
+	      ortverlagjahr = "${ortverlagjahr}, ${jahr}";
+           ELSE;
+	      ortverlagjahr = "${ortverlagjahr} ${jahr}";	   
+	   END;
 	 END;
 
-         ortverlagjahrcontent = ortverlagjahr.join(' ');
+         ortverlagjahrcontent = ortverlagjahr;
 
          IF original_language;
 	    ortverlagjahrcontent = "${original_language} = ${ortverlagjahrcontent}";

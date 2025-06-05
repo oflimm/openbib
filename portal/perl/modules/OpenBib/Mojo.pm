@@ -163,6 +163,7 @@ sub startup ($app){
 	my $r            = $c->req;
 	my $path         = $r->url->path;
 	my $config       = $c->stash('config');
+	my $msg          = $c->stash('msg');
 	my $base_loc     = $config->{'base_loc'};
 
 	$logger->debug("Mojo - Entering _around_action");
@@ -205,6 +206,11 @@ sub startup ($app){
 	    $c->res->code(303);
 	    return $c->redirect_to($c->stash('dispatch_url'));
 	}    
+
+	# Basic Auth failure?
+	if ($c->stash('basic_auth_failure')){
+	    return $c->render( json => { error => 1, msg => $msg->maketext("Forbidden")} );
+	}
 	
 	return $next->();
 
@@ -1074,7 +1080,7 @@ sub check_http_basic_authentication($c) {
     # und HTTP Basic Authentication authentifiziert, ansonsten gilt die Cookie based authentication
     if ($http_authtype =~m/Basic/){
 
-	my $authenticatorid = ($r->param('authenticatorid'))?$r->param('authenticatorid'):4;
+	my $authenticatorid = ($r->param('authenticatorid'))?$r->param('authenticatorid'):$config->get_id_of_selfreg_authenticator;
 	
 	my @valid_authenticators = $config->get_viewauthenticators($view);
 	

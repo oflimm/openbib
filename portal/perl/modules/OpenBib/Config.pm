@@ -43,6 +43,8 @@ use LWP;
 use URI::Escape qw(uri_escape);
 use YAML::Syck;
 
+use Mojo::Promise;
+
 use OpenBib::Config::File;
 use OpenBib::Config::DispatchTable;
 use OpenBib::Schema::DBI;
@@ -1436,6 +1438,31 @@ sub get_locationinfo_by_id {
     return "";
 }
 
+sub get_locationinfo_by_id_p {
+    my $self   = shift;
+    my $id = shift;
+
+    my $locationinfo = $self->get_schema->resultset('Locationinfo')->single(
+        {
+            'identifier' => $id,
+        },
+    );
+
+    if ($locationinfo){
+            my $locationinfo_ref = {
+                id          => $locationinfo->id,
+                identifier  => $locationinfo->identifier,
+                description => $locationinfo->description,
+                shortdesc   => $locationinfo->shortdesc,
+                type        => $locationinfo->type,
+            };
+
+        return Mojo::Promise->resolve($locationinfo_ref);
+    }
+
+    return Mojo::Promise->resolve({});
+}
+
 
 sub get_locationinfo {
     my ($self) = @_;
@@ -1526,6 +1553,84 @@ sub get_locationinfo_fields {
     return $locationinfo_ref;
 }
 
+sub get_locationinfo_fields_p {
+    my $self        = shift;
+    my $locationid  = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return {} if (!$locationid);
+
+    my ($atime,$btime,$timeall);
+        
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $locationinfo_ref= {};
+
+    my $memc_key = "config:locationinfo_fields:$locationid";
+
+    if ($self->{memc}){
+        my $locationinfo_ref = $self->{memc}->get($memc_key);
+
+	if ($locationinfo_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got locationinfo_fields for key $memc_key from memcached");
+	    }
+
+            if ($self->{benchmark}) {
+                my $btime=new Benchmark;
+                my $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+            }
+
+	    return $locationinfo_ref if (defined $locationinfo_ref);
+	}
+    }
+
+    # DBI: "select category,content,indicator from libraryinfo where dbname = ?"
+    my $locationfields = $self->get_schema->resultset('LocationinfoField')->search_rs(
+        {
+            'locationid.identifier' => $locationid,
+        },
+        {
+#            select => ['me.field','me.subfield','me.mult','me.content'].
+#            as => ['field','subfield','mult','content'].
+            join => ['locationid'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
+        }
+    );
+
+    while (my $item = $locationfields->next){
+        my $field    = "L".sprintf "%04d",$item->{field};
+        my $subfield =                    $item->{subfield} || '';
+        my $mult     =                    $item->{mult}     || 1;
+        my $content  =                    $item->{content};
+
+        next if ($content=~/^\s*$/);
+
+        push @{$locationinfo_ref->{$field}}, {
+            mult     => $mult,
+            subfield => $subfield,
+            content  => $content,
+        } if ($content);
+    }
+
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,$locationinfo_ref,$self->{memcached_expiration}{'config:locationinfo_fields'});
+    }
+    
+    if ($self->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
+    }
+
+    return Mojo::Promise->resolve($locationinfo_ref);
+}
+
 sub get_locationinfo_occupancy {
     my $self        = shift;
     my $locationid  = shift;
@@ -1607,6 +1712,87 @@ sub get_locationinfo_occupancy {
     return $occupancy_ref;
 }
 
+sub get_locationinfo_occupancy_p {
+    my $self        = shift;
+    my $locationid  = shift;
+    my $from        = shift;
+    my $to          = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return {} if (!$locationid);
+
+    my ($atime,$btime,$timeall);
+        
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $occupancy_ref= [];
+
+    my $memc_key = "config:locationinfo_occupancy:$locationid:$from:$to";
+
+    if ($self->{memc}){
+        my $occupancy_ref = $self->{memc}->get($memc_key);
+
+	if ($occupancy_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got locationinfo_occupancy for key $memc_key from memcached");
+	    }
+
+            if ($self->{benchmark}) {
+                my $btime=new Benchmark;
+                my $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+            }
+
+	    return $occupancy_ref if (defined $occupancy_ref);
+	}
+    }
+
+    my $locationoccupancy = $self->get_schema->resultset('LocationinfoOccupancy')->search_rs(
+        {
+            'locationid.identifier' => $locationid,
+            -and => [ 'me.tstamp' => { '>=' => $from },
+		      'me.tstamp' => { '<=' => $to },
+		],
+        },
+        {
+#            select => ['me.tstamp','me.num_entries','me.num_exits','me.num_occupancy'].
+#            as => ['tstamp','num_entries','num_exits','num_occupancy'].
+            join => ['locationid'],
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
+        }
+    );
+
+    while (my $item = $locationoccupancy->next()){
+        my $tstamp         =  $item->{tstamp};
+        my $num_entry      =  $item->{num_entries}   || 0;
+        my $num_exit       =  $item->{num_exits}     || 0;
+        my $num_occupancy  =  $item->{num_occupancy} || 0;
+
+        push @{$occupancy_ref}, {
+            tstamp        => $tstamp,
+            num_entry     => $num_entry,
+            num_exit      => $num_exit,
+            num_occupancy => $num_occupancy,
+        };
+    }
+
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,$occupancy_ref,$self->{memcached_expiration}{'config:locationinfo_occupancy'});
+    }
+
+    if ($self->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
+    }
+
+    return Mojo::Promise->resolve($occupancy_ref);
+}
+
 sub get_locationinfo_overview {
     my $self   = shift;
     
@@ -1674,6 +1860,75 @@ sub get_locationinfo_overview {
     }
     
     return $locationinfo_overview_ref;
+}
+
+sub get_locationinfo_overview_p {
+    my $self   = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my ($atime,$btime,$timeall);
+        
+    if ($self->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $memc_key = "config:locationinfo_overview";
+
+    if ($self->{memc}){
+        my $locationinfo_overview_ref = $self->{memc}->get($memc_key);
+
+	if ($locationinfo_overview_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got locationinfo_overview for key $memc_key from memcached");
+	    }
+
+            if ($self->{benchmark}) {
+                my $btime=new Benchmark;
+                my $timeall=timediff($btime,$atime);
+                $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
+            }
+
+	    return $locationinfo_overview_ref if (defined $locationinfo_overview_ref);
+	}
+    }
+
+    my $locations = $self->get_locationinfo->search_rs(
+        undef,
+        {
+            order_by => 'identifier',
+            result_class => 'DBIx::Class::ResultClass::HashRefInflator',            
+        }
+    );
+
+    my $locationinfo_overview_ref = [];
+
+    while (my $location = $locations->next){
+        my $thislocation_ref = {
+            id          => $location->{id},
+            identifier  => $location->{identifier},
+            description => $location->{description},
+            shortdesc   => $location->{shortdesc},
+            type        => $location->{type},
+            fields      => $self->get_locationinfo_fields($location->{identifier}),
+            
+        };
+        
+        push @$locationinfo_overview_ref, $thislocation_ref;
+    }
+
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,$locationinfo_overview_ref,$self->{memcached_expiration}{$memc_key});
+    }
+    
+    if ($self->{benchmark}) {
+	my $btime=new Benchmark;
+	my $timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
+    }
+    
+    return Mojo::Promise->resolve($locationinfo_overview_ref);
 }
 
 sub memc_cleanup_locationinfo {

@@ -79,15 +79,19 @@ sub show_collection {
     my $useragent      = $self->stash('useragent');
     my $path_prefix    = $self->stash('path_prefix');
 
-    my $locationlist_ref = $config->get_locationinfo_overview;
-    
-    # TT-Data erzeugen
-    my $ttdata={
-        queryoptions_ref => $queryoptions->get_options,
-        locations        => $locationlist_ref,
-    };
-    
-    return $self->print_page($config->{tt_locations_tname},$ttdata);
+    my $locationlist_p = $config->get_locationinfo_overview_p;
+
+    $locationlist_p->then(sub {
+	my $locationlist_ref = shift;
+	
+	# TT-Data erzeugen
+	my $ttdata={
+	    queryoptions_ref => $queryoptions->get_options,
+	    locations        => $locationlist_ref,
+	};
+	
+	$self->print_page($config->{tt_locations_tname},$ttdata);
+			  });
 }
 
 sub show_record {
@@ -115,60 +119,49 @@ sub show_record {
     my $to   = "";
 
     if ( $locationid ){ # Valide Informationen etc.
-        my $search_args_ref = {};
-        
-        if ($locationid){
-            $logger->debug("Id: $locationid");
-                    
-            $search_args_ref->{identifier} = $locationid;
-        }
-        
-        my $locationinfo = $config->get_locationinfo->single({identifier => $locationid});
-        
-        my $locationinfo_ref = {};
-        
-        if ($locationinfo){
 
-	    my $date      = ParseDate("now");
-	    my $timestamp = UnixDate($date,"%Y-%m-%d");
+	my $date      = ParseDate("now");
+	my $timestamp = UnixDate($date,"%Y-%m-%d");
+	
+	my $locationinfo_by_id_p = $config->get_locationinfo_by_id_p($locationid);
+	my $locationinfo_fields_p = $config->get_locationinfo_fields_p($locationid);
 
-	    unless ($from) {
-		$from = "$timestamp 00:00:00";
-	    }
+	unless ($from) {
+	    $from = "$timestamp 00:00:00";
+	}
+	
+	unless ($to) {
+	    $to   = "$timestamp 23:59:50";
+	}
+	
+	my $locationinfo_occupancy_p = $config->get_locationinfo_occupancy_p($locationid,$from,$to);
 
-	    unless ($to) {
-		$to   = "$timestamp 23:59:50";
-	    }
+	my $locationinfo_ref = {};
+	
+	$locationinfo_by_id_p->then(sub {
+	    $locationinfo_ref = shift;
 
-            $locationinfo_ref = {
-                id          => $locationinfo->id,
-                identifier  => $locationinfo->identifier,
-                description => $locationinfo->description,
-                shortdesc   => $locationinfo->shortdesc,
-                type        => $locationinfo->type,
-                fields      => $config->get_locationinfo_fields($locationid),
-                occupancy   => $config->get_locationinfo_occupancy($locationid,$from,$to),
-            };
+	    return $locationinfo_fields_p;
+				    })->then(sub {
+					my $fields_ref = shift;
 
-            if ($logger->is_debug){
-                $logger->debug("Found record:".YAML::Dump($locationinfo_ref));
-            }
+					$locationinfo_ref->{fields} = $fields_ref;
 
-        }
-        else {
-            $logger->info("Can't find location with id $locationid")
-        }
-            
-	my $locationlist_ref = $config->get_locationinfo_overview;
-    
-        my $ttdata = {
-	    locations      => $locationlist_ref,
-            locationid     => $locationid,
-            locationinfo   => $locationinfo_ref,
-        };
+					return $locationinfo_occupancy_p;
+					     })->then(sub {
+						 my $occupancy_ref = shift;
 
-        return $self->print_page($config->{tt_locations_record_tname},$ttdata);
+						 $locationinfo_ref->{occupancy} = $occupancy_ref;
 
+						      })->then(sub {
+							  my $ttdata = {
+							      locationid     => $locationid,
+							      locationinfo   => $locationinfo_ref,
+							  };
+							  
+							  return $self->print_page($config->{tt_locations_record_tname},$ttdata);
+							       });
+						 
     }
     else {
         return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit einer Id spezifiziert."));

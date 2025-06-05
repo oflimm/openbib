@@ -702,7 +702,9 @@ FOREACH field IN normdata;
 
 	 IF thisfield.${'c'} ; # Jahr
 	   jahr = thisfield.${'c'};
-	   IF verlag ;
+	   IF ind == ' 4';
+	      ortverlagjahr = "${ortverlagjahr} ${jahr}";	   	   
+	   ELSIF verlag ;
 	      ortverlagjahr = "${ortverlagjahr}, ${jahr}";
            ELSE;
 	      ortverlagjahr = "${ortverlagjahr} ${jahr}";	   

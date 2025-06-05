@@ -53,6 +53,7 @@ use YAML ();
 
 use Mojo::Promise;
 use Mojo::IOLoop;
+use Mojolicious::Validator;
 
 use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
@@ -857,6 +858,8 @@ sub parse_valid_input {
     else {
 	$valid_input_params_ref = $self->get_input_definition;
     }
+
+    my $v = $self->validation;
     
     my $input_params_ref = {};
 
@@ -878,10 +881,21 @@ sub parse_valid_input {
 	}
 
         foreach my $param (keys %$valid_input_params_ref){
-            my $type     = $valid_input_params_ref->{$param}{type};
-            my $encoding = $valid_input_params_ref->{$param}{encoding};
-            my $default  = $valid_input_params_ref->{$param}{default};
+            my $type       = $valid_input_params_ref->{$param}{type};
+            my $encoding   = $valid_input_params_ref->{$param}{encoding};
+            my $default    = $valid_input_params_ref->{$param}{default};
+            # my $required   = $valid_input_params_ref->{$param}{required};
+            # my $value_num  = $valid_input_params_ref->{$param}{value_num};
+            # my $value_like = $valid_input_params_ref->{$param}{value_like};
+            # my $value_in   = $valid_input_params_ref->{$param}{value_in};
 
+	    # $v->required($param) if ($v->param($param) && $required); # Check if required
+	    
+	    # $v->param($param)->is_num if ($v->param($param) && ! ref $value_num && $value_num eq "all"); # Check if generic number
+	    # $v->param($param)->is_num($value_num->[0],$value_num->[1]) if ($v->param($param) && ref $value_num eq "ARRAY"); # Check if in number range
+	    # $v->param($param)->like($value_like) if ($v->param($param) && $value_like); # Check if regexp matches
+	    # $v->param($param)->in($value_in) if ($v->param($param) && $value_in); # Check if in value list
+	    	    
 	    if ($type eq "mixed_bag"){
 		my $param_prefix = $param;
 		
@@ -895,7 +909,7 @@ sub parse_valid_input {
                 }
 	    }
 	    else {
-		$input_params_ref->{$param} = $input_data_ref->{$param} || $default;
+		$input_params_ref->{$param} = $input_data_ref->{$param} || $default;		
 	    }
         }    
 
@@ -905,12 +919,23 @@ sub parse_valid_input {
         $logger->debug("CGI Input");
 
         foreach my $param (keys %$valid_input_params_ref){
-            my $type      = $valid_input_params_ref->{$param}{type};
-            my $encoding  = $valid_input_params_ref->{$param}{encoding};
-            my $default   = $valid_input_params_ref->{$param}{default};
-	    my $no_escape = (defined $valid_input_params_ref->{$param}{no_escape})?$valid_input_params_ref->{$param}{no_escape}:0;
-
+            my $type       = $valid_input_params_ref->{$param}{type};
+            my $encoding   = $valid_input_params_ref->{$param}{encoding};
+            my $default    = $valid_input_params_ref->{$param}{default};
+            # my $required   = $valid_input_params_ref->{$param}{required};
+            # my $value_num  = $valid_input_params_ref->{$param}{value_num};
+            # my $value_like = $valid_input_params_ref->{$param}{value_like};
+            # my $value_in   = $valid_input_params_ref->{$param}{value_in};
+	    my $no_escape  = (defined $valid_input_params_ref->{$param}{no_escape})?$valid_input_params_ref->{$param}{no_escape}:0;
+	    
 	    $logger->debug("Processing parameter $param of type $type");
+
+	    # $v->required($param) if ($v->param($param) && $required); # Check if required
+	    
+	    # $v->param($param)->is_num if ($v->param($param) && ! ref $value_num && $value_num eq "all"); # Check if generic number
+	    # $v->param($param)->is_num($value_num->[0],$value_num->[1]) if ($v->param($param) && ref $value_num eq "ARRAY"); # Check if in number range
+	    # $v->param($param)->like($value_like) if ($v->param($param) && $value_like); # Check if regexp matches
+	    # $v->param($param)->in($value_in) if ($v->param($param) && $value_in); # Check if in value list
 	    
 	    if ($type eq "scalar"){
 		my $value = ($r->param($param))?$r->param($param):$default;
@@ -1013,6 +1038,8 @@ sub parse_valid_input {
         }
     }
 
+    $input_params_ref->{validation} = $v;
+    
     if ($logger->is_debug){
 	$logger->debug("Input Params: ".YAML::Dump($input_params_ref));
     }

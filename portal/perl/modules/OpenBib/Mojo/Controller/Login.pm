@@ -93,7 +93,7 @@ sub show_form {
     my $redirect_to = $r->param('redirect_to') || '';  # || "$path_prefix/$config->{searchform_loc}?l=$lang";
 
     $logger->debug("Redirecting to: $redirect_to");
-    
+
     # Wenn die Session schon authentifiziert ist, dann wird
     # in die Benutzereinstellungen gesprungen
     if ($user->{ID} && !$validtarget){
@@ -177,6 +177,20 @@ sub authenticate {
         success => 0,
     };
 
+    my $ils_barcode_regexp = $config->get('ils_barcode_regexp');
+    my $email_regexp       = $config->get('email_regexp');
+    
+    # Parameter validation    
+    my $v = $self->validation;
+
+    $v->required('username')->like(qr/($ils_barcode_regexp|$email_regexp)/);
+    $v->required('password');
+    $v->required('authenticatorid')->num;
+
+    if ($v->has_error){
+	return $self->print_warning($msg->maketext("Fehler bei der Validierung der Übergabeparameter"));
+    }
+    
     $logger->debug("CSRF-Check: ".$self->validation->csrf_protect->has_error);
     
     # CSRF-Checking
@@ -185,7 +199,8 @@ sub authenticate {
 	my $reason = $self->get_error_message($code);
 	return $self->print_warning($reason,$code);
     }
-    
+
+        
     # Authentifizierung nur dann valide, wenn dem View das Anmeldeziel
     # authenticatorid zugeordnet ist.
     my @valid_authenticators = $config->get_viewauthenticators($view);
@@ -552,6 +567,7 @@ sub get_input_definition {
             default  => '',
             encoding => 'none',
             type     => 'scalar',
+	    required => 1,
         },
 	# See Date::Manip
         expire => { 

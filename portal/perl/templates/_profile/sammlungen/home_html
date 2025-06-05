@@ -79,7 +79,7 @@
   width: 100%;
   height: 100%;
   
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magnus_Froschperspektive_50.jpg);
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/AnsichtUniversitaetsstrasseV2b.png);
   background-position: 10% 10%;
   background-repeat: no-repeat;
   background-size: cover;
@@ -91,7 +91,7 @@
 
 .image {
   background-position: 40% 10%;
-  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/Magnus_Froschperspektive_50_500px.jpg);
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/AnsichtUniversitaetsstrasseV2b.png);
 }
 
 

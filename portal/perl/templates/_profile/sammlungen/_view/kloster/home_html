@@ -161,14 +161,14 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
      	description = 'Augustinerkloster Köln'
 	id          = '16246584-1'
      }]
-     ' ' = [{
-     	description = 'Augustinerinnenkloster Zum Kleinen Lämmchen, Köln'
-	id          = '1331108772'
-     }]
-     ' ' = [{
-     	description = 'Kapuzinerkloster Köln'
-	id          = '16248828-2'
-     }]
+     # ' ' = [{
+     # 	description = 'Augustinerinnenkloster Zum Kleinen Lämmchen, Köln'
+     # 	id          = '1331108772'
+     # }]
+     # ' ' = [{
+     # 	description = 'Kapuzinerkloster Köln'
+     # 	id          = '16248828-2'
+     # }]
      '50.93112009103265,6.956248974520216' = [{
      	description = 'Kloster der Beschuhten Karmeliter Köln'
 	id          = '3072615-3'

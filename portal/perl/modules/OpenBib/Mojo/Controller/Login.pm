@@ -177,20 +177,6 @@ sub authenticate {
     my $result_ref = {
         success => 0,
     };
-
-    my $ils_barcode_regexp = $config->get('ils_barcode_regexp');
-    my $email_regexp       = $config->get('email_regexp');
-    
-    # Parameter validation    
-    my $v = $self->validation;
-
-    $v->required('username')->like(qr/($ils_barcode_regexp|$email_regexp)/);
-    $v->required('password');
-    $v->required('authenticatorid')->num;
-
-    if ($v->has_error){
-	return $self->print_warning($msg->maketext("Fehler bei der Validierung der Übergabeparameter"));
-    }
     
     $logger->debug("CSRF-Check: ".$self->validation->csrf_protect->has_error);
     
@@ -290,6 +276,20 @@ sub authenticate {
 	}
     }
 
+    my $ils_barcode_regexp = $config->get('ils_barcode_regexp');
+    my $email_regexp       = $config->get('email_regexp');
+    
+    # Parameter validation    
+    my $v = $self->validation;
+
+    $v->required('username')->like(qr/($ils_barcode_regexp|$email_regexp)/);
+    $v->required('password');
+    $v->required('authenticatorid')->num;
+
+    if ($v->has_error){
+	return $self->print_warning($msg->maketext("Fehler bei der Validierung der Übergabeparameter"));
+    }
+    
     eval {
 	$password    = decode_entities($password);
 	

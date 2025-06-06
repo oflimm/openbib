@@ -144,10 +144,21 @@ sub create_record {
     my $useragent      = $self->stash('useragent');
     my $path_prefix    = $self->stash('path_prefix');
     my $location       = $self->stash('location');
+    my $representation = $self->stash('representation');
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
 
+    # CSRF-Checking
+    if ($representation ne "json" && $self->validation->csrf_protect->has_error('csrf_token')){
+	
+	$logger->debug("CSRF-Check: ".$self->validation->csrf_protect->has_error);
+    
+	my $code   = -1;
+	my $reason = $msg->maketext("Fehler mit CSRF-Token");
+	return $self->print_warning($reason,$code);
+    }
+    
     if (!$self->authorization_successful('right_create')){
         return $self->print_authorization_error();
     }
@@ -246,10 +257,21 @@ sub update_record {
     my $stylesheet     = $self->stash('stylesheet');
     my $useragent      = $self->stash('useragent');
     my $path_prefix    = $self->stash('path_prefix');
+    my $representation = $self->stash('representation');
 
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
     $input_data_ref->{identifier} = $locationid;
+
+    # CSRF-Checking
+    if ($representation ne "json" && $self->validation->csrf_protect->has_error('csrf_token')){
+	
+	$logger->debug("CSRF-Check: ".$self->validation->csrf_protect->has_error);
+    
+	my $code   = -1;
+	my $reason = $msg->maketext("Fehler mit CSRF-Token");
+	return $self->print_warning($reason,$code);
+    }
     
     if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
@@ -311,7 +333,18 @@ sub delete_record {
     my $stylesheet     = $self->stash('stylesheet');
     my $useragent      = $self->stash('useragent');
     my $path_prefix    = $self->stash('path_prefix');
+    my $representation = $self->stash('representation');
 
+    # CSRF-Checking
+    if ($representation ne "json" && $self->validation->csrf_protect->has_error('csrf_token')){
+	
+	$logger->debug("CSRF-Check: ".$self->validation->csrf_protect->has_error);
+    
+	my $code   = -1;
+	my $reason = $msg->maketext("Fehler mit CSRF-Token");
+	return $self->print_warning($reason,$code);
+    }
+    
     if (!$self->authorization_successful('right_delete')){
         return $self->print_authorization_error();
     }

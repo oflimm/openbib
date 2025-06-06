@@ -125,24 +125,28 @@ sub startup ($app){
     #
     # see https://docs.mojolicious.org/Mojolicious#HOOKS
 
-    $app->hook(
-        after_build_tx => sub ($tx,$app) {
-            weaken $tx;
+    # $app->hook(
+    #     after_build_tx => sub ($tx,$app) {
+    #         weaken $tx;
 
-	    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
-	    # zu verwenden
+    # 	    # Method workaround fuer die Unfaehigkeit von Browsern PUT/DELETE in Forms
+    # 	    # zu verwenden
 	    
-            $tx->req->content->on(method => sub {
-                my $req = $tx->req;
+    #         $tx->req->content->on(method => sub {
+    #             my $req = $tx->req;
 
-		my $method = $req->param('_method');
+    # 		my $method = $req->param('_method');
 
-                if ($method and $method =~ /^(DELETE|PUT)$/) {
-                    $req->method($method);
-                }
-            });
-        }
-    );
+    # 		$logger->debug("Method parameter is $method");
+		
+    #             if ($method and $method =~ /^(DELETE|PUT)$/) {
+    #                 $req->method($method);
+
+    # 		    $logger->debug("Method set to ".$req->method);
+    #             }
+    #         });
+    #     }
+    # );
     
     $app->hook(before_dispatch => sub ($c){
 	\&_before_dispatch($c)
@@ -304,6 +308,16 @@ sub _before_dispatch($c){
     # Wenn kein Portal-URL (z.B. CSS, JS, Images), dann kein Preprocessing notwendig
     # hardcoded for performance
     return if ($path !~m{^/portal/});
+
+    my $method = $r->param('_method');
+
+    $logger->debug("Method parameter is $method");
+		
+    if ($method and $method =~ /^(DELETE|PUT)$/) {
+	$r->method($method);
+
+	$logger->debug("Method set to ".$r->method);
+    }
     
     my ($view)       = $path =~ m{^/portal/([^/]+)/}; # $c->param('view') for placeholder :view not yet available at this stage
     
@@ -311,6 +325,7 @@ sub _before_dispatch($c){
     $logger->debug("Mojo - View c: ".YAML::Dump($c->param('view')));
     $logger->debug("Mojo - Path: ".$r->url->path);
     $logger->debug("Mojo - Route: ".$c->match);
+    $logger->debug("Mojo - Method: ".$r->method);
     #$logger->debug("Mojo - Format: ".$c->stash('format'));
     $logger->debug("Mojo - View regexp: ".$view);
 

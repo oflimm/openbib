@@ -126,7 +126,6 @@ sub show_form {
         validtarget     => $validtarget,
         username        => $username,
         redirect_to     => $redirect_to,
-	csrf_token      => $self->stash('csrf_token'),
     };
     
     my $templatename = ($type)?"tt_login_".$type."_tname":"tt_login_tname";

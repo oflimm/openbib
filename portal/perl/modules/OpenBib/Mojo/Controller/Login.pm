@@ -156,6 +156,7 @@ sub authenticate {
     my $path_prefix    = $self->stash('path_prefix');
     my $scheme         = $self->stash('scheme');
     my $servername     = $self->stash('servername');
+    my $representation = $self->stash('representation');
     
     # CGI / JSON input
     my $input_data_ref = $self->parse_valid_input();
@@ -194,7 +195,7 @@ sub authenticate {
     $logger->debug("CSRF-Check: ".$self->validation->csrf_protect->has_error);
     
     # CSRF-Checking
-    if ($self->validation->csrf_protect->has_error('csrf_token')){
+    if ($representation ne "json" && $self->validation->csrf_protect->has_error('csrf_token')){
 	my $code   = -10;
 	my $reason = $self->get_error_message($code);
 	return $self->print_warning($reason,$code);

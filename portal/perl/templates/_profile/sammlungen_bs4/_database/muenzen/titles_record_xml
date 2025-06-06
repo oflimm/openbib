@@ -95,23 +95,6 @@
      # Datum
      datum = normdata.${"T0003"}.first.content ;
 
-     cdmptr_vorderseite = "";
-     cdmptr_rueckseite  = "";
-
-     FOREACH item IN normdata.${"T6054"} ;
-       cdm_ptr = item.content ;
-       thismult = item.mult ;
-       FOREACH thisitem IN normdata.${"T6050"} ;
-           IF thisitem.mult == thismult ;
-              IF thisitem.content == 'Vorderseite';
-	        cdmptr_vorderseite = cdm_ptr ;
-              ELSIF thisitem.content == 'Rückseite';
-                cdmptr_rueckseite = cdm_ptr ;
-	      END;
-           END ;
-       END ;
-     END ;
-
 -%]
 <?xml version="1.0" encoding="UTF-8"?>
 <lido:lidoWrap xmlns:lido="http://www.lido-schema.org" xsi:schemaLocation="http://www.lido-schema.org http://www.lido-schema.org/schema/v1.0/lido-v1.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -418,19 +401,19 @@
       <lido:resourceWrap>
         <lido:resourceSet lido:sortorder="1">
           <lido:resourceRepresentation lido:type="image_thumb">
-            <lido:linkResource lido:formatResource="image/jpeg"
+            <lido:linkResource lido:formatResource="image/bmp"
             lido:type="URI">
-            https://www.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=/muenzen&amp;CISOPTR=[% cdmptr_vorderseite %]</lido:linkResource>
+            https://muenzportal.uni-koeln.de/thumbnails/[% record.id %]_O.bmp</lido:linkResource>
           </lido:resourceRepresentation>
           <lido:resourceRepresentation lido:type="image_preview">
             <lido:linkResource lido:formatResource="image/jpeg"
             lido:type="URI">
-            https://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&amp;CISOPTR=[% cdmptr_vorderseite %]&amp;DMSCALE=100.00000&amp;DMWIDTH=4000&amp;DMHEIGHT=4000&amp;DMX=0&amp;DMY=0&amp;DMTEXT=&amp;REC=2&amp;DMTHUMB=1&amp;DMROTATE=0</lido:linkResource>
+            https://muenzportal.uni-koeln.de/JPG/[% record.id %]_O.jpg</lido:linkResource>
           </lido:resourceRepresentation>
           <lido:resourceRepresentation lido:type="image_master">
             <lido:linkResource lido:formatResource="image/jpeg"
             lido:type="URI">
-            http://www.ub.uni-koeln.de/cgi-bin/showfile.exe?CISOROOT=/muenzen&amp;CISOPTR=[% cdmptr_vorderseite %]</lido:linkResource>
+            https://muenzportal.uni-koeln.de/JPG/[% record.id %]_O.jpg</lido:linkResource>
          </lido:resourceRepresentation>
           <lido:resourceType>
             <lido:term xml:lang="en">Digital image</lido:term>
@@ -461,19 +444,19 @@
         </lido:resourceSet>
         <lido:resourceSet lido:sortorder="2">
           <lido:resourceRepresentation lido:type="image_thumb">
-            <lido:linkResource lido:formatResource="image/jpeg"
+            <lido:linkResource lido:formatResource="image/bmp"
             lido:type="URI">
-            https://www.ub.uni-koeln.de/cgi-bin/thumbnail.exe?CISOROOT=/muenzen&amp;CISOPTR=[% cdmptr_rueckseite %]</lido:linkResource>
+            https://muenzportal.uni-koeln.de/thumbnails/[% record.id %]_R.bmp</lido:linkResource>
           </lido:resourceRepresentation>
           <lido:resourceRepresentation lido:type="image_preview">
             <lido:linkResource lido:formatResource="image/jpeg"
             lido:type="URI">
-            https://www.ub.uni-koeln.de/cgi-bin/getimage.exe?CISOROOT=/muenzen&amp;CISOPTR=[% cdmptr_rueckseite %]&amp;DMSCALE=100.00000&amp;DMWIDTH=4000&amp;DMHEIGHT=4000&amp;DMX=0&amp;DMY=0&amp;DMTEXT=&amp;REC=2&amp;DMTHUMB=1&amp;DMROTATE=0</lido:linkResource>
+            https://muenzportal.uni-koeln.de/JPG/[% record.id %]_R.jpg</lido:linkResource>
           </lido:resourceRepresentation>
           <lido:resourceRepresentation lido:type="image_master">
             <lido:linkResource lido:formatResource="image/jpeg"
             lido:type="URI">
-            http://www.ub.uni-koeln.de/cgi-bin/showfile.exe?CISOROOT=/muenzen&amp;CISOPTR=[% cdmptr_rueckseite %]</lido:linkResource>
+            https://muenzportal.uni-koeln.de/JPG/[% record.id %]_R.jpg</lido:linkResource>
           </lido:resourceRepresentation>
           <lido:resourceType>
             <lido:term xml:lang="en">Digital image</lido:term>

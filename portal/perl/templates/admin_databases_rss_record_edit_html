@@ -33,6 +33,7 @@ yesno = {
 <form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% dbname %]/rss/id/[% rssinfo.id %]">
 <input type="hidden" name="_method"    value="PUT" />
 <input type="hidden" name="rss_type"   value="[% rssinfo.type %]" />
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 <h1 class="display-5">[% msg.maketext("RSS-Einstellungen &auml;ndern") %]</h1>
 

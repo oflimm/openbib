@@ -28,6 +28,8 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('profiles_loc') %]">
 
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
+
 <div class="form-floating mb-3">
 <input class="form-control" type="text" name="profilename" id="profilename" size="8" />
 <label for="profilename">[% msg.maketext("Profil-Name") %]</label>

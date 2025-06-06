@@ -27,6 +27,8 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]" >
 
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
+
 <div class="form-floating mb-3">
   <select class="form-select" name="templatelang" id="templatelang">
      <option value="de">[% msg.maketext("Deutsch") %]</option>

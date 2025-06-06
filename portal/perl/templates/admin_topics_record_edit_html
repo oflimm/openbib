@@ -65,6 +65,8 @@
 <form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]">
 <input class="form-control" type="hidden" name="_method" value="PUT" />
 
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
+
 <h1 class="display-5">[% msg.maketext("Themengebiet bearbeiten") %]</h1>
 
 <div class="form-floating mb-3">
@@ -92,6 +94,8 @@
 <div class="border-top my-3"></div>
 
 <form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/bk">
+
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) der Basisklassifikation zuordnen") %]</h1>
 
@@ -121,6 +125,8 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/ezb">
 
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
+
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) der EZB zuordnen") %]</h1>
 
 <div class="mb-3">
@@ -148,6 +154,8 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/dbis">
 
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
+
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) von DBIS zuordnen") %]</h1>
 
 <div class="mb-3">
@@ -174,6 +182,8 @@
 <div class="border-top my-3"></div>
 
 <form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/rvk">
+
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) der Regensburger Verbundklassifikation zuordnen") %]</h1>
 
@@ -203,6 +213,8 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/ddc">
 
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
+
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) der DDC zuordnen") %]</h1>
 
 <div class="mb-3">
@@ -230,6 +242,8 @@
 <div class="border-top my-3"></div>
 
 <form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]/mappings/id/lcc">
+
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 <h1 class="display-5">[% msg.maketext("Themengebiet(e) der LoC Classification zuordnen") %]</h1>
 

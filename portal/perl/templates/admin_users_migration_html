@@ -14,6 +14,7 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/migration" enctype="application/x-www-form-urlencoded" >
 <input type="hidden" name="_method"    value="PUT" />
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 <h1 class="display-5">[% msg.maketext("Migration von nutzergenerierten Inhalte (Literaturlisten, Tags, Merkliste) einer anderen Kennung") %]</h1>
 

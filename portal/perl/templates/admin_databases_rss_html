@@ -58,6 +58,8 @@ END ;
 
 <form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% katalog.dbname %]/rss">
 
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
+
 <div class="form-floating mb-3">
   <select class="form-select" name="type" id="type">
 [% FOREACH type IN available_types.keys %]

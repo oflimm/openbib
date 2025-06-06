@@ -41,6 +41,7 @@ function add_field(this) {
 
 <form method="post" action="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locationinfo.identifier %]">
 <input type="hidden" name="_method"    value="PUT" />
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 <h1 class="display-5">[% msg.maketext("Standortinformationen bearbeiten") %]</h1> 
 <div class="form-floating mb-3">

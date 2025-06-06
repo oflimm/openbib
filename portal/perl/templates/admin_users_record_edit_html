@@ -17,6 +17,7 @@
 <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="_method"    value="PUT" />
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 <!-- Beispiel: Ablage von weiteren Informationen in mixed_bag -->
 [%# USE dumper;dumper.dump(userinfo)%]
@@ -170,6 +171,7 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/rights/[% config.get('roles_loc') %]">
 <input type="hidden" name="_method"    value="PUT" />
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 <div class="mb-3">
 <label class="form-label" for="roles">[% msg.maketext("Rollen") %]</label>
@@ -195,6 +197,7 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userinfo.id %]/rights/[% config.get('templates_loc') %]">
 <input type="hidden" name="_method"    value="PUT" />
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 <div class="mb-3">
 <label class="form-label" for="templates">[% msg.maketext("Templates") %]</label>

@@ -28,6 +28,8 @@
       <div class="card-body">
 <form method="post" action="[% path_prefix %]/[% config.get('views_loc') %]">
 
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
+
 <div class="form-floating mb-3">
 <input class="form-control" type="text" name="viewname" id="viewname"/>
 <label for="viewname">[% msg.maketext("Viewname") %]</label>

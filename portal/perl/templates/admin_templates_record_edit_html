@@ -18,6 +18,7 @@
 
 <form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]">
 <input type="hidden" name="_method"    value="PUT" />
+<input type="hidden" name="csrf_token" value="[% csrf_token %]">
 
 <h1 class="display-5">[% msg.maketext("Template bearbeiten") %]</h1>
 

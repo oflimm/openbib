@@ -463,6 +463,7 @@ sub add_default_ttdata {
     my $location       = $self->stash('location');
     my $scheme         = $self->stash('scheme');
     my $remote_ip      = $self->stash('remote_ip');
+    my $csrf_token     = $self->stash('csrf_token');
     my $representation = $self->stash('representation') || 'html';
     my $content_type   = $self->stash('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     
@@ -536,6 +537,7 @@ sub add_default_ttdata {
     $ttdata->{'cgiapp'}         = $self;
     $ttdata->{'container'}      = $container;
     $ttdata->{'remote_ip'}      = $remote_ip;
+    $ttdata->{'csrf_token'}     = $csrf_token;
     
     # Helper functions
     $ttdata->{'to_json'}        = sub {

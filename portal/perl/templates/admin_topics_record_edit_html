@@ -84,7 +84,7 @@
 [%- IF user.has_right({scope = 'admin_topics', right = 'right_delete'}) -%]
 &nbsp;&nbsp;&nbsp;
 
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]?_method=DELETE&confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]?_method=DELETE&confirm=1&csrf_token=[% csrf_token %]">[% msg.maketext("Löschen") %]</a>
 [% END # right_delete %]
 
 </form>

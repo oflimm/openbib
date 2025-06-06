@@ -55,6 +55,6 @@ yesno = {
 [%- IF user.has_right({scope = 'admin_databases_rss', right = 'right_delete'}) -%]
 &nbsp;&nbsp;&nbsp;
 
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% dbname %]/rss/id/[% rssinfo.id %]?_method=DELETE&confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% dbname %]/rss/id/[% rssinfo.id %]?_method=DELETE&confirm=1&csrf_token=[% csrf_token %]">[% msg.maketext("Löschen") %]</a>
 [%- END -%]
 </form>

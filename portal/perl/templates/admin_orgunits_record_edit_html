@@ -62,6 +62,6 @@
 
 &nbsp;&nbsp;&nbsp;
 
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/[% config.get('orgunits_loc') %]/id/[% orgunitinfo.orgunitname %]?_method=DELETE&confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('profiles_loc') %]/id/[% profileinfo.profilename %]/[% config.get('orgunits_loc') %]/id/[% orgunitinfo.orgunitname %]?_method=DELETE&confirm=1&csrf_token=[% csrf_token %]">[% msg.maketext("Löschen") %]</a>
 
 </form>

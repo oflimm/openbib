@@ -64,7 +64,7 @@
 
 &nbsp;&nbsp;&nbsp;
 
-<a class="btn btn-primary mb-2" role="button" href="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticatorinfo.id %]?_method=DELETE&confirm=1">[% msg.maketext("Löschen") %]</a>
+<a class="btn btn-primary mb-2" role="button" href="[% path_prefix %]/[% config.get('authenticators_loc') %]/id/[% authenticatorinfo.id %]?_method=DELETE&confirm=1&csrf_token=[% csrf_token %]">[% msg.maketext("Löschen") %]</a>
 
 </form>
 

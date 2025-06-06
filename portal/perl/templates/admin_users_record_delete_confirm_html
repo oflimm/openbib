@@ -17,7 +17,7 @@
          <h1 class="display-4">[% msg.maketext("Sind Sie sicher?") %]</h1>
          <p class="lead">[% msg.maketext("Soll die Kennung [_1] wirklich gel&ouml;scht werden?",userid) %] [% msg.maketext("Wenn Sie wirklich Ihre Kennung l&ouml;schen wollen, so klicken Sie auf die untenstehende Schaltfl&auml;che. Es werden dann auch alle Sitzungsdaten gel&ouml;scht.") %]</p>
 
-<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userid %]?_method=DELETE&confirm=0">[% msg.maketext("Ja") %]</a>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% userid %]?_method=DELETE&csrf_token=[% csrf_token %]">[% msg.maketext("Ja") %]</a>
 
 &nbsp;&nbsp;
 

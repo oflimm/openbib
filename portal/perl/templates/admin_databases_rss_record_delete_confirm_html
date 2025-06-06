@@ -11,80 +11,14 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title='' %]
 
-  <body>
+        <div class="ob-jumbotron">
+          <h1 class="display-4">[% msg.maketext("Sind sie sicher?") %]</h1>
+          <p class="lead">[% msg.maketext("Möchten Sie wirklich den RSS-Feed löschen?") %]</p>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% dbname %]/rss/id/[% rssinfo.id %]?_method=DELETE&csrf_token=[% csrf_token %]">[% msg.maketext("Ja") %]</a>
 
-<!-- skip link navigation -->
-<ul class="ym-skiplinks">
-	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter).</a></li>
-	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter).</a></li>
-</ul>
+&nbsp;&nbsp;
 
-<div class="ym-wrapper">
-  <div class="ym-wbox">
-
-[% PROCESS common/subtemplate name="corporate_banner" %]
-
-[% PROCESS common/subtemplate name="mainnavigation" active_menu="admin" %] 
-
-    <!-- begin: main content area #main -->
-    <div id="main">
-
-   <div class="ob-functional_nav">
-     <div class="ob-breadcrumb">
-       <ul>
-         <li><a href="[% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %]">Start</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %].html?l=[% lang %]">Administration</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %].html?l=[% lang %]">[% msg.maketext("Kataloge") %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% dbname %].html?l=[% lang %]">[% dbname %]</a></li>
-         <li><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% dbname %]/rss.html?l=[% lang %]">RSS</a></li>
-         <li><a href="#" class="lastitem">[% rssinfo.id %]</a></li>
-       </ul>
-     </div>
-   </div>
-
-    <div class="ym-column linearize-level-1">
-      <div class="ym-col1">
-        <div class="ym-cbox" class="ym-clearfix">
-[% PROCESS common/subtemplate name="admin_navigation" active_submenu="databases_record"  active_subsubmenu="databases_record_rss" %]
-        </div>
-      </div>
-      <!-- end: #col1 -->
-      <!-- begin: #col3 static column -->
-      <div class="ym-col3" >
-        <div class="ym-cbox" class="ym-clearfix">
-
-<table width="100%">
-<tr><th>Sind sie sicher?</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
-
-<table>
-<tr>
-<td>
-<form method="post" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% dbname %]/rss/id/[% rssinfo.id %]">
-<input type="hidden" name="_method"     value="DELETE" />
-<input type="hidden" name="confirm"     value="0" />
-<input type="submit" value="[% msg.maketext("Ja") %]">
-</form>
-</td>
-<td>&nbsp;&nbsp;</td>
-<td>
-<form method="get" action="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% dbname %]/rss/id/[% rssinfo.id %]/edit">
-<input type="submit" value="[% msg.maketext("Nein") %]">
-</form>
-</td>
-</tr>
-</table>
-</td></tr>
-</table>
+          <a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% dbname %]/rss/id/[% rssinfo.id %]/edit.html?l=[% lang %]">[% msg.maketext("Abbruch") %]</a>
 
         </div>
-        <div class="ym-ie-clearing">&nbsp;</div>
-        <!-- End: IE Column Clearing -->
-      </div>
-     </div> <!-- end: ym-column -->
-    </div>
-    <!-- end: #main -->
-
-[% PROCESS common/subtemplate name="std_footer" %]

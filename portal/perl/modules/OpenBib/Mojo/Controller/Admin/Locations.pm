@@ -2,7 +2,7 @@
 #
 #  OpenBib::Mojo::Controller::Admin::Locations
 #
-#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2025 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -70,7 +70,7 @@ sub show_collection {
         return $self->print_authorization_error();
     }
 
-    my $locationinfo_ref = $config->get_locationinfo_overview();
+    my $locationinfo_ref = $config->get_locationinfo_overview;
     
     my $ttdata={
         locations  => $locationinfo_ref,
@@ -181,8 +181,9 @@ sub create_record {
         return;
     }
     else {
-        $logger->debug("Weiter zum Record $input_data_ref->{identifier}");
+        $logger->debug("Weiter zum Record $input_data_ref->{identifier}");	
         $self->stash('status',201); # created
+	$self->param('locationid',$input_data_ref->{identifier});
         $self->show_record;
     }
     

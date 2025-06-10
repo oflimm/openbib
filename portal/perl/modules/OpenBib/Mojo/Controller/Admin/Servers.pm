@@ -173,6 +173,10 @@ sub create_record {
     if ($input_data_ref->{hostip} eq "") {
         return $self->print_warning($msg->maketext("Sie müssen einen Servernamen eingeben."));
     }
+
+    if ($config->servername_exists($input_data_ref->{description})){
+	return $self->print_warning($msg->maketext("Ein Server mit diesem Namen existiert bereits"));
+    }
     
     my $new_serverid = $config->new_server($input_data_ref);
 
@@ -186,7 +190,7 @@ sub create_record {
         if ($new_serverid){ # Datensatz erzeugt, wenn neue id
             $logger->debug("Weiter zur DB $new_serverid");
             $self->stash('status',201); # created
-            $self->stash('serverid',$new_serverid);
+            $self->param('serverid',$new_serverid);
             $self->stash('location',"$location/$new_serverid");
             $self->show_record;
         }
@@ -230,6 +234,10 @@ sub update_record {
         return $self->print_authorization_error();
     }
 
+    if ($config->servername_exists($input_data_ref->{description})){
+	return $self->print_warning($msg->maketext("Ein Server mit diesem Namen existiert bereits"));
+    }
+    
     $config->update_server($input_data_ref);
 
     if ($self->stash('representation') eq "html"){

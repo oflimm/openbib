@@ -103,7 +103,7 @@
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 <td>
 [%- IF user.has_right({scope = 'admin_clusters', right = 'right_delete'}) -%]
-<form method="post" action="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><button class="btn btn-primary mb-2" type="submit">[% msg.maketext("L&ouml;schen") %]</button></form>
+<form method="post" action="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="hidden" name="csrf_token" value="[% csrf_token %]"/><button class="btn btn-primary mb-2" type="submit">[% msg.maketext("L&ouml;schen") %]</button></form>
 [%- END -%]
 </td>
 </tr>

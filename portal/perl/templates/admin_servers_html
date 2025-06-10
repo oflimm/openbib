@@ -147,7 +147,7 @@
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 <td>
 [%   IF user.has_right({scope = 'admin_servers', right = 'right_update'}) %]
-<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><button class="btn btn-primary mb-2" type="submit" [% IF serverinfo.active && serverinfo.status == 'searchable' && last_searchable_server %]disabled[% END %]>[% msg.maketext("L&ouml;schen") %]</button></form>
+<form method="post" action="[% path_prefix %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><input type="hidden" name="csrf_token" value="[% csrf_token %]"/><button class="btn btn-primary mb-2" type="submit" [% IF serverinfo.active && serverinfo.status == 'searchable' && last_searchable_server %]disabled[% END %]>[% msg.maketext("L&ouml;schen") %]</button></form>
 [%   END %]
 </td></tr>
 [% END %]

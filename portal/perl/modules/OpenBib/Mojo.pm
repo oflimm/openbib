@@ -309,7 +309,7 @@ sub _before_dispatch($c){
     # hardcoded for performance
     return if ($path !~m{^/portal/});
 
-    my $method = $r->param('_method');
+    my $method = $r->param('_method') || '';
 
     $logger->debug("Method parameter is $method");
 		

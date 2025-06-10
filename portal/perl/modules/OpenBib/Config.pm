@@ -1858,6 +1858,10 @@ sub get_locationinfo_overview {
 	my $timeall=timediff($btime,$atime);
 	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
     }
+
+    if ($logger->is_debug){
+        $logger->debug("Locationinfo Overview is ".YAML::Dump($locationinfo_overview_ref));
+    }     
     
     return $locationinfo_overview_ref;
 }
@@ -1927,7 +1931,11 @@ sub get_locationinfo_overview_p {
 	my $timeall=timediff($btime,$atime);
 	$logger->info("Zeit fuer das Holen der Informationen ist ".timestr($timeall));
     }
-    
+
+    if ($logger->is_debug){
+        $logger->debug("Locationinfo Overview is ".YAML::Dump($locationinfo_overview_ref));
+    }     
+
     return Mojo::Promise->resolve($locationinfo_overview_ref);
 }
 
@@ -4926,6 +4934,22 @@ sub server_exists {
     return $servercount;
 }
 
+sub servername_exists {
+    my ($self,$servername) = @_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $servercount = $self->get_schema->resultset('Serverinfo')->search_rs(
+        {
+            description => $servername,
+        }
+    )->count;
+    
+    return $servercount;
+}
+
 sub del_cluster {
     my ($self,$arg_ref) = @_;
 
@@ -5017,6 +5041,22 @@ sub cluster_exists {
     my $clustercount = $self->get_schema->resultset('Clusterinfo')->search_rs(
         {
             id => $clusterid,
+        }
+    )->count;
+    
+    return $clustercount;
+}
+
+sub clustername_exists {
+    my ($self,$clustername) = @_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $clustercount = $self->get_schema->resultset('Clusterinfo')->search_rs(
+        {
+            description => $clustername,
         }
     )->count;
     

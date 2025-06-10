@@ -196,6 +196,10 @@ sub create_record {
         return $self->print_authorization_error();
     }
 
+    if ($config->clustername_exists($input_data_ref->{description})){
+	return $self->print_warning($msg->maketext("Ein Cluster mit diesem Namen existiert bereits"));
+    }
+    
     my $new_clusterid = $config->new_cluster($input_data_ref);
 
     if ($self->stash('representation') eq "html"){
@@ -208,7 +212,7 @@ sub create_record {
         if ($new_clusterid){ # Datensatz erzeugt, wenn neue id
             $logger->debug("Weiter zur DB $new_clusterid");
             $self->stash('status',201); # created
-            $self->stash('clusterid',$new_clusterid);
+            $self->param('clusterid',$new_clusterid);
             $self->stash('location',"$location/$new_clusterid");
             $self->show_record;
         }
@@ -255,6 +259,10 @@ sub update_record {
 
     # POST oder PUT => Aktualisieren
 
+    if ($config->clustername_exists($input_data_ref->{description})){
+	return $self->print_warning($msg->maketext("Ein Cluster mit diesem Namen existiert bereits"));
+    }
+        
     $config->update_cluster($input_data_ref);
 
     if ($self->stash('representation') eq "html"){
@@ -333,9 +341,7 @@ sub delete_record {
     return $self->render( json => { success => 1, id => $clusterid }) unless ($self->stash('representation') eq "html");
 
     $self->res->headers->content_type('text/html');    
-    $self->redirect("$path_prefix/$config->{clusters_loc}.html?l=$lang");
-
-    return;
+    return  $self->redirect("$path_prefix/$config->{clusters_loc}.html?l=$lang");
 }
 
 sub get_input_definition {

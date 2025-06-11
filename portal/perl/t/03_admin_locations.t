@@ -25,10 +25,7 @@ $t->post_ok('/portal/openbib/locations' => json => { 'l' => 'de', 'identifier' =
 
 $t->put_ok("/portal/openbib/locations/id/DE-38" => json => { 'l' => 'de', 'identifier' => 'DE-38', 'type' => 'ISIL', 'description' => 'Universitäts- und Stadtbibliothek Köln', 'shortdesc' => 'USB Köln', fields => { '0010' => [ { 'subfield' => '', mult => '1', content => 'Universitäts- und Stadtbibliothek Köln' } ], '0010' => [ { 'subfield' => '', mult => '1', content => '' } ], '0015' => [ { 'subfield' => '', mult => '1', content => 'usb' } ], '0020' => [ { 'subfield' => '', mult => '1', content => 'Universitätsstr. 33<br /> 50931 Köln' } ], '0040' => [ { 'subfield' => '', mult => '1', content => 'Geben Sie im <a class="exturl" href="http://www.uni-koeln.de/uni/plan/interaktiv/"> Lageplan </a> den Namen des gewünschten Instituts ein.' } ], '0050' => [ { 'subfield' => '', mult => '1', content => 'nein' } ], '0060' => [ { 'subfield' => '', mult => '1', content => 'Anmeldung u. Ausleihe: 0221 / 470 - 3316' } ], '0070' => [ { 'subfield' => '', mult => '1', content => '0221 / 470 - 5166' } ], '0080' => [ { 'subfield' => '', mult => '1', content => '<a class="exturl" href="mailto:sekret@ub.uni-koeln.de">sekret@ub.uni-koeln.de</a>' } ], '0110' => [ { 'subfield' => '', mult => '1', content => 'Lesesäle: Mo - Fr: 9.00-24.00 Uhr;<br /> Sa - So: 9.00-21.00 Uhr<br /> Andere Dienste siehe: <a class="exturl" href="https://ub.uni-koeln.de/die-usb/oeffnungszeiten-adressen" target="_blank">Öffnungszeiten</a>' } ], '0120' => [ { 'subfield' => '', mult => '1', content => 'ca. 3.300.000' } ], '0280' => [ { 'subfield' => '', mult => '1', content => '50.925755,6.928751' } ],  }   })->status_is(200)->json_is('/fields/L0280/0/content' => '50.925755,6.928751');
 
-
-my $result = $t->tx->res->body;
-
-print $result,"\n";
+$t->get_ok('/portal/openbib/admin/locations')->status_is(200)->content_like(qr/Bereits existierende Standorte: \d+/);
 
 # Clear all cookies
 $t->reset_session;

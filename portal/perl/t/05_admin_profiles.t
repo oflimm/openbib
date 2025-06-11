@@ -25,11 +25,15 @@ $t->post_ok('/portal/openbib/login' => form => { 'l' => 'de', 'authenticatorid' 
 
 #$t->put_ok('/portal/openbib/profiles/id/unikatalog' => json => { 'l' => 'de', 'profilename' => 'unikatalog', 'description' => 'Universitätskatalog' })->status_is(200)->json_is('/profilename' => 'unikatalog');
 
+$t->get_ok('/portal/openbib/admin/profiles')->status_is(200)->content_like(qr/Bereits existierende Katalog-Profile: \d+/);
+
+$t->get_ok('/portal/openbib/admin/profiles/id/unikatalog/edit.html?l=de')->status_is(200)->content_like(qr/Bereits existierende Organisationseinheiten/);
+
 $t->post_ok('/portal/openbib/profiles/id/unikatalog/orgunits' => json => { 'l' => 'de', 'orgunitname' => 'books', 'description' => 'Bücher &amp; Mehr' })->status_is(201)->json_is('/orgunitname' => 'books');
 
 $t->put_ok('/portal/openbib/profiles/id/unikatalog/orgunits/id/books' => json => { 'l' => 'de', 'orgunitname' => 'books', 'description' => 'Bücher &amp; Mehr', 'nr' => 1, databases => ['lbs'], 'own_index' => 0  })->status_is(200)->json_is('/orgunitname' => 'books');
 
-print $result,"\n";
+$t->get_ok('/portal/openbib/admin/profiles/id/unikatalog/orgunits/id/books/edit.html?l=de')->status_is(200)->content_like(qr/Organisationseinheit bearbeiten/);
 
 # Clear all cookies
 $t->reset_session;

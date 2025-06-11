@@ -27,6 +27,8 @@ my $locationid = $t->tx->res->json('/id');
 # Databases
 $t->post_ok('/portal/openbib/databases' => json => { 'l' => 'de', 'dbname' => 'lbs', 'description' => 'USB Köln / Lehrbuchsammlung', 'shortdesc' => 'USBK / LBS', 'system' => 'MARC', 'schema' => 'marc21', searchengines => [ 'xapian', 'elasticsearch' ], 'locationid' => $locationid, 'sigel' => '38', 'active' => 'true', 'host' => 'opendata.ub.uni-koeln.de', 'protocol' => 'https', 'remotepath' => 'dumps/DE-38-USB_Koeln-Lehrbuchsammlung', 'titlefile' => 'meta.title.gz', 'personfile' => 'meta.person.gz', 'corporatebodyfile' => 'meta.corporatebody.gz', 'subjectfile' => 'meta.subject.gz', 'classificationfile' => 'meta.classification.gz', 'holdingfile' => 'meta.holding.gz', 'autoconvert' => 'false'})->status_is(201)->json_is('/titlefile' => 'meta.title.gz');
 
+$t->get_ok('/portal/openbib/admin/databases')->status_is(200)->content_like(qr/Bereits existierende Kataloge: \d+/);
+
 # Clear all cookies
 $t->reset_session;
 

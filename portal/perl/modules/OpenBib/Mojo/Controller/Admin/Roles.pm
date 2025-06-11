@@ -221,8 +221,8 @@ sub create_record {
         if ($new_roleid){ # Datensatz erzeugt, wenn neue id
             $logger->debug("Weiter zur DB $new_roleid");
             $self->stash('status',201); # created
-            $self->stash('roleid',$input_data_ref->{rolename});
-            $self->stash('location',"$location/$input_data_ref->{rolename}");
+            $self->param('roleid',$input_data_ref->{rolename});
+            $self->stash('location',"$location/id/$input_data_ref->{rolename}");
             $self->show_record;
         }
     }

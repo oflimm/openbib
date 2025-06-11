@@ -217,8 +217,8 @@ sub create_record {
         if ($new_authenticatorid){
             $logger->debug("Weiter zum Record $new_authenticatorid");
             $self->stash('status',201); # created
-            $self->stash('authenticatorid',$new_authenticatorid);
-            $self->stash('location',"$location/$new_authenticatorid");
+            $self->param('authenticatorid',$new_authenticatorid);
+            $self->stash('location',"$location/id/$new_authenticatorid");
             $self->show_record;
         }
     }

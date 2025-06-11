@@ -186,8 +186,8 @@ sub create_record {
         if ($new_viewid){ # Datensatz erzeugt, wenn neue id
             $logger->debug("Weiter zum Record $input_data_ref->{viewname}");
             $self->stash('status',201); # created
-            $self->stash('viewid',$input_data_ref->{viewname});
-            $self->stash('location',"$location/$input_data_ref->{viewname}");
+            $self->param('viewid',$input_data_ref->{viewname});
+            $self->stash('location',"$location/id/$input_data_ref->{viewname}");
             $self->show_record;
         }
     }

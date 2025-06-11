@@ -172,7 +172,8 @@ sub create_record {
         if ($viewid){
             $logger->debug("Weiter zum Record $viewid");
             $self->stash('status',201); # created
-            $self->stash('location',"$location/$viewid");
+            $self->param('viewid',$viewid);
+            $self->stash('location',"$location/id/$viewid");
             $self->show_record;
         }
     }

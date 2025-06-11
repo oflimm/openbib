@@ -139,8 +139,8 @@ sub create_record {
         if ($new_databaseid){ # Datensatz erzeugt, wenn neue id
             $logger->debug("Weiter zur DB $input_data_ref->{dbname}");
             $self->stash('status',201); # created
-            $self->stash('databaseid',$input_data_ref->{dbname});
-            $self->stash('location',"$location/$input_data_ref->{dbname}");
+            $self->param('databaseid',$input_data_ref->{dbname});
+            $self->stash('location',"$location/id/$input_data_ref->{dbname}");
             return $self->show_record;
         }
     }

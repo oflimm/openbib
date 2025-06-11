@@ -213,7 +213,7 @@ sub create_record {
             $logger->debug("Weiter zur DB $new_clusterid");
             $self->stash('status',201); # created
             $self->param('clusterid',$new_clusterid);
-            $self->stash('location',"$location/$new_clusterid");
+            $self->stash('location',"$location/id/$new_clusterid");
             $self->show_record;
         }
     }

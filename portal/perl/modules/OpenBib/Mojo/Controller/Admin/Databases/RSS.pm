@@ -211,8 +211,8 @@ sub create_record {
         if ($new_rssid){
             $logger->debug("Weiter zum Record $new_rssid");
             $self->stash('status',201); # created
-            $self->stash('rssid',$new_rssid);
-            $self->stash('location',"$location/$new_rssid");
+            $self->param('rssid',$new_rssid);
+            $self->stash('location',"$location/id/$new_rssid");
             $self->show_record;
         }
     }

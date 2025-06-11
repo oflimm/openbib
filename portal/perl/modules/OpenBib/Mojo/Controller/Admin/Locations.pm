@@ -184,6 +184,7 @@ sub create_record {
         $logger->debug("Weiter zum Record $input_data_ref->{identifier}");	
         $self->stash('status',201); # created
 	$self->param('locationid',$input_data_ref->{identifier});
+	$self->stash('location',"$location/id/$input_data_ref->{identifier}");
         $self->show_record;
     }
     

@@ -227,8 +227,8 @@ sub create_record {
         if ($new_topicid){
             $logger->debug("Weiter zum Record $new_topicid");
             $self->stash('status',201); # created
-            $self->stash('topicid',$new_topicid);
-            $self->stash('location',"$location/$new_topicid");
+            $self->param('topicid',$new_topicid);
+            $self->stash('location',"$location/id/$new_topicid");
             $self->show_record;
         }
     }

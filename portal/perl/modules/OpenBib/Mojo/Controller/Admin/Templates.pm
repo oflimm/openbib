@@ -141,7 +141,8 @@ sub create_record {
         if ($new_templateid){ # Datensatz erzeugt, wenn neue id
             $logger->debug("Weiter zur DB $input_data_ref->{dbname}");
             $self->stash('status',201); # created
-            $self->stash('templateid',$new_templateid);
+            $self->param('templateid',$new_templateid);
+            $self->stash('location',"$location/id/$new_templateid");
             $self->show_record;
         }
     }

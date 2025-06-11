@@ -191,7 +191,7 @@ sub create_record {
             $logger->debug("Weiter zur DB $new_serverid");
             $self->stash('status',201); # created
             $self->param('serverid',$new_serverid);
-            $self->stash('location',"$location/$new_serverid");
+            $self->stash('location',"$location/id/$new_serverid");
             $self->show_record;
         }
     }

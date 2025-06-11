@@ -215,8 +215,8 @@ sub create_record {
         if ($new_orgunitid){ # Datensatz erzeugt, wenn neue id
             $logger->debug("Weiter zum Record $input_data_ref->{orgunitname}");
             $self->stash('status',201); # created
-            $self->stash('orgunitid',$input_data_ref->{orgunitname});
-            $self->stash('location',"$location/$input_data_ref->{orgunitname}");
+            $self->param('orgunitid',$input_data_ref->{orgunitname});
+            $self->stash('location',"$location/id/$input_data_ref->{orgunitname}");
             return $self->show_record;
         }
     }

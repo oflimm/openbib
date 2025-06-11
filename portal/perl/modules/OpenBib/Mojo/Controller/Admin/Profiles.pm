@@ -185,8 +185,8 @@ sub create_record {
         if ($new_profileid){ # Datensatz erzeugt, wenn neue id
             $logger->debug("Weiter zum Record $input_data_ref->{profilename}");
             $self->stash('status',201); # created
-            $self->stash('profileid',$input_data_ref->{profilename});
-            $self->stash('location',"$location/$input_data_ref->{profilename}");
+            $self->param('profileid',$input_data_ref->{profilename});
+            $self->stash('location',"$location/id/$input_data_ref->{profilename}");
             $self->show_record;
         }
     }

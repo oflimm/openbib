@@ -20,12 +20,16 @@ $t->post_ok('/portal/openbib/login' => form => { 'l' => 'de', 'authenticatorid' 
 
 $t->post_ok('/portal/openbib/login' => form => { 'l' => 'de', 'authenticatorid' => '1', 'username' => $adminuser, 'password' => $adminpw, 'redirect_to' => '%2Fportal%2Fopenbib%2Fhome.html%3Fl%3Dde', 'csrf_token' => $csrftoken })->status_is(200)->content_like(qr/Administration/);
 
-$t->get_ok('/portal/openbib/admin/locations/id/DE-38.json' => json => {});
+# Profiles
+#$t->post_ok('/portal/openbib/profiles' => json => { 'l' => 'de', 'profilename' => 'unikatalog', 'description' => 'Universitätskatalg' })->status_is(201)->json_is('/profilename' => 'unikatalog');
 
-my $locationid = $t->tx->res->json('/id');
+#$t->put_ok('/portal/openbib/profiles/id/unikatalog' => json => { 'l' => 'de', 'profilename' => 'unikatalog', 'description' => 'Universitätskatalog' })->status_is(200)->json_is('/profilename' => 'unikatalog');
 
-# Databases
-$t->post_ok('/portal/openbib/databases' => json => { 'l' => 'de', 'dbname' => 'lbs', 'description' => 'USB Köln / Lehrbuchsammlung', 'shortdesc' => 'USBK / LBS', 'system' => 'MARC', 'schema' => 'marc21', searchengines => [ 'xapian', 'elasticsearch' ], 'locationid' => $locationid, 'sigel' => '38', 'active' => 'true', 'host' => 'opendata.ub.uni-koeln.de', 'protocol' => 'https', 'remotepath' => 'dumps/DE-38-USB_Koeln-Lehrbuchsammlung', 'titlefile' => 'meta.title.gz', 'personfile' => 'meta.person.gz', 'corporatebodyfile' => 'meta.corporatebody.gz', 'subjectfile' => 'meta.subject.gz', 'classificationfile' => 'meta.classification.gz', 'holdingfile' => 'meta.holding.gz', 'autoconvert' => 'false'})->status_is(201)->json_is('/titlefile' => 'meta.title.gz');
+$t->post_ok('/portal/openbib/profiles/id/unikatalog/orgunits' => json => { 'l' => 'de', 'orgunitname' => 'books', 'description' => 'Bücher &amp; Mehr' })->status_is(201)->json_is('/orgunitname' => 'books');
+
+$t->put_ok('/portal/openbib/profiles/id/unikatalog/orgunits/id/books' => json => { 'l' => 'de', 'orgunitname' => 'books', 'description' => 'Bücher &amp; Mehr', 'nr' => 1, databases => ['lbs'], 'own_index' => 0  })->status_is(200)->json_is('/orgunitname' => 'books');
+
+print $result,"\n";
 
 # Clear all cookies
 $t->reset_session;

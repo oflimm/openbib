@@ -7081,7 +7081,7 @@ sub search {
 	    };
         }
 	
-        my $resultcount = $self->get_schema->resultset('Userinfo')->search($where_ref)->count;
+        $resultcount = $self->get_schema->resultset('Userinfo')->search($where_ref)->count;
 	
         my $users = $self->get_schema->resultset('Userinfo')->search($where_ref,{ rows => $num, offset => $offset, order_by => ['username'] });
         foreach my $user ($users->all){

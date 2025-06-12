@@ -2316,23 +2316,23 @@
    rule: '/portal/:view/viewadmin/users/id/:userid[post]'
    runmode: 'update_record'
 - # users_loc/roles_loc: Update
-   scope: 'viewadmin_users'
+   scope: 'viewadmin_roles'
    module: 'OpenBib::Handler::PSGI::Viewadmin::Users::Rights::Roles'
    rule: '/portal/:view/viewadmin/users/id/:userid/rights/roles[post]'
    runmode: 'update_record'
 - # users_loc/roles_loc: Update
-   scope: 'viewadmin_users'
+   scope: 'viewadmin_roles'
    module: 'OpenBib::Handler::PSGI::Viewadmin::Users::Rights::Roles'
    rule: '/portal/:view/viewadmin/users/id/:userid/rights/roles[put]'
    runmode: 'update_record'
 
 - # users_loc/templates_loc: Update
-   scope: 'viewadmin_users'
+   scope: 'viewadmin_templates'
    module: 'OpenBib::Handler::PSGI::Viewadmin::Users::Rights::Templates'
    rule: '/portal/:view/viewadmin/users/id/:userid/rights/templates[post]'
    runmode: 'update_record'
 - # users_loc/templates_loc: Update
-   scope: 'viewadmin_users'
+   scope: 'viewadmin_templates'
    module: 'OpenBib::Handler::PSGI::Viewadmin::Users::Rights::Templates'
    rule: '/portal/:view/viewadmin/users/id/:userid/rights/templates[put]'
    runmode: 'update_record'

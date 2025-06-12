@@ -2316,23 +2316,23 @@
    rule: '/portal/:view/viewadmin/users/id/:userid[post]'
    runmode: 'update_record'
 - # users_loc/roles_loc: Update
-   scope: 'viewadmin_users'
+   scope: 'viewadmin_roles'
    module: 'OpenBib::Handler::PSGI::Viewadmin::Users::Rights::Roles'
    rule: '/portal/:view/viewadmin/users/id/:userid/rights/roles[post]'
    runmode: 'update_record'
 - # users_loc/roles_loc: Update
-   scope: 'viewadmin_users'
+   scope: 'viewadmin_roles'
    module: 'OpenBib::Handler::PSGI::Viewadmin::Users::Rights::Roles'
    rule: '/portal/:view/viewadmin/users/id/:userid/rights/roles[put]'
    runmode: 'update_record'
 
 - # users_loc/templates_loc: Update
-   scope: 'viewadmin_users'
+   scope: 'viewadmin_templates'
    module: 'OpenBib::Handler::PSGI::Viewadmin::Users::Rights::Templates'
    rule: '/portal/:view/viewadmin/users/id/:userid/rights/templates[post]'
    runmode: 'update_record'
 - # users_loc/templates_loc: Update
-   scope: 'viewadmin_users'
+   scope: 'viewadmin_templates'
    module: 'OpenBib::Handler::PSGI::Viewadmin::Users::Rights::Templates'
    rule: '/portal/:view/viewadmin/users/id/:userid/rights/templates[put]'
    runmode: 'update_record'
@@ -3406,6 +3406,19 @@
    args:
      'restrict_db_to_view': 0
 
+- # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Requests'
+   rule: '/portal/:view/users/id/:userid/circulations/id/requests[post]'
+   runmode: 'create_record'
+   args:
+     'restrict_db_to_view': 0
+- # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Requests'
+   rule: '/portal/:view/users/id/:userid/circulations/id/requests[delete]'
+   runmode: 'delete_record'
+   args:
+     'restrict_db_to_view': 0
+
 #####################################################################
 # Admin User Rights Roles-Resource/Repraesentation
 - # admin users:
@@ -3440,7 +3453,7 @@
 #####################################################################
 # Admin User Rights Roles-Resource/Repraesentation
 - # admin users/roles_loc:
-   scope: 'admin_users'
+   scope: 'admin_roles'
    module: 'OpenBib::Handler::PSGI::Admin::Users::Rights::Roles'
    rule: '/portal/:view/admin/users/id/:userid/rights/roles[get]'
    runmode: 'show_record'
@@ -3450,12 +3463,12 @@
      - json
      - rdf
 - # users_loc/roles_loc: Update
-   scope: 'admin_users'
+   scope: 'admin_roles'
    module: 'OpenBib::Handler::PSGI::Admin::Users::Rights::Roles'
    rule: '/portal/:view/admin/users/id/:userid/rights/roles[post]'
    runmode: 'update_record'
 - # users_loc/roles_loc: Update
-   scope: 'admin_users'
+   scope: 'admin_roles'
    module: 'OpenBib::Handler::PSGI::Admin::Users::Rights::Roles'
    rule: '/portal/:view/admin/users/id/:userid/rights/roles[put]'
    runmode: 'update_record'
@@ -3463,7 +3476,7 @@
 #####################################################################
 # Admin User Rights Templates-Resource/Repraesentation
 - # admin users/templates_loc:
-   scope: 'admin_users'
+   scope: 'admin_templates'
    module: 'OpenBib::Handler::PSGI::Admin::Users::Rights::Templates'
    rule: '/portal/:view/admin/users/id/:userid/rights/templates[get]'
    runmode: 'show_record'
@@ -3473,12 +3486,12 @@
      - json
      - rdf
 - # users_loc/templates_loc: Update
-   scope: 'admin_users'
+   scope: 'admin_templates'
    module: 'OpenBib::Handler::PSGI::Admin::Users::Rights::Templates'
    rule: '/portal/:view/admin/users/id/:userid/rights/templates[post]'
    runmode: 'update_record'
 - # users_loc/templates_loc: Update
-   scope: 'admin_users'
+   scope: 'admin_templates'
    module: 'OpenBib::Handler::PSGI::Admin::Users::Rights::Templates'
    rule: '/portal/:view/admin/users/id/:userid/rights/templates[put]'
    runmode: 'update_record'
@@ -3486,12 +3499,12 @@
 #####################################################################
 # Admin User Rights Viewzuordnung (obsolete)
 - # users_loc/views_loc: Update
-   scope: 'admin_users'
+   scope: 'admin_views'
    module: 'OpenBib::Handler::PSGI::Admin::Users::Rights::Views'
    rule: '/portal/:view/admin/users/id/:userid/rights/views[post]'
    runmode: 'update_record'
 - # users_loc/views_loc: Update
-   scope: 'admin_users'
+   scope: 'admin_views'
    module: 'OpenBib::Handler::PSGI::Admin::Users::Rights::Views'
    rule: '/portal/:view/admin/users/id/:userid/rights/views[put]'
    runmode: 'update_record'

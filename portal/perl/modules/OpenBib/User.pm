@@ -7063,7 +7063,10 @@ sub search {
     else {
         my $where_ref = {};
         if ($username) {
-            $where_ref->{username} = { '~' => $username };
+            $where_ref->{'-or'} = [
+		'username' => {'~' => $username},
+		'external_id' => {'~' => $username},
+		];
         }
         
         if ($commonname) {

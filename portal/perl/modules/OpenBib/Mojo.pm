@@ -256,27 +256,28 @@ sub _register_routes {
         my $controller = $item->{controller};
         my $action     = $item->{action};
         my $method     = $item->{method} || 'GET'; # Default: GET
+        my $scope      = $item->{scope};
         my $args       = $item->{args};
 
 	if ($method eq "GET"){
 	    if (defined $item->{representations}){
 		# Route zur Repraesentation
-		$routes->get($rule => [ format => $item->{representations} ])->to(controller => $controller, action => $action, dispatch_args => $args );
+		$routes->get($rule => [ format => $item->{representations} ])->to(controller => $controller, action => $action, dispatch_args => $args, scope => $scope );
 		# Route zur Resource
-		$routes->get($rule)->to(controller => $controller, action => $action, dispatch_args => $args );
+		$routes->get($rule)->to(controller => $controller, action => $action, dispatch_args => $args, scope => $scope );
 	    }
 	    else {
-		$routes->get($rule)->to(controller => $controller, action => $action, dispatch_args => $args );
+		$routes->get($rule)->to(controller => $controller, action => $action, dispatch_args => $args, scope => $scope  );
 	    }	    
 	}
 	elsif ($method eq "POST"){
-	    $routes->post($rule)->to(controller => $controller, action => $action, dispatch_args => $args )
+	    $routes->post($rule)->to(controller => $controller, action => $action, dispatch_args => $args, scope => $scope  )
 	}
 	elsif ($method eq "PUT"){
-	    $routes->put($rule)->to(controller => $controller, action => $action, dispatch_args => $args )
+	    $routes->put($rule)->to(controller => $controller, action => $action, dispatch_args => $args, scope => $scope  )
 	}
 	elsif ($method eq "DELETE"){
-	    $routes->delete($rule)->to(controller => $controller, action => $action, dispatch_args => $args )
+	    $routes->delete($rule)->to(controller => $controller, action => $action, dispatch_args => $args, scope => $scope  )
 	}
     }
 

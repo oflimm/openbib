@@ -2593,26 +2593,26 @@
    method: 'POST'
    action: 'update_record'
 - # users_loc/roles_loc: Update
-   scope: 'viewadmin_users'
+   scope: 'viewadmin_roles'
    controller: 'Viewadmin::Users::Rights::Roles'
    rule: '/portal/:view/viewadmin/users/id/:userid/rights/roles'
    method: 'POST'
    action: 'update_record'
 - # users_loc/roles_loc: Update
-   scope: 'viewadmin_users'
+   scope: 'viewadmin_roles'
    controller: 'Viewadmin::Users::Rights::Roles'
    rule: '/portal/:view/viewadmin/users/id/:userid/rights/roles'
    method: 'PUT'
    action: 'update_record'
 
 - # users_loc/templates_loc: Update
-   scope: 'viewadmin_users'
+   scope: 'viewadmin_templates'
    controller: 'Viewadmin::Users::Rights::Templates'
    rule: '/portal/:view/viewadmin/users/id/:userid/rights/templates'
    method: 'POST'
    action: 'update_record'
 - # users_loc/templates_loc: Update
-   scope: 'viewadmin_users'
+   scope: 'viewadmin_templates'
    controller: 'Viewadmin::Users::Rights::Templates'
    rule: '/portal/:view/viewadmin/users/id/:userid/rights/templates'
    method: 'PUT'
@@ -3878,7 +3878,7 @@
 #####################################################################
 # Admin User Rights Roles-Resource/Repraesentation
 - # admin users/roles_loc:
-   scope: 'admin_users'
+   scope: 'admin_roles'
    controller: 'Admin::Users::Rights::Roles'
    rule: '/portal/:view/admin/users/id/:userid/rights/roles'
    method: 'GET'
@@ -3889,13 +3889,13 @@
      - json
      - rdf
 - # users_loc/roles_loc: Update
-   scope: 'admin_users'
+   scope: 'admin_roles'
    controller: 'Admin::Users::Rights::Roles'
    rule: '/portal/:view/admin/users/id/:userid/rights/roles'
    method: 'POST'
    action: 'update_record'
 - # users_loc/roles_loc: Update
-   scope: 'admin_users'
+   scope: 'admin_roles'
    controller: 'Admin::Users::Rights::Roles'
    rule: '/portal/:view/admin/users/id/:userid/rights/roles'
    method: 'PUT'
@@ -3904,7 +3904,7 @@
 #####################################################################
 # Admin User Rights Templates-Resource/Repraesentation
 - # admin users/templates_loc:
-   scope: 'admin_users'
+   scope: 'admin_templates'
    controller: 'Admin::Users::Rights::Templates'
    rule: '/portal/:view/admin/users/id/:userid/rights/templates'
    method: 'GET'
@@ -3915,13 +3915,13 @@
      - json
      - rdf
 - # users_loc/templates_loc: Update
-   scope: 'admin_users'
+   scope: 'admin_templates'
    controller: 'Admin::Users::Rights::Templates'
    rule: '/portal/:view/admin/users/id/:userid/rights/templates'
    method: 'POST'
    action: 'update_record'
 - # users_loc/templates_loc: Update
-   scope: 'admin_users'
+   scope: 'admin_templates'
    controller: 'Admin::Users::Rights::Templates'
    rule: '/portal/:view/admin/users/id/:userid/rights/templates'
    method: 'PUT'
@@ -3930,13 +3930,13 @@
 #####################################################################
 # Admin User Rights Viewzuordnung (obsolete)
 - # users_loc/views_loc: Update
-   scope: 'admin_users'
+   scope: 'admin_views'
    controller: 'Admin::Users::Rights::Views'
    rule: '/portal/:view/admin/users/id/:userid/rights/views'
    method: 'POST'
    action: 'update_record'
 - # users_loc/views_loc: Update
-   scope: 'admin_users'
+   scope: 'admin_views'
    controller: 'Admin::Users::Rights::Views'
    rule: '/portal/:view/admin/users/id/:userid/rights/views'
    method: 'PUT'

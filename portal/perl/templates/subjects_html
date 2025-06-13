@@ -1,0 +1,10 @@
+[% IF hits == 0 %]
+        <div class="ob-jumbotron">
+         <h1 class="display-4">[% msg.maketext("Keine Anzeige aller Normdaten") %]</h1>
+         <p class="lead">[% msg.maketext("Zu diesem Katalog wird keine Übersicht der Schlagworte angeboten") %]</p>
+         <p class="lead">
+            <a class="btn btn-primary btn-lg" href="[% IF returnurl %][% returnurl %][% ELSE %][% path_prefix %]/[% config.get('home_loc') %].html?l=[% lang %][% END %]" role="button">[% msg.maketext('Weiter') %]</a>
+         </p>
+        </div><!-- End: ob-jumbotron -->
+[% ELSE %]
+[% END %]

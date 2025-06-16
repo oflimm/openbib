@@ -167,21 +167,21 @@ sub show_collection {
 
         my $classifications_ref = $catalog->get_classifications;
 
-	my $thisref = ref $classifications_ref;
+	# my $thisref = ref $classifications_ref;
 
-        if ($logger->is_debug){
-	    $logger->debug("Ref: $thisref");       	    
-            $logger->debug(YAML::Dump($classifications_ref));
-        }
+        # if ($logger->is_debug){
+	#     $logger->debug("Ref: $thisref");       	    
+        #     $logger->debug(YAML::Dump($classifications_ref));
+        # }
 
-	my $temp_ref = {};
+	# my $temp_ref = {};
 
-	if ($thisref ne "HASH"){
-	    $temp_ref->{item} = $classifications_ref;
-	    $temp_ref->{hits} = scalar @$classifications_ref;
+	# if ($thisref ne "HASH"){
+	#     $temp_ref->{item} = $classifications_ref;
+	#     $temp_ref->{hits} = scalar @$classifications_ref;
 
-	    $classifications_ref = $temp_ref;
-	}
+	#     $classifications_ref = $temp_ref;
+	# }
 	
         # TT-Data erzeugen
         my $ttdata={

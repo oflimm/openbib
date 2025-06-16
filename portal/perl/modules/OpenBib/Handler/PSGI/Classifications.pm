@@ -171,13 +171,15 @@ sub show_collection {
             $logger->debug(YAML::Dump($classifications_ref));
         }
 
-	my $temp_ref = $classifications_ref;
+	my $temp_ref = {};
 
 	$logger->debug(ref $temp_ref);
 	
-	if (ref $temp_ref eq "ARRAY"){
-	    $classifications_ref->{items} = $temp_ref;
-	    $classifications_ref->{hits} = scalar @$temp_ref;
+	if (ref $classifications_ref eq "ARRAY"){
+	    $temp_ref->{item} = $classifications_ref;
+	    $temp_ref->{hits} = scalar @$classifications_ref;
+
+	    $classifications_ref = $temp_ref;
 	}
 	
         # TT-Data erzeugen

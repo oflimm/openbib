@@ -166,16 +166,17 @@ sub show_collection {
         my $catalog = OpenBib::Catalog::Factory->create_catalog($catalog_args_ref);
 
         my $classifications_ref = $catalog->get_classifications;
-        
+
+	my $thisref = ref $classifications_ref;
+
         if ($logger->is_debug){
+	    $logger->debug("Ref: $thisref");       	    
             $logger->debug(YAML::Dump($classifications_ref));
         }
 
 	my $temp_ref = {};
 
-	$logger->debug(ref $classifications_ref);
-	
-	if (ref $classifications_ref eq "ARRAY"){
+	if ($thisref ne "HASH"){
 	    $temp_ref->{item} = $classifications_ref;
 	    $temp_ref->{hits} = scalar @$classifications_ref;
 

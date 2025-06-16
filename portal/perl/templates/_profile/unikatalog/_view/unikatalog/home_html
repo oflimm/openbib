@@ -225,7 +225,7 @@
     </div>  
 [% IF NOT ezb_outage %]    
     <div class="col-md-3 ps-3 pe-1 pb-2">
-     <a class="text-white" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/ezb/classifications.html?l=[% lang %]">
+     <a class="text-white" href="http://ezb.ur.de/ezeit/fl.phtml?bibid=USBK&colors=7&lang=de">
       <div class="card mt-2 h-100 ob-shortlink">
 	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-book-open pe-2"></i> [% msg.maketext("E-Zeitschriften") %]</div>
       </div>
@@ -240,7 +240,7 @@
 [% END %]
 [% IF NOT dbis_outage %]    
     <div class="col-md-3 ps-3 pe-1 pb-2">
-     <a class="text-white" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/dbis/classifications.html?l=[% lang %]">
+     <a class="text-white" href="https://https://dbis.ur.de/USBK">
       <div class="card mt-2 h-100 ob-shortlink">
 	<div class="card-body pt-3 text-center fs-4"><i class="fas fa-database pe-2"></i> [% msg.maketext("Datenbanken") %]</div>
       </div>

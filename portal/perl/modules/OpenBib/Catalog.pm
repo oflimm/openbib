@@ -261,21 +261,60 @@ sub load_brief_title_record {
     return $self->load_full_title_record($arg_ref);
 }
 
+sub get_persons {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->get_api->get_persons($arg_ref) if ($self->has_api);
+
+    return $self->get_persons($arg_ref);
+}
+
+sub get_corporatebodies {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->get_api->get_corporatebodies($arg_ref) if ($self->has_api);
+
+    return $self->get_corporatebodies($arg_ref);
+}
+
 sub get_classifications {
     my ($self,$arg_ref) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $classifications_ref = $self->get_api->get_classifications();
-    
-    return $classifications_ref;
+    return $self->get_api->get_classifications($arg_ref) if ($self->has_api);
+
+    return $self->get_classifications($arg_ref);
+}
+
+sub get_subjects {
+    my ($self,$arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self->get_api->get_subjects($arg_ref) if ($self->has_api);
+
+    return $self->get_subjects($arg_ref);
 }
 
 sub get_api {
     my $self = shift;
 
     return $self->{api};
+}
+
+sub has_api {
+    my $self = shift;
+
+    return (defined $self->{api} && $self->{api})?1:0;
 }
 
 sub get_common_holdings {

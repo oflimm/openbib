@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::PSGI::Subjects.pm
 #
-#  Copyright 2009-2020 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2009-2025 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -176,7 +176,8 @@ sub show_collection {
         # TT-Data erzeugen
         my $ttdata={
             database        => $database,
-            subjects        => $subjects_ref,
+            subjects        => $subjects_ref->{items},
+	    hits            => $subjects_ref->{hits},
         };
         
         return $self->print_page($config->{'tt_subjects_tname'},$ttdata);

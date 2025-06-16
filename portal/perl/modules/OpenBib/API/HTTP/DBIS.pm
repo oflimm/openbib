@@ -528,8 +528,13 @@ sub get_classifications {
     if ($memc){
 	$memc->set($memc_key,$classifications_ref,$config->{memcached_expiration}{'dbis:classifications'});
     }
+
+    my $hits = scalar @$classifications_ref;
     
-    return $classifications_ref;
+    return {
+	items => $classifications_ref,
+	hits => $hits,
+    };
 }
 
 sub search {

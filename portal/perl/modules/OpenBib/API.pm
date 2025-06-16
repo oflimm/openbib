@@ -217,6 +217,54 @@ sub get_resultcount {
     return $self->{resultcount};
 }
 
+sub get_persons {
+    my ($self,$arg_ref) = @_;
+
+    my $persons_ref = [];
+    my $hits = 0;
+    
+    return {
+	items => $persons_ref,
+	hits  => $hits,
+    };
+}
+
+sub get_corporatebodies {
+    my ($self,$arg_ref) = @_;
+
+    my $corporatebodies_ref = [];
+    my $hits = 0;
+    
+    return {
+	items => $corporatebodies_ref,
+	hits => $hits,
+    };
+}
+
+sub get_classifications {
+    my ($self,$arg_ref) = @_;
+
+    my $classifications_ref = [];
+    my $hits = 0;
+    
+    return {
+	items => $classifications_ref,
+	hits => $hits,
+    };
+}
+
+sub get_subjects {
+    my ($self,$arg_ref) = @_;
+
+    my $subjects_ref = [];
+    my $hits = 0;
+    
+    return {
+	items => $subjects_ref,
+	hits => $hits,
+    };
+}
+
 sub DESTROY {
     my $self = shift;
 

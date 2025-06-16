@@ -2574,6 +2574,18 @@
 
 #####################################################################
 # Persons-Resource/Repraesentation
+- # users_loc/persons_loc: Collection show
+   module: 'OpenBib::Handler::PSGI::Persons'
+   rule: '/portal/:view/databases/id/:database/persons[get]'
+   runmode: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - include
+     - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/persons_loc: Record show
    module: 'OpenBib::Handler::PSGI::Persons'
    rule: '/portal/:view/databases/id/:database/persons/id/:personid[get]'
@@ -2641,6 +2653,18 @@
 
 #####################################################################
 # Corporatebodies-Resource/Repraesentation
+- # users_loc/corporatebodies_loc: Collection show
+   module: 'OpenBib::Handler::PSGI::CorporateBodies'
+   rule: '/portal/:view/databases/id/:database/corporatebodies[get]'
+   runmode: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - include
+     - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/corporatebodies_loc: Record show
    module: 'OpenBib::Handler::PSGI::CorporateBodies'
    rule: '/portal/:view/databases/id/:database/corporatebodies/id/:corporatebodyid[get]'

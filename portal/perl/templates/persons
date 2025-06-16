@@ -1,6 +1,46 @@
 [%- PROCESS common/subtemplate name="local_config" -%] 
-[%- IF representation == '' || representation == 'html' -%]
-[%- PROCESS common/subtemplate name="persons_html" -%]
+[%- IF representation == '' || representation == 'html' ;
+
+    katalogname = dbinfo.get('dbnames').${database}.short ;
+    
+    layout_param = {
+
+      'main_template' = 'persons_html'
+
+      'database' = database
+
+      'active_menu' = 'ezb'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = msg.maketext('Kataloge')
+	     url  = "${path_prefix}/${config.get('databases_loc')}.html?l=${lang}"
+	  },
+          {
+             desc = dbinfo.get('dbnames').${database}.short
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Alle Personen')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+
+      'representations' = [
+          {
+	     type = 'json'
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}/persons.json?l=${lang}"
+	  }
+       ]
+
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'json' -%]
 [%- PROCESS common/subtemplate name="persons_json" -%]
 [%- ELSIF representation == 'include' -%]

@@ -40,7 +40,7 @@
 
     };
 -%]
-[%- PROCESS common/subtemplate name="classifications_html" -%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'json' -%]
 [%- PROCESS common/subtemplate name="classifications_json" -%]
 [%- ELSIF representation == 'include' -%]

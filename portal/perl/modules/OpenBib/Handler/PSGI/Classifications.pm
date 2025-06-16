@@ -173,7 +173,7 @@ sub show_collection {
 
 	my $temp_ref = {};
 
-	$logger->debug(ref $temp_ref);
+	$logger->debug(ref $classifications_ref);
 	
 	if (ref $classifications_ref eq "ARRAY"){
 	    $temp_ref->{item} = $classifications_ref;

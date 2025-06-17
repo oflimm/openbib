@@ -2060,8 +2060,72 @@ sub get_bibliographic_counters {
 sub get_persons {
     my ($self,$arg_ref) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $page               = exists $arg_ref->{page}
+        ? $arg_ref->{page}                    : 1;
+
+    my $num                = exists $arg_ref->{num}
+        ? $arg_ref->{num}                     : 20;
+
     my $persons_ref = [];
     my $hits = 0;
+
+    my $offset            = $page*$num-$num;
+    
+    eval {
+       my $persons_count = $self->get_schema->resultset('PersonField')->search_rs(
+	   {
+	       'field' => '0800',
+	   },
+	   {
+
+	       select   => ['content'],
+	       as       => ['thisperson'],
+	       group_by => ['content'],	       
+            }
+        );
+
+       $hits = $persons_count->count;
+
+       $logger->debug("$hits persons found");
+
+       $logger->debug("page: $page - num: $num - offset: $offset");
+       
+       my $persons = $self->get_schema->resultset('Person')->search_rs(
+	   {
+	       'person_fields.field' => '0800',
+	   },
+	   {
+
+	       select   => ['me.id','person_fields.content'],
+	       as       => ['thisid','thisperson'],
+	       join     => ['person_fields'],
+	       order_by => ['person_fields.content ASC'],
+	       group_by => ['me.id','person_fields.content'],
+	       rows     => $num,
+	       offset   => $offset,
+	       result_class => 'DBIx::Class::ResultClass::HashRefInflator',    
+            }
+        );
+	   
+       while (my $person = $persons->next){
+	   push @{$persons_ref}, {
+	       id   => $person->{thisid},
+	       name => $person->{thisperson},
+	   };
+        }
+    };
+        
+    if ($@){
+        $logger->fatal($@);
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Persons: ".YAML::Dump($persons_ref));
+	
+    }
     
     return {
 	items => $persons_ref,

@@ -23,7 +23,7 @@
 
 <ul class="list-group">
 [% FOREACH item IN persons %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %]&[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item.name) %]&fdb=[% database %]">[% item.name %]</a></li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %]&[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]&fdb=[% database %]">[% item %]</a></li>
 [% END %]
 </ul>
 

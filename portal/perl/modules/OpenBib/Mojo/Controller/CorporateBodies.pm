@@ -34,6 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Data::Pageset;
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Record::CorporateBody;
@@ -118,42 +119,49 @@ sub show_collection {
     my $database         = $self->strip_suffix($self->param('database'));
 
     # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
+    my $r              = $self->stash('r');
+    my $config         = $self->stash('config');
+    my $session        = $self->stash('session');
+    my $user           = $self->stash('user');
+    my $msg            = $self->stash('msg');
+    my $queryoptions   = $self->stash('qopts');
+    my $stylesheet     = $self->stash('stylesheet');
+    my $useragent      = $self->stash('useragent');
+    my $path_prefix    = $self->stash('path_prefix');
 
     # CGI Args
-    my $callback      = $query->param('callback') || '';
-    my $lang          = $query->param('lang')     || $queryoptions->get_option('l') || 'de';
-    my $no_log        = $query->param('no_log')   || '';
+    my $callback      = $r->param('callback') || '';
+    my $lang          = $r->param('lang')     || $queryoptions->get_option('l') || 'de';
+    my $no_log        = $r->param('no_log')   || '';
 
 
     if ($database){ # Valide Informationen etc.
         
-        my $catalog_args_ref = OpenBib::Common::Util::query2hashref($query);
+        my $catalog_args_ref = OpenBib::Common::Util::query2hashref($r);
         $catalog_args_ref->{database} = $database if (defined $database);
         $catalog_args_ref->{l}        = $lang if (defined $lang);
 
         my $catalog = OpenBib::Catalog::Factory->create_catalog($catalog_args_ref);
 
-        my $corporatebodies_ref = $catalog->get_corporatebodies;
+        my $corporatebodies_ref = $catalog->get_corporatebodies({ page => $queryoptions->get_option('page'), num => $queryoptions->get_option('num') });
         
         if ($logger->is_debug){
             $logger->debug(YAML::Dump($corporatebodies_ref));
         }
+
+        my $nav = Data::Pageset->new({
+            'total_entries'    => $corporatebodies_ref->{hits},
+            'entries_per_page' => $queryoptions->get_option('num'),
+            'current_page'     => $queryoptions->get_option('page'),
+            'mode'             => 'slide',
+        });
         
         # TT-Data erzeugen
         my $ttdata={
             database        => $database,
             corporatebodies => $corporatebodies_ref->{items},
 	    hits            => $corporatebodies_ref->{hits},
+	    nav             => $nav,
         };
         
         return $self->print_page($config->{'tt_corporatebodies_tname'},$ttdata);

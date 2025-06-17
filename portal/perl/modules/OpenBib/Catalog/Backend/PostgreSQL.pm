@@ -2093,17 +2093,16 @@ sub get_persons {
 
        $logger->debug("page: $page - num: $num - offset: $offset");
        
-       my $persons = $self->get_schema->resultset('Person')->search_rs(
+       my $persons = $self->get_schema->resultset('PersonField')->search_rs(
 	   {
-	       'person_fields.field' => '0800',
+	       'field' => '0800',
 	   },
 	   {
 
-	       select   => ['me.id','person_fields.content'],
-	       as       => ['thisid','thisperson'],
-	       join     => ['person_fields'],
-	       order_by => ['person_fields.content ASC'],
-	       group_by => ['me.id','person_fields.content'],
+	       select   => ['content'],
+	       as       => ['thisperson'],
+	       order_by => ['content ASC'],
+	       group_by => ['content'],
 	       rows     => $num,
 	       offset   => $offset,
 	       result_class => 'DBIx::Class::ResultClass::HashRefInflator',    
@@ -2111,10 +2110,7 @@ sub get_persons {
         );
 	   
        while (my $person = $persons->next){
-	   push @{$persons_ref}, {
-	       id   => $person->{thisid},
-	       name => $person->{thisperson},
-	   };
+	   push @{$persons_ref}, $person->{thisperson};
         }
     };
         
@@ -2136,8 +2132,68 @@ sub get_persons {
 sub get_corporatebodies {
     my ($self,$arg_ref) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $page               = exists $arg_ref->{page}
+        ? $arg_ref->{page}                    : 1;
+
+    my $num                = exists $arg_ref->{num}
+        ? $arg_ref->{num}                     : 20;
+    
     my $corporatebodies_ref = [];
     my $hits = 0;
+
+    my $offset            = $page*$num-$num;
+    
+    eval {
+       my $corporatebodies_count = $self->get_schema->resultset('CorporatebodyField')->search_rs(
+	   {
+	       'field' => '0800',
+	   },
+	   {
+
+	       select   => ['content'],
+	       as       => ['thiscorporatebody'],
+	       group_by => ['content'],	       
+            }
+        );
+
+       $hits = $corporatebodies_count->count;
+
+       $logger->debug("$hits corporatebodies found");
+
+       $logger->debug("page: $page - num: $num - offset: $offset");
+       
+       my $corporatebodies = $self->get_schema->resultset('CorporatebodyField')->search_rs(
+	   {
+	       'field' => '0800',
+	   },
+	   {
+
+	       select   => ['content'],
+	       as       => ['thiscorporatebody'],
+	       order_by => ['content ASC'],
+	       group_by => ['content'],
+	       rows     => $num,
+	       offset   => $offset,
+	       result_class => 'DBIx::Class::ResultClass::HashRefInflator',    
+            }
+        );
+	   
+       while (my $corporatebody = $corporatebodies->next){
+	   push @{$corporatebodies_ref}, $corporatebody->{thiscorporatebody};
+        }
+    };
+        
+    if ($@){
+        $logger->fatal($@);
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Corporatebodies: ".YAML::Dump($corporatebodies_ref));
+	
+    }
     
     return {
 	items => $corporatebodies_ref,
@@ -2148,8 +2204,68 @@ sub get_corporatebodies {
 sub get_classifications {
     my ($self,$arg_ref) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $page               = exists $arg_ref->{page}
+        ? $arg_ref->{page}                    : 1;
+
+    my $num                = exists $arg_ref->{num}
+        ? $arg_ref->{num}                     : 20;
+    
     my $classifications_ref = [];
     my $hits = 0;
+
+    my $offset            = $page*$num-$num;
+    
+    eval {
+       my $classifications_count = $self->get_schema->resultset('ClassificationField')->search_rs(
+	   {
+	       'field' => '0800',
+	   },
+	   {
+
+	       select   => ['content'],
+	       as       => ['thisclassification'],
+	       group_by => ['content'],	       
+            }
+        );
+
+       $hits = $classifications_count->count;
+
+       $logger->debug("$hits classifications found");
+
+       $logger->debug("page: $page - num: $num - offset: $offset");
+       
+       my $classifications = $self->get_schema->resultset('ClassificationField')->search_rs(
+	   {
+	       'field' => '0800',
+	   },
+	   {
+
+	       select   => ['content'],
+	       as       => ['thisclassification'],
+	       order_by => ['content ASC'],
+	       group_by => ['content'],
+	       rows     => $num,
+	       offset   => $offset,
+	       result_class => 'DBIx::Class::ResultClass::HashRefInflator',    
+            }
+        );
+	   
+       while (my $classification = $classifications->next){
+	   push @{$classifications_ref}, $classification->{thisclassification};
+        }
+    };
+        
+    if ($@){
+        $logger->fatal($@);
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Classifications: ".YAML::Dump($classifications_ref));
+	
+    }
     
     return {
 	items => $classifications_ref,
@@ -2160,8 +2276,68 @@ sub get_classifications {
 sub get_subjects {
     my ($self,$arg_ref) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $page               = exists $arg_ref->{page}
+        ? $arg_ref->{page}                    : 1;
+
+    my $num                = exists $arg_ref->{num}
+        ? $arg_ref->{num}                     : 20;
+    
     my $subjects_ref = [];
     my $hits = 0;
+
+    my $offset            = $page*$num-$num;
+    
+    eval {
+       my $subjects_count = $self->get_schema->resultset('SubjectField')->search_rs(
+	   {
+	       'field' => '0800',
+	   },
+	   {
+
+	       select   => ['content'],
+	       as       => ['thissubject'],
+	       group_by => ['content'],	       
+            }
+        );
+
+       $hits = $subjects_count->count;
+
+       $logger->debug("$hits subjects found");
+
+       $logger->debug("page: $page - num: $num - offset: $offset");
+       
+       my $subjects = $self->get_schema->resultset('SubjectField')->search_rs(
+	   {
+	       'field' => '0800',
+	   },
+	   {
+
+	       select   => ['content'],
+	       as       => ['thissubject'],
+	       order_by => ['content ASC'],
+	       group_by => ['content'],
+	       rows     => $num,
+	       offset   => $offset,
+	       result_class => 'DBIx::Class::ResultClass::HashRefInflator',    
+            }
+        );
+	   
+       while (my $subject = $subjects->next){
+	   push @{$subjects_ref}, $subject->{thissubject};
+        }
+    };
+        
+    if ($@){
+        $logger->fatal($@);
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Subjects: ".YAML::Dump($subjects_ref));
+	
+    }
     
     return {
 	items => $subjects_ref,

@@ -2886,6 +2886,19 @@
 
 #####################################################################
 # Persons-Resource/Repraesentation
+- # users_loc/persons_loc: Collection show
+   controller: 'Persons'
+   rule: '/portal/:view/databases/id/:database/persons'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - include
+     - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/persons_loc: Record show
    controller: 'Persons'
    rule: '/portal/:view/databases/id/:database/persons/id/#personid'
@@ -2962,6 +2975,19 @@
 
 #####################################################################
 # Corporatebodies-Resource/Repraesentation
+- # users_loc/corporatebodies_loc: Collection show
+   controller: 'CorporateBodies'
+   rule: '/portal/:view/databases/id/:database/corporatebodies'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - include
+     - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/corporatebodies_loc: Record show
    controller: 'CorporateBodies'
    rule: '/portal/:view/databases/id/:database/corporatebodies/id/#corporatebodyid'
@@ -3036,6 +3062,19 @@
 
 #####################################################################
 # Subjects-Resource/Repraesentation
+- # users_loc/subjects_loc: Collection show
+   controller: 'Subjects'
+   rule: '/portal/:view/databases/id/:database/subjects'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+     - json
+     - include
+     - rdf
+   args:
+     'restrict_db_to_view': 1
 - # users_loc/subjects_loc: Collection show
    controller: 'Subjects'
    rule: '/portal/:view/databases/id/:database/subjects'

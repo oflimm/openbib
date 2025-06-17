@@ -34,6 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Data::Pageset;
 use Log::Log4perl qw(get_logger :levels);
 use Encode qw/decode_utf8 encode_utf8/;
 
@@ -149,17 +150,25 @@ sub show_collection {
             $logger->debug("Passing Args: ".YAML::Dump($catalog_args_ref));
         }
         
-        my $subjects_ref = $catalog->get_subjects($catalog_args_ref);
+        my $subjects_ref = $catalog->get_subjects({ page => $queryoptions->get_option('page'), num => $queryoptions->get_option('num') });
         
         if ($logger->is_debug){
             $logger->debug(YAML::Dump($subjects_ref));
         }
+
+        my $nav = Data::Pageset->new({
+            'total_entries'    => $subjects_ref->{hits},
+            'entries_per_page' => $queryoptions->get_option('num'),
+            'current_page'     => $queryoptions->get_option('page'),
+            'mode'             => 'slide',
+        });
         
         # TT-Data erzeugen
         my $ttdata={
             database        => $database,
             subjects        => $subjects_ref->{items},
 	    hits            => $subjects_ref->{hits},
+	    nav             => $nav,
         };
         
         return $self->print_page($config->{'tt_subjects_tname'},$ttdata);

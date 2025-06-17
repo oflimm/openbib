@@ -1,3 +1,16 @@
+[%-
+    request_base    = "num=${queryoptions.get_option('num')};srt=${queryoptions.get_option('srt')}_${queryoptions.get_option('srto')};" ;
+    start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+    end_range       = nav.current_page*queryoptions.get_option('num');
+    IF end_range >= hits ;
+       end_range       = hits;
+    END;
+
+    searchfield = "classificationstring";
+    
+    query_args_base = cgiapp.to_cgi_querystring({ exclude = ['page']}) ;
+-%]
+
 [% IF hits == 0 %]
         <div class="ob-jumbotron">
          <h1 class="display-4">[% msg.maketext("Keine Anzeige aller Normdaten") %]</h1>
@@ -7,4 +20,15 @@
          </p>
         </div><!-- End: ob-jumbotron -->
 [% ELSE %]
+<ul class="list-group">
+
+[% FOREACH item IN classifications %]
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?[% query_args_base %]&[% config.get('searchfield').${searchfield}.prefix %]=[% uri_escape(item) %]&fdb=[% database %]">[% item %]</a></li>
+[% END %]
+</ul>
+
+<p/>
+
+[% PROCESS common/subtemplate name="pagination" %]
+
 [% END %]

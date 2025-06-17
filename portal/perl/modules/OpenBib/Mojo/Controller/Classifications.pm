@@ -34,6 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Data::Pageset;
 use Log::Log4perl qw(get_logger :levels);
 use Encode qw/decode_utf8 encode_utf8/;
 
@@ -146,29 +147,21 @@ sub show_collection {
 
         my $catalog = OpenBib::Catalog::Factory->create_catalog($catalog_args_ref);
 
-        my $classifications_ref = $catalog->get_classifications;
+        my $classifications_ref = $catalog->get_classifications({ page => $queryoptions->get_option('page'), num => $queryoptions->get_option('num') });
 
-	# my $thisref = ref $classifications_ref;
-
-        # if ($logger->is_debug){
-	#     $logger->debug("Ref: $thisref");       	    
-        #     $logger->debug(YAML::Dump($classifications_ref));
-        # }
-
-	# my $temp_ref = {};
-
-	# if ($thisref ne "HASH"){
-	#     $temp_ref->{item} = $classifications_ref;
-	#     $temp_ref->{hits} = scalar @$classifications_ref;
-
-	#     $classifications_ref = $temp_ref;
-	# }
+        my $nav = Data::Pageset->new({
+            'total_entries'    => $classifications_ref->{hits},
+            'entries_per_page' => $queryoptions->get_option('num'),
+            'current_page'     => $queryoptions->get_option('page'),
+            'mode'             => 'slide',
+        });
 	
         # TT-Data erzeugen
         my $ttdata={
             database        => $database,
             classifications => $classifications_ref->{items},
 	    hits            => $classifications_ref->{hits},
+	    nav             => $nav,
         };
         
         return $self->print_page($config->{'tt_classifications_tname'},$ttdata);

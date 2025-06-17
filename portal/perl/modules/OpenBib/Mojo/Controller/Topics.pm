@@ -67,13 +67,16 @@ sub show_collection {
     my $config         = $self->stash('config');
     my $user           = $self->stash('user');
 
-    my $topics_ref = $user->get_topics;
+    my $topics_p = $user->get_topics_p;
+
+    $topics_p->then(sub {
+	my $topics_ref = shift;
+	my $ttdata={
+	    topics   => $topics_ref,
+	};
     
-    my $ttdata={
-        topics   => $topics_ref,
-    };
-    
-    return $self->print_page($config->{tt_topics_tname},$ttdata);
+	return $self->print_page($config->{tt_topics_tname},$ttdata);
+		    });
 }
 
 sub show_record {
@@ -90,17 +93,22 @@ sub show_record {
     my $config         = $self->stash('config');
     my $user           = $self->stash('user');
 
-    my $topic_ref = $user->get_topic({ id => $topicid});
-    my $ezb         = OpenBib::Catalog::Factory->create_catalog({database => 'ezb' });;
-    my $dbis        = OpenBib::Catalog::Factory->create_catalog({database => 'dbis' });
-    
-    my $ttdata={
-        topic    => $topic_ref,
-        ezb        => $ezb,
-        dbis       => $dbis,
-    };
-    
-    return $self->print_page($config->{tt_topics_record_tname},$ttdata);
+    my $topic_p = $user->get_topic_p({ id => $topicid });
+
+    $topic_p->then(sub {
+	my $topic_ref = shift;
+	
+	my $ezb         = OpenBib::Catalog::Factory->create_catalog({database => 'ezb' });;
+	my $dbis        = OpenBib::Catalog::Factory->create_catalog({database => 'dbis' });
+	
+	my $ttdata={
+	    topic      => $topic_ref,
+	    ezb        => $ezb,
+	    dbis       => $dbis,
+	};
+	
+	return $self->print_page($config->{tt_topics_record_tname},$ttdata);
+		   });
 }
 
 

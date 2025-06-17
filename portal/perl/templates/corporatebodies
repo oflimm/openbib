@@ -25,7 +25,7 @@
 	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Alle Personen')
+	     desc = msg.maketext('Alle Körperschaften')
 	     url  = '#'
 	     current = 1
 	  }

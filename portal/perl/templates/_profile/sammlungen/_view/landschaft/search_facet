@@ -770,7 +770,7 @@ yearslider_to[% facet_prefix %][% idsuffix %].addEventListener('change', functio
    'Sammlung Gustav von Mevissen' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/mevissen'
    'Sammlung Gymnasialbibliothek' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/gymnasialbibliothek'
    'Sammlung Hallische Jahrbücher' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/hallische'
-   'Sammlung Hanns-Theo Schmitz-Otto' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/familie-schmitz-otto'
+   'Sammlung Hanns-Theo Schmitz-Otto' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/schmitz-otto'
    'Sammlung Hans Engländer' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/englaender'
    'Sammlung H. C. Artmann - Sammlung Karl-Heinz Knupfer' = 'https://artmann.ub.uni-koeln.de/'
    'Sammlung Heinrich Erkes' = 'https://ub.uni-koeln.de/sammlungen-und-schwerpunkte/islandica'

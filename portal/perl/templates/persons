@@ -5,7 +5,7 @@
     
     layout_param = {
 
-      'main_template' = 'subjects_html'
+      'main_template' = 'persons_html'
 
       'database' = database
 
@@ -25,7 +25,7 @@
 	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Alle Schlagworte')
+	     desc = msg.maketext('Alle Personen')
 	     url  = '#'
 	     current = 1
 	  }
@@ -34,7 +34,7 @@
       'representations' = [
           {
 	     type = 'json'
-	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}/subjects.json?l=${lang}"
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/${database}/persons.json?l=${lang}"
 	  }
        ]
 
@@ -42,9 +42,9 @@
 -%]
 [%- PROCESS common/subtemplate name="layout_html" -%]
 [%- ELSIF representation == 'json' -%]
-[%- PROCESS common/subtemplate name="subjects_json" -%]
+[%- PROCESS common/subtemplate name="persons_json" -%]
 [%- ELSIF representation == 'include' -%]
-[%- PROCESS common/subtemplate name="subjects_include" -%]
+[%- PROCESS common/subtemplate name="persons_include" -%]
 [%- ELSE -%]
 This Resource-Type is not available in the representation [% representation %]
 [%- END -%]

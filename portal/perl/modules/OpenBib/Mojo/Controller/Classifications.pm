@@ -147,15 +147,28 @@ sub show_collection {
         my $catalog = OpenBib::Catalog::Factory->create_catalog($catalog_args_ref);
 
         my $classifications_ref = $catalog->get_classifications;
-        
-        if ($logger->is_debug){
-            $logger->debug(YAML::Dump($classifications_ref));
-        }
-        
+
+	# my $thisref = ref $classifications_ref;
+
+        # if ($logger->is_debug){
+	#     $logger->debug("Ref: $thisref");       	    
+        #     $logger->debug(YAML::Dump($classifications_ref));
+        # }
+
+	# my $temp_ref = {};
+
+	# if ($thisref ne "HASH"){
+	#     $temp_ref->{item} = $classifications_ref;
+	#     $temp_ref->{hits} = scalar @$classifications_ref;
+
+	#     $classifications_ref = $temp_ref;
+	# }
+	
         # TT-Data erzeugen
         my $ttdata={
             database        => $database,
-            classifications => $classifications_ref,
+            classifications => $classifications_ref->{items},
+	    hits            => $classifications_ref->{hits},
         };
         
         return $self->print_page($config->{'tt_classifications_tname'},$ttdata);
@@ -163,251 +176,6 @@ sub show_collection {
     else {
         return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname spezifiziert."));
     }
-}
-
-sub show_collection_ezb {
-    my $self = shift;
-
-        # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $database       = $self->strip_suffix($self->param('database'));
-
-    # Shared Args
-    my $r              = $self->stash('r');
-    my $config         = $self->stash('config');
-    my $session        = $self->stash('session');
-    my $user           = $self->stash('user');
-    my $msg            = $self->stash('msg');
-    my $queryoptions   = $self->stash('qopts');
-    my $stylesheet     = $self->stash('stylesheet');
-    my $useragent      = $self->stash('useragent');
-    my $path_prefix    = $self->stash('path_prefix');
-    
-    # CGI Args
-    my $type           = decode_utf8($r->param('type'))     || 'cloud';
-    my $access_green   = decode_utf8($r->param('access_green'))     || 0;
-    my $access_yellow  = decode_utf8($r->param('access_yellow'))    || 0;
-    my $access_red     = decode_utf8($r->param('access_red'))       || 0;
-    my $id             = decode_utf8($r->param('id'))       || undef;
-    my $sc             = decode_utf8($r->param('sc'))       || '';
-    my $lc             = decode_utf8($r->param('lc'))       || '';
-    my $sindex         = decode_utf8($r->param('sindex'))   || 0;
-    
-    #####                                                          ######
-    ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
-    #####                                                          ######
-  
-    ###########                                               ###########
-    ############## B E G I N N  P R O G R A M M F L U S S ###############
-    ###########                                               ###########
-
-    my $colors = $access_green + $access_yellow*2 + $access_red*4;
-
-    if (!$colors){
-        $colors=$config->{ezb_colors};
-
-        my $colors_mask  = dec2bin($colors);
-
-        $logger->debug("Access: mask($colors_mask)");
-        
-        $access_green  = ($colors_mask & 0b001)?1:0;
-        $access_yellow = ($colors_mask & 0b010)?1:0;
-        $access_red    = ($colors_mask & 0b100)?1:0;
-    }
-
-    $logger->debug("Access: colors($colors) green($access_green) yellow($access_yellow) red($access_red)");
-    
-    my $ezb = new OpenBib::Search::Backend::EZB({colors => $colors, lang => $queryoptions->get_option('l') });
-    
-    my $subjects_ref = $ezb->get_subjects();
-    
-    if ($logger->is_debug){
-        $logger->debug(YAML::Dump($subjects_ref));
-    }
-    
-    # TT-Data erzeugen
-    my $ttdata={
-        database      => $database,
-        type          => $type,
-        access_green  => $access_green,
-        access_yellow => $access_yellow,
-        access_red    => $access_red,
-        subjects      => $subjects_ref,
-    };
-    
-    return $self->print_page($config->{'tt_classifications_tname'},$ttdata);
-}
-
-sub show_collectionxxx {
-    my $self = shift;
-
-        # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    # Dispatched Args
-    my $view           = $self->param('view');
-    my $database       = $self->strip_suffix($self->param('database'));
-
-    # Shared Args
-    my $r              = $self->stash('r');
-    my $config         = $self->stash('config');
-    my $session        = $self->stash('session');
-    my $user           = $self->stash('user');
-    my $msg            = $self->stash('msg');
-    my $queryoptions   = $self->stash('qopts');
-    my $stylesheet     = $self->stash('stylesheet');
-    my $useragent      = $self->stash('useragent');
-    my $path_prefix    = $self->stash('path_prefix');
-    
-    # CGI Args
-    my $type           = decode_utf8($r->param('type'))     || 'cloud';
-    my $access_green   = decode_utf8($r->param('access_green'))     || 0;
-    my $access_yellow  = decode_utf8($r->param('access_yellow'))    || 0;
-    my $access_red     = decode_utf8($r->param('access_red'))       || 0;
-    my $id             = decode_utf8($r->param('id'))       || undef;
-    my $sc             = decode_utf8($r->param('sc'))       || '';
-    my $lc             = decode_utf8($r->param('lc'))       || '';
-    my $sindex         = decode_utf8($r->param('sindex'))   || 0;
-    
-    #####                                                          ######
-    ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
-    #####                                                          ######
-  
-    ###########                                               ###########
-    ############## B E G I N N  P R O G R A M M F L U S S ###############
-    ###########                                               ###########
-
-    my $colors = $access_green + $access_yellow*2 + $access_red*4;
-
-    if (!$colors){
-        $colors=$config->{ezb_colors};
-
-        my $colors_mask  = dec2bin($colors);
-
-        $logger->debug("Access: mask($colors_mask)");
-        
-        $access_green  = ($colors_mask & 0b001)?1:0;
-        $access_yellow = ($colors_mask & 0b010)?1:0;
-        $access_red    = ($colors_mask & 0b100)?1:0;
-    }
-
-    $logger->debug("Access: colors($colors) green($access_green) yellow($access_yellow) red($access_red)");
-    
-    my $ezb = new OpenBib::Search::Backend::EZB({colors => $colors, lang => $queryoptions->get_option('l') });
-    
-    my $subjects_ref = $ezb->get_subjects();
-    
-    if ($logger->is_debug){
-        $logger->debug(YAML::Dump($subjects_ref));
-    }
-    
-    # TT-Data erzeugen
-    my $ttdata={
-        database      => $database,
-        type          => $type,
-        access_green  => $access_green,
-        access_yellow => $access_yellow,
-        access_red    => $access_red,
-        subjects      => $subjects_ref,
-    };
-    
-    return $self->print_page($config->{'tt_classifications_tname'},$ttdata);
-}
-
-sub show_collection_dbis {
-        my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    # Dispatched Args
-    my $view           = $self->param('view')           || '';
-    my $database       = $self->strip_suffix($self->param('database'));
-
-    # Shared Args
-    my $r              = $self->stash('r');
-    my $config         = $self->stash('config');
-    my $session        = $self->stash('session');
-    my $user           = $self->stash('user');
-    my $msg            = $self->stash('msg');
-    my $queryoptions   = $self->stash('qopts');
-    my $stylesheet     = $self->stash('stylesheet');
-    my $useragent      = $self->stash('useragent');
-    my $path_prefix    = $self->stash('path_prefix');
-    
-    # CGI Args
-    my $type           = decode_utf8($r->param('type'))     || 'cloud';
-
-    my $access_green   = decode_utf8($r->param('access_green'))     || 0;
-    my $access_yellow  = decode_utf8($r->param('access_yellow'))    || 0;
-    my $access_red     = decode_utf8($r->param('access_red'))       || 0;
-    my $access_de      = decode_utf8($r->param('access_de'))        || 0;
-    my $id             = decode_utf8($r->param('id'))       || undef;
-    my $lett           = decode_utf8($r->param('lett'))     || '';
-
-    my $sc             = decode_utf8($r->param('sc'))       || '';
-    my $lc             = decode_utf8($r->param('lc'))       || '';
-    my $sindex         = decode_utf8($r->param('sindex'))   || 0;
-    
-    #####                                                          ######
-    ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
-    #####                                                          ######
-  
-    ###########                                               ###########
-    ############## B E G I N N  P R O G R A M M F L U S S ###############
-    ###########                                               ###########
-
-    my $colors  = $access_green + $access_yellow*44;
-    my $ocolors = $access_red*8 + $access_de*32;
-
-    # Wenn keine Parameter uebergeben wurden, dann Defaults nehmen
-    if (!$colors && !$ocolors){
-        $logger->debug("Using defaults for color and ocolor");
-
-        $colors  = $config->{dbis_colors};
-        $ocolors = $config->{dbis_ocolors};
-
-        my $colors_mask  = OpenBib::Common::Util::dec2bin($colors);
-        my $ocolors_mask = OpenBib::Common::Util::dec2bin($ocolors);
-        
-        $access_red    = ($ocolors_mask & 0b001000)?1:0;
-        $access_de     = ($ocolors_mask & 0b100000)?1:0;
-        $access_green  = ($colors_mask  & 0b000001)?1:0;
-        $access_yellow = ($colors_mask  & 0b101100)?1:0;
-    }
-    else {
-        $logger->debug("Using CGI values for color and ocolor");
-    }
-    
-    my $dbis = new OpenBib::Search::Backend::DBIS({colors => $colors, ocolors => $ocolors, lang => $queryoptions->get_option('l') });
-
-    my $subjects_ref = $dbis->get_subjects();
-    
-    if ($logger->is_debug){
-        $logger->debug(YAML::Dump($subjects_ref));
-    }
-    
-    # TT-Data erzeugen
-    my $ttdata={
-        database      => $database,
-        type          => $type,
-        access_green  => $access_green,
-        access_yellow => $access_yellow,
-        access_red    => $access_red,
-        access_de     => $access_de,
-        subjects      => $subjects_ref,
-    };
-    
-    return $self->print_page($config->{'tt_classifications_tname'},$ttdata);
-}
-
-sub show_collection_sql {
-    my $self = shift;
-
-    return;
 }
 
 1;

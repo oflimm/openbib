@@ -107,4 +107,60 @@ sub show_record {
     }
 }
 
+sub show_collection {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $view             = $self->param('view');
+    my $database         = $self->strip_suffix($self->param('database'));
+
+    # Shared Args
+    my $query          = $self->query();
+    my $r              = $self->param('r');
+    my $config         = $self->param('config');
+    my $session        = $self->param('session');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    my $queryoptions   = $self->param('qopts');
+    my $stylesheet     = $self->param('stylesheet');
+    my $useragent      = $self->param('useragent');
+    my $path_prefix    = $self->param('path_prefix');
+
+    # CGI Args
+    my $callback      = $query->param('callback') || '';
+    my $lang          = $query->param('lang')     || $queryoptions->get_option('l') || 'de';
+    my $no_log        = $query->param('no_log')   || '';
+
+
+    if ($database){ # Valide Informationen etc.
+        
+        my $catalog_args_ref = OpenBib::Common::Util::query2hashref($query);
+        $catalog_args_ref->{database} = $database if (defined $database);
+        $catalog_args_ref->{l}        = $lang if (defined $lang);
+
+        my $catalog = OpenBib::Catalog::Factory->create_catalog($catalog_args_ref);
+
+        my $corporatebodies_ref = $catalog->get_corporatebodies;
+        
+        if ($logger->is_debug){
+            $logger->debug(YAML::Dump($corporatebodies_ref));
+        }
+        
+        # TT-Data erzeugen
+        my $ttdata={
+            database        => $database,
+            corporatebodies => $corporatebodies_ref->{items},
+	    hits            => $corporatebodies_ref->{hits},
+        };
+        
+        return $self->print_page($config->{'tt_corporatebodies_tname'},$ttdata);
+    }
+    else {
+        return $self->print_warning($msg->maketext("Die Resource wurde nicht korrekt mit Datenbankname spezifiziert."));
+    }
+}
+
 1;

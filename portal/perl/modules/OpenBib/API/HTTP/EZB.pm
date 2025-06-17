@@ -646,7 +646,7 @@ sub _get_readme {
 }
 
 sub get_classifications {
-    my ($self) = @_;
+    my ($self,$arg_ref) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -665,7 +665,7 @@ sub get_classifications {
     $logger->debug("Memc: ".$memc);
     $logger->debug("Memcached: ".$config->{memcached});    
     
-    if ($memc){
+    if (0 == 1 && $memc){
         my $classifications_ref = $memc->get($memc_key);
 
 	if ($classifications_ref){
@@ -733,8 +733,13 @@ sub get_classifications {
     if ($memc){
 	$memc->set($memc_key,$classifications_ref,$config->{memcached_expiration}{'ezb:classifications'});
     }
+
+    my $hits = scalar @$classifications_ref;
     
-    return $classifications_ref;
+    return {
+	items => $classifications_ref,
+	hits => $hits,
+    };
 }
 
 sub search {

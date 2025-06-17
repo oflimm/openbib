@@ -4644,6 +4644,48 @@ sub get_topics {
     return $topics_ref;
 }
 
+sub get_topics_p {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $memc_key = "config:topics";
+
+    if ($self->{memc}){
+        my $topics_ref = $self->{memc}->get($memc_key);
+
+	if ($topics_ref){
+	    return $topics_ref;
+	}
+    }
+
+    # DBI: "select * from topics order by name"
+    my $topics = $self->get_schema->resultset('Topic')->search_rs(
+        undef,        
+        {
+            'order_by' => ['name'],
+        }
+    );
+
+    my $topics_ref = [];
+    
+    foreach my $topic ($topics->all){
+        push @{$topics_ref}, {
+            id           => $topic->id,
+            name         => $topic->name,
+            description  => $topic->description,
+        };
+    }
+
+    if ($self->{memc}){
+	$self->{memc}->set($memc_key,$topics_ref,$self->{memcached_expiration}{$memc_key});
+    }
+
+    return Mojo::Promise->resolve($topics_ref);
+}
+
 
 sub get_topics_of_litlist {
     my ($self,$arg_ref)=@_;
@@ -4885,6 +4927,37 @@ sub get_topic {
     }
 
     return $topic_ref;
+}
+
+sub get_topic_p {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $id           = exists $arg_ref->{id}
+        ? $arg_ref->{id}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    # DBI: "select * from topic where id = ?"
+    my $topic = $self->get_schema->resultset('Topic')->search_rs(
+        {
+            id => $id,
+        }
+    )->first;
+
+    my $topic_ref = {};
+    
+    if ($topic){
+        $topic_ref = {
+            id           => $topic->id,
+            name         => $topic->name,
+            description  => $topic->description,
+        };
+    }
+
+    return Mojo::Promise->resolve($topic_ref);
 }
 
 sub is_authenticated {

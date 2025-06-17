@@ -306,7 +306,6 @@ sub get_corporatebodies {
     return $self->get_api->get_corporatebodies($arg_ref) if ($self->has_api);
 
     return $self->get_corporatebodies($arg_ref);
->>>>>>> 18e1e19951308b1516dd2ec6d2dd1cb3d2ca8511
 }
 
 sub get_classifications {

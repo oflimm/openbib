@@ -95,7 +95,6 @@ my $titles_with_provenances = $catalog->get_schema->resultset('TitleField')->sea
         column   => ['titleid'],
         group_by => ['titleid','id','mult','content'],
         result_class => 'DBIx::Class::ResultClass::HashRefInflator',
-	rows => 1,
     }
 );
 

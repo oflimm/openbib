@@ -524,7 +524,7 @@ sub threadB {
 
     $logger->info("### Aufgesplittete Sammlungen aus dem USB Katalog");
     
-    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['afrikaans','alff','artmann','auslaender','baenfer','baeumker','becker','belgischeshaus','benelux','bers','conrady','dante','dirksen','englaender','evang','fichte','frauenlektuere','gabel','gruen','gymnasialbibliothek','herbschneider','herterich','hilferding','hinck','hochschulschriften','islandica','kbg','kempis','kloster','kroh','lefort','loeffler','mies','mukluweit','modernedtlit','modernelyrik','nevissen','oidtman','ostasiatica','quint','schia','schirmer','schmalenbach','schneider','schmitzotto','scholle','syndikatsbibliothek','thorbecke','tietz','tillich','vormweg','wallraf','weinkauff','westerholt','wolff'] });
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['afrikaans','alff','artmann','auslaender','baenfer','baeumker','becker','belgischeshaus','benelux','bers','conrady','dante','dirksen','englaender','evang','fichte','frauenlektuere','gabel','gruen','gymnasialbibliothek','herbschneider','herterich','hilferding','hinck','hochschulschriften','islandica','kbg','kempis','kloster','kroh','lefort','loeffler','mies','mukluweit','modernedtlit','modernelyrik','nevissen','oidtman','ostasiatica','quint','rheinzeit','schia','schirmer','schmalenbach','schneider','schmitzotto','scholle','syndikatsbibliothek','thorbecke','tietz','tillich','vormweg','wallraf','weinkauff','westerholt','wolff'] });
 
     return $thread_description;
 }

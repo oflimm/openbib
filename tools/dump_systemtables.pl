@@ -142,7 +142,7 @@ my $table_string = join(' ', map { "-T $_"} @system_tables);
 
 system("echo \"*:*:*:$config->{'systemdbuser'}:$config->{'systemdbpasswd'}\" > ~/.pgpass ; chmod 0600 ~/.pgpass");
 
-system("$pg_dump -U $config->{'systemdbuser'} -h $config->{'systemdbhost'} -F c -b -c $table_string openbib_system | $gzip > system_tables.sql.gz");
+system("$pg_dump -U $config->{'systemdbuser'} -h $config->{'systemdbhost'} -b -c $table_string openbib_system | $gzip > system_tables.sql.gz");
 
 sub print_help {
     print << "ENDHELP";

@@ -4820,6 +4820,7 @@ sub del_server {
             $self->{memc}->delete("config:local_server_is_active_and_searchable:$hostip");
         }
 
+        $serverinfo->updatelogs->delete;
         $serverinfo->delete;
     };
 

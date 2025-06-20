@@ -296,6 +296,9 @@ sub get_field {
     my $field            = exists $arg_ref->{field}
         ? $arg_ref->{field}               : undef;
 
+    my $subfield         = exists $arg_ref->{subfield}
+        ? $arg_ref->{subfield}            : undef;
+    
     my $mult             = exists $arg_ref->{mult}
         ? $arg_ref->{mult}                : undef;
 
@@ -305,20 +308,28 @@ sub get_field {
     if (!defined $self->{_fields} && !defined $self->{_fields}->{$field}){
         return;
     }
-    
-    if (defined $subfield && ($subfield || $subfield eq "0")){
+        
+    if (defined $mult && $mult){
         foreach my $field_ref (@{$self->{_fields}->{$field}}){
-            if (defined $field_ref->{subfield} && $field_ref->{subfield} eq $subfield){
-                return $field_ref->{content};
-            }
-        }
+	    if (defined $subfield && ($subfield || $subfield >= 0)){
+		if (defined $field_ref->{mult} && $field_ref->{mult} == $mult && defined $field_ref->{subfield} && $field_ref->{subfield} eq $subfield){
+		    return $field_ref->{content};
+		}		
+	    }
+	    else {
+		if (defined $field_ref->{mult} && $field_ref->{mult} == $mult){
+		    return $field_ref->{content};
+		}
+		
+	    }
+	}
     }
-    elsif (defined $mult && $mult){
-        foreach my $field_ref (@{$self->{_fields}->{$field}}){
-            if (defined $field_ref->{mult} && $field_ref->{mult} == $mult){
-                return $field_ref->{content};
-            }
-        }
+    elsif (defined $subfield && ($subfield || $subfield >= 0)){
+        foreach my $field_ref (@{$self->{_fields}->{$field}}){	
+	    if (defined $field_ref->{subfield} && $field_ref->{subfield} eq $subfield){
+		return $field_ref->{content};
+	    }
+	}
     }
     else {
         return $self->{_fields}->{$field};

@@ -57,7 +57,7 @@ my ($database,$help,$logfile,$filename);
 	    "help"            => \$help
 	    );
 
-if ($help){
+if ($help || !$database){
     print_help();
 }
 
@@ -105,12 +105,23 @@ my $title_done_ref = {};
 foreach my $title ($titles_with_provenances->all){
     my $titleid = $title->{titleid};
 
+    print STDERR "Titelid: $titleid\n";
+    
     next if (defined $title_done_ref->{$titleid});
 
     my $record = OpenBib::Record::Title->new({ database => $database, id => $titleid, config => $config})->load_full_record;
 
-    my $hbzid  = $record->get_field({ field => 'T0010', mult => 1});
+    my $ids_ref  = $record->get_field({ field => 'T0035' });
 
+    my $hbzid = "";
+
+    foreach my $item_ref (@$ids_ref){
+	if ($item_ref->{subfield} eq "a" && $item_ref->{content} =~m/\(EXLNZ-49HBZ_NETWORK\)(\d+)$/){
+	    $hbzid=$1;
+	    last;
+	}
+    }
+    
     my $harvard_citation = $record->to_harvard_citation;
     
     $logger->debug("Record: ".YAML::Dump($record->get_fields));
@@ -126,15 +137,15 @@ foreach my $title ($titles_with_provenances->all){
     foreach my $mult (@$provenances_ids_ref){
         my $provenance_ref = {};
 
-        my $medianumber   = $record->get_field({ field => 'T4309', mult => $mult});
-        my $description   = $record->get_field({ field => 'T4310', mult => $mult});
-        my $sigel         = $record->get_field({ field => 'T4311', mult => $mult});
-        my $incomplete    = $record->get_field({ field => 'T4312', mult => $mult});
-        my $reference     = $record->get_field({ field => 'T4313', mult => $mult});
-        my $former_mark   = $record->get_field({ field => 'T4314', mult => $mult});
-        my $scan_id       = $record->get_field({ field => 'T4315', mult => $mult});
-        my $entry_year    = $record->get_field({ field => 'T4316', mult => $mult});
-        my $remark        = $record->get_field({ field => 'T4317', mult => $mult});
+        my $medianumber   = $record->get_field({ field => 'T4309', subfield => 'a', mult => $mult});
+        my $description   = $record->get_field({ field => 'T4310',, subfield => 'a', mult => $mult});
+        my $sigel         = $record->get_field({ field => 'T4311', subfield => 'a', mult => $mult});
+        my $incomplete    = $record->get_field({ field => 'T4312', subfield => 'a', mult => $mult});
+        my $reference     = $record->get_field({ field => 'T4313', subfield => 'a', mult => $mult});
+        my $former_mark   = $record->get_field({ field => 'T4314', subfield => 'a', mult => $mult});
+        my $scan_id       = $record->get_field({ field => 'T4315', subfield => 'a', mult => $mult});
+        my $entry_year    = $record->get_field({ field => 'T4316', subfield => 'a', mult => $mult});
+        my $remark        = $record->get_field({ field => 'T4317', subfield => 'a', mult => $mult});
 
         # Mark from Holdings
 
@@ -153,19 +164,8 @@ foreach my $title ($titles_with_provenances->all){
         my $collection_name = "";
 
         if ($record->has_field('T4306')){
-            foreach my $field_ref (@{$record->get_field({ field => 'T4306'})}){
-                if ($field_ref->{mult} eq $mult){
-                    my $subject = OpenBib::Record::Subject->new({database => $database, id => $field_ref->{id}, config => $config})->load_full_record;
-                    
-                    my $this_subject_gnd  = $subject->get_field({field => 'S0010', mult => 1});
-                    my $this_subject_name = $subject->get_field({field => 'S0800', mult => 1});
-		    
-                    next unless (defined $this_subject_gnd);
-		    
-                    $collection_gnd  = $this_subject_gnd;
-                    $collection_name = $this_subject_name;
-		}
-            }
+	    $collection_gnd   = $record->get_field({ field => 'T4306', subfield => 'g', mult => $mult});
+	    $collection_name  = $record->get_field({ field => 'T4306', subfield => 'a', mult => $mult});
         }
 
         # GND and name for corporate bodies
@@ -174,19 +174,8 @@ foreach my $title ($titles_with_provenances->all){
         my $corp_name = "";
 
         if ($record->has_field('T4307')){                    
-            foreach my $field_ref (@{$record->get_field({ field => 'T4307'})}){
-                if ($field_ref->{mult} eq $mult){
-                    my $corp = OpenBib::Record::CorporateBody->new({database => $database, id => $field_ref->{id}, config => $config})->load_full_record;
-                    
-                    my $this_corp_gnd  = $corp->get_field({field => 'C0010', mult => 1});
-                    my $this_corp_name = $corp->get_field({field => 'C0800', mult => 1});
-
-                    next unless (defined $this_corp_gnd);
-                    
-                    $corp_gnd  = $this_corp_gnd;
-		    $corp_name = $this_corp_name;
-                }
-            }
+	    $corp_gnd   = $record->get_field({ field => 'T4307', subfield => 'g', mult => $mult});
+	    $corp_name  = $record->get_field({ field => 'T4307', subfield => 'a', mult => $mult});
         }
         
         # GND and name for Persons
@@ -195,26 +184,8 @@ foreach my $title ($titles_with_provenances->all){
 	my $person_name = "";
 
         if ($record->has_field('T4308')){
-
-            $logger->debug("Personen: ".YAML::Dump($record->get_field({field => 'T4308'})));
-            
-            foreach my $field_ref (@{$record->get_field({ field => 'T4308'})}){
-                if ($field_ref->{mult} eq $mult){
-
-                    my $person = OpenBib::Record::Person->new({database => $database, id => $field_ref->{id}, config => $config})->load_full_record;
-                    
-                    my $this_person_gnd  = $person->get_field({field => 'P0010', mult => 1});
-                    my $this_person_name = $person->get_field({field => 'P0800', mult => 1});
-
-		    
-                    next unless (defined $this_person_gnd);
-                    
-                    $logger->debug("Person-ID: ".$person->get_id." - $this_person_gnd");
-                    
-                    $person_gnd = $this_person_gnd;
-		    $person_name = $this_person_name;
-                }
-            }
+	    $person_gnd   = $record->get_field({ field => 'T4308', subfield => 'g', mult => $mult});
+	    $person_name  = $record->get_field({ field => 'T4308', subfield => 'a', mult => $mult});
         }
 
 	$provenance_ref->{titleid}           = $titleid if ($titleid);
@@ -238,6 +209,7 @@ foreach my $title ($titles_with_provenances->all){
         $provenance_ref->{entry_year}         = $entry_year  if ($entry_year);
         $provenance_ref->{remark}             = $remark  if ($remark);
         $provenance_ref->{title_citation}     = $harvard_citation  if ($harvard_citation);
+        $provenance_ref->{linkage}            = $mult;
 	
 	if ($logger->is_debug){
 	    $logger->debug(YAML::Dump($provenance_ref));

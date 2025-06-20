@@ -155,8 +155,8 @@ typischerweise lokal anzupassende -- (Konfigurations-)Dateien einfach
 kopiert werden.
 
 Der große Vorteil dieser Verlinkung in den git-Baum besteht darin,
-dass man auch nach der lokalen Installation durch ein einfaches cvs
-update von alle Fehlerbereinigungen und Erweiterungen lokal
+dass man auch nach der lokalen Installation durch ein einfaches git
+pull von alle Fehlerbereinigungen und Erweiterungen lokal
 profitieren und auf dem aktuellen Stand bleiben kann.
 
 Die generelle Vorgehensweise bei der Schnell-Installation ist im
@@ -182,7 +182,7 @@ Um dieses Repository zu nutzen muss folgende Zeile in die Datei
 eingefügt werden:
 
 # OpenBib
-deb http://packages.ub.uni-koeln.de/debian buster main
+deb [trusted=yes] http://packages.ub.uni-koeln.de/debian bookworm main
 
 Danach wird die aktuelle Pakete-Datenbank aktualisiert:
 
@@ -201,22 +201,43 @@ Fuer die OpenBib-Installation wird folgendes benötigt:
 * Benutzername und Passwort eines Nutzers in der Datenbank, der
   idealer-/einfacherweise maximale Rechte hat.
 
+So kann ein Nutzer 'root' mit der Rolle Superuser angelegt werden.
+Dazu wechselt man zum Nutzer postgres und startet psql. Darin:
+
+postgres=# create role root with superuser login password '<Passwort>';
+ CREATE ROLE
+
+Schliesslich aendert man den Eintrag fuer die generelle Anmeldung der
+Nutzer in pg_hba.conf von peer
+
+ local   all             all                                     peer
+
+auf md5,
+
+ local   all             all                                     md5
+
+damit die Anmeldung mit dem neuen Nutzer root wirksam wird.
+
+Danach PostgreSQL restarten:
+
+root@foo:~# /etc/init.d/postgresql restart
+Restarting postgresql (via systemctl): postgresql.service.
+
 2.) Auschecken der aktuellen OpenBib-Version aus dem Repository
 
 Die folgenden Schritte führen Sie als root aus. Legen Sie zunächst ein
 Verzeichnis /opt/git an
 
 mkdir /opt/git
-
+cd /opt/git
+ 
 und wechseln Sie dann in dieses Verzeichnis. Dort wird nun die
 aktuelle OpenBib-Version aus dem offiziellen Repository ausgecheckt.
 
-git clone https://github.com/oflimm/openbib.git openbib-master
+git clone https://github.com/oflimm/openbib.git openbib-current
 
 Als abstraktes OpenBib-Verzeichnis verwenden wir openbib-current, für
 die aktuell verwendete OpenBib-Version.
-
-ln -s openbib-master openbib-current
 
 3.) Anpassen von quickinstall.pl
 
@@ -224,9 +245,10 @@ Gehen Sie nun in das ausgecheckte git-Verzeichniss und passen folgende
 lokale Pfadangaben im Skript quickinstall.pl an:
 
 $documentroot
-    Wo ist der Basis-Pfad fuer die Dokumente Ihres Apache-Webservers 
+    Wo ist der Basis-Pfad fuer die Dokumente Ihres Webservers 
 
-Beide Pfade sind ohne abschliessenden '/' einzugeben.
+Der Pfad ist ohne abschliessendes '/' einzugeben. In der Regel lautet er
+/var/www/html
 
 Danach erzeugen sie bitte mit touch die Datei .changed_config als
 Zeichen der erfolgen Konfigurationsänderung.
@@ -244,11 +266,38 @@ Rufen Sie nun das Programm quickinstall.pl auf:
 Bisher wurden alle Anweisung als Nutzer root gemacht. Diesem gehören
 auch alle Dateien der OpenBib-Installation. Aus Sicherheitsgründen ist
 es sehr ratsam fortan tagtäglich unter einem unprivilegierten Nutzer
-openbib zu arbeiten. Diesem müssen dazu alle Dateien gehören:
+openbib zu arbeiten.
+
+Dieser wird angelegt mit
+
+adduser openbib --ingroup www-data --shell /bin/bash
+
+Diesem Nutzer müssen alle Dateien gehören:
 
 chown -R openbib.www-data /opt/openbib
 chown -R openbib.www-data /opt/git
 chown -R openbib.www-data /var/log/openbib/
+
+Praktisch ist zudem das Setzen einer default umask mit
+
+openbib@localhost:> echo "umask 0002" >> ~/.bashrc
+
+Ebenso müssen die Berechtigungen korrigiert werden, da auch der Nutzer
+www-data volle Schreib- und Ausführberechtigung haben muss:
+
+find /opt/git -perm -g-w -exec chmod g+w {} \; 
+find /opt/openbib -perm -g-w -exec chmod g+w {} \;
+find /var/log/openbib -perm -g-w -exec chmod g+w {} \;
+
+An dieser Stelle sollte das Verzeichnis openbib-current nun z.B. in
+openbib-master umbenannt werden und ein symbolischer Link
+openbib-current angelegt werden, der darauf zeigt.
+
+cd /opt/git
+mv openbib-current openbib-master
+ln -s openbib-master openbib-current
+
+Auf diese Weise können Sie später ganz einfach verschiedene OpenBib-Version auschecken und diejenige, die Sie verwenden wollen, durch Umlegen des Links openbib-current aktivieren.
 
 6.) Konfiguration von portal.yml
 

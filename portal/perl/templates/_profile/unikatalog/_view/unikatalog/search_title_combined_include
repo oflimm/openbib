@@ -254,6 +254,7 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
   </div>
 
 [% END %]
+[% IF NOT alma_disable_listitem_status %]
 <template id="lendable-template">
   <a href="" class="btn btn-primary avail-js ob-availability_lendable mb-1 me-1 ps-2 pe-2"><img src="[% config.get_icon('lendable',view,sysprofile) %]" alt="[% msg.maketext("ausleihbar") %]" /><span class="ps-1 d-none d-sm-inline">[% msg.maketext("ausleihbar") %]</span></a>
 </template>
@@ -395,3 +396,4 @@ function get_avail_info(circ_table, library_code, location_code, availability){
 
 }
 </script>
+[% END %]

@@ -169,7 +169,7 @@ foreach my $authority_file_ref (@authority_files){
 
         $logger->info("### $database: Entpacken der Authority-Daten fuer Typ $type");
                 
-        system("rm $rootdir/data/$database/authority_*");
+        #system("rm $rootdir/data/$database/authority_*");
         system("/bin/gzip -dc $source_filename > $rootdir/data/$database/$dest_filename");
         
         my $btime      = new Benchmark;

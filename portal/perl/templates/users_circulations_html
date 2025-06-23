@@ -83,6 +83,7 @@
 
 <p/>
 
+[% IF NOT alma_disable_circulation %]
 <div class="card">
 <div class="card-header">[% msg.maketext("Bücher: Ausleihen / Fernleihen") %]</div>
 <div class="card-body">
@@ -148,6 +149,18 @@
 </div>
 
 <p/>
+[% ELSE %]
+<div class="card">
+<div class="card-header">[% msg.maketext("Ausleihsystem temporär ausser Betrieb") %]</div>
+<div class="card-body">
+
+[% msg.maketext("Derzeit ist keine Verbindung zum Ausleihsystem und damit auf Bestellungen, Vormerkungen, Gebühren sowie ausgeliehene Medien möglich. Ebenso kann nicht auf das Fernleihkonto zugegriffen werden.") %]
+
+</div>
+</div>
+
+<p/>
+[% END %]
 
 <div class="card">
 <div class="card-header">[% msg.maketext("Persönliche Daten") %]</div>

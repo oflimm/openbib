@@ -40,7 +40,6 @@ my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 
-my $harvestoaiexe        = "$config->{'conv_dir'}/harvestOAI.pl";
 my $marcjson2marcmetaexe = "$config->{'conv_dir'}/marcjson2marcmeta.pl";
 
 my $pool          = $ARGV[0];

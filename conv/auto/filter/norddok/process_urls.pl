@@ -8,7 +8,7 @@ use utf8;
 use warnings;
 use strict;
 
-my $default_access = 'y';
+my $default_access = 'g';
 
 while (<>){
     my $record_ref = decode_json $_;
@@ -70,6 +70,8 @@ while (<>){
 
 		# URL schon ueber Portfolios verarbeitet? Dann ignorieren
 		next if (defined $url_done_ref->{$url} && $url_done_ref->{$url});
+
+		next if ($url=~m/thumbnail/);
 
 		push @{$record_ref->{fields}{'4662'}}, {
 		    mult     => $mult,

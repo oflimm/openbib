@@ -193,7 +193,7 @@ foreach my $title ($titles_with_provenances->all){
 
 	$provenance_ref->{titleid}           = $titleid if ($titleid);
         $provenance_ref->{hbzid}             = $hbzid if ($hbzid);
-        $provenance_ref->{nzid}              = $hbzid if ($nzid);
+        $provenance_ref->{nzid}              = $nzid if ($nzid);
         $provenance_ref->{medianumber}       = $medianumber if ($medianumber);
         $provenance_ref->{tpro_description}  = $description if ($description);
         $provenance_ref->{sigel}             = $sigel if ($sigel);

@@ -234,10 +234,10 @@ $logger->info("$provenances_count provenances exported");
 sub cleanup_term {
     my $term = shift;
 
-    $term=~s{&gt;}{>}g/
-    $term=~s{&lt;}{<}g/
-    $term=~s{&amp;}{&}g/
-    $term=~s{</?i>}{}g/
+    $term=~s{&gt;}{>}g;
+    $term=~s{&lt;}{<}g;
+    $term=~s{&amp;}{&}g;
+    $term=~s{</?i>}{}g;
 
     return $term;
 }

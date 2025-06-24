@@ -114,11 +114,14 @@ foreach my $title ($titles_with_provenances->all){
     my $ids_ref  = $record->get_field({ field => 'T0035' });
 
     my $hbzid = "";
+    my $nzid  = "";
 
     foreach my $item_ref (@$ids_ref){
 	if ($item_ref->{subfield} eq "a" && $item_ref->{content} =~m/\(EXLNZ-49HBZ_NETWORK\)(\d+)$/){
+	    $nzid=$1;
+	}
+	if ($item_ref->{subfield} eq "a" && $item_ref->{content} =~m/(\(DE-605\).+)$/){
 	    $hbzid=$1;
-	    last;
 	}
     }
     
@@ -190,6 +193,7 @@ foreach my $title ($titles_with_provenances->all){
 
 	$provenance_ref->{titleid}           = $titleid if ($titleid);
         $provenance_ref->{hbzid}             = $hbzid if ($hbzid);
+        $provenance_ref->{nzid}              = $hbzid if ($nzid);
         $provenance_ref->{medianumber}       = $medianumber if ($medianumber);
         $provenance_ref->{tpro_description}  = $description if ($description);
         $provenance_ref->{sigel}             = $sigel if ($sigel);

@@ -151,9 +151,9 @@
       <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %].html?l=[% lang %]">[% msg.maketext("Persönliche Angaben") %]</a></li>
 [%   END %]
 
+[% IF NOT alma_disable_circulation %]
       <li class="nav-item">[% msg.maketext("Einzelne Übersichten") %]
         <ul>
-
 
 [%   IF layout_param.active_submenu == "loans" %]
       <li class="nav-item active"><strong class="ps-3">[% msg.maketext("Ausleihen") %]</strong></li>
@@ -172,6 +172,8 @@
 [%   END %]
     </ul>
    </li>
+[% END # disable_alma_circulation %]
+
 [%   IF layout_param.active_submenu == "suggestion" %]
       <li class="nav-item active"><strong>[% msg.maketext("Anschaffungsvorschläge") %]</strong></li>
 [%   ELSE %]

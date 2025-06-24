@@ -69,6 +69,7 @@
 <ul class="list-unstyled">
       <li><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %].html?l=[% lang %]">[% msg.maketext("Gesamtübersicht") %]</a></li>
       <li><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %].html?l=[% lang %]">[% msg.maketext("Persönliche Angaben") %]</a></li>
+[% IF NOT alma_disable_circulation %]      
       <li><span>[% msg.maketext("Einzelne Übersichten") %]</span>
         <ul class="components">
           <li class="[% IF layout_param.active_submenu == "loans" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/loans.html?l=[% lang %]">[% msg.maketext("Ausleihen") %]</a></li>
@@ -76,6 +77,7 @@
           <li class="[% IF layout_param.active_submenu == "fees" %]active[% END %]"><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/fees.html?l=[% lang %]">[% msg.maketext("Gebühren") %]</a></li>
 	</ul>
      </li>
+[% END # alma_disable_circulation %]
       <li><a class="ob-dropdown_link" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('circulations_loc') %]/id/suggestions.html?l=[% lang %]">[% msg.maketext("Anschaffungsvorschläge") %]</a></li>
 </ul>
 

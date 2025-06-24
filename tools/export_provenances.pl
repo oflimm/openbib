@@ -195,7 +195,7 @@ foreach my $title ($titles_with_provenances->all){
         $provenance_ref->{hbzid}             = $hbzid if ($hbzid);
         $provenance_ref->{nzid}              = $nzid if ($nzid);
         $provenance_ref->{medianumber}       = $medianumber if ($medianumber);
-        $provenance_ref->{tpro_description}  = $description if ($description);
+        $provenance_ref->{tpro_description}  = cleanup_term($description) if ($description);
         $provenance_ref->{sigel}             = $sigel if ($sigel);
         $provenance_ref->{incomplete}        = $incomplete if ($incomplete);
         $provenance_ref->{reference}         = $reference  if ($reference);
@@ -207,12 +207,12 @@ foreach my $title ($titles_with_provenances->all){
 
         $provenance_ref->{collection_name}    = $collection_name  if ($collection_name);
         $provenance_ref->{corporatebody_name} = $corp_name  if ($corp_name);
-        $provenance_ref->{person_name}        = $person_name  if ($person_name);
+        $provenance_ref->{person_name}        = cleanup_term($person_name)  if ($person_name);
 
         $provenance_ref->{scan_id}            = $scan_id  if ($scan_id);
         $provenance_ref->{entry_year}         = $entry_year  if ($entry_year);
-        $provenance_ref->{remark}             = $remark  if ($remark);
-        $provenance_ref->{title_citation}     = $harvard_citation  if ($harvard_citation);
+        $provenance_ref->{remark}             = cleanup_term($remark)  if ($remark);
+        $provenance_ref->{title_citation}     = cleanup_term($harvard_citation)  if ($harvard_citation);
         $provenance_ref->{linkage}            = $mult;
 	
 	if ($logger->is_debug){
@@ -230,6 +230,17 @@ foreach my $title ($titles_with_provenances->all){
 close(OUT);
 
 $logger->info("$provenances_count provenances exported");
+
+sub cleanup_term {
+    my $term = shift;
+
+    $term=~s{&gt;}{>}g/
+    $term=~s{&lt;}{<}g/
+    $term=~s{&amp;}{&}g/
+    $term=~s{</?i>}{}g/
+
+    return $term;
+}
 
 sub print_help {
     print << "ENDHELP";

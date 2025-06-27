@@ -5874,23 +5874,29 @@ sub set_private_info {
     my $logger = get_logger();
 
     if ($logger->is_debug()){
-	$logger->debug(YAML::Dump($userinfo_ref));
+	$logger->debug("Setting Private Info for user $userid to ".YAML::Dump($userinfo_ref));
+    }
+
+    eval {
+	$self->get_schema->resultset('Userinfo')->single(
+	    {
+		id => $userid,
+	    }
+	    )->update(
+	    {
+		nachname       => $userinfo_ref->{'surname'},
+		vorname        => $userinfo_ref->{'forename'},
+		email          => $userinfo_ref->{'email'},
+		external_id    => $userinfo_ref->{'external_id'},
+		external_group => $userinfo_ref->{'external_group'},
+	    }
+	    );
+    };
+
+    if ($@){
+        $logger->error($@);
     }
     
-    $self->get_schema->resultset('Userinfo')->single(
-        {
-            id => $userid,
-        }
-    )->update(
-        {
-            nachname       => $userinfo_ref->{'surname'},
-            vorname        => $userinfo_ref->{'forename'},
-	    email          => $userinfo_ref->{'email'},
-	    external_id    => $userinfo_ref->{'external_id'},
-	    external_group => $userinfo_ref->{'external_group'},
-        }
-    );
-
     return;
 }
 

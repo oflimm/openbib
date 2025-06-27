@@ -456,7 +456,7 @@ sub user_show_ugc {
     my $cartitems_ref = $user->get_items_in_collection({ userid => $id});
 
     if (@{$cartitems_ref->to_list}){
-	print "\n\nCartitems for userid $id\n";       
+	print "\nCartitems for userid $id\n";       
 	foreach my $record (@{$cartitems_ref->to_list}){
 	    print "- ".$record->to_harvard_citation."\n";
 	}
@@ -469,10 +469,10 @@ sub user_show_ugc {
     my $litlists_ref = $user->get_litlists({ userid => $id});
 
     if (@{$litlists_ref}){
-	print "\n\nLitlists for userid $id\n";       
+	print "\nLitlists for userid $id\n";       
 
 	foreach my $entry_ref (@{$litlists_ref}){
-	    print "- ".$entry_ref->{title}." (Count: ".$entry_ref->{itemcount}."\n";
+	    print "- ".$entry_ref->{title}." (Count: ".$entry_ref->{itemcount}.")\n";
 	}
     }
     else {
@@ -482,10 +482,10 @@ sub user_show_ugc {
     my ($tags_ref,$tags_count) = $user->get_private_tags_by_name({ userid => $id});
     
     if ($tags_count){
-	print "\n\nPrivate Tags for userid $id\n";       
+	print "\nPrivate Tags for userid $id\n";       
 
 	foreach my $entry_ref (@{$tags_ref}){
-	    print "- ".$entry_ref->{name}." (Count: ".$entry_ref->{count}."\n";
+	    print "- ".$entry_ref->{name}." (Count: ".$entry_ref->{count}.")\n";
 	}
     }
     else {

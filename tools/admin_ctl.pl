@@ -35,6 +35,7 @@ use Log::Log4perl qw(get_logger :levels);
 use YAML;
 
 use OpenBib::Config;
+use OpenBib::User;
 
 our ($do,$scope,$view,$id,$db,$loc,$help,$loglevel,$logfile);
 
@@ -431,6 +432,20 @@ sub cluster_check_consistency {
 
 }
 
+sub user_delete_account {
+
+    if (!$id){
+	$logger->error("Missing arg numeric (user)id");
+	exit;
+    }
+
+    $logger->info("Deleting account for userid $id");       
+
+    my $user   = new OpenBib::User;
+
+    $user->wipe_account($id);
+}
+
 
 sub print_help {
     print << "ENDHELP";
@@ -493,6 +508,11 @@ Check consistency of DBs-counts in Cluster
    --do=check_consistency
    --id=...              : Cluster id
 
+Delete Useraccount by id
+   --scope=user
+   --do=delete_account
+   --id=...              : Cluster id
+
 e.g:
 
 ./admin_ctl.pl --scope=view --do=list --view=unikatalog
@@ -512,6 +532,8 @@ e.g:
 ./admin_ctl.pl --scope=view --do=delete_loc --view=unikatalog --loc=DE-38-123
 
 ./admin_ctl.pl --scope=cluster --do=check_consistency --id=1
+
+./admin_ctl.pl --scope=user --do=delete_account --id=1
 
 ENDHELP
     exit;

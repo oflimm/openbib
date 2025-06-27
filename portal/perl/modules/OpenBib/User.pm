@@ -5858,8 +5858,8 @@ sub delete_private_info {
             vorname        => '',
             email          => '',	    
             token          => '',
-            external_id    => '',	    
-            external_group => '',	    
+            #external_id    => '',	    
+            #external_group => '',	    
         }
     );
    

@@ -3930,15 +3930,18 @@ sub get_litlists {
 
     my $view                = exists $arg_ref->{view}
         ? $arg_ref->{view}                : '';
+
+    my $userid              = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}              : $self->{ID};
     
-    return [] if (!$self->{ID});
+    return [] if (!$userid);
 
     my $litlists_ref = [];
 
     # DBI: "select id from litlist where userid=?"
     my $litlists = $self->get_schema->resultset('Litlist')->search_rs(
         {
-            userid => $self->{ID},
+            userid => $userid,
         }
     );
 
@@ -5007,6 +5010,10 @@ sub get_items_in_collection {
 
     my $view                = exists $arg_ref->{view}
         ? $arg_ref->{view}                : '';
+
+    my $userid              = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}              : $self->{ID};
+
     my $queryoptions        = exists $arg_ref->{queryoptions}
         ? $arg_ref->{queryoptions}        : new OpenBib::QueryOptions;
 
@@ -5060,7 +5067,7 @@ sub get_items_in_collection {
 
         $cartitems = $self->get_schema->resultset('UserCartitem')->search_rs(
             {
-                'userid.id'          => $self->{ID},
+                'userid.id'          => $userid,
                 'cartitemid.dbname'  => { -in => $databases->as_query },
                 
             },
@@ -5081,7 +5088,7 @@ sub get_items_in_collection {
         # DBI: "select * from collection where userid = ? order by dbname"
         $cartitems = $self->get_schema->resultset('UserCartitem')->search_rs(
             {
-                'userid.id' => $self->{ID},
+                'userid.id' => $userid,
             },
             {
                 select  => [ 'cartitemid.dbname', 'cartitemid.titleid', 'cartitemid.titlecache', 'cartitemid.id', 'cartitemid.tstamp', 'cartitemid.comment' ],

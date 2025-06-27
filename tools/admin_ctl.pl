@@ -444,7 +444,23 @@ sub user_delete_account {
     $user->wipe_account($id);
 }
 
-sub user_show_ugc {
+sub user_listinfo {
+
+    if (!$id){
+	$logger->error("Missing arg numeric (user)id");
+	exit;
+    }
+
+    $logger->info("Showing account info for userid $id");       
+
+    my $user   = new OpenBib::User;
+
+    my $userinfo_ref = $user->get_info($id);
+
+    print YAML::Dump($userinfo_ref),"\n";
+}
+
+sub user_listugc {
 
     if (!$id){
 	$logger->error("Missing arg numeric (user)id");
@@ -556,12 +572,17 @@ Check consistency of DBs-counts in Cluster
    --do=check_consistency
    --id=...              : Cluster id
 
-Show user generated content by id
+Show user account by id
    --scope=user
-   --do=show_ugc
+   --do=listinfo
    --id=...              : numeric Userid
 
-Delete Useraccount by id
+Show user generated content by id
+   --scope=user
+   --do=listugc
+   --id=...              : numeric Userid
+
+Delete user account by id
    --scope=user
    --do=delete_account
    --id=...              : numeric userid
@@ -588,7 +609,9 @@ e.g:
 
 ./admin_ctl.pl --scope=user --do=delete_account --id=1
 
-./admin_ctl.pl --scope=user --do=show_ugc --id=1
+./admin_ctl.pl --scope=user --do=listugc --id=1
+
+./admin_ctl.pl --scope=user --do=listinfo --id=1
 
 ENDHELP
     exit;

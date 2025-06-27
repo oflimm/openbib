@@ -572,7 +572,7 @@ Check consistency of DBs-counts in Cluster
    --do=check_consistency
    --id=...              : Cluster id
 
-Show user account by id
+Show user account by id (YAML)
    --scope=user
    --do=listinfo
    --id=...              : numeric Userid

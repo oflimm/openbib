@@ -428,8 +428,6 @@ sub cluster_check_consistency {
 	print $db_ref->{dbname}.": ", join(' - ',@output),"\n" if (@output);
 
     }
-    
-
 }
 
 sub user_delete_account {
@@ -444,6 +442,56 @@ sub user_delete_account {
     my $user   = new OpenBib::User;
 
     $user->wipe_account($id);
+}
+
+sub user_show_ugc {
+
+    if (!$id){
+	$logger->error("Missing arg numeric (user)id");
+	exit;
+    }
+
+    my $user   = new OpenBib::User;
+
+    my $cartitems_ref = $user->get_items_in_collection({ userid => $id});
+
+    if (@{$cartitems_ref->to_list}){
+	print "\n\nCartitems for userid $id\n";       
+	foreach my $record (@{$cartitems_ref->to_list}){
+	    print "- ".$record->to_harvard_citation."\n";
+	}
+    }
+    else {
+	print "NO cartitems for userid $id\n";
+    }
+    
+
+    my $litlists_ref = $user->get_litlists({ userid => $id});
+
+    if (@{$litlists_ref}){
+	print "\n\nLitlists for userid $id\n";       
+
+	foreach my $entry_ref (@{$litlists_ref}){
+	    print "- ".$entry_ref->{title}." (Count: ".$entry_ref->{itemcount}."\n";
+	}
+    }
+    else {
+	print "NO litlists for userid $id\n";
+    }
+
+    my ($tags_ref,$tags_count) = $user->get_private_tags_by_name({ userid => $id});
+    
+    if ($tags_count){
+	print "\n\nPrivate Tags for userid $id\n";       
+
+	foreach my $entry_ref (@{$tags_ref}){
+	    print "- ".$entry_ref->{name}." (Count: ".$entry_ref->{count}."\n";
+	}
+    }
+    else {
+	print "NO private Tags for userid $id\n";
+    }
+    
 }
 
 
@@ -508,10 +556,15 @@ Check consistency of DBs-counts in Cluster
    --do=check_consistency
    --id=...              : Cluster id
 
+Show user generated content by id
+   --scope=user
+   --do=show_ugc
+   --id=...              : numeric Userid
+
 Delete Useraccount by id
    --scope=user
    --do=delete_account
-   --id=...              : Cluster id
+   --id=...              : numeric userid
 
 e.g:
 
@@ -534,6 +587,8 @@ e.g:
 ./admin_ctl.pl --scope=cluster --do=check_consistency --id=1
 
 ./admin_ctl.pl --scope=user --do=delete_account --id=1
+
+./admin_ctl.pl --scope=user --do=show_ugc --id=1
 
 ENDHELP
     exit;

@@ -3932,15 +3932,18 @@ sub get_litlists {
 
     my $view                = exists $arg_ref->{view}
         ? $arg_ref->{view}                : '';
+
+    my $userid              = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}              : $self->{ID};
     
-    return [] if (!$self->{ID});
+    return [] if (!$userid);
 
     my $litlists_ref = [];
 
     # DBI: "select id from litlist where userid=?"
     my $litlists = $self->get_schema->resultset('Litlist')->search_rs(
         {
-            userid => $self->{ID},
+            userid => $userid,
         }
     );
 
@@ -5159,6 +5162,10 @@ sub get_items_in_collection {
 
     my $view                = exists $arg_ref->{view}
         ? $arg_ref->{view}                : '';
+
+    my $userid              = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}              : $self->{ID};
+
     my $queryoptions        = exists $arg_ref->{queryoptions}
         ? $arg_ref->{queryoptions}        : new OpenBib::QueryOptions;
 
@@ -5212,7 +5219,7 @@ sub get_items_in_collection {
 
         $cartitems = $self->get_schema->resultset('UserCartitem')->search_rs(
             {
-                'userid.id'          => $self->{ID},
+                'userid.id'          => $userid,
                 'cartitemid.dbname'  => { -in => $databases->as_query },
                 
             },
@@ -5233,7 +5240,7 @@ sub get_items_in_collection {
         # DBI: "select * from collection where userid = ? order by dbname"
         $cartitems = $self->get_schema->resultset('UserCartitem')->search_rs(
             {
-                'userid.id' => $self->{ID},
+                'userid.id' => $userid,
             },
             {
                 select  => [ 'cartitemid.dbname', 'cartitemid.titleid', 'cartitemid.titlecache', 'cartitemid.id', 'cartitemid.tstamp', 'cartitemid.comment' ],
@@ -6010,8 +6017,8 @@ sub delete_private_info {
             vorname        => '',
             email          => '',	    
             token          => '',
-            external_id    => '',	    
-            external_group => '',	    
+            #external_id    => '',	    
+            #external_group => '',	    
         }
     );
    
@@ -6026,23 +6033,29 @@ sub set_private_info {
     my $logger = get_logger();
 
     if ($logger->is_debug()){
-	$logger->debug(YAML::Dump($userinfo_ref));
+	$logger->debug("Setting Private Info for user $userid to ".YAML::Dump($userinfo_ref));
+    }
+
+    eval {
+	$self->get_schema->resultset('Userinfo')->single(
+	    {
+		id => $userid,
+	    }
+	    )->update(
+	    {
+		nachname       => $userinfo_ref->{'surname'},
+		vorname        => $userinfo_ref->{'forename'},
+		email          => $userinfo_ref->{'email'},
+		external_id    => $userinfo_ref->{'external_id'},
+		external_group => $userinfo_ref->{'external_group'},
+	    }
+	    );
+    };
+
+    if ($@){
+        $logger->error($@);
     }
     
-    $self->get_schema->resultset('Userinfo')->single(
-        {
-            id => $userid,
-        }
-    )->update(
-        {
-            nachname       => $userinfo_ref->{'surname'},
-            vorname        => $userinfo_ref->{'forename'},
-	    email          => $userinfo_ref->{'email'},
-	    external_id    => $userinfo_ref->{'external_id'},
-	    external_group => $userinfo_ref->{'external_group'},
-        }
-    );
-
     return;
 }
 

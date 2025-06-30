@@ -72,6 +72,7 @@ sub authenticate {
     my $result_ref = $ils->authenticate({ username => $username, password => $password});
 
     if ($logger->is_debug){
+	$logger->debug("Authentication of user $username with password $password");
 	$logger->debug("Authentication result ".YAML::Dump($result_ref));
     }
     

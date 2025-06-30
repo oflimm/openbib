@@ -35,6 +35,7 @@ use Log::Log4perl qw(get_logger :levels);
 use YAML;
 
 use OpenBib::Config;
+use OpenBib::User;
 
 our ($do,$scope,$view,$id,$db,$loc,$help,$loglevel,$logfile);
 
@@ -427,8 +428,86 @@ sub cluster_check_consistency {
 	print $db_ref->{dbname}.": ", join(' - ',@output),"\n" if (@output);
 
     }
+}
+
+sub user_delete_account {
+
+    if (!$id){
+	$logger->error("Missing arg numeric (user)id");
+	exit;
+    }
+
+    $logger->info("Deleting account for userid $id");       
+
+    my $user   = new OpenBib::User;
+
+    $user->wipe_account($id);
+}
+
+sub user_listinfo {
+
+    if (!$id){
+	$logger->error("Missing arg numeric (user)id");
+	exit;
+    }
+
+    $logger->info("Showing account info for userid $id");       
+
+    my $user   = new OpenBib::User;
+
+    my $userinfo_ref = $user->get_info($id);
+
+    print YAML::Dump($userinfo_ref),"\n";
+}
+
+sub user_listugc {
+
+    if (!$id){
+	$logger->error("Missing arg numeric (user)id");
+	exit;
+    }
+
+    my $user   = new OpenBib::User;
+
+    my $cartitems_ref = $user->get_items_in_collection({ userid => $id});
+
+    if (@{$cartitems_ref->to_list}){
+	print "\nCartitems for userid $id\n";       
+	foreach my $record (@{$cartitems_ref->to_list}){
+	    print "- ".$record->to_harvard_citation."\n";
+	}
+    }
+    else {
+	print "NO cartitems for userid $id\n";
+    }
     
 
+    my $litlists_ref = $user->get_litlists({ userid => $id});
+
+    if (@{$litlists_ref}){
+	print "\nLitlists for userid $id\n";       
+
+	foreach my $entry_ref (@{$litlists_ref}){
+	    print "- ".$entry_ref->{title}." (Count: ".$entry_ref->{itemcount}.")\n";
+	}
+    }
+    else {
+	print "NO litlists for userid $id\n";
+    }
+
+    my ($tags_ref,$tags_count) = $user->get_private_tags_by_name({ userid => $id});
+    
+    if ($tags_count){
+	print "\nPrivate Tags for userid $id\n";       
+
+	foreach my $entry_ref (@{$tags_ref}){
+	    print "- ".$entry_ref->{name}." (Count: ".$entry_ref->{count}.")\n";
+	}
+    }
+    else {
+	print "NO private Tags for userid $id\n";
+    }
+    
 }
 
 
@@ -493,6 +572,21 @@ Check consistency of DBs-counts in Cluster
    --do=check_consistency
    --id=...              : Cluster id
 
+Show user account by id (YAML)
+   --scope=user
+   --do=listinfo
+   --id=...              : numeric Userid
+
+Show user generated content by id
+   --scope=user
+   --do=listugc
+   --id=...              : numeric Userid
+
+Delete user account by id
+   --scope=user
+   --do=delete_account
+   --id=...              : numeric userid
+
 e.g:
 
 ./admin_ctl.pl --scope=view --do=list --view=unikatalog
@@ -512,6 +606,12 @@ e.g:
 ./admin_ctl.pl --scope=view --do=delete_loc --view=unikatalog --loc=DE-38-123
 
 ./admin_ctl.pl --scope=cluster --do=check_consistency --id=1
+
+./admin_ctl.pl --scope=user --do=delete_account --id=1
+
+./admin_ctl.pl --scope=user --do=listugc --id=1
+
+./admin_ctl.pl --scope=user --do=listinfo --id=1
 
 ENDHELP
     exit;

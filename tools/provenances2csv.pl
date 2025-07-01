@@ -99,6 +99,8 @@ my $idx = 1;
 while (my $json = <>){
     my $json_ref = decode_json $json;
 
+    $out_ref = [];
+    
     my $signatur     = $json_ref->{current_mark};
     my $field_361_o  =  "";
     my $field_361_5  = ($json_ref->{sigel})?"DE-".$json_ref->{sigel}:"";

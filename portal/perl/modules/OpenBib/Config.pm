@@ -39,11 +39,11 @@ use JSON::XS;
 use List::Compare;
 use List::MoreUtils qw(uniq);
 use Log::Log4perl qw(get_logger :levels);
-use LWP;
 use URI::Escape qw(uri_escape);
 use YAML::Syck;
 
 use Mojo::Promise;
+use Mojo::UserAgent;
 
 use OpenBib::Config::File;
 use OpenBib::Config::DispatchTable;
@@ -3143,11 +3143,12 @@ sub load_lcc {
 sub get_geoposition {
     my ($self,$address)=@_;
 
-    my $ua = LWP::UserAgent->new;
+    my $ua = Mojo::UserAgent->new;
 
     my $url = "http://maps.google.com/maps/geo?q=".uri_escape($address)."&output=csv&key=".$self->{google_maps_api_key};
         
-    my $response = $ua->get($url)->decoded_content(charset => 'utf8');
+    my $response = $ua->get($url)->result->body;
+
     return $response;
 }
 
@@ -5117,12 +5118,40 @@ sub del_template {
 sub get_templatetext {
     my ($self,$templatename,$viewname,$templatelang) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Getting templatetext from promise");
+
+    my $template = "";
+
+    my $template_p = $self->get_templatetext_p($templatename,$viewname,$templatelang);
+
+    $template_p->then(sub {
+       $template = shift;
+
+       $logger->debug("Got templatetext: $template");
+
+       return;
+    });
+
+    return $template;
+}
+
+sub get_templatetext_p {
+    my ($self,$templatename,$viewname,$templatelang) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug("Getting templatetext in Promise from SystemDB");
+
     my $viewid = $self->get_viewinfo->single({ viewname => $viewname })->id;
 
     my $template = $self->get_schema->resultset('Templateinfo')->search_rs({ viewid => $viewid, templatename => $templatename, templatelang => $templatelang })->single;
 
     if ($template){
-        return $template->templatetext;
+        return Mojo::Promise->resolve($template->templatetext);
     }
     # Sonst erste alternative Sprachfassung ausgeben
     else {
@@ -5132,12 +5161,12 @@ sub get_templatetext {
              my $template = $self->get_schema->resultset('Templateinfo')->search_rs({ viewid => $viewid, templatename => $templatename, templatelang => $thislang })->single;
             
              if ($template){
-                 return $template->templatetext;
+                 return Mojo::Promise->resolve($template->templatetext);
              }
          }
     }
 
-    return "";
+    return Mojo::Promise->resolve("");
 }
 
 sub update_template {

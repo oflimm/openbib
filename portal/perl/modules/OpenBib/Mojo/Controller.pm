@@ -467,7 +467,7 @@ sub add_default_ttdata {
     my $representation = $self->stash('representation') || 'html';
     my $content_type   = $self->stash('content_type') || $ttdata->{'content_type'} || $config->{'content_type_map_rev'}{$representation} || 'text/html';
     
-    my $query          = $r->params->to_hash;
+    my $query          = $r; #->params->to_hash;
     my $container      = OpenBib::Container->instance;
     
     # View- und Datenbank-spezifisches Templating
@@ -715,7 +715,7 @@ sub to_cgi_params {
 		    $value = $self->cleanup_lang($value);
 		}
 		else {
-		    $value = escape_html(decode_utf8(uri_unescape($value)));
+		    $value = escape_html(uri_unescape($value));
 		    # Anpassung/Ausnahme " fuer Phrasensuche
 		    $value =~s/&quot;/"/g;
 		}
@@ -734,7 +734,7 @@ sub to_cgi_params {
 			    $value = $self->cleanup_lang($value);
 			}
 			else {
-			    $value = escape_html(decode_utf8(uri_unescape($value)));
+			    $value = escape_html(uri_unescape($value));
 			    # Anpassung/Ausnahme " fuer Phrasensuche
 			    $value =~s/&quot;/"/g;
 			}
@@ -752,7 +752,7 @@ sub to_cgi_params {
 			$value = $self->cleanup_lang($value);
 		    }
 		    else {
-			$value = escape_html(decode_utf8(uri_unescape($value)));
+			$value = escape_html(uri_unescape($value));
 			# Anpassung/Ausnahme " fuer Phrasensuche
 			$value =~s/&quot;/"/g;
 		    }
@@ -961,7 +961,7 @@ sub parse_valid_input {
                         my $subfield = $3;
                         my $mult     = $4;
 
-                        my $content  = ($no_escape)?decode_utf8($r->param($qparam)):escape_html(decode_utf8($r->param($qparam)));
+                        my $content  = ($no_escape)?$r->param($qparam):escape_html($r->param($qparam));
 
                         $logger->debug("Got $field - $prefix - $subfield - $mult - $content");
 
@@ -980,7 +980,7 @@ sub parse_valid_input {
                 foreach my $qparam ($r->param){
                     if ($qparam=~/^${param_prefix}_/){
 
-                        my $content  = ($no_escape)?decode_utf8($r->param($qparam)):escape_html(decode_utf8($r->param($qparam)));
+                        my $content  = ($no_escape)?$r->param($qparam):escape_html($r->param($qparam));
 			
 			push @{$input_params_ref->{mixed_bag}{$qparam}}, $content;
                     }
@@ -994,7 +994,7 @@ sub parse_valid_input {
                         my $scope    = $1;
                         my $right    = $2;
                         
-                        my $content  = escape_html(decode_utf8($r->param($qparam)));
+                        my $content  = escape_html($r->param($qparam));
                         
                         $logger->debug("Got $scope - $right - $content");
                         

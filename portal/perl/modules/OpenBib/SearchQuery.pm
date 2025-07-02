@@ -191,7 +191,7 @@ sub set_from_request {
             my ($thissearchfield_content, $thissearchfield_norm_content,$thissearchfield_bool_op);
 
 	    # Process and escape Input
-	    $thissearchfield_norm_content = decode_utf8(uri_unescape($self->_html_unescape($query->param("$prefix")))) || '';
+	    $thissearchfield_norm_content = uri_unescape($self->_html_unescape($query->param("$prefix"))) || '';
             $thissearchfield_content      = escape_html($thissearchfield_norm_content);
 
 	    # Anpassung/Ausnahme fuer " Phrasensuche wieder entfernt wg. XSS
@@ -292,7 +292,7 @@ sub set_from_request {
         foreach my $term (@terms){
 	    $logger->debug("Native filter Term: $term");
 #            $term = decode_utf8(uri_unescape($self->_html_unescape($term)));
-	    $term = escape_html(decode_utf8(uri_unescape($self->_html_unescape($term))));
+	    $term = escape_html(uri_unescape($self->_html_unescape($term)));
 	    
             my $string  = $term;
             
@@ -324,9 +324,9 @@ sub set_from_request {
     $self->{classificationindex} = ($query->param('classificationindex'))?escape_html($query->param('classificationindex')):'';
 
     # oder Index als Separate Funktion
-    $indexterm = $indextermnorm  = ($query->param('indexterm'))?escape_html(decode_utf8($query->param('indexterm'))):''; #    || escape_html($query->param('indexterm')) || '';
+    $indexterm = $indextermnorm  = ($query->param('indexterm'))?escape_html($query->param('indexterm')):''; #    || escape_html($query->param('indexterm')) || '';
 
-    $self->{indextype}           = ($query->param('indextype'))?escape_html(decode_utf8($query->param('indextype'))):''; #    || escape_html($query->param('indextype')) || '';
+    $self->{indextype}           = ($query->param('indextype'))?escape_html($query->param('indextype')):''; #    || escape_html($query->param('indextype')) || '';
     $self->{searchindex}         = ($query->param('searchindex'))?escape_html($query->param('searchindex')):'';
     
     if ($indexterm){
@@ -743,18 +743,20 @@ sub get_dbis_recommendations {
 
     $logger->debug("Terms: $alltermsstring");
     my $url="https://suche.suub.uni-bremen.de/cgi-bin/CiXbase/brewis/CiXbase_search?act=search&LAN=DE&CLUSTER=3&index=L&n_dtyp=1L&n_rtyp=ceEdX&PRECISION=220&RELEVANCE=45&dtyp=DE&term=$alltermsstring";
-
-    my $ua = LWP::UserAgent->new();
-    $ua->agent('USB Koeln/1.0');
-    $ua->timeout(5);
-    
-    my $response = $ua->get($url);
+ 
+    my $ua = Mojo::UserAgent->new();
+    $ua->transactor->name('USB Koeln/1.0');
+    $ua->connect_timeout(30);
+       
+    my $response = $ua->get($url)->result;
 
     if (!$response->is_success){
+	$logger->debug("Response error: ".$response->message);
+
 	return [];
     }
 
-    my $content = $response->decoded_content(charset => 'utf8');
+    my $content = $response->body;
     
     $logger->debug("Response: $content");
 

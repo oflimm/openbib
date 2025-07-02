@@ -74,7 +74,7 @@ sub startup ($app){
     # Renderer Path (for mojo default ep templates
     push @{$app->renderer->paths}, $configfile->{'tt_include_path'};
     
-    # Types (eg. include)
+    # Add more Types (eg. include)
     $app->types->type('include' => 'text/html');
 	
     # Plugins

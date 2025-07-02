@@ -301,9 +301,6 @@ sub get_field {
     
     my $mult             = exists $arg_ref->{mult}
         ? $arg_ref->{mult}                : undef;
-
-    my $subfield         = exists $arg_ref->{subfield}
-        ? $arg_ref->{subfield}            : undef;
     
     if (!defined $self->{_fields} && !defined $self->{_fields}->{$field}){
         return;

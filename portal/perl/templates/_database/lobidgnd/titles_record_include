@@ -29,7 +29,7 @@
 
 <div class="row">
 
-<div class="categories [% IF gnd.depiction.first.thumbnail %]col-md-7[% ELSE %]col-md-12[% END %]"><!-- Begin Categories -->
+<div class="categories [% IF gnd.depiction.first.thumbnail %]col-md-8[% ELSE %]col-md-12[% END %]"><!-- Begin Categories -->
 
 <h4>[% msg.maketext("Index-Eintrag (Normdaten)") %]</h4>
 
@@ -216,8 +216,8 @@
 </div><!-- End Categories -->
 
 [% IF gnd.depiction.first.thumbnail %]
-<div class="img-fluid images col-md-5"><!-- Begin Images -->
-<img src="[% gnd.depiction.first.thumbnail %]" alt="Bild zu [% gnd.preferredName %]\" />
+<div class="images col-md-4 p-3 pt-4"><!-- Begin Images -->
+<img class="img-fluid" src="[% gnd.depiction.first.thumbnail %]" alt="Bild zu [% gnd.preferredName %]\" />
 </div><!-- End Images -->
 [% END %]
 

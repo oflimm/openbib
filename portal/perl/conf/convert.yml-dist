@@ -1958,6 +1958,12 @@ convtab:
         'h':         # hbzid (alte ID, NZ-ID, CZ-ID)
           index:
             'hbzid': 1
+        'i':         # ISTC-Nummer
+          index:
+            'id': 1
+        'w':         # GW-Nummer
+          index:
+            'id': 1
       '1002': # USB Systematiken
         'a':         # USB LBS und LS
           index:

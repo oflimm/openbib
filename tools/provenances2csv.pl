@@ -79,7 +79,7 @@ my $logger = get_logger();
 
 my $out;
 
-my $filename = "provenances_361.csv";
+my $filename = "provenances_de38_361.csv";
 
 open $out, ">:encoding(utf8)", $filename;
 
@@ -90,7 +90,7 @@ my $outputcsv = Text::CSV_XS->new ({
 
 my $out_ref = [];
 
-push @{$out_ref}, ('3611$o','3611$5','3611$s','3611$a','3611$0','3611$f','3611$l','3611$z','035$a','Network Id','3611$8','Signatur');
+push @{$out_ref}, ('3611$o','3611$5','3611$s','3611$a','3611$0','3611$f','3611$l','3611$7','3611$z','035$a','Network Id','3611$8','Signatur');
 
 $outputcsv->print($out,$out_ref);
 
@@ -100,23 +100,77 @@ while (my $json = <>){
     my $json_ref = decode_json $json;
 
     $out_ref = [];
+
+    my $tpro_merkmal = "";
+
+    my %tpro_merkmale = (
+	# tpro_description-Teil => Ziel Merkmal
+	'^Autogramm' => 'Autogramm',
+	'^Einband' => 'Einband',
+	'^Einlage' => 'Einlage',
+	'^Etikett' => 'Etikett',
+	'^Exlibris' => 'Exlibris',
+	'^gedr. Besitzvermerk' => 'gedr. Besitzvermerk',
+	'^hs. Besitzvermerk' => 'hs. Besitzvermerk',
+	'^Indiz' => 'Indiz',
+	'^Initiale' => 'Initiale',
+	'^Monogramm' => 'Monogramm',
+	'^Notiz' => 'Notiz',
+	'^NS-Raubgut' => 'NS-Raubgut',
+	'^Prämienband' => 'Prämienband',
+	'^Restitution' => 'Resitution',
+	'^Restitutionsexemplar' => 'Restitutionsexemplar',
+	'^Stempel' => 'Stempel',
+	'^Supralibros' => 'Supralibros',
+	'^Wappenstempel' => 'Wappenstempel',
+	'^Widmung' => 'Widmuing',
+	);
+
+    if (!defined $json_ref->{tpro_description}){
+	print STDERR "Keine TPRO-Beschreibung ".YAML::Dump($json_ref)."\n";
+	next;
+    }
+	
+    my $multiple_tpro = 0;
+    foreach my $merkmal (keys %tpro_merkmale){
+	if ($json_ref->{tpro_description} =~m/$merkmal/){
+	    if ($tpro_merkmal){
+		$multiple_tpro = 1;
+		next;
+	    }
+		    	    
+	    $tpro_merkmal = $tpro_merkmale{$merkmal};
+	}
+    }
+
+    if ($multiple_tpro){	
+	print STDERR "Mehrfache Merkmale: ".YAML::Dump($json_ref)."\n";
+    }
     
     my $signatur     = $json_ref->{current_mark};
-    my $field_361_o  =  "";
-    my $field_361_5  = ($json_ref->{sigel})?"DE-".$json_ref->{sigel}:"";
+    my $field_361_o  =  "Vorbesitz";
+    my $field_361_5  = ($json_ref->{sigel} !~ "^DE")?"DE-".$json_ref->{sigel}:$json_ref->{sigel};
     my $field_361_s  = $json_ref->{medianumber} || "";
     my $field_361_a  = $json_ref->{person_name} || $json_ref->{corporatebody_name} || $json_ref->{collection_name};
     my $field_361_0  = $json_ref->{person_gnd} || $json_ref->{corporatebody_gnd} || $json_ref->{collection_gnd};
-    my $field_361_f  = $json_ref->{tpro_description};
-    my $field_361_l  = "";
+    my $field_361_f  = $tpro_merkmal || '';
+    my $field_361_l  = $json_ref->{entry_year} || '';
     my $field_361_u  = $json_ref->{scan_id};
     my @fields_361_z = ();
     my $field_361_8  = "";
+    my $field_361_7  = ""; # "(dpesc/dpsff)t-pro";
     my $field_035_a  = $json_ref->{hbzid};
     my $nz_id        = $json_ref->{nzid};
-    my $field_361_z  = join(' ; ',@fields_361_z);
+
+    push @fields_361_z, "T-Pro: ".$json_ref->{tpro_description};
+    push @fields_361_z, "Alt-Signatur: ".$json_ref->{former_mark} if ($json_ref->{former_mark});
+    push @fields_361_z, "Referenz: ".$json_ref->{reference} if ($json_ref->{reference});
+    push @fields_361_z, "Bemerkung: ".$json_ref->{remark} if ($json_ref->{remark});
+    push @fields_361_z, "Unvollst.: ".$json_ref->{incomplete} if ($json_ref->{incomplete});
+
+    my $field_361_z  = join(', ',@fields_361_z);
     
-    push @{$out_ref}, ($field_361_o,$field_361_5,$field_361_s,$field_361_a,$field_361_0,$field_361_f,$field_361_l,$field_361_z,$field_035_a,$nz_id,$field_361_8,$signatur);
+    push @{$out_ref}, ($field_361_o,$field_361_5,$field_361_s,$field_361_a,$field_361_0,$field_361_f,$field_361_l,$field_361_7,$field_361_z,$field_035_a,$nz_id,$field_361_8,$signatur);
 
     $outputcsv->print($out,$out_ref);
 

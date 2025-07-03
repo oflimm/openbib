@@ -17,7 +17,7 @@
     holding_fields = record.to_custom_field_scheme_2.${'T1943'};
     
     #USE dumper;dumper.dump(circulation);
-    # USE dumper;dumper.dump(holding_fields);
+    #USE dumper;dumper.dump(holding_fields);
     # Preprocessing
     
     # Zusammenfassung von Feldern ueber Holdingid in $8

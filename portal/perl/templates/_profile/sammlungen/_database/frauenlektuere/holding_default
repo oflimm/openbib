@@ -31,12 +31,6 @@
 </thead>
 <tbody>
 [%  FOREACH thisholding IN holding %]
-[%-
-
-     # Nur Aleki Bestand!
-     NEXT UNLESS thisholding.${"X3330"}.content.match('^38-323$');
-
--%]
 <tr><td><strong>
 [%-
 

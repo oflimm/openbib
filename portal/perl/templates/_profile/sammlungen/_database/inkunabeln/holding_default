@@ -42,10 +42,8 @@ IF sigel.match('^38/[0-9][0-9][0-9]$');
   isil = "DE-38-${sigel.replace('38/','')}";
 ELSIF sigel.match('^Kn 3$');	  
   isil = "DE-Kn3";
-ELSIF sigel ;
+ELSE ;
   isil = "DE-${sigel}";
-ELSIF dbinfo.get('locationid').${record.database};
-  isil = dbinfo.get('locationid').${record.database};
 END ;
 
 
@@ -106,16 +104,10 @@ IF isil;
   isil_desc = locinfo.identifier.${isil}.description;
 END;
 
-  barcode = record.id;
-  
-  IF thisholding.${"X1203"}.content;
-    barcode = thisholding.${"X1203"}.content ;
-  END;
-
 -%]
 
 [%-  IF isil_desc -%]
-<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% isil %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% isil %].include?l=[% lang %]">[% isil_desc %]</a>
+<a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% isil %].html?l=[% lang %]">[% isil_desc %]</a>
 [%-  ELSIF thisholding.${"X4000"}.content && thisholding.${"X4001"}.content -%]
 [%-    IF dbinfo.get('locationid').${record.database} %]
 <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% isil %].include?l=[% lang %]">
@@ -144,7 +136,7 @@ END;
    END;
 
 -%]
-<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong>[% IF barcode %]<br/>(Barcode: [% barcode %])[% END %]</td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]     
+<td><strong><span class="ob-mark">[% thisholding.${"X0014"}.content %]</span></strong></td>[% IF have_bestandsverlauf %]<td>[% IF thisholding.${"X1200"} %][% thisholding.${"X1200"}.content %] [% END %][% thisholding.${"X1204"}.content %][% IF thisholding.${"X1203"} %] ([% thisholding.${"X1203"}.content %])[% END %]     
 [% IF NOT normdata.${"T5002"}.first.content && thisholding.${"X0014"}.content.match('^ZTG') %]
 <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
 [% END %]

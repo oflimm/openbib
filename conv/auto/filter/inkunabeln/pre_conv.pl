@@ -48,4 +48,4 @@ my $konvdir       = $config->{'conv_dir'};
 
 print "### $pool: Erweiterung um Standortinformationen, weiteres Processing\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/$pool/process_urls.pl | $rootdir/filter/$pool/volume2year.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl | $rootdir/filter/$pool/gen_local_topic.pl | $rootdir/filter/$pool/process_urls.pl | $rootdir/filter/$pool/process_ids.pl | $rootdir/filter/$pool/volume2year.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");

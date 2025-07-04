@@ -1008,7 +1008,7 @@ while (my $json=<IN>){
 	my $person_fields_ref = $data_person{$personid};
 
 	if ($logger->is_debug){
-	    $logger->debug("Persondata: ".YAML::Syck::Dump($person_fields_ref));
+	    $logger->debug("Persondata for id $personid: ".YAML::Syck::Dump($person_fields_ref));
 	}
 	
 	my @subfields = ();
@@ -1017,9 +1017,9 @@ while (my $json=<IN>){
 	if ($person_fields_ref->{'0800'}){
 	    push (@subfields,'a', cleanup($person_fields_ref->{'0800'}[0]{content}));
 	}
-
+	
 	# GND
-	if ($person_fields_ref->{'0010'}){
+	if ($person_fields_ref->{'0010'} && $person_fields_ref->{'0010'}[0]{content} =~m/^\d+/){
 	    push (@subfields,'0', "(DE-588)".$person_fields_ref->{'0010'}[0]{content});
 	}
 
@@ -1037,6 +1037,10 @@ while (my $json=<IN>){
 	foreach my $personid (@personids){
 	    my $person_fields_ref = $data_person{$personid};
 
+	    if ($logger->is_debug){
+		$logger->debug("Persondata for id $personid: ".YAML::Syck::Dump($person_fields_ref));
+	    }
+	    
 	    my @subfields = ();
 	    
 	    # Ansetzungsform
@@ -1045,7 +1049,7 @@ while (my $json=<IN>){
 	    }
 	    
 	    # GND
-	    if ($person_fields_ref->{'0010'}){
+	    if ($person_fields_ref->{'0010'} && $person_fields_ref->{'0010'}[0]{content} =~m/^\d+/){
 		push (@subfields,'0', "(DE-588)".$person_fields_ref->{'0010'}[0]{content});
 	    }
 	    
@@ -1081,7 +1085,7 @@ while (my $json=<IN>){
 	my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
 	
 	if ($logger->is_debug){
-	    $logger->debug("Corporatebodydata: ".YAML::Syck::Dump($corporatebody_fields_ref));
+	    $logger->debug("Corporatebodydata for id $corporatebodyid: ".YAML::Syck::Dump($corporatebody_fields_ref));
 	}
 	
 	my @subfields = ();
@@ -1092,7 +1096,7 @@ while (my $json=<IN>){
 	}
 	
 	# GND
-	if ($corporatebody_fields_ref->{'0010'}){
+	if ($corporatebody_fields_ref->{'0010'} && $corporatebody_fields_ref->{'0010'}[0]{content} =~m/^\d+/){
 	    push (@subfields,'0', "(DE-588)".$corporatebody_fields_ref->{'0010'}[0]{content});
 	}
 	
@@ -1111,6 +1115,10 @@ while (my $json=<IN>){
 	foreach my $corporatebodyid (@corporatebodyids){
 	    my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
 
+	    if ($logger->is_debug){
+		$logger->debug("Corporatebodydata for id $corporatebodyid: ".YAML::Syck::Dump($corporatebody_fields_ref));
+	    }
+	    
 	    my @subfields = ();
 	    
 	    # Ansetzungsform
@@ -1119,7 +1127,7 @@ while (my $json=<IN>){
 	    }
 	    
 	    # GND
-	    if ($corporatebody_fields_ref->{'0010'}){
+	    if ($corporatebody_fields_ref->{'0010'} && $corporatebody_fields_ref->{'0010'}[0]{content} =~m/^\d+/){
 		push (@subfields,'0', "(DE-588)".$corporatebody_fields_ref->{'0010'}[0]{content});
 	    }
 	    
@@ -1146,7 +1154,7 @@ while (my $json=<IN>){
 	    my $subject_fields_ref = $data_subject{$subjectid};
 
 	    if ($logger->is_debug){	    
-		$logger->debug("Subjectdata: ".YAML::Syck::Dump($subject_fields_ref));
+		$logger->debug("Subjectdata for id $subjectid: ".YAML::Syck::Dump($subject_fields_ref));
 	    }
 	    
 	    my @subfields = ();
@@ -1170,7 +1178,7 @@ while (my $json=<IN>){
 	    }
 	    
 	    # GND
-	    if ($subject_fields_ref->{'0010'}){
+	    if ($subject_fields_ref->{'0010'} && $subject_fields_ref->{'0010'}[0]{content} =~m/^\d+/){
 		push (@subfields,'0', "(DE-588)".$subject_fields_ref->{'0010'}[0]{content});
 		push (@subfields,'2', "gnd-content");
 	    }
@@ -1196,7 +1204,7 @@ while (my $json=<IN>){
 	    my $classification_fields_ref = $data_classification{$classificationid};
 	    
 	    if ($logger->is_debug){
-		$logger->debug("Classificationdata: ".YAML::Syck::Dump($classification_fields_ref));
+		$logger->debug("Classificationdata for id $classificationid: ".YAML::Syck::Dump($classification_fields_ref));
 	    }
 	    
 	    my @subfields = ();

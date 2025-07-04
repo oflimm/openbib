@@ -90,7 +90,7 @@ my $outputcsv = Text::CSV_XS->new ({
 
 my $out_ref = [];
 
-push @{$out_ref}, ('3611$o','3611$5','3611$s','3611$a','3611$0','3611$f','3611$l','3611$7','3611$z','035$a','Network Id','3611$8','Signatur');
+push @{$out_ref}, ('3611$o','3611$5','3611$s','3611$a','3611$0','3611$f','3611$l','3611$z','035$a','Network Id','3611$y');
 
 $outputcsv->print($out,$out_ref);
 
@@ -147,20 +147,18 @@ while (my $json = <>){
 	print STDERR "Mehrfache Merkmale: ".YAML::Dump($json_ref)."\n";
     }
     
-    my $signatur     = $json_ref->{current_mark};
-    my $field_361_o  =  "Vorbesitz";
+    my $field_361_y  = $json_ref->{current_mark} || "";
+    my $field_361_o  = "Vorbesitz";
     my $field_361_5  = ($json_ref->{sigel} !~ "^DE")?"DE-".$json_ref->{sigel}:$json_ref->{sigel};
     my $field_361_s  = $json_ref->{medianumber} || "";
-    my $field_361_a  = $json_ref->{person_name} || $json_ref->{corporatebody_name} || $json_ref->{collection_name};
-    my $field_361_0  = $json_ref->{person_gnd} || $json_ref->{corporatebody_gnd} || $json_ref->{collection_gnd};
+    my $field_361_a  = $json_ref->{person_name} || $json_ref->{corporatebody_name} || $json_ref->{collection_name} || "";
+    my $field_361_0  = $json_ref->{person_gnd} || $json_ref->{corporatebody_gnd} || $json_ref->{collection_gnd} || "";
     my $field_361_f  = $tpro_merkmal || '';
-    my $field_361_l  = $json_ref->{entry_year} || '';
-    my $field_361_u  = $json_ref->{scan_id};
+    my $field_361_l  = $json_ref->{entry_year} || "";
+    my $field_361_u  = $json_ref->{scan_id} || "";
     my @fields_361_z = ();
-    my $field_361_8  = "";
-    my $field_361_7  = ""; # "(dpesc/dpsff)t-pro";
-    my $field_035_a  = $json_ref->{hbzid};
-    my $nz_id        = $json_ref->{nzid};
+    my $field_035_a  = $json_ref->{hbzid} || "";
+    my $nz_id        = $json_ref->{nzid} || "";
 
     push @fields_361_z, "T-Pro: ".$json_ref->{tpro_description};
     push @fields_361_z, "Alt-Signatur: ".$json_ref->{former_mark} if ($json_ref->{former_mark});
@@ -170,7 +168,7 @@ while (my $json = <>){
 
     my $field_361_z  = join(', ',@fields_361_z);
     
-    push @{$out_ref}, ($field_361_o,$field_361_5,$field_361_s,$field_361_a,$field_361_0,$field_361_f,$field_361_l,$field_361_7,$field_361_z,$field_035_a,$nz_id,$field_361_8,$signatur);
+    push @{$out_ref}, ($field_361_o,$field_361_5,$field_361_s,$field_361_a,$field_361_0,$field_361_f,$field_361_l,$field_361_z,$field_035_a,$nz_id,$field_361_y);
 
     $outputcsv->print($out,$out_ref);
 

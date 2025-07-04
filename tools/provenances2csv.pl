@@ -90,7 +90,7 @@ my $outputcsv = Text::CSV_XS->new ({
 
 my $out_ref = [];
 
-push @{$out_ref}, ('3611$o','3611$5','3611$s','3611$a','3611$0','3611$f','3611$l','3611$z','035$a','Network Id','3611$y');
+push @{$out_ref}, ('3611$o','3611$5','3611$s','3611$a','3611$0','3611$f','3611$l','3611$z','3611$u','035$a','Network Id','3611$y');
 
 $outputcsv->print($out,$out_ref);
 
@@ -168,7 +168,7 @@ while (my $json = <>){
 
     my $field_361_z  = join(', ',@fields_361_z);
     
-    push @{$out_ref}, ($field_361_o,$field_361_5,$field_361_s,$field_361_a,$field_361_0,$field_361_f,$field_361_l,$field_361_z,$field_035_a,$nz_id,$field_361_y);
+    push @{$out_ref}, ($field_361_o,$field_361_5,$field_361_s,$field_361_a,$field_361_0,$field_361_f,$field_361_l,$field_361_z,$field_361_u,$field_035_a,$nz_id,$field_361_y);
 
     $outputcsv->print($out,$out_ref);
 

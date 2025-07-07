@@ -1244,23 +1244,157 @@ while (my $json=<IN>){
 #	$marc_record->append_fields($new_field) if ($new_field);	    	
     }
 
-    # Beigefuegte Werte in 0361 behandeln
+    # Beigefuegte Werke in 0361 behandeln
     {	
-	if (defined $fields_ref->{'0361'}){
+	if (defined $fields_ref->{'0249'}){
 	    foreach my $item_ref (@{$fields_ref->{'0361'}}){
 		my $content    = $item_ref->{content};
 
 		my @subfields = ();
 		
-		push (@subfields,'i', "Erweitert durch");
-		push (@subfields,'t', $content);
+		push (@subfields,'a', $content);
 		
-		my $new_field = MARC::Field->new('787', '0',  '8', @subfields);
+		my $new_field = MARC::Field->new('249', ' ',  ' ', @subfields);
 		
-		push @{$output_fields_ref->{'787'}}, $new_field if ($new_field);
+		push @{$output_fields_ref->{'249'}}, $new_field if ($new_field);
 	    }
 	}
     }
+
+    # Fussnote in 505 bearbeiten
+    {	
+	if (defined $fields_ref->{'0505'}){
+	    foreach my $item_ref (@{$fields_ref->{'0505'}}){
+		my $content    = $item_ref->{content};
+
+		my ($info,$thiscontent) = $content =~m/^(.+?):(.+)$/;
+
+		next unless ($info && $thiscontent);
+		
+		my @subfields = ();
+		
+		push (@subfields,'i', $info);
+		push (@subfields,'a', $thiscontent);
+		
+		my $new_field = MARC::Field->new('246', '1',  ' ', @subfields);
+		
+		push @{$output_fields_ref->{'246'}}, $new_field if ($new_field);
+	    }
+	}
+    }
+
+    # Fussnote in 527 bearbeiten
+    {	
+	if (defined $fields_ref->{'0527'}){
+	    foreach my $item_ref (@{$fields_ref->{'0527'}}){
+		my $content    = $item_ref->{content};
+
+		my ($info,$thiscontent) = $content =~m/^(.+?):(.+)$/;
+
+		next unless ($info && $thiscontent);
+		
+		my @subfields = ();
+		
+		push (@subfields,'i', $info);
+		push (@subfields,'a', $thiscontent);
+		
+		my $new_field = MARC::Field->new('775', '0',  '8', @subfields);
+		
+		push @{$output_fields_ref->{'775'}}, $new_field if ($new_field);
+	    }
+	}
+    }
+
+
+    # Fussnote in 529 bearbeiten
+    {	
+	if (defined $fields_ref->{'0529'}){
+	    foreach my $item_ref (@{$fields_ref->{'0529'}}){
+		my $content    = $item_ref->{content};
+
+		my ($info,$thiscontent) = $content =~m/^(.+?):(.+)$/;
+
+		next unless ($info && $thiscontent);
+		
+		my @subfields = ();
+		
+		push (@subfields,'i', $info);
+		push (@subfields,'t', $thiscontent);
+		
+		my $new_field = MARC::Field->new('770', '0',  '8', @subfields);
+		
+		push @{$output_fields_ref->{'770'}}, $new_field if ($new_field);
+	    }
+	}
+    }
+    
+    # Fussnote in 530 bearbeiten
+    {	
+	if (defined $fields_ref->{'0530'}){
+	    foreach my $item_ref (@{$fields_ref->{'0530'}}){
+		my $content    = $item_ref->{content};
+
+		my ($info,$thiscontent) = $content =~m/^(.+?):(.+)$/;
+
+		next unless ($info && $thiscontent);
+		
+		my @subfields = ();
+		
+		push (@subfields,'i', $info);
+		push (@subfields,'t', $thiscontent);
+		
+		my $new_field = MARC::Field->new('772', '0',  '8', @subfields);
+		
+		push @{$output_fields_ref->{'772'}}, $new_field if ($new_field);
+	    }
+	}
+    }
+
+    # Fussnote in 531 bearbeiten
+    {	
+	if (defined $fields_ref->{'0531'}){
+	    foreach my $item_ref (@{$fields_ref->{'0531'}}){
+		my $content    = $item_ref->{content};
+
+		my ($info,$thiscontent) = $content =~m/^(.+?):(.+)$/;
+
+		next unless ($info && $thiscontent);
+		
+		my @subfields = ();
+		
+		push (@subfields,'i', $info);
+		push (@subfields,'t', $thiscontent);
+		
+		my $new_field = MARC::Field->new('780', '0',  '8', @subfields);
+		
+		push @{$output_fields_ref->{'780'}}, $new_field if ($new_field);
+	    }
+	}
+    }
+    
+    # 333 zu HST getrennt mit ' / ' hinzufuegen:
+    {
+	if (defined $fields_ref->{'0333'} && defined $fields_ref->{'0331'}){
+	    $fields_ref->{'0331'}[0]{content} .= " / ".$fields_ref->{'0333'}[0]{content};
+	}
+    }
+       
+    # {	
+    # 	if (defined $fields_ref->{'0361'}){
+    # 	    foreach my $item_ref (@{$fields_ref->{'0361'}}){
+    # 		my $content    = $item_ref->{content};
+
+    # 		my @subfields = ();
+		
+    # 		push (@subfields,'i', "Erweitert durch");
+    # 		push (@subfields,'t', $content);
+		
+    # 		my $new_field = MARC::Field->new('787', '0',  '8', @subfields);
+		
+    # 		push @{$output_fields_ref->{'787'}}, $new_field if ($new_field);
+    # 	    }
+    # 	}
+    # }
     
     # Ueberordnungen entsprechen 0004 nach 773 0# schreiben
     {
@@ -1716,6 +1850,17 @@ while (my $json=<IN>){
 	    }
 	}
 
+	# 773 $t = In: zusaetzlich setzen fuer Aufsaetze in 773 80 entfernen, da redundant zu $i
+	{
+	    foreach my $mult (sort keys %{$marcfields_ref}){
+		foreach my $thisitem_ref (@{$marcfields_ref->{$mult}}){
+		    if ($fieldno eq "773" && $thisitem_ref->{ind1} eq "0" && $thisitem_ref->{ind2} eq "8" && $thisitem_ref->{subfield} eq "t"){
+			$thisitem_ref->{content} =~s/^In:\s+//;
+		    }
+		}
+	    }
+	}
+	
 	# Sortierung Subfelder 773 08: i - t - b - d - g - k - w - x - z
 	{
 	    foreach my $mult (sort keys %{$marcfields_ref}){

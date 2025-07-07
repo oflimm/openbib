@@ -32,9 +32,9 @@ convtab:
         from_field: '0015' # Sprache
         subfield: 'a'
 
-    '240_1_0': # Bevorzugter Titel des Werkes (mit geistigem Schöpfer): default, Nachbearbeitung der Indikatoren im Konverter 
+    '240_1_0': # Einheitssachtitel / Bevorzugter Titel des Werkes (mit geistigem Schöpfer): default, Nachbearbeitung der Indikatoren im Konverter 
       -
-        from_field: '0303'		
+        from_field: '0304'		
         subfield: 'a'
     '245_1_0': # Titelangaben: default, Nachbearbeitung der Indikatoren im Konverter 
       -
@@ -58,6 +58,9 @@ convtab:
       -
         from_field: '0089'		
         subfield: 'n'
+      -
+        from_field: '0334'		
+        subfield: 'h'
         
     '246_1_1': # Paralleltitel
       -
@@ -69,6 +72,9 @@ convtab:
     '246_3_ ': # Abweichender Titel
       -
         from_field: '0370'		
+        subfield: 'a'
+      -
+        from_field: '0310'		
         subfield: 'a'
     '246_1_0': # Stichwörter in abweichender Orthografie
       -
@@ -118,6 +124,11 @@ convtab:
         from_field: '0437'		
         subfield: 'e'
 
+    '362_0_ ': # Erscheinungsverlauf
+      -
+        from_field: '0405'		
+        subfield: 'a'
+
     '655_ _4': # Medientyp
       -
         from_field: '0800'		
@@ -135,15 +146,35 @@ convtab:
       -
         from_field: '0501'		
         subfield: 'a'
+      -
+        from_field: '0507'		
+        subfield: 'a'
+      -
+        from_field: '0509'		
+        subfield: 'a'
+      -
+        from_field: '0511'		
+        subfield: 'a'
+      -
+        from_field: '0517'		
+        subfield: 'a'
+      -
+        from_field: '0525'		
+        subfield: 'a'
 
+    '501_ _ ': # 
+      -
+        from_field: '0524'		
+        subfield: 'a'
+        
     '502_ _ ':
       -
         from_field: '0519'		
         subfield: 'a'
 
-    '505_ _ ':
+    '515_ _ ':
       -
-        from_field: '0517'		
+        from_field: '0523'		
         subfield: 'a'
 
     '516_ _ ':
@@ -151,11 +182,11 @@ convtab:
         from_field: '0435'		
         subfield: 'a'
         
-    '520_ _ ':
+    '546_ _ ':
       -
-        from_field: '0517'		
+        from_field: '0516'		
         subfield: 'a'
-
+        
     '590_ _ ': # Bemerkung = lokale Fussnote
       -
         from_field: '0600'		
@@ -170,6 +201,7 @@ convtab:
       -
         from_field: '0673'		
         subfield: 'a'
+        
     '773_0_8':
       -
         from_field: '0585' # ISSN der Quelle (Aufsaetze)		

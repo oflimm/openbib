@@ -118,12 +118,12 @@ while (my $json = <>){
 	'^Notiz' => 'Notiz',
 	'^NS-Raubgut' => 'NS-Raubgut',
 	'^Prämienband' => 'Prämienband',
-	'^Restitution' => 'Resitution',
+	'^Restitution' => 'Restitution',
 	'^Restitutionsexemplar' => 'Restitutionsexemplar',
 	'^Stempel' => 'Stempel',
 	'^Supralibros' => 'Supralibros',
 	'^Wappenstempel' => 'Wappenstempel',
-	'^Widmung' => 'Widmuing',
+	'^Widmung' => 'Widmung',
 	);
 
     if (!defined $json_ref->{tpro_description}){

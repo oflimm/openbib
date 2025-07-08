@@ -1103,6 +1103,7 @@ while (my $json=<IN>){
 	
     # Koerperschaften
     my $firstcorporatebodyid = 0;
+    my $firstcorporatebodysupplement = "";
     
     my @corporatebodyids = ();
 
@@ -1110,9 +1111,13 @@ while (my $json=<IN>){
 	foreach my $thisfield_ref (@{$fields_ref->{$field}}){
 	    if ($field eq '0200' && !$firstcorporatebodyid && !$have_1xx){
 		$firstcorporatebodyid = $thisfield_ref->{id};
+		$firstcorporatebodysupplement = $thisfield_ref->{supplement};
 	    }
 	    else {
-		push @corporatebodyids, $thisfield_ref->{id};
+		push @corporatebodyids, {
+		    id => $thisfield_ref->{id},
+		    supplement => $thisfield_ref->{supplement},
+		};
 	    }
 	}
     }
@@ -1120,7 +1125,7 @@ while (my $json=<IN>){
     if ($firstcorporatebodyid){
 	# Erste in 110 2#
 	my $corporatebodyid = $firstcorporatebodyid;
-	
+
 	my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
 	
 	if ($logger->is_debug){
@@ -1138,9 +1143,11 @@ while (my $json=<IN>){
 	if ($corporatebody_fields_ref->{'0010'} && $corporatebody_fields_ref->{'0010'}[0]{content} =~m/^\d+/){
 	    push (@subfields,'0', "(DE-588)".$corporatebody_fields_ref->{'0010'}[0]{content});
 	}
+
+	# Relationship	
+	my $relation = ($firstcorporatebodysupplement)?supplement2relation($firstcorporatebodysupplement):'';
 	
-	# Relationship
-	push (@subfields,'4', "aut");
+	push (@subfields,'4', $relation) if ($relation);
 	
 	my $new_field = MARC::Field->new('110', '2',  ' ', @subfields);
 	
@@ -1151,7 +1158,10 @@ while (my $json=<IN>){
 
     if (@corporatebodyids){
 
-	foreach my $corporatebodyid (@corporatebodyids){
+	foreach my $corporatebody_ref (@corporatebodyids){
+	    my $corporatebodyid = $corporatebody_ref->{id};
+	    my $supplement      = $corporatebody_ref->{supplement};
+	    
 	    my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
 
 	    if ($logger->is_debug){
@@ -1171,7 +1181,9 @@ while (my $json=<IN>){
 	    }
 	    
 	    # Relationship
-	    push (@subfields,'4', "aut");
+	    my $relation = ($supplement)?supplement2relation($supplement):'';
+
+	    push (@subfields,'4', $relation) if ($relation);
 	    	    
 	    my $new_field = MARC::Field->new('710', '2',  ' ', @subfields);
 
@@ -2183,6 +2195,15 @@ sub supplement2relation {
     }
     elsif ($content =~m/\[Zusammenstellender/i){
 	$relation = "com";
+    }
+    elsif ($content =~m/\[Herausgebendes Organ/i){
+	$relation = "isb";
+    }
+    elsif ($content =~m/\[Grad-verleihende Institution/i){
+	$relation = "dgg";
+    }
+    elsif ($content =~m/\[Veranstalter/i){
+	$relation = "orm";
     }
     
     return $relation;

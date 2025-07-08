@@ -1115,7 +1115,7 @@ while (my $json=<IN>){
 	    }
 	    else {
 		push @corporatebodyids, {
-		    id => $thisfield_ref->{id},
+		    id         => $thisfield_ref->{id},
 		    supplement => $thisfield_ref->{supplement},
 		};
 	    }
@@ -1184,10 +1184,12 @@ while (my $json=<IN>){
 	    my $relation = ($supplement)?supplement2relation($supplement):'';
 
 	    push (@subfields,'4', $relation) if ($relation);
-	    	    
-	    my $new_field = MARC::Field->new('710', '2',  ' ', @subfields);
 
-	    push @{$output_fields_ref->{'710'}}, $new_field if ($new_field);
+	    if (@subfields){
+		my $new_field = MARC::Field->new('710', '2',  ' ', @subfields);
+		
+		push @{$output_fields_ref->{'710'}}, $new_field if ($new_field);
+	    }
 	}	
     }
 

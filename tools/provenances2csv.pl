@@ -123,6 +123,8 @@ while (my $json = <>){
 	'^Stempel' => 'Stempel',
 	'^Supralibros' => 'Supralibros',
 	'^Wappenstempel' => 'Wappenstempel',
+	'^Wappen' => 'Wappen',
+	'^Wappenexlibris' => 'Wappenexlibris',
 	'^Widmung' => 'Widmung',
 	);
 

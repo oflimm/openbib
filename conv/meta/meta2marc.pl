@@ -970,18 +970,27 @@ while (my $json=<IN>){
     # HBZID?
     if (defined $fields_ref->{'0010'}){
 	foreach my $item_ref (@{$fields_ref->{'0010'}}){
-	    my $hbzid = $item_ref->{content};
+	    my $fremdid = $item_ref->{content};
 
-	    if ($hbzid =~m/^[A-Z][A-Z]\d+$/){
+	    if ($fremdid =~m/^[CTH][A-Z]\d+$/){
 		my @subfields = ();
 		
-		push (@subfields,'a', "(DE-605)".$hbzid);
+		push (@subfields,'a', "(DE-605)".$fremdid); # HBZ
 		
 		my $new_field = MARC::Field->new('035', ' ',  ' ', @subfields);
 		
 		push @{$output_fields_ref->{'035'}}, $new_field if ($new_field);
 	    }
-	}
+	    elsif ($fremdid =~m/^BV\d+$/){
+		my @subfields = ();
+		
+		push (@subfields,'a', "(DE-604)".$fremdid); # BVB
+		
+		my $new_field = MARC::Field->new('035', ' ',  ' ', @subfields);
+		
+		push @{$output_fields_ref->{'035'}}, $new_field if ($new_field);
+	    }
+ 	}
     }
     
     if ($logger->is_debug){

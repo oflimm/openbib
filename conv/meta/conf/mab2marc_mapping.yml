@@ -32,10 +32,21 @@ convtab:
         from_field: '0015' # Sprache
         subfield: 'a'
 
+    '044_ _ ': # Land
+      -
+        from_field: '0035' # Land
+        subfield: 'c'
+        
     '240_1_0': # Einheitssachtitel / Bevorzugter Titel des Werkes (mit geistigem Schöpfer): default, Nachbearbeitung der Indikatoren im Konverter 
       -
         from_field: '0304'		
         subfield: 'a'
+
+    '243_1_0': # 
+      -
+        from_field: '0300'		
+        subfield: 'a'
+        
     '245_1_0': # Titelangaben: default, Nachbearbeitung der Indikatoren im Konverter 
       -
         from_field: '0331'		
@@ -76,9 +87,13 @@ convtab:
       -
         from_field: '0310'		
         subfield: 'a'
-    '246_1_0': # Stichwörter in abweichender Orthografie
       -
-        from_field: '0370'		
+        from_field: '0670'		
+        subfield: 'a'
+
+    '249_ _ ': # Beigefuegtes Werk
+      -
+        from_field: '0361'		
         subfield: 'a'
         
     '250_ _ ': # Ausgabe
@@ -182,19 +197,45 @@ convtab:
         from_field: '0435'		
         subfield: 'a'
         
+    '533_ _ ':
+      -
+        from_field: '0610'		
+        subfield: 'a'
+      -
+        from_field: '0637'		
+        subfield: 'e'
+      -
+        from_field: '0621'		
+        subfield: 'f'
+      -
+        from_field: '0634'		
+        subfield: 'n'
+      -
+        from_field: '0634'		
+        subfield: 'c'
+      -
+        from_field: '0619'		
+        subfield: '7'
+
+        
     '546_ _ ':
       -
         from_field: '0516'		
         subfield: 'a'
         
-    '590_ _ ': # Bemerkung = lokale Fussnote
+    # '590_ _ ': # Bemerkung = lokale Fussnote
+    #   -
+    #     from_field: '0600'		
+    #     subfield: 'a'
+
+    '591_ _ ': # 
       -
-        from_field: '0600'		
+        from_field: '0537'		
         subfield: 'a'
-      
-    '720_ _ ':
+
+    '730_0_ ':
       -
-        from_field: '0370'		
+        from_field: '1805'		
         subfield: 'a'
         
     '751_ _ ':

@@ -966,6 +966,23 @@ while (my $json=<IN>){
     substr($fixed_length_008,35,3) = $lang;
 
     $marc_record->add_fields('008',$fixed_length_008);
+
+    # HBZID?
+    if (defined $fields_ref->{'0010'}){
+	foreach my $item_ref (@{$fields_ref->{'0010'}}){
+	    my $hbzid = $item_ref->{content};
+
+	    if ($hbzid =~m/^[A-Z][A-Z]\d+$/){
+		my @subfields = ();
+		
+		push (@subfields,'a', "(DE-605)".$hbzid);
+		
+		my $new_field = MARC::Field->new('035', ' ',  ' ', @subfields);
+		
+		push @{$output_fields_ref->{'035'}}, $new_field if ($new_field);
+	    }
+	}
+    }
     
     if ($logger->is_debug){
 	$logger->debug(YAML::Dump($fields_ref));
@@ -1244,23 +1261,7 @@ while (my $json=<IN>){
 #	$marc_record->append_fields($new_field) if ($new_field);	    	
     }
 
-    # Beigefuegte Werke in 0361 behandeln
-    {	
-	if (defined $fields_ref->{'0249'}){
-	    foreach my $item_ref (@{$fields_ref->{'0361'}}){
-		my $content    = $item_ref->{content};
-
-		my @subfields = ();
-		
-		push (@subfields,'a', $content);
-		
-		my $new_field = MARC::Field->new('249', ' ',  ' ', @subfields);
-		
-		push @{$output_fields_ref->{'249'}}, $new_field if ($new_field);
-	    }
-	}
-    }
-
+    
     # Fussnote in 505 bearbeiten
     {	
 	if (defined $fields_ref->{'0505'}){
@@ -1296,7 +1297,7 @@ while (my $json=<IN>){
 		my @subfields = ();
 		
 		push (@subfields,'i', $info);
-		push (@subfields,'a', $thiscontent);
+		push (@subfields,'t', $thiscontent);
 		
 		my $new_field = MARC::Field->new('775', '0',  '8', @subfields);
 		
@@ -1368,6 +1369,63 @@ while (my $json=<IN>){
 		my $new_field = MARC::Field->new('780', '0',  '8', @subfields);
 		
 		push @{$output_fields_ref->{'780'}}, $new_field if ($new_field);
+	    }
+	}
+    }
+
+    # Fussnote in 532 bearbeiten
+    {	
+	if (defined $fields_ref->{'0532'}){
+	    foreach my $item_ref (@{$fields_ref->{'0532'}}){
+		my $content    = $item_ref->{content};
+
+		my ($info,$thiscontent) = $content =~m/^(.+?):(.+)$/;
+
+		next unless ($info && $thiscontent);
+		
+		my @subfields = ();
+		
+		push (@subfields,'i', $info);
+		push (@subfields,'t', $thiscontent);
+		
+		my $new_field = MARC::Field->new('785', '0',  '8', @subfields);
+		
+		push @{$output_fields_ref->{'785'}}, $new_field if ($new_field);
+	    }
+	}
+    }
+
+    # Fussnote in 533 bearbeiten
+    {	
+	if (defined $fields_ref->{'0533'}){
+	    foreach my $item_ref (@{$fields_ref->{'0533'}}){
+		my $content    = $item_ref->{content};
+
+		my ($info,$thiscontent) = $content =~m/^(.+?):(.+)$/;
+
+		next unless ($info && $thiscontent);
+		
+		my @subfields = ();
+		
+		push (@subfields,'i', $info);
+		push (@subfields,'t', $thiscontent);
+		
+		my $new_field = MARC::Field->new('785', '0',  '0', @subfields);
+		
+		push @{$output_fields_ref->{'785'}}, $new_field if ($new_field);
+	    }
+	}
+    }
+
+    # 619 fixen
+    {	
+	if (defined $fields_ref->{'0619'}){
+	    foreach my $item_ref (@{$fields_ref->{'0619'}}){
+		my $content    = $item_ref->{content};
+
+		$content =~s/\D//g; # Nicht-Ziffern entfernen
+
+		$item_ref->{content} = "d".$content;
 	    }
 	}
     }

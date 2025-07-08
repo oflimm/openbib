@@ -1013,16 +1013,21 @@ while (my $json=<IN>){
     my $have_1xx = 0; # Geistiger Schoepfer / Haupteintragung
 
     my $firstpersonid = 0;
+    my $firstpersonsupplement = "";
     
     my @personids = ();
 
     foreach my $field ('0100','0101','0102','0103'){	    
 	foreach my $thisfield_ref (@{$fields_ref->{$field}}){
 	    if ($field eq '0100' && !$firstpersonid){
-		$firstpersonid = $thisfield_ref->{id};
+		$firstpersonid         = $thisfield_ref->{id};
+		$firstpersonsupplement = $thisfield_ref->{supplement};
 	    }
 	    else {
-		push @personids, $thisfield_ref->{id};
+		push @personids, {
+		    id         => $thisfield_ref->{id},
+		    supplement => $thisfield_ref->{supplement},
+		};
 	    }
 	}
     }
@@ -1050,7 +1055,10 @@ while (my $json=<IN>){
 	}
 
 	# Relationship
-	push (@subfields,'4', "aut");
+
+	my $relation = ($firstpersonsupplement)?supplement2relation($firstpersonsupplement):'aut';
+	
+	push (@subfields,'4', $relation) if ($relation);
 	
 	my $new_field = MARC::Field->new('100', '1',  ' ', @subfields);
 	
@@ -1060,9 +1068,12 @@ while (my $json=<IN>){
     }
     
     if (@personids){
-	foreach my $personid (@personids){
-	    my $person_fields_ref = $data_person{$personid};
+	foreach my $person_ref (@personids){
+	    my $personid   = $person_ref->{id};
+	    my $supplement = $person_ref->{supplement};
 
+	    my $person_fields_ref = $data_person{$personid};
+	    
 	    if ($logger->is_debug){
 		$logger->debug("Persondata for id $personid: ".YAML::Syck::Dump($person_fields_ref));
 	    }
@@ -1080,7 +1091,9 @@ while (my $json=<IN>){
 	    }
 	    
 	    # Relationship
-	    push (@subfields,'4', "aut");
+	    my $relation = ($supplement)?supplement2relation($supplement):'aut';
+	    
+	    push (@subfields,'4', $relation) if ($relation);
 	    	    
 	    my $new_field = MARC::Field->new('700', '1',  ' ', @subfields);
 
@@ -2062,6 +2075,117 @@ Beispiel:
 
 ENDHELP
     exit;
+}
+
+sub supplement2relation {
+    my $content = shift;
+
+    my $relation = "";
+
+    if ($content =~m/\[(Hrsg|Herausgeber|editor|Ed\.|edt|éditeur|Ermittelter Hrsg)/i){
+	$relation = "edt";
+    }
+    elsif ($content =~m/Drucker/i){
+	$relation = "prt";
+    }
+    elsif ($content =~m/\[Fotogr/i){
+	$relation = "pht";
+    }
+    elsif ($content =~m/\[Schauspieler/i){
+	$relation = "act";
+    }
+    elsif ($content =~m/\[Künstler/i){
+	$relation = "art";
+    }
+    elsif ($content =~m/\[Architekt/i){
+	$relation = "arc";
+    }
+    elsif ($content =~m/\[(Illustrator|Ill\.)/i){
+	$relation = "ill";
+    }
+    elsif ($content =~m/\[Komponist/i){
+	$relation = "cmp";
+    }
+    elsif ($content =~m/\[Stecher/i){
+	$relation = "egr";
+    }
+    elsif ($content =~m/\[Art Director/i){
+	$relation = "adi";
+    }
+    elsif ($content =~m/\[Verfasser eines Nachworts/i){
+	$relation = "aft";
+    }
+    elsif ($content =~m/\[Trickfilmzeichner/i){
+	$relation = "anm";
+    }
+    elsif ($content =~m/\[Arrangeur/i){
+	$relation = "arr";
+    }
+    elsif ($content =~m/\[Kürzender/i){
+	$relation = "abr";
+    }
+    elsif ($content =~m/\[Unterzeichner/i){
+	$relation = "ato";
+    }
+    elsif ($content =~m/\[Tontechniker/i){
+	$relation = "aue";
+    }
+    elsif ($content =~m/\[Verfasser eines Geleitworts/i){
+	$relation = "aui";
+    }
+    elsif ($content =~m/\[Verfasser einer Einleitung/i){
+	$relation = "win";
+    }
+    elsif ($content =~m/\[(Verfasser eines Vorworts|Vorwort)/i){
+	$relation = "wpr";
+    }
+    elsif ($content =~m/\[Produzent einer Tonaufnahme/i){
+	$relation = "aup";
+    }
+    elsif ($content =~m/\[Produzent/i){
+	$relation = "pro";
+    }
+    elsif ($content =~m/\[Sonstige/i){
+	$relation = "oth";
+    }
+    elsif ($content =~m/\[(Übers\.|Übersetzer)/i){
+	$relation = "trl";
+    }
+    elsif ($content =~m/\[Adressat/i){
+	$relation = "rcp";
+    }
+    elsif ($content =~m/\[Akademischer Betreuer/i){
+	$relation = "dgs";
+    }
+    elsif ($content =~m/\[Gefeierter/i){
+	$relation = "hnr";
+    }
+    elsif ($content =~m/\[Mitwirkender/i){
+	$relation = "ctb";
+    }
+    elsif ($content =~m/\[Sammler/i){
+	$relation = "col";
+    }
+    elsif ($content =~m/\[Sänger/i){
+	$relation = "sng";
+    }
+    elsif ($content =~m/\[Textdichter/i){
+	$relation = "lyr";
+    }
+    elsif ($content =~m/\[(Verf\.|Verfasser)/i){
+	$relation = "aut";
+    }
+    elsif ($content =~m/\[Verfasser von ergänzendem Text/i){
+	$relation = "wst";
+    }
+    elsif ($content =~m/\[Verfasser von Zusatztexten/i){
+	$relation = "wat";
+    }
+    elsif ($content =~m/\[Zusammenstellender/i){
+	$relation = "com";
+    }
+    
+    return $relation;
 }
 
 sub cleanup {

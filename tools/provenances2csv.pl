@@ -162,6 +162,9 @@ while (my $json = <>){
     my $field_035_a  = $json_ref->{hbzid} || "";
     my $nz_id        = $json_ref->{nzid} || "";
 
+
+    $field_361_0 = "(DE-588)$field_361_0" if( $field_361_0 && $field_361_0 !~m/DE-588/);
+    
     push @fields_361_z, "T-Pro: ".$json_ref->{tpro_description};
     push @fields_361_z, "Alt-Signatur: ".$json_ref->{former_mark} if ($json_ref->{former_mark});
     push @fields_361_z, "Referenz: ".$json_ref->{reference} if ($json_ref->{reference});

@@ -456,6 +456,9 @@ sub get_classifications {
         max   => $maxcount, 
         type  => 'log'});
 
+    # Sortierung nach Beschreibungen
+    @$classifications_ref = sort {$a->{desc} cmp $b->{desc}} @$classifications_ref;
+    
     if ($logger->is_debug){
         $logger->debug(YAML::Dump($classifications_ref));
     }

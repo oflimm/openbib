@@ -168,8 +168,10 @@
 
 <ul>
 <li><a class="inturl" href="#" data-bs-toggle="modal" data-bs-target="#addressModal">[% msg.maketext("Persönliche Angaben anzeigen") %]</a></li>
+[% IF NOT alma_disable_circulation %]
 <li><a class="inturl" href="#" data-bs-toggle="modal" data-bs-target="#emailModal">[% msg.maketext("E-Mail-Adresse eintragen bzw. ändern") %]</li></a>
 <li><a class="inturl" href="#" data-bs-toggle="modal" data-bs-target="#pinModal">[% msg.maketext("Ausleih-PIN eintragen bzw. ändern") %]</a></li>
+[% END %]
 <li><a class="inturl" href="#" data-bs-toggle="modal" data-bs-target="#passwordModal">[% msg.maketext("Passwort ändern") %]</a></li>
 </ul>
 

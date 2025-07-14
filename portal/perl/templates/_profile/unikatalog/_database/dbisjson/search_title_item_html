@@ -85,7 +85,7 @@
   <div class="offcanvas-body">
     <div>
 
-        [% PROCESS common/subtemplate database="dbis" name="classifications_sidebar" %]
+        [% PROCESS common/subtemplate database="dbisjson" name="classifications_sidebar" %]
 
     </div>
     

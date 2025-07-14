@@ -197,16 +197,13 @@ sub get_titles_record {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $dbis_base = $config->get('dbisjson_baseurl');
+    my $dbis_base  = $config->get('dbisjson_baseurl');
+    my $dbis_bibid = $self->{'bibid'};
     
     my $record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
     
-    my $url = $dbis_base."api/v1/resource/$id?language=$self->{lang}";
+    my $url = $dbis_base."api/v1/resource/$id/organizatin/$dbis_bibid?language=$self->{lang}";
 
-    # if (defined $self->{bibid}){
-    # 	$url.="&".$self->{bibid};
-    # }
-    
     my $memc_key = "dbis:title:$url";
 
     my $memc = $config->get_memc;
@@ -386,17 +383,12 @@ sub get_classifications {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $dbis_base = $config->get('dbisjson_baseurl');
-    
-    my $url=$dbis_base."api/v1/subjects?language=$self->{lang}";
-
-    # if (defined $self->{bibid}){
-    # 	$url.="&".$self->{bibid};
-    # }
+    my $dbis_base  = $config->get('dbisjson_baseurl');
+    my $dbis_bibid = $self->{'bibid'};
     
     my $classifications_ref = [];
 
-    my $memc_key = "dbis:classifications:$url";
+    my $memc_key = "dbis:classifications:all";
 
     my $memc = $config->get_memc;
     
@@ -404,50 +396,72 @@ sub get_classifications {
     $logger->debug("Memcached: ".$config->{memcached});    
     
     if ($memc){
-        my $classifications_ref = $memc->get($memc_key);
-
-	if ($classifications_ref){
+        my $response_ref = $memc->get($memc_key);
+	
+	if ($response_ref){
 	    if ($logger->is_debug){
 		$logger->debug("Got classifications for key $memc_key from memcached");
 	    }
-
-	    return $classifications_ref if (defined $classifications_ref);
+	    
+	    return $response_ref if (defined $response_ref);
 	}
-    }
-    
-    $logger->debug("Request: $url");
-
-    my $json_ref = {};
-
-    my $response = $ua->get($url)->result;
-
-    if ($response->is_success){
-	$json_ref = $response->json;
-    }
-    else {        
-	$logger->info($response->code . ' - ' . $response->message);
-	return;
     }
     
     my $maxcount=0;
     my $mincount=999999999;
-
-    foreach my $classification_ref (@{$json_ref}) {
-        my $singleclassification_ref = {} ;
-
-        $singleclassification_ref->{name}    = $classification_ref->{id};
-        $singleclassification_ref->{count}   = 1; # Fehlt aktuell
-        $singleclassification_ref->{desc}    = $classification_ref->{title};
-
-        if ($maxcount < $singleclassification_ref->{count}){
-            $maxcount = $singleclassification_ref->{count};
-        }
-        
-        if ($mincount > $singleclassification_ref->{count}){
-            $mincount = $singleclassification_ref->{count};
-        }
-
-        push @{$classifications_ref}, $singleclassification_ref;
+    
+    foreach my $type ('subjects','collections'){
+	
+	my $url = $dbis_base."api/v1/$type/organization/$dbis_bibid?resource_count=true&language=$self->{lang}";
+	
+	$logger->debug("Request: $url");
+	
+	my $json_ref = {};
+	
+	my $response = $ua->get($url)->result;
+	
+	if ($response->is_success){
+	    $json_ref = $response->json;
+	}
+	else {        
+	    $logger->info($response->code . ' - ' . $response->message);
+	    return;
+	}
+	
+	if ($logger->is_debug){
+	    $logger->debug("$type: ".YAML::Dump($json_ref));
+	}
+	
+	my @classifications = ();
+	
+	if ($type eq "subjects"){
+	    @classifications = @{$json_ref};
+	}
+	else {
+	    foreach my $key (sort keys %{$json_ref}){
+		push @classifications, $json_ref->{$key};
+	    }
+	}
+	
+	foreach my $classification_ref (@classifications) {
+	    my $singleclassification_ref = {} ;
+	    
+	    $singleclassification_ref->{name}          = $classification_ref->{id};
+	    $singleclassification_ref->{count}         = $classification_ref->{resource_count};
+	    $singleclassification_ref->{desc}          = $classification_ref->{title};
+	    $singleclassification_ref->{is_collection} = 1 if ($type eq "collections");
+	    $singleclassification_ref->{is_subject}    = 1 if ($type eq "subjects");
+	    
+	    if ($maxcount < $singleclassification_ref->{count}){
+		$maxcount = $singleclassification_ref->{count};
+	    }
+	    
+	    if ($mincount > $singleclassification_ref->{count}){
+		$mincount = $singleclassification_ref->{count};
+	    }
+	    
+	    push @{$classifications_ref}, $singleclassification_ref;
+	}
     }
 
     $classifications_ref = OpenBib::Common::Util::gen_cloud_class({
@@ -463,11 +477,18 @@ sub get_classifications {
         $logger->debug(YAML::Dump($classifications_ref));
     }
 
-    if ($memc){
-	$memc->set($memc_key,$classifications_ref,$config->{memcached_expiration}{'dbis:classifications'});
-    }
+    my $hits = scalar @$classifications_ref;
     
-    return $classifications_ref;
+    my $response_ref = {
+	items => $classifications_ref,
+	hits => $hits,
+    };
+    
+    if ($memc){
+	$memc->set($memc_key,$response_ref,$config->{memcached_expiration}{'dbis:classifications'});
+    }
+
+    return $response_ref;
 }
 
 sub search {
@@ -918,7 +939,7 @@ sub parse_query {
     my @searchterms = ();
     foreach my $field (keys %{$config->{searchfield}}){
         my $searchtermstring = (defined $searchquery->get_searchfield($field)->{norm})?$searchquery->get_searchfield($field)->{norm}:'';
-#        my $searchtermop     = (defined $searchquery->get_searchfield($field)->{bool} && defined $ops_ref->{$searchquery->get_searchfield($field)->{bool}})?$ops_ref->{$searchquery->get_searchfield($field)->{bool}}:'';
+
         if ($searchtermstring) {
             # Freie Suche einfach uebernehmen
             if    ($field eq "freesearch" && $searchtermstring) {
@@ -1001,42 +1022,26 @@ __END__
 
 =head1 NAME
 
- OpenBib::API::HTTP::EDS - Objekt zur Interaktion mit EDS
+ OpenBib::API::HTTP::DBISJSON - Objekt zur Interaktion mit DBIS JSON/XML-API
 
 =head1 DESCRIPTION
 
- Mit diesem Objekt kann von OpenBib über das API von EDS auf diesen Web-Dienst zugegriffen werden.
+ Mit diesem Objekt kann von OpenBib über das API von DBIS auf diesen Web-Dienst zugegriffen werden.
 
 =head1 SYNOPSIS
 
- use OpenBib::API::HTTP::EDS;
+ use OpenBib::API::HTTP::DBISJSON;
 
- my $eds = new OpenBib::EDS({ api_key => $api_key, api_user => $api_user});
-
- my $search_result_json = $eds->search({ searchquery => $searchquery, queryoptions => $queryoptions });
-
- my $single_record_json = $eds->get_record({ });
+ my $api = new OpenBib::API::HTTP::DBISJSON($arg_ref);
 
 =head1 METHODS
 
 =over 4
 
-=item new({ api_key => $api_key, api_user => $api_user })
+=item new({ ... })
 
-Anlegen eines neuen EDS-Objektes. Für den Zugriff über das
-EDS-API muss ein API-Key $api_key und ein API-Nutzer $api_user
-vorhanden sein. Diese können direkt bei der Objekt-Erzeugung angegeben
-werden, ansonsten werden die Standard-Keys unter eds aus OpenBib::Config 
-respektive portal.yml verwendet.
-
-=item search({ searchquery => $searchquery, queryoptions => $queryoptions })
-
-Liefert die EDS Antwort in JSON zurueck.
-
-=item get_record({ })
-
-Liefert die EDS Antwort in JSON zurueck.
-=back
+Anlegen eines neuen DBISJSON-Objektes. Für den Zugriff über das
+DBIS-API
 
 =head1 EXPORT
 

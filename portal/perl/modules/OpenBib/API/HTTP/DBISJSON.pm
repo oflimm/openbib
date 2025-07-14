@@ -202,7 +202,7 @@ sub get_titles_record {
     
     my $record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
     
-    my $url = $dbis_base."api/v1/resource/$id/organizatin/$dbis_bibid?language=$self->{lang}";
+    my $url = $dbis_base."api/v1/resource/$id/organization/$dbis_bibid?language=$self->{lang}";
 
     my $memc_key = "dbis:title:$url";
 
@@ -939,7 +939,7 @@ sub parse_query {
     my @searchterms = ();
     foreach my $field (keys %{$config->{searchfield}}){
         my $searchtermstring = (defined $searchquery->get_searchfield($field)->{norm})?$searchquery->get_searchfield($field)->{norm}:'';
-
+#        my $searchtermop     = (defined $searchquery->get_searchfield($field)->{bool} && defined $ops_ref->{$searchquery->get_searchfield($field)->{bool}})?$ops_ref->{$searchquery->get_searchfield($field)->{bool}}:'';
         if ($searchtermstring) {
             # Freie Suche einfach uebernehmen
             if    ($field eq "freesearch" && $searchtermstring) {
@@ -1022,26 +1022,42 @@ __END__
 
 =head1 NAME
 
- OpenBib::API::HTTP::DBISJSON - Objekt zur Interaktion mit DBIS JSON/XML-API
+ OpenBib::API::HTTP::EDS - Objekt zur Interaktion mit EDS
 
 =head1 DESCRIPTION
 
- Mit diesem Objekt kann von OpenBib über das API von DBIS auf diesen Web-Dienst zugegriffen werden.
+ Mit diesem Objekt kann von OpenBib über das API von EDS auf diesen Web-Dienst zugegriffen werden.
 
 =head1 SYNOPSIS
 
- use OpenBib::API::HTTP::DBISJSON;
+ use OpenBib::API::HTTP::EDS;
 
- my $api = new OpenBib::API::HTTP::DBISJSON($arg_ref);
+ my $eds = new OpenBib::EDS({ api_key => $api_key, api_user => $api_user});
+
+ my $search_result_json = $eds->search({ searchquery => $searchquery, queryoptions => $queryoptions });
+
+ my $single_record_json = $eds->get_record({ });
 
 =head1 METHODS
 
 =over 4
 
-=item new({ ... })
+=item new({ api_key => $api_key, api_user => $api_user })
 
-Anlegen eines neuen DBISJSON-Objektes. Für den Zugriff über das
-DBIS-API
+Anlegen eines neuen EDS-Objektes. Für den Zugriff über das
+EDS-API muss ein API-Key $api_key und ein API-Nutzer $api_user
+vorhanden sein. Diese können direkt bei der Objekt-Erzeugung angegeben
+werden, ansonsten werden die Standard-Keys unter eds aus OpenBib::Config 
+respektive portal.yml verwendet.
+
+=item search({ searchquery => $searchquery, queryoptions => $queryoptions })
+
+Liefert die EDS Antwort in JSON zurueck.
+
+=item get_record({ })
+
+Liefert die EDS Antwort in JSON zurueck.
+=back
 
 =head1 EXPORT
 

@@ -466,14 +466,13 @@
 
 
    alma_disable_suggestions     = 0; # msg.maketext("Ab dem 18.12.2023 können keine Anschaffungsvorschläge mehr entgegengenommen werden, dies ist wieder ab dem 08.01.2024 möglich. Wir bitten um Verständnis.") # Keine Anschaffungsvorschlaege
-   alma_disable_ill_books       = 1; # Keine Buecherfernleihe
+   alma_disable_ill_books       = 0; # Keine Buecherfernleihe
    alma_disable_librarycard     = 1; # Keine Online-Anmeldung
    alma_disable_uccard          = 1; # Keine UCCard Freischaltung
-   alma_disable_circulation     = 1; # Keine Bestellung/Vormerkung/Campuslieferdienst/Passwortreset
+   alma_disable_circulation     = 0; # Keine Bestellung/Vormerkung/Campuslieferdienst/Passwortreset
 
-   alma_disable_listitem_status = 1; # Keine Medienstatusanzeige in Alma wg. Concurrent API Request Limit
+   alma_disable_listitem_status = 0; # Keine Medienstatusanzeige in Alma wg. Concurrent API Request Limit
 
-   disable_mybib                = 1; # Keine Mybib-Anbindung = Deaktivierung ESA und Campuslieferdienst
    disable_dbis_recommendations = 1; # Keine Datenbankempfehlungen via ELIB 
    disable_occupancy            = 0; # Keine Belegungsdaten
 -%]

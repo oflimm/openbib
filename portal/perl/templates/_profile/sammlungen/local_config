@@ -466,7 +466,7 @@
    alma_disable_uccard          = 1; # Keine UCCard Freischaltung
    alma_disable_circulation     = 1; # Keine Bestellung/Vormerkung/Campuslieferdienst/Passwortreset
 
-   alma_disable_listitem_status = 1; # Keine Medienstatusanzeige in Alma wg. Concurrent API Request Limit
+   alma_disable_listitem_status = 0; # Keine Medienstatusanzeige in Alma wg. Concurrent API Request Limit
 
    disable_mybib                = 1; # Keine Mybib-Anbindung = Deaktivierung ESA und Campuslieferdienst
    disable_dbis_recommendations = 1; # Keine Datenbankempfehlungen via ELIB 

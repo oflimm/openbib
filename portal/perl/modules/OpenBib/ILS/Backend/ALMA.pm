@@ -832,6 +832,10 @@ sub get_loans {
 	my $url     = $config->get('alma')->{'api_baseurl'}."/users/$username/loans?user_id_type=all_unique&expand=renewable&limit=$num&offset=$offset&order_by=due_date&direction=ASC&loan_status=Active&lang=$lang&apikey=$api_key";
 	
 	my $api_result_ref = $self->send_alma_api_call({ method => 'GET', url => $url });
+
+	if ($logger->is_debug){
+	    $logger->debug("Result send_alma_api_call with url $url: ".YAML::Dump($api_result_ref));
+	}
 	
 	# Preprocessed response? Return it
 	if (defined $api_result_ref->{'response'}){

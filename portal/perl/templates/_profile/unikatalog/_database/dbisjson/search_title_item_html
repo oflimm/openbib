@@ -181,7 +181,7 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
    </div>
    <div class="col-md-3 d-none d-md-block">
 
-        [% PROCESS common/subtemplate database="dbis" name="classifications_sidebar" %]
+        [% PROCESS common/subtemplate database="dbisjson" name="classifications_sidebar" %]
 
   </div>
 

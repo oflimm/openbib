@@ -459,7 +459,7 @@ sub get_classifications {
     $logger->debug("Memc: ".$memc);
     $logger->debug("Memcached: ".$config->{memcached});    
     
-    if (0 == 1 && $memc){
+    if ($memc){
         my $response_ref = $memc->get($memc_key);
 
 	if ($response_ref){

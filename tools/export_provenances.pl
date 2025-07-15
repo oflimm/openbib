@@ -220,7 +220,7 @@ foreach my $title ($titles_with_provenances->all){
 	}
 
 
-        print OUT encode_json $provenance_ref, "\n" if ($corp_gnd || $person_gnd || $collection_gnd);
+        print OUT encode_json $provenance_ref, "\n"; # if ($corp_gnd || $person_gnd || $collection_gnd);
     }
 
     $title_done_ref->{$titleid} = 1;

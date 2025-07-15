@@ -173,7 +173,7 @@ sub new {
     $self->{access_yellow}   = $access_yellow;
     $self->{access_red}      = $access_red;
     $self->{access_national} = $access_national;
-    $self->{bibid}           = $bibid;
+    $self->{bibid}           = "USBK"; #$bibid;
     $self->{lang}            = $lang if ($lang);
     $self->{colors}          = $colors if ($colors);
     $self->{ocolors}         = $ocolors if ($ocolors);

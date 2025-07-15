@@ -300,24 +300,50 @@ sub get_titles_record {
         }
     }
 
-    # URLs werden noch nicht geliefert
-    # $mult=1;
-    # if (defined $access_ref->{main}){
-    # 	if ($access_ref->{main}){
-    # 	    $record->set_field({field => 'T0662', subfield => $access_type, mult => $mult, content => $config->{dbis_baseurl}.$access_ref->{main}});
+    if ($traffic_light ne "red" && defined $json_ref->{licenses} && ref $json_ref->{licenses} eq "ARRAY"){
+	
+	
+	foreach my $license_ref (@{$json_ref->{licenses}}){
+	    
+	    if (defined $license_ref->{accesses} && ref $license_ref->{accesses} eq "ARRAY"){
+		my $mult=1;
 		
-    # 	    $record->set_field({field => 'T4120', subfield => $access_type, mult => $mult, content => $config->{dbis_baseurl}.$access_ref->{main}});
-		
-    # 	    $mult++;
-    # 	}
-    # }
+		foreach my $access_ref (@{$license_ref->{accesses}}){
+		    my $this_access_url   = $access_ref->{accessUrl};
+		    
+		    my $this_access_label = $access_ref->{label};
+		    my $this_access_id    = $access_ref->{id};
+		    my $this_access_type  = $access_ref->{type}{id};
+		    
+		    my $this_license_type = $license_ref->{type}{id};
+		    my $this_license_form = $license_ref->{form}{id};
+		    		    
+		    $this_access_url = 'warpto?ubr_id='.$self->{bibid}.'&amp;resource_id='.$id.'&amp;access_id='.$this_access_id.'&amp;license_type='.$this_license_type.'&amp;license_form='.$this_license_form.'&amp;access_type='.$this_access_type.'&amp;url='.uri_escape($this_access_url);
 
-    # if (defined $access_ref->{other}){
-    #     foreach my $access_ref (@{$access_ref->{other}}){
-    #         $record->set_field({field => 'T2662', subfield => '', mult => $mult, content => $config->{dbis_baseurl}.$access_ref->{url} }) if ($access_ref->{url});
-    #         $mult++;
-    #     }
-    # }
+		    my $this_access = "";
+		    
+		    if ($this_license_type == 1){
+			$this_access = "g";
+		    }
+		    else {
+			$this_access = "y";
+		    }
+
+		    if ($url){
+			# URL
+			$record->set_field({field => 'T0662', subfield => $this_access, mult => $mult, content => $config->{dbis_baseurl}.$this_access_url});
+
+			# Beschreibung zum URL
+			$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => $this_access_label});
+
+			# Expliziter URL zum Volltext
+			$record->set_field({field => 'T4120', subfield => $this_access, mult => $mult, content => $config->{dbis_baseurl}.$this_access_url});
+			$mult++;
+		    }
+		}
+	    }
+	}
+    }
 
     if (defined $json_ref->{subjects} && ref $json_ref->{subjects} eq "ARRAY"){
 	my $mult=1;
@@ -529,7 +555,7 @@ sub search {
 
     my $dbis_base = $config->get('dbis_baseurl');
 
-    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&colors=$self->{colors}&ocolors=$self->{ocolors}&lett=k&".$self->querystring."&hits_per_page=$num&offset=$offset&sort=alph&xmloutput=1";
+    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&include%5B%5D=licenses&colors=$self->{colors}&lett=a&all=false&".$self->querystring."&hits_per_page=$num&offset=$offset&sort=alph&xmloutput=1";
 
     my $memc_key = "dbis:search:$url";
 

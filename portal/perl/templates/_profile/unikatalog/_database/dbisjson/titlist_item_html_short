@@ -485,9 +485,6 @@
 	<div class="ps-2 d-flex">
           <div class="d-flex flex-wrap ob-titleactions">
 [% IF record_exists && record.id && record.database %]
-[%  IF fulltext_type == 'r' %]
-[% msg.maketext("Diese Datenbank ist nicht lizensiert") %]
-[%  ELSE %]
 [%   IF NOT record_from_cache %]
             <div class="pe-1 pb-1">
               <a class="btn btn-primary pe-2" href="[% IF NOT hide_detail && NOT hide_hit %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %];redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]">[% IF hide_detail %]<i class="fas fa-ban"></i>[% ELSE %]<i class="fas fa-eye"></i>[% END %] <span>Details</span></a>
@@ -509,7 +506,7 @@
 	    <div class="pe-1 pb-1">	    
               <a class="btn btn-primary pe-2" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span class="d-none d-sm-inline">[% toc_i18n %]</span></a>
 	    </div>
-[%   END %]
+
 [%  END %]
 
 

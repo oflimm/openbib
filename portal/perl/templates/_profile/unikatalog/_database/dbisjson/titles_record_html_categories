@@ -31,7 +31,7 @@
       'y' = config.get('dbis_yellow_img')
       'n' = config.get('dbis_de_img')
       'l' = config.get('dbis_yellow_red_img')
-      'r' = config.get('dbis_red_img')
+      'r' = config.get('ezb_red_img')
    };
 
    IF normdata.${"T4120"} ;
@@ -43,6 +43,10 @@
         access_icon = "<img src=\"${access_icon}\"  alt=\"${access_icon}\" />";
      END;
 
+   ELSE ;
+        access_icon = access_icon_ref.r;
+
+        access_icon = "<img src=\"${access_icon}\"  alt=\"${access_icon}\" />";
    END;
 
    # Preprocessing lizensiert, OA oder Nationallizens

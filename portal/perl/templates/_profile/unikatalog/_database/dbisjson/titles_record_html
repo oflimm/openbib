@@ -351,6 +351,9 @@
     ELSIF normdata.${'T4120'}.first.subfield == "n";
       fulltext_icon = config.get('dbis_de_img');
       fulltext_desc = msg.maketext("Volltext über Nationallizenz");;
+    ELSIF normdata.${'T4120'}.first.subfield == "r";
+      fulltext_icon = config.get('ezb_red_img');
+      fulltext_desc = msg.maketext("Kein lizensierter Zugriff");;
     ELSE ;
       fulltext_icon = config.get('ezb_unknown_img');
       fulltext_desc = msg.maketext("Unbekannter Zugang");;

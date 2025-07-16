@@ -14,7 +14,7 @@ while (<>){
     
     my $fields_ref = $record_ref->{fields};
 
-    if (defined $fields_ref->{'0984'} && defined $fields_ref->{'0985'}){
+    if (defined $fields_ref->{'0985'}){
 
 	my $field_scheme_ref = {};
 	

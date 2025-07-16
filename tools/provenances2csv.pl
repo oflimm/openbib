@@ -90,7 +90,7 @@ my $outputcsv = Text::CSV_XS->new ({
 
 my $out_ref = [];
 
-push @{$out_ref}, ('3611$o','3611$5','3611$s','3611$a','3611$0','3611$f','3611$l','3611$z','3611$u','035$a','Network Id','3611$y');
+push @{$out_ref}, ('3611$o','3611$5','3611$s','3611$a','3611$0','3611$f','3611$l','3611$z','035$a','Network Id','3611$y');
 
 $outputcsv->print($out,$out_ref);
 
@@ -130,7 +130,6 @@ while (my $json = <>){
 
     if (!defined $json_ref->{tpro_description}){
 	print STDERR "Keine TPRO-Beschreibung ".YAML::Dump($json_ref)."\n";
-	next;
     }
 	
     my $multiple_tpro = 0;
@@ -157,7 +156,6 @@ while (my $json = <>){
     my $field_361_0  = $json_ref->{person_gnd} || $json_ref->{corporatebody_gnd} || $json_ref->{collection_gnd} || "";
     my $field_361_f  = $tpro_merkmal || '';
     my $field_361_l  = $json_ref->{entry_year} || "";
-    my $field_361_u  = $json_ref->{scan_id} || "";
     my @fields_361_z = ();
     my $field_035_a  = $json_ref->{hbzid} || "";
     my $nz_id        = $json_ref->{nzid} || "";
@@ -165,16 +163,21 @@ while (my $json = <>){
 
     $field_361_0 = "(DE-588)$field_361_0" if( $field_361_0 && $field_361_0 !~m/DE-588/);
     
-    push @fields_361_z, "T-Pro: ".$json_ref->{tpro_description};
+    push @fields_361_z, "Details: ".$json_ref->{tpro_description};
     push @fields_361_z, "Alt-Signatur: ".$json_ref->{former_mark} if ($json_ref->{former_mark});
     push @fields_361_z, "Referenz: ".$json_ref->{reference} if ($json_ref->{reference});
     push @fields_361_z, "Bemerkung: ".$json_ref->{remark} if ($json_ref->{remark});
     push @fields_361_z, "Unvollst.: ".$json_ref->{incomplete} if ($json_ref->{incomplete});
 
-    my $field_361_z  = join(', ',@fields_361_z);
+    my $field_361_z  = join('.- ',@fields_361_z);
     
-    push @{$out_ref}, ($field_361_o,$field_361_5,$field_361_s,$field_361_a,$field_361_0,$field_361_f,$field_361_l,$field_361_z,$field_361_u,$field_035_a,$nz_id,$field_361_y);
+    push @{$out_ref}, ($field_361_o,$field_361_5,$field_361_s,$field_361_a,$field_361_0,$field_361_f,$field_361_l,$field_361_z,$field_035_a,$nz_id,$field_361_y);
 
+    if (!$field_035_a && !$nz_id){
+	print STDERR "Weder HT-Nummer noch NZ-ID ".YAML::Dump($json_ref)."\n";
+	next;
+    }
+    
     $outputcsv->print($out,$out_ref);
 
     if ($idx % 1000 == 0){

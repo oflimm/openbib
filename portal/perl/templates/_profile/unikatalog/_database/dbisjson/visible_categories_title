@@ -15,7 +15,7 @@
 [%- categories = [
                 'Titel', # msg.maketext("Titel") HST 0331
                 'Weitere Titel', # msg.maketext("Weitere Titel") WST 0370
-                'Zugang', # msg.maketext("Zugang") Zugang (Haupt-URL) 4120
+                'Zugang', # msg.maketext("Zugang") Zugang (Haupt-URL) 0662/0663
                 'Verfügbarkeit', # msg.maketext("Verfügbarkeit") Verfuegbarkeit 0501
                 'Hinweise', # msg.maketext("Hinweise") Inhalt 0510		
                 'Inhalt', # msg.maketext("Inhalt") Inhalt 0750

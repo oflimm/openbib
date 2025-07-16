@@ -83,15 +83,60 @@ sub new {
     my $lang      = exists $arg_ref->{l}
         ? $arg_ref->{l}           : 'de';
 
-    my $database               = exists $arg_ref->{database}
+    my $database        = exists $arg_ref->{database}
         ? $arg_ref->{database}         : undef;
 
-    my $options                = exists $arg_ref->{options}
+    my $options            = exists $arg_ref->{options}
         ? $arg_ref->{options}                 : {};
+    
+    my $access_green           = exists $arg_ref->{access_green}
+        ? $arg_ref->{access_green}            : 0;
 
-    my $access_all             = exists $arg_ref->{access_all}
-        ? $arg_ref->{access_all}            : 'false';
+    my $access_yellow          = exists $arg_ref->{access_yellow}
+        ? $arg_ref->{access_yellow}           : 0;
+
+    my $access_red             = exists $arg_ref->{access_red}
+        ? $arg_ref->{access_red}              : 0;
+
+    my $access_ppu             = exists $arg_ref->{access_ppu}
+        ? $arg_ref->{access_ppu}              : 0;
+    
+    my $access_national        = exists $arg_ref->{access_national}
+        ? $arg_ref->{access_national}         : 0;
+
+    # access_yellow = Hochschulnetz = online (4) + CD/DVD (8) + eingeschraenkt (32) = 44
+    my $colors  = $access_green*1 + $access_yellow*4 + $access_yellow*8 + $access_yellow*32;
+    my $ocolors = $access_ppu*8 + $access_national*32;
+
+    $logger->debug("green: $access_green ; yellow: $access_yellow ; red: $access_red ; ppu: $access_ppu ; national: $access_national");
+    $logger->debug("colors: $colors ; ocolors: $ocolors");
+    
+    # Wenn keine Parameter uebergeben wurden, dann Defaults nehmen
+    if (!$colors && !$ocolors){
+        $logger->debug("Using defaults for color and ocolor");
+
+        $colors  = $config->{dbis_colors};
+        $ocolors = $config->{dbis_ocolors};
+
+        my $colors_mask  = OpenBib::Common::Util::dec2bin($colors);
+        my $ocolors_mask = OpenBib::Common::Util::dec2bin($ocolors);
         
+        $access_red      = ($ocolors_mask & 0b001000)?1:0;
+        $access_national = ($ocolors_mask & 0b100000)?1:0;
+        $access_green    = ($colors_mask  & 0b000001)?1:0;
+        $access_yellow   = ($colors_mask  & 0b101100)?1:0;
+    }
+    # Eins von colors oder ocolors ist besetzt (oder auch beides)
+    else {
+        $logger->debug("Using CGI values for color and ocolor");
+        $logger->debug("access_red: $access_red - access_national: $access_national - access_green: $access_green - access_yellow: $access_yellow");
+
+        $colors = "" unless ($colors);
+        $ocolors = "" unless ($ocolors);
+    }
+
+    $logger->debug("Postprocessed colors: $colors ; ocolors: $ocolors");
+    
     my $self = { };
 
     bless ($self, $class);
@@ -124,11 +169,14 @@ sub new {
     }
 
     # Backend Specific Attributes
-    $access_all = 'false' if ($access_all ne 'true');
-    
-    $self->{access_all}      = $access_all;
-    $self->{bibid}           = $bibid;
+    $self->{access_green}    = $access_green;
+    $self->{access_yellow}   = $access_yellow;
+    $self->{access_red}      = $access_red;
+    $self->{access_national} = $access_national;
+    $self->{bibid}           = "USBK"; #$bibid;
     $self->{lang}            = $lang if ($lang);
+    $self->{colors}          = $colors if ($colors);
+    $self->{ocolors}         = $ocolors if ($ocolors);
     
     return $self;
 }
@@ -230,10 +278,10 @@ sub get_titles_record {
     }
 
     my $title          = $json_ref->{title};
-    my $hints          = ''; # wird noch nicht geliefert
+    my $hints          = '';
     my $content        = $json_ref->{description};
     my $instruction    = $json_ref->{instructions};
-    my $publisher      = ''; # wird noch nicht geliefert
+    my $publisher      = ''; 
     my $report_periods = ''; # werden noch nicht geliefert
     my $appearence     = ''; # wird noch nicht geliefert
     my $isbn           = (defined $json_ref->{isbn_issn} && length $json_ref->{isbn_issn} > 9)?$json_ref->{isbn_issn}:'';
@@ -252,10 +300,16 @@ sub get_titles_record {
         }
     }
 
+    my @externalNotes = ();
+    
     if ($traffic_light ne "red" && defined $json_ref->{licenses} && ref $json_ref->{licenses} eq "ARRAY"){
 	
 	
 	foreach my $license_ref (@{$json_ref->{licenses}}){
+
+	    push @externalNotes, $license_ref->{externalNotes};
+
+	    $publisher = $license_ref->{publisher}{title} if (defined $license_ref->{publisher} && defined $license_ref->{publisher}{title});
 	    
 	    if (defined $license_ref->{accesses} && ref $license_ref->{accesses} eq "ARRAY"){
 		my $mult=1;
@@ -272,7 +326,7 @@ sub get_titles_record {
 		    		    
 		    $this_access_url = 'warpto?ubr_id='.$self->{bibid}.'&amp;resource_id='.$id.'&amp;access_id='.$this_access_id.'&amp;license_type='.$this_license_type.'&amp;license_form='.$this_license_form.'&amp;access_type='.$this_access_type.'&amp;url='.uri_escape($this_access_url);
 
-		    my $this_access = "";
+		    my $this_access = $access_type;
 		    
 		    if ($this_license_type == 1){
 			$this_access = "g";
@@ -337,7 +391,11 @@ sub get_titles_record {
     
     $record->set_field({field => 'T0511', subfield => '', mult => 1, content => $instruction}) if ($instruction);
 
-    $record->set_field({field => 'T0510', subfield => '', mult => 1, content => $hints}) if ($hints);
+    my $notes_mult = 1;
+    foreach my $externalNote (@externalNotes){	
+	$record->set_field({field => 'T0510', subfield => '', mult => $notes_mult, content => $externalNote});
+	$notes_mult++;
+    }
 
     # Gesamtresponse in dbisjson_source
     $record->set_field({field => 'dbisjson_source', subfield => '', mult => 1, content => $json_ref});
@@ -507,7 +565,7 @@ sub search {
 
     my $dbis_base = $config->get('dbis_baseurl');
 
-    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&include%5B%5D=licenses&lett=a&all=".$self->{access_all}."&".$self->querystring."&hits_per_page=$num&offset=$offset&sort=alph&xmloutput=1";
+    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&include%5B%5D=licenses&colors=$self->{colors}&lett=a&all=false&".$self->querystring."&hits_per_page=$num&offset=$offset&sort=alph&xmloutput=1";
 
     my $memc_key = "dbis:search:$url";
 
@@ -583,32 +641,10 @@ sub search {
     my $have_group_ref           = {};
     $db_group_ref->{group_order} = [];
 
-    # Zugriffstatus
-    #
-    # '' : Keine Ampel
-    # ' ': Unbestimmt g oder y oder r
-    # 'f': Unbestimmt, aber Volltext Zugriff g oder y (fulltext)
-    # 'g': Freier Zugriff (green)
-    # 'y': Lizensierter Zugriff (yellow)
-    # 'l': Unbestimmt Eingeschraenkter Zugriff y oder r (limited)
-    # 'r': Kein Zugriff (red)
-    
-    my $type_mapping_ref = {
-	'yellow'      => 'y', # yellow
-	'green'       => 'g', # green
-	'red'         => 'r', # red
-	'access_0'    => 'g', # green
-	'access_2'    => 'y', # yellow
-	'access_3'    => 'y', # yellow
-	'access_5'    => 'l', # yellow red
-	'access_500'  => 'n', # national license
-    };
-    
     my $search_count = 0;
     foreach my $dbs_node ($root->findnodes('/dbis_page/list_dbs/dbs[not(@top_db)]')) {
         $search_count = $dbs_node->findvalue('@db_count');
 	$logger->debug("DBIS searchcount is $search_count");
-	
         my $i=0;
         foreach my $db_node ($dbs_node->findnodes('db')) {
             $i++;
@@ -617,42 +653,15 @@ sub search {
             
             my $single_db_ref = {};
 
-            $single_db_ref->{id}        = $db_node->findvalue('@title_id');
+            $single_db_ref->{id}            = $db_node->findvalue('@title_id');
+            $single_db_ref->{access}        = $db_node->findvalue('@access_ref');
+            $single_db_ref->{traffic_light} = $db_node->findvalue('@traffic_light');
+            my @types = split(" ",$db_node->findvalue('@db_type_refs'));
+
+            $single_db_ref->{db_types} = \@types;
             $single_db_ref->{title}     = decode_utf8($db_node->textContent);
 
-            $single_db_ref->{traffic_light} = $db_node->findvalue('licenses/@traffic_light');
-
-	    $single_db_ref->{access_type} = (defined $type_mapping_ref->{ $single_db_ref->{traffic_light}})?$type_mapping_ref->{ $single_db_ref->{traffic_light}}:'';
-	    
-            my @types = split(" ",$db_node->findvalue('@db_type_refs'));
-            $single_db_ref->{db_types} = \@types;
-	    
-	    my @urls = ();
-	    
-	    my @licenses      = $db_node->findnodes('licenses/license');
-	    
-	    foreach my $license_node (@licenses){
-		my $license_id = $license_node->findvalue('@id');
-
-		$logger->debug("License-ID: $license_id");
-		
-		my @accesses = $license_node->findnodes('access');
-		
-		foreach my $access_node (@accesses){
-		    my $access_id = $access_node->findvalue('@id');
-		    
-		    $logger->debug("Access-ID: $access_id");
-		    
-		    my $access_url = $access_node->findvalue('@access_url');
-		    $logger->debug("Access url: $access_url");
-		    push @urls, $config->get("dbis_baseurl").$access_url if ($access_url);
-		}
-	    }
-	    
-	    foreach my $url (@urls){    
-		$single_db_ref->{url}       = $url;
-		last;  # Nur erster URL zaehlt in Kurztrefferliste
-	    }
+            $single_db_ref->{url}       = $config->get("dbis_baseurl").$db_node->findvalue('@href');
 	    
             push @{$dbs_ref}, $single_db_ref;
         }
@@ -727,7 +736,7 @@ sub get_popular_records {
 
     my $dbis_base = $config->get('dbis_baseurl');
     
-    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&include%5B%5D=licenses&lett=a&all=".$self->{access_all}."&gebiete=$gebiet&sort=alph&xmloutput=1";
+    my $url=$dbis_base."dbliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{bibid}&lett=f&gebiete=$gebiet&sort=alph&xmloutput=1";
 
     my $recordlist = new OpenBib::RecordList::Title;
 
@@ -832,47 +841,34 @@ sub get_popular_records {
     @nodes = $root->findnodes('/dbis_page/list_dbs/dbs/db[@top_db=1]') unless (@nodes);
     
     foreach my $db_node (@nodes) {
-	
+
 	my $id            = $db_node->findvalue('@title_id');
-	my $title         = $db_node->textContent;
-	my @types         = split(" ",$db_node->findvalue('@db_type_refs'));
-	my $db_types_ref  = \@types;
+	my $access        = $db_node->findvalue('@access_ref');
+	my $traffic_light = $db_node->findvalue('@traffic_light');
+	my @types  = split(" ",$db_node->findvalue('@db_type_refs'));
 	
-	my $traffic_light = $db_node->findvalue('licenses/@traffic_light');
+	my $db_types_ref = \@types;
+	my $title   = $db_node->textContent;
 	
-	my $access_type = (defined $type_mapping_ref->{$traffic_light})?$type_mapping_ref->{$traffic_light}:'';
-	
-	my @urls = ();
+	my $url     = $config->get("dbis_baseurl").$db_node->findvalue('@href');
 
-	my @licenses      = $db_node->findnodes('licenses/license');
+        my $access_info = $access_info_ref->{$access};
+
+	my $access_type = (defined $type_mapping_ref->{$traffic_light})?$type_mapping_ref->{$traffic_light}:
+	    (defined $type_mapping_ref->{$access})?$type_mapping_ref->{$access}:'';
 	
-	foreach my $license_node (@licenses){
-	    my @accesses = $license_node->findnodes('access');
-
-	    foreach my $access_node (@accesses){
-		my $access_url = $access_node->findvalue('@access_url');
-		push @urls, $config->get("dbis_baseurl").$access_url if ($access_url);
-	    }
-	}
-
 	if ($logger->is_debug){
-	    $logger->debug("Title: $title");	    
-	    $logger->debug("Traffic light: $traffic_light");
-	    $logger->debug("Access Type: $access_type");
-	    $logger->debug("URLs: ".join(' ',@urls));
+	    $logger->debug("Access Type:".YAML::Dump($access_type));
 	}
 	
-	my $record = new OpenBib::Record::Title({id => $id, database => 'dbisjson', generic_attributes => { access_type => $access_type }});
+	my $record = new OpenBib::Record::Title({id => $id, database => 'dbisjson', generic_attributes => { access => $access_info }});
 	
 	$logger->debug("Title is $title");
 	
 	$record->set_field({field => 'T0331', subfield => '', mult => 1, content => $title});
-
-	foreach my $url (@urls){    
-	    $record->set_field({field => 'T4120', subfield => $access_type, mult => 1, content => $url});
-	    last; # Nur erster URL zaehlt in Kurztrefferliste
-	}
 	
+	$record->set_field({field => 'T4120', subfield => $access_type, mult => 1, content => $url});
+	    
 	my $mult = 1;
 	if (@types){
 	    foreach my $type (@types){
@@ -934,15 +930,18 @@ sub get_search_resultlist {
 	    $logger->debug("Record: ".YAML::Dump($match_ref) );
 	}
 
-	my $access_type = $match_ref->{access_type};
+        my $access_info = $self->{_access_info}{$match_ref->{access}};
+
+	my $access_type = (defined $type_mapping_ref->{$match_ref->{traffic_light}})?$type_mapping_ref->{$match_ref->{traffic_light}}:
+	    (defined $type_mapping_ref->{$match_ref->{access}})?$type_mapping_ref->{$match_ref->{access}}:'';
         
-        my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => 'dbisjson', generic_attributes => { access_type => $access_type }});
+        my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => 'dbisjson', generic_attributes => { access => $access_info }});
 
         $logger->debug("Title is ".$match_ref->{title});
         
         $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $match_ref->{title}});
 
-        $record->set_field({field => 'T4120', subfield => $access_type, mult => 1, content => $match_ref->{url}}) if ($match_ref->{url});
+        $record->set_field({field => 'T4120', subfield => $access_type, mult => 1, content => $match_ref->{url}});
 	
         my $mult = 1;
         if (defined $match_ref->{db_types}){

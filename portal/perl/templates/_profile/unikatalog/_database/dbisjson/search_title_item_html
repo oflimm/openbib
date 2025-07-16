@@ -111,11 +111,11 @@
 <ul class="list-group mt-1">
 [% FOREACH record IN popular_records %]
 [%-
-
+    #USE dumper;dumper.dump(record);
     detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}.html?l=${lang}";
 
     title  = record.fields.${"T0331"}.first.content;
-    access = record.fields.${"T4120"}.first.subfield;
+    access = record.generic_attributes.access_type;
 
     fulltext_availability  = "";
     fulltext_icon = config.get('dbis_green_yellow_red_img');
@@ -135,7 +135,9 @@
       fulltext_icon = config.get('dbis_de_img');
       fulltext_desc = msg.maketext("Nationallizenz");
     ELSE;
-      dont_show = 1;
+      fulltext_icon = config.get('ezb_red_img');
+      fulltext_desc = msg.maketext("Kein lizensierter Zugriff");
+#      dont_show = 1;
     END;
 -%]
 <li class="list-group-item">[% IF NOT dont_show %]<img src="[% fulltext_icon %]" alt="Zugriff: [% fulltext_desc %]"/>[% END %]<span class="ms-3"><a href="[% detail_url %]">[% title %]</a></span></li>

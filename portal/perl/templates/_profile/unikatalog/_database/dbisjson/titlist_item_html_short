@@ -372,29 +372,17 @@
       fulltext_icon = config.get('ezb_red_img');
       fulltext_desc = msg.maketext("Kein lizensierter Zugriff");
     
-    ELSIF record.generic_attributes.access.desc_short == 'frei im Web' ;
+    ELSIF record.generic_attributes.access_type == 'g';
       fulltext_availability = "lawngreen";
       fulltext_icon = config.get('dbis_green_img');
       fulltext_desc = msg.maketext("Volltext mit freiem Zugang");
-    ELSIF record.generic_attributes.access.desc_short.match('Uninetz') || record.generic_attributes.access.desc_short.match('Uni-Netz') ;
+    ELSIF record.generic_attributes.access_type == 'y';
       fulltext_availability = "yellow";
       fulltext_icon = config.get('dbis_yellow_img');
       fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
-    ELSIF record.generic_attributes.access.desc_short == 'eingeschr&auml;nkt' ;
-      fulltext_icon = config.get('dbis_yellow_red_img');
-      fulltext_desc = msg.maketext("Eingeschränkter Zugriff");
-    ELSIF record.generic_attributes.access.desc_short == 'Nationallizenz' ;
-      fulltext_icon = config.get('dbis_de_img');
-      fulltext_desc = msg.maketext("Nationallizenz");
-    ELSIF record.generic_attributes.access.desc_short == '' ;
-      fulltext_icon = config.get('dbis_red_img');
-      fulltext_desc = record.generic_attributes.color.desc ;      
-    ELSIF record.generic_attributes.color.code == 5 ;
-      fulltext_icon = config.get('dbis_green_green_red_img') ;
-      fulltext_desc = record.generic_attributes.color.desc ;
-    ELSIF record.generic_attributes.color.code == 6 ;
-      fulltext_icon = config.get('dbis_yellow_red_img');
-      fulltext_desc = record.generic_attributes.color.desc ;
+    ELSIF record.generic_attributes.access_type == 'r';
+      fulltext_icon = config.get('ezb_red_img');
+      fulltext_desc = msg.maketext("Kein lizensierter Zugriff");
     ELSE ;
       fulltext_icon = config.get('dbis_green_yellow_red_img') ;
       fulltext_desc = record.generic_attributes.color.desc ;
@@ -439,7 +427,7 @@
 
 [% IF NOT hide_hit %]	
          <span class="ob-person">[% person %]</span>
-	 <!-- <img src="[% fulltext_icon %]" /> --> <strong><span class="ob-title">[% IF fulltext_type == 'r' %][% title %][% ELSE %]<a href="[% detail_url %]">[% title %]</a>[% END %]</span></strong>
+	 <!-- <img src="[% fulltext_icon %]" /> --> <strong><span class="ob-title"><a href="[% detail_url %]">[% title %]</a></span></strong>
 [%- IF edition -%], <span class="rledition">[% edition %]</span>[%- END -%][% IF publisher %], <span class="ob-publisher">[% publisher %]</span>[% END %] <span class="ob-yearofpub">[% yearofpub %]</span>
 [% ELSE %]
          <strong><span class="ob-title">[% hide_hit_msg %]</span></strong>

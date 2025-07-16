@@ -21,6 +21,8 @@ while (<>){
 	my $field_mult_ref = {};
 	
 	foreach my $fieldname ('0984','0985'){
+	    next unless (defined $fields_ref->{$fieldname});
+	    
 	    my $tmp_scheme_ref = {};
 
 	    # print YAML::Dump($fields_ref->{$fieldname});

@@ -89,53 +89,8 @@ sub new {
     my $options            = exists $arg_ref->{options}
         ? $arg_ref->{options}                 : {};
     
-    my $access_green           = exists $arg_ref->{access_green}
-        ? $arg_ref->{access_green}            : 0;
-
-    my $access_yellow          = exists $arg_ref->{access_yellow}
-        ? $arg_ref->{access_yellow}           : 0;
-
-    my $access_red             = exists $arg_ref->{access_red}
-        ? $arg_ref->{access_red}              : 0;
-
-    my $access_ppu             = exists $arg_ref->{access_ppu}
-        ? $arg_ref->{access_ppu}              : 0;
-    
-    my $access_national        = exists $arg_ref->{access_national}
-        ? $arg_ref->{access_national}         : 0;
-
-    # access_yellow = Hochschulnetz = online (4) + CD/DVD (8) + eingeschraenkt (32) = 44
-    my $colors  = $access_green*1 + $access_yellow*4 + $access_yellow*8 + $access_yellow*32;
-    my $ocolors = $access_ppu*8 + $access_national*32;
-
-    $logger->debug("green: $access_green ; yellow: $access_yellow ; red: $access_red ; ppu: $access_ppu ; national: $access_national");
-    $logger->debug("colors: $colors ; ocolors: $ocolors");
-    
-    # Wenn keine Parameter uebergeben wurden, dann Defaults nehmen
-    if (!$colors && !$ocolors){
-        $logger->debug("Using defaults for color and ocolor");
-
-        $colors  = $config->{dbis_colors};
-        $ocolors = $config->{dbis_ocolors};
-
-        my $colors_mask  = OpenBib::Common::Util::dec2bin($colors);
-        my $ocolors_mask = OpenBib::Common::Util::dec2bin($ocolors);
-        
-        $access_red      = ($ocolors_mask & 0b001000)?1:0;
-        $access_national = ($ocolors_mask & 0b100000)?1:0;
-        $access_green    = ($colors_mask  & 0b000001)?1:0;
-        $access_yellow   = ($colors_mask  & 0b101100)?1:0;
-    }
-    # Eins von colors oder ocolors ist besetzt (oder auch beides)
-    else {
-        $logger->debug("Using CGI values for color and ocolor");
-        $logger->debug("access_red: $access_red - access_national: $access_national - access_green: $access_green - access_yellow: $access_yellow");
-
-        $colors = "" unless ($colors);
-        $ocolors = "" unless ($ocolors);
-    }
-
-    $logger->debug("Postprocessed colors: $colors ; ocolors: $ocolors");
+    my $access_all           = exists $arg_ref->{access_all}
+        ? $arg_ref->{access_all}            : 'false';
     
     my $self = { };
 
@@ -168,15 +123,12 @@ sub new {
         $self->{_searchquery}   = $searchquery;
     }
 
+    $access_all = 'false' if ($access_all ne "true");
+    
     # Backend Specific Attributes
-    $self->{access_green}    = $access_green;
-    $self->{access_yellow}   = $access_yellow;
-    $self->{access_red}      = $access_red;
-    $self->{access_national} = $access_national;
-    $self->{bibid}           = "USBK"; #$bibid;
+    $self->{access_all}      = $access_all;
+    $self->{bibid}           = $bibid;
     $self->{lang}            = $lang if ($lang);
-    $self->{colors}          = $colors if ($colors);
-    $self->{ocolors}         = $ocolors if ($ocolors);
     
     return $self;
 }
@@ -281,7 +233,6 @@ sub get_titles_record {
     my $hints          = '';
     my $content        = $json_ref->{description};
     my $instruction    = $json_ref->{instructions};
-    my $publisher      = ''; 
     my $report_periods = ''; # werden noch nicht geliefert
     my $appearence     = ''; # wird noch nicht geliefert
     my $isbn           = (defined $json_ref->{isbn_issn} && length $json_ref->{isbn_issn} > 9)?$json_ref->{isbn_issn}:'';
@@ -301,6 +252,7 @@ sub get_titles_record {
     }
 
     my @externalNotes = ();
+    my @publishers    = ();
     
     if ($traffic_light ne "red" && defined $json_ref->{licenses} && ref $json_ref->{licenses} eq "ARRAY"){
 	
@@ -309,7 +261,9 @@ sub get_titles_record {
 
 	    push @externalNotes, $license_ref->{externalNotes};
 
-	    $publisher = $license_ref->{publisher}{title} if (defined $license_ref->{publisher} && defined $license_ref->{publisher}{title});
+	    if (defined $license_ref->{publisher} && defined $license_ref->{publisher}{title}){
+		push @publishers, $license_ref->{publisher}{title};
+	    }
 	    
 	    if (defined $license_ref->{accesses} && ref $license_ref->{accesses} eq "ARRAY"){
 		my $mult=1;
@@ -369,8 +323,6 @@ sub get_titles_record {
     
     $record->set_field({field => 'T0750', subfield => '', mult => 1, content => $content}) if ($content);
 
-    $record->set_field({field => 'T0412', subfield => '', mult => 1, content => $publisher}) if ($publisher);
-
     $record->set_field({field => 'T0600', subfield => '', mult => 1, content => $remarks}) if ($remarks);
 
     $record->set_field({field => 'T0523', subfield => '', mult => 1, content => $report_periods}) if ($report_periods);
@@ -383,12 +335,6 @@ sub get_titles_record {
 	
     $record->set_field({field => 'T0425', subfield => '', mult => 1, content => $year}) if ($year);
     
-    # $mult=1;
-    # if ($access_info_ref->{desc_short}){
-    #     $record->set_field({field => 'T0501', subfield => '', mult => $mult, content => $access_info_ref->{desc_short}});
-    #     $mult++;
-    # }
-    
     $record->set_field({field => 'T0511', subfield => '', mult => 1, content => $instruction}) if ($instruction);
 
     my $notes_mult = 1;
@@ -397,6 +343,12 @@ sub get_titles_record {
 	$notes_mult++;
     }
 
+    my $publishers_mult = 1;
+    foreach my $publisher (@publishers){
+	$record->set_field({field => 'T0412', subfield => '', mult => $publishers_mult, content => $publisher});
+	$publishers_mult++;
+    }
+        
     # Gesamtresponse in dbisjson_source
     $record->set_field({field => 'dbisjson_source', subfield => '', mult => 1, content => $json_ref});
     
@@ -565,7 +517,7 @@ sub search {
 
     my $dbis_base = $config->get('dbis_baseurl');
 
-    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&include%5B%5D=licenses&colors=$self->{colors}&lett=a&all=false&".$self->querystring."&hits_per_page=$num&offset=$offset&sort=alph&xmloutput=1";
+    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&include%5B%5D=licenses&lett=a&all=false&".$self->querystring."&hits_per_page=$num&offset=$offset&sort=alph&xmloutput=1";
 
     my $memc_key = "dbis:search:$url";
 
@@ -736,7 +688,7 @@ sub get_popular_records {
 
     my $dbis_base = $config->get('dbis_baseurl');
     
-    my $url=$dbis_base."dbliste.php?colors=$self->{colors}&ocolors=$self->{ocolors}&bib_id=$self->{bibid}&lett=f&gebiete=$gebiet&sort=alph&xmloutput=1";
+    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&lett=f&gebiete=$gebiet&sort=alph&xmloutput=1";
 
     my $recordlist = new OpenBib::RecordList::Title;
 

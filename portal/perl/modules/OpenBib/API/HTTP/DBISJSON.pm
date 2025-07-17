@@ -253,21 +253,28 @@ sub get_titles_record {
     my @externalNotes     = ();
     my @publishers        = ();
     my @publication_forms = ();
+    my @local_licenseinfo = ();
     
     if ($traffic_light ne "red" && defined $json_ref->{licenses} && ref $json_ref->{licenses} eq "ARRAY"){
 	
 	
 	foreach my $license_ref (@{$json_ref->{licenses}}){
 
-	    push @externalNotes, $license_ref->{externalNotes};
-
+	    if (defined $license_ref->{externalNotes}){
+		push @externalNotes, $license_ref->{externalNotes} if ($license_ref->{externalNotes});
+	    }
+	    
 	    if (defined $license_ref->{publisher} && defined $license_ref->{publisher}{title}){
-		push @publishers, $license_ref->{publisher}{title};
+		push @publishers, $license_ref->{publisher}{title} if ($license_ref->{publisher}{title});
 	    }
 
 
 	    if (defined $license_ref->{publicationForm} && defined $license_ref->{publicationForm}{title}){
-		push @publication_forms, $license_ref->{publicationForm}{title};
+		push @publication_forms, $license_ref->{publicationForm}{title} if ( $license_ref->{publicationForm}{title});
+	    }
+
+	    if (defined $license_ref->{licenseLocalisation} && defined $license_ref->{licenseLocalisation}{externalNotes}){
+		push @local_licenseinfo, $license_ref->{licenseLocalisation}{externalNotes} if ($license_ref->{licenseLocalisation}{externalNotes});
 	    }
 	    
 	    if (defined $license_ref->{accesses} && ref $license_ref->{accesses} eq "ARRAY"){
@@ -341,6 +348,11 @@ sub get_titles_record {
     $record->set_field({field => 'T0511', subfield => '', mult => 1, content => $instruction}) if ($instruction);
 
     my $notes_mult = 1;
+    foreach my $externalNote (@local_licenseinfo){	
+	$record->set_field({field => 'T0510', subfield => '', mult => $notes_mult, content => $externalNote});
+	$notes_mult++;
+    }
+    
     foreach my $externalNote (@externalNotes){	
 	$record->set_field({field => 'T0510', subfield => '', mult => $notes_mult, content => $externalNote});
 	$notes_mult++;
@@ -530,7 +542,7 @@ sub search {
 
     my $dbis_base = $config->get('dbis_baseurl');
 
-    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&include%5B%5D=licenses&lett=a&all=false&".$self->querystring."&hits_per_page=$num&offset=$offset&sort=alph&xmloutput=1";
+    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&include%5B%5D=licenses&lett=a&all=".$self->{access_all}."&".$self->querystring."&hits_per_page=$num&offset=$offset&sort=alph&xmloutput=1";
 
     my $memc_key = "dbis:search:$url";
 
@@ -606,10 +618,32 @@ sub search {
     my $have_group_ref           = {};
     $db_group_ref->{group_order} = [];
 
+    # Zugriffstatus
+    #
+    # '' : Keine Ampel
+    # ' ': Unbestimmt g oder y oder r
+    # 'f': Unbestimmt, aber Volltext Zugriff g oder y (fulltext)
+    # 'g': Freier Zugriff (green)
+    # 'y': Lizensierter Zugriff (yellow)
+    # 'l': Unbestimmt Eingeschraenkter Zugriff y oder r (limited)
+    # 'r': Kein Zugriff (red)
+    
+    my $type_mapping_ref = {
+	'yellow'      => 'y', # yellow
+	'green'       => 'g', # green
+	'red'         => 'r', # red
+	'access_0'    => 'g', # green
+	'access_2'    => 'y', # yellow
+	'access_3'    => 'y', # yellow
+	'access_5'    => 'l', # yellow red
+	'access_500'  => 'n', # national license
+    };
+    
     my $search_count = 0;
     foreach my $dbs_node ($root->findnodes('/dbis_page/list_dbs/dbs[not(@top_db)]')) {
         $search_count = $dbs_node->findvalue('@db_count');
 	$logger->debug("DBIS searchcount is $search_count");
+	
         my $i=0;
         foreach my $db_node ($dbs_node->findnodes('db')) {
             $i++;
@@ -618,15 +652,42 @@ sub search {
             
             my $single_db_ref = {};
 
-            $single_db_ref->{id}            = $db_node->findvalue('@title_id');
-            $single_db_ref->{access}        = $db_node->findvalue('@access_ref');
-            $single_db_ref->{traffic_light} = $db_node->findvalue('@traffic_light');
-            my @types = split(" ",$db_node->findvalue('@db_type_refs'));
-
-            $single_db_ref->{db_types} = \@types;
+            $single_db_ref->{id}        = $db_node->findvalue('@title_id');
             $single_db_ref->{title}     = decode_utf8($db_node->textContent);
 
-            $single_db_ref->{url}       = $config->get("dbis_baseurl").$db_node->findvalue('@href');
+            $single_db_ref->{traffic_light} = $db_node->findvalue('licenses/@traffic_light');
+
+	    $single_db_ref->{access_type} = (defined $type_mapping_ref->{ $single_db_ref->{traffic_light}})?$type_mapping_ref->{ $single_db_ref->{traffic_light}}:'';
+	    
+            my @types = split(" ",$db_node->findvalue('@db_type_refs'));
+            $single_db_ref->{db_types} = \@types;
+	    
+	    my @urls = ();
+	    
+	    my @licenses      = $db_node->findnodes('licenses/license');
+	    
+	    foreach my $license_node (@licenses){
+		my $license_id = $license_node->findvalue('@id');
+
+		$logger->debug("License-ID: $license_id");
+		
+		my @accesses = $license_node->findnodes('access');
+		
+		foreach my $access_node (@accesses){
+		    my $access_id = $access_node->findvalue('@id');
+		    
+		    $logger->debug("Access-ID: $access_id");
+		    
+		    my $access_url = $access_node->findvalue('@access_url');
+		    $logger->debug("Access url: $access_url");
+		    push @urls, $config->get("dbis_baseurl").$access_url if ($access_url);
+		}
+	    }
+	    
+	    foreach my $url (@urls){    
+		$single_db_ref->{url}       = $url;
+		last;  # Nur erster URL zaehlt in Kurztrefferliste
+	    }
 	    
             push @{$dbs_ref}, $single_db_ref;
         }
@@ -701,7 +762,7 @@ sub get_popular_records {
 
     my $dbis_base = $config->get('dbis_baseurl');
     
-    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&lett=f&gebiete=$gebiet&sort=alph&xmloutput=1";
+    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&include%5B%5D=licenses&lett=a&all=".$self->{access_all}."&gebiete=$gebiet&sort=alph&xmloutput=1";
 
     my $recordlist = new OpenBib::RecordList::Title;
 
@@ -806,34 +867,47 @@ sub get_popular_records {
     @nodes = $root->findnodes('/dbis_page/list_dbs/dbs/db[@top_db=1]') unless (@nodes);
     
     foreach my $db_node (@nodes) {
-
+	
 	my $id            = $db_node->findvalue('@title_id');
-	my $access        = $db_node->findvalue('@access_ref');
-	my $traffic_light = $db_node->findvalue('@traffic_light');
-	my @types  = split(" ",$db_node->findvalue('@db_type_refs'));
+	my $title         = decode_utf8($db_node->textContent);
+	my @types         = split(" ",$db_node->findvalue('@db_type_refs'));
+	my $db_types_ref  = \@types;
 	
-	my $db_types_ref = \@types;
-	my $title   = $db_node->textContent;
+	my $traffic_light = $db_node->findvalue('licenses/@traffic_light');
 	
-	my $url     = $config->get("dbis_baseurl").$db_node->findvalue('@href');
+	my $access_type = (defined $type_mapping_ref->{$traffic_light})?$type_mapping_ref->{$traffic_light}:'';
+	
+	my @urls = ();
 
-        my $access_info = $access_info_ref->{$access};
-
-	my $access_type = (defined $type_mapping_ref->{$traffic_light})?$type_mapping_ref->{$traffic_light}:
-	    (defined $type_mapping_ref->{$access})?$type_mapping_ref->{$access}:'';
+	my @licenses      = $db_node->findnodes('licenses/license');
 	
+	foreach my $license_node (@licenses){
+	    my @accesses = $license_node->findnodes('access');
+
+	    foreach my $access_node (@accesses){
+		my $access_url = $access_node->findvalue('@access_url');
+		push @urls, $config->get("dbis_baseurl").$access_url if ($access_url);
+	    }
+	}
+
 	if ($logger->is_debug){
-	    $logger->debug("Access Type:".YAML::Dump($access_type));
+	    $logger->debug("Title: $title");	    
+	    $logger->debug("Traffic light: $traffic_light");
+	    $logger->debug("Access Type: $access_type");
+	    $logger->debug("URLs: ".join(' ',@urls));
 	}
 	
-	my $record = new OpenBib::Record::Title({id => $id, database => 'dbisjson', generic_attributes => { access => $access_info }});
+	my $record = new OpenBib::Record::Title({id => $id, database => 'dbisjson', generic_attributes => { access_type => $access_type }});
 	
 	$logger->debug("Title is $title");
 	
 	$record->set_field({field => 'T0331', subfield => '', mult => 1, content => $title});
+
+	foreach my $url (@urls){    
+	    $record->set_field({field => 'T4120', subfield => $access_type, mult => 1, content => $url});
+	    last; # Nur erster URL zaehlt in Kurztrefferliste
+	}
 	
-	$record->set_field({field => 'T4120', subfield => $access_type, mult => 1, content => $url});
-	    
 	my $mult = 1;
 	if (@types){
 	    foreach my $type (@types){
@@ -895,18 +969,15 @@ sub get_search_resultlist {
 	    $logger->debug("Record: ".YAML::Dump($match_ref) );
 	}
 
-        my $access_info = $self->{_access_info}{$match_ref->{access}};
-
-	my $access_type = (defined $type_mapping_ref->{$match_ref->{traffic_light}})?$type_mapping_ref->{$match_ref->{traffic_light}}:
-	    (defined $type_mapping_ref->{$match_ref->{access}})?$type_mapping_ref->{$match_ref->{access}}:'';
+	my $access_type = $match_ref->{access_type};
         
-        my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => 'dbisjson', generic_attributes => { access => $access_info }});
+        my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => 'dbisjson', generic_attributes => { access_type => $access_type }});
 
         $logger->debug("Title is ".$match_ref->{title});
         
         $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $match_ref->{title}});
 
-        $record->set_field({field => 'T4120', subfield => $access_type, mult => 1, content => $match_ref->{url}});
+        $record->set_field({field => 'T4120', subfield => $access_type, mult => 1, content => $match_ref->{url}}) if ($match_ref->{url});
 	
         my $mult = 1;
         if (defined $match_ref->{db_types}){

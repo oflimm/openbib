@@ -234,7 +234,6 @@ sub get_titles_record {
     my $content        = $json_ref->{description};
     my $instruction    = $json_ref->{instructions};
     my $report_periods = ''; # werden noch nicht geliefert
-    my $appearence     = ''; # wird noch nicht geliefert
     my $isbn           = (defined $json_ref->{isbn_issn} && length $json_ref->{isbn_issn} > 9)?$json_ref->{isbn_issn}:'';
     my $issn           = (defined $json_ref->{isbn_issn} && length $json_ref->{isbn_issn} <= 9)?$json_ref->{isbn_issn}:'';
     my $year           = ''; # wird noch nicht geliefert
@@ -251,8 +250,9 @@ sub get_titles_record {
         }
     }
 
-    my @externalNotes = ();
-    my @publishers    = ();
+    my @externalNotes     = ();
+    my @publishers        = ();
+    my @publication_forms = ();
     
     if ($traffic_light ne "red" && defined $json_ref->{licenses} && ref $json_ref->{licenses} eq "ARRAY"){
 	
@@ -263,6 +263,11 @@ sub get_titles_record {
 
 	    if (defined $license_ref->{publisher} && defined $license_ref->{publisher}{title}){
 		push @publishers, $license_ref->{publisher}{title};
+	    }
+
+
+	    if (defined $license_ref->{publicationForm} && defined $license_ref->{publicationForm}{title}){
+		push @publication_forms, $license_ref->{publicationForm}{title};
 	    }
 	    
 	    if (defined $license_ref->{accesses} && ref $license_ref->{accesses} eq "ARRAY"){
@@ -327,8 +332,6 @@ sub get_titles_record {
 
     $record->set_field({field => 'T0523', subfield => '', mult => 1, content => $report_periods}) if ($report_periods);
 
-    $record->set_field({field => 'T0508', subfield => '', mult => 1, content => $appearence}) if ($appearence);
-
     $record->set_field({field => 'T0540', subfield => '', mult => 1, content => $isbn}) if ($isbn);
 
     $record->set_field({field => 'T0543', subfield => '', mult => 1, content => $issn}) if ($issn);
@@ -348,7 +351,13 @@ sub get_titles_record {
 	$record->set_field({field => 'T0412', subfield => '', mult => $publishers_mult, content => $publisher});
 	$publishers_mult++;
     }
-        
+
+    my $pubforms_mult = 1;
+    foreach my $publication_form (@publication_forms){
+	$record->set_field({field => 'T0508', subfield => '', mult => $pubforms_mult, content => $publication_form});
+	$pubforms_mult++;
+    }
+	    
     # Gesamtresponse in dbisjson_source
     $record->set_field({field => 'dbisjson_source', subfield => '', mult => 1, content => $json_ref});
     
@@ -423,11 +432,15 @@ sub get_classifications {
 	my @classifications = ();
 	
 	if ($type eq "subjects"){
-	    @classifications = @{$json_ref};
+	    if (ref $json_ref eq "ARRAY"){
+		@classifications = @{$json_ref};
+	    }
 	}
 	else {
-	    foreach my $key (sort keys %{$json_ref}){
-		push @classifications, $json_ref->{$key};
+	    if (ref $json_ref eq "HASH"){
+		foreach my $key (sort keys %{$json_ref}){
+		    push @classifications, $json_ref->{$key};
+		}
 	    }
 	}
 	

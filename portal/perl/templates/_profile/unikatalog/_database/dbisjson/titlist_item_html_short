@@ -484,13 +484,13 @@
 	    </div>
 [%   END %]
 
-[%   IF fulltext && fulltext.match('warpto') %]
-	    <div class="pe-1 pb-1">	    
-              <a class="btn btn-primary pe-2" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
-	    </div>
-[%   ELSIF fulltext_type == 'r' %]
+[%   IF fulltext_type == 'r' %]
 	    <div class="pe-1 pb-1">	    
               <a class="btn btn-primary pe-2" href="[% detail_url %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-ban"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
+	    </div>
+[%   ELSIF fulltext && fulltext.match('warpto') %]
+	    <div class="pe-1 pb-1">	    
+              <a class="btn btn-primary pe-2" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
 	    </div>
 [%   END %]
 

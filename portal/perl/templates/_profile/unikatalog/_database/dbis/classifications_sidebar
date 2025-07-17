@@ -14,7 +14,7 @@
   };
 
   with_status = 0;
-  
+
 -%]
 
 [% IF dbis_alert %]
@@ -105,7 +105,7 @@
 
 <div class="form-floating mb-3">
   <select class="form-select" id="cln[% sidebar_suffix %]" name="cln"><option value="" [% IF classification_name == 'all' %]selected="selected"[% END %]>[% msg.maketext("Alle Fachgebiete") %]</option>
-[%- FOREACH classification IN classifications -%]
+[%- FOREACH classification IN classifications.items -%]
 [%    NEXT IF denylist_cln.${classification.name} %]
 <option value="[% classification.name %]" [% IF classification_name == classification.name %]selected="selected"[% END %]>[% classification.desc | truncate(25) %]</option>
 [%- END -%]
@@ -175,7 +175,7 @@
 
 <div class="card-body">
 <ul class="list-group">
-[% FOREACH classification IN classifications ;
+[% FOREACH classification IN classifications.items ;
    searchterm    = classification.name;
    searchprefix  = config.get('searchfield').classification.prefix;
 

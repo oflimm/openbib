@@ -254,7 +254,7 @@ foreach my $nz_id (keys %{$provenances_by_nzid}){
 close ($out);
 
 sub print_help {
-    print "provenances2csv.pl - Erzeugen von CSV-Import-Dateien aus Provenienz-Exporten fuer 361 in der NZ des hbz\n\n";
+    print "provenances2marc.pl - Erzeugen von MARC-Import-Dateien aus Provenienz-Exporten fuer 361 in die NZ des hbz\n\n";
     print "Optionen: \n";
     print "  -help                   : Diese Informationsseite\n\n";
     print "  --loglevel=             : Loglevel\n\n";

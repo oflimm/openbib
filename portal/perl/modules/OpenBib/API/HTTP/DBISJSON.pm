@@ -193,6 +193,12 @@ sub get_titles_record {
     if ($logger->is_debug){
 	$logger->debug("Response: ".$response->body);
     }
+
+    my $quickfix_fields_ref = $self->_get_titles_record_quickfix_xml($arg_ref);
+    
+    if ($logger->is_debug){
+	$logger->debug("Got quickfix fields: ".YAML::Dump($quickfix_fields_ref));
+    }
     
     my $traffic_light              = $json_ref->{traffic_light};
     my $is_free                    = $json_ref->{is_free};
@@ -222,10 +228,19 @@ sub get_titles_record {
 	$access_type = 'g';
     }
 
+    if (defined $json_ref->{types} && !@{$json_ref->{types}} && defined $quickfix_fields_ref->{types} && @{$quickfix_fields_ref->{types}}){
+	$json_ref->{types} = $quickfix_fields_ref->{types};
+    }
+    
     if (defined $json_ref->{types} && ref $json_ref->{types} eq "ARRAY"){
 	my $mult = 1;
 	foreach my $db_type_ref (@{$json_ref->{types}}){
-	    $record->set_field({field => 'T0800', subfield => '', mult => $mult++, content => $db_type_ref->{title}}) if ($db_type_ref->{title});
+	    my $dbtype       =  $db_type_ref->{desc};
+	    my $dbtype_short =  $db_type_ref->{desc_short}; 
+	    
+	    $record->set_field({field => 'T0517', subfield => '', mult => $mult, content => $dbtype}) if ($dbtype);
+	    $record->set_field({field => 'T0800', subfield => '', mult => $mult++, content => $dbtype_short}) if ($dbtype_short);
+	    
 	}
     }
 
@@ -254,6 +269,11 @@ sub get_titles_record {
     my @publishers        = ();
     my @publication_forms = ();
     my @local_licenseinfo = ();
+
+    push @externalNotes, $quickfix_fields_ref->{hints} if ($quickfix_fields_ref->{hints});
+    
+    push @externalNotes, $remarks if ($remarks);
+
     
     if ($traffic_light ne "red" && defined $json_ref->{licenses} && ref $json_ref->{licenses} eq "ARRAY"){
 	
@@ -325,17 +345,21 @@ sub get_titles_record {
 	}
     }
 
+    if (defined $json_ref->{keywords} && !@{$json_ref->{keywords}} && defined $quickfix_fields_ref->{keywords} && @{$quickfix_fields_ref->{keywords}}){
+	$json_ref->{keywords} = $quickfix_fields_ref->{keywords};
+    }
+	
     if (defined $json_ref->{keywords} && ref $json_ref->{keywords} eq "ARRAY"){
 	my $mult=1;
-	foreach my $keyword_ref (@{$json_ref->{keywords}}){
-	    $record->set_field({field => 'T0710', subfield => '', mult => $mult, content => $keyword_ref->{title}, id => $keyword_ref->{id}});
+	foreach my $keyword (@{$json_ref->{keywords}}){
+	    $record->set_field({field => 'T0710', subfield => '', mult => $mult, content => $keyword});
 	    $mult++;
 	}
     }
     
     $record->set_field({field => 'T0750', subfield => '', mult => 1, content => $content}) if ($content);
 
-    $record->set_field({field => 'T0600', subfield => '', mult => 1, content => $remarks}) if ($remarks);
+#    $record->set_field({field => 'T0600', subfield => '', mult => 1, content => $remarks}) if ($remarks);
 
     $record->set_field({field => 'T0523', subfield => '', mult => 1, content => $report_periods}) if ($report_periods);
 
@@ -383,6 +407,151 @@ sub get_titles_record {
     return $record;
 }
 
+sub _get_titles_record_quickfix_xml {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id       = exists $arg_ref->{id}
+    ? $arg_ref->{id}        : '';
+
+    my $database = exists $arg_ref->{database}
+        ? $arg_ref->{database}  : 'dbis';
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+    my $ua     = $self->get_client;
+
+    my $dbis_base = $config->get('dbis_baseurl');
+    
+    my $url = $dbis_base."detail.php?titel_id=$id&bib_id=".((defined $self->{bibid})?$self->{bibid}:"")."&xmloutput=1";
+
+    my $fields_ref = {};
+        
+    my $memc_key = "dbis:title:$url";
+
+    my $memc = $config->get_memc;
+    
+    if ($memc){
+        my $fields_ref = $memc->get($memc_key);
+
+	if ($fields_ref){
+	    if ($logger->is_debug){
+		$logger->debug("Got fields for key $memc_key from memcached");
+	    }
+
+	    return $fields_ref;
+	}
+    }
+    
+    $logger->debug("Request: $url");
+
+    my $response = $ua->get($url)->result;
+
+    my $xmlresponse = "";
+    
+    if ($response->is_success){
+	$xmlresponse = $response->body;
+    }
+    else {        
+	$logger->info($response->code . ' - ' . $response->message);
+	return $fields_ref;
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("Response: ".$response->body);
+    }
+
+    $xmlresponse =~s/^.*?<\?xml/<\?xml/ms;
+    
+    my $parser = XML::LibXML->new();
+    my $tree   = $parser->parse_string($xmlresponse);
+    my $root   = $tree->getDocumentElement;
+
+    # Zugriffstatus
+    #
+    # '' : Keine Ampel
+    # ' ': Unbestimmt g oder y oder r
+    # 'f': Unbestimmt, aber Volltext Zugriff g oder y (fulltext)
+    # 'g': Freier Zugriff (green)
+    # 'y': Lizensierter Zugriff (yellow)
+    # 'l': Unbestimmt Eingeschraenkter Zugriff y oder r (limited)
+    # 'r': Kein Zugriff (red)
+    
+    my $type_mapping_ref = {
+        'access_0'    => 'g', # green
+        'access_2'    => 'y', # yellow
+        'access_3'    => 'y', # yellow
+        'access_5'    => 'l', # yellow red
+        'access_500'  => 'n', # national license
+    };
+    
+    my $db_type_ref = [];
+    my @db_type_nodes = $root->findnodes('/dbis_page/details/db_type_infos/db_type_info');
+    my $mult = 1;
+    foreach my $db_type_node (@db_type_nodes){
+        my $this_db_type_ref = {};
+
+        $this_db_type_ref->{desc}       = $db_type_node->findvalue('db_type_long_text');
+        $this_db_type_ref->{desc_short} = $db_type_node->findvalue('db_type');
+        $this_db_type_ref->{desc}=~s/\|/<br\/>/g;
+	
+        push @$db_type_ref, $this_db_type_ref;
+    }
+
+    $fields_ref->{types} = $db_type_ref;
+    
+    my @title_nodes = $root->findnodes('/dbis_page/details/titles/title');
+
+    my $title_ref = {};
+    $title_ref->{other} = [];
+
+    foreach my $this_node (@title_nodes){
+        $title_ref->{main}     =  $this_node->textContent if ($this_node->findvalue('@main') eq "Y");
+        push @{$title_ref->{other}}, $this_node->textContent if ($this_node->findvalue('@main') eq "N");
+    }
+
+    $fields_ref->{title} = $title_ref;
+    
+    $fields_ref->{hints}   =  $root->findvalue('/dbis_page/details/hints');
+    $fields_ref->{content} =  $root->findvalue('/dbis_page/details/content');
+    $fields_ref->{content_eng} =  $root->findvalue('/dbis_page/details/content_eng');
+    $fields_ref->{instruction} =  $root->findvalue('/dbis_page/details/instruction');
+    $fields_ref->{publisher} =  $root->findvalue('/dbis_page/details/publisher');
+    $fields_ref->{report_periods} =  $root->findvalue('/dbis_page/details/report_periods');
+    $fields_ref->{appearence} =  $root->findvalue('/dbis_page/details/appearence');
+    $fields_ref->{isbn} =  $root->findvalue('/dbis_page/details/isbn');
+    $fields_ref->{year} =  $root->findvalue('/dbis_page/details/year');
+    $fields_ref->{remarks} = $root->findvalue('/dbis_page/details/remarks');
+
+    my @subjects_nodes =  $root->findnodes('/dbis_page/details/subjects/subject');
+
+    my $subjects_ref = [];
+
+    foreach my $subject_node (@subjects_nodes){
+        push @{$subjects_ref}, $subject_node->textContent if ($subject_node->findvalue('@collection') ne 'true');
+    }
+
+    $fields_ref->{subjects} = $subjects_ref;
+    
+    my @keywords_nodes =  $root->findnodes('/dbis_page/details/keywords/keyword');
+
+    my $keywords_ref = [];
+
+    foreach my $keyword_node (@keywords_nodes){
+        push @{$keywords_ref}, $keyword_node->textContent;
+    }
+
+    $fields_ref->{keywords} = $keywords_ref;
+        
+    if ($memc){
+	$memc->set($memc_key,$fields_ref,$config->{memcached_expiration}{'dbis:title'});
+    }
+    
+    return $fields_ref;
+}
+
 sub get_classifications {
     my ($self) = @_;
 
@@ -419,62 +588,43 @@ sub get_classifications {
     my $maxcount=0;
     my $mincount=999999999;
     
-    foreach my $type ('subjects','collections'){
+    my $url = $dbis_base."api/v1/subjects/organization/$dbis_bibid?resource_count=true&language=$self->{lang}";
+    
+    $logger->debug("Request: $url");
+    
+    my $json_ref = {};
+    
+    my $response = $ua->get($url)->result;
+    
+    if ($response->is_success){
+	$json_ref = $response->json;
+    }
+    else {        
+	$logger->info($response->code . ' - ' . $response->message);
+	return $classifications_ref;
+    }
+    
+    if ($logger->is_debug){
+	$logger->debug("Subjects: ".YAML::Dump($json_ref));
+    }
 	
-	my $url = $dbis_base."api/v1/$type/organization/$dbis_bibid?resource_count=true&language=$self->{lang}";
+    foreach my $classification_ref (@{$json_ref}) {
+	my $singleclassification_ref = {} ;
 	
-	$logger->debug("Request: $url");
+	$singleclassification_ref->{name}          = $classification_ref->{id};
+	$singleclassification_ref->{count}         = $classification_ref->{resource_count};
+	$singleclassification_ref->{desc}          = $classification_ref->{title};
+	# $singleclassification_ref->{is_collection} = 1 if ($classification_ref->{is_collection});
 	
-	my $json_ref = {};
-	
-	my $response = $ua->get($url)->result;
-	
-	if ($response->is_success){
-	    $json_ref = $response->json;
-	}
-	else {        
-	    $logger->info($response->code . ' - ' . $response->message);
-	    return;
-	}
-	
-	if ($logger->is_debug){
-	    $logger->debug("$type: ".YAML::Dump($json_ref));
-	}
-	
-	my @classifications = ();
-	
-	if ($type eq "subjects"){
-	    if (ref $json_ref eq "ARRAY"){
-		@classifications = @{$json_ref};
-	    }
-	}
-	else {
-	    if (ref $json_ref eq "HASH"){
-		foreach my $key (sort keys %{$json_ref}){
-		    push @classifications, $json_ref->{$key};
-		}
-	    }
+	if ($maxcount < $singleclassification_ref->{count}){
+	    $maxcount = $singleclassification_ref->{count};
 	}
 	
-	foreach my $classification_ref (@classifications) {
-	    my $singleclassification_ref = {} ;
-	    
-	    $singleclassification_ref->{name}          = $classification_ref->{id};
-	    $singleclassification_ref->{count}         = $classification_ref->{resource_count};
-	    $singleclassification_ref->{desc}          = $classification_ref->{title};
-	    $singleclassification_ref->{is_collection} = 1 if ($type eq "collections");
-	    $singleclassification_ref->{is_subject}    = 1 if ($type eq "subjects");
-	    
-	    if ($maxcount < $singleclassification_ref->{count}){
-		$maxcount = $singleclassification_ref->{count};
-	    }
-	    
-	    if ($mincount > $singleclassification_ref->{count}){
-		$mincount = $singleclassification_ref->{count};
-	    }
-	    
-	    push @{$classifications_ref}, $singleclassification_ref;
+	if ($mincount > $singleclassification_ref->{count}){
+	    $mincount = $singleclassification_ref->{count};
 	}
+	
+	push @{$classifications_ref}, $singleclassification_ref;
     }
 
     $classifications_ref = OpenBib::Common::Util::gen_cloud_class({

@@ -372,13 +372,18 @@ sub get_titles_record {
     $record->set_field({field => 'T0511', subfield => '', mult => 1, content => $instruction}) if ($instruction);
 
     my $notes_mult = 1;
-    foreach my $externalNote (@local_licenseinfo){	
+    my %have_0510 = ();
+    foreach my $externalNote (@local_licenseinfo){
+	next if ($have_0510{$externalNote});
 	$record->set_field({field => 'T0510', subfield => '', mult => $notes_mult, content => $externalNote});
+	$have_0510{$externalNote} = 1;
 	$notes_mult++;
     }
     
     foreach my $externalNote (@externalNotes){	
+	next if ($have_0510{$externalNote});
 	$record->set_field({field => 'T0510', subfield => '', mult => $notes_mult, content => $externalNote});
+	$have_0510{$externalNote} = 1;
 	$notes_mult++;
     }
 

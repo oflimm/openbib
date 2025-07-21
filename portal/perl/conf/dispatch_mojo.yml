@@ -761,8 +761,8 @@
       disable_content_negotiation: 1
 - # connector_availabilityimage_loc: 
    controller: 'Connector::AvailabilityImage'
-   rule: '/portal/:view/connector/availabilityimage/:rm/#id'
-   action: 'gbs'
+   rule: '/portal/:view/connector/availabilityimage/:type/#id'
+   action: 'show_collection'
    args:
       disable_content_negotiation: 1
 - # connector_availability_loc:

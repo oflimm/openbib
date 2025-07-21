@@ -2,7 +2,7 @@
 #
 #  OpenBib::Mojo::Controller::Connector::AvailabilityImage
 #
-#  Dieses File ist (C) 2008-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2025 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -38,7 +38,7 @@ use Benchmark;
 use DBI;
 use JSON::XS;
 use Log::Log4perl qw(get_logger :levels);
-use LWP::UserAgent;
+use Mojo::UserAgent;
 use Template;
 use XML::LibXML;
 use YAML::Syck;
@@ -50,6 +50,38 @@ use OpenBib::Search::Util;
 use OpenBib::Session;
 
 use Mojo::Base 'OpenBib::Mojo::Controller', -signatures;
+
+sub show_collection {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Dispatched Args
+    my $type           = $self->param('type');
+
+    # Shared Args    
+    my $msg            = $self->stash('msg');
+
+    if ($type eq "gbs"){
+	return $self->process_gbs;
+    }
+    elsif ($type eq "bibsonomy"){
+	return $self->process_bibsonomy;
+    }
+    elsif ($type eq "ebooks"){
+	return $self->process_ebooks;
+    }
+    elsif ($type eq "ol"){
+	return $self->process_ol;
+    }
+    elsif ($type eq "wikipedia"){
+	return $self->process_wikipedia;
+    }
+    else {
+	return $self->print_warning($msg->maketext("Unbekannter Typ"));
+    }
+}
 
 sub process_gbs {
     my $self = shift;
@@ -71,28 +103,27 @@ sub process_gbs {
     my $stylesheet     = $self->stash('stylesheet');
     my $useragent      = $self->stash('useragent');
     my $path_prefix    = $self->stash('path_prefix');
-
-    my $client_ip="";
-    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $client_ip=$1;
-    }
-
+    my $client_ip      = $self->stash('remote_ip');
+    
     my $isbn = $self->id2isbnX($id);
 
     if ($logger->is_debug){
         $logger->debug("ISBN von ID $id: ".YAML::Dump($isbn));
     }
 
-    my $redirect_url = "/images/openbib/no_img.png";
+    my $redirect_url = $self->stash('scheme')."://".$self->stash('servername')."/images/openbib/no_img.png";
     
     if ($isbn->{isbn13}){
-        my $ua       = LWP::UserAgent->new();
-        $ua->agent($useragent);
-        $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
+        my $ua       = Mojo::UserAgent->new;
+	$ua->transactor->name($useragent); # Passthrough Clients UA
+	$ua->connect_timeout(10);
+
+        my $header_ref = {'X-Forwarded-For' => $client_ip};
+	
         my $url      ="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN$isbn->{isbn13}";
         #        my $url      = "http://books.google.com/books?vid=ISBN$isbn->{isbn13}";
-        my $request  = HTTP::Request->new('GET', $url);
-        my $response = $ua->request($request);
+
+        my $response = $ua->get($url => $header_ref)->result;
         
         if ( $response->is_error() ) {
             $logger->info("ISBN $isbn->{isbn13} NOT found in Google BookSearch");
@@ -101,9 +132,9 @@ sub process_gbs {
         }
         else {
             $logger->info("ISBN $isbn->{isbn13} found in Google BookSearch");
-            $logger->debug($response->content());
+            $logger->debug($response->body);
             
-            my ($json_result) = $response->content() =~/^var _GBSBookInfo = (.+);$/;
+            my ($json_result) = $response->body =~/^var _GBSBookInfo = (.+);$/;
             
             my $gbs_result = {};
             
@@ -119,19 +150,19 @@ sub process_gbs {
             
             if ($type eq "noview"){
                 $logger->debug("GBS: noview");
-                $redirect_url = "/images/openbib/no_img.png";
+                $redirect_url = $self->stash('scheme')."://".$self->stash('servername')."/images/openbib/no_img.png";
             }
             elsif ($type eq "partial"){
                 $logger->debug("GBS: partial");
-                $redirect_url = "/images/openbib/gbs-partial.png";
+                $redirect_url = $self->stash('scheme')."://".$self->stash('servername')."/images/openbib/gbs-partial.png";
             }
             elsif ($type eq "full"){
                 $logger->debug("GBS: full");
-                $redirect_url = "/images/openbib/gbs-full.png";
+                $redirect_url = $self->stash('scheme')."://".$self->stash('servername')."/images/openbib/gbs-full.png";
             }
             else {
                 $logger->debug("GBS: other");
-                $redirect_url = "/images/openbib/no_img.png";
+                $redirect_url = $self->stash('scheme')."://".$self->stash('servername')."/images/openbib/no_img.png";
             }
         }
     }
@@ -161,22 +192,20 @@ sub process_bibsonomy {
     my $stylesheet     = $self->stash('stylesheet');
     my $useragent      = $self->stash('useragent');
     my $path_prefix    = $self->stash('path_prefix');
+    my $client_ip      = $self->stash('remote_ip');
 
-    my $client_ip="";
-    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $client_ip=$1;
-    }
-
-    my $redirect_url = "/images/openbib/no_img.png";
+    my $redirect_url = $self->stash('scheme')."://".$self->stash('servername')."/images/openbib/no_img.png";
     
-    my $ua       = LWP::UserAgent->new();
-    $ua->agent($useragent);
-    $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
+    my $ua       = Mojo::UserAgent->new;
+    $ua->transactor->name($useragent); # Passthrough Clients UA
+    $ua->connect_timeout(10);
+    
+    my $header_ref = {'X-Forwarded-For' => $client_ip};
+
     my $url      ="http://www.bibsonomy.org/swrc/bibtex/$id";
-    
-    my $request  = HTTP::Request->new('GET', $url);
-    my $response = $ua->request($request);
-    
+
+    my $response = $ua->get($url => $header_ref)->result;
+
     if ( $response->is_error() ) {
         $logger->info("Bibkey $id NOT found in BibSonomy");
         $logger->debug("Error-Code:".$response->code());
@@ -184,11 +213,11 @@ sub process_bibsonomy {
     }
     else {
         $logger->info("Bibkey $id found in BibSonomy");
-        $logger->debug($response->content());
+        $logger->debug($response->body);
         
-        my $content = $response->content();
+        my $content = $response->body;
         if ($content=~/rdf:Description/){
-            $redirect_url = "/images/openbib/bibsonomy_available.png";
+            $redirect_url = $self->stash('scheme')."://".$self->stash('servername')."/images/openbib/bibsonomy_available.png";
         }
     }
 
@@ -217,15 +246,11 @@ sub process_ebooks {
     my $stylesheet     = $self->stash('stylesheet');
     my $useragent      = $self->stash('useragent');
     my $path_prefix    = $self->stash('path_prefix');
-
-    my $client_ip="";
-    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $client_ip=$1;
-    }
+    my $client_ip      = $self->stash('remote_ip');
 
     my $isbn = $self->id2isbnX($id);
 
-    my $redirect_url = "/images/openbib/no_img.png";
+    my $redirect_url = $self->stash('scheme')."://".$self->stash('servername')."/images/openbib/no_img.png";
     
     if ($isbn->{isbn13}){
         # Verbindung zur SQL-Datenbank herstellen
@@ -240,7 +265,7 @@ sub process_ebooks {
         
         if ($result->{ebcount} > 0){
             $logger->info("ISBN $isbn->{isbn13} found for USB Ebooks");
-            $redirect_url = "/images/openbib/usb_ebook.png";
+            $redirect_url = $self->stash('scheme')."://".$self->stash('servername')."/images/openbib/usb_ebook.png";
         }
     }
 
@@ -269,23 +294,21 @@ sub process_ol {
     my $stylesheet     = $self->stash('stylesheet');
     my $useragent      = $self->stash('useragent');
     my $path_prefix    = $self->stash('path_prefix');
-
-    my $client_ip="";
-    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $client_ip=$1;
-    }
+    my $client_ip      = $self->stash('remote_ip');
 
     my $isbn = $self->id2isbnX($id);
 
-    my $redirect_url = "/images/openbib/no_img.png";
+    my $redirect_url = $self->stash('scheme')."://".$self->stash('servername')."/images/openbib/no_img.png";
     
-    my $ua       = LWP::UserAgent->new();
-    $ua->agent($useragent);
-    $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
+    my $ua       = Mojo::UserAgent->new;
+    $ua->transactor->name($useragent); # Passthrough Clients UA
+    $ua->connect_timeout(10);
+    
+    my $header_ref = {'X-Forwarded-For' => $client_ip};
+
     my $url      ="http://openlibrary.org/api/things?query=\{\"type\":\"/type/edition\", \"isbn_10\":\"$isbn->{isbn10}\"\}";
-    
-    my $request  = HTTP::Request->new('GET', $url);
-    my $response = $ua->request($request);
+
+    my $response = $ua->get($url => $header_ref)->result;
     
     if ( $response->is_error() ) {
         $logger->info("ISBN $id / $isbn->{isbn10} NOT found in OpenLibrary");
@@ -296,7 +319,7 @@ sub process_ol {
         $logger->info("ISBN $id / $isbn->{isbn10} found in OpenLibrary");
         $logger->debug($response->content());
         
-        my ($json_result) = $response->content();
+        my $json_result = $response->body;
         
         my $ol_result = {};
         
@@ -319,8 +342,8 @@ sub process_ol {
         my $url      ="http://openlibrary.org/api/get?key=$ids_ref->[0]";
         
         $logger->debug("URI: $url");
-        my $request  = HTTP::Request->new('GET', $url);
-        my $response = $ua->request($request);
+
+	my $response = $ua->get($url => $header_ref)->result;
         
         if ( $response->is_error() ) {
             $logger->info("Document-Data NOT found in OpenLibrary");
@@ -328,7 +351,7 @@ sub process_ol {
             $logger->debug("Fehlermeldung:".$response->message());
         }
         else {
-            my ($json_result) = $response->content();
+            my $json_result = $response->body;
             
             eval {
                 $ol_result = decode_json($json_result);
@@ -338,7 +361,7 @@ sub process_ol {
                 $logger->debug("OL OBJ Data".YAML::Dump($ol_result));
             }
         }
-        $redirect_url = "/images/openbib/no_img.png";
+        $redirect_url = $self->stash('scheme')."://".$self->stash('servername')."/images/openbib/no_img.png";
     }
 
     $self->redirect($redirect_url);
@@ -366,45 +389,49 @@ sub process_wikipedia {
     my $stylesheet     = $self->stash('stylesheet');
     my $useragent      = $self->stash('useragent');
     my $path_prefix    = $self->stash('path_prefix');
+    my $client_ip      = $self->stash('remote_ip');
 
     # CGI Args
     my $lang           = $r->param('lang') || 'de';
 
-    my $client_ip="";
-    if ($r->header('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $client_ip=$1;
-    }
+    my $redirect_url = $self->stash('scheme')."://".$self->stash('servername')."/images/openbib/no_img.png";
+
+    my $ua       = Mojo::UserAgent->new;
+    $ua->transactor->name($useragent); # Passthrough Clients UA
+    $ua->connect_timeout(10);
     
-    my $redirect_url = "/images/openbib/no_img.png";
-    
-    my $ua       = LWP::UserAgent->new();
-    $ua->agent($useragent);
-    $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
-    my $url      ="http://${lang}.wikipedia.org/w/api.php?action=query&format=json&titles=$id";
+    my $header_ref = {'X-Forwarded-For' => $client_ip};
+
+    my $url      ="https://${lang}.wikipedia.org/w/api.php?action=query&format=json&titles=$id";
+
     $logger->debug("Querying Wikipedia with $url");
-    my $request  = HTTP::Request->new('GET', $url);
-    my $response = $ua->request($request);
     
+    my $response = $ua->get($url => $header_ref)->result;
+        
     if ( $response->is_error() ) {
         $logger->info("Error querying Wikipedia");
         $logger->debug("Error-Code:".$response->code());
         $logger->debug("Fehlermeldung:".$response->message());
     }
     else {
-        $logger->debug($response->content());
+        $logger->debug($response->body);
         
-        my $content = $response->content();
+        my $content = $response->body;
         
         my $content_ref = decode_json($content);
-        
-        if (! exists $content_ref->{query}{pages}{-1}){
-            $redirect_url = "$config->{wikipedia_img}";
+
+	if ($logger->is_debug){
+	    $logger->debug("Result: ".YAML::Dump($content_ref));
+	}
+	
+        if (defined $content_ref->{'query'}{'pages'}{'-1'}{'title'}){
+            $redirect_url = $self->stash('scheme')."://".$self->stash('servername')."$config->{wikipedia_img}";
+
+	    $logger->debug("Setting redirect url to $redirect_url");
         }
     }
 
-    $self->redirect($redirect_url);
-    
-    return;
+    return $self->redirect($redirect_url);
 }
 
 sub id2isbnX {

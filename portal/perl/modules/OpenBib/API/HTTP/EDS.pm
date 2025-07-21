@@ -87,7 +87,8 @@ sub new {
     
     my $ua = Mojo::UserAgent->new();
     $ua->transactor->name('USB Koeln/1.0');
-    $ua->connect_timeout(10);
+    $ua->connect_timeout(5);
+    $ua->request_timeout($config->{'eds'}{'api_timeout'});
     $ua->max_redirects(2);
 
     $self->{client}        = $ua;
@@ -154,9 +155,21 @@ sub send_retrieve_request {
     }
     
     my $json_result_ref = {};
+
+    my $atime = new Benchmark;
     
     my $response = $ua->get($url => $header_ref)->result;
 
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $resulttime = $resulttime * 1000.0; # to ms
+    
+    if ($resulttime > $config->{'eds'}{'api_logging_threshold'}){
+	$logger->error("EDS API call $url took $resulttime ms");
+    }
+    
     if ($response->is_success){
 	eval {
 	    $json_result_ref = decode_json $response->body;
@@ -278,9 +291,21 @@ sub send_search_request {
     if ($logger->is_debug){
 	$logger->debug("Setting default header with x-authenticationToken: ".$self->{authtoken}." and x-sessionToken: ".$self->{sessiontoken});
     }
+
+    my $atime = new Benchmark;
     
     my $response = $ua->get($url => $header_ref)->result;
 
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $resulttime = $resulttime * 1000.0; # to ms
+    
+    if ($resulttime > $config->{'eds'}{'api_logging_threshold'}){
+	$logger->error("EDS API call $url took $resulttime ms");
+    }
+    
     if ($response->is_success){
 	eval {
 	    $json_result_ref = decode_json $response->body;
@@ -1315,9 +1340,21 @@ sub _create_authtoken {
 	$logger->error('Encoding error: '.$@);
 	return $json_result_ref;
     }
+
+    my $atime = new Benchmark;
     
     my $response = $ua->post($url => $header_ref, $body)->result;
 
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $resulttime = $resulttime * 1000.0; # to ms
+    
+    if ($resulttime > $config->{'eds'}{'api_logging_threshold'}){
+	$logger->error("EDS API call $url took $resulttime ms");
+    }
+    
     if ($response->is_success){
 	eval {
 	    $json_result_ref = decode_json $response->body;
@@ -1396,9 +1433,21 @@ sub _create_sessiontoken {
 	$logger->error('Encoding error: '.$@);
 	return $json_result_ref;
     }
+
+    my $atime = new Benchmark;
     
     my $response = $ua->post($url => $header_ref, $body)->result;
 
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $resulttime = $resulttime * 1000.0; # to ms
+    
+    if ($resulttime > $config->{'eds'}{'api_logging_threshold'}){
+	$logger->error("EDS API call $url took $resulttime ms");
+    }
+    
     if ($response->is_success){
 	eval {
 	    $json_result_ref = decode_json $response->body;

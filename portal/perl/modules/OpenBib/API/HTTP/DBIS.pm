@@ -146,7 +146,8 @@ sub new {
 
     my $ua = Mojo::UserAgent->new();
     $ua->transactor->name('USB Koeln/1.0');
-    $ua->connect_timeout(30);
+    $ua->connect_timeout(5);
+    $ua->request_timeout($config->{'dbis'}{'api_timeout'});
 
     $self->{client}        = $ua;
         

@@ -79,7 +79,8 @@ sub new {
     
     my $ua = Mojo::UserAgent->new();
     $ua->transactor->name('USB Koeln/1.0');
-    $ua->connect_timeout(30);
+    $ua->connect_timeout(5);
+    $ua->request_timeout($config->{'lobidgnd'}{'api_timeout'});
     $ua->max_redirects(2);
 
     $self->{client}        = $ua;
@@ -150,8 +151,20 @@ sub get_titles_record {
 
     my $json_result_ref = {};
 
+    my $atime = new Benchmark;
+    
     my $response = $ua->get($url)->result;
 
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $resulttime = $resulttime * 1000.0; # to ms
+    
+    if ($resulttime > $config->{'lobidgnd'}{'api_logging_threshold'}){
+	$logger->error("LobidGND API call $url took $resulttime ms");
+    }
+    
     if ($response->is_success){
 	eval {
 	    $json_result_ref = decode_json $response->body;

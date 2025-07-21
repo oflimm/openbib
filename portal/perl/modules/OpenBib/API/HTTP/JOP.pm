@@ -123,7 +123,19 @@ sub search {
 
     my $ua      = $self->get_client;
 
+    my $atime = new Benchmark;
+    
     my $response = $ua->get($url)->result;
+
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $resulttime = $resulttime * 1000.0; # to ms
+    
+    if ($resulttime > $config->{'jop'}{'api_logging_threshold'}){
+	$logger->error("JOP API call $url took $resulttime ms");
+    }
     
     my $xmlresponse = "";
     

@@ -152,7 +152,7 @@ while (my $json = <>){
 
     $field_361_0 = "(DE-588)$field_361_0" if( $field_361_0 && $field_361_0 !~m/DE-588/);
     
-    push @fields_361_z, "Details: ".$json_ref->{tpro_description};
+    push @fields_361_z, "Details: ".$json_ref->{tpro_description} if ($json_ref->{tpro_description});
     push @fields_361_z, "Alt-Signatur: ".$json_ref->{former_mark} if ($json_ref->{former_mark});
     push @fields_361_z, "Referenz: ".$json_ref->{reference} if ($json_ref->{reference});
     push @fields_361_z, "Bemerkung: ".$json_ref->{remark} if ($json_ref->{remark});

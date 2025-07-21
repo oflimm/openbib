@@ -158,7 +158,7 @@ while (my $json = <>){
     push @fields_361_z, "Bemerkung: ".$json_ref->{remark} if ($json_ref->{remark});
     push @fields_361_z, "Unvollst.: ".$json_ref->{incomplete} if ($json_ref->{incomplete});
 
-    my $field_361_z  = join('.- ',@fields_361_z);
+    my $field_361_z  = (@fields_361_z)?join('.- ',@fields_361_z):'';
     
     if (!$field_035_a && !$nz_id){
 	print STDERR "Weder HT-Nummer noch NZ-ID ".YAML::Dump($json_ref)."\n";

@@ -32,10 +32,21 @@ convtab:
         from_field: '0015' # Sprache
         subfield: 'a'
 
-    '240_1_0': # Bevorzugter Titel des Werkes (mit geistigem Schöpfer): default, Nachbearbeitung der Indikatoren im Konverter 
+    '044_ _ ': # Land
       -
-        from_field: '0303'		
+        from_field: '0035' # Land
+        subfield: 'c'
+        
+    '240_1_0': # Einheitssachtitel / Bevorzugter Titel des Werkes (mit geistigem Schöpfer): default, Nachbearbeitung der Indikatoren im Konverter 
+      -
+        from_field: '0304'		
         subfield: 'a'
+
+    '243_1_0': # 
+      -
+        from_field: '0300'		
+        subfield: 'a'
+        
     '245_1_0': # Titelangaben: default, Nachbearbeitung der Indikatoren im Konverter 
       -
         from_field: '0331'		
@@ -58,6 +69,9 @@ convtab:
       -
         from_field: '0089'		
         subfield: 'n'
+      -
+        from_field: '0334'		
+        subfield: 'h'
         
     '246_1_1': # Paralleltitel
       -
@@ -70,9 +84,16 @@ convtab:
       -
         from_field: '0370'		
         subfield: 'a'
-    '246_1_0': # Stichwörter in abweichender Orthografie
       -
-        from_field: '0370'		
+        from_field: '0310'		
+        subfield: 'a'
+      -
+        from_field: '0670'		
+        subfield: 'a'
+
+    '249_ _ ': # Beigefuegtes Werk
+      -
+        from_field: '0361'		
         subfield: 'a'
         
     '250_ _ ': # Ausgabe
@@ -118,6 +139,11 @@ convtab:
         from_field: '0437'		
         subfield: 'e'
 
+    '362_0_ ': # Erscheinungsverlauf
+      -
+        from_field: '0405'		
+        subfield: 'a'
+
     '655_ _4': # Medientyp
       -
         from_field: '0800'		
@@ -135,15 +161,35 @@ convtab:
       -
         from_field: '0501'		
         subfield: 'a'
+      -
+        from_field: '0507'		
+        subfield: 'a'
+      -
+        from_field: '0509'		
+        subfield: 'a'
+      -
+        from_field: '0511'		
+        subfield: 'a'
+      -
+        from_field: '0517'		
+        subfield: 'a'
+      -
+        from_field: '0525'		
+        subfield: 'a'
 
+    '501_ _ ': # 
+      -
+        from_field: '0524'		
+        subfield: 'a'
+        
     '502_ _ ':
       -
         from_field: '0519'		
         subfield: 'a'
 
-    '505_ _ ':
+    '515_ _ ':
       -
-        from_field: '0517'		
+        from_field: '0523'		
         subfield: 'a'
 
     '516_ _ ':
@@ -151,25 +197,52 @@ convtab:
         from_field: '0435'		
         subfield: 'a'
         
-    '520_ _ ':
+    '533_ _ ':
       -
-        from_field: '0517'		
+        from_field: '0610'		
+        subfield: 'a'
+      -
+        from_field: '0637'		
+        subfield: 'e'
+      -
+        from_field: '0621'		
+        subfield: 'f'
+      -
+        from_field: '0634'		
+        subfield: 'n'
+      -
+        from_field: '0634'		
+        subfield: 'c'
+      -
+        from_field: '0619'		
+        subfield: '7'
+
+        
+    '546_ _ ':
+      -
+        from_field: '0516'		
+        subfield: 'a'
+        
+    # '590_ _ ': # Bemerkung = lokale Fussnote
+    #   -
+    #     from_field: '0600'		
+    #     subfield: 'a'
+
+    '591_ _ ': # 
+      -
+        from_field: '0537'		
         subfield: 'a'
 
-    '590_ _ ': # Bemerkung = lokale Fussnote
+    '730_0_ ':
       -
-        from_field: '0600'		
-        subfield: 'a'
-      
-    '720_ _ ':
-      -
-        from_field: '0370'		
+        from_field: '1805'		
         subfield: 'a'
         
     '751_ _ ':
       -
         from_field: '0673'		
         subfield: 'a'
+        
     '773_0_8':
       -
         from_field: '0585' # ISSN der Quelle (Aufsaetze)		

@@ -745,6 +745,7 @@ sub show_index {
     
     # TT-Data erzeugen
     my $ttdata={
+	config       => $config,
         qopts        => $queryoptions->get_options,
         queryoptions => $queryoptions,
         
@@ -1189,7 +1190,9 @@ sub print_resultitem {
     my $ttdata={
         database        => $database,
         viewname        => $viewname,
-	
+
+	config          => $config,
+
         searchquery     => $searchquery,
         
         qopts           => $queryoptions->get_options,

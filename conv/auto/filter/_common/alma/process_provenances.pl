@@ -14,13 +14,15 @@ while (<>){
     
     my $fields_ref = $record_ref->{fields};
 
-    if (defined $fields_ref->{'0984'} && defined $fields_ref->{'0985'}){
+    if (defined $fields_ref->{'0985'}){
 
 	my $field_scheme_ref = {};
 	
 	my $field_mult_ref = {};
 	
 	foreach my $fieldname ('0984','0985'){
+	    next unless (defined $fields_ref->{$fieldname});
+	    
 	    my $tmp_scheme_ref = {};
 
 	    # print YAML::Dump($fields_ref->{$fieldname});

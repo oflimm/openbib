@@ -966,6 +966,32 @@ while (my $json=<IN>){
     substr($fixed_length_008,35,3) = $lang;
 
     $marc_record->add_fields('008',$fixed_length_008);
+
+    # HBZID?
+    if (defined $fields_ref->{'0010'}){
+	foreach my $item_ref (@{$fields_ref->{'0010'}}){
+	    my $fremdid = $item_ref->{content};
+
+	    if ($fremdid =~m/^[CTH][A-Z]\d+$/){
+		my @subfields = ();
+		
+		push (@subfields,'a', "(DE-605)".$fremdid); # HBZ
+		
+		my $new_field = MARC::Field->new('035', ' ',  ' ', @subfields);
+		
+		push @{$output_fields_ref->{'035'}}, $new_field if ($new_field);
+	    }
+	    elsif ($fremdid =~m/^BV\d+$/){
+		my @subfields = ();
+		
+		push (@subfields,'a', "(DE-604)".$fremdid); # BVB
+		
+		my $new_field = MARC::Field->new('035', ' ',  ' ', @subfields);
+		
+		push @{$output_fields_ref->{'035'}}, $new_field if ($new_field);
+	    }
+ 	}
+    }
     
     if ($logger->is_debug){
 	$logger->debug(YAML::Dump($fields_ref));
@@ -987,16 +1013,21 @@ while (my $json=<IN>){
     my $have_1xx = 0; # Geistiger Schoepfer / Haupteintragung
 
     my $firstpersonid = 0;
+    my $firstpersonsupplement = "";
     
     my @personids = ();
 
     foreach my $field ('0100','0101','0102','0103'){	    
 	foreach my $thisfield_ref (@{$fields_ref->{$field}}){
 	    if ($field eq '0100' && !$firstpersonid){
-		$firstpersonid = $thisfield_ref->{id};
+		$firstpersonid         = $thisfield_ref->{id};
+		$firstpersonsupplement = $thisfield_ref->{supplement};
 	    }
 	    else {
-		push @personids, $thisfield_ref->{id};
+		push @personids, {
+		    id         => $thisfield_ref->{id},
+		    supplement => $thisfield_ref->{supplement},
+		};
 	    }
 	}
     }
@@ -1008,7 +1039,7 @@ while (my $json=<IN>){
 	my $person_fields_ref = $data_person{$personid};
 
 	if ($logger->is_debug){
-	    $logger->debug("Persondata: ".YAML::Syck::Dump($person_fields_ref));
+	    $logger->debug("Persondata for id $personid: ".YAML::Syck::Dump($person_fields_ref));
 	}
 	
 	my @subfields = ();
@@ -1017,14 +1048,17 @@ while (my $json=<IN>){
 	if ($person_fields_ref->{'0800'}){
 	    push (@subfields,'a', cleanup($person_fields_ref->{'0800'}[0]{content}));
 	}
-
+	
 	# GND
-	if ($person_fields_ref->{'0010'}){
+	if ($person_fields_ref->{'0010'} && $person_fields_ref->{'0010'}[0]{content} =~m/^\d+/){
 	    push (@subfields,'0', "(DE-588)".$person_fields_ref->{'0010'}[0]{content});
 	}
 
 	# Relationship
-	push (@subfields,'4', "aut");
+
+	my $relation = ($firstpersonsupplement)?supplement2relation($firstpersonsupplement):'aut';
+	
+	push (@subfields,'4', $relation) if ($relation);
 	
 	my $new_field = MARC::Field->new('100', '1',  ' ', @subfields);
 	
@@ -1034,9 +1068,16 @@ while (my $json=<IN>){
     }
     
     if (@personids){
-	foreach my $personid (@personids){
-	    my $person_fields_ref = $data_person{$personid};
+	foreach my $person_ref (@personids){
+	    my $personid   = $person_ref->{id};
+	    my $supplement = $person_ref->{supplement};
 
+	    my $person_fields_ref = $data_person{$personid};
+	    
+	    if ($logger->is_debug){
+		$logger->debug("Persondata for id $personid: ".YAML::Syck::Dump($person_fields_ref));
+	    }
+	    
 	    my @subfields = ();
 	    
 	    # Ansetzungsform
@@ -1045,12 +1086,14 @@ while (my $json=<IN>){
 	    }
 	    
 	    # GND
-	    if ($person_fields_ref->{'0010'}){
+	    if ($person_fields_ref->{'0010'} && $person_fields_ref->{'0010'}[0]{content} =~m/^\d+/){
 		push (@subfields,'0', "(DE-588)".$person_fields_ref->{'0010'}[0]{content});
 	    }
 	    
 	    # Relationship
-	    push (@subfields,'4', "aut");
+	    my $relation = ($supplement)?supplement2relation($supplement):'aut';
+	    
+	    push (@subfields,'4', $relation) if ($relation);
 	    	    
 	    my $new_field = MARC::Field->new('700', '1',  ' ', @subfields);
 
@@ -1060,6 +1103,7 @@ while (my $json=<IN>){
 	
     # Koerperschaften
     my $firstcorporatebodyid = 0;
+    my $firstcorporatebodysupplement = "";
     
     my @corporatebodyids = ();
 
@@ -1067,9 +1111,13 @@ while (my $json=<IN>){
 	foreach my $thisfield_ref (@{$fields_ref->{$field}}){
 	    if ($field eq '0200' && !$firstcorporatebodyid && !$have_1xx){
 		$firstcorporatebodyid = $thisfield_ref->{id};
+		$firstcorporatebodysupplement = $thisfield_ref->{supplement};
 	    }
 	    else {
-		push @corporatebodyids, $thisfield_ref->{id};
+		push @corporatebodyids, {
+		    id         => $thisfield_ref->{id},
+		    supplement => $thisfield_ref->{supplement},
+		};
 	    }
 	}
     }
@@ -1077,11 +1125,11 @@ while (my $json=<IN>){
     if ($firstcorporatebodyid){
 	# Erste in 110 2#
 	my $corporatebodyid = $firstcorporatebodyid;
-	
+
 	my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
 	
 	if ($logger->is_debug){
-	    $logger->debug("Corporatebodydata: ".YAML::Syck::Dump($corporatebody_fields_ref));
+	    $logger->debug("Corporatebodydata for id $corporatebodyid: ".YAML::Syck::Dump($corporatebody_fields_ref));
 	}
 	
 	my @subfields = ();
@@ -1092,12 +1140,14 @@ while (my $json=<IN>){
 	}
 	
 	# GND
-	if ($corporatebody_fields_ref->{'0010'}){
+	if ($corporatebody_fields_ref->{'0010'} && $corporatebody_fields_ref->{'0010'}[0]{content} =~m/^\d+/){
 	    push (@subfields,'0', "(DE-588)".$corporatebody_fields_ref->{'0010'}[0]{content});
 	}
+
+	# Relationship	
+	my $relation = ($firstcorporatebodysupplement)?supplement2relation($firstcorporatebodysupplement):'';
 	
-	# Relationship
-	push (@subfields,'4', "aut");
+	push (@subfields,'4', $relation) if ($relation);
 	
 	my $new_field = MARC::Field->new('110', '2',  ' ', @subfields);
 	
@@ -1108,9 +1158,16 @@ while (my $json=<IN>){
 
     if (@corporatebodyids){
 
-	foreach my $corporatebodyid (@corporatebodyids){
+	foreach my $corporatebody_ref (@corporatebodyids){
+	    my $corporatebodyid = $corporatebody_ref->{id};
+	    my $supplement      = $corporatebody_ref->{supplement};
+	    
 	    my $corporatebody_fields_ref = $data_corporatebody{$corporatebodyid};
 
+	    if ($logger->is_debug){
+		$logger->debug("Corporatebodydata for id $corporatebodyid: ".YAML::Syck::Dump($corporatebody_fields_ref));
+	    }
+	    
 	    my @subfields = ();
 	    
 	    # Ansetzungsform
@@ -1119,16 +1176,20 @@ while (my $json=<IN>){
 	    }
 	    
 	    # GND
-	    if ($corporatebody_fields_ref->{'0010'}){
+	    if ($corporatebody_fields_ref->{'0010'} && $corporatebody_fields_ref->{'0010'}[0]{content} =~m/^\d+/){
 		push (@subfields,'0', "(DE-588)".$corporatebody_fields_ref->{'0010'}[0]{content});
 	    }
 	    
 	    # Relationship
-	    push (@subfields,'4', "aut");
-	    	    
-	    my $new_field = MARC::Field->new('710', '2',  ' ', @subfields);
+	    my $relation = ($supplement)?supplement2relation($supplement):'';
 
-	    push @{$output_fields_ref->{'710'}}, $new_field if ($new_field);
+	    push (@subfields,'4', $relation) if ($relation);
+
+	    if (@subfields){
+		my $new_field = MARC::Field->new('710', '2',  ' ', @subfields);
+		
+		push @{$output_fields_ref->{'710'}}, $new_field if ($new_field);
+	    }
 	}	
     }
 
@@ -1146,7 +1207,7 @@ while (my $json=<IN>){
 	    my $subject_fields_ref = $data_subject{$subjectid};
 
 	    if ($logger->is_debug){	    
-		$logger->debug("Subjectdata: ".YAML::Syck::Dump($subject_fields_ref));
+		$logger->debug("Subjectdata for id $subjectid: ".YAML::Syck::Dump($subject_fields_ref));
 	    }
 	    
 	    my @subfields = ();
@@ -1170,7 +1231,7 @@ while (my $json=<IN>){
 	    }
 	    
 	    # GND
-	    if ($subject_fields_ref->{'0010'}){
+	    if ($subject_fields_ref->{'0010'} && $subject_fields_ref->{'0010'}[0]{content} =~m/^\d+/){
 		push (@subfields,'0', "(DE-588)".$subject_fields_ref->{'0010'}[0]{content});
 		push (@subfields,'2', "gnd-content");
 	    }
@@ -1196,7 +1257,7 @@ while (my $json=<IN>){
 	    my $classification_fields_ref = $data_classification{$classificationid};
 	    
 	    if ($logger->is_debug){
-		$logger->debug("Classificationdata: ".YAML::Syck::Dump($classification_fields_ref));
+		$logger->debug("Classificationdata for id $classificationid: ".YAML::Syck::Dump($classification_fields_ref));
 	    }
 	    
 	    my @subfields = ();
@@ -1236,23 +1297,198 @@ while (my $json=<IN>){
 #	$marc_record->append_fields($new_field) if ($new_field);	    	
     }
 
-    # Beigefuegte Werte in 0361 behandeln
+    
+    # Fussnote in 505 bearbeiten
     {	
-	if (defined $fields_ref->{'0361'}){
-	    foreach my $item_ref (@{$fields_ref->{'0361'}}){
+	if (defined $fields_ref->{'0505'}){
+	    foreach my $item_ref (@{$fields_ref->{'0505'}}){
 		my $content    = $item_ref->{content};
 
+		my ($info,$thiscontent) = $content =~m/^(.+?):(.+)$/;
+
+		next unless ($info && $thiscontent);
+		
 		my @subfields = ();
 		
-		push (@subfields,'i', "Erweitert durch");
-		push (@subfields,'t', $content);
+		push (@subfields,'i', $info);
+		push (@subfields,'a', $thiscontent);
 		
-		my $new_field = MARC::Field->new('787', '0',  '8', @subfields);
+		my $new_field = MARC::Field->new('246', '1',  ' ', @subfields);
 		
-		push @{$output_fields_ref->{'787'}}, $new_field if ($new_field);
+		push @{$output_fields_ref->{'246'}}, $new_field if ($new_field);
 	    }
 	}
     }
+
+    # Fussnote in 527 bearbeiten
+    {	
+	if (defined $fields_ref->{'0527'}){
+	    foreach my $item_ref (@{$fields_ref->{'0527'}}){
+		my $content    = $item_ref->{content};
+
+		my ($info,$thiscontent) = $content =~m/^(.+?):(.+)$/;
+
+		next unless ($info && $thiscontent);
+		
+		my @subfields = ();
+		
+		push (@subfields,'i', $info);
+		push (@subfields,'t', $thiscontent);
+		
+		my $new_field = MARC::Field->new('775', '0',  '8', @subfields);
+		
+		push @{$output_fields_ref->{'775'}}, $new_field if ($new_field);
+	    }
+	}
+    }
+
+
+    # Fussnote in 529 bearbeiten
+    {	
+	if (defined $fields_ref->{'0529'}){
+	    foreach my $item_ref (@{$fields_ref->{'0529'}}){
+		my $content    = $item_ref->{content};
+
+		my ($info,$thiscontent) = $content =~m/^(.+?):(.+)$/;
+
+		next unless ($info && $thiscontent);
+		
+		my @subfields = ();
+		
+		push (@subfields,'i', $info);
+		push (@subfields,'t', $thiscontent);
+		
+		my $new_field = MARC::Field->new('770', '0',  '8', @subfields);
+		
+		push @{$output_fields_ref->{'770'}}, $new_field if ($new_field);
+	    }
+	}
+    }
+    
+    # Fussnote in 530 bearbeiten
+    {	
+	if (defined $fields_ref->{'0530'}){
+	    foreach my $item_ref (@{$fields_ref->{'0530'}}){
+		my $content    = $item_ref->{content};
+
+		my ($info,$thiscontent) = $content =~m/^(.+?):(.+)$/;
+
+		next unless ($info && $thiscontent);
+		
+		my @subfields = ();
+		
+		push (@subfields,'i', $info);
+		push (@subfields,'t', $thiscontent);
+		
+		my $new_field = MARC::Field->new('772', '0',  '8', @subfields);
+		
+		push @{$output_fields_ref->{'772'}}, $new_field if ($new_field);
+	    }
+	}
+    }
+
+    # Fussnote in 531 bearbeiten
+    {	
+	if (defined $fields_ref->{'0531'}){
+	    foreach my $item_ref (@{$fields_ref->{'0531'}}){
+		my $content    = $item_ref->{content};
+
+		my ($info,$thiscontent) = $content =~m/^(.+?):(.+)$/;
+
+		next unless ($info && $thiscontent);
+		
+		my @subfields = ();
+		
+		push (@subfields,'i', $info);
+		push (@subfields,'t', $thiscontent);
+		
+		my $new_field = MARC::Field->new('780', '0',  '8', @subfields);
+		
+		push @{$output_fields_ref->{'780'}}, $new_field if ($new_field);
+	    }
+	}
+    }
+
+    # Fussnote in 532 bearbeiten
+    {	
+	if (defined $fields_ref->{'0532'}){
+	    foreach my $item_ref (@{$fields_ref->{'0532'}}){
+		my $content    = $item_ref->{content};
+
+		my ($info,$thiscontent) = $content =~m/^(.+?):(.+)$/;
+
+		next unless ($info && $thiscontent);
+		
+		my @subfields = ();
+		
+		push (@subfields,'i', $info);
+		push (@subfields,'t', $thiscontent);
+		
+		my $new_field = MARC::Field->new('785', '0',  '8', @subfields);
+		
+		push @{$output_fields_ref->{'785'}}, $new_field if ($new_field);
+	    }
+	}
+    }
+
+    # Fussnote in 533 bearbeiten
+    {	
+	if (defined $fields_ref->{'0533'}){
+	    foreach my $item_ref (@{$fields_ref->{'0533'}}){
+		my $content    = $item_ref->{content};
+
+		my ($info,$thiscontent) = $content =~m/^(.+?):(.+)$/;
+
+		next unless ($info && $thiscontent);
+		
+		my @subfields = ();
+		
+		push (@subfields,'i', $info);
+		push (@subfields,'t', $thiscontent);
+		
+		my $new_field = MARC::Field->new('785', '0',  '0', @subfields);
+		
+		push @{$output_fields_ref->{'785'}}, $new_field if ($new_field);
+	    }
+	}
+    }
+
+    # 619 fixen
+    {	
+	if (defined $fields_ref->{'0619'}){
+	    foreach my $item_ref (@{$fields_ref->{'0619'}}){
+		my $content    = $item_ref->{content};
+
+		$content =~s/\D//g; # Nicht-Ziffern entfernen
+
+		$item_ref->{content} = "d".$content;
+	    }
+	}
+    }
+    
+    # 333 zu HST getrennt mit ' / ' hinzufuegen:
+    {
+	if (defined $fields_ref->{'0333'} && defined $fields_ref->{'0331'}){
+	    $fields_ref->{'0331'}[0]{content} .= " / ".$fields_ref->{'0333'}[0]{content};
+	}
+    }
+       
+    # {	
+    # 	if (defined $fields_ref->{'0361'}){
+    # 	    foreach my $item_ref (@{$fields_ref->{'0361'}}){
+    # 		my $content    = $item_ref->{content};
+
+    # 		my @subfields = ();
+		
+    # 		push (@subfields,'i', "Erweitert durch");
+    # 		push (@subfields,'t', $content);
+		
+    # 		my $new_field = MARC::Field->new('787', '0',  '8', @subfields);
+		
+    # 		push @{$output_fields_ref->{'787'}}, $new_field if ($new_field);
+    # 	    }
+    # 	}
+    # }
     
     # Ueberordnungen entsprechen 0004 nach 773 0# schreiben
     {
@@ -1708,6 +1944,17 @@ while (my $json=<IN>){
 	    }
 	}
 
+	# 773 $t = In: zusaetzlich setzen fuer Aufsaetze in 773 80 entfernen, da redundant zu $i
+	{
+	    foreach my $mult (sort keys %{$marcfields_ref}){
+		foreach my $thisitem_ref (@{$marcfields_ref->{$mult}}){
+		    if ($fieldno eq "773" && $thisitem_ref->{ind1} eq "0" && $thisitem_ref->{ind2} eq "8" && $thisitem_ref->{subfield} eq "t"){
+			$thisitem_ref->{content} =~s/^In:\s+//;
+		    }
+		}
+	    }
+	}
+	
 	# Sortierung Subfelder 773 08: i - t - b - d - g - k - w - x - z
 	{
 	    foreach my $mult (sort keys %{$marcfields_ref}){
@@ -1842,6 +2089,126 @@ Beispiel:
 
 ENDHELP
     exit;
+}
+
+sub supplement2relation {
+    my $content = shift;
+
+    my $relation = "";
+
+    if ($content =~m/\[(Hrsg|Herausgeber|editor|Ed\.|edt|éditeur|Ermittelter Hrsg)/i){
+	$relation = "edt";
+    }
+    elsif ($content =~m/Drucker/i){
+	$relation = "prt";
+    }
+    elsif ($content =~m/\[Fotogr/i){
+	$relation = "pht";
+    }
+    elsif ($content =~m/\[Schauspieler/i){
+	$relation = "act";
+    }
+    elsif ($content =~m/\[Künstler/i){
+	$relation = "art";
+    }
+    elsif ($content =~m/\[Architekt/i){
+	$relation = "arc";
+    }
+    elsif ($content =~m/\[(Illustrator|Ill\.)/i){
+	$relation = "ill";
+    }
+    elsif ($content =~m/\[Komponist/i){
+	$relation = "cmp";
+    }
+    elsif ($content =~m/\[Stecher/i){
+	$relation = "egr";
+    }
+    elsif ($content =~m/\[Art Director/i){
+	$relation = "adi";
+    }
+    elsif ($content =~m/\[Verfasser eines Nachworts/i){
+	$relation = "aft";
+    }
+    elsif ($content =~m/\[Trickfilmzeichner/i){
+	$relation = "anm";
+    }
+    elsif ($content =~m/\[Arrangeur/i){
+	$relation = "arr";
+    }
+    elsif ($content =~m/\[Kürzender/i){
+	$relation = "abr";
+    }
+    elsif ($content =~m/\[Unterzeichner/i){
+	$relation = "ato";
+    }
+    elsif ($content =~m/\[Tontechniker/i){
+	$relation = "aue";
+    }
+    elsif ($content =~m/\[Verfasser eines Geleitworts/i){
+	$relation = "aui";
+    }
+    elsif ($content =~m/\[Verfasser einer Einleitung/i){
+	$relation = "win";
+    }
+    elsif ($content =~m/\[(Verfasser eines Vorworts|Vorwort)/i){
+	$relation = "wpr";
+    }
+    elsif ($content =~m/\[Produzent einer Tonaufnahme/i){
+	$relation = "aup";
+    }
+    elsif ($content =~m/\[Produzent/i){
+	$relation = "pro";
+    }
+    elsif ($content =~m/\[Sonstige/i){
+	$relation = "oth";
+    }
+    elsif ($content =~m/\[(Übers\.|Übersetzer)/i){
+	$relation = "trl";
+    }
+    elsif ($content =~m/\[Adressat/i){
+	$relation = "rcp";
+    }
+    elsif ($content =~m/\[Akademischer Betreuer/i){
+	$relation = "dgs";
+    }
+    elsif ($content =~m/\[Gefeierter/i){
+	$relation = "hnr";
+    }
+    elsif ($content =~m/\[Mitwirkender/i){
+	$relation = "ctb";
+    }
+    elsif ($content =~m/\[Sammler/i){
+	$relation = "col";
+    }
+    elsif ($content =~m/\[Sänger/i){
+	$relation = "sng";
+    }
+    elsif ($content =~m/\[Textdichter/i){
+	$relation = "lyr";
+    }
+    elsif ($content =~m/\[(Verf\.|Verfasser)/i){
+	$relation = "aut";
+    }
+    elsif ($content =~m/\[Verfasser von ergänzendem Text/i){
+	$relation = "wst";
+    }
+    elsif ($content =~m/\[Verfasser von Zusatztexten/i){
+	$relation = "wat";
+    }
+    elsif ($content =~m/\[Zusammenstellender/i){
+	$relation = "com";
+    }
+    elsif ($content =~m/\[Herausgebendes Organ/i){
+	$relation = "isb";
+    }
+    elsif ($content =~m/\[Grad-verleihende Institution/i){
+	$relation = "dgg";
+    }
+    elsif ($content =~m/\[Veranstalter/i){
+	$relation = "orm";
+    }
+    
+    return $relation;
 }
 
 sub cleanup {

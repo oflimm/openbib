@@ -367,6 +367,11 @@
       fulltext_icon = config.get('dbis_yellow_img');
       fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
     
+    ELSIF fulltext_type == 'r';
+      fulltext_availability = "red";
+      fulltext_icon = config.get('ezb_red_img');
+      fulltext_desc = msg.maketext("Kein lizensierter Zugriff");
+      
     ELSIF record.generic_attributes.access.desc_short == 'frei im Web' ;
       fulltext_availability = "lawngreen";
       fulltext_icon = config.get('dbis_green_img');

@@ -125,8 +125,13 @@
    END;
 
 
-   alma_disable_suggestions = 1; # Keine Anschaffungsvorschlaege wg. Umstieg auf Alma
-   alma_disable_ill_books   = 1; # Keine Buecherfernleihe wg. Umstieg auf Alma 
+   alma_disable_suggestions     = 1; # Keine Anschaffungsvorschlaege wg. Umstieg auf Alma
+   alma_disable_ill_books       = 1; # Keine Buecherfernleihe wg. Umstieg auf Alma 
+   alma_disable_circulation     = 0; # Keine Bestellung/Vormerkung/Campuslieferdienst/Passwortreset
+
+   disable_mybib                = 0; # Keine Mybib-Anbindung = Deaktivierung ESA und Campuslieferdienst
+   alma_disable_listitem_status = 0; # Keine Medienstatusanzeige in Alma wg. Concurrent API Request Limit
+
 
    valid_ilias_session = 0;
 

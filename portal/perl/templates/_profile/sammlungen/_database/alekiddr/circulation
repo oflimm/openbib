@@ -210,7 +210,7 @@
 <td><span class="fw-bold" aria-label="[% msg.maketext("Signatur") %]" title="[% msg.maketext("Signatur") %]">[% thiscirculation.location_mark %]</span>
 [% IF thiscirculation.remark %] [% thiscirculation.remark %][% END %]
 [% IF thiscirculation.boundcollection == "Y" %]<img src="/USB/img/bindeeinheit.gif" width="28px" height="26px" title="Dieser Titel ist Teil einer Bindeeinheit, die verschiedene Medien zusammenfasst." alt="Bindeeinheit" style="vertical-align:middle;" />[% END %]
-[% IF NOT thiscirculation.department_id.match('^(38-201|KN3|38-204|38-208|38-212|38-213|38-214|38-217|38-219|38-223|38-228|38-230|38-308|38-319|38-321|38-325|38-328|38-403|38-405|38-420|38-422|38-423|38-425|38-431|38-134|38-108|38-125|38-222|38-465|38-119|38-314|38-315|38-317)$') # Mediennummer fuer Zweigstellen 19, 20, 405, ... immer unterdruecken %]
+[% IF NOT thiscirculation.department_id.match('^(38-201|KN3|38-204|38-208|38-212|38-213|38-214|38-217|38-219|38-223|38-228|38-230|38-308|38-319|38-321|38-325|38-328|38-403|38-405|38-420|38-422|38-423|38-425|38-431|38-134|38-108|38-125|38-222|38-465|38-119|38-314|38-315|38-317|38-239)$') # Mediennummer fuer Zweigstellen 19, 20, 405, ... immer unterdruecken %]
 [%   IF thiscirculation.location_mark != thiscirculation.barcode # Anzeige der Mediennummer fuer USB-Treffer, falls ungleich Signatur %] 
 [%     IF NOT thiscirculation.location_mark.match('^(JUR|BWL|VERSW)$') %]
 <br /><span class="fst-italic" aria-label="[% msg.maketext("Mediennummer") %]" title="[% msg.maketext("Mediennummer") %]"><i class="fas fa-barcode pe-2"></i>[% thiscirculation.barcode %]</span>
@@ -218,8 +218,8 @@
 [%   END %]
 [% END %]
 
-[% IF have_provenance_for.defined(thiscirculation.barcode) %]
-<br/><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %]&mnr=[% uri_escape(thiscirculation.barcode) %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.include?l=[% lang %]&mnr=[% uri_escape(thiscirculation.barcode) %]">Provenienzen</a>
+[% IF have_provenance_for.defined(thiscirculation.location_mark) %]
+<br/><a class="inturl" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.html?l=[% lang %]&mnr=[% uri_escape(thiscirculation.location_mark) %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% titleid %]/provenances.include?l=[% lang %]&mnr=[% uri_escape(thiscirculation.location_mark) %]">Provenienzen</a>
 [% END %]
 
 [% IF shelfid && config.get('campusgis_testuser').${username} && NOT disable_campusgis %]
@@ -380,6 +380,11 @@
 [% ELSE %]
 [%############### AUSLEIHBAR/BESTELLBAR ############################## %]
 [%   IF thiscirculation.availability.match('^(order|loan)$') %]
+[%-
+       IF availability_info == "bestellbar in Lesesaal" && storage_id == "38-HWA-LS" ;
+          availability_info = "bestellbar in HWA-Lesesaal";
+       END;
+-%]
 [%     IF availability_info.match('\(') %]
 [%        textparts = availability_info.match('^(.*) (\(.*\).*?)$') # Klammerzusatz (Anzahl der Vormerkungen, Fachbibl. XYZ) in neuer Zeile %]
 [% textparts.first %]<br/>[% textparts.last %]
@@ -569,8 +574,8 @@ Präsenzbestand
 [%############### ANFANG KMB,CAMPUSLIEFERDIENST,ILLIAS ######### %]
 
 [%############### ANFANG KMB ######### %]
-[% IF thiscirculation.department_id == 'KN3' # KMB: Bestellbutton mit Sprung ins KuBi-Portal bzw. zur Bestellmaske, z.B. ID=inst001:7140497 %]
-[%   IF NOT thiscirculation.storage_id.match('(KN3-RHBILD|KN3-SCHLAD|KN3-MAK|KN3-WRMGRA)$') && NOT thiscirculation.availability.match('missing') && NOT thiscirculation.remark.match('vermisst') && NOT thiscirculation.unavailability_info.first.expected.match('acquisition') && NOT thiscirculation.barcode.match('DummyBarcodeOrders')  # Bestellfunktionen fuer KMB-Bestand im MAKK, WRM (Graphische Sammlung) und DSL usw. unterdruecken. Nur KMB selbst %]
+[% IF thiscirculation.department_id == 'KN3' # KMB: Bestellbutton mit Sprung ins KuBi-Portal bzw. zur Bestellmaske, z.B. ID=uni:991036433909706476 %]
+[%   IF NOT thiscirculation.storage_id.match('(KN3-RHBILD|KN3-SCHLAD|KN3-MAK|KN3-WRMGRA)$') && NOT thiscirculation.availability.match('missing') && NOT thiscirculation.remark.match('vermisst') && NOT thiscirculation.unavailability_info.first.expected.match('acquisition') && NOT thiscirculation.barcode.match('DummyBarcodeOrders') && NOT thiscirculation.location_mark.match('KMB/2025') && NOT thiscirculation.location_mark.match('KMB/(C|D|E|F|H|N|R|Y|YF|YNA|YNL|YNK|YNM|YK|YU|YV|Z|\+Z|\=Z)') # Bestellfunktionen fuer KMB-Bestand im MAKK, WRM (Graphische Sammlung) und DSL usw. unterdruecken. Nur KMB selbst %]
 [%#     IF config.get('active_ils') %]
 <p><a class="btn btn-primary mb-1" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% IF user.ID %][% user.ID %][% ELSE %]me[% END %]/[% config.get('circulations_loc') %]/id/mail/kmb.html?l=[% lang %]&titleid=[% record.id %]&label=[% thiscirculation.location_mark |uri %]&dbname=[% database %]&location=[% thiscirculation.storage_id %]&realm=kmb">[% msg.maketext("In den KMB Lesesaal bestellen") %]</a></p> 
 <p>
@@ -638,7 +643,7 @@ Präsenzbestand
 [%############### ANFANG ILIAS ######### %]
 [% ELSIF scan_dienst == "ilias" %]
 [%  IF thiscirculation.department_id.match('^(38|38-HWA|38-HLS)$') && valid_ilias_session %]
-[%    IF thiscirculation.availability.match('^(order)$') %]
+[%    IF thiscirculation.availability.match('^(order|loan|presence)$') %]
 [%      IF config.get('active_ils') %]
 <p/>
  <form  method="POST" action="[% path_prefix %]/[% config.get('users_loc') %]/id/ilias/[% config.get('circulations_loc') %]/id/iliasorders">

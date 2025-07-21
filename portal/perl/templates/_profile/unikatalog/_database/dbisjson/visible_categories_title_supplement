@@ -21,7 +21,6 @@
 		'Verlag', # msg.maketext("Verlag") Verlag 0412
 		'ISBN', # msg.maketext("ISBN") Verlag 0425
 		'Berichtszeitraum', # msg.maketext("Berichtszeitraum") Berichtszeitraum 0523
-		'Weitere Hinweise', # msg.maketext("Weitere Hinweise") Weitere Hinweise 0600
 
                 ]
 

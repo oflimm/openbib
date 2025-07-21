@@ -41,7 +41,7 @@
 [% IF NOT alma_disable_ill_books %]	  
             <li><a class="exturl" href="https://usb-koeln.digibib.net/ill/books[% IF fl_all_args.size > 0 %]?[% fl_all_args.join('&') %][% END %]" target="monofernleihsuche">Buch bestellen</a></li>
 [% ELSE %]
-            <li>[% msg.maketext("Wegen des Umstiegs auf das neue Bibliothekssystem Alma sind bis ca. 6.9.2023 keine Fernleihbestellungen von Büchern möglich") %]</li>
+            <li>[% msg.maketext("Wegen Systemarbeiten am Bibliothekssystem Alma sind derzeit keine Fernleihbestellungen von Büchern möglich") %]</li>
 [% END %]
             <li><a class="exturl" href="https://usb-koeln.digibib.net/ill/articles[% IF fl_all_args.size > 0 %]?[% fl_all_args.join('&') %][% END %]" target="artikelfernleihe">Zeitschriftenartikel bestellen</a></li>
           </ul>

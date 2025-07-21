@@ -60,11 +60,7 @@ sub new {
     my $queryoptions       = exists $arg_ref->{queryoptions}
         ? $arg_ref->{queryoptions}            : OpenBib::QueryOptions->new;
     
-    $arg_ref->{access_green}    = $queryoptions->get_option('access_green') || 0;
-    $arg_ref->{access_yellow}   = $queryoptions->get_option('access_yellow') || 0;
-    $arg_ref->{access_ppu}      = $queryoptions->get_option('access_ppu') || 0;
-    $arg_ref->{access_national} = $queryoptions->get_option('access_national') || 0;
-    $arg_ref->{access_red}      = $queryoptions->get_option('access_red') || 0;
+    $arg_ref->{access_all}    = $queryoptions->get_option('access_all') || 'false';
     
     my $api = new OpenBib::API::HTTP::DBISJSON($arg_ref);
     
@@ -117,7 +113,7 @@ sub get_records {
     
     my $container = OpenBib::Container->instance;
 
-    $container->register('classifications_dbis',$classifications_ref);
+    $container->register('classifications_dbis',$classifications_ref->{items});
     $container->register("popular_dbis_records_$gebiet",$popular_records->to_serialized_reference);    
 
     if ($logger->is_debug){    

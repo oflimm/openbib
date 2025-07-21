@@ -2,9 +2,9 @@
 
 #####################################################################
 #
-#  provenances2csv.pl
+#  provenances2marc.pl
 #
-#  Umwandlung von Provenienz-Exporten im JSON-Format in eine CSV-Datei
+#  Umwandlung von Provenienz-Exporten im JSON-Format in eine MARC(XML)-Datei
 #  zum Import in die hbz NZ
 #
 #  Dieses File ist (C) 2025 Oliver Flimm <flimm@openbib.org>
@@ -41,8 +41,8 @@ use Getopt::Long;
 
 use Log::Log4perl qw(get_logger :levels);
 use Encode qw/decode_utf8 encode decode/;
+use MARC::Record;
 use JSON::XS;
-use Text::CSV_XS;
 use YAML;
 
 my ($help,$logfile,$loglevel);
@@ -57,7 +57,7 @@ if ($help){
     print_help();
 }
 
-$logfile  = ($logfile)?$logfile:'/var/log/openbib/provenances2csv.log';
+$logfile  = ($logfile)?$logfile:'/var/log/openbib/provenances2marc.log';
 $loglevel = ($loglevel)?$loglevel:'INFO';
 
 my $log4Perl_config = << "L4PCONF";
@@ -79,27 +79,16 @@ my $logger = get_logger();
 
 my $out;
 
-my $filename = "provenances_de38_361.csv";
+my $filename = "provenances_de38_361.mrc";
 
 open $out, ">:encoding(utf8)", $filename;
 
-my $outputcsv = Text::CSV_XS->new ({
-    'eol'         => "\n",
-    'sep_char'    => "\t",
-});
-
-my $out_ref = [];
-
-push @{$out_ref}, ('3611$o','3611$5','3611$s','3611$a','3611$0','3611$f','3611$l','3611$z','035$a','Network Id','3611$y');
-
-$outputcsv->print($out,$out_ref);
-
 my $idx = 1;
+
+my $provenances_by_nzid = {};
 
 while (my $json = <>){
     my $json_ref = decode_json $json;
-
-    $out_ref = [];
 
     my $tpro_merkmal = "";
 
@@ -163,7 +152,7 @@ while (my $json = <>){
 
     $field_361_0 = "(DE-588)$field_361_0" if( $field_361_0 && $field_361_0 !~m/DE-588/);
     
-    push @fields_361_z, "Details: ".$json_ref->{tpro_description}  if ($json_ref->{tpro_description});
+    push @fields_361_z, "Details: ".$json_ref->{tpro_description} if ($json_ref->{tpro_description});
     push @fields_361_z, "Alt-Signatur: ".$json_ref->{former_mark} if ($json_ref->{former_mark});
     push @fields_361_z, "Referenz: ".$json_ref->{reference} if ($json_ref->{reference});
     push @fields_361_z, "Bemerkung: ".$json_ref->{remark} if ($json_ref->{remark});
@@ -171,26 +160,101 @@ while (my $json = <>){
 
     my $field_361_z  = (@fields_361_z)?join('.- ',@fields_361_z):'';
     
-    push @{$out_ref}, ($field_361_o,$field_361_5,$field_361_s,$field_361_a,$field_361_0,$field_361_f,$field_361_l,$field_361_z,$field_035_a,$nz_id,$field_361_y);
-
     if (!$field_035_a && !$nz_id){
 	print STDERR "Weder HT-Nummer noch NZ-ID ".YAML::Dump($json_ref)."\n";
 	next;
     }
-    
-    $outputcsv->print($out,$out_ref);
 
+    $provenances_by_nzid->{$nz_id}{'035_a'} = $field_035_a;
+
+    push @{$provenances_by_nzid->{$nz_id}{'361'}}, {
+	'361_o' => $field_361_o,
+	    '361_5' => $field_361_5,
+	    '361_s' => $field_361_s,
+	    '361_a' => $field_361_a,
+	    '361_0' => $field_361_0,
+	    '361_f' => $field_361_f,
+	    '361_l' => $field_361_l,
+	    '361_z' => $field_361_z,
+	    '361_y' => $field_361_y,
+    };
+    
     if ($idx % 1000 == 0){
-	$logger->info("$idx Records done");
+	$logger->info("$idx Records preprocessed");
     }
 
     $idx++;
 }
 
+foreach my $nz_id (keys %{$provenances_by_nzid}){
+    my $output_fields_ref = {};
+    
+    my $marc_record = new MARC::Record;
+
+    $marc_record->add_fields('001',$nz_id);
+
+    if (defined $provenances_by_nzid->{$nz_id}{'035_a'} &&  $provenances_by_nzid->{$nz_id}{'035_a'}){
+	my @subfields = ();
+	
+	push (@subfields,'a', $provenances_by_nzid->{$nz_id}{'035_a'});
+	
+	my $new_field = MARC::Field->new('035', ' ',  ' ', @subfields);
+
+	$marc_record->append_fields($new_field) if ($new_field);
+    }
+    
+    foreach my $field_ref (@{$provenances_by_nzid->{$nz_id}{'361'}}){
+
+	my @subfields = ();
+	
+	if (defined $field_ref->{'361_o'} && $field_ref->{'361_o'}){
+	    push (@subfields,'o', $field_ref->{'361_o'});	    
+	}
+
+	if (defined $field_ref->{'361_5'} && $field_ref->{'361_5'}){
+	    push (@subfields,'5', $field_ref->{'361_5'});
+	}
+
+	if (defined $field_ref->{'361_s'} && $field_ref->{'361_s'}){
+	    push (@subfields,'s', $field_ref->{'361_s'});
+	}
+
+	if (defined $field_ref->{'361_a'} && $field_ref->{'361_a'}){
+	    push (@subfields,'a', $field_ref->{'361_a'});
+	}
+
+	if (defined $field_ref->{'361_0'} && $field_ref->{'361_0'}){
+	    push (@subfields,'0', $field_ref->{'361_0'});
+	}
+
+	if (defined $field_ref->{'361_f'} && $field_ref->{'361_f'}){
+	    push (@subfields,'f', $field_ref->{'361_f'});
+	}
+
+	if (defined $field_ref->{'361_l'} && $field_ref->{'361_l'}){
+	    push (@subfields,'l', $field_ref->{'361_l'});
+	}
+
+	if (defined $field_ref->{'361_z'} && $field_ref->{'361_z'}){
+	    push (@subfields,'z', $field_ref->{'361_z'});
+	}
+
+	if (defined $field_ref->{'361_y'} && $field_ref->{'361_y'}){
+	    push (@subfields,'y', $field_ref->{'361_y'});
+	}
+
+	my $new_field = MARC::Field->new('361', '1',  ' ', @subfields);
+	    
+	$marc_record->append_fields($new_field) if ($new_field);	
+    }
+    
+    print $out $marc_record->as_usmarc;
+}
+
 close ($out);
 
 sub print_help {
-    print "provenances2csv.pl - Erzeugen von CSV-Import-Dateien aus Provenienz-Exporten fuer 361 in der NZ des hbz\n\n";
+    print "provenances2marc.pl - Erzeugen von MARC-Import-Dateien aus Provenienz-Exporten fuer 361 in die NZ des hbz\n\n";
     print "Optionen: \n";
     print "  -help                   : Diese Informationsseite\n\n";
     print "  --loglevel=             : Loglevel\n\n";

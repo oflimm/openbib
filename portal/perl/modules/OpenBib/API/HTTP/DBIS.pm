@@ -463,15 +463,15 @@ sub get_classifications {
     $logger->debug("Memc: ".$memc);
     $logger->debug("Memcached: ".$config->{memcached});    
     
-    if (0 == 1 && $memc){
-        my $classifications_ref = $memc->get($memc_key);
+    if ($memc){
+        my $response_ref = $memc->get($memc_key);
 
-	if ($classifications_ref){
+	if ($response_ref){
 	    if ($logger->is_debug){
 		$logger->debug("Got classifications for key $memc_key from memcached");
 	    }
 
-	    return $classifications_ref if (defined $classifications_ref);
+	    return $response_ref if (defined $response_ref);
 	}
     }
     
@@ -528,20 +528,25 @@ sub get_classifications {
         max   => $maxcount, 
         type  => 'log'});
 
+    # Sortierung nach Beschreibungen
+    @$classifications_ref = sort {$a->{desc} cmp $b->{desc}} @$classifications_ref;
+    
     if ($logger->is_debug){
         $logger->debug(YAML::Dump($classifications_ref));
     }
 
-    if ($memc){
-	$memc->set($memc_key,$classifications_ref,$config->{memcached_expiration}{'dbis:classifications'});
-    }
-
     my $hits = scalar @$classifications_ref;
     
-    return {
+    my $response_ref = {
 	items => $classifications_ref,
 	hits => $hits,
     };
+    
+    if ($memc){
+	$memc->set($memc_key,$response_ref,$config->{memcached_expiration}{'dbis:classifications'});
+    }
+    
+    return $response_ref;
 }
 
 sub search {

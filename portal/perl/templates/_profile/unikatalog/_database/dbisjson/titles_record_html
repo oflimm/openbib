@@ -352,8 +352,8 @@
       fulltext_icon = config.get('dbis_de_img');
       fulltext_desc = msg.maketext("Volltext über Nationallizenz");;
     ELSE ;
-      fulltext_icon = config.get('ezb_unknown_img');
-      fulltext_desc = msg.maketext("Unbekannter Zugang");;
+      fulltext_icon = config.get('ezb_red_img');
+      fulltext_desc = msg.maketext("Kein lizensierter Zugriff");;
     END;
 
 

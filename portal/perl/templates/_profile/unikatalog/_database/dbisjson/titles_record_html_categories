@@ -31,7 +31,7 @@
       'y' = config.get('dbis_yellow_img')
       'n' = config.get('dbis_de_img')
       'l' = config.get('dbis_yellow_red_img')
-      'r' = config.get('dbis_red_img')
+      'r' = config.get('ezb_red_img')
    };
 
    IF normdata.${"T4120"} ;
@@ -43,6 +43,10 @@
         access_icon = "<img src=\"${access_icon}\"  alt=\"${access_icon}\" />";
      END;
 
+   ELSE ;
+        access_icon = access_icon_ref.r;
+
+        access_icon = "<img src=\"${access_icon}\"  alt=\"${access_icon}\" />";
    END;
 
    # Preprocessing lizensiert, OA oder Nationallizens
@@ -270,26 +274,6 @@ IF normdata.defined('T0521');
   END;
 END;
 
-# Switching processed links
-
-IF normdata.defined('T4662');
-   normdata.${'T0662'} = normdata.${'T4662'};
-   normdata.${'T0663'} = normdata.${'T4663'};
-   normdata.${'T2662'} = [];
-   normdata.${'T2662'}.delete;
-   normdata.${'T2663'} = [];
-   normdata.${'T2663'}.delete;   
-ELSIF record.database != 'eds'; # EDS hat kein Preprocessing von Links
-   normdata.${'T0662'} = [];
-   normdata.${'T0663'} = [];
-   normdata.${'T2662'} = [];
-   normdata.${'T2663'} = [];
-   normdata.${'T0662'}.delete;
-   normdata.${'T0663'}.delete;
-   normdata.${'T2662'}.delete;
-   normdata.${'T2663'}.delete;
-END;
-
 # Preprocessing lizensiert, OA oder Nationallizens
 
 # Lizensierter Volltext oder OA? (Ausgabe Zugriffshinweis)
@@ -479,14 +463,28 @@ FOREACH field IN normdata;
 	 END;
          content_map.${'Weitere Titel'}.push(content);
 
-    CASE "T4120";
-         thiscontent   = msg.maketext("Datenbankrecherche starten");
+    CASE "T0662";
+         thiscontent      = msg.maketext("Datenbankrecherche starten");
+         thismult         = item.mult ;
+	 thiscontent_supp = "";
+	 
+         FOREACH thisitem IN normdata.${"T0663"} ;
+            IF thisitem.mult == thismult ;
+                thiscontent_supp = thisitem.content ;
+            END ;
+         END ;
+
 	 #content       = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(content)}" ;
 	 content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\"><b>${thiscontent}</b></a>";
+
+         IF thiscontent_supp ;
+	   content = "${content} (${thiscontent_supp})";
+	 END;
 
          IF NOT content_map.${'Zugang'} ;
 	    content_map.${'Zugang'} = [];
 	 END;
+	 
          content_map.${'Zugang'}.push(content);
 
     CASE "T0501";
@@ -533,6 +531,11 @@ FOREACH field IN normdata;
 
 
     CASE "T0700";
+         gebiete_id = item.id;
+
+         #localurl  = "${path_prefix}/${config.get('search_loc')}.html?l=${lang};db=${record.database};sm=seq;page=1;num=20;cln=${gebiete_id}";
+
+         #content   = "<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a>";
 	 
          IF NOT content_map.${'Fachgebiete'} ;
 	    content_map.${'Fachgebiete'} = [];
@@ -607,10 +610,11 @@ display_types = {
    'T0662' => 'list',
    'T0710' => 'list',
    'T0700' => 'list',
+   'Zugang' => 'list',
    'Hinweise' => 'list',
    'Druckausgabe' => 'list',
 #   'Schlagwörter' => 'list',
-#   'Fachgebiete' => 'list',   
+   'Fachgebiete' => 'list',   
    
 };
 

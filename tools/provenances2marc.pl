@@ -176,7 +176,7 @@ while (my $json = <>){
 	    '361_f' => $field_361_f,
 	    '361_l' => $field_361_l,
 	    '361_z' => $field_361_z,
-	    '361_y' => $field_361_y,
+#	    '361_y' => $field_361_y,
     };
     
     if ($idx % 1000 == 0){

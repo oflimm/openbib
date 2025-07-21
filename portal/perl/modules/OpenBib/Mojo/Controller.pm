@@ -1083,7 +1083,7 @@ sub redirect {
 
     $self->res->code($status);
     
-    return $self->redirect_to($url);
+    $self->redirect_to($url);
 }
 
 sub print_authorization_error {

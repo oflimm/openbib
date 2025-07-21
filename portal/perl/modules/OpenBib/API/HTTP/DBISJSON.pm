@@ -75,7 +75,7 @@ sub new {
 
     # Set API specific defaults
     my $bibid     = exists $arg_ref->{bibid}
-        ? $arg_ref->{bibid}       : $config->{dbis_bibid};
+        ? $arg_ref->{bibid}       : $config->{dbis}{bibid};
 
     my $client_ip = exists $arg_ref->{client_ip}
         ? $arg_ref->{client_ip}   : undef;
@@ -100,7 +100,8 @@ sub new {
 
     my $ua = Mojo::UserAgent->new();
     $ua->transactor->name('USB Koeln/1.0');
-    $ua->connect_timeout(30);
+    $ua->connect_timeout(5);
+    $ua->request_timeout($config->{'dbis'}{'api_timeout'});
     $ua->max_redirects(2);
 
     $self->{client}        = $ua;
@@ -149,7 +150,7 @@ sub get_titles_record {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $dbis_base  = $config->get('dbisjson_baseurl');
+    my $dbis_base  = $config->{dbis}{baseurl};
     my $dbis_bibid = $self->{'bibid'};
     
     my $record = new OpenBib::Record::Title({ database => $self->{database}, id => $id });
@@ -180,8 +181,20 @@ sub get_titles_record {
 
     my $json_ref = {};
 
+    my $atime = new Benchmark;
+    
     my $response = $ua->get($url)->result;
 
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $resulttime = $resulttime * 1000.0; # to ms
+    
+    if ($resulttime > $config->{'dbis'}{'api_logging_threshold'}){
+	$logger->error("DBIS API call $url took $resulttime ms");
+    }
+    
     if ($response->is_success){
 	$json_ref = $response->json;
     }
@@ -323,13 +336,13 @@ sub get_titles_record {
 
 		    if ($url){
 			# URL
-			$record->set_field({field => 'T0662', subfield => $this_access, mult => $mult, content => $config->{dbis_baseurl}.$this_access_url});
+			$record->set_field({field => 'T0662', subfield => $this_access, mult => $mult, content => $config->{dbis}{baseurl}.$this_access_url});
 
 			# Beschreibung zum URL
 			$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => $this_access_label});
 
 			# Expliziter URL zum Volltext
-			$record->set_field({field => 'T4120', subfield => $this_access, mult => $mult, content => $config->{dbis_baseurl}.$this_access_url});
+			$record->set_field({field => 'T4120', subfield => $this_access, mult => $mult, content => $config->{'dbis'}{'baseurl'}.$this_access_url});
 			$mult++;
 		    }
 		}
@@ -401,7 +414,10 @@ sub get_titles_record {
 	    
     # Gesamtresponse in dbisjson_source
     $record->set_field({field => 'dbisjson_source', subfield => '', mult => 1, content => $json_ref});
-    
+
+    # Gesamtresponse XML in dbisxml_source
+    $record->set_field({field => 'dbisxml_source', subfield => '', mult => 1, content => $quickfix_fields_ref->{dbisxml_source}}) if ($quickfix_fields_ref->{dbisxml_source});
+
     $record->set_holding([]);
     $record->set_circulation([]);
 
@@ -428,7 +444,7 @@ sub _get_titles_record_quickfix_xml {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $dbis_base = $config->get('dbis_baseurl');
+    my $dbis_base = $config->{'dbis'}{'baseurl'};
     
     my $url = $dbis_base."detail.php?titel_id=$id&bib_id=".((defined $self->{bibid})?$self->{bibid}:"")."&xmloutput=1";
 
@@ -452,8 +468,20 @@ sub _get_titles_record_quickfix_xml {
     
     $logger->debug("Request: $url");
 
+    my $atime = new Benchmark;
+    
     my $response = $ua->get($url)->result;
 
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $resulttime = $resulttime * 1000.0; # to ms
+    
+    if ($resulttime > $config->{'dbis'}{'api_logging_threshold'}){
+	$logger->error("DBIS API call $url took $resulttime ms");
+    }
+    
     my $xmlresponse = "";
     
     if ($response->is_success){
@@ -549,7 +577,9 @@ sub _get_titles_record_quickfix_xml {
     }
 
     $fields_ref->{keywords} = $keywords_ref;
-        
+
+    $fields_ref->{dbisxml_source} = $xmlresponse;
+    
     if ($memc){
 	$memc->set($memc_key,$fields_ref,$config->{memcached_expiration}{'dbis:title'});
     }
@@ -566,7 +596,7 @@ sub get_classifications {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $dbis_base  = $config->get('dbisjson_baseurl');
+    my $dbis_base  = $config->{'dbis'}{'baseurl'};
     my $dbis_bibid = $self->{'bibid'};
     
     my $classifications_ref = [];
@@ -598,8 +628,20 @@ sub get_classifications {
     $logger->debug("Request: $url");
     
     my $json_ref = {};
+
+    my $atime = new Benchmark;
     
     my $response = $ua->get($url)->result;
+
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $resulttime = $resulttime * 1000.0; # to ms
+    
+    if ($resulttime > $config->{'dbis'}{'api_logging_threshold'}){
+	$logger->error("DBIS API call $url took $resulttime ms");
+    }
     
     if ($response->is_success){
 	$json_ref = $response->json;
@@ -695,7 +737,7 @@ sub search {
 
     $self->parse_query($searchquery);
 
-    my $dbis_base = $config->get('dbis_baseurl');
+    my $dbis_base = $config->{'dbis'}{'baseurl'};
 
     my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&include%5B%5D=licenses&lett=a&all=".$self->{access_all}."&".$self->querystring."&hits_per_page=$num&offset=$offset&sort=alph&xmloutput=1";
 
@@ -724,8 +766,20 @@ sub search {
     
     $logger->debug("Request: $url");
 
+    my $atime = new Benchmark;
+    
     my $response = $ua->get($url)->result;
 
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $resulttime = $resulttime * 1000.0; # to ms
+    
+    if ($resulttime > $config->{'dbis'}{'api_logging_threshold'}){
+	$logger->error("DBIS API call $url took $resulttime ms");
+    }
+    
     my $xmlresponse = "";
     
     if ($response->is_success){
@@ -915,7 +969,7 @@ sub get_popular_records {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $dbis_base = $config->get('dbis_baseurl');
+    my $dbis_base = $config->{'dbis'}{'baseurl'};
     
     my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&include%5B%5D=licenses&lett=a&all=".$self->{access_all}."&gebiete=$gebiet&sort=alph&xmloutput=1";
 
@@ -942,9 +996,21 @@ sub get_popular_records {
     }
     
     $logger->debug("Request: $url");
+
+    my $atime = new Benchmark;
     
     my $response = $ua->get($url)->result;
 
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $resulttime = $resulttime * 1000.0; # to ms
+    
+    if ($resulttime > $config->{'dbis'}{'api_logging_threshold'}){
+	$logger->error("DBIS API call $url took $resulttime ms");
+    }
+    
     my $xmlresponse = "";
     
     if ($response->is_success){
@@ -1041,7 +1107,7 @@ sub get_popular_records {
 
 	    foreach my $access_node (@accesses){
 		my $access_url = $access_node->findvalue('@access_url');
-		push @urls, $config->get("dbis_baseurl").$access_url if ($access_url);
+		push @urls, $config->{'dbis'}{'baseurl'}.$access_url if ($access_url);
 	    }
 	}
 

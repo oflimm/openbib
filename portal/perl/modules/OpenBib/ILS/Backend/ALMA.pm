@@ -87,7 +87,8 @@ sub new {
 
     my $ua = Mojo::UserAgent->new();
     $ua->transactor->name('USB Koeln/1.0');
-    $ua->connect_timeout($config->get('alma')->{api_timeout});
+    $ua->connect_timeout(5);
+    $ua->request_timeout($config->{'alma'}{'api_timeout'});
     $ua->max_redirects(2);
 
     # Only valid and defined languages. Fallback 'de'

@@ -1,0 +1,205 @@
+[% IF record_exists %]
+
+[%
+ FOREACH thiscirculation IN circulation ;
+    IF thiscirculation.AquisitionStatuscode >= 1 ;
+      circulation = [];
+    END ;
+ END ;
+
+ has_circulation_error = record.has_circulation_error ;
+
+%]
+
+[% IF has_circulation_error %]
+<div class="alert alert-info">
+<h4>[% msg.maketext("Probleme mit der Kopplung zum Bibliothekssystem") %]</h4>
+
+<p>
+[% record.get_circulation_error.error_description %]
+</p>
+</div>
+[% END %]
+
+[%- reviews = user.get_reviews_of_tit({ titleid => record.id, dbname => record.database }); %]
+[%-
+
+    fields = record.to_custom_field_scheme_1;
+    
+    issn                 = ""; # Todo fields.${"T0022"}.first.${"a"} ;
+    IF issn ;
+       journaltocs_feed  = "http://www.journaltocs.ac.uk/api/journals/${issn}?output=articles";
+    END ;
+
+    is_printjournal = 0;
+
+    IF fields.${"T0035"} ;
+      FOREACH this_field IN fields.${"T0035"};
+         IF this_field.${"a"}.match("DE-600");
+	   is_printjournal = 1;
+	 END;
+      END;
+
+    END;
+   #USE dumper;dumper.dump(fields);
+
+-%]
+<div id="ob-additional_title_info"><!-- Begin Additional Title Info -->
+[%# USE dumper;dumper.dump(holding)%]
+
+<ul class="nav nav-tabs">
+[%   IF is_printjournal && holding.size > 0 %]
+<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
+[%   ELSIF circulation.size > 0 %]
+<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#ob-circulation_info">[% msg.maketext("Ausleihe/Exemplare") %]</a></li>
+[%   ELSIF holding.size > 0 %]
+<li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#ob-holding_info">[% msg.maketext("Bestand") %]</a></li>
+[%   END %]
+
+[%   IF journaltocs_feed %]
+<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#ob-journaltocs">[% msg.maketext("Letzte Artikel") %]</a></li>
+[%   END %]
+<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#ob-same_records" id="ob-same_records_li">[% msg.maketext("In anderen Katalogen") %]</a></li>
+<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#ob-similar_records" id="ob-similar_records_li">[% msg.maketext("Andere Ausgaben") %]</a></li>
+[%   IF config.get('reviews') %]
+<li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#ob-reviews">[% msg.maketext("Bewertungen/Rezensionen") %]</a></li>
+[%   END %]
+</ul>
+
+<div class="tab-content pt-3">
+[% IF is_printjournal > 0 && holding.size > 0 %]
+<div role="tabpanel" class="tab-pane fade-in active pb-3" id="ob-holding_info"><!-- Begin Journal-Bestand -->
+[% PROCESS common/subtemplate name="holding_journal" %]
+[% ELSIF circulation.size > 0 %]
+<div role="tabpanel" class="tab-pane fade-in active pb-3" id="ob-circulation_info"><!-- Begin Circulation -->
+[% PROCESS common/subtemplate name="circulation" %]
+</div><!-- End Circulation -->
+[% ELSIF holding.size > 0 %]
+<div role="tabpanel" class="tab-pane fade-in active pb-3" id="ob-holding_info"><!-- Begin Bestand -->
+[% PROCESS common/subtemplate name="holding" %]
+</div><!-- End Bestand -->
+[% END %]
+
+[% IF journaltocs_feed %]
+<script type="text/javascript">
+$(document).ready(function(){
+// Begin Journaltocs
+  $.get("[% path_prefix %]/[% config.get('info_loc') %]/journaltocs?id=[% journaltocs_feed | uri | html %];format=ajax",
+         function (txt){
+           $("#ob-journaltocs").html(txt); 
+  });
+});
+</script>
+
+<div role="tabpanel" class="tab-pane fade pb-3" id="ob-journaltocs"><!-- Begin Journaltocs -->
+[% msg.maketext("F&uuml;r die letzten in dieser Zeitschrift ver&ouml;ffentlichten Artikel bieten wir eine eine [_1]&Uuml;bersicht[_2] an.","<a href=\"${path_prefix}/${config.get('info_loc')}/journaltocs?id=${journaltocs_feed}\">","</a>") %]
+</div><!-- End Journaltocs -->
+[% END %]
+<!-- Begin: Reviews -->
+[% IF config.get('reviews') %]
+
+<div role="tabpanel" class="tab-pane fade pb-3" id="ob-reviews"><!-- Begin: Reviews -->
+
+[% IF   username %]
+
+[% ownreviewid = user.tit_reviewed_by_user({ titleid => record.id, dbname => record.database, username => username }); %]
+
+<p />
+
+OID[% ownreviewid %]
+[% IF NOT ownreviewid %]
+<form method="post" action="[% path_prefix %]/[% config.get('reviews_loc') %]">
+
+<input type="hidden" name="dbname"      value="[% record.database %]" />
+<input type="hidden" name="titleid"      value="[% record.get_encoded_id %]" />
+<input type="hidden" name="queryid"    value="[% queryid %]" />
+<input type="hidden" name="titisbn"    value="[% isbn %]" />
+
+<div class="ob-headline"><span id="newreviews_toggle">[% msg.maketext("Neue Bewertung/Rezension") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="ob-newreviews_do"><!-- Begin formats do -->
+
+<h4>[% msg.maketext("Bewertung") %]</h4>
+
+<table class="table">
+<tr><td>[% msg.maketext("schlecht") %]&nbsp;<input type="radio"
+name="rating" value="0"/>&nbsp;<input type="radio" name="rating"
+value="1"/>&nbsp;<input type="radio" name="rating"
+value="2"/>&nbsp;<input type="radio" name="rating"
+value="3" checked="checked"/>&nbsp;<input type="radio" name="rating"
+value="4"/>&nbsp;<input type="radio" name="rating"
+value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
+</table>
+
+<h4>[% msg.maketext("Rezension") %]</h4>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="review_nickname" type="text" name="nickname" value="" />
+<label for="review_nickname">[% msg.maketext("Pseudonym") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<input class="form-control" id="review_title" type="text" name="title" value=""  />
+<label for="review_title">[% msg.maketext("Titel") %]</label>
+</div>
+
+<div class="form-floating mb-3">
+<textarea class="form-control" id="review_text" cols="80" rows="10" name="review"></textarea>
+<label for="review_text">[% msg.maketext("Rezension") %]</label>
+</div>
+
+<button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Aufnehmen") %]</button>&nbsp;&nbsp;<button class="btn btn-primary mb-2" type="reset">[% msg.maketext("Löschen") %]</button>
+
+</form>
+[% END %]
+
+[%   END %]
+
+</div><!-- End: do_new_review -->
+
+[%   IF reviews.size > 0 %]
+
+<p />
+
+<div class="ob-headline"><span id="allreviews_toggle">[% msg.maketext("Bewertungen/Rezensionen von Nutzern") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
+<div id="allreviews_do"><!-- Begin allreviews do -->
+
+<!-- Beginn Reviews -->
+<dl class="ob-reviews">
+[%- FOREACH item IN reviews -%]
+<dt class="ob-review">[% IF item.votes.all > 0 %][% msg.maketext("[_1]
+von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,item.votes.all) %]<p />[% END %]<span class="ob-reviewtitle">[% item.title %]</span> von <span class="ob-reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="ob-reviewrating">[% item.rating %]</span>)</dt>
+<dd class="ob-review">[%    IF item.review %][% item.review %][% END %]
+[% IF item.id == ownreviewid %]
+<p />
+<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]/edit">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=DELETE&confirm=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
+[% ELSIF username %]
+<p />
+[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?_method=PUT&titleid=[% record.get_encoded_id %]&dbname=[% record.database %]&rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
+<a href="[% path_prefix %]/[% config.get('reviews_loc') %]/id/[% item.id %]?titleid=[% record.get_encoded_id %]&dbname=[% record.database %]&rating=0">[% msg.maketext("Nein") %]</a>
+[% END %]
+</dd>
+[%  END %]
+</dl>
+
+</div><!-- End: allreviews_do -->
+
+[%   END %]
+</div><!-- End: Reviews -->
+
+[% END %]
+
+<!-- End: Reviews -->
+
+<div role="tabpanel" class="tab-pane fade pb-3" id="ob-same_records"><!-- Begin: Same records -->
+   <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/same_records.html?l=[% lang %]">Titel in anderen Katalogen anzeigen?</a>
+</div><!-- End: Same Records -->
+
+<div role="tabpanel" class="tab-pane fade pb-3" id="ob-similar_records"><!-- Begin: Similar records -->
+   <a href="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/similar_records.html?l=[% lang %]">Titel in anderen Ausgaben anzeigen?</a>
+</div><!-- End: Similar Records -->
+
+</div><!-- End: tab-content -->
+</div><!-- End: Additional Title Info -->
+
+[% END # record_exists %]

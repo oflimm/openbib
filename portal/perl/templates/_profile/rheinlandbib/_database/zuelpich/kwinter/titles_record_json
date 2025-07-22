@@ -1,0 +1,78 @@
+[%-
+
+circulation = [];
+
+FOREACH item IN record.get_circulation;
+  item.delete('Entleiher','Gruppe');
+  circulation.push(item);
+END;
+
+record.set_circulation(circulation);
+
+thisfields = record.get_fields;
+
+IF hide_hit || hide_detail ;
+  thisfields = {
+     T0245 = [{
+         content = hide_detail_msg
+	 subfield = 'a'
+     }]
+  };
+END;
+
+thisrecord = {
+           flags = {
+	      hide_hit = hide_hit
+	      hide_detail = hide_detail
+	   }
+           link = {
+                    rel = 'self'
+                    href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.json"
+           }
+           id       = record.id
+           database = {
+                link = {
+                       rel = 'self'
+                       href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${record.database}.json"
+                }
+                id                = record.database
+                description       = dbinfo.get('dbnames').${record.database}.full
+                description_short = dbinfo.get('dbnames').${record.database}.short
+                schema            = dbinfo.get('schema').${record.database}
+                url               = dbinfo.get('urls').${record.database}                          
+           }
+           fields      = thisfields
+           items       = record.get_holding
+           circulation = record.get_circulation
+};
+
+item_locations = record.get_locations;
+
+IF NOT item_locations;
+  item_locations = [ dbinfo.get('locationid').${record.database} ];
+END;
+
+blacklisted_locations = { 'DE-38-USBFB' => 1 };
+
+item_locations_out = [];
+
+FOREACH item_location IN item_locations ;
+  NEXT IF blacklisted_locations.${item_location}.defined ;
+
+  this_item_location = {
+      link = {
+              rel = 'self'
+              href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${item_location}.json"
+      }
+      id = item_location 
+      description = locinfo.get('identifier').${item_location}.description  
+  };
+
+  item_locations_out.push(this_item_location);
+END;
+
+thisrecord.locations = item_locations_out;
+
+to_json(thisrecord);
+
+-%]

@@ -316,7 +316,9 @@ sub get_titles_record {
 		foreach my $access_ref (@{$license_ref->{accesses}}){
 		    my $this_access_url   = $access_ref->{accessUrl};
 		    
-		    my $this_access_label = $access_ref->{label};
+		    my $this_access_label         = $access_ref->{label};
+		    my $this_access_label_long    = $access_ref->{labelLongest} || $access_ref->{labelLong};
+		    
 		    my $this_access_id    = $access_ref->{id};
 		    my $this_access_type  = $access_ref->{type}{id};
 		    
@@ -339,7 +341,8 @@ sub get_titles_record {
 			$record->set_field({field => 'T0662', subfield => $this_access, mult => $mult, content => $config->{dbis}{baseurl}.$this_access_url});
 
 			# Beschreibung zum URL
-			$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => $this_access_label});
+			$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => $this_access_label}) if ($this_access_label);
+			$record->set_field({field => 'T0664', subfield => '', mult => $mult, content => $this_access_label_long}) if ($this_access_label_long);
 
 			# Expliziter URL zum Volltext
 			$record->set_field({field => 'T4120', subfield => $this_access, mult => $mult, content => $config->{'dbis'}{'baseurl'}.$this_access_url});

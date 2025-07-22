@@ -467,6 +467,7 @@ FOREACH field IN normdata;
          thiscontent      = msg.maketext("Datenbankrecherche starten");
          thismult         = item.mult ;
 	 thiscontent_supp = "";
+	 thiscontent_supp_long = "";
 	 
          FOREACH thisitem IN normdata.${"T0663"} ;
             IF thisitem.mult == thismult ;
@@ -474,11 +475,23 @@ FOREACH field IN normdata;
             END ;
          END ;
 
+         FOREACH thisitem IN normdata.${"T0664"} ;
+            IF thisitem.mult == thismult ;
+                thiscontent_supp_long = thisitem.content ;
+            END ;
+         END ;
+
 	 #content       = "${path_prefix}/${config.get('redirect_loc')}?type=503;url=${uri_escape(content)}" ;
 	 content       = "<a href=\"${content}\" class=\"ext\" target=\"_blank\"><b>${thiscontent}</b></a>";
 
          IF thiscontent_supp ;
+	   IF thiscontent_supp_long ;
+	      thiscontent_supp = "${thiscontent_supp} <a href=\"#\" data-bs-toggle=\"collapse\" data-bs-target=\"#CollapseLabel${thismult}\" aria-expanded=\"false \" aria-controls=\"CollapseLabel${thismult}\"><i class=\"\fas fa-question-circle\"></i></a>";
+	   END;
 	   content = "${content} (${thiscontent_supp})";
+	   IF thiscontent_supp_long ;
+	     content = "${content} <div class=\"collapse p-2\" id=\"CollapseLabel${thismult}\">${thiscontent_supp_long}</div>";
+	   END;
 	 END;
 
          IF NOT content_map.${'Zugang'} ;

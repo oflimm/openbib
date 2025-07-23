@@ -1,0 +1,75 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_images
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe des "Bilder"-Bereichs fuer einen
+# einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%# USE dumper;dumper.dump(normdata)%]
+[% IF normdata.${"T6051"} %]
+<p>
+<a href="http://dfg-viewer.de/show/?set[mets]=http%3A%2F%2F[%servername%]%2F[% path_prefix %]%2Fconnector%2Funapi%3Fid%3D[%record.database%]%3A[%record.get_encoded_id%]%26format%3Dmets" target="_blank"><center><img src="http://dfg-viewer.de/fileadmin/images/dfgviewer_logo_viewer.gif" title="DFG-Viewer" alt="[% msg.maketext("DFG-Viewer") %]"/><br/>[Online lesen im DFG-Viewer]</center></a>
+</p>
+[% END %]
+
+[%-
+
+isbn = "";
+
+FOREACH item IN normdata.${"T0020"};
+  IF item.subfield == '9';
+    isbn = item.content ;
+    last;
+  END;
+END;
+
+iiif_id = "";
+
+FOREACH item IN normdata.${"T0024"};
+  IF item.content.match(10.58016);
+    iiif_id = item.content.replace('10.58016/','');
+  END;
+END;
+
+-%]
+
+[% IF iiif_id %]
+<p>
+  <a href="[% normdata.${'T4120'}.first.content %]" target="_blank"><center><img id="cover_full" src="http://api-digital.ub.uni-koeln.de/iiif/thumbnail?manifest_id=[% iiif_id %]&size=300" title="IIIF-Viewer" alt="[% msg.maketext("IIIF-Viewer") %]" /></a></center>
+</p>
+<p>
+  <center><a class="exturl" href="[% normdata.${'T4120'}.first.content %]" target="_blank">[Online lesen]</a></center>
+</p>
+
+[% ELSIF (config.get('coverscans').all || config.get('coverscans').${database}) && isbn %]
+<p>
+[% coverapi = config.get('covers').vlb %]
+[%# USE dumper;dumper.dump(coverapi)%]
+<a href="[% coverapi.credits_url %]" target="_blank"><img src="[% path_prefix %]/[% config.get('connector_cover_loc') %]/vlb/[% isbn %]?size=m" title="[% coverapi.credits_text %]" alt="[% msg.maketext("Cover-Scan") %]"/></a>
+</p>
+[% END %]
+[%- IF 0 == 1 && isbn # disabled -%]
+<p>
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=525&url=[% uri_escape("http://books.google.com/books?vid=ISBN${isbn}") %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/gbs/[% isbn %]" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a>
+</p>
+[%- END -%]
+[%- IF 0 == 1 && bibkey # disabled -%]
+<p>
+<a href="[% path_prefix %]/[% config.get('redirect_loc') %]?type=511&url=[% uri_escape("http://www.bibsonomy.org/bibtex/${bibkey}") %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% path_prefix %]/[% config.get('connector_availabilityimage_loc') %]/bibsonomy/[% bibkey %]" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a>
+</p>
+[%- END -%]
+[% IF cgiapp.is_authenticated('admin') || cgiapp.is_authenticated('librarian') %]
+<p>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %].html?l=[% lang %]&flush_cache=1" >[% msg.maketext("Titel ohne Cache") %]</a>
+</p>
+<p>
+<a class="btn btn-primary mb-2" href="[% path_prefix %]/[% config.get('users_loc') %]/id/[% user.ID %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/searchindex.html?l=[% lang %]" >[% msg.maketext("Zum Suchindex") %]</a>
+</p>
+[% END %]

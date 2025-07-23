@@ -102,6 +102,12 @@ if ($authority){
     $logger->info("### $database: Building authority index");
     $xapian_cmd = "$config->{'base_dir'}/conv/authority2xapian.pl";
     $es_cmd     = "$config->{'base_dir'}/conv/authority2elasticsearch.pl";
+
+    my $cmd = "cd $rootdir/data/$database/ ; $xapian_cmd --loglevel=$loglevel -unpack-only --database=$database";
+
+    $logger->info("Executing: $cmd");
+    
+    system($cmd);        
 }
 else {
     $logger->info("### $database: Building catalog index");
@@ -139,7 +145,7 @@ INDEX_PART:
 	    
 	    my $cmd = "cd $rootdir/data/$database/ ; $xapian_cmd --loglevel=$loglevel -with-sorting -with-positions --database=$xapianindexname --indexpath=$indexpathtmp";
 	    if ($authority){
-		$cmd = "cd $rootdir/data/$database/ ; $xapian_cmd --loglevel=$loglevel -with-sorting -with-positions --database=$database --indexpath=$indexpathtmp";
+		$cmd = "cd $rootdir/data/$database/ ; $xapian_cmd --loglevel=$loglevel -with-sorting -with-positions -without-unpack --database=$database --indexpath=$indexpathtmp";
 	    }
 	    
 	    if ($incremental){
@@ -158,7 +164,7 @@ INDEX_PART:
 	    my $cmd = "cd $rootdir/data/$database/ ; $es_cmd --database=$database";
 
 	    if ($authority){
-		$cmd = "cd $rootdir/data/$database/ ; $es_cmd --loglevel=$loglevel --database=$database";
+		$cmd = "cd $rootdir/data/$database/ ; $es_cmd --loglevel=$loglevel --database=$database -without-unpack";
 	    }
 	    
 	    if ($incremental){
@@ -177,7 +183,7 @@ INDEX_PART:
 	if ($searchengine eq "solr"){
 	    $logger->info("### $database: Importing data into Solr searchengine");
 	    
-	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2solr.pl --loglevel=$loglevel --database=$database";
+	    my $cmd = "cd $rootdir/data/$database/ ; $config->{'base_dir'}/conv/file2solr.pl --loglevel=$loglevel --database=$database -without-unpack";
 	    
 	    $logger->info("Executing: $cmd");
 	    

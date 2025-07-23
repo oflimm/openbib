@@ -217,9 +217,13 @@ source_systems:
      has_authorities: 1
   Aleph:
      has_authorities: 0
+  Alma:
+     has_authorities: 0
   Allegro:
      has_authorities: 0
   Aleph:
+     has_authorities: 0
+  Koha:
      has_authorities: 0
   Lars:
      has_authorities: 0
@@ -227,11 +231,15 @@ source_systems:
      has_authorities: 0
   MAB:
      has_authorities: 0
+  MARC:
+     has_authorities: 0
   'Backend: Z3950':
      has_authorities: 0
   'Backend: EZB':
      has_authorities: 0
   'Backend: DBIS':
+     has_authorities: 0
+  'Backend: DBIS-JSON':
      has_authorities: 0
   'Backend: BibSonomy':
      has_authorities: 0
@@ -242,6 +250,8 @@ source_systems:
   'Backend: Gesis':
      has_authorities: 0
   'Backend: JOP':
+     has_authorities: 0
+  'Backend: LobidGND':
      has_authorities: 0
   Anderes:
      has_authorities: 0
@@ -893,21 +903,46 @@ hbzzeitfernleih_exturl: ''
 
 # Externer Link zur Elektronischen ZeitschriftenBibliothek (EZB)
 # fuer den entsprechenden Standort (hier USBK)
-ezb_exturl: http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=IS&jq_bool2=AND&jq_not2=+&jq_type2=KT&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations%5B%5D=all&selected_colors%5B%5D=1&selected_colors%5B%5D=2&selected_colors%5B%5D=4
-ezb_baseurl: http://rzblx1.uni-regensburg.de/ezeit/
+ezb_exturl: https://ezb.ur.de/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=IS&jq_bool2=AND&jq_not2=+&jq_type2=KT&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations%5B%5D=all&selected_colors%5B%5D=1&selected_colors%5B%5D=2&selected_colors%5B%5D=4
+ezb_baseurl: https://ezb.ur.de/
 
 ezb_bibid: USBK
 ezb_colors: 3
 
 # Externer Link zum DatenBankInfoSystem (DBIS)
-dbis_exturl: http://www.bibliothek.uni-regensburg.de/dbinfo/?bib_id=usb_k
-dbis_baseurl: http://www.bibliothek.uni-regensburg.de/dbinfo/
+dbis_exturl: https://dbis.ur.de/USBK
+dbis_baseurl: https://dbis.ur.de/
 
-dbis_bibid: usb_k
+dbis_bibid: USBK
 # 1 (frei) + 4 (Hochschulnetz online) + 8 (Hochschulnetz Citrix) + 32 (Hochschulnetz eingeschraenkt)
 dbis_colors: 45
 # 8 (Pay-per-use) + 32 (DFG Nationallizenz)
 dbis_ocolors: 32
+
+dbis:
+  bibid: USBK
+  exturl: https://dbis.ur.de/USBK
+  baseurl: https://dbis.ur.de/  
+  colors: 45 # 1 (frei) + 4 (Hochschulnetz online) + 8 (Hochschulnetz Citrix) + 32 (Hochschulnetz eingeschraenkt)
+  ocolors: 32 # 8 (Pay-per-use) + 32 (DFG Nationallizenz)
+  api_timeout: 5
+  api_logging_threshold: 3000 # log api calls longer than this (ms)
+
+ezb:
+  bibid: USBK
+  exturl: https://ezb.ur.de/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=IS&jq_bool2=AND&jq_not2=+&jq_type2=KT&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations%5B%5D=all&selected_colors%5B%5D=1&selected_colors%5B%5D=2&selected_colors%5B%5D=4
+  baseurl: https://ezb.ur.de/  
+  colors: 3
+  api_timeout: 5
+  api_logging_threshold: 3000 # log api calls longer than this (ms)
+
+lobidgnd:
+  api_timeout: 5
+  api_logging_threshold: 3000 # log api calls longer than this (ms)
+
+jop:
+  api_timeout: 5
+  api_logging_threshold: 3000 # log api calls longer than this (ms)
 
 # DBPedia Base-URL
 dbpedia_base: 'https://dbpedia.org/data/'

@@ -85,7 +85,7 @@
   <div class="offcanvas-body">
     <div>
 
-        [% PROCESS common/subtemplate database="dbisjson" name="classifications_sidebar" %]
+        [% PROCESS common/subtemplate database=database name="classifications_sidebar" %]
 
     </div>
     
@@ -115,7 +115,7 @@
     detail_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}.html?l=${lang}";
 
     title  = record.fields.${"T0331"}.first.content;
-    access = record.generic_attributes.access_type;
+    access = record.generic_attributes.access_type || record.fields.${"T4120"}.first.subfield;;
 
     fulltext_availability  = "";
     fulltext_icon = config.get('dbis_green_yellow_red_img');
@@ -183,7 +183,7 @@ in: [% resulttime %] [% msg.maketext("Sekunden") %]
    </div>
    <div class="col-md-3 d-none d-md-block">
 
-        [% PROCESS common/subtemplate database="dbisjson" name="classifications_sidebar" %]
+        [% PROCESS common/subtemplate database=database name="classifications_sidebar" %]
 
   </div>
 

@@ -627,7 +627,7 @@ display_types = {
    'Hinweise' => 'list',
    'Druckausgabe' => 'list',
 #   'Schlagwörter' => 'list',
-   'Fachgebiete' => 'list',   
+#   'Fachgebiete' => 'list',   
    
 };
 

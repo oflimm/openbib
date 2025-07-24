@@ -338,7 +338,7 @@
 
     # E-Book/Inhaltsverzeichnis vorhanden
     fulltext      = item.${'T4120'}.first.content ;
-    fulltext_type = record.generic_attributes.access_type;
+    fulltext_type = record.generic_attributes.access_type || item.${'T4120'}.first.subfield;
     toc           = item.${'T4110'}.first.content ;
 
     # DBIS/EZB? Dann umleiten

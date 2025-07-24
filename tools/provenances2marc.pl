@@ -49,7 +49,7 @@ my ($help,$logfile,$loglevel);
 
 &GetOptions(
     "logfile"  => \$logfile,
-    "loglevel"  => \$loglevel,
+    "loglevel" => \$loglevel,
     "help"     => \$help,
     );
 
@@ -87,13 +87,16 @@ my $idx = 1;
 
 my $provenances_by_nzid = {};
 
+# 1) Provenienzfelder sammeln und jeweils in einer NZ-ID buendeln
 while (my $json = <>){
     my $json_ref = decode_json $json;
 
     my $tpro_merkmal = "";
 
+    # Vokabularium fuer Besetzung von 361$f zum Regexp-Parsing
+    # von tpro_description-Inhalten
     my %tpro_merkmale = (
-	# tpro_description-Teil => Ziel Merkmal
+	# tpro_description-Regexp => liefert Merkmal fuer 361$f
 	'^Autogramm' => 'Autogramm',
 	'^Einband' => 'Einband',
 	'^Einlage' => 'Einlage',
@@ -176,7 +179,7 @@ while (my $json = <>){
 	    '361_f' => $field_361_f,
 	    '361_l' => $field_361_l,
 	    '361_z' => $field_361_z,
-	    '361_y' => $field_361_y,
+#	    '361_y' => $field_361_y, # Aktuelle Signatur derzeit nicht in Ausgabe erwuenscht
     };
     
     if ($idx % 1000 == 0){
@@ -186,6 +189,9 @@ while (my $json = <>){
     $idx++;
 }
 
+# 2) Provenienzen zu allen NZ-IDs in MARC-Records umwandeln.
+# Durch die Buendelung in 1) koennen alle Provenienzen zu einer NZ-ID in einem
+# MARC-Record zusammengefasst werden.
 foreach my $nz_id (keys %{$provenances_by_nzid}){
     my $output_fields_ref = {};
     
@@ -254,11 +260,17 @@ foreach my $nz_id (keys %{$provenances_by_nzid}){
 close ($out);
 
 sub print_help {
-    print "provenances2marc.pl - Erzeugen von MARC-Import-Dateien aus Provenienz-Exporten fuer 361 in die NZ des hbz\n\n";
-    print "Optionen: \n";
-    print "  -help                   : Diese Informationsseite\n\n";
-    print "  --loglevel=             : Loglevel\n\n";
-    print "  --logfile=              : Logfile\n\n";
-    
+    print << 'HELP';
+provenances2marc.pl - Erzeugen von MARC-Import-Dateien aus Provenienz-Exporten fuer 361 in die NZ des hbz
+
+Optionen:
+  -help                   : Diese Informationsseite
+  --loglevel=             : Loglevel
+  --logfile=              : Logfile
+
+Weitere Umwandlung nach MARCXML ohne Leader z.B. mit:
+
+yaz-marcdump -o marcxml provenances_de38_361.mrc |egrep -v '<leader>' > provenances_de38_361.xml
+HELP
     exit;
 }

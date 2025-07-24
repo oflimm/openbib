@@ -338,7 +338,7 @@
 
     # E-Book/Inhaltsverzeichnis vorhanden
     fulltext      = item.${'T4120'}.first.content ;
-    fulltext_type = item.${'T4120'}.first.subfield ;    
+    fulltext_type = record.generic_attributes.access_type || item.${'T4120'}.first.subfield;
     toc           = item.${'T4110'}.first.content ;
 
     # DBIS/EZB? Dann umleiten
@@ -371,30 +371,18 @@
       fulltext_availability = "red";
       fulltext_icon = config.get('ezb_red_img');
       fulltext_desc = msg.maketext("Kein lizensierter Zugriff");
-      
-    ELSIF record.generic_attributes.access.desc_short == 'frei im Web' ;
+    
+    ELSIF record.generic_attributes.access_type == 'g';
       fulltext_availability = "lawngreen";
       fulltext_icon = config.get('dbis_green_img');
       fulltext_desc = msg.maketext("Volltext mit freiem Zugang");
-    ELSIF record.generic_attributes.access.desc_short.match('Uninetz') || record.generic_attributes.access.desc_short.match('Uni-Netz') ;
+    ELSIF record.generic_attributes.access_type == 'y';
       fulltext_availability = "yellow";
       fulltext_icon = config.get('dbis_yellow_img');
       fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
-    ELSIF record.generic_attributes.access.desc_short == 'eingeschr&auml;nkt' ;
-      fulltext_icon = config.get('dbis_yellow_red_img');
-      fulltext_desc = msg.maketext("Eingeschränkter Zugriff");
-    ELSIF record.generic_attributes.access.desc_short == 'Nationallizenz' ;
-      fulltext_icon = config.get('dbis_de_img');
-      fulltext_desc = msg.maketext("Nationallizenz");
-    ELSIF record.generic_attributes.access.desc_short == '' ;
-      fulltext_icon = config.get('dbis_red_img');
-      fulltext_desc = record.generic_attributes.color.desc ;      
-    ELSIF record.generic_attributes.color.code == 5 ;
-      fulltext_icon = config.get('dbis_green_green_red_img') ;
-      fulltext_desc = record.generic_attributes.color.desc ;
-    ELSIF record.generic_attributes.color.code == 6 ;
-      fulltext_icon = config.get('dbis_yellow_red_img');
-      fulltext_desc = record.generic_attributes.color.desc ;
+    ELSIF record.generic_attributes.access_type == 'r';
+      fulltext_icon = config.get('ezb_red_img');
+      fulltext_desc = msg.maketext("Kein lizensierter Zugriff");
     ELSE ;
       fulltext_icon = config.get('dbis_green_yellow_red_img') ;
       fulltext_desc = record.generic_attributes.color.desc ;
@@ -490,23 +478,28 @@
               <a class="btn btn-primary pe-2" href="[% IF NOT hide_detail && NOT hide_hit %][% detail_url %][% ELSE %][% path_prefix %]/[% config.get('login_loc') %].html?l=[% lang %]&redirect_to=[% uri_escape(detail_url) %][% END %]" alt="[% title %]" title="[% title %]">[% IF hide_detail %]<i class="fas fa-ban"></i>[% ELSE %]<i class="fas fa-eye"></i>[% END %] <span>Details</span></a>
             </div>
 [%   END # record_from_cache %]	    
-[% IF NOT with_cartitems_delete && NOT hide_hit && NOT record_from_cache %]
+[%   IF NOT with_cartitems_delete && NOT hide_hit && NOT record_from_cache %]
 	    <div class="pe-1 pb-1">
               <a  class="btn btn-primary pe-2" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST&dbname=[% record.database %]&titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span>[% msg.maketext("Merken") %]</span></a>
 	    </div>
-[% END %]
+[%   END %]
 
-[% IF fulltext && fulltext.match('warpto') %]
+[%   IF fulltext_type == 'r' %]
+	    <div class="pe-1 pb-1">	    
+              <a class="btn btn-primary pe-2" href="[% detail_url %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-ban"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
+	    </div>
+[%   ELSIF fulltext && fulltext.match('warpto') %]
 	    <div class="pe-1 pb-1">	    
               <a class="btn btn-primary pe-2" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Volltext") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
 	    </div>
-[% END %]
+[%   END %]
 
-[% IF toc %]
+[%   IF toc %]
 	    <div class="pe-1 pb-1">	    
               <a class="btn btn-primary pe-2" href="[% toc %]" target="_blank" title="[% msg.maketext("Inhaltsverzeichnis") %]"><i class="fas fa-list"></i> <span class="d-none d-sm-inline">[% toc_i18n %]</span></a>
 	    </div>
-[% END %]
+
+[%  END %]
 
 
 [% END # id / database%]

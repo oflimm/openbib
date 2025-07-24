@@ -14,6 +14,16 @@
 
 [%-
 
+  denylist_cln = {
+    '39' = 1 # Sport
+    '27' = 1 # Militaerwissenschaft
+    '23' = 1 # Maschinenbau
+    '11' = 1 # Elektrotechnik
+    '42' = 1 # Werkstoffwissenschaften
+    '1' = 1 # Agrar
+    '7' = 1 # Architektur
+  };
+
   with_cloud = 1;
 
 -%]
@@ -45,9 +55,9 @@
 [% FOREACH classification IN classifications;
    searchterm    = classification.name;
    searchprefix  = config.get('searchfield').classification.prefix;
-
+   NEXT IF denylist_cln.${searchterm};
 %]
-<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbisjson;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% classification.desc %] ([% classification.count %])</a>[% IF classification.is_collection %]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("DBIS-Sammlung der USB Köln") %]" alt="[% msg.maketext("DBIS-Sammlung der USB Köln") %]" style="vertical-align:bottom"/>[% END %]</li>
+<li class="list-group-item"><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=[% database %];sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% classification.desc %] ([% classification.count %])</a>[% IF classification.is_collection %]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("DBIS-Sammlung der USB Köln") %]" alt="[% msg.maketext("DBIS-Sammlung der USB Köln") %]" style="vertical-align:bottom"/>[% END %]</li>
 [% END %]
 </ul>
 </div>
@@ -77,7 +87,7 @@
 
    NEXT IF denylist_cln.${searchterm};
 -%]
-<li class="[% itemclass %]"><span>[% classification.count %] Titel sind in der Fachgruppe</span><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=dbisjson;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]"  class="tag" title="[% classification.count %] Zeitschriften sind in der Fachgruppe [% classification.desc %]">[% classification.desc %]</a>[% IF classification.is_collection %]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("DBIS-Sammlung der USB Köln") %]" alt="[% msg.maketext("DBIS-Sammlung der USB Köln") %]" style="vertical-align:bottom"/>[% END %]</li>
+<li class="[% itemclass %]"><span>[% classification.count %] Titel sind in der Fachgruppe</span><a href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=[% database %];sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]"  class="tag" title="[% classification.count %] Zeitschriften sind in der Fachgruppe [% classification.desc %]">[% classification.desc %]</a>[% IF classification.is_collection %]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("DBIS-Sammlung der USB Köln") %]" alt="[% msg.maketext("DBIS-Sammlung der USB Köln") %]" style="vertical-align:bottom"/>[% END %]</li>
 [% END %]
 </ol>
 <!-- Ende Tag-Cloud -->

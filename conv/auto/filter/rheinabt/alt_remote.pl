@@ -2,7 +2,7 @@
 
 #####################################################################
 #
-#  post_remote.pl
+#  alt_remote.pl
 #
 #  Dieses File ist (C) 2005-2006 Oliver Flimm <flimm@openbib.org>
 #
@@ -39,6 +39,6 @@ my $konvdir       = $config->{'conv_dir'};
 
 my $pool          = $ARGV[0];
 
-print "### $pool: Extrahiere der Daten der Rheinischen Abteilung aus den USB-Daten\n";
+print "### $pool: Extrahiere die Daten aus uni\n";
 
 system("$rootdir/filter/$pool/gen-subset.pl $pool");

@@ -11,6 +11,32 @@
 #
 #######################################################################
 -%]
+[%-
+
+scope_desc = {
+  'admin' => msg.maketext("Administration: Startseite")
+  'admin_authenticators' => msg.maketext("Administration: Anmeldeziele")
+  'admin_clusters' => msg.maketext("Administration: Cluster")
+  'admin_databases' => msg.maketext("Administration: Kataloge")
+  'admin_locations' => msg.maketext("Administration: Standorte")
+  'admin_profiles' => msg.maketext("Administration: Katalogprofile")
+  'admin_roles' => msg.maketext("Administration: Rollen")
+  'admin_searchprofiles' => msg.maketext("Administration: Suchprofile")
+  'admin_servers' => msg.maketext("Administration: Server")
+  'admin_sessions' => msg.maketext("Administration: Sessions")
+  'admin_statistics' => msg.maketext("Administration: Statistiken")
+  'admin_templates' => msg.maketext("Administration: Templates")
+  'admin_topics' => msg.maketext("Administration: Themengebiete")
+  'admin_users' => msg.maketext("Administration: Nutzer")
+  'admin_views' => msg.maketext("Administration: Views")
+  'viewadmin' => msg.maketext("Portal-Administration: Startseite")
+  'viewadmin_roles' => msg.maketext("Portal-Administration: Rollen")
+  'viewadmin_templates' => msg.maketext("Portal-Administration: Templates")
+  'viewadmin_users' => msg.maketext("Portal-Administration: Nutzer")
+  'viewadmin_views' => msg.maketext("Portal-Administration: Views")
+};
+
+-%]
 
 <form method="post" action="[% path_prefix %]/[% config.get('roles_loc') %]/id/[% roleinfo.rolename %]">
 <input type="hidden" name="_method"    value="PUT" />
@@ -49,7 +75,7 @@
 </thead>
 <tbody>
 [% FOREACH scope IN config.get_scopes %]
-<tr><td>[% scope %]</td>
+<tr><td>[% scope_desc.${scope} %]</td>
 <td><input type="checkbox" title="[% msg.maketext("Recht zu erzeugen") %]" name="[% scope %]|right_create" value="1" [% IF rights_of_role.${scope}.right_create %]checked="checked" [% END %]/></td>
 <td><input type="checkbox" title="[% msg.maketext("Recht zu lesen") %]" name="[% scope %]|right_read"   value="1" [% IF rights_of_role.${scope}.right_read %]checked="checked" [% END %]/></td>
 <td><input type="checkbox" title="[% msg.maketext("Recht zu ändern") %]" name="[% scope %]|right_update" value="1" [% IF rights_of_role.${scope}.right_update %]checked="checked" [% END %]/></td>

@@ -74,6 +74,9 @@ sub new {
     my $queryoptions       = exists $arg_ref->{queryoptions}
         ? $arg_ref->{queryoptions}            : OpenBib::QueryOptions->new;
 
+    my $database           = exists $arg_ref->{database}
+        ? $arg_ref->{database}                : undef;
+    
     # Set API specific defaults
     my $bibid     = exists $arg_ref->{bibid}
         ? $arg_ref->{bibid}       : $config->{dbis}{bibid};
@@ -83,9 +86,6 @@ sub new {
 
     my $lang      = exists $arg_ref->{l}
         ? $arg_ref->{l}           : 'de';
-
-    my $database        = exists $arg_ref->{database}
-        ? $arg_ref->{database}         : undef;
 
     my $options            = exists $arg_ref->{options}
         ? $arg_ref->{options}                 : {};
@@ -106,8 +106,8 @@ sub new {
     $ua->max_redirects(2);
 
     $self->{client}        = $ua;
-        
-    $self->{sessionID} = $sessionID;
+   
+    $self->{sessionID}     = $sessionID;
 
     if ($options){
         $self->{_options}       = $options;
@@ -143,7 +143,7 @@ sub get_titles_record {
     ? $arg_ref->{id}        : '';
 
     my $database = exists $arg_ref->{database}
-        ? $arg_ref->{database}  : 'dbisjson';
+        ? $arg_ref->{database}  : $self->{database};
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -323,7 +323,9 @@ sub get_titles_record {
 		foreach my $access_ref (@{$license_ref->{accesses}}){
 		    my $this_access_url   = $access_ref->{accessUrl};
 		    
-		    my $this_access_label = $access_ref->{label};
+		    my $this_access_label         = $access_ref->{label};
+		    my $this_access_label_long    = $access_ref->{labelLongest} || $access_ref->{labelLong};
+		    
 		    my $this_access_id    = $access_ref->{id};
 		    my $this_access_type  = $access_ref->{type}{id};
 		    
@@ -346,7 +348,8 @@ sub get_titles_record {
 			$record->set_field({field => 'T0662', subfield => $this_access, mult => $mult, content => $config->{dbis}{baseurl}.$this_access_url});
 
 			# Beschreibung zum URL
-			$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => $this_access_label});
+			$record->set_field({field => 'T0663', subfield => '', mult => $mult, content => $this_access_label}) if ($this_access_label);
+			$record->set_field({field => 'T0664', subfield => '', mult => $mult, content => $this_access_label_long}) if ($this_access_label_long);
 
 			# Expliziter URL zum Volltext
 			$record->set_field({field => 'T4120', subfield => $this_access, mult => $mult, content => $config->{'dbis'}{'baseurl'}.$this_access_url});
@@ -1131,7 +1134,7 @@ sub get_popular_records {
 	    $logger->debug("URLs: ".join(' ',@urls));
 	}
 	
-	my $record = new OpenBib::Record::Title({id => $id, database => 'dbisjson', generic_attributes => { access_type => $access_type }});
+	my $record = new OpenBib::Record::Title({id => $id, database => $self->{database}, generic_attributes => { access_type => $access_type }});
 	
 	$logger->debug("Title is $title");
 	
@@ -1205,7 +1208,7 @@ sub get_search_resultlist {
 
 	my $access_type = $match_ref->{access_type};
         
-        my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => 'dbisjson', generic_attributes => { access_type => $access_type }});
+        my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => $self->{database}, generic_attributes => { access_type => $access_type }});
 
         $logger->debug("Title is ".$match_ref->{title});
         

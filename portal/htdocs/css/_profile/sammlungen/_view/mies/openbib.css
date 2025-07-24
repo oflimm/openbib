@@ -302,7 +302,8 @@
     #ob-startpage .landing-page-img {
 	padding-bottom: 40px;
 /*	background:url('/images/openbib/views/unikatalog/AnsichtUniversitaetsstrasseV2b.png') left 100% no-repeat; 	*/
-	background:url('/images/openbib/views/mies/Portal_Maria_Mies_Suchfeldhintergrund_Briefmarkencollage.jpg') left 100% no-repeat; 	
+/*	background:url('/images/openbib/views/mies/Portal_Maria_Mies_Suchfeldhintergrund_Briefmarkencollage.jpg') left 100% no-repeat; 	 */
+	background:url('/images/openbib/views/mies/portal_maria_mies_banner_1869x1402.jpg') left 100% no-repeat; 	
 	background-position: 0% 15%;
 	background-size: cover;
 	height: 500px !important;

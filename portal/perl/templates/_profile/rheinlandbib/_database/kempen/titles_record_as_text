@@ -1,0 +1,1000 @@
+[%-
+
+     items = record.get_holding;
+
+     record_type = "" ; 
+     IF normdata.${'T4410'}.first.content.match('Monographie');
+       record_type = "mono";
+       PROCESS common/subtemplate name="visible_categories_title_mono";
+       PROCESS common/subtemplate name="visible_categories_title_mono_supplement";
+     ELSIF normdata.${'T4410'}.first.content.match('Zeitschrift/Serie');
+       record_type = "journal";        
+       PROCESS common/subtemplate name="visible_categories_title_journal";
+       PROCESS common/subtemplate name="visible_categories_title_journal_supplement";
+     ELSIF  normdata.${'T4410'}.first.content.match('Aufsatz');
+       record_type = "article";
+       PROCESS common/subtemplate name="visible_categories_title_article";
+       PROCESS common/subtemplate name="visible_categories_title_article_supplement";
+     ELSE;
+       record_type = "default";
+       PROCESS common/subtemplate name="visible_categories_title";
+       PROCESS common/subtemplate name="visible_categories_title_supplement";
+     END;
+
+   rswkswt_done      = {};
+
+   normdata = record.to_custom_field_scheme_1;
+
+   laender_map = {
+     'EG' = 'Ägypten',
+     'AD' = 'Andorra',
+     'AR' = 'Argentinien',
+     'AM' = 'Armenien',
+     'AU' = 'Australien',
+     'BE' = 'Belgien',
+     'BO' = 'Bolivien',
+     'BR' = 'Brasilien',
+     'BG' = 'Bulgarien',
+     'CL' = 'Chile',
+     'CN' = 'China',
+     'DK' = 'Dänemark',
+     'DE' = 'Deutschland',
+     'DXDE' = 'Deutschland',
+     'EE' = 'Estland',
+     'FI' = 'Finnland',
+     'FR' = 'Frankreich',
+     'GE' = 'Georgien',
+     'GI' = 'Gibraltar',
+     'GD' = 'Grenada',
+     'GR' = 'Griechenland',
+     'GB' = 'Großbritannien',
+     'HK' = 'Hongkong',
+     'IN' = 'Indien',
+     'IQ' = 'Irak',
+     'IR' = 'Iran',
+     'IE' = 'Irland',
+     'IS' = 'Island',
+     'IL' = 'Israel',
+     'IT' = 'Italien',
+     'YUCS' = 'Jugoslawien',
+     'CA' = 'Kanada',
+     'CO' = 'Kolumbien',
+     'QV' = 'Kosovo',
+     'HR' = 'Kroatien',
+     'LV' = 'Lettland',
+     'LI' = 'Liechtenstein',
+     'LT' = 'Litauen',
+     'LU' = 'Luxemburg',
+     'MT' = 'Malta',
+     'MX' = 'Mexiko',
+     'MC' = 'Monaco',
+     'MD' = 'Moldawien',
+     'MC' = 'Monaco',
+     'ME' = 'Montenegro',
+     'NL' = 'Niederlande',
+     'NO' = 'Norwegen',
+     'AT' = 'Österreich',
+     'AAAT' = 'Österreich',
+     'PK' = 'Pakistan',
+     'PO' = 'Polen',
+     'PT' = 'Portugal',
+     'RO' = 'Rumänien',
+     'RU' = 'Russland',
+     'SM' = 'San Marino',
+     'SH' = 'Sankt Helena',
+     'SE' = 'Schweden',
+     'CH' = 'Schweiz',
+     'RS' = 'Serbien',
+     'SK' = 'Slowakei',
+     'SI' = 'Slowenien',
+     'SUHH' = 'Sowjetunion',
+     'ES' = 'Spanien',
+     'SY' = 'Syrien',
+     'CSHH' = 'Tschechoslowakei',
+     'TR' = 'Türkei',
+     'UA' = 'Ukraine',
+     'HU' = 'Ungarn',
+     'US' = 'USA',
+     'VA' = 'Vatikanstadt',
+     'BY' = 'Weißrussland',
+     'CY' = 'Zypern',
+     'ZZ' = 'Land unbekannt',
+   };
+
+   lang_map = {
+        "ara"      => msg.maketext("Arabisch"),
+        "arm"      => msg.maketext("Armenisch"),
+        "arab."    => msg.maketext("Arabisch"),
+        "ces"      => msg.maketext("Tschechisch"),
+        "chi"      => msg.maketext("Chinesisch"),
+        "cop"      => msg.maketext(""),
+        "cze"      => msg.maketext("Tschechisch"),
+        "de"       => msg.maketext("Deutsch"),
+        "dt."      => msg.maketext("Deutsch"),
+        "dut"      => msg.maketext("Niederländisch"),
+        "dut."     => msg.maketext("Niederländisch"),
+        "ell"      => msg.maketext("Neu-Griechisch"),
+        "en"       => msg.maketext("Englisch"),
+        "eng"      => msg.maketext("Englisch"),
+        "engl."    => msg.maketext("Englisch"),
+        "fin"      => msg.maketext("Finnisch"),
+        "finn."    => msg.maketext("Finnisch"),
+        "fr"       => msg.maketext("Französisch"),
+        "franz."       => msg.maketext("Französisch"),
+        "fre"      => msg.maketext("Französisch"),
+        "ger"      => msg.maketext("Deutsch"),
+        "gre"      => msg.maketext("Neu-Griechisch"),
+        "grc"      => msg.maketext("Alt-Griechisch"),
+        "griech."  => msg.maketext("Griechisch"),
+        "grk"      => msg.maketext("Griechisch"),
+        "he"       => msg.maketext("Hebräisch"),
+        "heb"      => msg.maketext("Hebräisch"),
+        "hun"      => msg.maketext("Ungarisch"),
+        "ice"      => msg.maketext("Isländisch"),
+        "islaend." => msg.maketext("Isländisch"),
+        "ita"      => msg.maketext("Italienisch"),
+        "ital."    => msg.maketext("Italienisch"),
+        "jpn"      => msg.maketext("Japanisch"),
+        "lat"      => msg.maketext("Latein"),
+        "lat."     => msg.maketext("Latein"),
+        "lats"     => msg.maketext("Latein"),
+        "nds"      => msg.maketext("Niederdeutsch"),
+        "neugriech."   => msg.maketext("Neu-Griechisch"),
+        "niederlaend." => msg.maketext("Niederländisch"),
+        "pol"      => msg.maketext("Polnisch"),
+        "rus"      => msg.maketext("Russisch"),
+        "russ."    => msg.maketext("Russisch"),
+        "spa"      => msg.maketext("Spanisch"),
+        "span."    => msg.maketext("Spanisch"),
+        "swe"      => msg.maketext("Schwedisch"),
+        "syc"      => msg.maketext("Alt-Syrisch"),
+        "tschech." => msg.maketext("Tschechisch"),
+        "tur"      => msg.maketext("Türkisch"),
+        "ungar."   => msg.maketext("Ungarisch"),
+    };
+
+
+# Preprocessing
+
+rswkswt_done = {};
+
+# Switching processed links
+
+IF normdata.${'T4662'}.defined ;
+   normdata.${'T0662'} = normdata.${'T4662'};
+   normdata.${'T0663'} = normdata.${'T4663'};
+   normdata.${'T2662'} = [];
+   normdata.${'T2662'}.delete;
+   normdata.${'T2663'} = [];
+   normdata.${'T2663'}.delete;   
+ELSE;
+   normdata.${'T0662'} = [];
+   normdata.${'T0663'} = [];
+   normdata.${'T2662'} = [];
+   normdata.${'T2663'} = [];
+   normdata.${'T0662'}.delete;
+   normdata.${'T0663'}.delete;
+   normdata.${'T2662'}.delete;
+   normdata.${'T2663'}.delete;
+END;
+
+# Lizensierter Volltext? (Ausgabe Zugriffshinweis)
+is_licensed = 0;
+is_oa = 0; 
+#USE dumper;dumper.dump(normdata.${"T5003"});
+
+FOREACH item IN normdata.${'T4120'} ;
+   IF item.${'g'} ;
+      is_licensed = 0;
+      is_oa = 1 ;
+      LAST ;
+   ELSIF item.${'y'};
+      is_licensed = 1;
+      LAST ;
+   END;
+END;
+
+is_bindeeinheit = 0;
+
+content_map = {};
+
+FOREACH field IN normdata;
+
+  category = field.key ;
+
+  FOREACH thisfield IN field.value;
+    
+    SWITCH category;
+
+    CASE "T0035";
+         laenderdesc   = laender_map.${content};
+         IF laenderdesc ;
+            content   = laenderdesc ;
+         END ;
+         IF NOT content_map.${'T0035'} ;
+	    content_map.${'T0035'} = [];
+	 END;
+         content_map.${'T0035'}.push(content);
+
+    CASE "T0020";
+    
+         content = thisfield.${'9'};
+
+         IF thisfield.${'a'} && NOT content;
+	   content = thisfield.${'a'};
+         END;
+	 
+         IF content ;
+           IF NOT content_map.${'ISBN'} ;
+	      content_map.${'ISBN'} = [];
+	   END;
+           content_map.${'ISBN'}.push(content);
+	 END;
+
+    CASE "T0022";
+    
+         content = thisfield.${'9'};
+
+         IF thisfield.${'a'} && NOT content;
+	   content = thisfield.${'a'};
+         END;
+	 
+         IF content ;
+           IF NOT content_map.${'ISSN'} ;
+	      content_map.${'ISSN'} = [];
+	   END;
+           content_map.${'ISSN'}.push(content);
+	 END;
+
+    CASE "T0041"; # Sprache
+         content = thisfield.${'a'} ;
+
+         langdesc   = lang_map.${content};
+         IF langdesc ;
+            content   = langdesc ;
+         END;
+
+         IF content ;
+           IF NOT content_map.${"Sprache"} ;
+	      content_map.${"Sprache"} = [];
+	   END;
+           content_map.${"Sprache"}.push(content);
+	 END;
+
+    CASE "T0082";    
+         content = thisfield.${'a'};
+         thisid  = thisfield.${'6'};
+         supplement = "";
+	 
+         IF content ;
+           content   = "${content} ${supplement}";
+           IF NOT content_map.${'Klassifikation'} ;
+	      content_map.${'Klassifikation'} = [];
+	   END;
+           content_map.${'Klassifikation'}.push(content);
+	 END;
+
+    CASE [ "T0100" "T0700" ];
+         content = thisfield.${'a'} ;
+	 supplement = thisfield.${'e'} ;
+         thisid  = thisfield.${'0'};
+
+         gndid = "";
+	 IF thisid.match('(DE-588)');
+	    gndid = thisid.replace('\(DE-588\)','');
+	 END;
+	 	 
+         IF content ;
+           content   = "${content} ${supplement}";
+           IF NOT content_map.${'Person'} ;
+	     content_map.${'Person'} = [];
+	   END;
+           content_map.${'Person'}.push(content);
+	 END;
+
+    CASE [ "T0110" "T0710" ];
+         content = thisfield.${'a'} ;
+	 supplement = thisfield.${'e'} ;
+         thisid  = thisfield.${'0'};
+
+         gndid = "";
+	 IF thisid.match('(DE-588)');
+	    gndid = thisid.replace('\(DE-588\)','');
+	 END;
+	 
+         IF content ;
+           content   = "${content} ${supplement}";
+	 
+           IF NOT content_map.${'Institution'} ;
+	     content_map.${'Institution'} = [];
+	   END;
+           content_map.${'Institution'}.push(content);
+	 END;
+
+    CASE "T0240"; # Originaltitel
+         original_title     = "";
+	 supplemental_title = "";
+	 
+         IF thisfield.${'a'} ;
+	   original_title = thisfield.${'a'};
+	 END;
+	 
+         IF thisfield.${'g'} ;
+	   supplemental_title = thisfield.${'g'};	 
+	 END;
+
+         IF supplemental_title ;
+	    original_title = "${original_title} &lt;${supplemental_title}&gt;";
+	 END;
+
+         IF original_title ;
+	   content = original_title;
+
+           IF NOT content_map.${'Originaltitel'} ;
+	     content_map.${'Originaltitel'} = [];
+	   END;
+           content_map.${'Originaltitel'}.push(content);
+	 END;
+
+    CASE "T0245"; # HST
+         main_title         = "";
+	 supplemental_title = "";
+	 published_by       = "";
+	 part_title         = "";
+	 
+         IF thisfield.${'a'} ;
+	   main_title = thisfield.${'a'};
+	 END;
+	 
+         IF thisfield.${'b'} ;
+	   supplemental_title = thisfield.${'b'};	 
+	 END;
+
+         IF thisfield.${'c'} ;
+	   published_by = thisfield.${'c'};	 
+	 END;
+
+         IF thisfield.${'p'} ;
+	   part_title = thisfield.${'p'};	 
+	 END;
+
+         IF supplemental_title ;
+	    main_title = "${main_title} : ${supplemental_title}";
+	 END;
+
+         volume = "";
+	 
+         IF thisfield.${'n'} ;
+	   volume = thisfield.${'n'};	 
+	 END;
+
+         IF part_title ;
+	   content = part_title;
+
+           IF NOT content_map.${'Titel'} ;
+	     content_map.${'Titel'} = [];
+	   END;
+           content_map.${'Titel'}.push(content);	 
+         ELSIF main_title ;
+	   content = main_title;
+
+           IF NOT content_map.${'Titel'} ;
+	     content_map.${'Titel'} = [];
+	   END;
+           content_map.${'Titel'}.push(content);
+	 END;
+
+         IF volume ;
+           IF NOT content_map.${'Band'} ;
+	     content_map.${'Band'} = [];
+	   END;
+           content_map.${'Band'}.push(volume);
+	 END;
+
+         IF published_by ;
+           IF NOT content_map.${'Verfasserangabe'} ;
+	     content_map.${'Verfasserangabe'} = [];
+	   END;
+           content_map.${'Verfasserangabe'}.push(published_by);
+	 END;
+
+    CASE "T0246"; # Weitere Titel
+         content = thisfield.${'a'} ;
+
+         IF content ;
+           IF NOT content_map.${'Weitere Titel'} ;
+	     content_map.${'Weitere Titel'} = [];
+	   END;
+           content_map.${'Weitere Titel'}.push(content);
+	 END;
+
+    CASE "T0250"; # Auflage
+         content = thisfield.${'a'} ;
+
+         IF content ;
+           IF NOT content_map.${'Ausgabe'} ;
+	     content_map.${'Ausgabe'} = [];
+	   END;
+           content_map.${'Ausgabe'}.push(content);
+	 END;
+
+    CASE [ "T0260" "T0264" ]; # 
+         ortverlagjahr = [];
+
+         IF thisfield.${'a'} ; # Ort
+	   ort = thisfield.${'a'};
+	   ortverlagjahr.push("${ort}: ");
+	 END;
+
+         IF thisfield.${'b'} ; # Verlag
+           ortverlagjahr.push(thisfield.${'b'});
+         END;
+
+	 IF thisfield.${'c'} ; # Jahr
+	   jahr = thisfield.${'c'};
+           ortverlagjahr.push("(${jahr})");	 
+	 END;
+
+         ortverlagjahrcontent = ortverlagjahr.join(' ');
+
+         IF ortverlagjahrcontent ;
+           IF NOT content_map.${'Ort/Verlag/Jahr'} ;
+            content_map.${'Ort/Verlag/Jahr'} = [];
+	   END;
+           content_map.${'Ort/Verlag/Jahr'}.push(ortverlagjahrcontent);
+         END;
+
+    CASE "T0300"; # 
+         umfang = [];
+
+         IF thisfield.${'a'} ; # Kollation
+	   umfang.push(thisfield.${'a'});
+	 END;
+
+         IF thisfield.${'b'} ; # Illustr.
+           umfang.push(thisfield.${'b'});
+         END;
+
+         IF thisfield.${'c'} ; # Format
+           umfang.push(thisfield.${'c'});
+         END;
+
+         umfangcontent = umfang.join(' ');
+
+         IF umfangcontent ;
+           IF NOT content_map.${'Umfang'} ;
+            content_map.${'Umfang'} = [];
+	   END;
+           content_map.${'Umfang'}.push(umfangcontent);
+         END;
+
+    CASE "T0362"; # Erscheinungsverlauf
+         content = thisfield.${'a'} ;
+
+         IF content ;
+           IF NOT content_map.${'Erscheinungsverlauf'} ;
+	     content_map.${'Erscheinungsverlauf'} = [];
+	   END;
+           content_map.${'Erscheinungsverlauf'}.push(content);
+	 END;
+
+    CASE "T0830"; # Gesamttitel
+         content       = thisfield.${'a'} ;
+         volume        = thisfield.${'v'} ;	 
+         super_titleid = thisfield.${'w'} ;
+	          
+         IF content ;
+	   
+	   IF volume ;
+	     content = "${content} ; ${volume}";
+	   END ;
+	   
+           IF NOT content_map.${'Gesamttitel'} ;
+	     content_map.${'Gesamttitel'} = [];
+	   END;
+           content_map.${'Gesamttitel'}.push(content);
+	 END;
+
+    CASE [ "T0500" "T0555" "T0504" "T0530" ];    
+         content = thisfield.${'a'};
+
+         IF content ;
+           IF NOT content_map.${'Hinweis'} ;
+	      content_map.${'Hinweis'} = [];
+	   END;
+           content_map.${'Hinweis'}.push(content);
+	 END;
+
+    CASE "T0515";    
+         content = thisfield.${'a'};
+
+         IF content ;
+           IF NOT content_map.${'Erscheinungsweise'} ;
+	      content_map.${'Erscheinungsweise'} = [];
+	   END;
+           content_map.${'Erscheinungsweise'}.push(content);
+	 END;
+
+    CASE [ "T0505" ];    
+         content = thisfield.${'t'};
+
+         IF content ;
+           IF NOT content_map.${'Zusammenfassung'} ;
+	      content_map.${'Zusammenfassung'} = [];
+	   END;
+           content_map.${'Zusammenfassung'}.push(content);
+	 END;
+
+    CASE [ "T0520" ];    
+         content = thisfield.${'a'};
+
+         IF content ;
+           IF NOT content_map.${'Zusammenfassung'} ;
+	      content_map.${'Zusammenfassung'} = [];
+	   END;
+           content_map.${'Zusammenfassung'}.push(content);
+	 END;
+
+    CASE [ "T0600" "T0610" "T0648" "T0650" "T0651" "T0655" "T0688" "T0689" ];    
+         content = thisfield.${'a'};
+         thisid  = thisfield.${'0'};
+
+         gndid = "";
+	 IF thisid.match('(DE-588)');
+	    gndid = thisid.replace('\(DE-588\)','');
+	 END;
+
+         supplement = "";
+
+
+         IF content ;
+           content   = "${content} ${supplement}";
+           IF NOT content_map.${'Schlagwort'} ;
+	      content_map.${'Schlagwort'} = [];
+	   END;
+           content_map.${'Schlagwort'}.push(content);
+	 END;
+
+         rswkswt_done.${searchterm} = 1;
+
+    CASE [ "T0770" "T0776" ];    
+         content = thisfield.${'i'};
+         thistitle = thisfield.${'t'};
+         thisid    = thisfield.${'w'};
+
+         # ggf. verlinken
+         IF 0 == 1 && thistitle && thisid ;
+	    thisid = thisid.replace('\(.+?\)','');
+            searchterm    = thisid;
+            searchprefix  = config.get('searchfield').zdbid.prefix;
+
+            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
+
+	    thistitle = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+            content = "${content} ${thistitle}";
+	 END;
+	 
+         IF content ;
+           IF NOT content_map.${'Hinweis'} ;
+	      content_map.${'Hinweis'} = [];
+	   END;
+           content_map.${'Hinweis'}.push(content);
+	 END;
+
+
+    CASE [ "T0773" ];    
+         thisinfo  = thisfield.${'p'};
+         thistitle = thisfield.${'t'};
+         thisid    = thisfield.${'w'};
+         thismark  = thisfield.${'g'};
+         content   = "";
+	 
+         # ggf. verlinken
+         IF thisinfo == 'AngebundenAn' && thistitle && thisid.match('^[0-9]+$') ;
+	    content = thistitle;
+	    
+            IF thismark ;
+	      thismark = thismark.replace('^no:','');
+	      content  = "${content} (Signatur/Mediennummer: ${thismark})";
+	    END;
+
+	 END;
+
+         IF content ;
+	   is_bindeeinheit = 1;
+           IF NOT content_map.${'Zur Bindeeinheit'} ;
+	      content_map.${'Zur Bindeeinheit'} = [];
+	   END;
+           content_map.${'Zur Bindeeinheit'}.push(content);
+	 END;
+
+    CASE "T0856";
+         content = thisfield.${'3'};
+	 url     = thisfield.${'u'};
+
+         IF NOT content ;
+	   content = url;
+	 END;
+	 
+         IF NOT content_map.${'URL'} ;
+	    content_map.${'URL'} = [];
+	 END;
+         content_map.${'URL'}.push(content);
+
+    CASE "T0980";    
+         sammlung = thisfield.${'s'};
+
+         sammlungsvermerk = "";
+	 
+         IF sammlungen.${sammlung}.defined ;
+           sammlungsurl = sammlungen.${sammlung};
+           sammlungsvermerk = sammlung;
+         ELSIF sammlung ;
+           sammlungsvermerk = "${sammlung} (Portal im Aufbau)" ;
+         END ;
+
+         IF sammlungsvermerk ;
+           IF NOT content_map.${'Sammlungs-Portal'} ;
+	      content_map.${'Sammlungs-Portal'} = [];
+	   END;
+           content_map.${'Sammlungs-Portal'}.push(sammlungsvermerk);
+	 END;
+
+
+    CASE "T0983";    
+         content = thisfield.${'b'};
+
+         supplement = "";
+
+         bkdesc = ""; 
+         IF content.match('\d\d\.\d\d');         
+           bkresult      = bklookup.${content};
+	   IF bkresult ;
+	      bkdesc = "(${bkresult})";
+	   END;
+         END;
+
+         IF content ;
+           content   = "${bkdesc} ${supplement}";
+	   
+           IF NOT content_map.${'Klassifikation'} ;
+	      content_map.${'Klassifikation'} = [];
+	   END;
+           content_map.${'Klassifikation'}.push(content);
+	 END;
+
+    CASE "T4102";
+         content = thisfield.${'e'};
+	 
+         topicdesc   = topic_map.${content};
+         IF topicdesc ;
+            content   = topicdesc ;
+         END ;
+         IF NOT content_map.${'E4102'} ;
+	    content_map.${'E4102'} = [];
+	 END;
+         content_map.${'E4102'}.push(content);
+
+    CASE "T4300";
+         content = thisfield.${'e'};
+
+
+         NEXT IF extsubj_done.${content} == 1;
+         extsubj_done.${content} = 1;
+	 
+         IF NOT content_map.${'E4300'} ;
+	    content_map.${'E4300'} = [];
+	 END;
+         content_map.${'E4300'}.push(content);
+
+    CASE "T5001";
+         NEXT;
+
+    CASE "T5002";
+         NEXT;
+	 
+    CASE "T5005";
+         NEXT;
+
+    # CASE ;
+    #      content   = highlightquery(searchquery,item.content);
+    #      IF NOT content_map.${category} ;
+    # 	    content_map.${category} = [];
+    # 	 END;
+    #      content_map.${category}.push(content);
+    END;
+ END;
+END;
+
+# Sich nicht wiederholende Felder
+
+singular_normdata = record.get_fields;
+
+FOREACH field IN singular_normdata;
+
+  category = field.key ;
+
+  FOREACH item IN field.value;
+
+    SWITCH category;
+
+     CASE [ "T0982" ];
+       IF item.subfield == 'a';
+         content = item.content;
+	 
+         searchterm    = uri_escape(content);
+         searchprefix  = config.get('searchfield').subjectstring.prefix;
+
+         NEXT IF rswkswt_done.${searchterm} == 1;
+	 
+         localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}${searchprefix}=${searchterm}";
+
+         IF content ;
+             content   = "<a href=\"${localurl}\">${highlightquery(searchquery,content)}</a>";
+             IF NOT content_map.${'Schlagwort'} ;
+	        content_map.${'Schlagwort'} = [];
+	     END;
+             content_map.${'Schlagwort'}.push(content);
+	 END;
+
+         rswkswt_done.${searchterm} = 1;
+       END;
+
+    END;
+  END;
+END;
+
+display_types = {
+};
+
+#USE dumper;dumper.dump(content_map);dumper.dump(singular_normdata);dumper.dump(record_type);
+
+FOREACH category IN categories;
+
+   IF content_map.${category}.first;
+      IF display_types.${category} == 'list' ;
+        IF content_map.${category}.size > 1 ;
+          content = "<ul>";
+          FOREACH thiscontent IN content_map.${category};
+	    content="${content}<li>${thiscontent}</li>";
+	  END;
+	  content = "${content}</ul>";
+	ELSE ;
+	  content = content_map.${category}.first;
+	END;
+      ELSE ;
+        content = content_map.${category}.join(' ; ');
+      END;
+
+-%]
+[% msg.maketext("${category}") | format("%- 24s") %]: [% content %]
+[%
+   END;
+END;
+-%]
+[%-
+
+    is_journal = 0;
+
+    FOREACH thisholding IN holding ;
+      IF thisholding.defined('X1204') && thisholding.${"X1204"}.content != "-"; # Bestandsverlauf
+        is_journal = 1;
+      END;
+    END;
+
+    IF is_journal;
+    
+    holding_fields = record.to_custom_field_scheme_1.${'T1943'};
+
+    #USE dumper;dumper.dump(circulation);
+    # Preprocessing
+    
+    # Zusammenfassung von Feldern ueber Holdingid in $8
+    holding_fields_per_id = {};
+    
+    FOREACH thisholding IN holding_fields ;
+      holdingid        = thisholding.${"8"};
+      bestandsverlauf  = thisholding.${"a"};
+      luecken          = thisholding.${"z"};
+      signatur         = thisholding.${"h"};
+      standort         = thisholding.${"c"};
+      bibliothek       = thisholding.${"b"};
+
+      IF bestandsverlauf ;
+        holding_fields_per_id.${holdingid}.${"a"} = bestandsverlauf;
+      END ;
+      IF luecken ;
+        holding_fields_per_id.${holdingid}.${"z"} = luecken;
+      END;
+      IF signatur ;
+        holding_fields_per_id.${holdingid}.${"h"} = signatur;
+      END;
+      IF standort ;
+        IF alma_location_desc.${standort};
+	  standort = alma_location_desc.${standort};
+	END ;
+        holding_fields_per_id.${holdingid}.${"c"} = standort;
+      END;
+      IF bibliothek ;
+        holding_fields_per_id.${holdingid}.${"b"} = bibliothek;
+      END;
+    END;
+
+    # Anreichern mit Heften aus Items via API
+
+    FOREACH thisissue IN circulation;
+       holdingid = thisissue.${"holdingid"}.match('^(\d+)').first;
+       IF NOT holding_fields_per_id.${holdingid}.issues;
+          holding_fields_per_id.${holdingid}.issues = [];	  
+       END;
+       holding_fields_per_id.${holdingid}.issues.push(thisissue);         
+    END;
+
+    processed_holding_by_sigel = {};
+
+    # USE dumper;dumper.dump(holding_fields_per_id);
+    FOREACH holdingid IN holding_fields_per_id.keys ;
+      bestandsverlauf  = holding_fields_per_id.${holdingid}.${"a"};
+      luecken          = holding_fields_per_id.${holdingid}.${"z"};
+      signatur         = holding_fields_per_id.${holdingid}.${"h"};
+      standort         = holding_fields_per_id.${holdingid}.${"c"};
+      sigel            = holding_fields_per_id.${holdingid}.${"b"};
+      issues           = holding_fields_per_id.${holdingid}.${"issues"};
+      inventarnr       = ""; # thisholding.${"X0005"}.content;
+      bibliothek       = ""; # thisholding.${"X4000"}.content;
+      bibliothek_url   = ""; # thisholding.${"X4001"}.content;
+      bemerkung        = ""; # thisholding.${"X1203"}.content;
+      bemerkung2       = ""; #thisholding.${"X1200"}.content;
+
+      isil      = "";
+      isil_desc = "";
+      
+      IF sigel.match('^38/[0-9][0-9][0-9]$');	  
+         isil = "DE-38-${sigel.replace('38/','')}";
+      ELSIF sigel.match('^[0-9][0-9][0-9]$');	  
+         isil = "DE-38-${sigel}";
+      ELSIF sigel.match('^Kn 3$');	  
+         isil = "DE-Kn3";
+      ELSE ;
+         isil = "DE-${sigel}";
+      END ;
+
+      title    = normset.${"T0331"}.first.content ;
+      IF  normset.${"T0310"}.first.content ;
+        title = normset.${"T0310"}.first.content ;
+      END ;
+
+      IF sigel.match('^38$');
+        IF signatur.match('^FHM ') ;
+          standort = "USB-Freihandmagazin (1. OG)";
+        ELSIF signatur.match('^EWA Z') ;
+          standort = "HWA-Magazin, Gronewaldstr. 2<br/>(Kopierausleihe über die LS-Theke möglich)";
+          isil = "DE-38-HWA";
+	  sigel = 'HWA';
+        ELSIF signatur.match('^EWA-LS-Theke') ;
+          standort = "Lesesaal Humanwissenschaft, LS-Theke, Gronewaldstr. 2";
+          isil = "DE-38-HWA";    
+	  sigel = 'HWA';
+        ELSIF signatur.match('^(EWA-LS|EWALS) ') ;
+          standort = "Lesesaal Humanwissenschaft, Gronewaldstr. 2";
+          isil = "DE-38-HWA";    
+	  sigel = 'HWA';
+        ELSIF signatur.match('^(HP|HP-LS) ') || signatur.match('^HP-LS ') ;
+          standort = "Lesesaal Heilpädagogik, Frangenheimstr. 4";
+        ELSIF signatur.match('^LS ') ;
+          standort = "USB-Lesesaal (1. OG)";
+        ELSIF signatur.match('^(KS V|KS/V)') ;
+          standort = "USB-Magazin (Ausleihe nur in den Lesesaal), Bitte füllen Sie einen konventionellen Bestellschein aus (erhältlich an der Auskunft und der Lesesaal-Theke im 1. OG)";
+        ELSIF signatur.match('^KS ') ;
+          standort = "USB-Katalogsaal (2. OG)";
+        ELSIF signatur.match('^B ') ;
+          standort = "ausgelagerter Bestand. Lieferzeit ca. 14. Tage (ausleihbar nach Bestellung)";
+        ELSIF signatur.match('^ZTG') ;
+          standort = "Zeitungsbestand. USB-Magazin<br/>Bitte füllen Sie einen konventionellen Bestellschein aus (erhältlich an der Auskunft und der Lesesaal-Theke im 1. OG)";
+       ELSIF NOT signatur.match('\s') ;
+          standort = "USB-Magazin";
+       END; # End: Standort nach Signaturanfang
+    END; # End: Spezialbehandlung USB
+
+    IF isil;
+      isil_desc = locinfo.identifier.${isil}.description;
+    END;
+
+    provenances = record.get_provenances_of_media(signatur);
+    
+    # ZBM-Meldung kurzern
+    # IF bemerkung.match('vormals 38M; Bestände zur Zeit nicht einsehbar oder bestellbar') ;
+    #  bemerkung = "Bestände zur Zeit nicht verfügbar";
+    # END;
+
+    IF NOT processed_holding_by_sigel.defined(sigel);
+      processed_holding_by_sigel.${sigel} = {
+        isil             = isil
+        isil_desc        = isil_desc
+        bibliothek       = bibliothek
+        bibliothek_url   = bibliothek_url       
+        title            = title
+      };
+    END;
+    
+    this_iteminfo = {
+      bestandsverlauf  = bestandsverlauf
+      luecken          = luecken
+      signatur         = signatur
+      standort         = standort
+      sigel            = sigel
+      inventarnr       = inventarnr
+      bemerkung        = bemerkung
+      bemerkung2       = bemerkung2
+      isil             = isil
+      isil_desc        = isil_desc
+      issues           = issues
+    };
+
+    IF NOT processed_holding_by_sigel.${sigel}.defined('items');
+      processed_holding_by_sigel.${sigel}.${'items'} = [];
+    END;
+
+    processed_holding_by_sigel.${sigel}.${'items'}.push(this_iteminfo);
+
+  END; # End: holding-Schleife
+  USE dumper;dumper.dump(processed_holding_by_sigel);
+-%]
+[%-  FOREACH this_sigel IN processed_holding_by_sigel.keys.sort -%]
+[%-   this_cluster = processed_holding_by_sigel.${this_sigel}; -%]
+[% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% this_cluster.isil_desc %]
+[% IF this_cluster.standort -%]
+[% msg.maketext("Standort             ") %] [% loop.count %] : [% this_cluster.standort %]
+[% END -%]
+[% IF this_cluster.signatur -%]
+[% msg.maketext("Lokale Signatur      ") %] [% loop.count %] : [% this_cluster.signatur %]
+[% END -%]
+[% IF this_cluster.inventarnr -%]
+[% msg.maketext("Inventarnummer       ") %] [% loop.count %] : [% this_cluster.inventarnr %]
+[%- END %]
+[% IF this_cluster.bestandsverlauf -%]
+[% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% this_cluster.bestandsverlauf %]
+[% END -%]
+[%- END -%]
+[% ELSE # is_journal %]
+[%- IF items.size > 0 -%]
+[%- FOREACH mex IN items -%]
+[%-
+     #USE dumper;dumper.dump(items);
+
+     # Bestimmung department_url
+     library_isil = "";
+     library_id = mex.${"X3330"}.content;
+     IF library_id.match('^(38|38-HLS)$');
+       library_isil = "DE-38";
+     ELSIF library_id.match('^38-HWA$') ;
+       library_isil = "DE-38-HWA";     
+     ELSIF library_id.match('^38-[0-9][0-9][0-9]');
+       kuerzel = library_id.match("^38-([0-9][0-9][0-9])").first ;
+       IF kuerzel ;
+          library_isil = "DE-38-${kuerzel}";
+       END ;
+     END ;
+
+    IF library_isil;
+      isil_desc = locinfo.identifier.${library_isil}.description;
+    ELSE;
+      isil_desc = mex.${"X4000"}.content.full;
+    END;
+
+    standort = mex.${"X0016"}.content;
+
+    IF standort.match('-BIB$');
+      standort = "Bibliothek";
+    ELSIF standort.match('-MAG$');
+      standort = "Magazin";
+    END;
+-%]
+[% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% isil_desc %]
+[% msg.maketext("Standort             ") %] [% loop.count %] : [% standort %]
+[% msg.maketext("Lokale Signatur      ") %] [% loop.count %] : [% mex.${"X0014"}.content %]
+[% msg.maketext("Inventarnummer       ") %] [% loop.count %] : [% mex.${"X0005"}.content %]
+[% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% mex.${"X1204"}.content %]
+[% END %]
+[%- END -%]
+[% END %]

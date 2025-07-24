@@ -1,0 +1,352 @@
+[%#-
+#######################################################################
+#
+# Templatename: holding_journals
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Exemplar-Informationen aus den bibliograph. Daten
+#
+# Hier: Zeitschriften
+#
+#######################################################################
+-%]
+[%-
+    holding_fields = record.to_custom_field_scheme_2.${'T1943'};
+    
+    #USE dumper;dumper.dump(circulation);
+    #USE dumper;dumper.dump(holding_fields);
+    # Preprocessing
+    
+    # Zusammenfassung von Feldern ueber Holdingid in $8
+    holding_fields_per_id = {};
+    
+    FOREACH thisholding IN holding_fields ;
+      holdingid        = thisholding.${"8"}.first.content;
+      bestandsverlauf  = thisholding.${"a"}.first.content;
+      intro            = thisholding.${"9"}.first.content;
+      intro            = intro.replace('^- ','');
+      
+      luecken          = "";
+      bemerkung        = "";
+
+      FOREACH thissubfield IN thisholding.${"z"};
+         IF thissubfield.ind == ' 0';
+            bemerkung  = thissubfield.content ;
+         END;
+         IF thissubfield.ind == '30';
+            luecken    = thissubfield.content ;
+         END;
+      END;
+
+      signatur         = thisholding.${"h"}.first.content;
+      standort         = thisholding.${"c"}.first.content;
+      bibliothek       = thisholding.${"b"}.first.content;
+
+      IF bestandsverlauf ;
+        holding_fields_per_id.${holdingid}.${"a"} = bestandsverlauf;
+      END ;
+      IF luecken ;
+        holding_fields_per_id.${holdingid}.${"z"} = luecken;
+      END;
+      IF bemerkung ;
+        holding_fields_per_id.${holdingid}.${"remark"} = bemerkung;
+      END;
+      IF signatur ;
+        holding_fields_per_id.${holdingid}.${"h"} = signatur;
+      END;
+      IF intro ;
+        holding_fields_per_id.${holdingid}.${"9"} = intro;
+      END;
+      IF standort ;
+        IF alma_location_desc.${standort};
+	  standort = alma_location_desc.${standort};
+	END ;
+        holding_fields_per_id.${holdingid}.${"c"} = standort;
+      END;
+      IF bibliothek ;
+        holding_fields_per_id.${holdingid}.${"b"} = bibliothek;
+      END;
+    END;
+
+    # Anreichern mit Heften aus Items via API
+
+    FOREACH thisissue IN circulation;
+       holdingid = thisissue.${"holdingid"}.match('^(\d+)').first;
+       IF NOT holding_fields_per_id.${holdingid}.issues;
+          holding_fields_per_id.${holdingid}.issues = [];	  
+       END;
+       holding_fields_per_id.${holdingid}.issues.push(thisissue);         
+    END;
+
+    processed_holding_by_sigel = {};
+
+    # USE dumper;dumper.dump(holding_fields_per_id);
+    FOREACH holdingid IN holding_fields_per_id.keys.sort ;
+      bestandsverlauf  = holding_fields_per_id.${holdingid}.${"a"};
+      luecken          = holding_fields_per_id.${holdingid}.${"z"};
+      signatur         = holding_fields_per_id.${holdingid}.${"h"};
+      standort         = holding_fields_per_id.${holdingid}.${"c"};
+      sigel            = holding_fields_per_id.${holdingid}.${"b"};
+      intro            = holding_fields_per_id.${holdingid}.${"9"};
+      bemerkung        = holding_fields_per_id.${holdingid}.${"remark"};
+      issues           = holding_fields_per_id.${holdingid}.${"issues"};
+      inventarnr       = ""; # thisholding.${"X0005"}.content;
+      bibliothek       = ""; # thisholding.${"X4000"}.content;
+      bibliothek_url   = ""; # thisholding.${"X4001"}.content;
+      # bemerkung        = ""; # thisholding.${"X1203"}.content;
+      bemerkung2       = ""; #thisholding.${"X1200"}.content;
+
+      isil      = "";
+      isil_desc = "";
+      
+      IF sigel.match('^38/[0-9][0-9][0-9]$');	  
+         isil = "DE-38-${sigel.replace('38/','')}";
+      ELSIF sigel.match('^[0-9][0-9][0-9]$');	  
+         isil = "DE-38-${sigel}";
+      ELSIF sigel.match('^KN3$');	  
+         isil = "DE-Kn3";
+      ELSE ;
+         isil = "DE-${sigel}";
+      END ;
+
+      title    = normset.${"T0331"}.first.content ;
+      IF  normset.${"T0310"}.first.content ;
+        title = normset.${"T0310"}.first.content ;
+      END ;
+
+      IF sigel.match('^38$');
+        IF signatur.match('^FHM ') ;
+          standort = "USB-Freihandmagazin (1. OG)";
+        ELSIF signatur.match('^EWA Z') ;
+          standort = "HWA-Magazin, Gronewaldstr. 2<br/>(Kopierausleihe über die LS-Theke möglich)";
+          isil = "DE-38-HWA";
+	  sigel = 'HWA';
+        ELSIF signatur.match('^EWA-LS-Theke') ;
+          standort = "Lesesaal Humanwissenschaft, LS-Theke, Gronewaldstr. 2";
+          isil = "DE-38-HWA";    
+	  sigel = 'HWA';
+        ELSIF signatur.match('^(EWA-LS|EWALS) ') ;
+          standort = "Lesesaal Humanwissenschaft, Gronewaldstr. 2";
+          isil = "DE-38-HWA";    
+	  sigel = 'HWA';
+        ELSIF signatur.match('^(HP|HP-LS) ') || signatur.match('^HP-LS ') ;
+          standort = "Lesesaal Heilpädagogik, Frangenheimstr. 4";
+        ELSIF signatur.match('^LS ') ;
+          standort = "USB-Lesesaal (1. OG)";
+        ELSIF signatur.match('^(KS V|KS/V)') ;
+          standort = "USB-Magazin (Ausleihe nur in den Lesesaal), Bitte füllen Sie einen konventionellen Bestellschein aus (erhältlich an der Auskunft und der Lesesaal-Theke im 1. OG)";
+        ELSIF signatur.match('^KS ') ;
+          standort = "USB-Katalogsaal (2. OG)";
+        ELSIF signatur.match('^B ') ;
+          standort = "ausgelagerter Bestand. Lieferzeit ca. 14. Tage (ausleihbar nach Bestellung)";
+        ELSIF signatur.match('^ZTG') ;
+          standort = "Zeitungsbestand. USB-Magazin<br/>Bitte füllen Sie einen konventionellen Bestellschein aus (erhältlich an der Auskunft und der Lesesaal-Theke im 1. OG)";
+        ELSIF NOT signatur.match('\s') ;
+          standort = "USB-Magazin";
+        END; # End: Standort nach Signaturanfang
+      END; # End: Spezialbehandlung USB
+
+      IF isil;
+        isil_desc = locinfo.identifier.${isil}.description;
+      END;
+
+      provenances = record.get_provenances_of_media(signatur);
+    
+      # ZBM-Meldung kurzern
+      # IF bemerkung.match('vormals 38M; Bestände zur Zeit nicht einsehbar oder bestellbar') ;
+      #  bemerkung = "Bestände zur Zeit nicht verfügbar";
+      # END;
+
+      IF NOT processed_holding_by_sigel.defined(sigel);
+        processed_holding_by_sigel.${sigel} = {
+          isil             = isil
+          isil_desc        = isil_desc
+          bibliothek       = bibliothek
+          bibliothek_url   = bibliothek_url       
+          title            = title
+        };
+      END;
+    
+      this_iteminfo = {
+        bestandsverlauf  = bestandsverlauf
+        luecken          = luecken
+        signatur         = signatur
+        standort         = standort
+        sigel            = sigel
+        inventarnr       = inventarnr
+	intro            = intro
+        bemerkung        = bemerkung
+        bemerkung2       = bemerkung2
+        isil             = isil
+        isil_desc        = isil_desc
+        issues           = issues
+      };
+
+      IF NOT processed_holding_by_sigel.${sigel}.defined('items');
+        processed_holding_by_sigel.${sigel}.${'items'} = [];
+      END;
+
+      processed_holding_by_sigel.${sigel}.${'items'}.push(this_iteminfo);
+
+    END; # End: holding-Schleife
+   #USE dumper;dumper.dump(processed_holding_by_sigel);
+-%]
+[% IF processed_holding_by_sigel.keys > 0 %]
+<div class="table-responsive">
+<table class="table table-striped">
+<thead>
+<tr><th>[% msg.maketext("Bibliothek") %]</th><th>[% msg.maketext("Bestandsverlauf") %] ([% msg.maketext("Jahrgänge/Hefte/[Lücken]") %])</th></tr>
+</thead>
+<tbody>
+[%  IF processed_holding_by_sigel.defined('38'); # USB zuerst %]
+[%    this_cluster = processed_holding_by_sigel.${'38'} %]
+<tr><td><strong>
+[%-   IF this_cluster.isil_desc -%]
+<a class="inturl" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% this_cluster.isil %].include?l=[% lang %]" href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% this_cluster.isil %].html?l=[% lang %]">[% this_cluster.isil_desc %]</a>
+[%-   ELSIF thiscluster.bibliothek && thiscluster.bibliothek_url -%]
+[%-     IF dbinfo.get('locationid').${record.database} %]
+<a class="inturl" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].include?l=[% lang %]" href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">
+[%-     ELSE -%]
+<a href="[% this_cluster.bibliothek_url %]" target="_blank">
+[%-     END -%]
+[%      this_cluster.bibliothek.full %]</a>
+[%-   ELSE -%]
+[% this_cluster.bibliothek.full %]
+[%-   END -%]
+</strong>
+</td>
+<td>
+<ul>
+[%    FOREACH this_item IN this_cluster.items %]
+<li>
+<strong>[% IF this_item.intro %][% this_item.intro %] [% END %][% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
+<emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
+[% IF this_item.standort %]
+<emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
+[% END %]
+[% IF this_item.bemerkung %]
+<emph>[% msg.maketext("Hinweis") %]:</emph> [% this_item.bemerkung %]<br/>
+[% END %]
+[% IF this_item.issues %]
+<a class="btn btn-primary mt-2" data-bs-toggle="collapse" href="#collapseIssues" role="button" aria-expanded="false" aria-controls="collapseIssues">
+    [% msg.maketext("Hefte anzeigen") %]
+</a>
+<div class="collapse mt-2" id="collapseIssues">
+   <ul>
+[% FOREACH thisissue IN this_item.issues %]
+    <li>[% thisissue.remark %] ([% IF thisissue.availability.match('lent')%][% msg.maketext("noch nicht eingegangen") %][% ELSE %][% msg.maketext("eingegangen") %][% END %])</li>
+[% END %]
+   </ul>
+</div>
+[% END %]
+</li>
+[% END %]
+</ul>
+</td>
+</tr>
+[%  END %]
+[%  IF processed_holding_by_sigel.defined('38-HWA'); # HWA danach %]
+[%    this_cluster = processed_holding_by_sigel.${'38-HWA'} %]
+<tr><td><strong>
+[%-  IF this_cluster.isil_desc -%]
+<a class="inturl" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% this_cluster.isil %].include?l=[% lang %]" href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% this_cluster.isil %].html?l=[% lang %]">[% this_cluster.isil_desc %]</a>
+[%-  ELSIF thiscluster.bibliothek && thiscluster.bibliothek_url -%]
+[%-    IF dbinfo.get('locationid').${record.database} %]
+<a class="inturl" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].include?l=[% lang %]" href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">
+[%-    ELSE -%]
+<a href="[% this_cluster.bibliothek_url %]" target="_blank">
+[%-    END -%]
+[%     this_cluster.bibliothek.full %]</a>
+[%-  ELSE -%]
+[% this_cluster.bibliothek.full %]
+[%-  END -%]
+</strong>
+</td>
+<td>
+<ul>
+[% FOREACH this_item IN this_cluster.items %]
+<li>
+<strong>[% IF this_item.intro %][% this_item.intro %] [% END %][% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
+<emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
+[% IF this_item.standort %]
+<emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
+[% END %]
+[% IF this_item.bemerkung %]
+<emph>[% msg.maketext("Hinweis") %]:</emph> [% this_item.bemerkung %]<br/>
+[% END %]
+[% IF this_item.issues %]
+<emph>[% msg.maketext("Hefte") %]:</emph><br/>
+   <ul>
+[% FOREACH thisissue IN this_item.issues %]
+    <li>[% thisissue.remark %] ([% IF thisissue.availability.match('lent')%][% msg.maketext("noch nicht eingegangen") %][% ELSE %][% msg.maketext("eingegangen") %][% END %])</li>
+[% END %]
+   </ul>
+[% END %]
+</li>
+[% END %]
+</ul>
+</td>
+</tr>
+[% END %]
+
+[%-
+     processed_holding_by_sigel.${'38'} = undef;
+     processed_holding_by_sigel.delete('38');
+     processed_holding_by_sigel.${'38-HWA'} = undef;
+     processed_holding_by_sigel.delete('38-HWA');
+-%]
+
+
+[%  FOREACH this_sigel IN processed_holding_by_sigel.keys.sort %]
+[%-
+      this_cluster = processed_holding_by_sigel.${this_sigel};
+
+-%]
+<tr><td><strong>
+[%-  IF this_cluster.isil_desc -%]
+<a class="inturl" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% this_cluster.isil %].include?l=[% lang %]" href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% this_cluster.isil %].html?l=[% lang %]">[% this_cluster.isil_desc %]</a>
+[%-  ELSIF thiscluster.bibliothek && thiscluster.bibliothek_url -%]
+[%-    IF dbinfo.get('locationid').${record.database} %]
+<a class="inturl" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].include?l=[% lang %]" href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% dbinfo.get('locationid').${record.database} %].html?l=[% lang %]">
+[%-    ELSE -%]
+<a href="[% this_cluster.bibliothek_url %]" target="_blank">
+[%-    END -%]
+[%     this_cluster.bibliothek.full %]</a>
+[%-  ELSE -%]
+[% this_cluster.bibliothek.full %]
+[%-  END -%]
+</strong>
+</td>
+<td>
+<ul>
+[% FOREACH this_item IN this_cluster.items %]
+<li>
+<strong>[% IF this_item.intro %][% this_item.intro %] [% END %][% IF this_item.bemerkung2 %][% this_item.bemerkung2 %] [% END %][% this_item.bestandsverlauf %][% IF this_item.luecken %] [% this_item.luecken %][% END %]</strong><br/>
+<emph>[% msg.maketext("Signatur")%]:</emph> [% this_item.signatur %]<br/>
+[% IF this_item.standort %]
+<emph>[% msg.maketext("Standort")%]:</emph> [% this_item.standort %]<br/>
+[% END %]
+[% IF this_item.bemerkung %]
+<emph>[% msg.maketext("Hinweis") %]:</emph> [% this_item.bemerkung %]<br/>
+[% END %]
+[% IF this_item.issues %]
+<emph>[% msg.maketext("Hefte") %]:</emph><br/>
+   <ul>
+[% FOREACH thisissue IN this_item.issues %]
+    <li>[% thisissue.remark %] ([% IF thisissue.availability.match('lent')%][% msg.maketext("noch nicht eingegangen") %][% ELSE %][% msg.maketext("eingegangen") %][% END %])</li>
+[% END %]
+   </ul>
+[% END %]
+</li>
+[% END %]
+</ul>
+</td>
+</tr>
+[% END %]
+</tbody>
+</table>
+</div>
+[% END %]

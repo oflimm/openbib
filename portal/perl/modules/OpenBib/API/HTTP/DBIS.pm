@@ -190,7 +190,7 @@ sub get_titles_record {
     ? $arg_ref->{id}        : '';
 
     my $database = exists $arg_ref->{database}
-        ? $arg_ref->{database}  : 'dbis';
+        ? $arg_ref->{database}  : $self->{database};
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -882,7 +882,7 @@ sub get_popular_records {
 	    $logger->debug("Access Type:".YAML::Dump($access_type));
 	}
 	
-	my $record = new OpenBib::Record::Title({id => $id, database => 'dbis', generic_attributes => { access => $access_info }});
+	my $record = new OpenBib::Record::Title({id => $id, database => $self->{database}, generic_attributes => { access => $access_info }});
 	
 	$logger->debug("Title is $title");
 	
@@ -956,7 +956,7 @@ sub get_search_resultlist {
 	my $access_type = (defined $type_mapping_ref->{$match_ref->{traffic_light}})?$type_mapping_ref->{$match_ref->{traffic_light}}:
 	    (defined $type_mapping_ref->{$match_ref->{access}})?$type_mapping_ref->{$match_ref->{access}}:'';
         
-        my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => 'dbis', generic_attributes => { access => $access_info }});
+        my $record = new OpenBib::Record::Title({id => $match_ref->{id}, database => $self->{database}, generic_attributes => { access => $access_info }});
 
         $logger->debug("Title is ".$match_ref->{title});
         

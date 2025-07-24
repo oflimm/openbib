@@ -49,7 +49,7 @@ use OpenBib::Config;
 use OpenBib::Index::Factory;
 use OpenBib::Normalizer;
 
-my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath,$incremental,$authtype);
+my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$withoutunpack,$unpackonly,$indexpath,$incremental,$authtype);
 
 &GetOptions(
     "indexpath=s"       => \$indexpath,
@@ -59,6 +59,9 @@ my ($database,$help,$logfile,$withsorting,$withpositions,$loglevel,$indexpath,$i
     "loglevel=s"      => \$loglevel,
     "with-sorting"    => \$withsorting,
     "with-positions"  => \$withpositions,
+    "with-positions"  => \$withpositions,
+    "unpack-only"     => \$unpackonly,
+    "without-unpack"  => \$withoutunpack,
     "incremental"     => \$incremental,
     "help"            => \$help
 );
@@ -126,9 +129,50 @@ my @authority_files = (
     # }
 );
 
-my $conv_config = new OpenBib::Conv::Config({dbname => $database});
+if (! -d "$rootdir/data/$database"){
+    system("mkdir $rootdir/data/$database");
+}
 
 $logger->info("### POOL $database");
+
+unless ($withoutunpack){
+    foreach my $authority_file_ref (@authority_files){	
+	my $type            = $authority_file_ref->{type};
+	my $source_filename = $authority_file_ref->{filename};
+	my $dest_filename   = "authority_meta.$type";
+	
+	next if ($authtype && $authtype ne $type);
+	
+	if (-f $source_filename){
+	    my $atime = new Benchmark;
+	    
+	    # Entpacken der Pool-Daten in separates Arbeits-Verzeichnis unter 'data'
+	    
+	    $logger->info("### $database: Entpacken der Authority-Daten fuer Typ $type");
+	    
+	    system("/bin/gzip -dc $source_filename > $rootdir/data/$database/$dest_filename");
+	    
+	    my $btime      = new Benchmark;
+	    my $timeall    = timediff($btime,$atime);
+	    my $resulttime = timestr($timeall,"nop");
+	    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+	    
+	    $logger->info("### $database: Benoetigte Zeit -> $resulttime");
+	    
+	    if ($database && -e "$config->{autoconv_dir}/filter/$database/authority_pre_conv_$type.pl"){
+		$logger->info("### $database: Verwende Plugin authority_pre_conv_$type.pl");
+		system("$config->{autoconv_dir}/filter/$database/authority_pre_conv_$type.pl $database");
+	    }
+	}
+    }
+}
+
+if ($unpackonly){
+    $logger->info("Authority-Daten entpackt. Beenden.");    
+    exit; 
+}
+
+my $conv_config = new OpenBib::Conv::Config({dbname => $database});
 
 $logger->info("Loeschung des alten Index fuer Datenbank $database");
     
@@ -143,41 +187,14 @@ my $indexer = OpenBib::Index::Factory->create_indexer({ database => $database, c
 $indexer->set_stopper;
 $indexer->set_termgenerator;
 
-
-if (! -d "$rootdir/data/$database"){
-    system("mkdir $rootdir/data/$database");
-}
-
-foreach my $authority_file_ref (@authority_files){
-    
+foreach my $authority_file_ref (@authority_files){    
     my $type            = $authority_file_ref->{type};
     my $source_filename = $authority_file_ref->{filename};
     my $dest_filename   = "authority_meta.$type";
 
     next if ($authtype && $authtype ne $type);
     
-    if (-f $source_filename){
-        my $atime = new Benchmark;
-
-        # Entpacken der Pool-Daten in separates Arbeits-Verzeichnis unter 'data'
-
-        $logger->info("### $database: Entpacken der Authority-Daten fuer Typ $type");
-                
-        #system("rm $rootdir/data/$database/authority_*");
-        system("/bin/gzip -dc $source_filename > $rootdir/data/$database/$dest_filename");
-        
-        my $btime      = new Benchmark;
-        my $timeall    = timediff($btime,$atime);
-        my $resulttime = timestr($timeall,"nop");
-        $resulttime    =~s/(\d+\.\d+) .*/$1/;
-        
-        $logger->info("### $database: Benoetigte Zeit -> $resulttime");
-        
-        if ($database && -e "$config->{autoconv_dir}/filter/$database/authority_pre_conv_$type.pl"){
-            $logger->info("### $database: Verwende Plugin authority_pre_conv_$type.pl");
-            system("$config->{autoconv_dir}/filter/$database/authority_pre_conv_$type.pl $database");
-        }
-        
+    if (-f "$rootdir/data/$database/$dest_filename"){
         $logger->info("### POOL $database - ".$type);
         
         my $fieldprefix = ($authority_file_ref->{type} eq "person")?"P":

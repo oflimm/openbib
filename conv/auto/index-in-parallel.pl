@@ -103,6 +103,7 @@ if ($authority){
     $xapian_cmd = "$config->{'base_dir'}/conv/authority2xapian.pl";
     $es_cmd     = "$config->{'base_dir'}/conv/authority2elasticsearch.pl";
 
+    $logger->info("### $database: Unpacking authority files");    
     my $cmd = "cd $rootdir/data/$database/ ; $xapian_cmd --loglevel=$loglevel -unpack-only --database=$database";
 
     $logger->info("Executing: $cmd");

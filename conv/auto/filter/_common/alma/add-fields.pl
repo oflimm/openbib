@@ -563,7 +563,47 @@ while (<>){
 	    };
 	}
     }
+
+    my $bandzaehlung = 0;
     
+    # Sortierung nach 5100$a
+    # Analyse nach aufsteigender Wichtigkeit 830$v>773$q>245$n
+    # Nachfolgeanalyse 'korrigiert' ggf. vorangegangene
+    if (defined $title_ref->{fields}{'0245'}){
+        foreach my $item (@{$title_ref->{fields}{'0245'}}){
+            if ($item->{subfield} eq "n"){
+                $bandzaehlung = $item->{content};
+		last;
+            }
+	}
+    }
+
+    if (defined $title_ref->{fields}{'0773'}){
+        foreach my $item (@{$title_ref->{fields}{'0773'}}){
+            if ($item->{subfield} eq "q"){
+                $bandzaehlung = $item->{content};
+		last;
+            }
+	}
+    }
+
+    if (defined $title_ref->{fields}{'0830'}){
+        foreach my $item (@{$title_ref->{fields}{'0830'}}){
+            if ($item->{subfield} eq "v"){
+                $bandzaehlung = $item->{content};
+		last;
+            }
+	}
+    }
+    
+    if ($bandzaehlung){
+	push @{$title_ref->{fields}{'5100'}}, {
+	    mult     => 1,
+	    subfield => 'a',
+	    content  => $bandzaehlung,
+	};
+    }
+	
     ### Medientyp Digital/online zusaetzlich vergeben
     my $is_digital = 0;
 

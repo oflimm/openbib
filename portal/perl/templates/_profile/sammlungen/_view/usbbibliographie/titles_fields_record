@@ -6,7 +6,7 @@
     END;
 
     IF field == '0100:a' ;
-       field_description = msg.maketext("Autor");
+       field_description = msg.maketext("Verfasser");
        searchfield = 'personstring' ;
     ELSIF field == '0110:a' ;
        field_description = msg.maketext("Körperschaft");

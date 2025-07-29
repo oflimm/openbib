@@ -15,6 +15,7 @@
 
 
   with_status = 0;
+  dbis_alert  = 0;
   
 -%]
 
@@ -189,10 +190,14 @@
 </ul>
 </div>
 </div>
+[% ELSE %]
+<div class="d-none d-md-block mt-3 mb-3">
+<a class="btn btn-primary" href="https://dbis.ur.de/USBK" target="_blank"><i class="fas fa-globe me-2"></i> [% msg.maketext("Direkt in DBIS recherchieren") %]</a>
+</div>
 [% END %]
 
 <div class="alert alert-secondary mt-2">
-        
+
 Ansprechpartner:<br><a href="mailto:dbfragen@ub.uni-koeln.de">Team Datenbanken</a><br>
         
  <span style="font-size:0.8em;">

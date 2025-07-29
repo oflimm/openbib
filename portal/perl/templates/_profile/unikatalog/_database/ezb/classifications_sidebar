@@ -104,6 +104,11 @@
 </ul>
 </div>
 </div>
+[% ELSE %]
+<div class="d-none d-md-block mt-3 mb-3">
+  <a class="btn btn-primary me-2" href="http://ezb.ur.de/ezeit/fl.phtml?bibid=USBK&colors=7&lang=de" target="_blank"><i class="fas fa-globe me-2"></i>[% msg.maketext("Direkt in der EZB recherchieren") %]</a>
+  <a class="btn btn-primary mt-3" href="[% path_prefix %]/[% config.get('info_loc') %]/ezeitungen.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/ezeitungen.include?l=[% lang %]" title="[% msg.maketext("Elektronische Zeitungen") %]"><i class="fas fa-globe me-2"></i>[% msg.maketext("Liste von E-Zeitungen") %]</a>
+</div>
 [% END %]
 
 <div class="alert alert-secondary mt-2"> 

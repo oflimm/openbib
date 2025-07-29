@@ -303,8 +303,7 @@ while (<DAT>){
 	    my $subject_data_ref        = {};
 	    my $classification_data_ref = {};
 	    my $holding_data_ref        = {};	    
-	    
-	    
+	    	    
 	    $field_mult_ref->{$field_nr} = 1 unless (defined $field_mult_ref->{$field_nr});
 
 	    my $ind = "";
@@ -343,7 +342,7 @@ while (<DAT>){
 		    elsif ($field eq "110" || $field eq "710"){
 			$corporatebody_data_ref->{$subfield_code} = $content;
 		    }
-		    elsif ($field eq "082"){
+		    elsif ($field eq "082" || $field eq "084"){
 			$classification_data_ref->{$subfield_code} = $content;
 		    }
 		    elsif ($field eq "600" || $field eq "610" || $field eq "648" || $field eq "650" || $field eq "651" || $field eq "655" || $field eq "688" || $field eq "689"){
@@ -437,7 +436,7 @@ while (<DAT>){
 		}
 	    } # Ende Koerperschaften
 	    # Klassifikationen
-	    elsif ($field eq "082"){
+	    elsif ($field eq "082"){ # DDC
 		my $linkage = $classification_data_ref->{'6'} || "";
 		
 		my $content = $classification_data_ref->{'a'} || ""; # Name
@@ -445,7 +444,7 @@ while (<DAT>){
 		# Linkage = Verweis zur ID des Nordatensates
 		
 		if (!$linkage){
-		    # Keine ID mitgegeben, dann ID aus Koerperschaftsnamen generieren
+		    # Keine ID mitgegeben, dann ID aus Klassifikationsnamen generieren
 		    $linkage = $content;
 		    
 		    $linkage=~s/\W+//g;
@@ -463,7 +462,35 @@ while (<DAT>){
 		if ($linkage && $content){
 		    add_classification($linkage,$content);
 		}		
-	    } # Ende Klassifikationen
+	    }
+	    elsif ($field eq "084"){ # Sonstige
+		my $linkage = $classification_data_ref->{'6'} || "";
+		
+		my $source  = $classification_data_ref->{'2'} || "";		
+		my $content = $classification_data_ref->{'a'} || ""; # Name
+		
+		# Linkage = Verweis zur ID des Nordatensates		
+		if (!$linkage){
+		    # Keine ID mitgegeben, dann ID aus Klassifikationsnamen generieren
+		    $linkage = $content;
+		    
+		    $linkage=~s/\W+//g;
+
+		    # Und als neues Linkage-Feld uebernehmen		    
+		    push @{$title_ref->{'fields'}{$field_nr}}, {
+			subfield => '6', # Linkage-Subfield
+			content  => $linkage,
+			ind      => $ind,
+			mult     => $field_mult_ref->{$field_nr},
+		    } if ($linkage);
+		}
+		
+		
+		if ($linkage && $content){
+		    add_classification($linkage,$content);
+		}		
+	    }	    
+	    # Ende Klassifikationen
 	    # Schlagworte
 	    elsif ($field eq "600" || $field eq "610" || $field eq "648" || $field eq "650" || $field eq "651" || $field eq "655" || $field eq "688" || $field eq "689"){
 		my $linkage = $classification_data_ref->{'6'} || "";

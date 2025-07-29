@@ -1,19 +1,20 @@
 [%- PROCESS common/subtemplate name="local_config" -%] 
 [%- IF representation == '' || representation == 'html' ;
 
-    IF field == '0100' ;
-       field_description = msg.maketext("Autor");
+    IF subfield ;
+      field = "${field}:${subfield}";
+    END;
+
+    IF field == '0100:a' ;
+       field_description = msg.maketext("Verfasser");
        searchfield = 'personstring' ;
-    ELSIF field == '0200' ;
+    ELSIF field == '0110:a' ;
        field_description = msg.maketext("Körperschaft");
        searchfield = 'corporatebodystring' ;
-    ELSIF field == '0700' ;
+    ELSIF field == '0084:a' ;
        field_description = msg.maketext("Systematik");
        searchfield = 'classificationstring' ;
-    ELSIF field == '0710' ;
-       field_description = msg.maketext("Schlagwort");
-       searchfield = 'subjectstring' ;
-    ELSIF field == '0425' ;
+    ELSIF field == '1008:a' ;
        field_description = msg.maketext("Erscheinungsjahr");
        searchfield = 'yearstring' ;
     ELSE ;

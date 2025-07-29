@@ -26,6 +26,7 @@
 
   with_cloud = 1;
 
+  #USE dumper;dumper.dump(classifications);
 -%]
 
 <h3 class="pt-2">[% msg.maketext("Datenbanken der Universität zu Köln") %]</h3>
@@ -47,7 +48,7 @@
 [% END %]
 </ul>
 
-<div class="tab-content pt-3 mb-2">
+<div class="tab-content pt-3 mb-3">
 
 <div role="tabpanel" class="tab-pane fade-in active" id="ob-dbis_list">
 
@@ -102,4 +103,6 @@
       </div>
     </div>
 
-<a class="btn btn-primary mt-3 mb-3" href="https://dbis.ur.de/USBK" target="_blank"><i class="fas fa-globe me-2"></i> [% msg.maketext("Direkt in DBIS recherchieren") %]</a>
+<div class="d-md-none mt-3 mb-3">
+<a class="btn btn-primary" href="https://dbis.ur.de/USBK" target="_blank"><i class="fas fa-globe me-2"></i> [% msg.maketext("Direkt in DBIS recherchieren") %]</a>
+</div>

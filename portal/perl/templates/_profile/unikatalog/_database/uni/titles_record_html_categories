@@ -458,7 +458,7 @@ FOREACH field IN normdata;
            searchprefix  = config.get('searchfield').gnd.prefix;
 	 ELSE ;
            searchterm    = uri_escape(content);
-           searchprefix  = config.get('searchfield').person.prefix;
+           searchprefix  = config.get('searchfield').personstring.prefix;
          END;
 	 
          NEXT IF person_done.${searchterm} == 1;

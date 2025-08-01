@@ -40,24 +40,50 @@ my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
 
-my $harvestoaiexe     = "$config->{'conv_dir'}/harvestOAI.pl";
-my $simplexml2metaexe = "$config->{'conv_dir'}/simplexml2meta.pl";
-my $marc2metaexe      = "$config->{'conv_dir'}/marc2meta.pl";
+my $catmanduexe          = "$config->{'conv_dir'}/marc2meta.pl";
+my $marcjson2marcmetaexe = "$config->{'conv_dir'}/marcjson2marcmeta.pl";
 
 my $pool          = $ARGV[0];
 
 my $dbinfo        = $config->get_databaseinfo->search_rs({ dbname => $pool })->single;
 
-my $oaiurl        = $dbinfo->protocol."://".$dbinfo->host."/".$dbinfo->remotepath."/".$dbinfo->titlefile;
+my $oaiurl        = $dbinfo->protocol."://".$dbinfo->host;
+$oaiurl = $oaiurl."/".$dbinfo->remotepath if ($dbinfo->remotepath);
+$oaiurl = $oaiurl."/".$dbinfo->titlefile if ($dbinfo->titlefile);
 
-print "### $pool: Datenabzug via OAI von $oaiurl\n";
-system("cd $pooldir/$pool ; rm meta.* ; rm pool*");
-system("cd $pooldir/$pool ; $harvestoaiexe -all --set=$pool --format=MarcXchange --url=\"$oaiurl\" ");
+my $oai_format = "MarcXchange";
+my $oai_set    = "vd16";
 
-system("cd $pooldir/$pool ; echo '<recordlist>' > $pooldir/$pool/pool.dat ; cat pool-*.xml >> $pooldir/$pool/pool.dat ; echo '</recordlist>' >> $pooldir/$pool/pool.dat");
+my $from  = "";
+my $until = "";
 
-system("cd $pooldir/$pool; yaz-marcdump -i marcxchange -o marc pool.dat > pool.mrc");
-#system("cd $pooldir/$pool; $simplexml2metaexe --inputfile=pool.dat --configfile=/opt/openbib/conf/${pool}.yml; gzip meta.*");
-system("cd $pooldir/$pool; $marc2metaexe --database=$pool --encoding='UTF-8' --inputfile=pool.mrc; gzip meta.*");
+foreach my $this_filename (<pool-*.mrc>) {
+    my ($this_format,$this_from,$this_to)=$this_filename=~m/^pool-(.*?)-(\d\d\d\d.+?Z)_to_(\d\d\d\d.+?Z).mrc$/;
+    $format=$this_format unless ($format);
+    $from = $this_to;
+}
 
-system("rm $pooldir/$pool/pool.dat $pooldir/$pool/pool-*.xml");
+if (!$from){
+    $from = "1970-01-01T12:00:00Z";
+}
+
+my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $dst) = localtime();
+$mon += 1;
+$year += 1900;
+
+if (!$until){
+    $until = sprintf "%4d-%02d-%02dT%02d:%02d:%02dZ",$year,$mon,$mday,$hour,$min,$sec;
+}
+
+print "### $pool: Datenabzug via OAI von $oaiurl from $from until $until\n";
+system("cd $pooldir/$pool ; rm meta.* ; rm pool.mrc");
+system("cd $pooldir/$pool ; catmandu convert OAI --url $oaiurl --metadataPrefix $oai_format --set $oai_set --from $from --until $until --handler marcxml to MARC  > pool-${oai_format}-${from}_to_${until}.mrc");
+
+my @marc_files = sort { $b <=> $a } <pool-*.mrc>;
+my $files = join(' ',@marc_files);
+
+system("cd $pooldir/$pool ; cat $files > pool.mrc");
+
+system("cd $pooldir/$pool; yaz-marcdump -i marc -o json pool.mrc | jq -S -c . > pool.json");
+
+system("cd $pooldir/$pool; $marcjson2marcmetaexe --database=$pool -reduce-mem --inputfile=pool.json --configfile=/opt/openbib/conf/uni.yml; gzip meta.*");

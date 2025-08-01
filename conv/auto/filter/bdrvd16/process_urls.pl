@@ -8,7 +8,7 @@ use utf8;
 use warnings;
 use strict;
 
-my $default_access = 'y';
+my $default_access = 'g';
 
 while (<>){
     my $record_ref = decode_json $_;

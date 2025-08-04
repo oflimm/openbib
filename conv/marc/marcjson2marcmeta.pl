@@ -383,6 +383,7 @@ while (<DAT>){
 		    }
 		    
 		    $linkage=~s/\W+//g;
+		    $linkage=substr($linkage,0,400); # Verkuerzen auf < 512 bytes wg. Indexierungskey in ElasticSearch
 		}
 		
 		# Und als neues Linkage-Feld uebernehmen
@@ -421,6 +422,8 @@ while (<DAT>){
 		    $linkage = $content_a;
 		    
 		    $linkage=~s/\W+//g;
+
+		    $linkage=substr($linkage,0,400); # Verkuerzen auf < 512 bytes wg. Indexierungskey in ElasticSearch
 		}
 
 		# Und als neues Linkage-Feld uebernehmen		    
@@ -449,6 +452,8 @@ while (<DAT>){
 		    
 		    $linkage=~s/\W+//g;
 
+		    $linkage=substr($linkage,0,400); # Verkuerzen auf < 512 bytes wg. Indexierungskey in ElasticSearch
+		    
 		    # Und als neues Linkage-Feld uebernehmen		    
 		    push @{$title_ref->{'fields'}{$field_nr}}, {
 			subfield => '6', # Linkage-Subfield
@@ -476,6 +481,8 @@ while (<DAT>){
 		    
 		    $linkage=~s/\W+//g;
 
+		    $linkage=substr($linkage,0,400); # Verkuerzen auf < 512 bytes wg. Indexierungskey in ElasticSearch
+		    
 		    # Und als neues Linkage-Feld uebernehmen		    
 		    push @{$title_ref->{'fields'}{$field_nr}}, {
 			subfield => '6', # Linkage-Subfield
@@ -517,6 +524,8 @@ while (<DAT>){
 		    $linkage = $content;
 		    
 		    $linkage=~s/\W+//g;
+
+		    $linkage=substr($linkage,0,400); # Verkuerzen auf < 512 bytes wg. Indexierungskey in ElasticSearch		    
 		}
 
 		# Und als neues Linkage-Feld uebernehmen		    

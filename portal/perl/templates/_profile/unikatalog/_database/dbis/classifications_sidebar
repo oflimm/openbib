@@ -164,7 +164,7 @@
 <small>* [% msg.maketext("Es muss mindestens ein Name, ein Fachgebiet oder ein Typ verwendet werden") %]</small>
 </p>
 <p>
-<small>Tipp: Nutzen Sie bei der Suche nach dem Titel einer Datenbank die Phrasensuche "...".</small>
+<small>[% msg.maketext("Tipp: Nutzen Sie bei der Suche nach dem Titel einer Datenbank die Phrasensuche \"...\".") %]</small>
 </p>
 
 <button class="btn btn-primary mb-2" type="submit" name="search">[% msg.maketext("Suchen") %]</button>

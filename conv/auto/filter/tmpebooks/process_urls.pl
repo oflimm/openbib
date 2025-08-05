@@ -55,11 +55,14 @@ while (<>){
 	my $url_info_ref = {};
 	
 	foreach my $item_ref (@{$fields_ref->{'0856'}}){
-	    my $url = $item_ref->{content};
+	    my $content = $item_ref->{content};
 
-	    $url=~s{http://https://}{https://}; # Fix Swisslex URLs
+	    if ($item_ref->{subfield} eq "u"){  # Fix Swisslex URLs
+		$content=~s{http://https://}{https://};
+		$item_ref->{content} = $content;
+	    }
 	    
-	    $url_info_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $url;
+	    $url_info_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $content;
 	}
 
 	foreach my $umult (sort keys %$url_info_ref){
@@ -70,6 +73,8 @@ while (<>){
 
 		my $description = "E-Book im Volltext";
 
+		$url=~s{http://https://}{https://}; # Fix Swisslex URLs
+		
 		my $mult = $mult_ref->{'4662'}++;
 
 		# URL schon ueber Portfolios verarbeitet? Dann ignorieren

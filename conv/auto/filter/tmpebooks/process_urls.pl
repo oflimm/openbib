@@ -55,7 +55,11 @@ while (<>){
 	my $url_info_ref = {};
 	
 	foreach my $item_ref (@{$fields_ref->{'0856'}}){
-	    $url_info_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content}; 
+	    my $url = $item_ref->{content};
+
+	    $url=~s{http://https://}{https://}; # Fix Swisslex URLs
+	    
+	    $url_info_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $url;
 	}
 
 	foreach my $umult (sort keys %$url_info_ref){

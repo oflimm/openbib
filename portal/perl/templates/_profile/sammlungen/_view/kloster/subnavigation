@@ -17,6 +17,19 @@
 #
 #######################################################################
 -%]
+[% IF layout_param.active_menu == "kloester" %]
+<div class="card">
+<div class="card-header">[% msg.maketext("Klosterbibliotheken") %]</div>
+<div class="card-body">
+<nav class="navbar bg-light ob-sidebar">
+
+ <ul class="navbar-nav">
+  <li class="navbar-item[% IF layout_param.active_submenu == "st_pantaleon" %] active[% END %]"> <a class="[% IF layout_param.active_submenu == "st_pantaleon" %]active [% END %]navbar-link" href="[% path_prefix %]/[% config.get('info_loc') %]/st_pantaleon.html?l=[% lang %]">[% msg.maketext('St. Pantaleon') %]</a></li>
+ </ul>
+</nav>
+</div>
+</div> 
+[% END %]
 [% IF layout_param.active_menu == "info" %]
 <div class="card">
 <div class="card-header">[% msg.maketext("Informationen") %]</div>

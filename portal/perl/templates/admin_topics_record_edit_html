@@ -60,8 +60,9 @@
     lcclist.push(thislcc);
   END ;
 
+  USE dumper;dumper.dump( user.get_classifications_of_topic({ type => 'ezb', topicid => 20}));
 %]
-
+xxx[% topic.id %]
 <form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]">
 <input class="form-control" type="hidden" name="_method" value="PUT" />
 
@@ -100,7 +101,7 @@
 <select class="form-select" name="classifications" id="classifications_bk" multiple="multiple" size="10">
 [%
    classification_selected = {};
-   FOREACH classification IN user.get_classifications_of_topic({ type => 'bk', topicid => topic.id});
+   FOREACH classification IN user.get_classifications_of_topic({ type => 'BK', topicid => topic.id});
       classification_selected.${classification} = 1;
    END;
 %]
@@ -132,7 +133,7 @@
       classification_selected.${classification} = 1;
    END;
 -%]
-[% FOREACH ezb_topic IN ezb.get_classifications %]
+[% FOREACH ezb_topic IN ezb.get_classifications.items %]
 <option value="[% ezb_topic.name %]" [% IF classification_selected.${ezb_topic.name}  %]selected="selected"[% END %]>[% ezb_topic.name %] [% ezb_topic.desc | truncate(100)%]</option>
 [% END %]
 </select>
@@ -159,7 +160,7 @@
       classification_selected.${classification} = 1;
    END;
 -%]
-[% FOREACH dbis_topic IN dbis.get_classifications %]
+[% FOREACH dbis_topic IN dbis.get_classifications.items %]
 <option value="[% dbis_topic.name %]"[% IF classification_selected.${dbis_topic.name}  %] selected="selected"[% END %]>[% dbis_topic.name %] [% dbis_topic.desc %]</option>
 [% END %]
 </select>

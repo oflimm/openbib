@@ -198,7 +198,7 @@
    FOREACH ezb_topic IN ezb_classifications;
      ezb_mapping.$ezb_topic = 1;
    END ;
-   ezb_topics = ezb.get_classifications;
+   ezb_topics = ezb.get_classifications.items;
 -%]
 [% IF ezb_classifications.size > 0 %]
 <h4>[% msg.maketext("Elektronisch verfügbare Zeitschriften (EZB)")%]</h4>
@@ -223,7 +223,7 @@
    FOREACH dbis_topic IN dbis_classifications;
      dbis_mapping.$dbis_topic = 1;
    END ;
-   dbis_topics = dbis.get_classifications;
+   dbis_topics = dbis.get_classifications.items;
 -%]
 
 [% IF dbis_classifications.size > 0 %]

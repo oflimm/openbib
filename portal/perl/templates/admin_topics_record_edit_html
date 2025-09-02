@@ -60,9 +60,9 @@
     lcclist.push(thislcc);
   END ;
 
-  USE dumper;dumper.dump( user.get_classifications_of_topic({ type => 'ezb', topicid => 20}));
+  #USE dumper;dumper.dump( user.get_classifications_of_topic({ type => 'ezb', topicid => 20}));
 %]
-xxx[% topic.id %]
+
 <form method="post" action="[% path_prefix %]/[% config.get('topics_loc') %]/id/[% topic.id %]">
 <input class="form-control" type="hidden" name="_method" value="PUT" />
 

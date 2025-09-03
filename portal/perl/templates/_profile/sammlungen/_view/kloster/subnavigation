@@ -24,6 +24,7 @@
 <nav class="navbar bg-light ob-sidebar">
 
  <ul class="navbar-nav">
+  <li class="navbar-item[% IF layout_param.active_submenu == "allgemeines" %] active[% END %]"> <a class="[% IF layout_param.active_submenu == "allgemeines" %]active [% END %]navbar-link" href="[% path_prefix %]/[% config.get('info_loc') %]/st_sammlung.html?l=[% lang %]">[% msg.maketext('Allgemeines') %]</a></li>
   <li class="navbar-item[% IF layout_param.active_submenu == "st_pantaleon" %] active[% END %]"> <a class="[% IF layout_param.active_submenu == "st_pantaleon" %]active [% END %]navbar-link" href="[% path_prefix %]/[% config.get('info_loc') %]/st_pantaleon.html?l=[% lang %]">[% msg.maketext('St. Pantaleon') %]</a></li>
  </ul>
 </nav>

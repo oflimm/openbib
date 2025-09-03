@@ -96,7 +96,7 @@
 	  <p class="card-text">[% msg.maketext("Bibliotheken gab es in vielen Klöstern, doch sie hatten unterschiedliche Formen und Funktionen – die Bücher tragen bis heute Spuren davon!") %]</p>
 	</div>
 	<div class="card-footer pb-3">			  
-	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/st_pantaleon.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
+	  <a class="btn btn-primary" href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]">[% msg.maketext("Mehr") %]</a>
 	</div>
       </div>
     </div>

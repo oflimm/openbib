@@ -3,14 +3,19 @@
 
       'main_template' = 'info_sammlung_html'
 
-      'active_menu' = 'info'
+      'sidebar_template' = 'subnavigation'
+      'sidebar_button_in_main_template' = 1 # Sidebar im Desktop anzeige, Mobil via Button
+
+      'active_menu' = 'kloester'
+      'active_submenu' = 'allgemeines'
+
       'breadcrumb' = [
           {
              desc = msg.maketext('Start')
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Die Bibliothek des Kölner Kollegs')
+	     desc = msg.maketext('Allgemeines')
 	     url  = '#'
 	     current = 1
 	  }

@@ -13,7 +13,23 @@
 -%]
 
 <div class="row">
-<div class="col-md-9">
+<div class="col-md-3">
+
+<p>
+<img class="img-fluid" src="/images/openbib/views/kloster/unterseiten/st_pantaleon/St_Pantaleon_503x415.png"/>
+</p>
+
+<p>
+<img class="img-fluid" src="/images/openbib/views/kloster/unterseiten/st_pantaleon/Fragment_GBIV5722_A.jpg"/>
+</p>
+
+<p>
+<img class="img-fluid" src="/images/openbib/views/kloster/unterseiten/st_pantaleon/Nutzungsvermerk_S_Pant.jpg"/>
+</p>
+
+</div>
+
+<div class="col-md-6">
 
 [% config.get_templatetext('info_st_pantaleon',view,lang) %]
 

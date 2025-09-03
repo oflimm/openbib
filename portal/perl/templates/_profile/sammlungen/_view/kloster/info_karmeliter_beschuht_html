@@ -17,23 +17,8 @@
 
 <p>
 <figure class="figure">
-<img class="figure-img img-fluid" alt="[% msg.maketext("Ausschnitt aus dem Kölner Stadtplan von 1571") %]" src="/images/openbib/views/kloster/unterseiten/karmeliter_beschuht/Karmeliter_Beschuht_503x415.png"/>
-<figcaption class="figure-caption"><em>[% msg.maketext("Ausschnitt aus dem Kölner Stadtplan von 1571 (sog. Mercator-Plan) aus der Herzogin Anna Amalia Bibliothek Weimar, Signatur: Kt 100 Köln 2S. Mit freundlicher Genehmigung der Klassik Stiftung Weimar.") %]</em></figcaption>
-</figure>
-</p>
-
-<p>
-<figure class="figure">
-<img class="figure-img img-fluid" alt="[% msg.maketext("Buch - Titelseite") %]" src="/images/openbib/views/kloster/unterseiten/karmeliter_beschuht/Nutzungsvermerk_S_Pant.jpg"/>
-<figcaption class="figure-caption"><em>[% msg.maketext("Dieses Buch war laut Nutzungsvermerk in Benutzung des Bruders Albin Hattingen und der anderen (Mitbrüder).") %]</em></figcaption>
-</figure>
-
-</p>
-
-<p>
-<figure class="figure">
-<img class="figure-img img-fluid" alt="[% msg.maketext("Buch - Einband") %]" src="/images/openbib/views/kloster/unterseiten/karmeliter_beschuht/Fragment_GBIV5722_A.jpg"/>
-<figcaption class="figure-caption"><em>[% msg.maketext("Für diesen Einband wurde ein fast vollständiges Doppelblatt einer mittelalterlichen Handschrift wiederverwendet.") %]</em></figcaption>
+<img class="figure-img img-fluid" alt="[% msg.maketext("Lorem ipsum dolor sit amet") %]" src="/images/openbib/views/kloster/unterseiten/karmeliter_beschuht/Karmeliter_beschuht_407x368.png"/>
+<figcaption class="figure-caption"><em>[% msg.maketext("Lorem ipsum dolor sit amet") %]</em></figcaption>
 </figure>
 </p>
 

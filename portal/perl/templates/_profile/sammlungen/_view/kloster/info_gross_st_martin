@@ -1,0 +1,28 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+
+      'main_template' = 'info_gross_st_martin_html'
+
+      'sidebar_template' = 'subnavigation'
+      'sidebar_button_in_main_template' = 1 # Sidebar im Desktop anzeige, Mobil via Button
+
+      'active_menu' = 'kloester'
+      'active_submenu' = 'gross_st_martin'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Gross St. Martin')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

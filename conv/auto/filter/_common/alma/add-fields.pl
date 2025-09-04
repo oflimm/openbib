@@ -569,10 +569,11 @@ while (<>){
     # Sortierung nach 5100$a
     # Analyse nach aufsteigender Wichtigkeit 830$v>773$q>245$n
     # Nachfolgeanalyse 'korrigiert' ggf. vorangegangene
+    # Es wird jeweils nur der numerische Anteil am Anfang des Subfeldes verwendet
     if (defined $title_ref->{fields}{'0245'}){
         foreach my $item (@{$title_ref->{fields}{'0245'}}){
             if ($item->{subfield} eq "n"){
-                $bandzaehlung = $item->{content};
+                ($bandzaehlung) = $item->{content} =~m/^(\d+)/;
 		last;
             }
 	}
@@ -581,7 +582,7 @@ while (<>){
     if (defined $title_ref->{fields}{'0773'}){
         foreach my $item (@{$title_ref->{fields}{'0773'}}){
             if ($item->{subfield} eq "q"){
-                $bandzaehlung = $item->{content};
+                ($bandzaehlung) = $item->{content} =~m/^(\d+)/;
 		last;
             }
 	}
@@ -590,7 +591,7 @@ while (<>){
     if (defined $title_ref->{fields}{'0830'}){
         foreach my $item (@{$title_ref->{fields}{'0830'}}){
             if ($item->{subfield} eq "v"){
-                $bandzaehlung = $item->{content};
+                ($bandzaehlung) = $item->{content} =~m/^(\d+)/;
 		last;
             }
 	}

@@ -40,7 +40,7 @@
                 'L0260', # msg.maketext("L0260") # Art der Vernetzung
                 'L0210', # msg.maketext("L0210") # DV-Ausstattung  
                 'L0270', # msg.maketext("L0270") # Zahl bereitgestellter Arbeitsplaetze
-                'L0220', # msg.maketext("L0220") # Art des Systems
+                #'L0220', # msg.maketext("L0220") # Art des Systems
                 'L0230', # msg.maketext("L0230") # Online-Katalogisierung seit Erscheinungsjahr
                 'L0235', # msg.maketext("L0235") # Online-Katalogisierung seit Erwerbungsjahr
                 #'L0240', # msg.maketext("L0240") # Mitarbeit am KUG

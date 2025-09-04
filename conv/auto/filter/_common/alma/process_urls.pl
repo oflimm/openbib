@@ -201,8 +201,24 @@ while (<>){
 		    
 		    $url_done_ref->{$url} = 1;
 		}
-		# Lokale Digitalisate
-		elsif ($url =~m/^https?:\/\/www\.ub\.uni\-koeln\.de\/permalink/){
+		# Lokale Digitalisate DOI
+		elsif ($url =~m/0.58016\/retro_/){
+		    push @{$record_ref->{fields}{'4662'}}, {
+			mult     => $mult,
+			subfield => 'g', # fulltext = green
+			content  => $url,
+		    };
+		    
+		    push @{$record_ref->{fields}{'4663'}}, {
+			mult     => $mult,
+			subfield => '',
+			content  => "Volltext",
+		    };
+		    
+		    $url_done_ref->{$url} = 1;
+		}
+		# Lokale Digitalisate Permalink
+		elsif ($url =~m/^https?:\/\/services\.ub\.uni\-koeln\.de\/permalink/){
 		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => 'f', # fulltext = green or yellow. Es gibt auch gelbe Objekte ID=6612903

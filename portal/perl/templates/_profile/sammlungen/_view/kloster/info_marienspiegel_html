@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: info_project_html
+# Templatename: info_marienspiegel_html
 #
 # Typ         : Subtemplate
 #
@@ -12,20 +12,21 @@
 #######################################################################
 -%]
 
-
 <div class="row">
-<div class="col-md-9">
+<div class="col-md-3">
 
 <p>
-<center>
 <figure class="figure">
-<img class="figure-img img-fluid" alt="[% msg.maketext("Historischer Stadtplan von Köln") %]" src="/images/openbib/views/kloster/stadtplan-koeln-historisch.png"/>
-<figcaption class="figure-caption"><em>[% msg.maketext("Historischer Stadtplan von Köln") %]</em></figcaption>
+<img class="figure-img img-fluid" alt="[% msg.maketext("Lorem ipsum dolor sit amet") %]" src="/images/openbib/views/kloster/unterseiten/marienspiegel/Marienspiegel_466x453.png"/>
+<figcaption class="figure-caption"><em>[% msg.maketext("Lorem ipsum dolor sit amet") %]</em></figcaption>
 </figure>
-</center>
 </p>
 
-[% config.get_templatetext('info_sammlung',view,lang) %]
+</div>
+
+<div class="col-md-6">
+
+[% config.get_templatetext('info_marienspiegel',view,lang) %]
 
 </div>
 

@@ -8,7 +8,7 @@ use utf8;
 use warnings;
 use strict;
 
-my $default_access = 'y';
+my $default_access = 'g';
 
 while (<>){
     my $record_ref = decode_json $_;
@@ -55,14 +55,7 @@ while (<>){
 	my $url_info_ref = {};
 	
 	foreach my $item_ref (@{$fields_ref->{'0856'}}){
-	    my $content = $item_ref->{content};
-
-	    if ($item_ref->{subfield} eq "u"){  # Fix Swisslex URLs
-		$content=~s{http://https://}{https://};
-		$item_ref->{content} = $content;
-	    }
-	    
-	    $url_info_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $content;
+	    $url_info_ref->{$item_ref->{mult}}{$item_ref->{subfield}} = $item_ref->{content}; 
 	}
 
 	foreach my $umult (sort keys %$url_info_ref){
@@ -73,8 +66,6 @@ while (<>){
 
 		my $description = "E-Book im Volltext";
 
-		$url=~s{http://https://}{https://}; # Fix Swisslex URLs
-		
 		my $mult = $mult_ref->{'4662'}++;
 
 		# URL schon ueber Portfolios verarbeitet? Dann ignorieren

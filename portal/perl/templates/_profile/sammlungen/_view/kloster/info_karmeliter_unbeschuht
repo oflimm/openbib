@@ -1,21 +1,21 @@
 [%- IF representation == '' || representation == 'html' ;
     layout_param = {
 
-      'main_template' = 'info_sammlung_html'
+      'main_template' = 'info_karmeliter_unbeschuht_html'
 
       'sidebar_template' = 'subnavigation'
       'sidebar_button_in_main_template' = 1 # Sidebar im Desktop anzeige, Mobil via Button
 
       'active_menu' = 'kloester'
-      'active_submenu' = 'allgemeines'
-
+      'active_submenu' = 'karmeliter_unbeschuht'
+      
       'breadcrumb' = [
           {
              desc = msg.maketext('Start')
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
 	  {
-	     desc = msg.maketext('Allgemeines')
+	     desc = msg.maketext('Karmeliter unbeschuht')
 	     url  = '#'
 	     current = 1
 	  }

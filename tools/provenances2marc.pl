@@ -171,14 +171,14 @@ while (my $json = <>){
     $provenances_by_nzid->{$nz_id}{'035_a'} = $field_035_a;
 
     push @{$provenances_by_nzid->{$nz_id}{'361'}}, {
-	'361_o' => $field_361_o,
-	    '361_5' => $field_361_5,
+	'361_5' => $field_361_5,
 	    '361_s' => $field_361_s,
+	    '361_o' => $field_361_o,
 	    '361_a' => $field_361_a,
 	    '361_0' => $field_361_0,
 	    '361_f' => $field_361_f,
-	    '361_l' => $field_361_l,
 	    '361_z' => $field_361_z,
+	    '361_l' => $field_361_l,
 #	    '361_y' => $field_361_y, # Aktuelle Signatur derzeit nicht in Ausgabe erwuenscht
     };
     
@@ -213,16 +213,16 @@ foreach my $nz_id (keys %{$provenances_by_nzid}){
 
 	my @subfields = ();
 	
-	if (defined $field_ref->{'361_o'} && $field_ref->{'361_o'}){
-	    push (@subfields,'o', $field_ref->{'361_o'});	    
-	}
-
 	if (defined $field_ref->{'361_5'} && $field_ref->{'361_5'}){
 	    push (@subfields,'5', $field_ref->{'361_5'});
 	}
 
 	if (defined $field_ref->{'361_s'} && $field_ref->{'361_s'}){
 	    push (@subfields,'s', $field_ref->{'361_s'});
+	}
+
+	if (defined $field_ref->{'361_o'} && $field_ref->{'361_o'}){
+	    push (@subfields,'o', $field_ref->{'361_o'});	    
 	}
 
 	if (defined $field_ref->{'361_a'} && $field_ref->{'361_a'}){
@@ -237,12 +237,12 @@ foreach my $nz_id (keys %{$provenances_by_nzid}){
 	    push (@subfields,'f', $field_ref->{'361_f'});
 	}
 
-	if (defined $field_ref->{'361_l'} && $field_ref->{'361_l'}){
-	    push (@subfields,'l', $field_ref->{'361_l'});
-	}
-
 	if (defined $field_ref->{'361_z'} && $field_ref->{'361_z'}){
 	    push (@subfields,'z', $field_ref->{'361_z'});
+	}
+	
+	if (defined $field_ref->{'361_l'} && $field_ref->{'361_l'}){
+	    push (@subfields,'l', $field_ref->{'361_l'});
 	}
 
 	if (defined $field_ref->{'361_y'} && $field_ref->{'361_y'}){

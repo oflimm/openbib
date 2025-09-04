@@ -64,7 +64,7 @@
       classification_selected.${classification} = 1;
    END;
 -%]
-[% FOREACH ezb_topic IN ezb.get_classifications %]
+[% FOREACH ezb_topic IN ezb.get_classifications.items %]
 [%   IF classification_selected.${ezb_topic.name}  %]<li class="list-group-item">[% ezb_topic.name %] [% ezb_topic.desc | truncate(100)%]</li>[% END %]
 [% END %]
 </ul>
@@ -85,7 +85,7 @@
       classification_selected.${classification} = 1;
    END;
 -%]
-[% FOREACH dbis_topic IN dbis.get_classifications %]
+[% FOREACH dbis_topic IN dbis.get_classifications.items %]
 [% IF classification_selected.${dbis_topic.name}  %]<li class="list-group-item">[% dbis_topic.name %] [% dbis_topic.desc %]</li>[% END %]
 [% END %]
 </ul>

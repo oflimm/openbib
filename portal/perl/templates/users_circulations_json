@@ -54,7 +54,7 @@
    this_userdata = {
       salutation = userdata.salutation
       fullname   = userdata.fullname
-      birthdata  = userdata.birthdate
+      #birthdate  = userdata.birthdate
       address    = [
       {
          street    = userdata.street

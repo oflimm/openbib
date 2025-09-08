@@ -739,10 +739,18 @@ sub search {
     my $offset            = $page*$num-$num;
 
     $self->parse_query($searchquery);
-
+    
     my $dbis_base = $config->{'dbis'}{'baseurl'};
 
-    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&include%5B%5D=licenses&lett=a&all=".$self->{access_all}."&".$self->querystring."&hits_per_page=$num&offset=$offset&sort=alph&xmloutput=1";
+    my $dbis_sort = "";
+
+    $logger->debug("Sorttype: $sorttype");
+    
+    unless ($sorttype eq "relevance"){
+	$dbis_sort = '&sort=alph';
+    }
+    
+    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&include%5B%5D=licenses&lett=a&all=".$self->{access_all}."&".$self->querystring."&hits_per_page=$num&offset=$offset".$dbis_sort."&xmloutput=1";
 
     my $memc_key = "dbis:search:$url";
 

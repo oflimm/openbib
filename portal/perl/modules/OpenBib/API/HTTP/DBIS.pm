@@ -580,7 +580,15 @@ sub search {
 
     my $dbis_base = $config->get('dbis_baseurl');
 
-    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&colors=$self->{colors}&ocolors=$self->{ocolors}&lett=k&".$self->querystring."&hits_per_page=$num&offset=$offset&sort=alph&xmloutput=1";
+    my $dbis_sort = "";
+
+    $logger->debug("Sorttype: $sorttype");
+    
+    unless ($sorttype eq "relevance"){
+	$dbis_sort = '&sort=alph';
+    }
+	
+    my $url=$dbis_base."dbliste.php?bib_id=$self->{bibid}&colors=$self->{colors}&ocolors=$self->{ocolors}&lett=k&".$self->querystring."&hits_per_page=$num&offset=$offset".$dbis_sort."&xmloutput=1";
 
     my $memc_key = "dbis:search:$url";
 

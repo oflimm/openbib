@@ -1,0 +1,13 @@
+Sehr geehrte(r) Portal-Nutzer [% username %],
+
+Zum Anmelden am Portal wird eine Mehrfaktor-Authentifizierung
+genutzt. Hiermit erhalten Sie den zweiten Faktor.
+
+Bitte setzen Sie folgenden Wert in die bei Ihnen angezeigte
+Eingabeaufforderung ein:
+
+[% mfa_token %]
+
+Mit freundlichen Gruessen
+
+Ihr Portal-Team

@@ -6,7 +6,7 @@
 #
 #  CRON-Job zum automatischen aktualisieren aller OpenBib-Datenbanken
 #
-#  Dieses File ist (C) 1997-2024 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2025 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -515,9 +515,7 @@ sub threadB {
 
     $logger->info("### Master: Alma Uni Katalog");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, purgefirst => 1, sync => 1, databases => ['uni'] });
-#    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, purgefirst => 1, sync => 1, reducemem => 1, databases => ['uni'] });
-#    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, databases => ['inst001'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, purgefirst => 1, sync => 1, reducemem => 1, databases => ['uni'] });
     
     ##############################
 

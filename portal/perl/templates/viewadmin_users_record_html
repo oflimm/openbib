@@ -22,9 +22,6 @@
 [% IF userinfo.vorname %]
 <tr><th>[% msg.maketext("Vorname") %]</th><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
 [% END %] 
-[% IF userinfo.gebdatum %]
-<tr><th>[% msg.maketext("Geburtsdatum") %]</th><td align="left">&nbsp;[% userinfo.gebdatum %]</td></tr>
-[% END %] 
 [% IF userinfo.strasse %]
 <tr><th>[% msg.maketext("Strasse") %]</th><td align="left">&nbsp;[% userinfo.strasse %]</td></tr>
 [% END %] 

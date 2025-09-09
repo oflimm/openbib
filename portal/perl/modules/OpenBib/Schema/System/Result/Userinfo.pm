@@ -159,6 +159,11 @@ __PACKAGE__->table("userinfo");
   data_type: 'text'
   is_nullable: 1
 
+=head2 mfa_token
+
+  data_type: 'text'
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -218,6 +223,8 @@ __PACKAGE__->add_columns(
   "external_id",
   { data_type => "text", is_nullable => 1 },
   "external_group",
+  { data_type => "text", is_nullable => 1 },
+  "mfa_token",
   { data_type => "text", is_nullable => 1 },
 );
 
@@ -512,8 +519,8 @@ __PACKAGE__->belongs_to(
 );
 
 
-# Created by DBIx::Class::Schema::Loader v0.07051 @ 2025-02-14 12:30:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BUIhYPmlYRlTdNpWkD6rVw
+# Created by DBIx::Class::Schema::Loader v0.07051 @ 2025-09-04 12:44:52
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YOo25y4S9JY12HtIeQ09XA
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

@@ -79,7 +79,7 @@
 <div class="table-responsive">
 <table class="table table-striped ">
 <thead>
-<tr><th>Id</th><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("Typ") %]</th><th>[% msg.maketext("Views") %]</th></tr>
+<tr><th>Id</th><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("Beschreibung") %]</th><th>[% msg.maketext("MFA") %]</th><th>[% msg.maketext("Typ") %]</th><th>[% msg.maketext("Views") %]</th></tr>
 </thead>
 <tbody>
 [% FOREACH target IN authenticators %]
@@ -93,6 +93,7 @@
 <a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('authenticators_loc') %]/id/[% target.id %].html?l=[% lang %]">[% target.description %]</a>
 [%   END %]
 </td>
+ <td>[% IF target.mfa == 'email_admin' %][% msg.maketext("E-Mail (Administration)") %][% ELSIF target.mfa == 'email'%][% msg.maketext("E-Mail (Alle)") %][% ELSE %][% msg.maketext("Deaktiviert") %][% END %]</td>
  <td>[% target.type %]</td>
  <td>
 [% IF target.views.size > 0 %]

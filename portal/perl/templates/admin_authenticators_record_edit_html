@@ -33,6 +33,15 @@
 </div>
 
 <div class="form-floating mb-3">
+  <select class="form-select" name="mfa" id="mfa">
+    <option value="none" [% IF authenticatorinfo.mfa == 'none' %]selected="selected"[% END %]>[% msg.maketext("Deaktiviert") %]</option>
+    <option value="email" [% IF authenticatorinfo.mfa == 'email' %]selected="selected"[% END %]>[% msg.maketext("E-Mail (alle Kennungen)") %]</option>
+    <option value="email_admin" [% IF authenticatorinfo.mfa == 'email_admin' %]selected="selected"[% END %]>[% msg.maketext("E-Mail (nur Administratoren)") %]</option>
+  </select>
+<label for="MFA">[% msg.maketext("MFA") %]</label>
+</div>
+
+<div class="form-floating mb-3">
   <select class="form-select" name="type" id="type">
     <option value="self" [% IF authenticatorinfo.type == 'self' %]selected="selected"[% END %]>[% msg.maketext("Selbstregistrierung") %]</option>
     <option value="ldap" [% IF authenticatorinfo.type == 'ldap' %]selected="selected"[% END %]>[% msg.maketext("LDAP") %]</option>

@@ -36,7 +36,9 @@ use utf8;
 
 use DBI;
 use Digest::MD5;
+use Email::Stuffer;
 use Encode 'decode_utf8';
+use File::Slurper 'read_binary';
 use HTML::Entities qw/decode_entities/;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
@@ -180,6 +182,7 @@ sub authenticate {
     my $authenticatorid  = $input_data_ref->{authenticatorid};
     my $username         = $input_data_ref->{username};
     my $password         = $input_data_ref->{password};
+    my $mfa_token        = $input_data_ref->{mfa_token};
     my $expire           = $input_data_ref->{expire};    
 
     # CGI-only Parameters for html-representation
@@ -194,7 +197,8 @@ sub authenticate {
         success => 0,
     };
 
-
+    my $mfa_done = 0;
+    
     # Authentifizierung nur dann valide, wenn dem View das Anmeldeziel
     # authenticatorid zugeordnet ist.
     my @valid_authenticators = $config->get_viewauthenticators($view);
@@ -249,83 +253,105 @@ sub authenticate {
         return;
     }
 
-    my $userid = 0; # Nicht erfolgreich authentifiziert
-
-    # Failure codes
-    #
-    #  0: unspecified
-    # -1: no username and/or password
-    # -2: max_login_failure reached selfref
-    # -3: wrong password
-    # -4: user does not exist
-    # -5: view denied
-    # -6: wrong authenticator
-    # -7: username is no email
-    # -8: max_login_failure reached other
-    
-    if ($username eq "" || $password eq "") {
-        $redirecturl="$path_prefix/$config->{login_loc}/failure?code=-1";
-	
-	my $code   = -1;
-	my $reason = $self->get_error_message($code);
-
-	$logger->error("Authentication Error for user $username: $reason ");
-	
-	if ($self->param('representation') eq "html"){
-	    $logger->debug("Redirecting to $redirecturl");
-	    
-	    # TODO GET?
-	    $self->header_add('Content-Type' => 'text/html');
-	    return $self->redirect($redirecturl);
-	}
-	else {
-	    return $self->print_warning($reason,$code);
-	}
-    }
-
-    eval {
-	$password    = decode_entities($password);
-	
-	# if ($logger->is_debug){
-	#     $logger->debug("Using password $password");
-	# }
-    };    
-    
     my $authenticator = OpenBib::Authenticator::Factory->create_authenticator({ id => $authenticatorid, config => $config, session => $session});
 
-    # Konsistenzchecks
-    { 
-	if ($authenticator->get('type') eq "self" && $username ne "admin" && $username !~/\@/){
-
-	    my $code   = -7;
-	    my $reason = $self->get_error_message($code);
-	    $logger->error("Authentication Error for user $username: $reason ");
+    my $userid = 0; # Nicht erfolgreich authentifiziert
     
-	    return $self->print_warning($reason,$code);	    
-	}
+    # Uebergabe MFA-Token, dann dieses Ueberpruefen
+    if ($username && $mfa_token){
+	$userid = $authenticator->authenticate({
+	    username  => $username,
+	    mfa_token => $mfa_token,
+	    viewname  => $view,
+					       });
+	$mfa_done = 1;
 
-	my $ils_barcode_regexp = $config->get('ils_barcode_regexp');
-
-	if ($authenticator->get('type') eq "ils" && $ils_barcode_regexp && $username !~/$ils_barcode_regexp/){
+	$logger->debug("MFA Check => Userid: $userid");
+    }
+    else {
+	# Failure codes
+	#
+	#  0: unspecified
+	# -1: no username and/or password
+	# -2: max_login_failure reached selfref
+	# -3: wrong password
+	# -4: user does not exist
+	# -5: view denied
+	# -6: wrong authenticator
+	# -7: username is no email
+	# -8: max_login_failure reached other
+	# -10: invalid mfa_token
+	
+	if ($username eq "" || $password eq "") {
+	    $redirecturl="$path_prefix/$config->{login_loc}/failure?code=-1";
 	    
-	    my $code   = -9;
+	    my $code   = -1;
 	    my $reason = $self->get_error_message($code);
+	    
 	    $logger->error("Authentication Error for user $username: $reason ");
 	    
-	    return $self->print_warning($reason,$code);	    
+	    if ($self->param('representation') eq "html"){
+		$logger->debug("Redirecting to $redirecturl");
+		
+		# TODO GET?
+		$self->header_add('Content-Type' => 'text/html');
+		return $self->redirect($redirecturl);
+	    }
+	    else {
+		return $self->print_warning($reason,$code);
+	    }
 	}
-
+	
+	eval {
+	    $password    = decode_entities($password);
+	    
+	    # if ($logger->is_debug){
+	    #     $logger->debug("Using password $password");
+	    # }
+	};    
+	
+	# Konsistenzchecks
+	{ 
+	    if ($authenticator->get('type') eq "self" && $username ne "admin" && $username !~/\@/){
+		
+		my $code   = -7;
+		my $reason = $self->get_error_message($code);
+		$logger->error("Authentication Error for user $username: $reason ");
+		
+		return $self->print_warning($reason,$code);	    
+	    }
+	    
+	    my $ils_barcode_regexp = $config->get('ils_barcode_regexp');
+	    
+	    if ($authenticator->get('type') eq "ils" && $ils_barcode_regexp && $username !~/$ils_barcode_regexp/){
+		
+		my $code   = -9;
+		my $reason = $self->get_error_message($code);
+		$logger->error("Authentication Error for user $username: $reason ");
+		
+		return $self->print_warning($reason,$code);	    
+	    }
+	    
+	}
+	
+	$userid = $authenticator->authenticate({
+	    username  => $username,
+	    password  => $password,
+	    viewname  => $view,
+					       });
+	
     }
 
-    $userid = $authenticator->authenticate({
-	username  => $username,
-	password  => $password,
-	viewname  => $view,
-					   });
-    
+    if ($userid == -10){
+	my $reason = $self->get_error_message($userid);
+	$logger->error("Authentication Error for user $username: $reason ");
+	
+	return $self->print_warning($reason,$code);
+    }
+
     if ($userid > 0) { 
         $logger->debug("Authentication successful");
-	
+
 	$user->update_lastlogin({ userid => $userid });
 
         $result_ref->{success} = 1;
@@ -341,6 +367,58 @@ sub authenticate {
 	    $logger->error("Authentication Error for user $username: $reason ");
 	    
 	    return $self->print_warning($reason,$code);
+	}
+
+	# Bevor die Session mit der Benutzerid assoziiert wird, muss bei MFA
+	# der zweite Faktor generiert, ggf. verschickt und ueberprueft werden
+
+	my $authenticator_mfa = $config->get_authenticator_mfa($authenticatorid);
+	if ($authenticator_mfa eq "email" && !$mfa_done){
+	    my $mfa_token = $user->gen_mfa_token;
+	    my $email = $user->get_info($userid)->{email};
+
+	    my $code = -11;
+	    my $reason = $self->get_error_message($code);
+	    
+	    return $self->print_warning($reason,$code) unless ($email);
+	    
+	    return $self->send_mfa_mail({ authenticatorid => $authenticatorid, username => $username, userid => $userid, email => $email, mfa_token => $mfa_token, redirect_to => $redirect_to });
+	}
+	elsif ($authenticator_mfa eq "email_admin" && !$mfa_done){
+	    my $userdata_ref = $user->get_info($userid);
+	    
+	    my $mfa_admin_ref = $config->{mfa_admin};
+
+	    my $mfa_required = 0;
+
+	    if (defined $mfa_admin_ref->{users}{$username}){
+		$mfa_required = 1;
+	    }
+	    elsif (defined $userdata_ref->{role}) {
+		foreach my $thisrole (keys %{$userdata_ref->{role}}){
+		    if (defined $mfa_admin_ref->{roles}{$thisrole}){
+			$mfa_required = 1;
+		    }
+		}
+	    }
+
+	    if ($logger->is_debug){
+		$logger->debug("Userinfo: ".YAML::Dump($userdata_ref));
+		$logger->debug("MFA email_admin: Roles: ".YAML::Dump($userdata_ref->{role})." - Configured: ".YAML::Dump($mfa_admin_ref)." -> required: $mfa_required");
+	    }
+	    
+	    if ($mfa_required){
+		my $mfa_token = $user->gen_mfa_token;
+		
+		my $email = $userdata_ref->{email};
+
+		my $code = -11;
+		my $reason = $self->get_error_message($code);
+		
+		return $self->print_warning($reason,$code) unless ($email);
+		
+		return $self->send_mfa_mail({ authenticatorid => $authenticatorid, username => $username, userid => $userid, email => $email, mfa_token => $mfa_token, redirect_to => $redirect_to });
+	    }
 	}
 	
 	# Jetzt wird die Session mit der Benutzerid assoziiert
@@ -526,6 +604,10 @@ sub get_error_message {
         -8 => $msg->maketext("Die Anmeldung mit Ihrer angegebenen Benutzerkennung und Passwort ist zu oft fehlgeschlagen. Die Kennung ist gesperrt. Bitte wenden Sie sich an an den Schalter \"Bibliotheksausweise und Fernleihrückgabe\" in der USB, um sie zu entsperren. Danach können Sie sich im Ausweisportal (https://ausweis.ub.uni-koeln.de/) ein neues Passwort setzen."),
 
         -9 => $msg->maketext("Die eingegebene Benutzernummer ist ungültig. Benutzernummern bestehen aus Großbuchstaben, Zahlen und #, z.B. A123456789#B."),
+
+	-10 => $msg->maketext("Das eingegebene MFA Token ist ungültig. Bitte versuchen Sie sich nochmals neu anzumelden."),
+
+	-11 => $msg->maketext("Es konnte keine E-Mailadresse zum Verschicken des MFA Tokens gefunden werden."),
 	
 	);
 
@@ -537,6 +619,123 @@ sub get_error_message {
     else {
 	return $unspecified;
     }
+}
+
+sub send_mfa_mail {
+    my ($self, $arg_ref) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    # Dispatched Args
+    my $view           = $self->param('view');
+
+    # Shared Args
+    my $config         = $self->param('config');
+    my $user           = $self->param('user');
+    my $msg            = $self->param('msg');
+    
+    # Set defaults
+    my $authenticatorid = exists $arg_ref->{authenticatorid}
+        ? $arg_ref->{authenticatorid}       : undef;
+
+    my $username     = exists $arg_ref->{username}
+        ? $arg_ref->{username}              : undef;
+
+    my $userid       = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}                : undef;
+    
+    my $email        = exists $arg_ref->{email}
+        ? $arg_ref->{email}                 : undef;
+
+    my $mfa_token    = exists $arg_ref->{mfa_token}
+        ? $arg_ref->{mfa_token}             : undef;
+
+    my $redirect_to  = exists $arg_ref->{redirect_to}
+        ? $arg_ref->{redirect_to}           : undef;
+    
+    # Bestaetigungsmail versenden
+
+    my $afile = "an." . $$ . ".txt";
+
+    my $subject  = $msg->maketext("MFA-Token zur Anmeldung am Portal");
+    my $viewinfo = $config->get_viewinfo->search({ viewname => $view })->single();
+
+    my $mainttdata = {
+	username       => $username,
+	userid         => $userid,
+	email          => $email,
+	mfa_token      => $mfa_token,
+	mfa_type       => 'email',	
+	viewinfo       => $viewinfo,
+    };
+    
+    my $maintemplate = Template->new({
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+            ABSOLUTE       => 1,
+        }) ],
+        #        ABSOLUTE      => 1,
+        #        INCLUDE_PATH  => $config->{tt_include_path},
+        # Es ist wesentlich, dass OUTPUT* hier und nicht im
+        # Template::Provider definiert wird
+        RECURSION      => 1,
+        OUTPUT_PATH   => '/tmp',
+        OUTPUT        => $afile,
+    });
+
+    $mainttdata = $self->add_default_ttdata($mainttdata);
+    
+    my $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => '', # Template ist nicht datenbankabhaengig
+        view         => $mainttdata->{view},
+        profile      => $mainttdata->{sysprofile},
+        templatename => $config->{tt_login_mfa_mail_message_tname},
+    });
+
+    $logger->debug("Using base Template $templatename");
+    
+    $maintemplate->process($templatename, $mainttdata ) || do { 
+        $logger->error($maintemplate->error());
+        $self->header_add('Status','400'); # Server Error
+        return;
+    };
+
+    my $anschfile="/tmp/" . $afile;
+    
+    Email::Stuffer->to($email)
+	->from($config->{contact_email})
+	->subject($subject)
+	->text_body(read_binary($anschfile))
+	->send;
+
+    # TT-Data erzeugen
+    my $ttdata={
+	mfa_authenticatorid => $authenticatorid,
+	mfa_username    => $username,
+	mfa_userid      => $userid,
+	mfa_email       => $email,
+	mfa_token       => $mfa_token,
+	mfa_type        => 'email',
+	mfa_redirect_to => $redirect_to,
+    };
+    
+    $ttdata = $self->add_default_ttdata($ttdata);
+
+    if ($logger->is_debug){
+	$logger->debug("TTdata: ".YAML::Dump($ttdata));
+    }
+    
+    $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => '', # Template ist nicht datenbankabhaengig
+        view         => $ttdata->{view},
+        profile      => $ttdata->{sysprofile},
+        templatename => $config->{tt_login_mfa_form_tname},
+    });
+
+    $user->set_mfa_token({ userid => $userid, mfa_token => $mfa_token });
+    
+    return $self->print_page($templatename,$ttdata);
 }
 
 sub get_input_definition {
@@ -554,6 +753,11 @@ sub get_input_definition {
             type     => 'scalar',
         },
         password => {
+            default  => '',
+            encoding => 'none',
+            type     => 'scalar',
+        },
+        mfa_token => {
             default  => '',
             encoding => 'none',
             type     => 'scalar',

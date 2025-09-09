@@ -179,6 +179,79 @@ sub set_credentials {
     return;
 }
 
+sub gen_mfa_token {
+    my ($self)=@_;
+
+    my $gmtime    = localtime(time);
+    my $md5digest=Digest::MD5->new();
+    
+    $md5digest->add($gmtime . rand('1024'). $$);
+    
+    return $md5digest->hexdigest;
+}
+
+sub set_mfa_token {
+    my ($self,$arg_ref)=@_;
+    
+    # Set defaults
+    my $userid     = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}             : undef;
+
+    my $mfa_token  = exists $arg_ref->{mfa_token}
+        ? $arg_ref->{mfa_token}             : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $thisuserid = (defined $userid)?$userid:$self->{ID};
+
+    $logger->debug("Userid: $userid (uebergeben) / $thisuserid (effektiv) - MFA-Token: $mfa_token");
+    
+    if ($thisuserid && $mfa_token){
+        # DBI: "update userinfo set pin = ? where username = ?"
+        my $userinfo = $self->get_schema->resultset('Userinfo')->single(
+            {
+                id => $thisuserid,
+            }
+	    );
+
+	if ($userinfo){
+	    $userinfo->update({ 'mfa_token' => $mfa_token });
+	    return 1;
+	}
+    }
+
+    return 0;
+}
+
+sub get_mfa_token {
+    my ($self,$arg_ref)=@_;
+    
+    # Set defaults
+    my $userid     = exists $arg_ref->{userid}
+        ? $arg_ref->{userid}             : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $thisuserid = (defined $userid)?$userid:$self->{ID};
+    
+    if ($thisuserid){
+        # DBI: "update userinfo set pin = ? where username = ?"
+        my $userinfo = $self->get_schema->resultset('Userinfo')->single(
+            {
+                id => $userid,
+            }
+	    );
+
+	if ($userinfo){
+	    return $userinfo->column('mfa_token');
+	}
+    }
+
+    return;
+}
+
 sub update_lastlogin {
     my ($self,$arg_ref)=@_;
 
@@ -5863,8 +5936,9 @@ sub delete_private_info {
         {
             nachname       => '',
             vorname        => '',
-            email          => '',	    
+            #email          => '',	    
             token          => '',
+            mfa_token      => '',	    
             #external_id    => '',	    
             #external_group => '',	    
         }

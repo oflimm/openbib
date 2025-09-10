@@ -344,7 +344,7 @@ for (var i = 0; i < libraries.length; i++) {
 
      url = '';
 
-     IF identifier.match('^DE-38-\d\d\d$');
+     IF identifier.match('^DE-38-\d\d\d$') || identifier.match('^DE-38-\d\d\d-[A-Z]+$');
         url = "${path_prefix}/${config.get('locations_loc')}/id/${identifier}";
      END;
 
@@ -361,6 +361,7 @@ for (var i = 0; i < libraries.length; i++) {
    END;
   
 %]
+[%# USE dumper;dumper.dump(institution_map)%]
 [% FOREACH desc IN institution_map.keys.sort %]
 	<li>[% IF institution_map.${desc}.url %]<a class="inturl" href="[% scheme %]://[% servername %][% institution_map.${desc}.url %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% institution_map.${desc}.url %].include?l=[% lang %]">[% END %][% desc %][% IF institution_map.${desc}.sigel %] ([% institution_map.${desc}.sigel %])[% END %][% IF institution_map.${desc}.url %]</a>[% END %][% IF institution_map.${desc}.arbeitsplaetze %]<br/>Zahl der Nutzerarbeitsplätze: [% institution_map.${desc}.arbeitsplaetze %][% END %]</li>
 

@@ -20,6 +20,7 @@
                 'L0030', # msg.maketext("L0030") # Gebäude
                 'L0031', # msg.maketext("L0031") # Etage
                 'L0032', # msg.maketext("L0032") # Raum
+                'L0033', # msg.maketext("L0033") # Lageplan-ID
                 'L0040', # msg.maketext("L0040") # Interaktiver Lageplan der Universität
                 'L0050', # msg.maketext("L0050") # Gemeinsame Bibliothek
                 'L0290', # msg.maketext("L0290") # Weitere Kataloge
@@ -37,6 +38,7 @@
                 'L0170', # msg.maketext("L0170") # Besondere Sammelgebiete
                 'L0180', # msg.maketext("L0180") # Art der Bibliothek
                 'L0190', # msg.maketext("L0190") # Neuerwerbungslisten
+                'L0290', # msg.maketext("L0290") # Barrierefreiheit
                 'L0200', # msg.maketext("L0200") # Kopierer / Technische Ausstattung
                 'L0260', # msg.maketext("L0260") # Art der Vernetzung
                 'L0210', # msg.maketext("L0210") # DV-Ausstattung  

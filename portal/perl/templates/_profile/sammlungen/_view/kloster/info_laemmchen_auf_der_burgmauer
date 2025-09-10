@@ -1,0 +1,28 @@
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+
+      'main_template' = 'info_laemmchen_auf_der_burgmauer_html'
+
+      'sidebar_template' = 'subnavigation'
+      'sidebar_button_in_main_template' = 1 # Sidebar im Desktop anzeige, Mobil via Button
+
+      'active_menu' = 'kloester'
+      'active_submenu' = 'laemmchen_auf_der_burgmauer'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Lämmchen auf der Burgmauer')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

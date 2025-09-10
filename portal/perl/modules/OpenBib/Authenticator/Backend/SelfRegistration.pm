@@ -2,7 +2,7 @@
 #
 #  OpenBib::Authenticator::Backend::SelfRegistration
 #
-#  Dieses File ist (C) 2019 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2019-2025 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -53,6 +53,9 @@ sub authenticate {
 
     my $password    = exists $arg_ref->{password}
         ? $arg_ref->{password}       : undef;
+
+    my $mfa_token   = exists $arg_ref->{mfa_token}
+        ? $arg_ref->{mfa_token}      : undef;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -82,19 +85,31 @@ sub authenticate {
 	    authenticatorid => $self->{id},
         },
         {
-            select => ['id', 'login_failure','status'],
-            as     => ['thisid','thislogin_failure','thisstatus'],
+            select => ['id', 'login_failure','status','mfa_token'],
+            as     => ['thisid','thislogin_failure','thisstatus','thismfa_token'],
 	    order_by => ['viewid asc'],
         }
             
     )->first;
-    
-    if ($thisuser){
+
+    if ($thisuser && $mfa_token){
+	my $user_mfa_token = $thisuser->get_column('thismfa_token');
+	
+	$logger->debug("Username: $username - MFA Token via CGI: $mfa_token - MFA Token of User: $user_mfa_token");
+   
+	if ($mfa_token eq $user_mfa_token){
+	    $userid = $thisuser->get_column('thisid') || '';
+	}
+	else {
+	    $userid = -10;  # Status: wrong mfa_token
+	}
+    }
+    elsif ($thisuser){
 	my $login_failure = $thisuser->get_column('thislogin_failure');
 	my $status        = $thisuser->get_column('thisstatus') || '';
         $userid           = $thisuser->get_column('thisid');
         $logger->debug("Got Userid $userid with login failure $login_failure and status $status");
-
+	
 	if ($userid && $login_failure > $config->get('max_login_failure')){
 	    $userid = -2; # Status: max_login_failure reached
 	}

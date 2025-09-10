@@ -1,0 +1,23 @@
+        <div class="ob-jumbotron">
+         <h1 class="display-4">[% msg.maketext("Mehrfaktor-Authentifizierung") %]</h1>
+         <p>[% msg.maketext("Bitte geben Sie hier den zweiten Faktor an. Dieser wurde per E-Mail an Ihre Adresse geschickt. Bitte schauen Sie ggf. auch in Ihrem Spam-Ordner nach.") %]</p>
+
+        <form method="post" action="[% IF config.get('use_https') %]https://[% servername %][% END %][% path_prefix %]/[% config.get('login_loc') %]" enctype="application/x-www-form-urlencoded">
+
+[% IF redirect_to %]
+          <input type="hidden" name="redirect_to" value="[% uri_escape(mfa_redirect_to) %]">
+[% END %]
+
+         <input type="hidden" name="authenticatorid" value="[% mfa_authenticatorid %]">
+         <input type="hidden" name="username" value="[% mfa_username %]">
+
+         <div class="form-floating mb-3">
+           <input class="form-control" type="mfa_token" name="mfa_token" id="mfa_token" />
+           <label for="mfa_token"/>[% msg.maketext("MFA Token") %]</label>
+         </div>
+
+
+         <button class="btn btn-primary mb-2" type="submit">[% msg.maketext("Abschicken") %]</button>
+
+        </form>
+      </div>

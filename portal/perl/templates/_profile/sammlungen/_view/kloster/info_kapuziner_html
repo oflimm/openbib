@@ -1,0 +1,27 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_kapuziner_html
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+
+<div class="row">
+
+[% config.get_templatetext('info_kapuziner',view,lang) %]
+
+<div class="col-md-3 d-none d-md-block">
+
+[% PROCESS common/subtemplate name=layout_param.sidebar_template %]
+
+</div>
+
+</div>
+
+<button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" aria-label="[% msg.maketext("Mehr Aktionen") %]"><i class="fas fa-plus fa-2x"></i></button>

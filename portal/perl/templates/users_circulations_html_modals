@@ -30,7 +30,6 @@
 <table class="table table-striped ">
 <tbody>
 <tr><th>[% msg.maketext("Name") %]</th><td>[% userdata.fullname %]</td></tr>
-<tr><th>[% msg.maketext("Geburtsdatum") %]</th><td>[% userdata.birthdate %]</td></tr>
 <tr><th>[% msg.maketext("Anmeldung am") %]</th><td>[% userdata.startdate %]</td></tr>
 <tr><th>[% msg.maketext("Ausweis gültig bis") %]</th><td>[% userdata.enddate %]</td></tr>
 [% IF userdata.street || userdata.zip || userdata.city %]

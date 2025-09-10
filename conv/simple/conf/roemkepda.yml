@@ -42,7 +42,7 @@ title:
   'price': '4211'
   'publishingyear': '0425'
   'publisher': '0412'
-  'availability': '0600' # Bemerkung
+#  'availability': '0600' # Bemerkung
 #filter:
 #  'releasedate_':
 #     filter_match: "^(\d\d\d\d)"

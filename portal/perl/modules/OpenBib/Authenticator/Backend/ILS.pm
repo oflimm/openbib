@@ -57,6 +57,9 @@ sub authenticate {
 
     my $password    = exists $arg_ref->{password}
         ? $arg_ref->{password}       : undef;
+
+    my $mfa_token   = exists $arg_ref->{mfa_token}
+        ? $arg_ref->{mfa_token}      : undef;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -67,82 +70,122 @@ sub authenticate {
     my $user    = $self->get_user;
     my $dbname  = $self->get('name');
 
-    my $ils = OpenBib::ILS::Factory->create_ils({ database => $dbname });
-
-    my $result_ref = $ils->authenticate({ username => $username, password => $password});
-
-    if ($logger->is_debug){
-	$logger->debug("Authentication of user $username with password $password");
-	$logger->debug("Authentication result ".YAML::Dump($result_ref));
-    }
+    my $result_ref = {};
     
-    my $max_login_failure = $config->get('max_login_failure');
-
-    # Bestimmung einer etwaig bereits vorhandenen Userid, um Fehlversuche zu loggen 
-    # ILS-Nutzer haben keine View-Zuordnung, damit sie einheitlich mit ihrem
-    # ein und demselben Account auch verschiedenen Views nutzen koennen
-    my $thisuser = $config->get_schema->resultset('Userinfo')->search_rs(
-        {
-            username        => $username,
-	    viewid          => undef,
-	    authenticatorid => $self->{id},
-        },
-        {
-            select => ['id', 'login_failure','status'],
-            as     => ['thisid','thislogin_failure','thisstatus'],
-	    order_by => ['id asc'],
-        }
-            
-    )->first;
-    
-    if ($thisuser){
-	my $login_failure = $thisuser->get_column('thislogin_failure');
-	my $status        = $thisuser->get_column('thisstatus') || '';
-        $userid           = $thisuser->get_column('thisid');
+    if ($username && $mfa_token){
+	my $thisuser = $config->get_schema->resultset('Userinfo')->search_rs(
+	    {
+		username        => $username,
+		viewid          => undef,
+		mfa_token       => $mfa_token,
+		authenticatorid => $self->{id},
+	    },
+	    {
+		select => ['id', 'login_failure','status'],
+		as     => ['thisid','thislogin_failure','thisstatus'],
+		order_by => ['id asc'],
+	    }            
+	    )->first;
 	
-        $logger->debug("Got Userid $userid with login failure $login_failure and status $status");
-
-	if ($userid && $login_failure > $max_login_failure){
-	    $userid = -8; # Status: max_login_failure reached
-	    return $userid;
-	}
-	elsif ($userid) {
-	    # User exists, so we can log failure
-	    if (defined $result_ref->{failure} && $result_ref->{failure}{code} <= 0){
-	       $user->add_login_failure({ userid => $userid});
-               $userid = -3;  # Status: wrong password
-	       return $userid;
-	    }
-	    # or login successful, so we can reset failure counter
-            elsif (defined $result_ref->{successful} && $result_ref->{successful}){
-               $user->reset_login_failure({ userid => $userid});
-            }
+	if ($thisuser){
+	    $userid = $thisuser->get_column('thisid') || '';
 	}
 	else {
+	    $userid = -10;  # Status: wrong mfa_token
+	    return $userid;
+	}
+
+	my $ils = OpenBib::ILS::Factory->create_ils({ database => $dbname });
+
+	my $userdata_ref = $ils->get_userdata($username);
+
+	$result_ref->{userinfo}{username}       = $userdata_ref->{username};    
+	$result_ref->{userinfo}{fullname}       = $userdata_ref->{fullname};
+	$result_ref->{userinfo}{surname}        = $userdata_ref->{surname};
+	$result_ref->{userinfo}{forename}       = $userdata_ref->{forename};
+	$result_ref->{userinfo}{email}          = $userdata_ref->{email};
+	$result_ref->{userinfo}{external_id}    = $userdata_ref->{external_id};	
+	$result_ref->{userinfo}{external_group} = $userdata_ref->{external_group};	
+
+    }
+    else {
+	my $ils = OpenBib::ILS::Factory->create_ils({ database => $dbname });
+
+	$result_ref = $ils->authenticate({ username => $username, password => $password});
+
+	if ($logger->is_debug){
+	    $logger->debug("Authentication of user $username with password $password");
+	    $logger->debug("Authentication result ".YAML::Dump($result_ref));
+	}
+	
+	my $max_login_failure = $config->get('max_login_failure');
+
+	# Bestimmung einer etwaig bereits vorhandenen Userid, um Fehlversuche zu loggen 
+	# ILS-Nutzer haben keine View-Zuordnung, damit sie einheitlich mit ihrem
+	# ein und demselben Account auch verschiedenen Views nutzen koennen
+	my $thisuser = $config->get_schema->resultset('Userinfo')->search_rs(
+	    {
+		username        => $username,
+		viewid          => undef,
+		authenticatorid => $self->{id},
+	    },
+	    {
+		select => ['id', 'login_failure','status'],
+		as     => ['thisid','thislogin_failure','thisstatus'],
+		order_by => ['id asc'],
+	    }
+            
+	    )->first;
+	
+	if ($thisuser){
+	    my $login_failure = $thisuser->get_column('thislogin_failure');
+	    my $status        = $thisuser->get_column('thisstatus') || '';
+	    $userid           = $thisuser->get_column('thisid');
+	    
+	    $logger->debug("Got Userid $userid with login failure $login_failure and status $status");
+
+	    if ($userid && $login_failure > $max_login_failure){
+		$userid = -8; # Status: max_login_failure reached
+		return $userid;
+	    }
+	    elsif ($userid) {
+		# User exists, so we can log failure
+		if (defined $result_ref->{failure} && $result_ref->{failure}{code} <= 0){
+		    $user->add_login_failure({ userid => $userid});
+		    $userid = -3;  # Status: wrong password
+		    return $userid;
+		}
+		# or login successful, so we can reset failure counter
+		elsif (defined $result_ref->{successful} && $result_ref->{successful}){
+		    $user->reset_login_failure({ userid => $userid});
+		}
+	    }
+	    else {
+		$userid = -3;  # Status: wrong password
+		return $userid;
+	    }
+	}
+	elsif (defined $result_ref->{failure} && $result_ref->{failure}{code} <= 0){
 	    $userid = -3;  # Status: wrong password
 	    return $userid;
 	}
-    }
-    elsif (defined $result_ref->{failure} && $result_ref->{failure}{code} <= 0){
-	$userid = -3;  # Status: wrong password
-	return $userid;
-    }
-    elsif (defined $result_ref->{failure}){
-	$userid = 0;  # Status: unspecified
-	return $userid;
-    }
+	elsif (defined $result_ref->{failure}){
+	    $userid = 0;  # Status: unspecified
+	    return $userid;
+	}
 
-    # Ab hier nur weiter, wenn Authentifizierung positiv successful war!
-    unless (defined $result_ref->{successful} && $result_ref->{successful}){
-	$userid = 0;  # Status: unspecified
-	return $userid;
+	# Ab hier nur weiter, wenn Authentifizierung positiv successful war!
+	unless (defined $result_ref->{successful} && $result_ref->{successful}){
+	    $userid = 0;  # Status: unspecified
+	    return $userid;
+	}
     }
     
     $logger->debug("Authentication via ILS successful");
     
     # Eintragen, wenn noch nicht existent
     # OLWS-Kennungen werden NICHT an einen View gebunden, damit mit der gleichen Kennung verschiedene lokale Bibliothekssysteme genutzt werden koennen - spezifisch fuer die Universitaet zu Koeln
-    unless ($thisuser) {
+    unless ($userid > 0) {
 	# Gegebenenfalls Benutzer lokal eintragen
 	$logger->debug("Save new user");
 	

@@ -5281,6 +5281,7 @@ sub get_authenticators {
             id          => $authenticator->id,
             name        => $authenticator->name,
             description => $authenticator->description,
+	    mfa         => $authenticator->mfa,
             type        => $authenticator->type,
         };
 
@@ -5314,8 +5315,8 @@ sub get_authenticators_by_view {
 	    'viewid.viewname' => $viewname,
 	},
 	{
-	    select => ['authenticatorid.id','authenticatorid.name','authenticatorid.description','authenticatorid.type'],
-	    as => ['thisid','thisname','thisdescription','thistype'],
+	    select => ['authenticatorid.id','authenticatorid.name','authenticatorid.description','authenticatorid.type','authenticatorid.mfa'],
+	    as => ['thisid','thisname','thisdescription','thistype','thismfa'],
 	    join => ['authenticatorid','viewid'],
             order_by => ['type DESC','description'],
         }
@@ -5328,6 +5329,7 @@ sub get_authenticators_by_view {
             id          => $authenticator->get_column('thisid'),
             name        => $authenticator->get_column('thisname'),
             description => $authenticator->get_column('thisdescription'),
+            mfa         => $authenticator->get_column('thismfa'),
             type        => $authenticator->get_column('thistype'),
         };
 
@@ -5373,6 +5375,7 @@ sub get_authenticator_by_id {
             id          => $authenticator->get_column('id'),
             name        => $authenticator->get_column('name'),
             description => $authenticator->get_column('description'),
+            mfa         => $authenticator->get_column('mfa'),
             type        => $authenticator->get_column('type'),
         };
 
@@ -5421,6 +5424,7 @@ sub get_authenticator_by_dbname {
             id          => $authenticator->id,
             name        => $authenticator->name,
             description => $authenticator->description,
+            mfa         => $authenticator->mfa,
             type        => $authenticator->type,
         };
 
@@ -5462,6 +5466,7 @@ sub get_authenticator_self {
             id          => $authenticator->id,
             name        => $authenticator->name,
             description => $authenticator->description,
+            mfa         => $authenticator->mfa,
             type        => $authenticator->type,
         };
 
@@ -5653,6 +5658,28 @@ sub get_id_of_selfreg_authenticator {
     return $targetid;
 }
 
+sub get_authenticator_mfa {
+    my ($self,$authenticatorid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # DBI: "select id from authenticator where type = 'self'"
+    my $authenticator = $self->get_schema->resultset('Authenticatorinfo')->search_rs(
+        {
+            id => $authenticatorid,
+        }
+    )->single();
+
+    my $mfa;
+    
+    if ($authenticator){
+        $mfa = $authenticator->mfa;
+    }
+    
+    return $mfa;
+}
+	  
 sub get_ils_of_database {
     my ($self,$dbname) = @_;
     

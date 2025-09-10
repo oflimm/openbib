@@ -6,7 +6,7 @@
 #
 #  CRON-Job zum automatischen aktualisieren aller OpenBib-Datenbanken
 #
-#  Dieses File ist (C) 1997-2024 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2025 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -407,7 +407,7 @@ if ($genzsst){
     
     system("/opt/openbib/bin/gen_zsstlist-all.pl $zsstdir > /tmp/gen_zsstlist-all.log 2>&1");
 }
-    
+
 $logger->info("### Dumping isbns");
 
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=warenkorb_usb 2>&1 > /dev/null");
@@ -420,6 +420,12 @@ system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=tmpebooks 2>&1 > /dev/null");
 system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl --view=emedienkauf 2>&1 > /dev/null");
 
+$logger->info("### Dumping provenances to JSON and MARC/MARCXML");
+
+system("/opt/openbib/bin/export_provenances.pl --database=uni --filename=/var/www.opendata/dumps/provenances/DE-38.json > /tmp/export_provenances.log 2>&1");
+system("cd /var/www.opendata/dumps/provenances ; cat DE-38.json | /opt/openbib/bin/provenances2marc.pl > /tmp/provenances2marc.log 2>&1 ; mv provenances_de38_361.mrc DE-38.mrc");
+system("cd /var/www.opendata/dumps/provenances ; yaz-marcdump -o marcxml DE-38.mrc |egrep -v '<leader>' > DE-38.xml 2> /tmp/provenances_marc2marcxml.log");
+    
 # $logger->info("### Finding corresponding ebooks in inst526/inst006");
 
 # system("/opt/openbib/bin/bestandsabgleich.pl --selector=ISBN13 --database=inst526 --database=usbebooks --filename=/var/www.kug/extra/inst526/abgleich-inst526-usbebooks.csv 2>&1 > /dev/null");
@@ -509,9 +515,7 @@ sub threadB {
 
     $logger->info("### Master: Alma Uni Katalog");
     
-    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, purgefirst => 1, sync => 1, databases => ['uni'] });
-#    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, purgefirst => 1, sync => 1, reducemem => 1, databases => ['uni'] });
-#    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, databases => ['inst001'] });
+    autoconvert({ incremental => $incremental, updatemaster => $updatemaster, purgefirst => 1, sync => 1, reducemem => 1, databases => ['uni'] });
     
     ##############################
 

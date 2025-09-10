@@ -51,8 +51,13 @@
 [%-   NEXT IF authenticator.type != 'ils' -%]
 [%-   NEXT IF NOT authenticator.description.match('USB') -%]
 <input type="hidden" name="authenticatorid" value="[% authenticator.id %]"/>
-[%- END -%]
 
+[%    IF authenticator.mfa == 'email' %]
+<div class="alert alert-info">
+[% msg.maketext("Für diese Anmeldung ist eine Mehrfaktor-Authentifizierung mittels E-Mail aktiviert. Sie erhalten nach der erfolgreichen Verifizierung Ihrer Kennung und ihres Passworts einen Code an Ihre hier hinterlegte E-Mail-Adresse geschickt, den Sie danach hier eingeben müssen.") %]
+</div>
+[%    END %]
+[%- END -%]
 
 <div class="form-floating mb-3">
 <input class="form-control" type="text" name="username" id="username_ils" value="[% username %]" />

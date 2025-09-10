@@ -13,22 +13,8 @@
 -%]
 
 <div class="row">
-<div class="col-md-3">
-
-<p>
-<figure class="figure">
-<img class="figure-img img-fluid" alt="[% msg.maketext("Lorem ipsum dolor sit amet") %]" src="/images/openbib/views/kloster/unterseiten/gross_st_martin/Gross_St_Martin_396x550.png"/>
-<figcaption class="figure-caption"><em>[% msg.maketext("Lorem ipsum dolor sit amet") %]</em></figcaption>
-</figure>
-</p>
-
-</div>
-
-<div class="col-md-6">
 
 [% config.get_templatetext('info_gross_st_martin',view,lang) %]
-
-</div>
 
 <div class="col-md-3 d-none d-md-block">
 

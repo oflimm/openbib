@@ -414,6 +414,11 @@ sub get_input_definition {
             encoding => 'none',
             type     => 'scalar',
         },
+        mfa => {
+            default  => 'none',
+            encoding => 'none',
+            type     => 'scalar',
+        },
         type => {
             default  => '',
             encoding => 'none',

@@ -350,6 +350,7 @@ CREATE TABLE userinfo (
  external_id     TEXT,
  external_group  TEXT,
  token           TEXT,
+ mfa_token       TEXT,
  login_failure   BIGINT default 0,
  status          TEXT,
  
@@ -495,6 +496,7 @@ CREATE TABLE authenticatorinfo (
 
  name        TEXT,
  description TEXT,
+ mfa         TEXT,
  type        TEXT
 );
 

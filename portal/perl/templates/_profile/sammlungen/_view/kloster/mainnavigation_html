@@ -71,19 +71,19 @@
       <ul class="list-unstyled components">
 
         <li class="nav-item">
-	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/alekiddr/[% config.get('titles_loc') %]/fields/id/0100:a.html?l=[% lang %]">
+	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kloster/[% config.get('titles_loc') %]/fields/id/0100:a.html?l=[% lang %]">
             <i class="fas fa-list"></i> [% msg.maketext("Register") %]
 	    
           </a>
 	</li>
         <li class="nav-item">
-	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/alekiddr/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">
+	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kloster/[% config.get('clouds_loc') %]/id/year.html?l=[% lang %]">
             <i class="fas fa-cloud"></i> [% msg.maketext("Wortwolken") %]
 	    
           </a>
 	</li>
 	<li class="nav-item">
-        <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/alekiddr/[% config.get('titles_loc') %].html?l=[% lang %]">
+        <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('databases_loc') %]/id/kloster/[% config.get('titles_loc') %].html?l=[% lang %]">
           <i class="fas fa-th-list"></i> [% msg.maketext("Alle Titel") %]
         </a>
 	</li>

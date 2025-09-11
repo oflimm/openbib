@@ -1169,6 +1169,8 @@ sub highlightquery {
 sub sort_circulation {
     my $array_ref = shift;
 
+    return () unless ($array_ref eq "ARRAY");
+    
     # Schwartz'ian Transform
         
     my @sorted = map { $_->[0] }

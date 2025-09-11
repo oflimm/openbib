@@ -1,0 +1,15 @@
+[Unit]
+Description=OpenBib with Hypnotoad
+After=network.target
+
+[Service]
+Type=forking
+User=openbib
+Group=www-data
+PIDFile=/var/log/openbib/hypnotoad.pid
+ExecStart=/usr/bin/hypnotoad /usr/share/perl5/OpenBib/Mojo.pm
+ExecReload=/usr/bin/hypnotoad /usr/share/perl5/OpenBib/Mojo.pm
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

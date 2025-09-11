@@ -1,5 +1,6 @@
 [Unit]
 Description=OpenBib with Hypnotoad
+Requires=network.target
 After=network.target
 
 [Service]
@@ -8,8 +9,12 @@ User=openbib
 Group=www-data
 PIDFile=/var/log/openbib/hypnotoad.pid
 ExecStart=/usr/bin/hypnotoad /opt/openbib/conf/portal.mojo
+ExecStop=/usr/bin/hypnotoad -s /opt/openbib/conf/portal.mojo
 ExecReload=/usr/bin/hypnotoad /opt/openbib/conf/portal.mojo
-KillMode=process
+Restart=always
+Nice=19
+LimitNOFILE=16384
+#KillMode=process
 
 [Install]
 WantedBy=multi-user.target

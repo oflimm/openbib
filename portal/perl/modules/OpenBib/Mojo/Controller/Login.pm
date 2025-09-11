@@ -334,7 +334,7 @@ sub authenticate {
 	
     }
 
-    if ($userid == -10){
+    if ($userid == -11){
 	my $reason = $self->get_error_message($userid);
 	$logger->error("Authentication Error for user $username: $reason ");
 	
@@ -599,13 +599,11 @@ sub get_error_message {
 
         -9 => $msg->maketext("Die eingegebene Benutzernummer ist ungültig. Benutzernummern bestehen aus Großbuchstaben, Zahlen und #, z.B. A123456789#B."),
 
-<<<<<<< HEAD:portal/perl/modules/OpenBib/Mojo/Controller/Login.pm
         -10 => $msg->maketext("Die Anmeldung ist wegen eines inkorrekten CSRF-Tokens gescheitert."),
-=======
-	-10 => $msg->maketext("Das eingegebene MFA Token ist ungültig. Bitte versuchen Sie sich nochmals neu anzumelden."),
 
-	-11 => $msg->maketext("Es konnte keine E-Mailadresse zum Verschicken des MFA Tokens gefunden werden."),
->>>>>>> 6078fb8fb756d5efafecbfdef99d3b2ff07615e2:portal/perl/modules/OpenBib/Handler/PSGI/Login.pm
+	-11 => $msg->maketext("Das eingegebene MFA Token ist ungültig. Bitte versuchen Sie sich nochmals neu anzumelden."),
+
+	-12 => $msg->maketext("Es konnte keine E-Mailadresse zum Verschicken des MFA Tokens gefunden werden."),
 	
 	);
 

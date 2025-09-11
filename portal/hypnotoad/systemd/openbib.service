@@ -7,8 +7,8 @@ Type=forking
 User=openbib
 Group=www-data
 PIDFile=/var/log/openbib/hypnotoad.pid
-ExecStart=/usr/bin/hypnotoad /usr/share/perl5/OpenBib/Mojo.pm
-ExecReload=/usr/bin/hypnotoad /usr/share/perl5/OpenBib/Mojo.pm
+ExecStart=/usr/bin/hypnotoad /opt/openbib/conf/portal.mojo
+ExecReload=/usr/bin/hypnotoad /opt/openbib/conf/portal.mojo
 KillMode=process
 
 [Install]

@@ -91,7 +91,7 @@ sub authenticate {
 	    $userid = $thisuser->get_column('thisid') || '';
 	}
 	else {
-	    $userid = -10;  # Status: wrong mfa_token
+	    $userid = -11;  # Status: wrong mfa_token
 	    return $userid;
 	}
 

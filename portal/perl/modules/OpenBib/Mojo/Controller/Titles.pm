@@ -1169,7 +1169,10 @@ sub highlightquery {
 sub sort_circulation {
     my $array_ref = shift;
 
-    return [] unless ($array_ref eq "ARRAY");
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return [] unless (ref $array_ref eq "ARRAY");
     
     # Schwartz'ian Transform
         

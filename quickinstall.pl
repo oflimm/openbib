@@ -235,8 +235,10 @@ my %copy_files = (
     "$repositoryroot/portal/perl/conf/portal.psgi"                    => "/opt/openbib/conf/portal.psgi",
     "$repositoryroot/portal/perl/conf/convert.yml-dist"               => "/opt/openbib/conf/convert.yml",
     "$repositoryroot/portal/perl/conf/dispatch_rules.yml-dist"        => "/opt/openbib/conf/dispatch_rules.yml",
+    "$repositoryroot/portal/perl/conf/dispatch_mojo.yml"        => "/opt/openbib/conf/dispatch_mojo.yml",
     "$repositoryroot/portal/starman/init.d/starman"                   => "/etc/init.d/starman",
     "$repositoryroot/portal/starman/systemd/starman.service"          => "/etc/systemd/system/starman.service",
+    "$repositoryroot/portal/hypnotoad/systemd/openbib.service"          => "/etc/systemd/system/openbib.service",
     "$repositoryroot/portal/perl/modules/OpenBib/Search/Backend/Z3950/USBK/Config.pm-dist"
                                                            => "$repositoryroot/portal/perl/modules/OpenBib/Search/Backend/Z3950/USBK/Config.pm",
 );

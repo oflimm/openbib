@@ -367,6 +367,8 @@ sub set_field {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return $self unless ($content);
+    
     if ($id){
         push @{$self->{_fields}{$field}}, {
             mult       => $mult,

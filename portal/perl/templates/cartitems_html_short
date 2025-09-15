@@ -34,8 +34,11 @@
     <h3>[% title %] ([% recordlist.get_size %]  [% msg.maketext("Titel") %])</h3>
 [% END %]
     <div class="col-md-6 d-flex justify-content-start ob-cartitems_allselection">
+[% IF user.ID %]
        <input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" aria-label="[% msg.maketext("Alle Eintr&auml;ge ausw&auml;hlen") %]" class="ms-1"/> <b class="ps-2 pt-2">[% msg.maketext("Alle Eintr&auml;ge ausw&auml;hlen") %]</b>
+[% END %]
     </div>
+
     <div class="col-md-6 d-flex justify-content-end">
 [%-
 
@@ -71,7 +74,11 @@
 [% IF format == 'short' %]
 [%# USE dumper;dumper.dump(recordlist.to_ids)%]
 [%- FOREACH record IN recordlist.get_records -%]
-[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database with_id_checkbox=1 with_cartitems_delete=1 %] 
+[%    IF user.ID %]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database with_id_checkbox=1 with_cartitems_delete=1 %]
+[%    ELSE %]
+[%    PROCESS common/subtemplate name="titlist_item_html_short" multiple_dbs=1 database=record.database with_cartitems_delete=1 %]
+[%    END %]
 [%- END -%]
 
 [%-END -%]

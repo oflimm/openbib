@@ -403,8 +403,10 @@ sub create_record {
         
         # Einfuegen eines Titels in die Merkliste
         my $new_titleid = $self->add_item_to_collection($input_data_ref);
-        
-        if ($self->stash('representation') eq "html" || $self->param('representation') eq "include"){
+
+        $logger->debug("Representation: ".$self->stash('representation'));
+	
+        if ($self->stash('representation') eq "html" || $self->stash('representation') eq "include"){
 	    my $ttdata={
 		cartitem_id => $new_titleid,
 		input_data  => $input_data_ref,

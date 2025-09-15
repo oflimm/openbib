@@ -318,7 +318,7 @@ sub _before_dispatch($c){
 
     $logger->debug("Method parameter is $method");
 		
-    if ($method and $method =~ /^(DELETE|PUT)$/) {
+    if ($method and $method =~ /^(DELETE|PUT|POST)$/) {
 	$r->method($method);
 
 	$logger->debug("Method set to ".$r->method);

@@ -627,9 +627,9 @@ sub send_mfa_mail {
     my $view           = $self->param('view');
 
     # Shared Args
-    my $config         = $self->param('config');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
+    my $config         = $self->stash('config');
+    my $user           = $self->stash('user');
+    my $msg            = $self->stash('msg');
     
     # Set defaults
     my $authenticatorid = exists $arg_ref->{authenticatorid}

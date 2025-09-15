@@ -21,6 +21,7 @@ use HTTP::BrowserDetect;
 use JSON::XS;
 use MIME::Base64;
 use Mojo::Util qw(secure_compare);
+use Mojo::Log;
 use Template;
 use URI::Escape;
 use XML::RSS;
@@ -79,6 +80,9 @@ sub startup ($app){
 	
     # Plugins
     $app->_plugins;
+
+    # Logging
+    $app->log( Mojo::Log->new( path => $configfile->{mojo}{logfile}, level => $configfile->{mojo}{loglevel} ) );
     
     # Router
     my $r = $app->routes;

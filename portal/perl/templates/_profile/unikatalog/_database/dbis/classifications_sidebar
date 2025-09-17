@@ -161,6 +161,14 @@
   <label for="typ[% sidebar_suffix %]"><b>[% msg.maketext("Datenbank-Typ") %]</b></label>
 </div>
 
+<div class="form-floating mb-3">
+  <select class="form-select" id="sorting[% sidebar_suffix %]" name="srt">
+<option value="title" selected="selected">[% msg.maketext("Alphabetisch") %]</option>
+<option value="relevance">[% msg.maketext("Relevanz") %]</option>
+  </select>
+  <label for="sortingsorting[% sidebar_suffix %]"><b>[% msg.maketext("Sortierung") %]</b></label>
+</div>
+
 <p>
 <small>* [% msg.maketext("Es muss mindestens ein Name, ein Fachgebiet oder ein Typ verwendet werden") %]</small>
 </p>

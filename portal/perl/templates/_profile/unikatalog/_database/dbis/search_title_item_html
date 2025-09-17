@@ -150,10 +150,13 @@
 
 
 <div class="ob-resultlist">
-  <div class="ob-resultheader">
+  <div class="ob-resultheader pb-2">
     <div class="left">
 [% msg.maketext("Gesamtangebot") %]: [% msg.maketext("Treffer") %]&nbsp;[% start_range %]-[% end_range %]&nbsp;[% msg.maketext("von") %]&nbsp;[% hits %]
     </div><!-- /.ob-hits -->
+    <div class="right">
+    [% PROCESS common/subtemplate name="titlist_options" this_loc=config.get('search_loc') %]
+    </div>    
   </div><!-- /.ob-resultheader -->
 
   <div class="ob-resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">

@@ -45,6 +45,7 @@
 <input type="hidden" name="sm"        value="seq" />
 <input type="hidden" name="page"      value="1" />
 <input type="hidden" name="num"       value="20" />
+<input type="hidden" name="srt"       value="relevance" />
 
 [% classification_name = searchquery.get_searchfield('classification').val %]
 
@@ -188,7 +189,7 @@
    searchprefix  = config.get('searchfield').classification.prefix;
 
  %]
-<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=[% database %];sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% IF classification_name == classification.name %]<b>[% classification.desc %]</b>[% ELSE %][% classification.desc %][% END %]</a> ([% classification.count %])[% IF classification.is_collection %]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("DBIS-Sammlung der USB Köln") %]" alt="[% msg.maketext("DBIS-Sammlung der USB Köln") %]" style="vertical-align:bottom"/>[% END %]</li>
+<li class="list-group-item"><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %];db=[% database %];srt=title;sm=seq;page=1;num=[% qopts.get_option('num') %];[% IF query.param('access_green') %]access_green=1;[% END %][% IF query.param('access_yellow') %]access_yellow=1;[% END %][% IF query.param('access_red') %]access_red=1;[% END %][% IF query.param('access_national') %]access_national=1;[% END %][% searchprefix %]=[% searchterm %]">[% IF classification_name == classification.name %]<b>[% classification.desc %]</b>[% ELSE %][% classification.desc %][% END %]</a> ([% classification.count %])[% IF classification.is_collection %]&nbsp;<img src="[% config.get_icon('university',view,sysprofile) %]" title="[% msg.maketext("DBIS-Sammlung der USB Köln") %]" alt="[% msg.maketext("DBIS-Sammlung der USB Köln") %]" style="vertical-align:bottom"/>[% END %]</li>
 [% END %]
 </ul>
 </div>

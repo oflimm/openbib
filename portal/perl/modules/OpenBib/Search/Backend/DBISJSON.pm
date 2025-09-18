@@ -61,6 +61,7 @@ sub new {
         ? $arg_ref->{queryoptions}            : OpenBib::QueryOptions->new;
     
     $arg_ref->{access_all}    = $queryoptions->get_option('access_all') || 'false';
+    $arg_ref->{srt}           = $queryoptions->get_option('srt') || '';
     
     my $api = new OpenBib::API::HTTP::DBISJSON($arg_ref);
     

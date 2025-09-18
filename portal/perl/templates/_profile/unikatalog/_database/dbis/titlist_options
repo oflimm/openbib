@@ -1,0 +1,37 @@
+[%#-
+#######################################################################
+#
+# Templatename: titlist_options
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Optionen einer Liste (Sortierung etc.)
+#
+#######################################################################
+-%]
+[%-
+
+   sort_args = cgiapp.to_cgi_querystring({ change = {'page' = 1 }, exclude = ['srt'] });
+
+   sorttype_desc_map = {
+     relevance = msg.maketext("Relevanz")
+     title = msg.maketext("Alphabetisch")
+   };
+
+   no_htmx=1;
+-%]
+
+<div class="dropdown" id="ob-titlist_options[% idsuffix %]">
+  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuSort[% idsuffix %]" data-bs-toggle="dropdown" aria-expanded="false">
+    [% IF sorttype_desc_map.defined(session_sort) %][% sorttype_desc_map.${session_sort} %][% ELSE %][% msg.maketext("Sortierung") %][% END %]<i class="fas fa-sort ps-2"></i>
+  </button>
+
+  <ul class="dropdown-menu" aria-labelledby="dropdownMenuSort[% idsuffix %]">
+[% IF NOT no_relevance %]  
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'relevance' || session_sort == 'relevance' %]text-strong[% END %]" [% IF NOT no_htmx %]hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].include?[% sort_args %];srt=relevance"[% END %] href="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].html?[% sort_args %];srt=relevance" title="[% msg.maketext("Relevanz") %]">[% msg.maketext("Relevanz") %]</a></li>
+[% END %]    
+    <li class="dropdown-item"><a class="w-100 [% IF query.param('srt') == 'title' || session_sort == 'title' %]text-strong[% END %]" [% IF NOT no_htmx %]hx-indicator="#spinner" hx-target="#ob-searchresult_tab_[% current_tab %]" hx-get="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].include?[% sort_args %];srt=title"[% END %] href="[% IF this_loc %][% this_loc %][% ELSE %][% path_prefix %]/[% config.get('search_loc') %][% END %].html?[% sort_args %];srt=title" title="[% msg.maketext("Alphabetisch") %]">[% msg.maketext("Alphabetisch") %]</a></li>
+  </ul>
+</div>

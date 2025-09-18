@@ -27,10 +27,16 @@
       topic_map.${topic.id} = topic.name;
     END;
 
+    querydb = "";
+    
     used_fields = [] ;
     FOREACH field IN searchquery.get_searchquery.keys ;
        fieldname    = field_map.${field};
        fieldcontent = searchquery.get_searchquery.${field}.val;
+       IF field == 'db' && ( fieldcontent == 'dbis' || fieldcontent == 'ezb');
+         querydb = fieldcontent;
+	 NEXT;
+       END;
        IF field == 'topic' && topic_map.${fieldcontent} ;
           fieldcontent = topic_map.${fieldcontent} ;
        END ;       
@@ -47,16 +53,41 @@
              desc = msg.maketext('Start')
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
-	  {
-	     desc = "<span class=\"fas fa-search\"></span>&nbsp;${used_fields.join(' ; ')}"
-	     url  = '#'
-	     current = 1
-	  }
       ]
-      
+
       'without_navigation_search' = '1'
     };
 
+    IF querydb == 'dbis';
+      layout_param.breadcrumb.push(
+          {
+             desc = msg.maketext('Kataloge')
+	     url  = "${path_prefix}/${config.get('databases_loc')}.html?l=${lang}"
+	  });
+      layout_param.breadcrumb.push(	  
+          {
+             desc = "DBIS"
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/dbis/classifications.html?l=${lang}"
+	  });
+    ELSIF querydb == 'ezb';
+      layout_param.breadcrumb.push(
+          {
+             desc = msg.maketext('Kataloge')
+	     url  = "${path_prefix}/${config.get('databases_loc')}.html?l=${lang}"
+	  });
+      layout_param.breadcrumb.push(	  
+          {
+             desc = "EZB"
+	     url  = "${path_prefix}/${config.get('databases_loc')}/id/ezb/classifications.html?l=${lang}"
+	  });
+    END;
+
+    layout_param.breadcrumb.push({
+	     desc = "<span class=\"fas fa-search\"></span>&nbsp;${used_fields.sort.join(' ; ')}"
+	     url  = '#'
+	     current = 1
+    });
+    
     IF NOT qopts.get_option('sm');
        layout_param.representations = [
           {

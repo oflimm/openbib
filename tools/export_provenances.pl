@@ -194,23 +194,23 @@ foreach my $title ($titles_with_provenances->all){
 	$provenance_ref->{titleid}           = $titleid if ($titleid);
         $provenance_ref->{hbzid}             = $hbzid if ($hbzid);
         $provenance_ref->{nzid}              = $nzid if ($nzid);
-        $provenance_ref->{medianumber}       = $medianumber if ($medianumber);
+        $provenance_ref->{medianumber}       = cleanup_term($medianumber) if ($medianumber);
         $provenance_ref->{tpro_description}  = cleanup_term($description) if ($description);
-        $provenance_ref->{sigel}             = $sigel if ($sigel);
-        $provenance_ref->{incomplete}        = $incomplete if ($incomplete);
-        $provenance_ref->{reference}         = $reference  if ($reference);
-        $provenance_ref->{former_mark}       = $former_mark  if ($former_mark);
-        $provenance_ref->{current_mark}      = $current_mark  if ($current_mark);
+        $provenance_ref->{sigel}             = cleanup_term($sigel) if ($sigel);
+        $provenance_ref->{incomplete}        = cleanup_term($incomplete) if ($incomplete);
+        $provenance_ref->{reference}         = cleanup_term($reference)  if ($reference);
+        $provenance_ref->{former_mark}       = cleanup_term($former_mark)  if ($former_mark);
+        $provenance_ref->{current_mark}      = cleanup_term($current_mark)  if ($current_mark);
         $provenance_ref->{collection_gnd}    = $collection_gnd  if ($collection_gnd);
         $provenance_ref->{corporatebody_gnd} = $corp_gnd  if ($corp_gnd);
         $provenance_ref->{person_gnd}        = $person_gnd  if ($person_gnd);
 
-        $provenance_ref->{collection_name}    = $collection_name  if ($collection_name);
-        $provenance_ref->{corporatebody_name} = $corp_name  if ($corp_name);
+        $provenance_ref->{collection_name}    = cleanup_term($collection_name)  if ($collection_name);
+        $provenance_ref->{corporatebody_name} = cleanup_term($corp_name)  if ($corp_name);
         $provenance_ref->{person_name}        = cleanup_term($person_name)  if ($person_name);
 
-        $provenance_ref->{scan_id}            = $scan_id  if ($scan_id);
-        $provenance_ref->{entry_year}         = $entry_year  if ($entry_year);
+        $provenance_ref->{scan_id}            = cleanup_term($scan_id)  if ($scan_id);
+        $provenance_ref->{entry_year}         = cleanup_term($entry_year)  if ($entry_year);
         $provenance_ref->{remark}             = cleanup_term($remark)  if ($remark);
         $provenance_ref->{title_citation}     = cleanup_term($harvard_citation)  if ($harvard_citation);
         $provenance_ref->{linkage}            = $mult;

@@ -27,13 +27,16 @@
       topic_map.${topic.id} = topic.name;
     END;
 
-    querydb = searchquery.get_searchquery.db.val;
+    querydb = "";
     
     used_fields = [] ;
     FOREACH field IN searchquery.get_searchquery.keys ;
        fieldname    = field_map.${field};
        fieldcontent = searchquery.get_searchquery.${field}.val;
-       NEXT IF field == 'db' && ( fieldcontent == 'dbis' || fieldcontent == 'ezb');
+       IF field == 'db' && ( fieldcontent == 'dbis' || fieldcontent == 'ezb');
+         querydb = fieldcontent;
+	 NEXT;
+       END;
        IF field == 'topic' && topic_map.${fieldcontent} ;
           fieldcontent = topic_map.${fieldcontent} ;
        END ;       

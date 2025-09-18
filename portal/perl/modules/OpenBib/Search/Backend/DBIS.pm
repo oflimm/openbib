@@ -65,6 +65,7 @@ sub new {
     $arg_ref->{access_ppu}      = $queryoptions->get_option('access_ppu') || 0;
     $arg_ref->{access_national} = $queryoptions->get_option('access_national') || 0;
     $arg_ref->{access_red}      = $queryoptions->get_option('access_red') || 0;
+    $arg_ref->{srt}             = $queryoptions->get_option('srt') || '';
     
     my $api = new OpenBib::API::HTTP::DBIS($arg_ref);
     

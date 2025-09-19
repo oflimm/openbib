@@ -1139,7 +1139,7 @@ FOREACH field IN normdata;
 	 new_mark = thisfield.${'f'};
 
          IF content && new_mark;
-	    content = "${content} &#8594; ${new_mark}";
+	    content = "${content} <i class=\"fas fa-long-arrow-alt-right\"></i> ${new_mark}";
 	 END;
 
          IF content ;

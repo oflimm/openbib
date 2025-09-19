@@ -800,7 +800,7 @@ FOREACH field IN normdata;
            content_map.${'Gesamttitel'}.push(content);
 	 END;
 
-    CASE [ "T0500" "T0555" "T0504" "T0530" "T0263" "T0546" "T0992"];    
+    CASE [ "T0500" "T0555" "T0504" "T0530" "T0263" "T0546"];    
          content = thisfield.${'a'};
 
          IF content ;
@@ -1134,7 +1134,20 @@ FOREACH field IN normdata;
            content_map.${'URL'}.push(content);
 	 END;
 
+    CASE [ "T0992"];    
+         content  = thisfield.${'a'};
+	 new_mark = thisfield.${'f'};
 
+         IF content && new_mark;
+	    content = "${content} &#8594; ${new_mark}";
+	 END;
+
+         IF content ;
+           IF NOT content_map.${'Hinweis'} ;
+	      content_map.${'Hinweis'} = [];
+	   END;
+           content_map.${'Hinweis'}.push(content);
+	 END;
 
     CASE "T4101";
          content = thisfield.${'e'} || thisfield.${''};

@@ -296,7 +296,7 @@ END;
 # Cleanup Gesamttitel in 490, 773(5005) und 830
 
 filter_content_490  = {};
-filter_titleid_5005 = {};
+#filter_titleid_5005 = {};
 
 FOREACH field_830 IN normdata.${'T0830'};
   FOREACH field_490 IN normdata.${'T0490'};
@@ -306,15 +306,15 @@ FOREACH field_830 IN normdata.${'T0830'};
      END;
   END;
 
-  FOREACH field_5005 IN normdata.${'T5005'};
-      thiscontent   = field_5005.${'e'};
-      super         = from_json(thiscontent);
-      super_titleid = super.id;
+  # FOREACH field_5005 IN normdata.${'T5005'};
+  #     thiscontent   = field_5005.${'e'};
+  #     super         = from_json(thiscontent);
+  #     super_titleid = super.id;
 
-     IF super_titleid == field_830.${'w'};
-       filter_titleid_5005.${super_titleid} = 1;
-     END;
-  END;
+  #    IF super_titleid == field_830.${'w'};
+  #      filter_titleid_5005.${super_titleid} = 1;
+  #    END;
+  # END;
 END;
 
 new_490  = [];
@@ -327,14 +327,14 @@ FOREACH field_490 IN normdata.${'T0490'};
   new_490.push(field_490);
 END;
 
-FOREACH field_5005 IN normdata.${'T5005'};
-    thiscontent   = field_5005.${'e'};
-    super         = from_json(thiscontent);
-    super_titleid = super.id;
+# FOREACH field_5005 IN normdata.${'T5005'};
+#     thiscontent   = field_5005.${'e'};
+#     super         = from_json(thiscontent);
+#     super_titleid = super.id;
 
-    NEXT IF filter_titleid_5005.${super_titleid};
-    new_5005.push(field_5005);
-END;
+#     NEXT IF filter_titleid_5005.${super_titleid};
+#     new_5005.push(field_5005);
+# END;
 
 normdata.${'T0490'} = new_490 ;
 normdata.${'T5005'} = new_5005 ;
@@ -433,7 +433,10 @@ FOREACH field IN normdata;
 
     CASE [ "T0100" "T0700" ];
          content = thisfield.${'a'} ;
-	 supplement = thisfield.${'e'} ;
+         number  = thisfield.${'b'} || '';
+	 supplement_person = thisfield.${'c'} || '';
+	 supplement = thisfield.${'e'} || '' ;
+	 
          thisid  = thisfield.${'0'} || thisfield.${'6'};
          original_language = thisfield.${'original_language'};
 	 
@@ -441,10 +444,23 @@ FOREACH field IN normdata;
 	 IF thisid.match('(DE-588)');
 	    gndid = thisid.replace('\(DE-588\)','');
 	 END;
-	 
-         searchterm    = uri_escape(content);
-         searchprefix  = config.get('searchfield').person.prefix;
 
+         IF number;
+            supplement = "${supplement} ${number}";
+	 END;
+
+         IF supplement_person ;
+	    supplement = "${supplement} ${supplement_person}";
+	 END;
+
+         IF gndid && (number || supplement_person);
+           searchterm    = gndid;
+           searchprefix  = config.get('searchfield').gnd.prefix;
+	 ELSE ;
+           searchterm    = uri_escape(content);
+           searchprefix  = config.get('searchfield').personstring.prefix;
+         END;
+	 
          NEXT IF person_done.${searchterm} == 1;
 	 
          resourceurl  = "${path_prefix}/${config.get('databases_loc')}/id/lobidgnd/${config.get('titles_loc')}/id/${gndid}";
@@ -627,7 +643,7 @@ FOREACH field IN normdata;
            content_map.${'Verfasserangabe'}.push(published_by);
 	 END;
 
-    CASE "T0246"; # Weitere Titel
+    CASE [ "T0246" "T0249" ]; # Weitere Titel
          content = thisfield.${'a'} ;
 	 ind     = thisfield.${'ind'} ;
 	 
@@ -636,6 +652,26 @@ FOREACH field IN normdata;
 	     content_map.${'Weitere Titel'} = [];
 	   END;
            content_map.${'Weitere Titel'}.push(content);
+	 END;
+
+    CASE [ "T0247" ]; # Frueherer Titel
+         content = thisfield.${'a'} ;
+         note    = thisfield.${'f'} ;	 
+	 ind     = thisfield.${'ind'} ;
+
+         IF content ;
+	    content = "Früherer Titel: ${content}";
+
+            IF ind.match('.0$') && note ;
+	       content = "${content} (${note})";
+	    END;
+	 END;
+
+         IF content;
+           IF NOT content_map.${'Hinweis'} ;
+	     content_map.${'Hinweis'} = [];
+	   END;
+           content_map.${'Hinweis'}.push(content);
 	 END;
 
     CASE "T0250"; # Auflage
@@ -650,24 +686,32 @@ FOREACH field IN normdata;
 
     CASE [ "T0260" "T0264" ]; #
          original_language  = thisfield.${'original_language'};
+	 ind     = thisfield.${'ind'} ;
     
-         ortverlagjahr = [];
+         ortverlagjahr = "";
 
          IF thisfield.${'a'} ; # Ort
 	   ort = thisfield.${'a'};
-	   ortverlagjahr.push("${ort}: ");
+	   ortverlagjahr = "${ort}: ";
 	 END;
 
          IF thisfield.${'b'} ; # Verlag
-           ortverlagjahr.push(thisfield.${'b'});
+	   verlag = thisfield.${'b'};
+           ortverlagjahr = "${ortverlagjahr} ${verlag}";
          END;
 
 	 IF thisfield.${'c'} ; # Jahr
 	   jahr = thisfield.${'c'};
-           ortverlagjahr.push("(${jahr})");	 
+	   IF ind == ' 4';
+	      ortverlagjahr = "${ortverlagjahr} ${jahr}";	   	   
+	   ELSIF verlag ;
+	      ortverlagjahr = "${ortverlagjahr}, ${jahr}";
+           ELSE;
+	      ortverlagjahr = "${ortverlagjahr} ${jahr}";	   
+	   END;
 	 END;
 
-         ortverlagjahrcontent = ortverlagjahr.join(' ');
+         ortverlagjahrcontent = ortverlagjahr;
 
          IF original_language;
 	    ortverlagjahrcontent = "${original_language} = ${ortverlagjahrcontent}";
@@ -756,7 +800,7 @@ FOREACH field IN normdata;
            content_map.${'Gesamttitel'}.push(content);
 	 END;
 
-    CASE [ "T0500" "T0555" "T0504" "T0530" "T0263" "T0546" ];    
+    CASE [ "T0500" "T0555" "T0504" "T0530" "T0263" "T0546" "T0992"];    
          content = thisfield.${'a'};
 
          IF content ;
@@ -795,6 +839,17 @@ FOREACH field IN normdata;
            content_map.${'Hochschulschrift'}.push(content);
 	 END;
 
+    CASE [ "T0505" ];    
+         content = thisfield.${'t'};
+       	 ind     = thisfield.${'ind'} ;
+	 
+         IF content && ind == "80";
+           IF NOT content_map.${'Enthaltener Titel'} ;
+	      content_map.${'Enthaltener Titel'} = [];
+	   END;
+           content_map.${'Enthaltener Titel'}.push(content);
+	 END;
+
     CASE "T0515";    
          content = thisfield.${'a'};
 
@@ -827,6 +882,8 @@ FOREACH field IN normdata;
 
     CASE [ "T0600" "T0610" "T0648" "T0650" "T0651" "T0655" "T0688" "T0689" ];    
          content = thisfield.${'a'};
+         number  = thisfield.${'b'} || '';
+	 supplement_person = thisfield.${'c'} || '';
 	 work    = thisfield.${'t'};
          thisid  = thisfield.${'0'};
 
@@ -836,14 +893,27 @@ FOREACH field IN normdata;
 	 END;
 
          supplement = "";
-	 
-         IF content && work ;
-	    supplement = ": ${work}";
+
+         IF number;
+            supplement = "${supplement} ${number}";
 	 END;
 
-         searchterm    = uri_escape(content);
-         searchprefix  = config.get('searchfield').subjectstring.prefix;
+         IF supplement_person ;
+	    supplement = "${supplement} ${supplement_person}";
+	 END;
+	 
+         IF content && work ;
+	    supplement = "${supplement}: ${work}";
+	 END;
 
+         IF gndid && (number || supplement_person);
+           searchterm    = gndid;
+           searchprefix  = config.get('searchfield').gnd.prefix;
+	 ELSE ;
+           searchterm    = uri_escape(content);
+           searchprefix  = config.get('searchfield').subjectstring.prefix;
+         END;
+	 
          NEXT IF rswkswt_done.${searchterm} == 1;
 	 
          resourceurl = "${path_prefix}/${config.get('databases_loc')}/id/lobidgnd/${config.get('titles_loc')}/id/${gndid}";
@@ -913,12 +983,20 @@ FOREACH field IN normdata;
             localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
 
 	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
-	  ELSIF thiszdbid ;
+	  ELSIF thiszdbid == '0' ; # Disable
 	    # thisid = thisid.replace('\(.+?\)','');
             searchterm    = thiszdbid;
             searchprefix  = config.get('searchfield').zdbid.prefix;
 
             localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database}&${searchprefix}=${searchterm}";
+
+	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
+	  ELSIF thisid.match('6476$') ;
+	    # thisid = thisid.replace('\(.+?\)','');
+            searchterm    = thisid;
+            searchprefix  = config.get('searchfield').id.prefix;
+
+            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
 
 	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
 	  END;
@@ -939,10 +1017,15 @@ FOREACH field IN normdata;
          thistitle = thisfield.${'t'};
          thisid    = thisfield.${'w'};
          thismark  = thisfield.${'g'};
+         thispub   = thisfield.${'d'};
+	 thiscat   = thisfield.${'i'};
+	 thisisbn  = thisfield.${'z'};
+	 
          content   = "";
 	 
          # ggf. verlinken
-         IF thisinfo == 'AngebundenAn' && thistitle && thisid.match('^[0-9]+$') ;
+         IF thisinfo == 'AngebundenAn' ;
+	  IF thistitle && thisid.match('^[0-9]+$') ;
             localurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${thisid}.html?l=${lang}";
 
 	    content = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
@@ -956,15 +1039,73 @@ FOREACH field IN normdata;
               END;
 	    END;
 
+            IF content ;
+  	      is_bindeeinheit = 1;
+              IF NOT content_map.${'Zur Bindeeinheit'} ;
+	         content_map.${'Zur Bindeeinheit'} = [];
+	      END;
+              content_map.${'Zur Bindeeinheit'}.push(content);
+	    END;
+          END;
+	 # Wenn keine Bindeeeinheit
+         ELSIF thistitle && thiscat;
+          IF thistitle ;
+ 	    IF thisid.match('6476$') ;
+              localurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${thisid}.html?l=${lang}";
+	    
+ 	      thistitle = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+	    ELSIF thisisbn;
+              searchterm    = thisisbn;
+              searchprefix  = config.get('searchfield').freesearch.prefix;
+
+              localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+
+ 	      thistitle = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+
+	    END;
+          END;
+
+          fullinfo = [];
+	  
+          IF thiscat;
+	    fullinfo.push("${thiscat}:");
+	  END;
+
+          IF thistitle;
+	    fullinfo.push(thistitle);
+          END;
+	    
+          IF thismark;
+            fullinfo.push("- ${thismark}");
+	  END;
+
+          IF fullinfo;
+	     content = fullinfo.join(' ');
+	  END;
+	  
+          IF content ;
+            IF NOT content_map.${'Hinweis'} ;
+	       content_map.${'Hinweis'} = [];
+	    END;
+            content_map.${'Hinweis'}.push(content);
+          END;
+	 ELSIF thisid.match('6476$') ;
+            localurl  = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${thisid}.html?l=${lang}";
+
+            IF NOT thistitle;
+              thistitle = msg.maketext("Zeige Überordnung");          
+            END;
+            
+            content = "<a href=\"${localurl}\" class=\"inturl\">${thistitle}</a>";
+	    
+            IF content ;
+              IF NOT content_map.${'Überordnung'} ;
+                 content_map.${'Überordnung'} = [];
+              END;
+              content_map.${'Überordnung'}.push(content);
+            END;
 	 END;
 
-         IF content ;
-	   is_bindeeinheit = 1;
-           IF NOT content_map.${'Zur Bindeeinheit'} ;
-	      content_map.${'Zur Bindeeinheit'} = [];
-	   END;
-           content_map.${'Zur Bindeeinheit'}.push(content);
-	 END;
 
     CASE "T0856";
          IF NOT normdata.defined('T4662');
@@ -1089,6 +1230,8 @@ FOREACH field IN normdata;
          # USE dumper;dumper.dump(super);
          super_titleid = super.id;
 
+         NEXT IF NOT super_titleid ;
+	 
          super_title   = "";
 
          FOREACH superfields IN super.fields.${'0245'} ;
@@ -1172,7 +1315,7 @@ FOREACH field IN singular_normdata;
        END;
 
      CASE [ "T0982" ];
-       IF item.subfield == 'a';
+       IF item.subfield.match('(a|b|c)');
          content = item.content;
 	 
          searchterm    = uri_escape(content);
@@ -1237,6 +1380,20 @@ FOREACH field IN singular_normdata;
 	 END;
        END; # End subfield 'b'
 
+    CASE "T0989";
+       IF item.subfield == 'a';    
+         content = item.content;
+
+         content = content.replace('ExtBem1','Externe Bemerkung');
+         content = content.replace('ExtBem2','Externe Bemerkung');
+	 
+         IF content ;
+           IF NOT content_map.${'Hinweis'} ;
+	      content_map.${'Hinweis'} = [];
+	   END;
+           content_map.${'Hinweis'}.push(content);
+	 END;
+       END;
 
     CASE [ "T0662" ];
          content       = item.content;
@@ -1322,10 +1479,11 @@ FOREACH field IN singular_normdata;
 END;
 
 display_types = {
-   'URL'             => 'list',
-   'Schlagwort'       => 'list',
-   'Hinweis'          => 'list',
-   'Sammlungs-Portal' => 'list',      
+   'URL'               => 'list',
+   'Schlagwort'        => 'list',
+   'Hinweis'           => 'list',
+   'Enthaltener Titel' => 'list',
+   'Sammlungs-Portal'  => 'list',      
 };
 
 # USE dumper;dumper.dump(content_map);dumper.dump(singular_normdata);dumper.dump(record_type);

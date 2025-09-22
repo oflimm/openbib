@@ -239,6 +239,12 @@ sub cleanup_term {
     $term=~s{&amp;}{&}g;
     $term=~s{</?i>}{}g;
 
+    # Fix Doppelkodierungen
+    $term=~s{&gt;}{>}g;
+    $term=~s{&lt;}{<}g;
+    $term=~s{&amp;}{&}g;
+    $term=~s{</?i>}{}g;
+    
     return $term;
 }
 
@@ -250,7 +256,7 @@ export_provenances.pl - Export der Provenienzen in ein JSON-Format
    Optionen:
    -help                 : Diese Informationsseite
        
-   --database=inst001    : Datenbankname (USB=inst001)
+   --database=uni        : Datenbankname (UzK=uni)
 
 
 ENDHELP

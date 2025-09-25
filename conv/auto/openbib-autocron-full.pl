@@ -423,6 +423,7 @@ system("cd /var/www.opendata/dumps/isbns/by_view ; /opt/openbib/bin/get_isbns.pl
 $logger->info("### Dumping provenances to JSON and MARC/MARCXML");
 
 system("/opt/openbib/bin/export_provenances.pl --database=uni --filename=/var/www.opendata/dumps/provenances/DE-38.json > /tmp/export_provenances.log 2>&1");
+system("cd /var/www.opendata/dumps/provenances ; cat DE-38.json | /opt/openbib/bin/provenances2csv.pl > /tmp/provenances2csv.log 2>&1");
 system("cd /var/www.opendata/dumps/provenances ; cat DE-38.json | /opt/openbib/bin/provenances2marc.pl > /tmp/provenances2marc.log 2>&1 ; mv provenances_de38_361.mrc DE-38.mrc");
 system("cd /var/www.opendata/dumps/provenances ; yaz-marcdump -o marcxml DE-38.mrc |egrep -v '<leader>' > DE-38.xml 2> /tmp/provenances_marc2marcxml.log");
     

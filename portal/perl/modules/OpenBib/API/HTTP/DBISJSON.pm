@@ -360,6 +360,10 @@ sub get_titles_record {
 	}
     }
 
+    if (defined $json_ref->{subjects} && !@{$json_ref->{subjects}} && defined $quickfix_fields_ref->{subjects} && @{$quickfix_fields_ref->{subjects}}){
+	$json_ref->{subjects} = $quickfix_fields_ref->{subjects};
+    }
+    
     if (defined $json_ref->{subjects} && ref $json_ref->{subjects} eq "ARRAY"){
 	my $mult=1;
 	foreach my $subject_ref (@{$json_ref->{subjects}}){
@@ -573,7 +577,9 @@ sub _get_titles_record_quickfix_xml {
     my $subjects_ref = [];
 
     foreach my $subject_node (@subjects_nodes){
-        push @{$subjects_ref}, $subject_node->textContent;
+        push @{$subjects_ref}, {
+	    title => $subject_node->textContent
+	};
     }
 
     $fields_ref->{subjects} = $subjects_ref;

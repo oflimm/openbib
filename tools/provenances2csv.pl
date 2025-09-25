@@ -79,7 +79,7 @@ my $logger = get_logger();
 
 my $out;
 
-my $filename = "provenances_de38_361.csv";
+my $filename = "DE-38.csv";
 
 open $out, ">:encoding(utf8)", $filename;
 
@@ -90,7 +90,7 @@ my $outputcsv = Text::CSV_XS->new ({
 
 my $out_ref = [];
 
-push @{$out_ref}, ('3611$o','3611$5','3611$s','3611$a','3611$0','3611$f','3611$l','3611$z','035$a','Network Id','3611$y');
+push @{$out_ref}, ('Network Id','035$a','3611$5','3611$s','3611$o','3611$a','3611$0','3611$f','3611$z','3611$l');
 
 $outputcsv->print($out,$out_ref);
 
@@ -102,29 +102,31 @@ while (my $json = <>){
     $out_ref = [];
 
     my $tpro_merkmal = "";
-
+    
+    # Vokabularium fuer Besetzung von 361$f zum Regexp-Parsing
+    # von tpro_description-Inhalten
     my %tpro_merkmale = (
-	# tpro_description-Teil => Ziel Merkmal
+	# tpro_description-Regexp => liefert Merkmal fuer 361$f
 	'^Autogramm' => 'Autogramm',
 	'^Einband' => 'Einband',
 	'^Einlage' => 'Einlage',
 	'^Etikett' => 'Etikett',
 	'^Exlibris' => 'Exlibris',
-	'^gedr. Besitzvermerk' => 'gedr. Besitzvermerk',
-	'^hs. Besitzvermerk' => 'hs. Besitzvermerk',
-	'^Indiz' => 'Indiz',
+	'^gedr. Besitzvermerk' => 'Etikett',
+	#'^hs. Besitzvermerk' => 'hs. Besitzvermerk',
+	#'^Indiz' => 'Indiz',
 	'^Initiale' => 'Initiale',
 	'^Monogramm' => 'Monogramm',
 	'^Notiz' => 'Notiz',
 	'^NS-Raubgut' => 'NS-Raubgut',
-	'^Prämienband' => 'Prämienband',
+	#'^Prämienband' => 'Prämienband',
 	'^Restitution' => 'Restitution',
 	'^Restitutionsexemplar' => 'Restitutionsexemplar',
 	'^Stempel' => 'Stempel',
-	'^Supralibros' => 'Supralibros',
-	'^Wappenstempel' => 'Wappenstempel',
+	'^Supralibros' => 'Einband',
 	'^Wappen' => 'Wappen',
-	'^Wappenexlibris' => 'Wappenexlibris',
+	'^Wappenexlibris' => 'Exlibris',
+	'^Wappenstempel' => 'Stempel',
 	'^Widmung' => 'Widmung',
 	);
 
@@ -147,7 +149,7 @@ while (my $json = <>){
     if ($multiple_tpro){	
 	print STDERR "Mehrfache Merkmale: ".YAML::Dump($json_ref)."\n";
     }
-    
+        
     my $field_361_y  = $json_ref->{current_mark} || "";
     my $field_361_o  = "Vorbesitz";
     my $field_361_5  = ($json_ref->{sigel} !~ "^DE")?"DE-".$json_ref->{sigel}:$json_ref->{sigel};
@@ -170,13 +172,13 @@ while (my $json = <>){
     push @fields_361_z, "Unvollst.: ".$json_ref->{incomplete} if ($json_ref->{incomplete});
 
     my $field_361_z  = (@fields_361_z)?join('.- ',@fields_361_z):'';
-    
-    push @{$out_ref}, ($field_361_o,$field_361_5,$field_361_s,$field_361_a,$field_361_0,$field_361_f,$field_361_l,$field_361_z,$field_035_a,$nz_id,$field_361_y);
 
     if (!$field_035_a && !$nz_id){
 	print STDERR "Weder HT-Nummer noch NZ-ID ".YAML::Dump($json_ref)."\n";
 	next;
     }
+    
+    push @{$out_ref}, ($nz_id,$field_035_a,$field_361_5,$field_361_s,$field_361_o,$field_361_a,$field_361_0,$field_361_f,$field_361_z,$field_361_l);
     
     $outputcsv->print($out,$out_ref);
 
@@ -188,6 +190,8 @@ while (my $json = <>){
 }
 
 close ($out);
+
+
 
 sub print_help {
     print "provenances2csv.pl - Erzeugen von CSV-Import-Dateien aus Provenienz-Exporten fuer 361 in der NZ des hbz\n\n";

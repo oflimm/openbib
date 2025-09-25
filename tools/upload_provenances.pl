@@ -45,15 +45,16 @@ my $password     = $config->{upload_provenances}{password};
 my $local_path   = $config->{upload_provenances}{local_path}."DE-38.xml";
 my $remote_path  = $config->{upload_provenances}{remote_path}."provenances_de38_361_".$this_date.".xml";
 
-my $last_month_in_this_quarter = ($this_quarter == 1)?"March":($this_quarter == 2)?"June":($this_quarter == 3)?"September":"December";
+# Insert appropriate dates here
+my %wanted_date = map { $_ => 1 } qw(
+    20251007
+    20260107
+    20260407
+);
 
-my $wanted = Date::Manip::ParseDate("Last Tuesday in $last_month_in_this_quarter");
+$logger->info("This date: $this_date / Wanted dates: ".join(', ',sort keys %wanted_date));
 
-my $wanted_date = Date::Manip::UnixDate($wanted,"%Y%m%d");
-
-$logger->info("This date: $this_date / Wanted date: $wanted_date");
-
-if ($this_date eq $wanted_date){
+if ($wanted_date{$this_date}){
     # Copy with scp
     $logger->info("Copying file with scp from $local_path to $remote_path");
 

@@ -63,7 +63,7 @@ if ($help || !$titlefile || !$subjectfile){
     print_help();
 }
 
-$logfile  = ($logfile)?$logfile:'./eprints2meta.log';
+$logfile  = ($logfile)?$logfile:'/var/log/openbib/eprints2meta.log';
 $loglevel = ($loglevel)?$loglevel:'INFO';
 
 my $log4Perl_config = << "L4PCONF";
@@ -159,22 +159,24 @@ sub parse_title {
 
     my $mult_ref = {};
     
+    my $id     = $record->first_child('eprintid')->text();
+    $title_ref->{id} = $convconfig->{idprefix}.$id;
+
+    unless ($id){
+	$logger->debug("Ignored - no ID");
+	$t->purge();
+	return;
+    }
+
     my $status = $record->first_child('eprint_status')->text();    
 
     # Nur freigegebene EPrints exportieren
     if ($status ne "archive"){
+	$logger->debug("Ignored ID $id - status is not archive");	
 	$t->purge();
 	return;
     }
     
-    my $id = $record->first_child('eprintid')->text();
-    $title_ref->{id} = $convconfig->{idprefix}.$id;
-
-    unless ($id){
-	$t->purge();
-	return;
-    }
-
     my $type = $record->first_child('type')->text();
     
     # Volltexte vorhanden?
@@ -194,10 +196,13 @@ sub parse_title {
 
     # Dokumente ohne Volltext irrelevant
     unless ($have_documents){
+	$logger->debug("Ignored ID $id - no full text");
 	$t->purge();
 	return;
     }
-        
+
+    $logger->debug("Processing ID $id");
+    
     # Titel
     if ($record->first_child('title')) {
 	$mult_ref->{'0331'} = 1;

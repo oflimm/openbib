@@ -125,14 +125,14 @@ sub process_vlb {
 
 	$ua->transactor->name($api_config_ref->{'agent_id'});
 	$ua->connect_timeout(10);
-	$ua->max_redirects(2);
+	#$ua->max_redirects(2);
 
 	my $headers_ref = {};
         $headers_ref->{'X-Forwarded-For'} = $client_ip if ($client_ip);
 
         my $url      = $api_config_ref->{'api_url'}."/".$isbn->{isbn13}."/$size?access_token=".$api_config_ref->{'api_token'};
 
-	$logger->info("Trying to get cover from $url");
+	$logger->info("Trying to get cover from $url for client ip $client_ip");
 
 	my $response_p = $ua->get_p($url => $headers_ref);
 
@@ -153,6 +153,7 @@ sub process_vlb {
 			   
 	    $self->redirect($redirect_url);
 			   })->catch(sub {
+			       $logger->info("Catched error for ISBN ".$isbn->{isbn13});		       
 			       return $self->redirect($redirect_url);
 				     })->wait;
     }

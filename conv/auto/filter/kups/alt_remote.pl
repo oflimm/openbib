@@ -60,7 +60,7 @@ system("cd $pooldir/$pool ; rm meta.* *.xml");
 system("$wgetexe $httpauthstring -P $pooldir/$pool/ $base_url".$dbinfo->titlefile." > /dev/null 2>&1 ");
 system("$wgetexe $httpauthstring -P $pooldir/$pool/ $base_url".$dbinfo->subjectfile." > /dev/null 2>&1 ");
 
-system("ls -l $pooldir/$pool/");
+system("cd $pooldir/$pool ; xmllint --recover titles.xml > titles.xml.processed ; mv -f titles.xml.processed titles.xml");
 
 system("cd $pooldir/$pool; $eprints2metaexe --titlefile=".$dbinfo->titlefile." --subjectfile=".$dbinfo->subjectfile." --configfile=/opt/openbib/conf/${pool}.yml; gzip meta.*");
 

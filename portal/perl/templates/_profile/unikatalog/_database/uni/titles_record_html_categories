@@ -937,7 +937,7 @@ FOREACH field IN normdata;
 
          rswkswt_done.${searchterm} = 1;
 
-    CASE [ "T0770" "T0776" "T0780" "T0785"];    
+    CASE [ "T0770" "T0772" "T0776" "T0780" "T0785"];    
          content = thisfield.${'i'};
          thistitle = thisfield.${'t'};
          thisinfo  = thisfield.${'n'};

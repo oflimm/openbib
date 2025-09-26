@@ -283,6 +283,9 @@ sub _register_routes {
 	elsif ($method eq "DELETE"){
 	    $routes->delete($rule)->to(controller => $controller, action => $action, dispatch_args => $args, scope => $scope  )
 	}
+	elsif ($method eq "WEBSOCKET"){
+	    $routes->websocket($rule)->to(controller => $controller, action => $action, dispatch_args => $args, scope => $scope  )
+	}
     }
 
     # Add Catchall-Route to Homepage

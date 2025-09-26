@@ -748,14 +748,14 @@
 - # connector_alma_loc: 
    controller: 'Connector::ALMA'
    rule: '/portal/:view/connector/alma'
-   method: 'GET'
+   method: 'WEBSOCKET'
    action: 'challenge'
    args:
       disable_content_negotiation: 1
 - # connector_alma_loc: 
    controller: 'Connector::ALMA'
    rule: '/portal/:view/connector/alma'
-   method: 'POST'
+   method: 'WEBSOCKET'
    action: 'create_record'
    args:
       disable_content_negotiation: 1

@@ -227,12 +227,6 @@ sub send_search_request {
     my $num               = $queryoptions->get_option('num');
 
     my $from              = ($page - 1)*$num;
-
-    my ($atime,$btime,$timeall);
-  
-    if ($config->{benchmark}) {
-        $atime=new Benchmark;
-    }
     
     my $url = $config->get('eds')->{'search_url'};
 
@@ -324,11 +318,11 @@ sub send_search_request {
 	$logger->debug("Response: ".$response->body);
     }
 
-    my $threshold_endtime      = new Benchmark;
+    my $threshold_endtime    = new Benchmark;
     my $threshold_timeall    = timediff($threshold_endtime,$threshold_starttime);
     my $threshold_resulttime = timestr($threshold_timeall,"nop");
     $threshold_resulttime    =~s/(\d+\.\d+) .*/$1/;
-    $threshold_resulttime = $threshold_resulttime * 1000.0; # to ms
+    $threshold_resulttime    = $threshold_resulttime * 1000.0; # to ms
     
     if (defined $config->get('eds')->{'api_logging_threshold'} && $threshold_resulttime > $config->get('eds')->{'api_logging_threshold'}){
 	$url =~s/\?.+$//; # Don't log args

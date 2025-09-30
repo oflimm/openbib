@@ -61,7 +61,7 @@
 [% order.label %]
 [% END %]
 </td>
-<td>[% order.department.about %][% IF order.pickup_location.about %] / [% IF order.pickup_location.about.match('Universitäts- und Stadtbibliothek Köln') %][% msg.maketext("Abholregale") %][% ELSE %][% order.pickup_location.about %][% END %][% END %]
+<td>[% order.department.about %][% IF order.pickup_location.about %] / [% IF order.pickup_location.about.match('Universitäts- und Stadtbibliothek Köln') %][% msg.maketext("Abholregal") %][% ELSE %][% order.pickup_location.about %][% END %][% END %]
 [% IF order.status == 'IN_PROCESS' %]
 <p><span style="color: red;"><i class="fas fa-hourglass-start"></i> [% msg.maketext("In Bearbeitung") %]</span></p>
 [% ELSIF order.status == 'ON_HOLD_SHELF' %]
@@ -75,7 +75,7 @@
   unitname = order.department.about;
 
   IF order.pickup_location.about.match('Universitäts- und Stadtbibliothek Köln');
-    unitname = "${unitname} / Abholregale";
+    unitname = "${unitname} / Abholregal";
   ELSE ;
     unitname = "${unitname} / ${order.pickup_location.about}";
   END;

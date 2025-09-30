@@ -86,7 +86,7 @@
   unitname = request.department.about;
 
   IF request.pickup_location.about.match('Universitäts- und Stadtbibliothek Köln');
-    unitname = "${unitname} / Abholregale";
+    unitname = "${unitname} / Abholregal";
   ELSE ;
     unitname = "${unitname} / ${request.pickup_location.about}";
   END;

@@ -1586,7 +1586,7 @@ sub get_locationinfo_fields_p {
                 $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
             }
 
-	    return $locationinfo_ref if (defined $locationinfo_ref);
+	    return Mojo::Promise->resolve($locationinfo_ref) if (defined $locationinfo_ref);
 	}
     }
 
@@ -1747,7 +1747,7 @@ sub get_locationinfo_occupancy_p {
                 $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
             }
 
-	    return $occupancy_ref if (defined $occupancy_ref);
+	    return Mojo::Promise->resolve($occupancy_ref) if (defined $occupancy_ref);
 	}
     }
 
@@ -1894,7 +1894,7 @@ sub get_locationinfo_overview_p {
                 $logger->info("Zeit fuer das Holen der gecacheten Informationen ist ".timestr($timeall));
             }
 
-	    return $locationinfo_overview_ref if (defined $locationinfo_overview_ref);
+	    return Mojo::Promise->resolve($locationinfo_overview_ref) if (defined $locationinfo_overview_ref);
 	}
     }
 

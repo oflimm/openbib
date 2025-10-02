@@ -4733,7 +4733,7 @@ sub get_topics_p {
         my $topics_ref = $self->{memc}->get($memc_key);
 
 	if ($topics_ref){
-	    return $topics_ref;
+	    return Mojo::Promise->resolve($topics_ref);
 	}
     }
 

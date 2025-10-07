@@ -183,14 +183,14 @@ sub show_collection {
 	#     $classifications_ref = $temp_ref;
 	# }
 
-	my $is_error = (defined $classifications_ref->{error})?1:0;
+	my $is_error = (defined $classifications_ref->{error} && $classifications_ref->{error})?1:0;
 	
         # TT-Data erzeugen
         my $ttdata={
-            database        => $database,
-            classifications => $classifications_ref->{items},
-	    hits            => $classifications_ref->{hits},
-	    error           => $is_error,
+            database             => $database,
+            classifications      => $classifications_ref->{items},
+	    hits                 => $classifications_ref->{hits},
+	    classification_error => $is_error,
         };
         
         return $self->print_page($config->{'tt_classifications_tname'},$ttdata);

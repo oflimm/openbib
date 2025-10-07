@@ -33,7 +33,7 @@
 
 <p/>
 
-[% IF error %]
+[% IF classification_error %]
 
 <div class="alert alert-info">
 <p>

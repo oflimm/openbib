@@ -111,7 +111,7 @@
 [% END %]
 
 </div><!-- End: Tabcontent -->
-[% END %]
+
 <button class="ob-floating_sidebar_button sidebar-toggler d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-control="offcanvasSidebar" title="[% msg.maketext("Suchen") %]"><i class="fas fa-search fa-2x"></i></button>
 
       </div>
@@ -120,3 +120,4 @@
 <div class="d-md-none mt-3 mb-3">
 <a class="btn btn-primary" href="https://dbis.ur.de/USBK" target="_blank"><i class="fas fa-globe me-2"></i> [% msg.maketext("Direkt in DBIS recherchieren") %]</a>
 </div>
+[% END %]

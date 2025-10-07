@@ -657,7 +657,12 @@ sub get_classifications {
     }
     else {        
 	$logger->info($response->code . ' - ' . $response->message);
-	return $classifications_ref;
+	return {
+	    items => [],
+	    hits  => 0,
+	    error => 1,
+	};
+
     }
     
     if ($logger->is_debug){

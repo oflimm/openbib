@@ -283,31 +283,30 @@ sub get_titles_record {
     my @publication_forms = ();
     my @local_licenseinfo = ();
 
-    push @externalNotes, $quickfix_fields_ref->{hints} if ($quickfix_fields_ref->{hints});
+    push @externalNotes, $quickfix_fields_ref->{hints} if ($quickfix_fields_ref->{hints} && $quickfix_fields_ref->{hints} =~m/\w/);
     
-    push @externalNotes, $remarks if ($remarks);
+    push @externalNotes, $remarks if ($remarks && $remarks =~m/\w/);
 
-    
     if ($traffic_light ne "red" && defined $json_ref->{licenses} && ref $json_ref->{licenses} eq "ARRAY"){
 	
 	
 	foreach my $license_ref (@{$json_ref->{licenses}}){
 
 	    if (defined $license_ref->{externalNotes}){
-		push @externalNotes, $license_ref->{externalNotes} if ($license_ref->{externalNotes});
+		push @externalNotes, $license_ref->{externalNotes} if ($license_ref->{externalNotes} && $license_ref->{externalNotes} =~m/\w/);
 	    }
 	    
 	    if (defined $license_ref->{publisher} && defined $license_ref->{publisher}{title}){
-		push @publishers, $license_ref->{publisher}{title} if ($license_ref->{publisher}{title});
+		push @publishers, $license_ref->{publisher}{title} if ($license_ref->{publisher}{title} && $license_ref->{publisher}{title} =~m/\w/);
 	    }
 
 
 	    if (defined $license_ref->{publicationForm} && defined $license_ref->{publicationForm}{title}){
-		push @publication_forms, $license_ref->{publicationForm}{title} if ( $license_ref->{publicationForm}{title});
+		push @publication_forms, $license_ref->{publicationForm}{title} if ($license_ref->{publicationForm}{title} && $license_ref->{publicationForm}{title} =~m/\w/);
 	    }
 
 	    if (defined $license_ref->{licenseLocalisation} && defined $license_ref->{licenseLocalisation}{externalNotes}){
-		push @local_licenseinfo, $license_ref->{licenseLocalisation}{externalNotes} if ($license_ref->{licenseLocalisation}{externalNotes});
+		push @local_licenseinfo, $license_ref->{licenseLocalisation}{externalNotes} if ($license_ref->{licenseLocalisation}{externalNotes} && $license_ref->{licenseLocalisation}{externalNotes} =~m/\w/);
 	    }
 	    
 	    if (defined $license_ref->{accesses} && ref $license_ref->{accesses} eq "ARRAY"){

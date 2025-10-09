@@ -35,6 +35,8 @@ use utf8;
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode qw/decode decode_utf8/;
+use HTML::Entities;
+use List::MoreUtils qw(uniq);
 use Log::Log4perl qw(get_logger :levels);
 use Mojo::UserAgent;
 use Storable;
@@ -210,7 +212,8 @@ sub get_titles_record {
     my $quickfix_fields_ref = $self->_get_titles_record_quickfix_xml($arg_ref);
     
     if ($logger->is_debug){
-	$logger->debug("Got quickfix fields: ".YAML::Dump($quickfix_fields_ref));
+	$logger->debug("Got JSON fields: ".YAML::Dump($json_ref));
+	$logger->debug("Got quickfix XML fields: ".YAML::Dump($quickfix_fields_ref));
     }
     
     my $traffic_light              = $json_ref->{traffic_light};
@@ -391,18 +394,17 @@ sub get_titles_record {
     $record->set_field({field => 'T0511', subfield => '', mult => 1, content => $instruction}) if ($instruction);
 
     my $notes_mult = 1;
-    my %have_0510 = ();
-    foreach my $externalNote (@local_licenseinfo){
-	next if ($have_0510{$externalNote});
-	$record->set_field({field => 'T0510', subfield => '', mult => $notes_mult, content => $externalNote});
-	$have_0510{$externalNote} = 1;
-	$notes_mult++;
+
+    if ($logger->is_debug){
+	$logger->debug("externalNotes: ".YAML::Dump(\@externalNotes));
+	$logger->debug("local_licenseinfo: ".YAML::Dump(\@local_licenseinfo));
     }
     
+    push @externalNotes, @local_licenseinfo;
+    @externalNotes = uniq map { decode_entities($_) } @externalNotes;
+    
     foreach my $externalNote (@externalNotes){	
-	next if ($have_0510{$externalNote});
 	$record->set_field({field => 'T0510', subfield => '', mult => $notes_mult, content => $externalNote});
-	$have_0510{$externalNote} = 1;
 	$notes_mult++;
     }
 

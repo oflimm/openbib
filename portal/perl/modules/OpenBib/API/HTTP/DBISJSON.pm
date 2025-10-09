@@ -35,6 +35,8 @@ use utf8;
 use Benchmark ':hireswallclock';
 use DBI;
 use Encode qw/decode decode_utf8/;
+use HTML::Entities;
+use List::MoreUtils qw(uniq);
 use Log::Log4perl qw(get_logger :levels);
 use Mojo::UserAgent;
 use Storable;
@@ -217,7 +219,8 @@ sub get_titles_record {
     my $quickfix_fields_ref = $self->_get_titles_record_quickfix_xml($arg_ref);
     
     if ($logger->is_debug){
-	$logger->debug("Got quickfix fields: ".YAML::Dump($quickfix_fields_ref));
+	$logger->debug("Got JSON fields: ".YAML::Dump($json_ref));
+	$logger->debug("Got quickfix XML fields: ".YAML::Dump($quickfix_fields_ref));
     }
     
     my $traffic_light              = $json_ref->{traffic_light};
@@ -290,31 +293,30 @@ sub get_titles_record {
     my @publication_forms = ();
     my @local_licenseinfo = ();
 
-    push @externalNotes, $quickfix_fields_ref->{hints} if ($quickfix_fields_ref->{hints});
+    push @externalNotes, $quickfix_fields_ref->{hints} if ($quickfix_fields_ref->{hints} && $quickfix_fields_ref->{hints} =~m/\w/);
     
-    push @externalNotes, $remarks if ($remarks);
+    push @externalNotes, $remarks if ($remarks && $remarks =~m/\w/);
 
-    
     if ($traffic_light ne "red" && defined $json_ref->{licenses} && ref $json_ref->{licenses} eq "ARRAY"){
 	
 	
 	foreach my $license_ref (@{$json_ref->{licenses}}){
 
 	    if (defined $license_ref->{externalNotes}){
-		push @externalNotes, $license_ref->{externalNotes} if ($license_ref->{externalNotes});
+		push @externalNotes, $license_ref->{externalNotes} if ($license_ref->{externalNotes} && $license_ref->{externalNotes} =~m/\w/);
 	    }
 	    
 	    if (defined $license_ref->{publisher} && defined $license_ref->{publisher}{title}){
-		push @publishers, $license_ref->{publisher}{title} if ($license_ref->{publisher}{title});
+		push @publishers, $license_ref->{publisher}{title} if ($license_ref->{publisher}{title} && $license_ref->{publisher}{title} =~m/\w/);
 	    }
 
 
 	    if (defined $license_ref->{publicationForm} && defined $license_ref->{publicationForm}{title}){
-		push @publication_forms, $license_ref->{publicationForm}{title} if ( $license_ref->{publicationForm}{title});
+		push @publication_forms, $license_ref->{publicationForm}{title} if ($license_ref->{publicationForm}{title} && $license_ref->{publicationForm}{title} =~m/\w/);
 	    }
 
 	    if (defined $license_ref->{licenseLocalisation} && defined $license_ref->{licenseLocalisation}{externalNotes}){
-		push @local_licenseinfo, $license_ref->{licenseLocalisation}{externalNotes} if ($license_ref->{licenseLocalisation}{externalNotes});
+		push @local_licenseinfo, $license_ref->{licenseLocalisation}{externalNotes} if ($license_ref->{licenseLocalisation}{externalNotes} && $license_ref->{licenseLocalisation}{externalNotes} =~m/\w/);
 	    }
 	    
 	    if (defined $license_ref->{accesses} && ref $license_ref->{accesses} eq "ARRAY"){
@@ -399,18 +401,17 @@ sub get_titles_record {
     $record->set_field({field => 'T0511', subfield => '', mult => 1, content => $instruction}) if ($instruction);
 
     my $notes_mult = 1;
-    my %have_0510 = ();
-    foreach my $externalNote (@local_licenseinfo){
-	next if ($have_0510{$externalNote});
-	$record->set_field({field => 'T0510', subfield => '', mult => $notes_mult, content => $externalNote});
-	$have_0510{$externalNote} = 1;
-	$notes_mult++;
+
+    if ($logger->is_debug){
+	$logger->debug("externalNotes: ".YAML::Dump(\@externalNotes));
+	$logger->debug("local_licenseinfo: ".YAML::Dump(\@local_licenseinfo));
     }
     
+    push @externalNotes, @local_licenseinfo;
+    @externalNotes = uniq map { decode_entities($_) } @externalNotes;
+    
     foreach my $externalNote (@externalNotes){	
-	next if ($have_0510{$externalNote});
 	$record->set_field({field => 'T0510', subfield => '', mult => $notes_mult, content => $externalNote});
-	$have_0510{$externalNote} = 1;
 	$notes_mult++;
     }
 
@@ -670,7 +671,12 @@ sub get_classifications {
     }
     else {        
 	$logger->info($response->code . ' - ' . $response->message);
-	return $classifications_ref;
+	return {
+	    items => [],
+	    hits  => 0,
+	    error => 1,
+	};
+
     }
     
     if ($logger->is_debug){

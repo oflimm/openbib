@@ -33,6 +33,20 @@
 
 <p/>
 
+[% IF classification_error %]
+
+<div class="alert alert-info">
+<p>
+[% msg.maketext("Das DBIS-API ist derzeit nicht erreichtbar. Versuchen Sie es bitte direkt in DBIS.") %]
+</p>
+
+<p>
+<a class="btn btn-primary" href="https://dbis.ur.de/USBK" target="_blank"><i class="fas fa-globe me-2"></i> [% msg.maketext("Direkt in DBIS recherchieren") %]</a>
+<p>
+
+</div>
+
+[% ELSE %]
 <h5>[% msg.maketext("Fachgebiete") %]</h5>
 
     <div class="row flex-md-row-reverse">
@@ -106,3 +120,4 @@
 <div class="d-md-none mt-3 mb-3">
 <a class="btn btn-primary" href="https://dbis.ur.de/USBK" target="_blank"><i class="fas fa-globe me-2"></i> [% msg.maketext("Direkt in DBIS recherchieren") %]</a>
 </div>
+[% END %]

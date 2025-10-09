@@ -149,6 +149,8 @@ sub show_collection {
 
         my $classifications_ref = $catalog->get_classifications({ page => $queryoptions->get_option('page'), num => $queryoptions->get_option('num') });
 
+	my $is_error = (defined $classifications_ref->{error} && $classifications_ref->{error})?1:0;
+	
         my $nav = Data::Pageset->new({
             'total_entries'    => $classifications_ref->{hits},
             'entries_per_page' => $queryoptions->get_option('num'),
@@ -162,8 +164,9 @@ sub show_collection {
             classifications => $classifications_ref->{items},
 	    hits            => $classifications_ref->{hits},
 	    nav             => $nav,
-        };
-        
+	    classification_error => $is_error,
+	};
+	        
         return $self->print_page($config->{'tt_classifications_tname'},$ttdata);
     }
     else {

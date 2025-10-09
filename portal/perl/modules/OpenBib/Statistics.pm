@@ -1277,8 +1277,9 @@ sub connectDB {
 
     my $config = OpenBib::Config::File->instance;
 
-    # UTF8: {'pg_enable_utf8'    => 1}
-    if ($config->{'statisticsdbsingleton'}){
+    if ($config->{'active_statisticsdb'}){
+      # UTF8: {'pg_enable_utf8'    => 1}
+      if ($config->{'statisticsdbsingleton'}){
         eval {        
             my $schema = OpenBib::Schema::Statistics::Singleton->instance;
             $self->{schema} = $schema->get_schema;
@@ -1287,8 +1288,8 @@ sub connectDB {
         if ($@){
             $logger->fatal("Unable to connect to database $config->{statisticsdbname}");
         }
-    }
-    else {
+      }
+      else {
         eval {        
             $self->{schema} = OpenBib::Schema::Statistics->connect("DBI:Pg:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd},$config->{statisticsdboptions}) or $logger->error_die($DBI::errstr);
             
@@ -1297,8 +1298,8 @@ sub connectDB {
         if ($@){
             $logger->fatal("Unable to connect to database $config->{statisticsdbname}");
         }
+      }
     }
-        
     
     return;
 }

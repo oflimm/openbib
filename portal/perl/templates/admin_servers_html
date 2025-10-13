@@ -141,7 +141,7 @@
 <a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %].html?l=[% lang %]">[% serverinfo.description %]</a>
 [%   END %]
 [% IF hap_check_duration %]
-<br/><span style="font-size:0.7em;">HAP: [% IF hap_status == 'UP' %]<i style="color:green" class="fas fa-toggle-on"></i>[% ELSIF hap_status == 'DOWN' %]<i style="color:red" class="fas fa-toggle-off"></i>[% END %] [% hap_check_duration %] ms</span>
+<br/><span style="font-size:0.7em;">[% IF hap_status == 'UP' %]<i style="color:green" class="fas fa-toggle-on"></i>[% ELSIF hap_status == 'DOWN' %]<i style="color:red" class="fas fa-toggle-off"></i>[% ELSE %]<i style="color:orange" class="fas fa-toggle-off"></i>[% END %] [% hap_check_duration %] ms [% IF hap_check_duration > 1000 %]<i class="ps-2 fas fa-exclamation-triangle"></i>[% END %]</span>
 [% END %]
 </td>
 <td>

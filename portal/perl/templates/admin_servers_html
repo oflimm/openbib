@@ -12,6 +12,7 @@
 #######################################################################
 -%]
 
+[%# USE dumper;dumper.dump(config.get_haproxy_status)%]
 [% IF user.has_right({scope = 'admin_servers', right = 'right_create'}) %]
 <div id="new_item" class="accordion">
   <div class="card">
@@ -103,6 +104,8 @@
    IF num_active_searchable_servers == 1 ;
       last_searchable_server = 1;
    END ;
+
+   haproxy_status = config.get_haproxy_status;
 -%]
 
 <div class="table-responsive text-nowrap">
@@ -112,6 +115,19 @@
 </thead>
 <tbody>
 [% FOREACH serverinfo IN serverinfos.all %]
+[%-
+
+   hap_servername      = "${serverinfo.description}";
+   hap_status          = "";
+   hap_check_duration  = 0;
+   
+   FOREACH hap_server IN haproxy_status;
+      NEXT UNLESS hap_server.svname.match(hap_servername);
+      hap_check_duration = hap_server.check_duration;
+      hap_status = hap_server.status;
+   END;
+
+-%]
 <tr [% IF serverinfo.active == 1 %]class="ob-active_item"[% ELSE %]class="ob-inactive_item"[% END %]>
 <th scope="row">[% serverinfo.id %]</th>
 <td>
@@ -126,6 +142,9 @@
 [%   ELSIF user.has_right({scope = 'admin_servers', right = 'right_read'}) %]
 <a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('servers_loc') %]/id/[% serverinfo.id %].html?l=[% lang %]">[% serverinfo.description %]</a>
 [%   END %]
+[% IF hap_check_duration %]
+<br/><span style="font-size:0.7em;">[% IF hap_status == 'UP' %]<i style="color:green" class="fas fa-toggle-on"></i>[% ELSIF hap_status == 'DOWN' %]<i style="color:red" class="fas fa-toggle-off"></i>[% ELSE %]<i style="color:orange" class="fas fa-toggle-off"></i>[% END %] [% hap_check_duration %] ms [% IF hap_check_duration > 1000 %]<i class="ps-2 fas fa-exclamation-triangle"></i>[% END %]</span>
+[% END %]
 </td>
 <td>
 [% IF serverinfo.status == 'updatable'%]

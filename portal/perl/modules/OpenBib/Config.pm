@@ -39,6 +39,9 @@ use JSON::XS;
 use List::Compare;
 use List::MoreUtils qw(uniq);
 use Log::Log4perl qw(get_logger :levels);
+use LWP;
+use Mojo::UserAgent;
+use Mojo::URL;
 use URI::Escape qw(uri_escape);
 use YAML::Syck;
 
@@ -242,6 +245,61 @@ sub get_number_of_all_dbs {
         })->count;
     
     return $alldbs;
+}
+
+sub get_haproxy_status {
+    my $self = shift;
+    my $servername = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $ua = Mojo::UserAgent->new();
+    $ua->transactor->name('USB Koeln/1.0');
+    $ua->connect_timeout(5);
+    $ua->max_redirects(2);
+
+    my $haproxy_ref = $self->get('haproxy');
+
+    if ($logger->is_debug){
+	$logger->debug("Haproxy-URL: ".$haproxy_ref->{url})
+    }
+    my $url = Mojo::URL->new($haproxy_ref->{url});
+    $url = $url->userinfo($haproxy_ref->{username}.":".$haproxy_ref->{password});
+    my $response = $ua->get($url)->result;
+
+    my $json_ref = {};
+    
+    if ($response->is_success){
+	$json_ref = $response->json;
+    }
+    else {        
+	$logger->info($response->code . ' - ' . $response->message);
+	return {};
+    }
+
+    # Result my ID
+    my $result_by_unit_ref = {};
+    foreach my $unit_ref (@{$json_ref}){	
+	foreach my $item_ref (@{$unit_ref}){
+	    $result_by_unit_ref->{$item_ref->{proxyId}}{$item_ref->{id}}{$item_ref->{field}{name}} = $item_ref->{value}{value};
+	}
+    }
+
+    if ($logger->is_debug){
+	$logger->debug("haproxy_result: ".YAML::Dump($result_by_unit_ref));
+    }
+
+    my $result_ref = [];
+
+    foreach my $unitid (keys %{$result_by_unit_ref}){
+	foreach my $itemid (keys %{$result_by_unit_ref->{$unitid}}){
+	    next unless ($result_by_unit_ref->{$unitid}{$itemid}{pxname} eq $haproxy_ref->{backend});
+	    push @{$result_ref}, $result_by_unit_ref->{$unitid}{$itemid};
+	}
+    }
+    
+    return $result_ref;
 }
 
 sub get_viewname_by_id {

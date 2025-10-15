@@ -691,7 +691,7 @@ sub get_common_holdings {
 			    $edition=$record_ref->{edition};
                         }
                         
-                        foreach my $signature_ref (@{$record->to_fields->{X0014}}){
+                        foreach my $signature_ref (@{$record->get_fields->{X0014}}){
                             push @signaturen, $signature_ref->{content};
                         }
                     }

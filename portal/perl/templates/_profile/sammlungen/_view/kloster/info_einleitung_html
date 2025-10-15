@@ -56,81 +56,81 @@ L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
      # 	id          = '6102582-3'
      # }]
      # Neu
-     '50.92866020664036,6.947721095951849' = [{
+     '50.935399,6.956821' = [{
      	description = 'Augustinerkloster Köln'
-	id          = '16246584-1'
+	id          = 'augustiner'
      }]
-     # ' ' = [{
-     # 	description = 'Augustinerinnenkloster Zum Kleinen Lämmchen, Köln'
-     # 	id          = '1331108772'
-     # }]
-     # ' ' = [{
-     # 	description = 'Kapuzinerkloster Köln'
-     # 	id          = '16248828-2'
-     # }]
      '50.93112009103265,6.956248974520216' = [{
      	description = 'Kloster der Beschuhten Karmeliter Köln'
-	id          = '3072615-3'
+	id          = 'karmeliter_beschuht'
      }]
      '50.92709955170081,6.956983198956426' = [{
      	description = 'Kloster der Unbeschuhten Karmeliter Köln'
-	id          = '129480037X'
+	id          = 'karmeliter_unbeschuht'
      }]
      '50.9245180102056,6.955758907914428' = [{
      	description = 'Kölner Kartause'
-	id          = '4275651-0'
+	id          = 'kartause'
      }]
      '50.93788877069326,6.948150378530619' = [{
      	description = 'Franziskanerkloster zu den Oliven Köln'
-	id          = '6507074-4'
+	id          = 'franziskaner'
      }]
      '50.938528499360054,6.9616297537839875' = [{
      	description = 'Kloster Groß Sankt Martin Köln'
-	id          = '16245368-1'
+	id          = 'gross_st_martin'
      }]
      '50.943246277040785,6.955168212952884' = [{
      	description = 'Dominikanerkloster Heilig Kreuz Köln'
-	id          = '6102582-3'
+	id          = 'dominikaner'
      }]
      '50.94560307240513,6.960902232348024' = [{
      	description = 'Johanniter, Kommende Köln'
-	id          = '7562565-9'
+	id          = 'johanniter'
      }]
      '50.936619118004046,6.95190646140926' = [{
      	description = 'Kölner Kreuzbrüder '
-	id          = '1156561094'
+	id          = 'kreuzbrueder'
      }]
      '50.939338423857755,6.9548142507403234' = [{
      	description = 'Minoritenkloster Köln'
-	id          = '16245592-6'
+	id          = 'minoriten'
      }]
      '50.927946726681746,6.96210666378662' = [{
      	description = 'Kloster Marienspiegel Köln'
-	id          = '4337111-5'
+	id          = 'marienspiegel'
      }]
      '50.93652881308375,6.945041491740515' = [{
      	description = 'Stift Sankt Aposteln Köln'
-	id          = '4378125-1'
+	id          = 'st_aposteln'
      }]
      '50.96117964112114,6.7825162400143935' = [{
      	description = 'Abtei Brauweiler'
-	id          = '4253823-3'
+	id          = 'brauweiler'
      }]
      '50.9284831673935,6.948194101114078' = [{
      	description = 'Kloster St. Pantaleon Köln'
-	id          = '1704954-4'
+	id          = 'st_pantaleon'
      }]
-     '50.94247057246334,6.9458166071118175' = [{
-     	description = 'Collegium Norbertinum, Köln'
-	id          = '1363747274'
-     }]
+     # '50.94247057246334,6.9458166071118175' = [{
+     # 	description = 'Collegium Norbertinum, Köln'
+     # 	id          = '1363747274'
+     # }]
      '51.192356986425274,6.431679547359651' = [{
      	description = 'Benediktinerabtei Sankt Vitus, Gladbach'
-	id          = '16277855-7'
+	id          = 'gladbach'
+     }]
+     '50.941012,6.951647' = [{
+     	description = 'Zum Kleinen Lämmchen'
+	id          = 'laemmchen_auf_der_burgmauer'
+     }]
+     '50.94648,6.958017' = [{
+     	description = 'Kapuzinerkloster'
+	id          = 'kapuziner'
      }]
      '50.929185565627904,6.946351370377913' = [{
      	description = 'Fraterhaus St. Michael am Weidenbach'
-	id          = '7764949-7'
+	id          = 'weidenbach'
      }]
    };
 
@@ -151,7 +151,7 @@ for (var i = 0; i < libraries.length; i++) {
   var marker = L.marker(libraries[i][0]).addTo(librariesmap);
   var markerstring = "";
   for (var j = 0; j < libraries[i][1].length; j++) {
-     markerstring = markerstring + '<a href="[% path_prefix%]/[% config.get('search_loc') %].html?gnd='+libraries[i][1][j][1]+'&l=[% lang %]">'+libraries[i][1][j][0]+'</a>'
+     markerstring = markerstring + '<a href="[% path_prefix%]/[% config.get('info_loc') %]/'+libraries[i][1][j][1]+'.html?l=[% lang %]">'+libraries[i][1][j][0]+'</a>'
      if (j < libraries[i][1].length -1){
         markerstring = markerstring + ',<br/> ';
      }

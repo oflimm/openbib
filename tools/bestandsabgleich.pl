@@ -47,10 +47,11 @@ use YAML::Syck;
 
 my $config      = OpenBib::Config->new;
 
-my (@locations,$help,$logfile,$loglevel,$selector,$filename);
+my (@locations,@databases,$help,$logfile,$loglevel,$selector,$filename);
 
 &GetOptions(
     "location=s@"     => \@locations,
+    "databases=s@"    => \@databases,
     "logfile=s"       => \$logfile,
     "loglevel=s"      => \$loglevel,
     "selector=s"      => \$selector,
@@ -84,7 +85,7 @@ my $logger = get_logger();
 
 my $enrichmnt = new OpenBib::Enrichment;
 
-my $common_holdings_ref = $enrichmnt->get_common_holdings({ selector => $selector, locations => \@locations, config => $config});
+my $common_holdings_ref = $enrichmnt->get_common_holdings({ selector => $selector, locations => \@locations, databases => \@databases, config => $config});
 
 my $csv = Text::CSV_XS->new ({
     'eol'         => "\n",

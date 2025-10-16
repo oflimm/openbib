@@ -567,8 +567,11 @@ sub get_common_holdings {
         ? $arg_ref->{selector}         : "ISBN13";
 
     my $locations_ref       = exists $arg_ref->{locations}
-        ? $arg_ref->{locations}        : ();
+        ? $arg_ref->{locations}        : [];
 
+    my $databases_ref       = exists $arg_ref->{databases}
+        ? $arg_ref->{databases}        : [];
+    
     my $config              = exists $arg_ref->{config}
         ? $arg_ref->{config}        : OpenBib::Config->new;
     
@@ -586,19 +589,30 @@ sub get_common_holdings {
     my %all_by_matchkey             = ();
 
     my $in_select_string = join(',',map {'?'} @{$locations_ref});
+    my $in_dbs_string = join(',',map {'?'} @{$databases_ref});
     
     my $sql_string = ($selector eq "ISBN13")?"select * from all_titles_by_isbn where location in ($in_select_string)":
         ($selector eq "ISSN")?"select * from all_titles_by_issn where location in ($in_select_string)":
             ($selector eq "BibKey")?"select * from all_titles_by_bibkey where location in ($in_select_string)":
                 ($selector eq "WorkKey")?"select * from all_titles_by_workkey where location in ($in_select_string)":"select * from all_titles_by_isbn where location in ($in_select_string)";
 
+    if ($in_dbs_string){
+	$sql_string .= "and dbname in ($in_dbs_string)";
+    }
+    
     $logger->debug($sql_string);
 
     $logger->info("Bestimmung aller Nachweise zum Selektor $selector für alle Standorte");
     
     my $request=$dbh->prepare($sql_string) or $logger->error($DBI::errstr);
+
+    my @args = @{$locations_ref};
+
+    if (@{$databases_ref}){
+	push @args, @{$databases_ref};
+    }
     
-    $request->execute(@{$locations_ref}) or $logger->error($DBI::errstr);;
+    $request->execute(@args) or $logger->error($DBI::errstr);;
 
     my $matchkey_column = ($selector eq "ISBN13")?'isbn':
         ($selector eq "ISSN")?'issn':
@@ -647,39 +661,37 @@ sub get_common_holdings {
         my $title_supplement = "";
         my $year             = "";
         my $edition          = "";
+	
         foreach my $location (@{$locations_ref}){
             if (defined $all_by_matchkey{$matchkey}{$location}){
                 my @signaturen = ();
                 foreach my $database (keys %{$all_by_matchkey{$matchkey}{$location}}){
                     foreach my $id (@{$all_by_matchkey{$matchkey}{$location}{$database}}){
-                        my $record=OpenBib::Record::Title->new({database => $database, id => $id, config => $config})->load_brief_record->get_fields;
+                        my $record =OpenBib::Record::Title->new({database => $database, id => $id, config => $config})->load_brief_record;
+			my $record_ref = $record->to_abstract_fields;
                         if (!$persons){
-                            $persons=$record->{PC0001}[0]{content};
+			    my @this_persons = ();
+                            push @this_persons, @{$record_ref->{authors}} if (defined $record_ref->{authors} && @{$record_ref->{authors}});
+                            push @this_persons, @{$record_ref->{editors}} if (defined $record_ref->{editors} && @{$record_ref->{editors}});
+			    push @this_persons, @{$record_ref->{corp}} if (defined $record_ref->{corp} && @{$record_ref->{corp}});
+                            push @this_persons, @{$record_ref->{creator}} if (defined $record_ref->{creator} && @{$record_ref->{creator}});
+			    $persons = join(' ; ',@this_persons) if (@this_persons);
                         }
                         
-                        if (!$title){
-                            $title=$record->{T0331}[0]{content};
+                        if (!$title && $record_ref->{title}){
+                            $title=$record_ref->{title};
                         }
-                        if (!$title_supplement){
-                            if (defined $record->{T0335}[0]{content}){
-                                $title_supplement=$record->{T0335}[0]{content};
-                            }
+                        if (!$title_supplement && $record_ref->{titlesup}){
+			    $title_supplement=$record->{titlesup};
                         }
-                        if (!$year){
-                            if (defined $record->{T0424}[0]{content}){
-                                $year=$record->{T0424}[0]{content};
-                            }
-                            elsif (defined $record->{T0425}[0]{content}){
-                                $year=$record->{T0425}[0]{content};
-                            }
+                        if (!$year && $record_ref->{year}){
+			    $year=$record_ref->{year};
                         }
-                        if (!$edition){
-                            if (defined $record->{T0403}[0]{content}){
-                                $edition=$record->{T0403}[0]{content};
-                            }
+                        if (!$edition && $record_ref->{edition}){
+			    $edition=$record_ref->{edition};
                         }
                         
-                        foreach my $signature_ref (@{$record->{X0014}}){
+                        foreach my $signature_ref (@{$record->get_fields->{X0014}}){
                             push @signaturen, $signature_ref->{content};
                         }
                     }

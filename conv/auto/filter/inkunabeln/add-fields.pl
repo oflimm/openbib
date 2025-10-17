@@ -30,7 +30,7 @@ while (<>){
 
     my $titleid = $title_ref->{id};
 
-    my ($collection,$cdmid) = $titleid =~m/^cdm_([a-z]+)_(\d+)$/;
+    my ($collection,$cdmid) = $titleid =~m/^cdm_([a-z_]+)_(\d+)$/;
 
     if (defined $cdm2doi_ref->{$collection} && defined $cdm2doi_ref->{$collection}{$cdmid}){
 

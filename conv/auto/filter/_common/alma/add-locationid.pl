@@ -301,6 +301,15 @@ sub extract_locationid {
         }
     }
 
+    # Thematische Markierung fuer ZB-Kunst anhand Topic 13 (Kunst, Kunstgeschichte)
+    if (defined $title_ref->{fields}{'4102'}){
+        foreach my $item (@{$title_ref->{fields}{'04102'}}){
+	    if ($item->{content} eq "13"){
+		push @{$element_ref}, "DE-38-ZBKUNST";
+	    }
+	}
+    }
+    
     return $element_ref;
 }
 

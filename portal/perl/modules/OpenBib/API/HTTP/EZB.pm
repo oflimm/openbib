@@ -563,7 +563,7 @@ sub _get_readme {
 
     my $ua     = $self->get_client;
     
-    my $url="http://ezb.ur.de/ezeit/show_readme.phtml?bibid=$self->{bibid}&lang=$self->{lang}&jour_id=$id&xmloutput=1";
+    my $url="https://ezb.ur.de/ezeit/show_readme.phtml?bibid=$self->{bibid}&lang=$self->{lang}&jour_id=$id&xmloutput=1";
 
     $logger->debug("Request: $url");
 
@@ -598,7 +598,7 @@ sub _get_readme {
     if ($location){
         # Lokaler Link in der EZB
         unless ($location=~m/^http/){
-            $location="http://ezb.ur.de/ezeit/$location";
+            $location="https://ezb.ur.de/ezeit/$location";
         }
         
         return {
@@ -621,10 +621,10 @@ sub _get_readme {
         $this_period_ref->{warpto_link} = uri_unescape($period_node->findvalue('warpto_link/@url'));
 
         unless ($this_period_ref->{readme_link}=~m/^http/){
-            $this_period_ref->{readme_link}="http://ezb.ur.de/ezeit/$this_period_ref->{readme_link}";
+            $this_period_ref->{readme_link}="https://ezb.ur.de/ezeit/$this_period_ref->{readme_link}";
         }
         unless ($this_period_ref->{warpto_link}=~m/^http/){
-            $this_period_ref->{warpto_link}="http://ezb.ur.de/ezeit/$this_period_ref->{readme_link}";
+            $this_period_ref->{warpto_link}="https://ezb.ur.de/ezeit/$this_period_ref->{readme_link}";
         }
 
         if ($logger->is_debug){
@@ -649,7 +649,7 @@ sub get_classifications {
     my $config = $self->get_config;
     my $ua     = $self->get_client;
 
-    my $url="http://ezb.ur.de/ezeit/fl.phtml?colors=$self->{colors}&bibid=$self->{bibid}&lang=$self->{lang}&xmloutput=1";
+    my $url="https://ezb.ur.de/ezeit/fl.phtml?colors=$self->{colors}&bibid=$self->{bibid}&lang=$self->{lang}&xmloutput=1";
 
     my $classifications_ref = [];
 
@@ -768,7 +768,7 @@ sub search {
 
     $self->parse_query($searchquery);
 
-    my $url="http://ezb.ur.de/ezeit/searchres.phtml?colors=$self->{colors}&bibid=$self->{bibid}&sc=$self->{sc}&lc=$self->{lc}&sindex=$self->{sindex}&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=".((defined $self->{lang})?$self->{lang}:"de")."&xmloutput=1";
+    my $url="https://ezb.ur.de/ezeit/searchres.phtml?colors=$self->{colors}&bibid=$self->{bibid}&sc=$self->{sc}&lc=$self->{lc}&sindex=$self->{sindex}&".$self->querystring."&hits_per_page=$num&offset=$offset&lang=".((defined $self->{lang})?$self->{lang}:"de")."&xmloutput=1";
 
     my $titles_ref = [];
 

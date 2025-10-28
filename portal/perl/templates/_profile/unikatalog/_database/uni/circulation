@@ -210,7 +210,7 @@
 <td><span class="fw-bold" aria-label="[% msg.maketext("Signatur") %]" title="[% msg.maketext("Signatur") %]">[% thiscirculation.location_mark %]</span>
 [% IF thiscirculation.remark %] [% thiscirculation.remark %][% END %]
 [% IF thiscirculation.boundcollection == "Y" %]<img src="/USB/img/bindeeinheit.gif" width="28px" height="26px" title="Dieser Titel ist Teil einer Bindeeinheit, die verschiedene Medien zusammenfasst." alt="Bindeeinheit" style="vertical-align:middle;" />[% END %]
-[% IF NOT thiscirculation.department_id.match('^(38-201|KN3|38-204|38-208|38-212|38-213|38-214|38-217|38-219|38-223|38-228|38-230|38-308|38-319|38-321|38-325|38-328|38-403|38-405|38-420|38-422|38-423|38-425|38-431|38-134|38-108|38-125|38-222|38-465|38-119|38-314|38-315|38-317|38-239)$') # Mediennummer fuer Zweigstellen 19, 20, 405, ... immer unterdruecken %]
+[% IF NOT thiscirculation.department_id.match('^(38-201|KN3|38-204|38-208|38-209|38-211|38-212|38-213|38-214|38-217|38-219|38-223|38-225|38-228|38-230|38-308|38-319|38-321|38-325|38-328|38-403|38-405|38-420|38-422|38-423|38-425|38-431|38-134|38-108|38-125|38-222|38-465|38-119|38-314|38-315|38-317|38-239)$') # Mediennummer fuer Zweigstellen 19, 20, 405, ... immer unterdruecken %]
 [%   IF thiscirculation.location_mark != thiscirculation.barcode # Anzeige der Mediennummer fuer USB-Treffer, falls ungleich Signatur %] 
 [%     IF NOT thiscirculation.location_mark.match('^(JUR|BWL|VERSW)$') %]
 <br /><span class="fst-italic" aria-label="[% msg.maketext("Mediennummer") %]" title="[% msg.maketext("Mediennummer") %]"><i class="fas fa-barcode pe-2"></i>[% thiscirculation.barcode %]</span>

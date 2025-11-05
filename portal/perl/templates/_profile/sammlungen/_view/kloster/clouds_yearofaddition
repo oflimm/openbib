@@ -5,6 +5,7 @@
 
       'main_template' = 'clouds_yearofaddition_html'
       'sidebar_template' = 'clouds_navigation'
+      'sidebar_button_in_main_template' = 1 # Sidebar im Desktop anzeige, Mobil via Button
 
       'active_menu' = 'cloud'
       'active_submenu' = 'clouds_yearofaddition'      

@@ -293,7 +293,7 @@ sub get_titles_record {
     my @publication_forms = ();
     my @local_licenseinfo = ();
 
-    push @externalNotes, $quickfix_fields_ref->{hints} if ($quickfix_fields_ref->{hints} && $quickfix_fields_ref->{hints} =~m/\w/);
+#    push @externalNotes, $quickfix_fields_ref->{hints} if ($quickfix_fields_ref->{hints} && $quickfix_fields_ref->{hints} =~m/\w/);
     
     push @externalNotes, $remarks if ($remarks && $remarks =~m/\w/);
 

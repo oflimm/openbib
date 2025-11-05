@@ -329,12 +329,13 @@ sub get_titles_record {
 	    push @{$homepages_ref}, $homepage_node->textContent;
 	}
 	
-	my $firstvolume =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_volume');
-	my $firstdate   =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_date');
-	my $appearence  =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/appearence');
-	my $costs       =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/costs');
-	my $remarks     =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/remarks');
+	my $firstvolume    =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_volume');
+	my $firstdate      =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/first_fulltext_issue/first_date');
+	my $appearence     =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/appearence');
+	my $costs          =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/costs');
+	my $remarks        =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/remarks');
 	my $journal_color  =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/journal_color/@color');
+	my $fulltext_url   =  $root->findvalue('/ezb_page/ezb_detail_about_journal/journal/detail/fulltext');
 	
 	my @periods =  $root->findnodes('/ezb_page/ezb_detail_about_journal/journal/periods/period');
 
@@ -418,6 +419,11 @@ sub get_titles_record {
 
 	my $mult_homepage = 1;
 	my $mult_fulltext = 1;
+
+	if ($fulltext_url){
+	    $record->set_field({field => 'T4120', subfield => $access_type, mult => $mult_fulltext++, content => $fulltext_url });
+	}
+	
 	foreach my $homepage (@$homepages_ref){
 	    $record->set_field({field => 'T4120', subfield => $access_type, mult => $mult_fulltext++, content => $homepage }) if ($journal_color eq "green");
 

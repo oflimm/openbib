@@ -12,6 +12,90 @@
 </div>
 [% END %]
 
+[%- cgiparam = searchfield.gnd.prefix;
+
+     gnd_values = [
+    {
+      description = 'Augustinerkloster Köln'
+      id          = '16246584-1'
+    },
+    {
+      description = 'Abtei Brauweiler'
+      id          = '4253823-3'
+    },
+    {
+      description = 'Dominikanerkloster Heilig Kreuz Köln'
+      id          = '6102582-3'
+    },
+    {
+      description = 'Franziskanerkloster zu den Oliven Köln'
+      id          = '6507074-4'
+    },
+    {
+      description = 'Benediktinerabtei Sankt Vitus, Gladbach'
+      id          = '16277855-7'
+    },
+    {
+      description = 'Kloster Groß Sankt Martin Köln'
+      id          = '16245368-1'
+    },
+    {
+      description = 'Johanniter, Kommende Köln'
+      id          = '7562565-9'
+    },
+    {
+      description = 'Kloster der Beschuhten Karmeliter Köln'
+      id          = '3072615-3'
+    },
+    {
+      description = 'Kloster der Unbeschuhten Karmeliter Köln'
+      id          = '129480037X'
+    },
+    {
+      description = 'Kölner Kartause'
+      id          = '4275651-0'
+    },
+    {
+      description = 'Kölner Kreuzbrüder '
+      id          = '1156561094'
+    },
+    {
+      description = 'Kloster Marienspiegel Köln'
+      id          = '4337111-5'
+    },
+    {
+      description = 'Minoritenkloster Köln'
+      id          = '16245592-6'
+    },
+    {
+      description = 'Stift Sankt Aposteln Köln'
+      id          = '4378125-1'
+    },
+    {
+      description = 'Kloster St. Pantaleon Köln'
+      id          = '1704954-4'
+    },
+#    {
+#      description = 'Collegium Norbertinum, Köln'
+#      id          = '1363747274'
+#    },
+    {
+      description = 'Fraterhaus St. Michael am Weidenbach'
+      id          = '7764949-7'
+    }
+    ];
+ -%]
+<div class="form-floating mb-3">
+<select class="form-control" id="[% cgiparam %]" name="[% cgiparam %]">
+<option value="">[% msg.maketext("Bitte wählen Sie ein Kloster aus") %]</option>
+<option value="">[% msg.maketext("Kein Eintrag") %]</option>
+[% FOREACH gnd IN gnd_values %]
+<option value="[% gnd.id %]">[% gnd.description %]</option>
+[% END %]
+</select>
+<label for="[% cgiparam %]">[% msg.maketext("Kloster") %]</label>
+</div>
+
 [% IF available_searchfields.title.active %]
 [%- cgiparam = searchfield.title.prefix;
     this_searchfield = 'title';

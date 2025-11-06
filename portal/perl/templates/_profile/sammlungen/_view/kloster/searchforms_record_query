@@ -96,36 +96,6 @@
 <label for="[% cgiparam %]">[% msg.maketext("Kloster") %]</label>
 </div>
 
-[% IF available_searchfields.title.active %]
-[%- cgiparam = searchfield.title.prefix;
-    this_searchfield = 'title';
- -%]
-<div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-<label for="[% cgiparam %]">[% msg.maketext("Titelworte") %]</label>
-</div>
-[% END %]
-
-[% IF available_searchfields.person.active %]
-[%- cgiparam = searchfield.person.prefix;
-    this_searchfield = 'person';
- -%]
-<div class="form-floating mb-3">
-<input class="form-control" id="autocomplete_[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Personen") %]</label>
-</div>
-[% END %]
-
-[% IF available_searchfields.corporatebody.active %]
-[%- cgiparam = searchfield.corporatebody.prefix;
-    this_searchfield = 'corporatebody';
- -%]
-<div class="form-floating mb-3">
-<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
-<label for="[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
-</div>
-[% END %]
-
 [%- cgiparam = searchfield.t4308.prefix;
     this_searchfield = 't4308';
  -%]
@@ -192,6 +162,44 @@
 <label for="[% cgiparam %]">[% msg.maketext("Provenienz Beschreibung") %] / [% msg.maketext("Autoptischer Befund") %]</label>
 </div>
 
+<p>
+<a data-bs-toggle="collapse" href="#collapseAdditionalSearchOptions" role="button" aria-expanded="false" aria-controls="collapseAdditionalSearchOptions">
+    [% msg.maketext("Mehr Suchfelder") %] >>
+</a>
+</p>
+
+<div class="collapse" id="collapseAdditionalSearchOptions">
+
+[% IF available_searchfields.title.active %]
+[%- cgiparam = searchfield.title.prefix;
+    this_searchfield = 'title';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Titelworte") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.person.active %]
+[%- cgiparam = searchfield.person.prefix;
+    this_searchfield = 'person';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="autocomplete_[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="autocomplete_[% cgiparam %]">[% msg.maketext("Personen") %]</label>
+</div>
+[% END %]
+
+[% IF available_searchfields.corporatebody.active %]
+[%- cgiparam = searchfield.corporatebody.prefix;
+    this_searchfield = 'corporatebody';
+ -%]
+<div class="form-floating mb-3">
+<input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="30" maxlength="200" />
+<label for="[% cgiparam %]">[% msg.maketext("Institutionen") %]</label>
+</div>
+[% END %]
+
 [% IF available_searchfields.markstring.active %]
 [%- cgiparam = searchfield.markstring.prefix;
     this_searchfield = 'markstring';
@@ -248,6 +256,7 @@
 <label for="[% cgiparam_to %]">[% msg.maketext("Zeitraum") %] [% msg.maketext("bis") %]</label>
 </div>
 
+</div>
 <p/>
 
 <div class="d-flex ob-fulltitle_actions mb-3">

@@ -1,0 +1,214 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset_categories
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabe von bibliographischen Daten fuer einen
+# einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[% IF format == "full" %]
+
+<div class="table-responsive">
+<table class="table table-striped table-hover ob-title_fields">
+
+[%-
+
+   request_base = config.get('search_defaultparams');
+   request_base = "l=${lang};profile=${current_profile};${request_base}";
+
+   IF NOT viewdbs ;
+       viewdbs = config.get_dbs_of_view(view);
+   END ;
+
+   IF NOT searchprofileid_of_database ;
+      searchprofileid_of_database = config.get_searchprofile_of_database(record.database) ;
+   END ;
+
+# Preprocessing spezielle Kategorien
+
+have_doi = {};
+
+FOREACH field IN normdata;
+
+  category = field.key ;
+
+  FOREACH item IN field.value;
+    content      = item.content;
+
+    SWITCH category;
+
+    CASE "T0089";
+         content   = "${highlightquery(searchquery,content)}";
+         IF NOT content_map.${'Nummer'} ;
+	    content_map.${'Nummer'} = [];
+	 END;
+         content_map.${'Nummer'}.push(content);
+
+    CASE "T0331";
+         content   = "${highlightquery(searchquery,content)}";
+         IF NOT content_map.${'Titel'} ;
+	    content_map.${'Titel'} = [];
+	 END;
+         content_map.${'Titel'}.push(content);
+
+    CASE "T0335";
+         content   = "${highlightquery(searchquery,content)}";
+         IF NOT content_map.${'Untenstehendes'} ;
+	    content_map.${'Untenstehendes'} = [];
+	 END;
+         content_map.${'Untenstehendes'}.push(content);
+
+    CASE "T0425";
+         content   = "${highlightquery(searchquery,content)}";
+         IF NOT content_map.${'Jahr'} ;
+	    content_map.${'Jahr'} = [];
+	 END;
+         content_map.${'Jahr'}.push(content);
+
+    CASE "T0595";
+         content   = "${highlightquery(searchquery,content)}";
+         IF NOT content_map.${'Datum'} ;
+	    content_map.${'Datum'} = [];
+	 END;
+         content_map.${'Datum'}.push(content);
+
+    CASE [ "T0662" "T2662" ];
+         thismult = item.mult ;
+         thiscontent   = '' ;
+	 ampel = '';
+         IF category == 'T0662' ;
+           FOREACH thisitem IN normdata.${"T0663"} ;
+             IF thisitem.mult == thismult ;
+                thiscontent = thisitem.content ;
+             END ;
+           END ;
+         ELSIF category == 'T2662' ;
+           FOREACH thisitem IN normdata.${"T2663"} ;
+             IF thisitem.mult == thismult ;
+                thiscontent = thisitem.content ;
+             END ;
+           END ;
+         END ;
+
+	 ampel =  "<img src=\"${config.get('dbis_yellow_img')}\" alt=\"Restricted  Access\" />" ;
+
+         IF thiscontent ;	 
+            content   = "<a href=\"${s3_base_url}${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
+         ELSE ;
+            thiscontent = content;
+            content   = "<a href=\"${s3_base_url}${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
+         END ;
+	 content = "${content} ${ampel}";
+         IF NOT content_map.${'T0662'} ;
+	    content_map.${'T0662'} = [];
+	 END;
+         content_map.${'T0662'}.push(content);
+
+    CASE ;
+         content   = highlightquery(searchquery,item.content);
+         IF NOT content_map.${category} ;
+	    content_map.${category} = [];
+	 END;
+         content_map.${category}.push(content);
+    END;
+ END;
+END;
+
+display_types = {
+   'T0662' => 'list',
+};
+
+FOREACH category IN categories;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+   IF content_map.${category}.first;
+      IF display_types.${category} == 'list' ;
+        IF content_map.${category}.size > 1 ;
+          content = "<ul>";
+          FOREACH thiscontent IN content_map.${category};
+	    content="${content}<li>${thiscontent}</li>";
+	  END;
+	  content = "${content}</ul>";
+	ELSE ;
+	  content = content_map.${category}.first;
+	END;
+      ELSE ;
+        content = content_map.${category}.join(' ; ');
+      END;
+
+      # Titel hervorheben
+      IF category == "T0331";
+        content = "<span class=\"ob-title\">${content}</span>";
+      END;
+-%]
+<tr><th class="ob-field">[% msg.maketext("${thiscategory}") %]</th><td>[% content %]</td></tr>
+[%
+   END;
+END;
+-%]
+[%- IF currently_unavailable -%]
+<tr><th class="ob-field">[% msg.maketext("Volltext")%]</th><td>derzeit nicht verf&uuml;gbar (z.B. noch im Erwerbungsvorgang)</td></tr>
+[%- END -%]
+</table>
+</div>
+
+<div class="mt-1 alert alert-info">
+[% msg.maketext("Aufgrund lizenzrechtlicher Einschr&auml;nkungen ist dieser Artikel des K&ouml;lner Stadtanzeigers nur innerhalb der USB K&ouml;ln aufrufbar.") %]
+</div>
+
+[%# USE dumper;dumper.dump(content_map) %]
+[% ELSIF format == "BibTeX" %]
+<div>
+<pre>
+[% record.to_bibtex %]
+</pre>
+</div>
+[% ELSIF format == "Text" %]
+<pre>
+[% FOREACH category IN categories;
+    FOREACH item IN normdata.$category;
+    content = item.content;
+
+    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+    # in Config.pm fuer die entsprechende Datenbank definiert
+    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+    # kodiert.
+   thiscategory = category ;
+   IF config.get('categorymapping').${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+-%]
+[% msg.maketext("${thiscategory}") | format("%- 24s") %]: [% content %]
+[% END -%]
+[%- END -%]
+[%- IF holding.size > 0 -%]
+[%- FOREACH thisholding IN holding -%]
+[% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% thisholding.${"X4000"}.content.full %]
+[% msg.maketext("Standort             ") %] [% loop.count %] : [% thisholding.${"X0016"}.content %]
+[% msg.maketext("Lokale Signatur      ") %] [% loop.count %] : [% thisholding.${"X0014"}.content %]
+[% msg.maketext("Inventarnummer       ") %] [% loop.count %] : [% thisholding.${"X0005"}.content %]
+[% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% thisholding.${"X1204"}.content %]
+[% END %]
+
+[% END %]
+</pre>
+[% ELSIF format == "EndNote" %]
+<pre>
+[% record.to_endnote %]
+</pre>
+[% END %]

@@ -1,0 +1,35 @@
+[%- PROCESS common/subtemplate name="local_config" -%]
+[%-  kmbas = config.load_yaml('/opt/openbib/conf/kmbas.yml'); -%]
+[%- IF representation == '' || representation == 'html' ;
+    layout_param = {
+      'page_title' = "Jahrgang '${sysid}' anzeigen"
+
+      'main_template' = 'browse_ksta_record_html'
+
+      'active_menu' = 'register'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+          {
+	     desc = msg.maketext('K&ouml;lner Stadtanzeiger')
+	     url  = "${path_prefix}/${config.get('browse_loc')}/ksta.html?l=${lang}"
+	  },
+	  {
+	     desc = "Jahrgang ${sysid}"
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="browse_ksta_record_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="browse_ksta_record_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

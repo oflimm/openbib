@@ -1,0 +1,58 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+[%
+
+  kmb_profileid = config.get_searchprofile_of_database('uni');
+
+  ksta_base = [
+    '1949',
+    '1950',
+    '1951',
+    '1952',
+    '1953',
+    '1954',
+    '1955',
+    '1956',
+    '1957',
+    '1958',
+    '1959',
+    '1960',
+    '1961',
+    '1962',
+    '1963',
+  ];
+
+%]
+
+<h3>[% msg.maketext("Jahrg&auml;nge des K&ouml;lner Stadtanzeigers") %]</h3>
+
+<div class="alert alert-info">
+[% msg.maketext("&Uuml;ber die Jahrg&auml;nge k&ouml;nnen Sie auf die jeweiligen Ausgaben des Jahres und die darin enthaltenen Artikel zugreifen. Diese sind in Kurzform dargestellt. Genauere Angaben zum Titel und einen Link zur Seite bzw. Gesamtausgabe im PDF-Format erhalten Sie im Vollformat.") %]
+</div>
+
+<h4 class="mt-4">[% msg.maketext("Jahrg&auml;nge") %]</h4>
+
+<div class="table-responsive mt-3">
+<table class="table table-striped ">
+[%- FOREACH sysid IN ksta_base -%]
+<tr>
+<th style="font-weight:bold;font-size:1.2em;" width="15%">[% sysid %]</th>
+<td>
+<a class="inturl ms-3" href="[% path_prefix %]/[% config.get('browse_loc') %]/ksta/id/[% sysid %].html?l=[% lang %]">[% msg.maketext("Jahrgang") %] [% sysid %]</a> <i class="fas fa-sort-down"></i>
+</td>
+</tr>
+[% END %]
+</table>
+</div>
+

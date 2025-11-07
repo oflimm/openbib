@@ -1,0 +1,77 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+[%-
+
+  s3_base_url = "https://testsite3.ub.uni-koeln.de/ksta/";
+
+  ksta_profileid = config.get_searchprofile_of_database('uni');
+
+  ksta = config.get_tree_of_classification(type => 'ksta', name => sysid );
+
+  # USE dumper;dumper.dump(kmb);
+  ksta_has_sub = {};
+  FOREACH thisksta IN ksta.subordinate;
+     kmbsub = config.get_tree_of_classification(type => 'ksta', name => thisksta ).subordinate;
+     IF NOT kstasub.empty;
+       ksta_has_sub.${thisksta} = 1;
+     END;
+  END;
+
+  all_ksta = [];
+  all_ksta.push(ksta.super);
+  all_ksta.push(ksta.subordinate);
+  all_ksta.push(ksta.current);
+  
+  ksta_desc = config.get_description_of_classification(type => 'ksta', names => all_ksta );
+-%]
+
+<h4>K&ouml;lner Stadtanzeiger Jahrgang [% sysid %]</h4>
+
+<p>Jahrg&auml;nge</p>
+
+<ul class="list-group pb-3">
+<li class="list-group-item"><a class="fas fa-list pe-2"></i> <a class="" href="[% path_prefix %]/[% config.get('browse_loc') %]/ksta.html?l=[% lang %]">[% msg.maketext("Übersicht") %]</a></li>
+[% FOREACH thisksta IN ksta.super.reverse %]
+<li class="list-group-item"><a class="fas fa-arrow-up pe-2"></i> <a class="" href="[% path_prefix %]/[% config.get('browse_loc') %]/ksta/id/[% thisksta %].html?l=[% lang %]">[% thisksta %]: [% ksta_desc.${thisksta} %]</a></li>
+[% END %]
+</ul>
+
+[% IF ksta %]
+<p>Ausgaben</p>
+[%# USE dumper;dumper.dump(ksta) %]
+<div class="table-responsive mt-3">
+<table class="table table-striped ">
+[%- FOREACH syssubid IN ksta.subordinate -%]
+[%-
+
+ thisdate = ksta_desc.${syssubid}.match('(\d\d)\.(\d\d)\.\d\d\d\d')
+ number   =  syssubid.match('^\d\d\d\d\.(\d+)$')
+-%]
+<tr>
+<th style="font-weight:bold;font-size:1.2em;" width="15%">[% syssubid %]</th>
+<td>
+[% IF ksta_has_sub.${syssubid} %]
+<ul>
+<li><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0503=[% syssubid %]&srt=title_asc&l=[% lang %]">[% msg.maketext("Artikel der Ausgabe vom") %] [% ksta_desc.${syssubid} %]</a></li>
+<li><a class="inturl" target="_blank" href="[% s3_base_url %]KoelnerStadtAnzeiger_J_[% sysid %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% sysid %]_N_[% number.0 %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% sysid %]_N_[% number.0 %].pdf">Gesamte Ausgabe als PDF-Datei</a></li>
+</ul>
+[% END%]
+</td>
+</tr>
+[% END %]
+</table>
+</div>
+[% ELSE %]
+<h5>Es sind aktuell keine Untergebiete definiert</h5>
+[% END %]

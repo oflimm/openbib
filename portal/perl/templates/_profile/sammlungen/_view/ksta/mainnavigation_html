@@ -142,13 +142,6 @@
 		 <nav class="navbar bg-light ob-sidebar">
 		   
 		   
-		   <ul class="navbar-nav">
-[% IF layout_param.active_submenu == "listofinterest" %]
-                      <li class="nav-item active"><strong>[% msg.maketext("Merkliste") %]</strong></li>
-[% ELSE %]
-                      <li class="nav-item"><a class="nav-link" href="[% path_prefix %]/[% config.get("cartitems_loc") %].html?l=[% lang %];page=1;num=20;srt=tstamp_desc">[% msg.maketext("Merkliste") %]</a></li>
-[% END %]
-		   </ul>
 		 </nav>
 	       </div>
 	     </div>
@@ -228,7 +221,6 @@
 [% END # End: suppress_unauthorized %]
 
     <ul id="ob-header_navbarmenu" class="nav navbar-nav flex-row justify-content-between ms-auto me-3 text-white">
-           <li class="nav-item[% IF layout_param.active_menu == "collection" %] active[% END %]"><a class="nav-link" href="[% path_prefix %]/[% IF user.ID %][% config.get('users_loc') %]/id/[% user.ID %]/[% END %][% config.get('cartitems_loc') %].html?l=[% lang %];page=1;num=20;srt=tstamp_desc">[% msg.maketext("Merkliste") %]</a></li>
 
 [%     IF config.get_viewauthenticators(view) %]
     [%  IF username %]

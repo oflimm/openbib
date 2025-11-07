@@ -12,6 +12,12 @@
 #
 #######################################################################
 -%]
+[%-
+
+   s3_base_url = "https://testsite3.ub.uni-koeln.de/ksta/";
+
+
+-%]
 [% IF format == "full" %]
 
 <div class="table-responsive">

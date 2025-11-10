@@ -7,7 +7,7 @@ while (<>){
 
     if (defined $title_ref->{fields}{'0425'}[0]{content} && defined $title_ref->{fields}{'0089'}[0]{content}){
 	my $year   = $title_ref->{fields}{'0425'}[0]{content};
-	my $number = defined $title_ref->{fields}{'0089'}[0]{content};
+	my $number = $title_ref->{fields}{'0089'}[0]{content};
 	$title_ref->{fields}{'0503'} = [
             {
                 mult     => 1,

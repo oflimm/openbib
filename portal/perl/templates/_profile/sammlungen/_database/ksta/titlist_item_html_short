@@ -65,8 +65,8 @@
      # Ejahr konstruieren
      yearofpub = item.${'T0425'}.first.content;
 
-     IF title && nummer && yearofpub ;
-        title = "${yearofpub}.${nummer} ${title}";
+     IF title && datum;
+#        title = "${datum}: ${title}";
      END;
 
     titleinfos = [] ;
@@ -87,7 +87,7 @@
 	
 [% IF record.record_exists %]
 
-         <span class="ob-person">[% datum %]</span>
+         <span class="ob-person">[% msg.maketext("Ausgabe Nr.") %] [% nummer %] / [% datum %]</span>
 	 <strong><span class="ob-title"><a data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% resource_url %].include?l=[% lang %]" href="[% resource_url %].html?l=[% lang %]" alt="[% title %]" title="[% title %]">[% title %]</a></span></strong>
 	 
          <br /><i class="fas fa-map-marker-alt"></i>

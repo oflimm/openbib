@@ -10,7 +10,7 @@
 #
 #  Andere : Ueber Plugins/Filter realisierbar
 #
-#  Dieses File ist (C) 1997-2021 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2025 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -49,7 +49,7 @@ use OpenBib::Catalog;
 use OpenBib::Catalog::Factory;
 use OpenBib::Index::Factory;
 
-my ($database,$sync,$scheme,$help,$keepfiles,$purgefirst,$sb,$logfile,$loglevel,$updatemaster,$incremental,$reducemem,$noenrichment,$searchengineonly,$nosearchengine);
+my ($database,$sync,$scheme,$help,$keepfiles,$purgefirst,$sb,$logfile,$loglevel,$updatemaster,$incremental,$reducemem,$noauthorities,$noenrichment,$searchengineonly,$nosearchengine);
 
 &GetOptions("database=s"        => \$database,
             "logfile=s"         => \$logfile,
@@ -62,6 +62,7 @@ my ($database,$sync,$scheme,$help,$keepfiles,$purgefirst,$sb,$logfile,$loglevel,
             "reduce-mem"        => \$reducemem,
             "scheme=s"          => \$scheme,
 	    'no-enrichment'     => \$noenrichment,
+	    'no-authorities'    => \$noauthorities,
             "no-searchengine"   => \$nosearchengine,	    
             "searchengine-only" => \$searchengineonly,
 	    "search-backend=s"  => \$sb,
@@ -636,7 +637,7 @@ if ($use_searchengine_ref->{"elasticsearch"}){
 
 # Suchmaschinen-Index fuer Normdaten aufbauen
 
-{    
+unless ($noauthorities) {    
     my $atime = new Benchmark;
     my $duration_stage_load_authorities_start = ParseDate("now");
 

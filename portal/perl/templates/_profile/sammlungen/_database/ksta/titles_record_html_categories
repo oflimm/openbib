@@ -16,7 +16,6 @@
 
    s3_base_url = "https://testsite3.ub.uni-koeln.de/ksta/";
 
-
 -%]
 [% IF format == "full" %]
 
@@ -173,7 +172,7 @@ END;
 </div>
 
 <div class="mt-1 alert alert-info">
-[% msg.maketext("Aufgrund lizenzrechtlicher Einschr&auml;nkungen ist dieser Artikel des K&ouml;lner Stadtanzeigers nur innerhalb der USB K&ouml;ln aufrufbar.") %]
+[% msg.maketext("Aufgrund lizenzrechtlicher Einschr&auml;nkungen ist dieser Artikel des K&ouml;lner Stadtanzeigers nur im Netzbereich der Universität zu Köln aufrufbar.") %]
 </div>
 
 [%# USE dumper;dumper.dump(content_map) %]

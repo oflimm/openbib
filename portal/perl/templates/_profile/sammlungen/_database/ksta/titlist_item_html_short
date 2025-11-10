@@ -28,6 +28,8 @@
      listid = record.listid;
      all_locations = record.get_locations;
 
+     s3_base_url = "https://testsite3.ub.uni-koeln.de/ksta/";
+
      # Filter locations
      locations = [];
 
@@ -65,11 +67,12 @@
      # Ejahr konstruieren
      yearofpub = item.${'T0425'}.first.content;
 
-     IF title && datum;
-#        title = "${datum}: ${title}";
-     END;
-
     titleinfos = [] ;
+
+    searchterms = searchquery.get_searchfield('freesearch').val ;
+
+    fulltext = item.${'T0662'}.first.content ;
+    fulltext = "${s3_base_url}${fulltext}";
 
     fulltext_availability = "yellow";
     fulltext_icon = config.get('ezb_yellow_img');
@@ -86,7 +89,6 @@
         <div class="ob-titleinfo ps-2 mt-4">
 	
 [% IF record.record_exists %]
-
          <span class="ob-person">[% msg.maketext("Ausgabe Nr.") %] [% nummer %] / [% datum %]</span>
 	 <strong><span class="ob-title"><a data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% resource_url %].include?l=[% lang %]" href="[% resource_url %].html?l=[% lang %]" alt="[% title %]" title="[% title %]">[% title %]</a></span></strong>
 	 
@@ -111,6 +113,10 @@
             <div class="pe-1 pb-1">
               <a class="btn btn-primary pe-2" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% resource_url %].include?l=[% lang %]" href="[% resource_url %].html?l=[% lang %]" title="[% title %]"><i class="fas fa-eye"></i> <span>Details</span></a>
             </div>
+	    <div class="pe-1 pb-1">	    
+              <a class="btn btn-primary pe-2" href="[% fulltext %][% IF searchterms %]#search=[% searchterms %][% END %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Artikelseite") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
+	    </div>
+	    
 [%   END # record_from_cache %]	    
 
 [% END # id / database%]

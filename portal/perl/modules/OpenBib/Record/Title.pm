@@ -3085,7 +3085,7 @@ sub to_apa_citation {
 	    $editors[$#editors] = "&amp; ".$editors[$#editors]; 
 	    $citation.=join(', ', @editors);
 	}
-	$citation.="(Ed.)";
+	$citation.=" (Ed.)";
     }
     elsif (defined $fields_ref->{authors} && @{$fields_ref->{authors}}){
 	my @authors = @{$fields_ref->{authors}} ;
@@ -3797,7 +3797,7 @@ sub to_abstract_fields_marc21 {
     foreach my $category (qw/T0100 T0700 T0900/){
         next if (!defined $field_ref->{$category});
         foreach my $part_ref (@{$field_ref->{$category}}){
-            if (defined $part_ref->{e} && $part_ref->{e} =~ /Hrsg/){
+            if (defined $part_ref->{4} && $part_ref->{4} =~ /edt/){
                 push @$editors_ref, $part_ref->{a} if (defined $part_ref->{a});
             }
             else{

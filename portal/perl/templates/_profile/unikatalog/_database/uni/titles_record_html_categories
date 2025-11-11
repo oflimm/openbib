@@ -435,10 +435,14 @@ FOREACH field IN normdata;
          content = thisfield.${'a'} ;
          number  = thisfield.${'b'} || '';
 	 supplement_person = thisfield.${'c'} || '';
-	 supplement = thisfield.${'e'} || '' ;
+	 supplement = thisfield.${'4'} || '' ;
 	 
          thisid  = thisfield.${'0'} || thisfield.${'6'};
          original_language = thisfield.${'original_language'};
+
+         IF supplement;
+	    supplement = "[${supplement}]";
+         END;
 	 
          gndid = "";
 	 IF thisid.match('(DE-588)');
@@ -446,11 +450,11 @@ FOREACH field IN normdata;
 	 END;
 
          IF number;
-            supplement = "${supplement} ${number}";
+            supplement = "${number} ${supplement}";
 	 END;
 
          IF supplement_person ;
-	    supplement = "${supplement} ${supplement_person}";
+	    supplement = "${supplement_person} ${supplement}";
 	 END;
 
          IF gndid && (number || supplement_person);

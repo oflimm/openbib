@@ -1,0 +1,226 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_title_combined_json
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse als JSON
+#
+#######################################################################
+-%]
+[%
+
+   querystring_without_page = cgiapp.to_cgi_querystring({ exclude = ['page'] });
+
+   IF hits > 0 ;
+      start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
+      end_range       = nav.current_page*queryoptions.get_option('num');
+   ELSE ;
+      nav.total_entries = 0
+      nav.current_page = 1;
+      nav.first_page = 1;
+      hits = 0;
+      start_range = 0;
+      end_range = 0;
+   END ;
+
+   IF end_range >= hits ;
+      end_range       = hits;
+   END;
+
+   records = [];
+
+   FOREACH record IN recordlist.get_records ;
+      thisfields = record.get_fields;
+      PROCESS "common/subtemplate" name="titles_record_preprocess";
+
+      IF hide_hit ;
+	    thisfields = {};
+	    thisfields.${'T0331'} = [{
+	       content = hide_hit_msg
+	       mult    = 1
+	    }];
+      ELSIF hide_detail ;
+            thisfields.delete('eds_source');
+      END;
+
+      thisfields.delete('T0662');
+      thisfields.delete('T0663');
+      
+      thisrecord = {
+                      link = {
+                               rel = 'self'
+                               href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}.json"
+                      }
+                      id       = record.id
+                      database = {
+                           link = {
+                                    rel = 'self'
+                                    href = "${scheme}://${servername}${path_prefix}/${config.get('databases_loc')}/id/${record.database}.json"
+                           }
+                           id                = record.database
+                           description       = dbinfo.get('dbnames').${record.database}.full
+                           description_short = dbinfo.get('dbnames').${record.database}.short
+                           schema            = dbinfo.get('schema').${record.database}			   
+                           url               = dbinfo.get('urls').${record.database}                          
+
+                      }
+		      flags = {
+		         hide_hit    = hide_hit
+			 hide_detail = hide_detail
+		      }
+                      fields   = thisfields
+      };
+
+      item_locations = record.get_locations;
+
+      IF NOT item_locations;
+         item_locations = [ dbinfo.get('locationid').${record.database} ];
+      END;
+
+      blacklisted_locations = { 'DE-38-USBFB' => 1 };
+
+      item_locations_out = [];
+
+      FOREACH item_location IN item_locations ;
+         NEXT IF blacklisted_locations.${item_location}.defined ;
+
+           this_item_location = {
+             link = {
+                 rel = 'self'
+                 href = "${scheme}://${servername}${path_prefix}/${config.get('locations_loc')}/id/${item_location}.json"
+            }
+           id = item_location 
+           description = locinfo.get('identifier').${item_location}.description  
+        };
+
+        item_locations_out.push(this_item_location); 
+      END;
+
+      thisrecord.locations = item_locations_out;
+
+      records.push(thisrecord);
+   END ;
+
+
+   metainformation = {
+      start_range = start_range
+      end_range   = end_range
+      hits        = nav.total_entries
+      num         = qopts.get_option('num')
+      page        = nav.current_page
+      ips_user    = queryoptions.get_option('ips_user')
+   };
+
+ IF nav.current_page < nav.last_page ;
+   next_page = nav.next_page;
+   metainformation.next_page = {
+       link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('search_loc')}.json?page=${next_page};${querystring_without_page}"
+       }
+   };
+ END;
+
+ IF nav.current_page > nav.first_page ;
+   previous_page = nav.previous_page;
+   metainformation.previous_page = {
+       link = {
+            rel = 'self'
+            href = "${scheme}://${servername}${path_prefix}/${config.get('search_loc')}.json?page=${previous_page};${querystring_without_page}"
+       }
+   };
+ END;
+
+   location_is_blacklisted = {
+	 digitalis = 1
+	 doab = 1
+	 eupub = 1
+	 ebookpda = 1
+	 freebooks = 1
+	 gallica = 1
+	 gdea = 1
+	 gdz = 1
+	 gresham_oer = 1
+	 gutenberg = 1
+	 hathitrust = 1
+	 intechopen = 1
+	 #'DE-38-KAPSEL' = 1
+	 khanacademy = 1
+	 loc = 1
+	 loviscach_oer = 1
+	 mdz = 1
+	 mitocw_oer = 1
+	 nationallizenzen = 1
+	 ndltd = 1
+	 nla = 1
+	 nomos = 1
+	 nptelhrd_oer = 1
+	 nsdl = 1
+	 oapen = 1
+	 ocwconsortium = 1
+	 openlibrary = 1
+	 otl = 1
+	 stanford_oer = 1
+	 ucberkeley_oer = 1
+	 ucla_oer = 1	 
+	 usbebooks = 1
+	 usbweb = 1
+	 wikisource_de = 1
+	 yale_oer = 1
+   };
+
+   facets_location    = [];
+   FOREACH loc IN facets.location;
+         thislocation = loc.first;
+         IF location_is_blacklisted.${thislocation} == 1;
+	       NEXT;
+         END ;
+	 facets_location.push(loc);
+   END;
+
+   search_result = {
+     link = {
+          rel = 'self'
+          href = "${scheme}://${servername}${path_prefix}/${config.get('search_loc')}.json?${cgiapp.to_cgi_querystring}"
+     }
+
+     meta = metainformation
+
+     records = records
+
+     facets = {
+         availability   = facets.availability
+         databases      = facets.database
+         location       = facets_location
+         persons        = facets.person
+         corporatebody  = facets.corporatebody
+         classification = facets.classification
+         subject        = facets.subject
+         year           = facets.year
+         mediatype      = facets.mediatype
+         language       = facets.language
+         tag            = facets.tag
+         litlist        = facets.litlist
+         custom1        = facets.custom1
+         custom2        = facets.custom2
+         custom3        = facets.custom3
+         custom4        = facets.custom4
+         custom5        = facets.custom5
+         custom6        = facets.custom6
+         custom7        = facets.custom7
+         custom8        = facets.custom8
+         custom9        = facets.custom9
+         custom10       = facets.custom10
+     }
+
+     filter = searchquery.get_filter
+
+   };
+
+   to_json(search_result);
+
+%]

@@ -85,35 +85,37 @@ FOREACH field IN normdata;
 
     CASE [ "T0662" "T2662" ];
          thismult = item.mult ;
-         thiscontent   = '' ;
-	 ampel = '';
-         IF category == 'T0662' ;
-           FOREACH thisitem IN normdata.${"T0663"} ;
-             IF thisitem.mult == thismult ;
-                thiscontent = thisitem.content ;
+	 IF thismult == 1 ; # Nur Artikel-PDF
+           thiscontent   = '' ;
+  	   ampel = '';
+           IF category == 'T0662' ;
+             FOREACH thisitem IN normdata.${"T0663"} ;
+               IF thisitem.mult == thismult ;
+                  thiscontent = thisitem.content ;
+               END ;
+             END ;
+           ELSIF category == 'T2662' ;
+             FOREACH thisitem IN normdata.${"T2663"} ;
+               IF thisitem.mult == thismult ;
+                  thiscontent = thisitem.content ;
+               END ;
              END ;
            END ;
-         ELSIF category == 'T2662' ;
-           FOREACH thisitem IN normdata.${"T2663"} ;
-             IF thisitem.mult == thismult ;
-                thiscontent = thisitem.content ;
-             END ;
+
+	   ampel =  "<img src=\"${config.get('dbis_yellow_img')}\" alt=\"Restricted  Access\" />" ;
+
+           IF thiscontent ;	 
+              content   = "<a href=\"${s3_base_url}${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
+           ELSE ;
+              thiscontent = content;
+              content   = "<a href=\"${s3_base_url}${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
            END ;
-         END ;
-
-	 ampel =  "<img src=\"${config.get('dbis_yellow_img')}\" alt=\"Restricted  Access\" />" ;
-
-         IF thiscontent ;	 
-            content   = "<a href=\"${s3_base_url}${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
-         ELSE ;
-            thiscontent = content;
-            content   = "<a href=\"${s3_base_url}${content}\" class=\"ext\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
-         END ;
-	 content = "${content} ${ampel}";
-         IF NOT content_map.${'T0662'} ;
-	    content_map.${'T0662'} = [];
+	   content = "${content} ${ampel}";
+           IF NOT content_map.${'T0662'} ;
+	      content_map.${'T0662'} = [];
+	   END;
+           content_map.${'T0662'}.push(content);
 	 END;
-         content_map.${'T0662'}.push(content);
 
     CASE ;
          content   = highlightquery(searchquery,item.content);

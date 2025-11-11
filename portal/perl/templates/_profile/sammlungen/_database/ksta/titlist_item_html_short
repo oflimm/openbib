@@ -41,7 +41,7 @@
 
      # Titel konstruieren
      title = item.${'T0331'}.first.content;
-
+  
      # Mit Unterreihe
      untenstehendes = "";
      IF item.${'T0335'}.first.content ;
@@ -90,8 +90,10 @@
 	
 [% IF record.record_exists %]
          <span class="ob-person">[% msg.maketext("Ausgabe Nr.") %] [% nummer %] / [% datum %]</span>
-	 <strong><span class="ob-title"><a data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% resource_url %].include?l=[% lang %]" href="[% resource_url %].html?l=[% lang %]" alt="[% title %]" title="[% title %]">[% title %]</a></span></strong>
-	 
+	 <strong><span class="ob-title">[% title %]</span></strong>
+[%   IF untenstehendes %]
+         <br/>[% untenstehendes %]
+[%   END %]
          <br /><i class="fas fa-map-marker-alt"></i>
          <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].html?l=[% lang %]">[% locinfo.identifier.${locations.first}.description %]</a>
 
@@ -110,9 +112,6 @@
           <div class="d-flex flex-wrap ob-titleactions">
 [% IF record_exists && record.id && record.database %]
 [%   IF NOT record_from_cache %]
-            <div class="pe-1 pb-1">
-              <a class="btn btn-primary pe-2" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% resource_url %].include?l=[% lang %]" href="[% resource_url %].html?l=[% lang %]" title="[% title %]"><i class="fas fa-eye"></i> <span>Details</span></a>
-            </div>
 	    <div class="pe-1 pb-1">	    
               <a class="btn btn-primary pe-2" href="[% fulltext %][% IF searchterms %]#search=[% searchterms %][% END %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Artikelseite") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
 	    </div>

@@ -10649,6 +10649,11 @@ convtab:
         '':
           index:
             'ft0503': 1
+      '0750':         # OCR Artikeltext
+        '':
+          index:
+            'content': 1
+            'freesearch': 10
 
   portrait:
     inverted_title:

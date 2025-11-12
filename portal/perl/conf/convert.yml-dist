@@ -10620,10 +10620,12 @@ convtab:
       '0331': 1
       '0335': 1
       '0425': 1
+      '0433': 1
       '0503': 1
       '0595': 1
       '0662': 1
       '0663': 1
+      '4410': 1
     inverted_title:
       '0331':         # HST
         '':
@@ -10654,6 +10656,14 @@ convtab:
           index:
             'content': 1
             'freesearch': 10
+      '4410':         # Medientyp
+        '':
+          index:
+            'mediatype': 1
+            'mediatypestring': 1
+            'freesearch': 1
+          facet:
+            'mediatype': 1
 
   portrait:
     inverted_title:

@@ -64,7 +64,6 @@
 [% IF ksta_has_sub.${syssubid} %]
 <ul>
 <li><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0503=[% syssubid %]&profileid=[% searchprofileid_of_ksta %]&srt=title_asc&l=[% lang %]">[% msg.maketext("Alle Artikel dieser Ausgabe") %]</a></li>
-<li><a class="inturl" target="_blank" href="[% s3_base_url %]KoelnerStadtAnzeiger_J_[% sysid %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% sysid %]_N_[% number %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% sysid %]_N_[% number %].pdf">Gesamte Ausgabe als PDF-Datei</a></li>
 </ul>
 [% END%]
 </td>

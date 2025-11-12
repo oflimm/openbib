@@ -67,17 +67,38 @@
      # Ejahr konstruieren
      yearofpub = item.${'T0425'}.first.content;
 
+     seite = item.${'T0433'}.first.content;
+
+     teaser = item.${'T0517'}.first.content;
+
+     type = item.${'T4410'}.first.content;
+     
     titleinfos = [] ;
 
     searchterms = searchquery.get_searchfield('freesearch').val ;
 
-    fulltext = item.${'T0662'}.first.content ;
-    fulltext = "${s3_base_url}${fulltext}";
+    IF type == 'Artikel';
+      fulltext = item.${'T0662'}.first.content ;
+      fulltext = "${s3_base_url}${fulltext}";
 
-    fulltext_availability = "yellow";
-    fulltext_icon = config.get('ezb_yellow_img');
-    fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+      fulltext_availability = "yellow";
+      fulltext_icon = config.get('ezb_yellow_img');
+      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+    ELSIF type == 'Illustration';
+      image = item.${'T0662'}.first.content ;
+      image = "${s3_base_url}${image}";
 
+      image_availability = "yellow";
+      image_icon = config.get('ezb_yellow_img');
+      image_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+      fulltext = item.${'T0662'}.1.content ;
+      fulltext = "${s3_base_url}${fulltext}";
+
+      fulltext_availability = "yellow";
+      fulltext_icon = config.get('ezb_yellow_img');
+      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+    END;
+    
     resource_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}" ;
 
 -%]
@@ -89,13 +110,15 @@
         <div class="ob-titleinfo ps-2 mt-4">
 	
 [% IF record.record_exists %]
-         <span class="ob-person">[% msg.maketext("Ausgabe Nr.") %] [% nummer %] / [% datum %]</span>
-	 <strong><span class="ob-title">[% title %]</span></strong>
+         <span class="ob-person">[% msg.maketext("Ausgabe Nr.") %] [% nummer %] / [% datum %] [% IF seite %]/ Seite [% seite %][% END %]</span>
+	 <strong><span class="ob-title">[% IF type == 'Artikel' %][% title %][% ELSE %][% decode_utf8(title) %][% END %]</span></strong>
 [%   IF untenstehendes %]
          <br/>[% untenstehendes %]
 [%   END %]
-         <br /><i class="fas fa-map-marker-alt"></i>
-         <a href="[% path_prefix %]/[% config.get('locations_loc') %]/id/[% locations.first %].html?l=[% lang %]">[% locinfo.identifier.${locations.first}.description %]</a>
+
+[%   IF teaser %]
+         <p><span style="font-size: 0.8em">[% teaser %] [...]</span></p>
+[%   END %]
 
 [% IF record_from_cache %]
           <br/><i class="fas fa-exclamation"></i><b class="ps-2">[% msg.maketext("Der Titel wurde im Katalog gelöscht. Sie sehen die ursprünglichen Informationen.") %]</b>
@@ -112,9 +135,18 @@
           <div class="d-flex flex-wrap ob-titleactions">
 [% IF record_exists && record.id && record.database %]
 [%   IF NOT record_from_cache %]
-	    <div class="pe-1 pb-1">	    
+[% IF type == 'Artikel' %]	    
+	    <div class="pe-1 pb-1">
               <a class="btn btn-primary pe-2" href="[% fulltext %][% IF searchterms %]#search=[% searchterms %][% END %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Artikelseite") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
 	    </div>
+[% ELSIF type == 'Illustration' # Illustration %]
+	    <div class="pe-1 pb-1">
+              <a class="btn btn-primary pe-2" href="[% image %]" target="_blank" title="[% image_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Illustration") %]</span><img class="ob-fulltext_status" src="[% image_icon %]" alt="[% image_desc %]"/></a>
+	    </div>
+	    <div class="pe-1 pb-1">
+              <a class="btn btn-primary pe-2" href="[% fulltext %][% IF searchterms %]#search=[% searchterms %][% END %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Artikelseite") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
+	    </div>
+[% END %]
 	    
 [%   END # record_from_cache %]	    
 

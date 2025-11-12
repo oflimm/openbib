@@ -19,7 +19,11 @@
  
 -%]
 [% IF image_url.match('^https://testsite3.ub.uni-koeln.de/') %]
-<img class="img img-fluid" src="[% image_url %]"/>
+<figure class="figure">
+<img class="figure-img img-fluid" src="[% image_url %]"/>
+<figcaption class="figure-caption"><em>[% decode_utf8(decode_utf8(title)) %]</em></figcaption>
+</figure>
 
-<div id="genericModalLabel" hx-swap-oob="true">[% decode_utf8(decode_utf8(title)) %]</div>
+
+<div id="genericModalLabel" hx-swap-oob="true">[% msg.maketext("Illustration") %]</div>
 [% END %]

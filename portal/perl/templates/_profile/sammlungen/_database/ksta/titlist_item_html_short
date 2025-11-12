@@ -147,7 +147,7 @@
 [%   IF NOT record_from_cache %]
 [% IF type == 'Illustration' # Illustration %]
 	    <div class="pe-1 pb-1">
-              <a class="btn btn-primary pe-2" href="[% image %]" target="_blank" title="[% image_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Illustration") %]</span><img class="ob-fulltext_status" src="[% image_icon %]" alt="[% image_desc %]"/></a>
+              <a class="btn btn-primary pe-2" href="[% image %]" target="_blank"  data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/quellen.include?l=[% lang %]&img_url=[% image | uri %]&title=[% title | uri %]" title="[% image_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Illustration") %]</span><img class="ob-fulltext_status" src="[% image_icon %]" alt="[% image_desc %]"/></a>
 	    </div>
 	    <div class="pe-1 pb-1">
               <a class="btn btn-primary pe-2" href="[% fulltext %][% IF searchterms %]#search=[% searchterms %][% END %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Artikelseite") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>

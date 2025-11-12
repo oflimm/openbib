@@ -1,0 +1,25 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_quellen_html
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+
+[%-
+
+ image_url = query.param('img_url')
+ title     = query.param('title')
+ 
+-%]
+[% IF image_url.match('^https://testsite3.ub.uni-koeln.de/') %]
+<img class="img img-fluid" src="[% image_url %]"/>
+
+<div id="genericModalLabel" hx-swap-oob="true">[% decode_utf8(decode_utf8(title)) %]</div>
+[% END %]

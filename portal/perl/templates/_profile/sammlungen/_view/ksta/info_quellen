@@ -1,0 +1,5 @@
+[%- IF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="info_quellen_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

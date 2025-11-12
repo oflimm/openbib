@@ -77,14 +77,7 @@
 
     searchterms = searchquery.get_searchfield('freesearch').val ;
 
-    IF type == 'Artikel';
-      fulltext = item.${'T0662'}.first.content ;
-      fulltext = "${s3_base_url}${fulltext}";
-
-      fulltext_availability = "yellow";
-      fulltext_icon = config.get('ezb_yellow_img');
-      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
-    ELSIF type == 'Illustration';
+    IF type == 'Illustration';
       image = item.${'T0662'}.first.content ;
       image = "${s3_base_url}${image}";
 
@@ -92,6 +85,13 @@
       image_icon = config.get('ezb_yellow_img');
       image_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
       fulltext = item.${'T0662'}.1.content ;
+      fulltext = "${s3_base_url}${fulltext}";
+
+      fulltext_availability = "yellow";
+      fulltext_icon = config.get('ezb_yellow_img');
+      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+    ELSE; 
+      fulltext = item.${'T0662'}.first.content ;
       fulltext = "${s3_base_url}${fulltext}";
 
       fulltext_availability = "yellow";
@@ -145,14 +145,14 @@
           <div class="d-flex flex-wrap ob-titleactions">
 [% IF record_exists && record.id && record.database %]
 [%   IF NOT record_from_cache %]
-[% IF type == 'Artikel' %]	    
-	    <div class="pe-1 pb-1">
-              <a class="btn btn-primary pe-2" href="[% fulltext %][% IF searchterms %]#search=[% searchterms %][% END %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Artikelseite") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
-	    </div>
-[% ELSIF type == 'Illustration' # Illustration %]
+[% IF type == 'Illustration' # Illustration %]
 	    <div class="pe-1 pb-1">
               <a class="btn btn-primary pe-2" href="[% image %]" target="_blank" title="[% image_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Illustration") %]</span><img class="ob-fulltext_status" src="[% image_icon %]" alt="[% image_desc %]"/></a>
 	    </div>
+	    <div class="pe-1 pb-1">
+              <a class="btn btn-primary pe-2" href="[% fulltext %][% IF searchterms %]#search=[% searchterms %][% END %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Artikelseite") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
+	    </div>
+[% ELSE %]	    
 	    <div class="pe-1 pb-1">
               <a class="btn btn-primary pe-2" href="[% fulltext %][% IF searchterms %]#search=[% searchterms %][% END %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Artikelseite") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
 	    </div>

@@ -105,13 +105,23 @@
     <div class="ob-item d-flex flex-row[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
     
       <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
+
+[% IF 0 == 1 %]
+      <div class="ob-thumbnail pt-1 ps-5 pe-5 me-0 d-none d-md-block">
+[% IF type == 'Artikel' %]
+<i class="fas fa-book fa-3x"></i>
+[% ELSIF type == 'Illustration' %]
+<img src="[% image %]" style="max-height: 100px; max-width:80px" />
+[% END %]
+      </div>
+[% END %]
       <div class="ob-brieftitle ps-4">
 [%# USE dumper;dumper.dump(dbinfo) %]
         <div class="ob-titleinfo ps-2 mt-4">
 	
 [% IF record.record_exists %]
          <span class="ob-person">[% msg.maketext("Ausgabe Nr.") %] [% nummer %] / [% datum %] [% IF seite %]/ Seite [% seite %][% END %]</span>
-	 <strong><span class="ob-title">[% IF type == 'Artikel' %][% title %][% ELSE %][% decode_utf8(title) %][% END %]</span></strong>
+	 <strong><span class="ob-title">[% IF type == 'Illustration' %][% decode_utf8(title) %][% ELSE %][% title %][% END %]</span></strong>
 [%   IF untenstehendes %]
          <br/>[% untenstehendes %]
 [%   END %]

@@ -17,6 +17,21 @@ while (<>){
         ];
 
     }
-   
+
+    if (defined $title_ref->{fields}{'0750'}[0]{content}){
+	my $fulltext = $title_ref->{fields}{'0750'}[0]{content};
+
+	my ($teaser) = $fulltext =~m{<P>(.*?)</P>}i;
+	
+	$title_ref->{fields}{'0517'} = [
+            {
+                mult     => 1,
+                subfield => '',
+                content  => $teaser,
+            },
+	    ] if ($teaser);
+
+    }
+    
     print encode_json $title_ref, "\n";
 }

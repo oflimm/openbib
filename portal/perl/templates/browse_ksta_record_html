@@ -63,7 +63,12 @@
 <td>
 [% IF ksta_has_sub.${syssubid} %]
 <ul>
-<li><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0503=[% syssubid %]&profileid=[% searchprofileid_of_ksta %]&srt=title_asc&l=[% lang %]">[% msg.maketext("Alle Artikel dieser Ausgabe") %]</a></li>
+[% IF sysid < 1958 %]
+<li><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0503=[% syssubid %]&f[ftyp]=Artikel&profileid=[% searchprofileid_of_ksta %]&srt=title_asc&l=[% lang %]">[% msg.maketext("Artikel dieser Ausgabe") %]</a></li>
+<li><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0503=[% syssubid %]&f[ftyp]=Illustration&profileid=[% searchprofileid_of_ksta %]&srt=title_asc&l=[% lang %]">[% msg.maketext("Illustrationen dieser Ausgabe") %]</a></li>
+[% ELSE %]
+<li><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0503=[% syssubid %]&profileid=[% searchprofileid_of_ksta %]&srt=title_asc&l=[% lang %]">[% msg.maketext("Artikel dieser Ausgabe") %]</a></li>
+[% END %]
 </ul>
 [% END%]
 </td>

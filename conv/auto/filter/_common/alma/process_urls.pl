@@ -84,6 +84,10 @@ my $yellow_collection_ref = {
 	'Oxford Scholarship - Oxford University Press: Law' => 1,
 };
 
+my $yellow_collection_ezb_ref = {
+    'EZB-NLBCJ-01880' => 1,
+};
+
 # Setzen der Zugriffampel 'Gelb' und der Beschreibung 'Dossier im Volltext' fuer Links aus diesen Paketen
 my $yellow_collection_statistica_ref = {
     'ZDB-185-STD' => 1,
@@ -105,6 +109,10 @@ my $green_collection_ref = {
 	'ZDB-13-SOC-ebook' => 1,
 	'ZDB-2-SOB' => 1,
 	'ZDB-23-GOA' => 1,
+};
+
+my $green_collection_ezb_ref = {
+    'EZB-FREE-00999' => 1,
 };
 
 # Setzen der Zugriffampel 'Gruen' fuer Links aus diesen Paketen (aktuell: Digitalisate aus dem Digi20 Projekt)
@@ -169,6 +177,32 @@ while (<>){
 	}
 
 	foreach my $pmult (sort keys %$portfolio_ref){
+	    my $ezb_collection    = "";
+	    my $is_yellow_collection_ezb = 0;
+	    my $is_green_collection_ezb  = 0;
+
+	    my $supplement = "";
+
+	    if (defined $portfolio_ref->{$pmult}{'n'}){ # Range
+		$supplement = $portfolio_ref->{$pmult}{'n'};
+	    }
+	    
+	    if (defined $portfolio_ref->{$pmult}{'q'}){ # Paketname
+		($ezb_collection) = $portfolio_ref->{$pmult}{'q'} =~m{^(EZB-[A-Z]+-\d+)};
+		$supplement = $supplement." (".$portfolio_ref->{$pmult}{'q'}.")";
+	    }
+
+	    if ($ezb_collection && defined $yellow_collection_ezb_ref->{$ezb_collection}){
+		$is_yellow_collection_ezb = 1;
+	    }
+	    elsif ($ezb_collection && defined $green_collection_ezb_ref->{$ezb_collection}){
+		$is_green_collection_ezb = 1;
+	    }
+
+	    if (defined $portfolio_ref->{$pmult}{'k'} && $portfolio_ref->{$pmult}{'k'}=~m/freier Zugriff/){ # freier Zugriff
+		$is_green_collection_ezb = 1;
+	    }
+	    	    
 	    if (defined $portfolio_ref->{$pmult}{'e'}){ # Static URL available
 		my $url     = $portfolio_ref->{$pmult}{'e'};
 		my $mult    = $mult_ref->{'4662'}++;
@@ -219,16 +253,23 @@ while (<>){
 		}
 		# Lokale Digitalisate Permalink
 		elsif ($url =~m/^https?:\/\/services\.ub\.uni\-koeln\.de\/permalink/){
+		    my $access = ($is_yellow_collection_ezb)?'y':($is_green_collection_ezb)?'g':'f'; # Default (f)ulltext = green or yellow. Es gibt auch gelbe Objekte ID=6612903
+		    my $access_desc = "Volltext";
+
+		    if ($supplement){
+			$access_desc.= " - $supplement";
+		    }
+		    
 		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
-			subfield => 'f', # fulltext = green or yellow. Es gibt auch gelbe Objekte ID=6612903
+			subfield => $access, 
 			content  => $url,
 		    };
 		    
 		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
-			content  => "Volltext",
+			content  => $access_desc,
 		    };
 		    
 		    $url_done_ref->{$url} = 1;
@@ -239,7 +280,8 @@ while (<>){
 		    $have_ezb = 1;
 		    
 		    my $description = "Elektronische Zeitschrift im Volltext";
-		    my $access      = " "; # Default: unknown
+		    
+		    my $access = ($is_yellow_collection_ezb)?'y':($is_green_collection_ezb)?'g':' '; # Default: unknown
 		    
 		    # Wie kann man hier green und yellow unterscheiden?
 		    
@@ -421,6 +463,11 @@ while (<>){
 			    or $public_note =~m/Open Access/) { # ID=6693843  
 			    
 			    my $description = "Volltext";
+
+			    if ($supplement){
+				$description.= " - $supplement";
+			    }
+			    
 			    my $url         = $url;
 			    my $access      = "g"; # green
 			    
@@ -468,6 +515,10 @@ while (<>){
 			    my $description = "Volltext";
 			    my $url         = $url;
 			    my $access      = ""; # Keine Ampel
+
+			    if ($supplement){
+				$description.= " - $supplement";
+			    }
 			    
 			    push @{$record_ref->{fields}{'4662'}}, {
 				mult     => $mult,
@@ -608,7 +659,14 @@ while (<>){
 		}
 		# Keine Public note
 		else {
-		    my $access = "f"; # zunaechst unbestimmt zugreifbar. Spaeter ggf. postprocessing bei Zugehoerigkeit zu einem Paket
+		    my $access = ($is_yellow_collection_ezb)?'y':($is_green_collection_ezb)?'g':'f'; # Default (f)ulltext = green or yellow.
+
+		    my $description = "Volltext";
+		    
+		    if ($supplement){
+			$description.= " - $supplement";
+		    }
+		    
 		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
@@ -618,7 +676,7 @@ while (<>){
 		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
-			content  => "Volltext",
+			content  => $description,
 			
 		    };
 		    
@@ -649,7 +707,12 @@ while (<>){
 		
 		my $mult        = $mult_ref->{'4662'}++;
 		my $description = "Zum Volltext";
-		my $access      = "f";
+		
+		my $access = ($is_yellow_collection_ezb)?'y':($is_green_collection_ezb)?'g':'f'; # Default (f)ulltext = green or yellow.
+		
+		if ($supplement){
+		    $description.= " - $supplement";
+		}
 		
 		push @{$record_ref->{fields}{'4662'}}, {
 		    mult     => $mult,
@@ -667,7 +730,7 @@ while (<>){
 		$url_done_ref->{$url} = 1;
 		
 	    }
-	    # Else build URL-Resolver URL with portfolio_id
+	    # Else build URL-Resolver URL with portfolio_id, z.B. EZB via NZ/CZ
 	    else {
 		my $portfolio_id = $portfolio_ref->{$pmult}{'a'};
 
@@ -676,7 +739,12 @@ while (<>){
 		    
 		    my $mult        = $mult_ref->{'4662'}++;
 		    my $description = "Zum Volltext";
-		    my $access      = "f";
+
+		    if ($supplement){
+			$description.= " - $supplement";
+		    }
+		    
+		    my $access = ($is_yellow_collection_ezb)?'y':($is_green_collection_ezb)?'g':'f'; # Default (f)ulltext = green or yellow.
 		    
 		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
@@ -1359,16 +1427,27 @@ while (<>){
     }
     
     # Volltext-Links zusaetzlich in 4120 ablegen fuer direkte Verlinkung in Trefferliste
-
+    # Zusaetzlich Linktext in 4121
     if (defined $fields_ref->{'4662'}){
+	my $fulltext_mult = 1;
 	foreach my $item_ref (@{$fields_ref->{'4662'}}){
 	    if ($item_ref->{subfield} =~m/(g|y|f|n)/){
-		$record_ref->{fields}{'4120'} = [{
-		    mult     => 1,
+		push @{$record_ref->{fields}{'4120'}}, {
+		    mult     => $fulltext_mult,
 		    subfield => $item_ref->{subfield},
 		    content  => $item_ref->{content},
-						 }];
-		last;
+		}
+		;
+		foreach my $desc_item_ref (@{$fields_ref->{'4663'}}){
+		    if ($desc_item_ref->{mult} eq $item_ref->{mult}){
+			push @{$record_ref->{fields}{'4121'}}, {
+			    mult     => $fulltext_mult,
+			    subfield => $item_ref->{subfield},
+			    content  => $desc_item_ref->{content},
+			};
+		    }		    
+		}
+		$fulltext_mult++;
 	    }
 	}	
     }    

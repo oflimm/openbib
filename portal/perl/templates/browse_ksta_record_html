@@ -66,7 +66,7 @@
 <ul style="list-style-type: none">
 <li><i class="far fa-newspaper pe-2"></i><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0503=[% syssubid %]&f[ftyp]=Artikel&profileid=[% searchprofileid_of_ksta %]&srt=title_asc&l=[% lang %]">[% msg.maketext("Artikel dieser Ausgabe") %]</a></li>
 <li><i class="far fa-image pe-2"></i><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0503=[% syssubid %]&f[ftyp]=Illustration&profileid=[% searchprofileid_of_ksta %]&srt=title_asc&l=[% lang %]">[% msg.maketext("Illustrationen dieser Ausgabe") %]</a></li>
-<li><i class="far fa-file-pdf pe-2"></i><a class="inturl" target="_blank" href="[% s3_base_url %]KoelnerStadtAnzeiger_J_[% sysid %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% sysid %]_N_[% number %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% sysid %]_N_[% number %].pdf">[% msg.maketext("Gesamte Ausgabe als PDF-Datei") %]</a></li>
+<li><i class="far fa-file-pdf pe-2"></i><a class="inturl" target="_blank" href="[% s3_base_url %]KoelnerStadtAnzeiger_J_[% sysid %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% sysid %]_N_[% number %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% sysid %]_N_[% number %].pdf">[% msg.maketext("Gesamte Ausgabe") %]</a></li>
 </ul>
 [% END%]
 </td>

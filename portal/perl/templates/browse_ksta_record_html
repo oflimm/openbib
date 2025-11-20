@@ -13,6 +13,7 @@
 -%]
 [%-
 
+  old_new_cutoff = 1972;
   s3_base_url = "https://testsite3.ub.uni-koeln.de/ksta/";
 
   ksta_profileid = config.get_searchprofile_of_database('uni');
@@ -62,13 +63,10 @@
 <th style="font-weight:bold;font-size:1.2em;" width="15%">[% msg.maketext("Ausgabe Nr.") %] [% number %]<br/>[% ksta_desc.${syssubid} %]</th>
 <td>
 [% IF ksta_has_sub.${syssubid} %]
-<ul>
-[% IF sysid < 1958 %]
-<li><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0503=[% syssubid %]&f[ftyp]=Artikel&profileid=[% searchprofileid_of_ksta %]&srt=title_asc&l=[% lang %]">[% msg.maketext("Artikel dieser Ausgabe") %]</a></li>
-<li><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0503=[% syssubid %]&f[ftyp]=Illustration&profileid=[% searchprofileid_of_ksta %]&srt=title_asc&l=[% lang %]">[% msg.maketext("Illustrationen dieser Ausgabe") %]</a></li>
-[% ELSE %]
-<li><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0503=[% syssubid %]&profileid=[% searchprofileid_of_ksta %]&srt=title_asc&l=[% lang %]">[% msg.maketext("Artikel dieser Ausgabe") %]</a></li>
-[% END %]
+<ul style="list-style-type: none">
+<li><i class="far fa-newspaper pe-2"></i><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0503=[% syssubid %]&f[ftyp]=Artikel&profileid=[% searchprofileid_of_ksta %]&srt=title_asc&l=[% lang %]">[% msg.maketext("Artikel dieser Ausgabe") %]</a></li>
+<li><i class="far fa-image pe-2"></i><a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?ft0503=[% syssubid %]&f[ftyp]=Illustration&profileid=[% searchprofileid_of_ksta %]&srt=title_asc&l=[% lang %]">[% msg.maketext("Illustrationen dieser Ausgabe") %]</a></li>
+<li><i class="far fa-file-pdf pe-2"></i><a class="inturl" target="_blank" href="[% s3_base_url %]KoelnerStadtAnzeiger_J_[% sysid %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% sysid %]_N_[% number %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% sysid %]_N_[% number %].pdf">[% msg.maketext("Gesamte Ausgabe als PDF-Datei") %]</a></li>
 </ul>
 [% END%]
 </td>

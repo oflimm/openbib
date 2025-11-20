@@ -14,7 +14,7 @@
 	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
 	  },
           {
-	     desc = msg.maketext('K&ouml;lner Stadtanzeiger')
+	     desc = msg.maketext('Jahrgänge')
 	     url  = "${path_prefix}/${config.get('browse_loc')}/ksta.html?l=${lang}"
 	  },
 	  {

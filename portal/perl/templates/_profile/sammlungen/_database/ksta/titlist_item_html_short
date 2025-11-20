@@ -64,6 +64,8 @@
      # Auflage konstruieren
      datum = item.${'T0595'}.first.content;
 
+     thisdate   = datum.match('(\d\d)\.(\d\d)\.(\d\d\d\d)') ;
+
      # Ejahr konstruieren
      yearofpub = item.${'T0425'}.first.content;
 
@@ -147,16 +149,19 @@
 [%   IF NOT record_from_cache %]
 [% IF type == 'Illustration' # Illustration %]
 	    <div class="pe-1 pb-1">
-              <a class="btn btn-primary pe-2" href="[% image %]" target="_blank"  data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/quellen.include?l=[% lang %]&img_url=[% image | uri %]&title=[% title | uri %]" title="[% image_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Illustration") %]</span><img class="ob-fulltext_status" src="[% image_icon %]" alt="[% image_desc %]"/></a>
+              <a class="btn btn-primary pe-2" href="[% image %]" target="_blank"  data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/quellen.include?l=[% lang %]&img_url=[% image | uri %]&title=[% title | uri %]" title="[% image_desc %]"><i class="far fa-image pe-2"></i><span class="d-none d-sm-inline">[% msg.maketext("Illustration") %]</span></a>
 	    </div>
 	    <div class="pe-1 pb-1">
-              <a class="btn btn-primary pe-2" href="[% fulltext %][% IF searchterms %]#search=[% searchterms %][% END %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Artikelseite") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
+              <a class="btn btn-primary pe-2" href="[% fulltext %][% IF searchterms %]#search=[% searchterms %][% END %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Artikelseite") %]</span></a>
 	    </div>
 [% ELSE %]	    
 	    <div class="pe-1 pb-1">
-              <a class="btn btn-primary pe-2" href="[% fulltext %][% IF searchterms %]#search=[% searchterms %][% END %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Artikelseite") %]</span><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% fulltext_desc %]"/></a>
+              <a class="btn btn-primary pe-2" href="[% fulltext %][% IF searchterms %]#search=[% searchterms %][% END %]" target="_blank" title="[% fulltext_desc %]"><i class="far fa-newspaper pe-2"></i><span class="d-none d-sm-inline">[% msg.maketext("Artikelseite") %]</span></a>
 	    </div>
 [% END %]
+	    <div class="pe-1 pb-1">
+              <a class="btn btn-primary pe-2" href="[% s3_base_url %]KoelnerStadtAnzeiger_J_[% thisdate.2 %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% thisdate.2 %]_N_[% number %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% thisdate.2 %]_N_[% nummer %].pdf"><i class="far fa-file-pdf pe-2"></i><span class="d-none d-sm-inline">[% msg.maketext("Gesamte Ausgabe") %]</span></a>
+	    </div>
 	    
 [%   END # record_from_cache %]	    
 

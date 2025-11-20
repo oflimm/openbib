@@ -160,7 +160,7 @@
 	    </div>
 [% END %]
 	    <div class="pe-1 pb-1">
-              <a class="btn btn-primary pe-2" href="[% s3_base_url %]KoelnerStadtAnzeiger_J_[% thisdate.2 %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% thisdate.2 %]_N_[% number %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% thisdate.2 %]_N_[% nummer %].pdf"><i class="far fa-file-pdf pe-2"></i><span class="d-none d-sm-inline">[% msg.maketext("Gesamte Ausgabe") %]</span></a>
+              <a class="btn btn-primary pe-2" href="[% s3_base_url %]KoelnerStadtAnzeiger_J_[% thisdate.2 %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% thisdate.2 %]_N_[% nummer %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% thisdate.2 %]_N_[% nummer %].pdf"><i class="far fa-file-pdf pe-2"></i><span class="d-none d-sm-inline">[% msg.maketext("Gesamte Ausgabe") %]</span></a>
 	    </div>
 	    
 [%   END # record_from_cache %]	    

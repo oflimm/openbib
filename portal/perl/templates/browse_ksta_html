@@ -85,7 +85,7 @@
 <h3>[% msg.maketext("Jahrgänge des Kölner Stadtanzeigers") %]</h3>
 
 <div class="alert alert-info">
-[% msg.maketext("Über die einzelnen Jahrgänge können Sie auf die jeweiligen Ausgaben des Jahres und die darin enthaltenen Artikel zugreifen. Diese sind in Kurzform dargestellt. Genauere Angaben zum Titel und einen Link zur Seite bzw. Gesamtausgabe im PDF-Format erhalten Sie im Vollformat.") %]
+[% msg.maketext("Über die einzelnen Jahrgänge können Sie auf die jeweiligen Ausgaben des Jahres und die darin enthaltenen Artikel sowie Illustrationen zugreifen.") %]
 </div>
 
 <h4 class="mt-4">[% msg.maketext("Jahrgänge") %]</h4>

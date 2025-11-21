@@ -1,6 +1,6 @@
 #####################################################################
 #
-#  OpenBib::Handler::PSGI::Browse::KSTA.pm
+#  OpenBib::Mojo::Controller::Browse::KSTA.pm
 #
 #  Copyright 2022 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::PSGI::Browse::KSTA;
+package OpenBib::Mojo::Controller::Browse::KSTA;
 
 use strict;
 use warnings;
@@ -38,7 +38,7 @@ use Log::Log4perl qw(get_logger :levels);
 use Encode qw/decode_utf8 encode_utf8/;
 
 use OpenBib::Statistics;
-use base 'OpenBib::Handler::PSGI';
+use Mojo::Base 'OpenBib::Mojo::Controller', -signatures;
 
 # Run at startup
 sub setup {
@@ -66,16 +66,15 @@ sub show_collection {
     my $view             = $self->param('view');
 
     # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
+    my $r              = $self->stash('r');
+    my $config         = $self->stash('config');
+    my $session        = $self->stash('session');
+    my $user           = $self->stash('user');
+    my $msg            = $self->stash('msg');
+    my $queryoptions   = $self->stash('qopts');
+    my $stylesheet     = $self->stash('stylesheet');
+    my $useragent      = $self->stash('useragent');
+    my $path_prefix    = $self->stash('path_prefix');
 
     my $statistics  = new OpenBib::Statistics();
     
@@ -98,16 +97,15 @@ sub show_record {
     my $sysid            = $self->strip_suffix($self->param('sysid'));
 
     # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
+    my $r              = $self->stash('r');
+    my $config         = $self->stash('config');
+    my $session        = $self->stash('session');
+    my $user           = $self->stash('user');
+    my $msg            = $self->stash('msg');
+    my $queryoptions   = $self->stash('qopts');
+    my $stylesheet     = $self->stash('stylesheet');
+    my $useragent      = $self->stash('useragent');
+    my $path_prefix    = $self->stash('path_prefix');
 
     my $statistics  = new OpenBib::Statistics();
 

@@ -1,0 +1,174 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchform_simple
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der einfachen Suchmaske
+#
+#######################################################################
+-%]
+[%-
+
+   session_sort = "year_desc";
+   IF qopts.get_option('srt') && NOT qopts.get_option('srt').match('_') && qopts.get_option('srto') ;
+     session_sort = "${qopts.get_option('srt')}_${qopts.get_option('srto')}";
+   END;
+
+-%]
+<style>
+@media all
+{
+@keyframes fadeInOut {
+  0% {
+    opacity:1;
+  }
+  5% {
+    opacity:1;
+  }
+  10% {
+    opacity:1;
+  }
+  15% {
+    opacity:1;
+  }
+  20% {
+    opacity:1;
+  }
+  25% {
+    opacity:1;
+  }
+  33% {
+    opacity:0;
+  }
+  66% {
+    opacity:0;
+  }
+  70% {
+    opacity:1;
+  }
+  75% {
+    opacity:1;
+  }
+  80% {
+    opacity:1;
+  }
+  85% {
+    opacity:1;
+  }
+  90% {
+    opacity:1;
+  }
+  95% {
+    opacity:1;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+#image-area {
+  position: relative;	
+}
+
+.image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/AnsichtUniversitaetsstrasseV2b.png);
+  background-position: 10% 10%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+}
+
+@media only screen and (max-width: 800px) {
+
+.image {
+  background-position: 40% 10%;
+  background-image: url(https://search.ub.uni-koeln.de/images/openbib/views/unikatalog/AnsichtUniversitaetsstrasseV2b.png);
+}
+
+
+}
+
+</style>
+
+<div id="image-area">
+  <div class="image" alt="[% msg.maketext("Hintergrundbild Haupteingang Universität") %]"></div>
+
+<div class="ob-jumbotron ob-jumbotron-fluid mb-0 landing-page-img ps-2">
+
+  <div class="container container-fluid" style="margin-top: 50px!important; min-width: 100%!important;">
+
+<form id="ob-mainsearchform" method="get" action="[% path_prefix %]/[% config.get('search_loc') %].html">
+
+<input type="hidden" name="num"        value="20" />
+<input type="hidden" name="page"       value="1" />
+<input type="hidden" name="l"          value="[% lang %]" />
+
+<input type="hidden" name="srt"        value="[% session_sort %]" />
+<input type="hidden" name="st"         value="1" />
+<input type="hidden" name="lt"         value="[% qopts.lt %]" />
+
+<div class="container justify-content-center border shadow rounded ps-2 pe-2 pt-3 pb-2 mb-4">
+    <div class="row">    
+        <div class="col">
+            <div class="input-group">
+                <input required="required" id="to_focus" class="form-control" type="search" name="fs" value="" title="[% msg.maketext("Freie Suche") %]" placeholder="[% msg.maketext("Suchen Sie Artikel und Illustrationen") %]" />
+                <span class="input-group-btn ps-1">
+                    <button class="btn btn-primary" type="submit" aria-label="[% msg.maketext("Anfrage abschicken") %]"><span class="fas fa-search d-md-none"></span><span class="d-none d-md-block font-weight-bold">[% msg.maketext("Suchen") %]</span></button>
+                    <span class="btn btn-primary fas fa-cog d-md-none" data-bs-toggle="collapse" data-bs-target="#search_options" aria-expanded="false"></span>
+                </span>
+            </div>
+       </div>
+    </div>
+    <div id="livesearch"  style="position: absolute; top: 3.5em; z-index:1000;">
+    </div>
+    <div class="row pt-1 pb-0">     
+      <div class="col collapse d-md-block p-0" id="search_options">
+         <ul class="list-group flex-row flex-wrap justify-content-center">
+<!--            <li class="list-group-item pe-1" style="border: none" >
+       	      [% PROCESS common/subtemplate name="searchforms_record_profile" %]
+            </li> -->
+            <li class="list-group-item pe-1 pt-3" style="border: none" >
+	     <a href="[% path_prefix %]/[% config.get('browse_loc') %]/ksta.html?l=[% lang %]">[% msg.maketext("Jahrgänge") %]</a>
+	    </li>      	  
+            <li class="list-group-item pe-1 pt-3" style="border: none" >
+	     <a href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('search_history_loc') %].include?l=[% lang %]">[% msg.maketext("Suchhistorie") %]</a>
+	   </li>
+            <li class="list-group-item pe-1 pt-3" style="border: none" >
+	     <a href="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.html?l=[% lang %]" data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/sammlung.include?l=[% lang %]" title="[% msg.maketext("Sammlung") %]"><i class="fas fa-question-circle"></i></a>
+	   </li>
+         </ul>
+    </div><!-- col -->
+  </div><!-- row -->
+</div>
+
+[%# sysprofile%]
+[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(sysprofile)) ; %]
+[%# USE dumper; dumper.dump(config.get_orgunitinfo_overview(dbchoice)) ; %]
+<!-- [% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.allcount.chunk(-3).join('.')}","${alldbs}") %] -->
+
+
+</form>
+<!-- </nav> -->
+
+</div>
+</div>
+
+<div id="ob-start_tiles" class="container pb-5">
+
+[% PROCESS common/subtemplate name="home_alert" %]
+
+</div>
+
+
+
+</div> <!-- image_area -->
+[%# PROCESS common/subtemplate name="home_html_bottom" %]

@@ -10613,6 +10613,59 @@ convtab:
           facet:
             'mediatype': 1
 
+  ksta:
+    listitemcat:
+      '0089': 1
+      '0304': 1
+      '0331': 1
+      '0335': 1
+      '0425': 1
+      '0433': 1
+      '0503': 1
+      '0517': 1
+      '0595': 1
+      '0662': 1
+      '0663': 1
+      '4410': 1
+    inverted_title:
+      '0331':         # HST
+        '':
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
+      '0335':         # HST
+        '':
+          index:
+            'title': 50
+            'titlestring': 50
+            'freesearch': 50
+      '0425':
+        '':
+          index:
+            'year': 1
+            'yearstring': 1
+            'freesearch': 1
+          facet:
+            'year': 1
+      '0503':
+        '':
+          index:
+            'ft0503': 1
+      '0750':         # OCR Artikeltext
+        '':
+          index:
+            'content': 1
+            'freesearch': 10
+      '4410':         # Medientyp
+        '':
+          index:
+            'mediatype': 1
+            'mediatypestring': 1
+            'freesearch': 1
+          facet:
+            'mediatype': 1
+
   portrait:
     inverted_title:
       'tag':

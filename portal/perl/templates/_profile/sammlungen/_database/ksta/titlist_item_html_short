@@ -1,0 +1,185 @@
+[%#-
+#######################################################################
+#
+# Templatename: titlist_item
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Einzelner Eintrag in einer Liste (Kurztitel)
+#
+#
+# Erhaelt neben Default-Objekten (config, session usw.)
+#
+# record
+# dbinfo 
+#
+#######################################################################
+-%]
+<!-- Anfang einzelner Treffer -->
+[%- PROCESS common/subtemplate name="titles_record_preprocess" -%]
+[%-
+     ebook_i18n      = msg.maketext("E-Book");
+     toc_i18n        = msg.maketext("Inhaltsverzeichnis");
+     popularity_i18n = msg.maketext("Popularität");
+
+     item   = record.get_fields;
+     listid = record.listid;
+     all_locations = record.get_locations;
+
+     s3_base_url = "https://testsite3.ub.uni-koeln.de/ksta/";
+
+     # Filter locations
+     locations = [];
+
+     is_licensed = 1;
+     
+     FOREACH loc IN all_locations ;
+       locations.push(loc);
+     END;
+
+     # Titel konstruieren
+     title = item.${'T0331'}.first.content;
+  
+     # Mit Unterreihe
+     untenstehendes = "";
+     IF item.${'T0335'}.first.content ;
+        untenstehendes = item.${'T0335'}.first.content;
+     END;
+
+     is_schriftenreihe = 0;
+     is_mehrbaendig    = 0;
+
+     nummer = "";
+     IF item.${'T0089'}.first.content;
+       nummer = item.${'T0089'}.first.content;
+     END;
+
+     # Kein verwertbarer Titel oder Titel in titles_exclude, z.B. bei Ueberordnungen?
+     IF NOT title ;
+       title = "Keine Titelangabe vorhanden";
+     END;
+ 
+     # Auflage konstruieren
+     datum = item.${'T0595'}.first.content;
+
+     thisdate   = datum.match('(\d\d)\.(\d\d)\.(\d\d\d\d)') ;
+
+     # Ejahr konstruieren
+     yearofpub = item.${'T0425'}.first.content;
+
+     seite = item.${'T0433'}.first.content;
+
+     teaser = item.${'T0517'}.first.content;
+
+     type = item.${'T4410'}.first.content;
+     
+    titleinfos = [] ;
+
+    searchterms = searchquery.get_searchfield('freesearch').val ;
+
+    IF type == 'Illustration';
+      image = item.${'T0662'}.first.content ;
+      image = "${s3_base_url}${image}";
+
+      image_availability = "yellow";
+      image_icon = config.get('ezb_yellow_img');
+      image_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+      fulltext = item.${'T0662'}.1.content ;
+      fulltext = "${s3_base_url}${fulltext}";
+
+      fulltext_availability = "yellow";
+      fulltext_icon = config.get('ezb_yellow_img');
+      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+    ELSE; 
+      fulltext = item.${'T0662'}.first.content ;
+      fulltext = "${s3_base_url}${fulltext}";
+
+      fulltext_availability = "yellow";
+      fulltext_icon = config.get('ezb_yellow_img');
+      fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+    END;
+    
+    resource_url = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.get_encoded_id}" ;
+
+-%]
+    <div class="ob-item d-flex flex-row[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+    
+      <div class="ob-numbering">[% IF with_id_checkbox %]<input type="checkbox" name="id" value="[% record.listid %]"  title="collection_item" />&nbsp;[% END %][% start_range+loop.count - 1 %]</div>
+
+[% IF 0 == 1 %]
+      <div class="ob-thumbnail pt-1 ps-5 pe-5 me-0 d-none d-md-block">
+[% IF type == 'Artikel' %]
+<i class="fas fa-book fa-3x"></i>
+[% ELSIF type == 'Illustration' %]
+<img src="[% image %]" style="max-height: 100px; max-width:80px" />
+[% END %]
+      </div>
+[% END %]
+      <div class="ob-brieftitle ps-4">
+[%# USE dumper;dumper.dump(dbinfo) %]
+        <div class="ob-titleinfo ps-2 mt-4">
+	
+[% IF record.record_exists %]
+         <span class="ob-person">[% msg.maketext("Ausgabe Nr.") %] [% nummer %] / [% datum %] [% IF seite %]/ Seite [% seite %][% END %]</span>
+	 <strong><span class="ob-title">[% IF type == 'Illustration' %][% decode_utf8(title) %][% ELSE %][% title %][% END %]</span></strong>
+[%   IF untenstehendes %]
+         <br/>[% untenstehendes %]
+[%   END %]
+
+[%   IF teaser %]
+         <p><span style="font-size: 0.8em">[% teaser %] [...]</span></p>
+[%   END %]
+
+[% IF record_from_cache %]
+          <br/><i class="fas fa-exclamation"></i><b class="ps-2">[% msg.maketext("Der Titel wurde im Katalog gelöscht. Sie sehen die ursprünglichen Informationen.") %]</b>
+[% END %]
+	
+[% ELSE # record_exists %]
+
+<div class="alert alert-info mt-5">[% msg.maketext("Dieser Titel existiert nicht mehr im Katalog!") %]</div>
+
+[% END # record_exists %]
+        </div> <!-- end: titleinfo -->
+
+	<div class="ps-2 d-flex">
+          <div class="d-flex flex-wrap ob-titleactions">
+[% IF record_exists && record.id && record.database %]
+[%   IF NOT record_from_cache %]
+[% IF type == 'Illustration' # Illustration %]
+	    <div class="pe-1 pb-1">
+              <a class="btn btn-primary pe-2" href="[% image %]" target="_blank"  data-bs-toggle="modal" data-bs-target="#genericModal" hx-target="#generic_message" hx-get="[% path_prefix %]/[% config.get('info_loc') %]/quellen.include?l=[% lang %]&img_url=[% image | uri %]&title=[% title | uri %]" title="[% image_desc %]"><i class="far fa-image pe-2"></i><span class="d-none d-sm-inline">[% msg.maketext("Illustration") %]</span></a>
+	    </div>
+	    <div class="pe-1 pb-1">
+              <a class="btn btn-primary pe-2" href="[% fulltext %][% IF searchterms %]#search=[% searchterms %][% END %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span class="d-none d-sm-inline">[% msg.maketext("Artikelseite") %]</span></a>
+	    </div>
+[% ELSE %]	    
+	    <div class="pe-1 pb-1">
+              <a class="btn btn-primary pe-2" href="[% fulltext %][% IF searchterms %]#search=[% searchterms %][% END %]" target="_blank" title="[% fulltext_desc %]"><i class="far fa-newspaper pe-2"></i><span class="d-none d-sm-inline">[% msg.maketext("Artikelseite") %]</span></a>
+	    </div>
+[% END %]
+	    <div class="pe-1 pb-1">
+              <a class="btn btn-primary pe-2" href="[% s3_base_url %]KoelnerStadtAnzeiger_J_[% thisdate.2 %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% thisdate.2 %]_N_[% nummer %]/KoelnerStadtAnzeiger_A_[% thisdate.0 %]-[% thisdate.1 %]-[% thisdate.2 %]_N_[% nummer %].pdf"><i class="far fa-file-pdf pe-2"></i><span class="d-none d-sm-inline">[% msg.maketext("Gesamte Ausgabe") %]</span></a>
+	    </div>
+	    
+[%   END # record_from_cache %]	    
+
+[% END # id / database%]
+
+
+[% IF with_cartitems_delete %]
+	    <div class="pe-1 pb-1"><a class="btn btn-primary pe-2" href="[% path_prefix %]/[% config.get('cartitems_loc') %]/id/[% record.listid %]?_method=DELETE" title="[% msg.maketext("Entfernen") %]"><i class="fas fa-trash"></i> <span>[% msg.maketext("Löschen") %]</span></a>
+	    </div>
+[% END %]
+          </div><!-- end ob-titleactions -->
+
+[% IF record_exists && record.id && record.database %]
+	   <div class="ms-auto ob-availability">[% IF availability == "online" %]<button class="btn btn-primary ob-availability_online mb-1 me-1 pe-2"><img src="[% config.get_icon('global',view,sysprofile) %]" alt="[% msg.maketext("online") %]" /><span  class="ps-1 d-none d-sm-inline">[% msg.maketext("online ") %]</span></button>[% ELSE %]<span id="availability_[% record.database %]_[% record.get_encoded_id %]" hx-get="[% path_prefix %]/[% config.get('databases_loc') %]/id/[% record.database %]/[% config.get('titles_loc') %]/id/[% record.get_encoded_id %]/availability?l=[% lang %]" hx-trigger="revealed"></span>[% END %]
+	   </div>
+[% END # record_exists %]	   
+	</div><!-- end: flex -->
+	
+    </div><!-- end: ob-brieftitle -->
+</div><!-- end: ob-item -->
+<!-- Ende einzelner Treffer -->

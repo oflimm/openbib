@@ -1,0 +1,34 @@
+[%- PROCESS common/subtemplate name="local_config" -%] 
+[%-
+
+    kmbas = config.load_yaml('/opt/openbib/conf/ksta.yml');
+    
+    IF representation == '' || representation == 'html' ;
+    layout_param = {
+#     'page_title' = 'Themengebiete anzeigen'
+
+      'main_template' = 'browse_kmb_html'
+
+      'active_menu' = 'register'
+      
+      'breadcrumb' = [
+          {
+             desc = msg.maketext('Start')
+	     url  = "${path_prefix}/${config.get('home_loc')}.html?l=${lang}"
+	  },
+	  {
+	     desc = msg.maketext('Jahrgänge')
+	     url  = '#'
+	     current = 1
+	  }
+      ]
+    };
+-%]
+[%- PROCESS common/subtemplate name="layout_html" content="browse_ksta_html" -%]
+[%- ELSIF representation == 'json' -%]
+[%- PROCESS common/subtemplate name="browse_ksta_json" -%]
+[%- ELSIF representation == 'include' -%]
+[%- PROCESS common/subtemplate name="browse_ksta_include" -%]
+[%- ELSE -%]
+This Resource-Type is not available in the representation [% representation %]
+[%- END -%]

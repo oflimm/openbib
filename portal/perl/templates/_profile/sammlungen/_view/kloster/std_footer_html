@@ -15,7 +15,7 @@
 <footer role="contentinfo">
 
 [% IF NOT hide_foot_banner %]
-<div id="extended-info" class="d-flex justify-content-center footer-logo-box pb-3 bg-white text-black">
+<div id="extended-info" class="d-flex justify-content-center footer-logo-box pt-3 pb-3 bg-white text-black">
     <div>
             <ul class="list-group list-group-horizontal flex-column flex-md-row justify-content-center">
                 <a class="navbar-brand" href="https://www.ub.uni-koeln.de/" title="Universitäts- und Stadtbibliothek Köln" target="_blank">

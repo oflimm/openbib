@@ -1788,6 +1788,9 @@ sub process_marc {
 		if ($item_ref->{subfield} =~m/^a$/ && $item_ref->{content} =~m/DE-600/){ # DE-600 = ZDB
 		    $is_zsst_serie = 1;
 		}
+		elsif ($item_ref->{subfield} =~m/^a$/ && $item_ref->{content} =~m/ZDB\d+/){ # z.B. (DE-599)ZDB
+		    $is_zsst_serie = 1;
+		}
 	    }
 	    
 	    foreach my $item_ref (@{$fields_ref->{'0022'}}) {

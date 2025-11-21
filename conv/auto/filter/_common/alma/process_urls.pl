@@ -84,6 +84,160 @@ my $yellow_collection_ref = {
 	'Oxford Scholarship - Oxford University Press: Law' => 1,
 };
 
+my $yellow_collection_ezb_ref = {
+	'EZB-DESPR-01578' => 1,
+	'EZB-DESPR-01750' => 1,
+	'EZB-DIGI-00331' => 1,
+	'EZB-EBSCO-00027' => 1,
+	'EZB-EBSCO-00063' => 1,
+	'EZB-EBSCO-00912' => 1,
+	'EZB-EBSCO-00914' => 1,
+	'EZB-ELDEA-01987' => 1,
+	'EZB-ELDEA-01988' => 1,
+	'EZB-ELDEA-01989' => 1,
+	'EZB-ELDEA-01991' => 1,
+	'EZB-EMER-00339' => 1,
+	'EZB-FAKEP-00341' => 1,
+	'EZB-FIMAT-00344' => 1,
+	'EZB-FIMAT-00345' => 1,
+	'EZB-HBZAC-01474' => 1,
+	'EZB-HBZBE-01476' => 1,
+	'EZB-HBZSP-01482' => 1,
+	'EZB-HBZSP-01550' => 1,
+	'EZB-HBZSP-01551' => 1,
+	'EZB-HBZSP-01552' => 1,
+	'EZB-HBZSP-01553' => 1,
+	'EZB-HBZSP-01554' => 1,
+	'EZB-HBZSP-01555' => 1,
+	'EZB-HBZSP-01567' => 1,
+	'EZB-HEBAR-01586' => 1,
+	'EZB-HEBK1-01160' => 1,
+	'EZB-HEBMU-00376' => 1,
+	'EZB-HEIN-00110' => 1,
+	'EZB-HOGRE-00385' => 1,
+	'EZB-LEXIS-01979' => 1,
+	'EZB-LWWKS-02046' => 1,
+	'EZB-NALAS-00434' => 1,
+	'EZB-NALAS-00435' => 1,
+	'EZB-NALAS-00436' => 1,
+	'EZB-NALAS-00437' => 1,
+	'EZB-NALAS-00438' => 1,
+	'EZB-NALBU-02023' => 1,
+	'EZB-NALCN-02018' => 1,
+	'EZB-NALEC-00439' => 1,
+	'EZB-NALEO-02070' => 1,
+	'EZB-NALFA-00440' => 1,
+	'EZB-NALFC-00442' => 1,
+	'EZB-NALFH-00445' => 1,
+	'EZB-NALFJ-00447' => 1,
+	'EZB-NALFO-01634' => 1,
+	'EZB-NALGD-02012' => 1,
+	'EZB-NALGI-00451' => 1,
+	'EZB-NALGO-00453' => 1,
+	'EZB-NALGP-00454' => 1,
+	'EZB-NALGS-00455' => 1,
+	'EZB-NALGT-00456' => 1,
+	'EZB-NALGU-00457' => 1,
+	'EZB-NALGX-00458' => 1,
+	'EZB-NALGY-00459' => 1,
+	'EZB-NALI1-00461' => 1,
+	'EZB-NALI2-00462' => 1,
+	'EZB-NALI3-00463' => 1,
+	'EZB-NALI4-00464' => 1,
+	'EZB-NALI5-00465' => 1,
+	'EZB-NALI8-00468' => 1,
+	'EZB-NALIA-00470' => 1,
+	'EZB-NALIB-01473' => 1,
+	'EZB-NALIC-00472' => 1,
+	'EZB-NALID-00473' => 1,
+	'EZB-NALIE-00474' => 1,
+	'EZB-NALIF-00475' => 1,
+	'EZB-NALIG-00476' => 1,
+	'EZB-NALIH-00477' => 1,
+	'EZB-NALII-00478' => 1,
+	'EZB-NALIJ-00479' => 1,
+	'EZB-NALIK-00480' => 1,
+	'EZB-NALIM-00482' => 1,
+	'EZB-NALIN-00483' => 1,
+	'EZB-NALIO-00484' => 1,
+	'EZB-NALIP-00485' => 1,
+	'EZB-NALIQ-00486' => 1,
+	'EZB-NALIR-00487' => 1,
+	'EZB-NALIT-00488' => 1,
+	'EZB-NALIU-00489' => 1,
+	'EZB-NALIY-00499' => 1,
+	'EZB-NALIZ-00500' => 1,
+	'EZB-NALJA-00503' => 1,
+	'EZB-NALJC-00505' => 1,
+	'EZB-NALJD-00506' => 1,
+	'EZB-NALJE-00112' => 1,
+	'EZB-NALJE-00113' => 1,
+	'EZB-NALJE-00114' => 1,
+	'EZB-NALJE-00115' => 1,
+	'EZB-NALJE-00116' => 1,
+	'EZB-NALJE-00117' => 1,
+	'EZB-NALJE-00118' => 1,
+	'EZB-NALJE-00119' => 1,
+	'EZB-NALJE-00120' => 1,
+	'EZB-NALJE-00121' => 1,
+	'EZB-NALJE-00122' => 1,
+	'EZB-NALJE-00123' => 1,
+	'EZB-NALJE-00124' => 1,
+	'EZB-NALJE-00138' => 1,
+	'EZB-NALJE-00507' => 1,
+	'EZB-NALJF-00508' => 1,
+	'EZB-NALJG-00509' => 1,
+	'EZB-NALJH-00510' => 1,
+	'EZB-NALJI-00511' => 1,
+	'EZB-NALJK-00512' => 1,
+	'EZB-NALJL-00513' => 1,
+	'EZB-NALJM-00514' => 1,
+	'EZB-NALJN-00515' => 1,
+	'EZB-NALJY-00517' => 1,
+	'EZB-NALK1-00522' => 1,
+	'EZB-NALK2-00523' => 1,
+	'EZB-NALK3-00524' => 1,
+	'EZB-NALK4-00525' => 1,
+	'EZB-NALKA-00526' => 1,
+	'EZB-NALKC-01449' => 1,
+	'EZB-NALKD-01677' => 1,
+	'EZB-NALKI-02011' => 1,
+	'EZB-NALKW-01427' => 1,
+	'EZB-NALLF-01485' => 1,
+	'EZB-NALLI-02008' => 1,
+	'EZB-NALP2-00545' => 1,
+	'EZB-NALPR-02013' => 1,
+	'EZB-NALRU-02019' => 1,
+	'EZB-NALSK-02044' => 1,
+	'EZB-NALSO-02009' => 1,
+	'EZB-NALVM-02014' => 1,
+	'EZB-NALXX-01721' => 1,
+	'EZB-NALYX-01661' => 1,
+	'EZB-NALZA-02010' => 1,
+	'EZB-NALZV-01858' => 1,
+	'EZB-NALZW-01859' => 1,
+	'EZB-NALZY-01850' => 1,
+	'EZB-NAPAR-01787' => 1,
+	'EZB-NATNK-02049' => 1,
+	'EZB-NKEUC-01633' => 1,
+	'EZB-NKMSP-01629' => 1,
+	'EZB-NKPLO-02021' => 1,
+	'EZB-NKPNA-01572' => 1,
+	'EZB-NLAFG-01900' => 1,
+	'EZB-NLBCJ-01880' => 1,
+	'EZB-NLCEP-02043' => 1,
+	'EZB-NLPWD-01917' => 1,
+	'EZB-NOMOS-01562' => 1,
+	'EZB-PROQU-01655' => 1,
+	'EZB-SIAM-00595' => 1,
+	'EZB-SIAM-00596' => 1,
+	'EZB-UNIEE-01425' => 1,
+	'EZB-WEIPU-02041' => 1,
+	'EZB-WIDEA-01707' => 1,
+	'EZB-WISO-00642' => 1,
+	'EZB-WISO-00644' => 1,
+};
+
 # Setzen der Zugriffampel 'Gelb' und der Beschreibung 'Dossier im Volltext' fuer Links aus diesen Paketen
 my $yellow_collection_statistica_ref = {
     'ZDB-185-STD' => 1,
@@ -105,6 +259,10 @@ my $green_collection_ref = {
 	'ZDB-13-SOC-ebook' => 1,
 	'ZDB-2-SOB' => 1,
 	'ZDB-23-GOA' => 1,
+};
+
+my $green_collection_ezb_ref = {
+    'EZB-FREE-00999' => 1,
 };
 
 # Setzen der Zugriffampel 'Gruen' fuer Links aus diesen Paketen (aktuell: Digitalisate aus dem Digi20 Projekt)
@@ -169,6 +327,32 @@ while (<>){
 	}
 
 	foreach my $pmult (sort keys %$portfolio_ref){
+	    my $ezb_collection    = "";
+	    my $is_yellow_collection_ezb = 0;
+	    my $is_green_collection_ezb  = 0;
+
+	    my $supplement = "";
+
+	    if (defined $portfolio_ref->{$pmult}{'n'}){ # Range
+		$supplement = $portfolio_ref->{$pmult}{'n'};
+	    }
+	    
+	    if (defined $portfolio_ref->{$pmult}{'q'}){ # Paketname
+		($ezb_collection) = $portfolio_ref->{$pmult}{'q'} =~m{^(EZB-[A-Z]+-\d+)};
+		$supplement = $supplement." (".$portfolio_ref->{$pmult}{'q'}.")";
+	    }
+
+	    if ($ezb_collection && defined $yellow_collection_ezb_ref->{$ezb_collection}){
+		$is_yellow_collection_ezb = 1;
+	    }
+	    elsif ($ezb_collection && defined $green_collection_ezb_ref->{$ezb_collection}){
+		$is_green_collection_ezb = 1;
+	    }
+
+	    if (defined $portfolio_ref->{$pmult}{'k'} && $portfolio_ref->{$pmult}{'k'}=~m/freier Zugriff/){ # freier Zugriff
+		$is_green_collection_ezb = 1;
+	    }
+	    	    
 	    if (defined $portfolio_ref->{$pmult}{'e'}){ # Static URL available
 		my $url     = $portfolio_ref->{$pmult}{'e'};
 		my $mult    = $mult_ref->{'4662'}++;
@@ -219,16 +403,23 @@ while (<>){
 		}
 		# Lokale Digitalisate Permalink
 		elsif ($url =~m/^https?:\/\/services\.ub\.uni\-koeln\.de\/permalink/){
+		    my $access = ($is_yellow_collection_ezb)?'y':($is_green_collection_ezb)?'g':'f'; # Default (f)ulltext = green or yellow. Es gibt auch gelbe Objekte ID=6612903
+		    my $access_desc = "Volltext";
+
+		    if ($supplement){
+			$access_desc.= " - $supplement";
+		    }
+		    
 		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
-			subfield => 'f', # fulltext = green or yellow. Es gibt auch gelbe Objekte ID=6612903
+			subfield => $access, 
 			content  => $url,
 		    };
 		    
 		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
-			content  => "Volltext",
+			content  => $access_desc,
 		    };
 		    
 		    $url_done_ref->{$url} = 1;
@@ -239,7 +430,8 @@ while (<>){
 		    $have_ezb = 1;
 		    
 		    my $description = "Elektronische Zeitschrift im Volltext";
-		    my $access      = " "; # Default: unknown
+		    
+		    my $access = ($is_yellow_collection_ezb)?'y':($is_green_collection_ezb)?'g':' '; # Default: unknown
 		    
 		    # Wie kann man hier green und yellow unterscheiden?
 		    
@@ -421,6 +613,11 @@ while (<>){
 			    or $public_note =~m/Open Access/) { # ID=6693843  
 			    
 			    my $description = "Volltext";
+
+			    if ($supplement){
+				$description.= " - $supplement";
+			    }
+			    
 			    my $url         = $url;
 			    my $access      = "g"; # green
 			    
@@ -468,6 +665,10 @@ while (<>){
 			    my $description = "Volltext";
 			    my $url         = $url;
 			    my $access      = ""; # Keine Ampel
+
+			    if ($supplement){
+				$description.= " - $supplement";
+			    }
 			    
 			    push @{$record_ref->{fields}{'4662'}}, {
 				mult     => $mult,
@@ -608,7 +809,14 @@ while (<>){
 		}
 		# Keine Public note
 		else {
-		    my $access = "f"; # zunaechst unbestimmt zugreifbar. Spaeter ggf. postprocessing bei Zugehoerigkeit zu einem Paket
+		    my $access = ($is_yellow_collection_ezb)?'y':($is_green_collection_ezb)?'g':'f'; # Default (f)ulltext = green or yellow.
+
+		    my $description = "Volltext";
+		    
+		    if ($supplement){
+			$description.= " - $supplement";
+		    }
+		    
 		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
 			subfield => $access,
@@ -618,7 +826,7 @@ while (<>){
 		    push @{$record_ref->{fields}{'4663'}}, {
 			mult     => $mult,
 			subfield => '',
-			content  => "Volltext",
+			content  => $description,
 			
 		    };
 		    
@@ -649,7 +857,12 @@ while (<>){
 		
 		my $mult        = $mult_ref->{'4662'}++;
 		my $description = "Zum Volltext";
-		my $access      = "f";
+		
+		my $access = ($is_yellow_collection_ezb)?'y':($is_green_collection_ezb)?'g':'f'; # Default (f)ulltext = green or yellow.
+		
+		if ($supplement){
+		    $description.= " - $supplement";
+		}
 		
 		push @{$record_ref->{fields}{'4662'}}, {
 		    mult     => $mult,
@@ -667,7 +880,7 @@ while (<>){
 		$url_done_ref->{$url} = 1;
 		
 	    }
-	    # Else build URL-Resolver URL with portfolio_id
+	    # Else build URL-Resolver URL with portfolio_id, z.B. EZB via NZ/CZ
 	    else {
 		my $portfolio_id = $portfolio_ref->{$pmult}{'a'};
 
@@ -676,7 +889,12 @@ while (<>){
 		    
 		    my $mult        = $mult_ref->{'4662'}++;
 		    my $description = "Zum Volltext";
-		    my $access      = "f";
+
+		    if ($supplement){
+			$description.= " - $supplement";
+		    }
+		    
+		    my $access = ($is_yellow_collection_ezb)?'y':($is_green_collection_ezb)?'g':'f'; # Default (f)ulltext = green or yellow.
 		    
 		    push @{$record_ref->{fields}{'4662'}}, {
 			mult     => $mult,
@@ -1359,16 +1577,27 @@ while (<>){
     }
     
     # Volltext-Links zusaetzlich in 4120 ablegen fuer direkte Verlinkung in Trefferliste
-
+    # Zusaetzlich Linktext in 4121
     if (defined $fields_ref->{'4662'}){
+	my $fulltext_mult = 1;
 	foreach my $item_ref (@{$fields_ref->{'4662'}}){
 	    if ($item_ref->{subfield} =~m/(g|y|f|n)/){
-		$record_ref->{fields}{'4120'} = [{
-		    mult     => 1,
+		push @{$record_ref->{fields}{'4120'}}, {
+		    mult     => $fulltext_mult,
 		    subfield => $item_ref->{subfield},
 		    content  => $item_ref->{content},
-						 }];
-		last;
+		}
+		;
+		foreach my $desc_item_ref (@{$fields_ref->{'4663'}}){
+		    if ($desc_item_ref->{mult} eq $item_ref->{mult}){
+			push @{$record_ref->{fields}{'4121'}}, {
+			    mult     => $fulltext_mult,
+			    subfield => $item_ref->{subfield},
+			    content  => $desc_item_ref->{content},
+			};
+		    }		    
+		}
+		$fulltext_mult++;
 	    }
 	}	
     }    

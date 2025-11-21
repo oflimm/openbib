@@ -102,6 +102,7 @@ sub process_file {
 	my ($subtitle)         = $slurped_file =~m{<UTI>(.+?)</UTI>};
 	my ($body)             = $slurped_file =~m{<body>(.+?)</BODY>}ism;
 	my ($pdfpage_filename) = $slurped_file =~m{<pdfFile>(.+?)</pdfFile>};
+	my ($encoding)         = $slurped_file =~m{<\?xml version="1.0" encoding="(.+?)"\?>};
 
 	my ($page) = $pdfpage_filename =~m{_A_\d\d-\d\d-\d\d\d\d_N_\d+_(\d+)};
 	
@@ -109,7 +110,7 @@ sub process_file {
 	
 	my ($publication_date) = $slurped_file =~m{<publicationDate>(.+?)</publicationDate>};
 	
-	my $enc = find_encoding("iso-8859-1");
+	my $enc = find_encoding($encoding);
 
 	push @{$title_ref->{fields}{'4410'}}, {
 	    mult     => 1,
@@ -236,11 +237,13 @@ sub process_file {
 
 	my $slurped_file = read_file($item_fullpath);
 
-	my ($title) = $slurped_file =~m{<captionText>(.+?)</captionText>};
+	my ($title)              = $slurped_file =~m{<captionText>(.+?)</captionText>};
 	my ($imagepage_filename) = $slurped_file =~m{<illustrationFile>(.+?)</illustrationFile>};
-	my ($pdfpage_filename) = $slurped_file =~m{<pdfFile>(.+?)</pdfFile>};
+	my ($pdfpage_filename)   = $slurped_file =~m{<pdfFile>(.+?)</pdfFile>};
+	my ($encoding)           = $slurped_file =~m{<\?xml version="1.0" encoding="(.+?)"\?>};
 
 	my ($page) = $pdfpage_filename =~m{_A_\d\d-\d\d-\d\d\d\d_N_\d+_(\d+)};
+
 	
 	$pdfpage_filename = $image_path."/".$image_dir."/".$pdfpage_filename;
 
@@ -248,9 +251,9 @@ sub process_file {
 	
 	my ($publication_date) = $slurped_file =~m{<publicationDate>(.+?)</publicationDate>};
 
-	next if ($title =~m/Untitled/i);
-	
-	my $enc = find_encoding("iso-8859-1");
+	#next if ($title =~m/Untitled/i);
+
+	my $enc = find_encoding($encoding);
 
 	push @{$title_ref->{fields}{'4410'}}, {
 	    mult     => 1,

@@ -568,19 +568,21 @@
      - html
    action: 'show_record'
 - # Resource: browse_loc
-   module: 'OpenBib::Handler::PSGI::Browse::KSTA'
-   rule: '/portal/:view/browse/ksta[get]'
+   controller: 'Browse::KSTA'
+   rule: '/portal/:view/browse/ksta'
+   method: 'GET'
    representations:
      - none
      - html
-   runmode: 'show_collection'
+   action: 'show_collection'
 - # Resource: browse_loc
-   module: 'OpenBib::Handler::PSGI::Browse::KSTA'
-   rule: '/portal/:view/browse/ksta/id/:sysid[get]'
+   controller: 'Browse::KSTA'
+   rule: '/portal/:view/browse/ksta/id/#sysid'
+   method: 'GET'
    representations:
      - none
      - html
-   runmode: 'show_record'
+   action: 'show_record'
 - # Resource: browse_loc
    controller: 'Browse::RVK'
    rule: '/portal/:view/browse/rvk'

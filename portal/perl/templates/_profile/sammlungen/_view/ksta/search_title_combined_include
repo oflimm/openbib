@@ -136,7 +136,7 @@
 [% IF separate_facets %]
 <script>
 $(document).ready(function(){
-   $.get("[% path_prefix %]/[% config.get('search_loc') %]/facets.include?[% cgiapp.to_cgi_querystring({ exclude = ['page','facets','num','page']}) %];facets=location,availability,person,year,subject;facet_prefix=main",
+   $.get("[% path_prefix %]/[% config.get('search_loc') %]/facets.include?[% cgiapp.to_cgi_querystring({ exclude = ['page','facets','num','page']}) %]&facets=location,availability,person,year,subject&facet_prefix=main",
      function (txt){
         $("#ob-separate_facets_main").html(txt);
    });
@@ -170,14 +170,14 @@ $(document).ready(function(){
 [% IF spelling_suggestion.resultlist %]
 [%    suggestion = searchquery.get_spelling_suggestion %]
 [%     IF suggestion%]
-[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% escape_html(query.param('num')) %];srt=year_desc;st=[% escape_html(query.param('st')) %]fs=[% suggestion %]">[% suggestion %]</a></b>
+[%        msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% path_prefix %]/[% search_loc %]?num=[% escape_html(query.param('num')) %]&srt=year_desc&st=[% escape_html(query.param('st')) %]&fs=[% suggestion %]">[% suggestion %]</a></b>
 [%     END %]
 [% END %]
 
 [% IF hits > 0 %]
 <!-- Beginn Result Item -->
 [%-
-    request_base    = "num=${queryoptions.get_option('num')};profile=${current_profile};srt=${session_sort};page=1;" ;
+    request_base    = "num=${queryoptions.get_option('num')}&profile=${current_profile}&srt=${session_sort}&page=1;" ;
     start_range     = nav.current_page*queryoptions.get_option('num')-queryoptions.get_option('num') + 1;
     end_range       = nav.current_page*queryoptions.get_option('num');
     IF end_range >= hits ;

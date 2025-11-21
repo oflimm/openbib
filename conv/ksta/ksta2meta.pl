@@ -97,9 +97,10 @@ sub process_file {
 
 	my $slurped_file = read_file($item_fullpath);
 
-	my ($title)            = $slurped_file =~m{<HTI>(.+?)</HTI>};
+	my ($title)            = $slurped_file =~m{<HTI>(.+?)</HTI>};	
 	my ($dtitle)           = $slurped_file =~m{<DTI>(.+?)</DTI>};
 	my ($subtitle)         = $slurped_file =~m{<UTI>(.+?)</UTI>};
+	my ($rubriktitle)      = $slurped_file =~m{<GTI>(.+?)</GTI>};	
 	my ($body)             = $slurped_file =~m{<body>(.+?)</BODY>}ism;
 	my ($pdfpage_filename) = $slurped_file =~m{<pdfFile>(.+?)</pdfFile>};
 	my ($encoding)         = $slurped_file =~m{<\?xml version="1.0" encoding="(.+?)"\?>};
@@ -117,6 +118,16 @@ sub process_file {
 	    subfield => '',
 	    content  => 'Artikel',
 	};
+
+	if ($dtitle){
+	    my $mult = ++$multcount_ref->{'0310'};
+
+	    push @{$title_ref->{fields}{'0310'}}, {
+		mult       => $mult,
+		subfield   => '',
+		content    => $enc->decode($dtitle),
+	    };
+	}
 	
 	if ($title){
 
@@ -143,6 +154,16 @@ sub process_file {
 	    };
 	}
 
+	if ($rubriktitle){
+	    my $mult = ++$multcount_ref->{'0451'};
+
+	    push @{$title_ref->{fields}{'0451'}}, {
+		mult       => $mult,
+		subfield   => '',
+		content    => $enc->decode($rubriktitle),
+	    };
+	}
+	
 	if ($page){
 	    $page =~s/^0+//;
 	    

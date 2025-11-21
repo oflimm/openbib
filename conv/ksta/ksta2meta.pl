@@ -189,19 +189,13 @@ sub process_file {
 	}
 	
 	if ($pdf_filename){
-	    my $mult = ++$multcount_ref->{'0662'};
+	    my $mult = ++$multcount_ref->{'4120'};
 
-	    push @{$title_ref->{fields}{'0662'}}, {
+	    push @{$title_ref->{fields}{'4120'}}, {
 		mult     => $mult,
-		subfield => '',
+		subfield => 'y',
 		content  => $pdf_filename,
 	    };
-
-	    push @{$title_ref->{fields}{'0663'}}, {
-		mult     => $mult,
-		subfield => '',
-		content  => "Zum PDF der Gesamtausgabe",
-	    };	
 	}
 
 	if ($year){
@@ -248,6 +242,8 @@ sub process_file {
 	my ($image_path,$image_dir) = $item_path =~m{^(.+?)/([^/]+?)/_ILLUSTRATIONEN};
 
 	$image_path =~s/^.+?KoelnerStadtAnzeiger_J_/KoelnerStadtAnzeiger_J_/; 
+
+	my $pdf_filename = $image_path."/".$image_dir."/".$image_dir.".pdf";
 	
 	my ($day,$month,$year,$issue) = $item_path =~m/_A_(\d+)-(\d+)-(\d\d\d\d)_N_(\d+)\//;
 
@@ -330,6 +326,16 @@ sub process_file {
 		subfield => '',
 		content  => "Zum PDF der Seite des Artikels",
 	    };	
+	}
+
+	if ($pdf_filename){
+	    my $mult = ++$multcount_ref->{'4120'};
+
+	    push @{$title_ref->{fields}{'4120'}}, {
+		mult     => $mult,
+		subfield => 'y',
+		content  => $pdf_filename,
+	    };
 	}
 	
 	if ($year){

@@ -130,11 +130,6 @@ sub process_file {
 	}
 	
 	if ($title){
-
-	    if ($dtitle){
-		$title = $dtitle." ".$title;
-	    }
-	    
 	    my $mult = ++$multcount_ref->{'0331'};
 
 	    push @{$title_ref->{fields}{'0331'}}, {

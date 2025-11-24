@@ -18,7 +18,7 @@
  title     = query.param('title')
  
 -%]
-[% IF image_url.match('^https://testsite3.ub.uni-koeln.de/') %]
+[% IF image_url.match('^https://digital.ub.uni-koeln.de/') %]
 <figure class="figure">
 <img class="figure-img img-fluid" src="[% image_url %]"/>
 <figcaption class="figure-caption"><em>[% decode_utf8(decode_utf8(title)) %]</em></figcaption>

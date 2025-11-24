@@ -435,7 +435,7 @@ $(document).ready(function(){
 	  
 	  
 	<div class="w-100"><!-- begin metadata left -->
-[% IF record_exists %]
+[% IF record.record_exists %]
 [%# USE dumper;dumper.dump(normdata)%]
 [%-
      record_type = "" ; 

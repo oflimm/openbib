@@ -380,10 +380,9 @@ $(document).ready(function(){
 
 </script>
 
-<!-- hide_hit: |[% hide_hit %]| / hide_detail: |[% hide_detail %]| -->
+<!-- record_exists: [% record_exists %] hide_hit: |[% hide_hit %]| / hide_detail: |[% hide_detail %]| -->
 
-[%# IF NOT hide_detail && NOT hide_hit %]
-[% IF 1 == 1 %]
+[% IF NOT hide_detail && NOT hide_hit %]
 
 <div class="content"><!-- Begin Fulltitle -->
 

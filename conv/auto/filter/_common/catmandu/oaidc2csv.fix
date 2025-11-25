@@ -1,0 +1,18 @@
+reject all_match(_status,"deleted")
+sort_field(title,-unique => 1);
+sort_field(contributor,-unique => 1);
+sort_field(creator,-unique => 1);
+join_field(_setSpec,"")
+join_field(title,"")
+join_field(creator,"")
+join_field(contributor,"")
+join_field(publisher,"")
+join_field(description,"")
+join_field(format,"")
+join_field(date,"")
+join_field(subject,"")
+join_field(source,"")
+join_field(type,"")
+join_field(identifier,"")
+join_field(language,"")
+join_field(relation,"")

@@ -52,4 +52,4 @@ system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-fields.pl
 
 print "### $pool: Erweiterung um Standortinformationen, weiteres Processing\n";
 
-system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl  > meta.title.tmp ; mv -f meta.title.tmp meta.title");
+system("cd $datadir/$pool ; cat meta.title | $rootdir/filter/$pool/add-locationid.pl | $rootdir/filter/$pool/fix-oai.pl > meta.title.tmp ; mv -f meta.title.tmp meta.title");

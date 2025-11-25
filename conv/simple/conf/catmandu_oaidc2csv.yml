@@ -1,0 +1,59 @@
+# Encoding der Daten
+#encoding: iso-8859-1
+encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': ','
+  'quote_char': '"'
+  'escape_char': '"'
+  'allow_loose_quotes': 1
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: '_identifier'
+
+category_split_chars:
+  'title': ''
+  'creator': ''
+  'subject': ''
+  'description': ''
+  'date': ''
+  'type': ''
+  'identifier': ''
+  'language': ''
+  'source': ''
+  'format': ''
+  'relation': ''
+  'publisher': ''
+  'contributor': ''
+
+# Personen
+person:
+  'person': '0100'        # Verfasser
+
+# Koerperschaften
+corporatebody:
+  'contributor': '0110'
+# Systematik
+classification: 
+  'department': '0700'
+  
+# Schlagworte
+subject:
+  'subject': '0710'
+  
+# Titel
+title:
+  'title': '0331'
+  'identifier': '0540'
+  'date': '0425'
+  'description': '0750'
+  'source': '0451'
+  'type': '0800'
+  'language': '0015'
+  'publisher': '0412'
+

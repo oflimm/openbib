@@ -238,15 +238,14 @@
 </div>
 [% END %]
 
-[% IF available_searchfields.year.active %]
-[%- cgiparam      = searchfield.year.prefix;
-    this_searchfield = 'year';
+[%- cgiparam      = searchfield.ft4316.prefix;
+    this_searchfield = 'ft4316';
  -%]
 <div class="form-floating mb-3">
 <input class="form-control" id="[% cgiparam %]" type="search" name="[% cgiparam %]" value="[% searchquery.get_searchfield(this_searchfield).val | html %]" size="4" maxlength="4" />
-<label for="[% cgiparam %]">[% msg.maketext("Erscheinungsjahr") %]</label>
+<label for="[% cgiparam %]">[% msg.maketext("Zugangsjahr") %]</label>
 </div>
-[% END %]
+
 [%- cgiparam      = searchfield.year.prefix -%]
 [%- cgiparam_from = "${cgiparam}_from";
     this_searchfield_from = 'year_from';

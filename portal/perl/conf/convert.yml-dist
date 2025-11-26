@@ -1948,6 +1948,12 @@ convtab:
         'b':
           index:
             'classificationstring': 1
+      '0985': 
+        'f': # Provenienzsignatur wg. Bindeeinheiten
+          index:
+            'markstring': 1
+            'mark': 1
+	    'freesearch': 1
       '1001': # Alternative IDs
         'z':         # zdbid
           index:

@@ -1,0 +1,327 @@
+[%#-
+#######################################################################
+#
+# Templatename: titles_record_html
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines GND-Normdatensatzes als HTML-Seite im Portal
+#
+#######################################################################
+-%]
+[%-
+
+   catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
+   
+   resourceurl             = "${path_prefix}/${config.get('databases_loc')}/id/${record.database}/${config.get('titles_loc')}/id/${record.id}";
+
+   gnd = record.get_fields.${'lobid_source'}.first.content;
+
+#   USE dumper;dumper.dump(gnd);
+-%]
+
+<div class="details ob-authority_record"><!-- Begin Details -->
+<!-- GND begins here -->
+
+<div class="ob-category_header">Gemeinsame Normdatei (GND)</div>
+
+<div class="row">
+
+<div class="categories [% IF gnd.depiction.first.thumbnail %]col-md-8[% ELSE %]col-md-12[% END %]"><!-- Begin Categories -->
+
+<h4>[% msg.maketext("Index-Eintrag (Normdaten)") %]</h4>
+
+<div class="table-responsive">
+<table class="table table-striped">
+
+[%-
+
+# Subfelder 806
+# msg.maketext("Sonstige Daten")
+# msg.maketext("Lebensdaten")
+# msg.maketext("Wirkungsdaten")
+# msg.maketext("Geburtsort")
+# msg.maketext("Sterbeort")
+# msg.maketext("Nationalität")
+# msg.maketext("Sprache")
+# msg.maketext("Beruf")
+# msg.maketext("Funktion")
+# msg.maketext("Akademische Titel")
+# msg.maketext("Dienstgrad")
+# msg.maketext("Berufsbezeichnung")
+
+# Subfelder 830
+# msg.maketext("Pseudonym")
+# msg.maketext("Wirklicher Name")
+# msg.maketext("Früherer Name")
+# msg.maketext("Späterer Name")
+# msg.maketext("Zeitweiser Name")
+-%]
+
+<tr><th class="ob-field">[% msg.maketext("GND ID") %]</th><td><a class="exturl" target="_blank" href="[% gnd.id %]">[% gnd.gndIdentifier %]</a></td></tr>
+
+[% IF gnd.preferredName %]
+<tr><th class="ob-field">[% msg.maketext("Name") %]</th><td>[% gnd.preferredName %]</td></tr>
+[% END %]
+
+[% IF gnd.academicDegree %]
+<tr><th class="ob-field">[% msg.maketext("Akademische Titel") %]</th><td>
+[% gnd.academicDegree.join(' | ') %]</td></tr>
+[% END %]
+
+
+[% FOREACH definition IN gnd.definition %]
+<tr><th class="ob-field">[% msg.maketext("Definition") %]</th><td>[% definition %]</td></tr>
+[% END %]
+
+[% IF gnd.variantName %]
+<tr><th class="ob-field">[% msg.maketext("Andere Namen") %]</th><td>
+[% gnd.variantName.join(' | ') %]
+</td></tr>
+[% END %]
+
+[% IF gnd.pseudonym %]
+<tr><th class="ob-field">[% msg.maketext("Pseudonym") %]</th><td>
+[% pseudonyms = [];
+   FOREACH pseudonym IN gnd.pseudonym;
+     pseudonyms.push(pseudonym.label);
+   END;
+%]
+[% pseudonyms.join(' | ') %]
+</td></tr>
+[% END %]
+
+[% IF gnd.dateOfBirth %]
+[%- lebensdaten = gnd.dateOfBirth.first;
+
+    IF gnd.placeOfBirth.first.label;
+      lebensdaten = "${lebensdaten} (${gnd.placeOfBirth.first.label})";
+    END ;
+
+    IF gnd.dateOfDeath;
+      lebensdaten = "${lebensdaten} - ${gnd.dateOfDeath.first}";
+   
+      IF gnd.placeOfDeath.first.label;
+        lebensdaten = "${lebensdaten} (${gnd.placeOfDeath.first.label})";
+      END ;
+    ELSE ;
+      lebensdaten = "${lebensdaten} - ";    
+    END;
+
+-%]
+<tr><th class="ob-field">[% msg.maketext("Lebensdaten") %]</th><td>
+[% lebensdaten %]
+</td></tr>
+[% END %]
+
+[% IF gnd.geographicAreaCode %]
+<tr><th class="ob-field">[% msg.maketext("Land") %]</th><td>
+[% countries = [];
+   FOREACH country IN gnd.geographicAreaCode;
+     countries.push(country.label);
+   END;
+%]
+[% countries.join(' | ') %]
+</td></tr>
+[% END %]
+
+[% IF gnd.placeOfActivity %]
+<tr><th class="ob-field">[% msg.maketext("Wirkungsort") %]</th><td>
+[% places = [];
+   FOREACH place IN gnd.placeOfActivity;
+     places.push(place.label);
+   END;
+%]
+[% places.join(' | ') %]
+</td></tr>
+[% END %]
+
+[% IF gnd.professionOrOccupation || gnd.professionOrOccupationAsLiteral %]
+<tr><th class="ob-field">[% msg.maketext("Beruf") %]</th><td>
+[% professions = [];
+   FOREACH profession IN gnd.professionOrOccupation;
+     professions.push(profession.label);
+   END;
+   FOREACH profession IN gnd.professionOrOccupationAsLiteral;
+     professions.push(profession);
+   END;
+%]
+[% professions.join(' | ') %]
+</td></tr>
+[% END %]
+
+[% IF gnd.familialRelationship %]
+<tr><th class="ob-field">[% msg.maketext("Familiäre Beziehung") %]</th><td>
+[% members = [];
+   FOREACH member IN gnd.familialRelationship;
+     members.push("<a class=\"exturl\" target=\"_blank\" href=\"${member.id}\">${member.label}</a>");
+   END;
+%]
+[% members.join(' | ') %]
+</td></tr>
+[% END %]
+
+[% IF gnd.hasParent %]
+<tr><th class="ob-field">[% msg.maketext("Eltern") %]</th><td>
+[% parents = [];
+   FOREACH parent IN gnd.hasParent;
+     parents.push("<a class=\"exturl\" target=\"_blank\" href=\"${parent.id}\">${parent.label}</a>");
+   END;
+%]
+[% parents.join(' | ') %]
+</td></tr>
+[% END %]
+
+[% IF gnd.hasSibling %]
+<tr><th class="ob-field">[% msg.maketext("Geschwister") %]</th><td>
+[% siblings = [];
+   FOREACH sibling IN gnd.hasSibling;
+     siblings.push("<a class=\"exturl\" target=\"_blank\" href=\"${sibling.id}\">${sibling.label}</a>");
+   END;
+%]
+[% siblings.join(' | ') %]
+</td></tr>
+[% END %]
+
+[% IF gnd.gndSubjectCategory %]
+<tr><th class="ob-field">[% msg.maketext("GND Fachgebiet(e)") %]</th><td>
+[% subjectcategories = [];
+   FOREACH subject IN gnd.gndSubjectCategory;
+     subjectcategories.push(subject.label);
+   END;
+%]
+[% subjectcategories.join(' | ') %]
+</td></tr>
+[% END %]
+
+[% IF gnd.relatedTerm %]
+<tr><th class="ob-field">[% msg.maketext("Verwandte Begriffe") %]</th><td>
+[% relatedterms = [];
+   FOREACH item IN gnd.relatedTerm;
+     gndid = item.id.replace('https://d-nb.info/gnd/','');
+     resourceurl = "${path_prefix}/databases/id/lobidgnd/titles/id/${gndid}";
+     content = "<a class=\"inturl\" title=\"GND-Information\" data-bs-toggle=\"modal\" data-bs-target=\"#genericModal\" hx-target=\"#generic_message\" hx-get=\"${resourceurl}.include?l=${lang}\" href=\"${resourceurl}.html?l=${lang}\">${item.label}</a>";
+     relatedterms.push(item.label);
+   END;
+%]
+[% relatedterms.join(' | ') %]
+</td></tr>
+[% END %]
+
+</table>
+</div>
+
+</div><!-- End Categories -->
+
+[% IF gnd.depiction.first.thumbnail %]
+<div class="images col-md-4 p-3 pt-4"><!-- Begin Images -->
+<img class="img-fluid" src="[% gnd.depiction.first.thumbnail %]" alt="Bild zu [% gnd.preferredName %]\" />
+</div><!-- End Images -->
+[% END %]
+
+</div><!-- End row -->
+
+[% IF gnd.wikipedia %]
+<!-- DBpedia Definition -->
+[%
+    article_name = gnd.wikipedia.first.id.replace('https?://.+?\.wikipedia.org/wiki/','');
+
+    dbpedia_result = {};
+
+    IF article_name ;
+       dbpedia_result = record.enrich_dbpedia(article_name);
+    END;
+
+    dbpedia_abstract = {};
+
+    dbpedia_resource_name = "http://dbpedia.org/resource/${article_name}";
+    dbpedia_resource = dbpedia_result.${dbpedia_resource_name};
+
+    IF dbpedia_resource.defined('http://dbpedia.org/ontology/abstract') ;
+      FOREACH abstract IN dbpedia_resource.${"http://dbpedia.org/ontology/abstract"};
+         IF abstract.lang == 'de' ;
+	    dbpedia_abstract.de = abstract.value;
+         ELSIF abstract.lang == 'en' ;
+	    dbpedia_abstract.en = abstract.value;
+	 END;
+      END;
+    ELSIF dbpedia_resource.defined('http://dbpedia.org/ontology/wikiPageRedirects') && dbpedia_resource.${'http://dbpedia.org/ontology/wikiPageRedirects'}.first.value.match('http://dbpedia.org/resource/');
+      article_name = dbpedia_resource.${'http://dbpedia.org/ontology/wikiPageRedirects'}.first.value.replace('http://dbpedia.org/resource/',''); 
+
+      dbpedia_result = record.enrich_dbpedia(article_name);
+
+      dbpedia_resource_name = "http://dbpedia.org/resource/${article_name}";
+      dbpedia_resource = dbpedia_result.${dbpedia_resource_name};
+
+      IF dbpedia_resource.defined('http://dbpedia.org/ontology/abstract') ;
+        FOREACH abstract IN dbpedia_resource.${"http://dbpedia.org/ontology/abstract"};
+         IF abstract.lang == 'de' ;
+	    dbpedia_abstract.de = abstract.value;
+         ELSIF abstract.lang == 'en' ;
+	    dbpedia_abstract.en = abstract.value;
+	 END;
+        END;
+
+      END;
+
+    END;
+
+    other_lang = "";
+    IF lang == 'de';
+      other_lang = 'en';
+    ELSIF lang == 'en';
+      other_lang = 'de';
+    END;
+%]
+
+[% IF dbpedia_abstract.${lang} %]
+<h4 class="mt-2">[% msg.maketext("Wikipedia") %] ([% lang %])</h4>
+
+<p>
+[% dbpedia_abstract.${lang} %]
+</p>
+[% ELSIF dbpedia_abstract.${other_lang} %]
+<h4 class="mt-2">[% msg.maketext("Wikipedia") %] ([% other_lang %])</h4>
+
+<p>
+[% dbpedia_abstract.${other_lang} %]
+</p>
+[% END %]
+
+[% END %]
+
+
+[% IF gnd.sameAs %]
+<h4>[% msg.maketext("Weiterführende Links") %]</h4>
+
+<div class="table-responsive">
+<table class="table table-striped ob-normdata_fields">
+[% FOREACH item IN gnd.sameAs %]
+[%-   name = item.collection.name ;
+      name = name.replace('Gemeinsame Normdatei \(GND\) im Katalog der Deutschen Nationalbibliothek','Deutschen Nationalbibliothek');
+-%]
+<tr><th class="ob-field">[% name %]</th><td><a href="[% item.id %]" class="exturl" target="_blank">[% item.id %]</a></td></tr>
+[% END %]
+</table>
+</div>
+[% END %]
+
+<p class="pt-3">[% msg.maketext("Quelle") %]: <a href="https://lobid.org/gnd" class="exturl" target="_blank">Lobid GND</a> / <a href="https://www.hbz-nrw.de" class="exturl" target="_blank">hbz NRW</a></p>
+</div><!-- End Details -->
+
+[%
+   modal_title = msg.maketext("Eintrag in der GND");
+
+   FOREACH type IN gnd.type;
+      IF type == 'Person';
+         modal_title = msg.maketext("Personen-Information");
+      ELSIF type == 'CorporateBody';
+         modal_title = msg.maketext("Körperschafts-Information");
+      ELSIF type == 'SubjectHeading';
+         modal_title = msg.maketext("Schlagwort-Information");
+      END;    
+   END;
+%]
+<div id="genericModalLabel" hx-swap-oob="true">[% modal_title %]</div>

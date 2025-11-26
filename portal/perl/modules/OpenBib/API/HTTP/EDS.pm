@@ -215,7 +215,7 @@ sub send_search_request {
 
     my $from              = ($page - 1)*$num;
 
-    my ($atime,$btime,$timeall);
+    my ($atime,$timeall);
   
     if ($config->{benchmark}) {
         $atime=new Benchmark;
@@ -1103,7 +1103,7 @@ sub search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my ($atime,$btime,$timeall);
+    my ($atime,$timeall);
 
     my $config=$self->get_config;
     
@@ -1475,7 +1475,7 @@ sub process_matches {
     foreach my $match (@{$json_result_ref->{SearchResult}{Data}{Records}}){
 	my $fields_ref = {};
 
-	my ($atime,$btime,$timeall);
+	my ($atime,$timeall);
 	
 	if ($config->{benchmark}) {
 	    $atime=new Benchmark;

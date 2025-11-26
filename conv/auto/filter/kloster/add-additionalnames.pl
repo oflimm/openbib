@@ -49,7 +49,7 @@ while (<>){
 	foreach my $item_ref (@{$title_ref->{fields}{'0984'}}){
 	    if ($item_ref->{subfield} eq "0"){
 		if ($gnd2namen{$item_ref->{content}}){
-		    foreach my $verweisung (split(' ; ',$gnd2namen{$item_ref->{content}})){
+		    foreach my $verweisung (split('\s*;\s*',$gnd2namen{$item_ref->{content}})){
 			
 			push @{$title_ref->{fields}{'1009'}}, {
 			    mult     => $mult++,

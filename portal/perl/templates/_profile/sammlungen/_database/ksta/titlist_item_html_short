@@ -123,7 +123,7 @@
 	
 [% IF record.record_exists %]
          <span class="ob-person">[% msg.maketext("Ausgabe Nr.") %] [% nummer %] / [% datum %] [% IF seite %]/ Seite [% seite %][% END %]</span>
-	 <strong><span class="ob-title">[% IF type == 'Illustration' %][% decode_utf8(title) %][% ELSE %][% title %][% END %]</span></strong>
+	 <strong><span class="ob-title">[% title %]</span></strong>
 [%   IF untenstehendes %]
          <br/>[% untenstehendes %]
 [%   END %]

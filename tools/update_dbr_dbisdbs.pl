@@ -43,23 +43,17 @@ foreach my $thisdbistopic ($dbistopics->all){
     $db_group_ref->{group_order} = [];
     
     my $search_count = 0;
-    foreach my $dbs_node ($root->findnodes('/dbis_page/list_dbs/dbs')) {
-        $search_count = $dbs_node->findvalue('@db_count');
-
-        foreach my $db_node ($dbs_node->findnodes('db')) {
-            next unless $db_node->findvalue('@top_db');
-            
-            my $single_db_ref = {};
-            
-            $single_db_ref->{id}       = $db_node->findvalue('@title_id');
-            $single_db_ref->{access}   = $db_node->findvalue('@access_ref');
-            my @types = split(" ",$db_node->findvalue('@db_type_refs'));
-            
-            $single_db_ref->{db_types} = \@types;
-            $single_db_ref->{title}     = $db_node->textContent;
-            
-            push @{$dbs_ref}, $single_db_ref;
-        }
+    foreach my $db_node ($root->findnodes('/dbis_page/list_dbs/dbs[@top_db=1]/db')) {
+	my $single_db_ref = {};
+	
+	$single_db_ref->{id}       = $db_node->findvalue('@title_id');
+	$single_db_ref->{access}   = $db_node->findvalue('@access_ref');
+	my @types = split(" ",$db_node->findvalue('@db_type_refs'));
+	
+	$single_db_ref->{db_types} = \@types;
+	$single_db_ref->{title}     = $db_node->textContent;
+	
+	push @{$dbs_ref}, $single_db_ref;
     }
     
 

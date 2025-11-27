@@ -33,7 +33,7 @@ category_split_chars:
 
 # Personen
 person:
-  'person': '0100'        # Verfasser
+  'creator': '0100'        # Verfasser
 
 # Koerperschaften
 corporatebody:

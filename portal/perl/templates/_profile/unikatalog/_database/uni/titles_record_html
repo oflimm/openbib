@@ -315,6 +315,11 @@
    
   # E-Book/Inhaltsverzeichnis vorhanden
   fulltext  = normdata.${'T4120'}.first.content ;
+  multiple_fulltexts = 0;
+  IF normdata.${"T4120"}.size > 1;
+      multiple_fulltexts = 1; 
+  END;
+  
   fulltext  = fulltext.replace('%26','&');  
   toc       = normdata.${'T4110'}.first.content ;
 
@@ -491,7 +496,56 @@ Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es au
          <a  class="btn btn-primary text-nowrap" aria-described-by="[% msg.maketext("In die Merkliste") %]" hx-get="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" hx-headers='{"Content-Type": "application/xml+html"}' href="[% path_prefix %]/[% config.get('cartitems_loc') %]?_method=POST;dbname=[% record.database %];titleid=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><i class="far fa-bookmark"></i> <span>[% msg.maketext("Merken") %]</span></a>
   </div>
 
-[% IF fulltext %]
+[% IF multiple_fulltexts %]
+	    <div class="pe-1 pb-1">
+              <div class="dropdown">
+                <button class="btn btn-primary text-nowrap dropdown-toggle" aria-described-by="[% msg.maketext("Volltext aufrufen") %]" title="[% msg.maketext("Volltext") %]" type="button" id="fulltextMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <i class="fas fa-download"></i> [% msg.maketext("Volltext") %]
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="fulltextMenuButton">
+[%   FOREACH this_fulltext IN normdata.${'T4120'} %]
+[%-
+       fulltext_mult    = this_fulltext.mult;
+       fulltext_url     = this_fulltext.content;
+       fulltext_license = this_fulltext.subfield
+       fulltext_desc    = "";
+          FOREACH this_fulltext_desc IN normdata.${'T4121'};
+	     IF this_fulltext_desc.mult == fulltext_mult;
+	       fulltext_desc = this_fulltext_desc.content;
+	       LAST;
+	     END;
+	  END;
+       fulltext_desc = fulltext_desc.replace('Zum Volltext - ','');
+       fulltext_desc = fulltext_desc.replace(' \(','<br/>(');
+
+    IF fulltext_license == "g";
+      fulltext_icon    = config.get('ezb_green_img');
+      fulltext_tooltip = msg.maketext("Volltext mit freiem Zugang");;
+    ELSIF fulltext_license == "y";
+      fulltext_availability = "yellow";
+      fulltext_icon = config.get('ezb_yellow_img');
+      fulltext_tooltip = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+    ELSIF fulltext_license == "l";
+      fulltext_icon = config.get('ezb_yellow_red_img');
+      fulltext_tooltip = msg.maketext("Volltext mit eingeschränkten Zugang");;
+    ELSIF fulltext_license == "f";
+      fulltext_icon = config.get('ezb_green_yellow_img');
+      fulltext_tooltip = msg.maketext("Volltext mit unbekanntem Zugang");;
+    ELSIF fulltext_license == "n";
+      fulltext_icon = config.get('dbis_de_img');
+      fulltext_tooltip = msg.maketext("Volltext über Nationallizenz");
+    ELSE ;
+      fulltext_icon = config.get('ezb_unknown_img');
+      fulltext_tooltip = msg.maketext("Unbekannter Zugang");;
+    END;
+
+-%]
+                  <li><a class="dropdown-item" target="_blank" href="[% fulltext_url %]" title="[% fulltext_tooltip %]"><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% msg.maketext("Volltext-Icon") %]"/>[% fulltext_desc %]</a></li>
+[%   END %]		  
+               </ul>
+             </div>
+	    </div>
+[% ELSIF fulltext %]
 	    <div class="pe-1 pb-3">	    
               <a class="btn btn-primary text-nowrap pe-2" aria-described-by="[% msg.maketext("Volltext aufrufen") %]" href="[% fulltext %]" target="_blank" title="[% fulltext_desc %]"><i class="fas fa-download"></i> <span>[% msg.maketext("Volltext") %]</span><img class="ps-2" src="[% fulltext_icon %]"  alt="[% msg.maketext("Volltext") %]"/></a>
 	    </div>

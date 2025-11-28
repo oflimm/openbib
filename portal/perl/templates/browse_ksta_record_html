@@ -13,8 +13,7 @@
 -%]
 [%-
 
-  old_new_cutoff = 1972;
-  s3_base_url = "https://testsite3.ub.uni-koeln.de/ksta/";
+  s3_base_url = "https://digital.ub.uni-koeln.de/ksta/";
 
   ksta_profileid = config.get_searchprofile_of_database('uni');
 

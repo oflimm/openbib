@@ -125,7 +125,7 @@
         <div class="ob-titleinfo ps-2 mt-4">
 	
 [% IF record.record_exists %]
-         <span class="ob-person">[% msg.maketext("Ausgabe Nr.") %] [% nummer %] / [% datum %][% IF day_of_week %]/ [% day_of_week %] [% END %] [% IF seite %]/ Seite [% seite %][% END %]</span>
+         <span class="ob-person">[% msg.maketext("Ausgabe Nr.") %] [% nummer %] / [% datum %] [% IF day_of_week %]/ [% day_of_week %] [% END %] [% IF seite %]/ Seite [% seite %][% END %]</span>
 	 <strong><span class="ob-title">[% title %]</span></strong>
 [%   IF untenstehendes %]
          <br/>[% untenstehendes %]

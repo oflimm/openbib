@@ -319,7 +319,9 @@
   IF normdata.${"T4120"}.size > 1;
       multiple_fulltexts = 1; 
   END;
-  
+
+  multiple_fulltexts = 0;
+
   fulltext  = fulltext.replace('%26','&');  
   toc       = normdata.${'T4110'}.first.content ;
 

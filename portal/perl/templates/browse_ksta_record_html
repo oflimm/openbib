@@ -54,12 +54,15 @@
 [%- FOREACH syssubid IN ksta.subordinate -%]
 [%-
 
- thisdate   = ksta_desc.${syssubid}.match('(\d\d)\.(\d\d)\.\d\d\d\d') ;
+ thisdate   = ksta_desc.${syssubid}.match('(\d\d)\.(\d\d)\.(\d\d\d\d)') ;
  field_0503 = syssubid.match('^(\d\d\d\d)\.(\d+)$') ;
  number     = field_0503.1 ;
+
+ USE date;
+ day_of_week = date.format("${thisdate.2}-${thisdate.1}-${thisdate.0} 00:00:00", "%A"); 
 -%]
 <tr>
-<th style="font-weight:bold;font-size:1.2em;" width="15%">[% msg.maketext("Ausgabe Nr.") %] [% number %]<br/>[% ksta_desc.${syssubid} %]</th>
+<th style="font-weight:bold;font-size:1.2em;" width="15%">[% msg.maketext("Ausgabe Nr.") %] [% number %]<br/>[% ksta_desc.${syssubid} %]<br/>[% day_of_week %]</th>
 <td>
 [% IF ksta_has_sub.${syssubid} %]
 <ul style="list-style-type: none">

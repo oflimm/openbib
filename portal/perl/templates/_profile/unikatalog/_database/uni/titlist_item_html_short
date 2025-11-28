@@ -830,7 +830,7 @@
     END;
 
 -%]
-                  <li><a class="dropdown-item" href="[% fulltext_url %]"  title="[% fulltext_tooltip %]"><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% msg.maketext("Volltext-Icon") %]"/>[% fulltext_desc %]</a></li>
+                  <li><a class="dropdown-item" target="_blank" href="[% fulltext_url %]" title="[% fulltext_tooltip %]"><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% msg.maketext("Volltext-Icon") %]"/>[% fulltext_desc %]</a></li>
 [%   END %]		  
                </ul>
              </div>

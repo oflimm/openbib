@@ -20,95 +20,6 @@
   holding         = record.get_holding ;
   circulation     = record.load_circulation.get_circulation ; 
 
-  # Interimsloesung: Fehlende Volltextlinks aus NZ-Publishing
-   nz_fulltext_links_from_fields = 0;
-
-   IF nz_fulltext_links_from_fields && record.database == 'uni' && record.id.match('6441$') && normdata.defined('T1945') && NOT normdata.defined('T4120') ;
-
-   custom_normdata = record.to_custom_field_scheme_1;
-   
-   pakete = [];
-
-   IF custom_normdata.defined('T0912') || custom_normdata.defined('T0962');
-      FOREACH thisitem IN custom_normdata.${'T0912'};
-         IF thisitem.defined('a');
-           pakete.push(thisitem.${'a'});
-	 END;
-      END;
-
-      FOREACH thisitem IN custom_normdata.${'T0962'};
-         IF thisitem.defined('e');
-           pakete.push(thisitem.${'e'});
-        END;
-      END;
-   END;
-
-   paketstring = "";
-
-   IF pakete ;
-     paketstring = pakete.join('; ');
-   END;
-
-   IF custom_normdata.${'T1945'}.first.defined('e') ; # Static URL
-      static_url = custom_normdata.${'T1945'}.first.${'e'};
-      online_access = 'f';
-      online_text = "Volltext";
-
-      IF paketstring.match('(ZDB-2-SWI|ZDB-2-SNA|ZDB-2-STI|ZDB-2-SGR|ZDB-2-SGRSpringer|ZDB-2-SEP|ZDB-2-SBE|ZDB-2-CMS|ZDB-2-PHA|ZDB-2-SMA|ZDB-2-MGE|ZDB-2-SZR|ZDB-2-BUM|ZDB-2-ECF|ZDB-2-SCS|ZDB-2-ESA|ZDB-5-WEB|ZDB-5-WMS|ZDB-5-WMW|ZDB-14-DLO|ZDB-18-BEO|ZDB-18-BOH|ZDB-18-BST|ZDB-15-ACM|ZDB-16-Hanser-EBA|hbzebo_ebahanser|ZDB-18-Nomos-NRW|ZDB-18-Nomos-VDI-NRW|hbzebo_nrwnomos|ZDB-149-HCB|ZDB-162-Bloom-EBA|hbz_ebabloomsbury|ZDB-605-Preselect|hbzebo_preselect|ZDB-196-Meiner-EBA|hbzebo_ebameiner|ZDB-23-DGG|ZDB-98-IGB|ZDB-23-DGG-eba|ZDB-54-Duncker-EBA|hbzebo_ebaduncker|ZDB-2-BSP|ZDB-2-SBL|ZDB-2-BUM|ZDB-2-CMS|ZDB-2-SCS|ZDB-2-EES|ZDB-2-ECF|ZDB-2-EDA|ZDB-2-ENE|ZDB-2-ENG|ZDB-2-HTY|ZDB-2-INR|ZDB-2-LCR|ZDB-2-LCM|ZDB-2-SMA|ZDB-2-SME|ZDB-2-PHA|ZDB-2-POS|ZDB-2-CWD|ZDB-2-REP|ZDB-2-SLS|ZDB-41-UTB-EBA|ZDB-7-taylorfra-EBA|ZDB-71-Narr-EBA)');
-        online_access = 'y';
-	online_text   = 'E-Book im Volltext';
-      ELSIF paketstring.match('(ZDB-2-SOB|ZDB-23-GOA|ZDB-13-SOC|ZDB-13-SOC-ebook)');
-        online_access = 'g';
-	online_text   = 'E-Book im Volltext';
-      ELSIF paketstring.match('(ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)');
-        online_access = 'g';
-	online_text   = 'E-Book im Volltext';
-      ELSIF paketstring.match('(ZDB-185-STD|ZDB-185-SDI)');
-        online_access = 'y';
-	online_text   = 'Dossier im Volltext';
-      ELSIF paketstring.match('(ZDB-101-VTB)');
-        online_access = 'y';
-	online_text   = 'Video';
-      END;
-      
-      normdata.${'T4120'} = [{
-	  mult  = 1
-	  subfield = online_access
-	  content = static_url
-      }];
-
-   ELSIF custom_normdata.${'T1945'}.first.defined('2') ; # Dynamic URL
-      resolver_url = custom_normdata.${'T1945'}.first.${'2'};
-      online_access = 'f';
-      online_text = "Volltext";
-
-      IF paketstring.match('(ZDB-2-SWI|ZDB-2-SNA|ZDB-2-STI|ZDB-2-SGR|ZDB-2-SGRSpringer|ZDB-2-SEP|ZDB-2-SBE|ZDB-2-CMS|ZDB-2-PHA|ZDB-2-SMA|ZDB-2-MGE|ZDB-2-SZR|ZDB-2-BUM|ZDB-2-ECF|ZDB-2-SCS|ZDB-2-ESA|ZDB-5-WEB|ZDB-5-WMS|ZDB-5-WMW|ZDB-14-DLO|ZDB-18-BEO|ZDB-18-BOH|ZDB-18-BST|ZDB-15-ACM|ZDB-16-Hanser-EBA|hbzebo_ebahanser|ZDB-18-Nomos-NRW|ZDB-18-Nomos-VDI-NRW|hbzebo_nrwnomos|ZDB-149-HCB|ZDB-162-Bloom-EBA|hbz_ebabloomsbury|ZDB-605-Preselect|hbzebo_preselect|ZDB-196-Meiner-EBA|hbzebo_ebameiner|ZDB-23-DGG|ZDB-98-IGB|ZDB-23-DGG-eba|ZDB-54-Duncker-EBA|hbzebo_ebaduncker|ZDB-2-BSP|ZDB-2-SBL|ZDB-2-BUM|ZDB-2-CMS|ZDB-2-SCS|ZDB-2-EES|ZDB-2-ECF|ZDB-2-EDA|ZDB-2-ENE|ZDB-2-ENG|ZDB-2-HTY|ZDB-2-INR|ZDB-2-LCR|ZDB-2-LCM|ZDB-2-SMA|ZDB-2-SME|ZDB-2-PHA|ZDB-2-POS|ZDB-2-CWD|ZDB-2-REP|ZDB-2-SLS|ZDB-41-UTB-EBA|ZDB-7-taylorfra-EBA|ZDB-71-Narr-EBA)');
-        online_access = 'y';
-	online_text   = 'E-Book im Volltext';
-      ELSIF paketstring.match('(ZDB-2-SOB|ZDB-23-GOA|ZDB-13-SOC|ZDB-13-SOC-ebook)');
-        online_access = 'g';
-	online_text   = 'E-Book im Volltext';
-      ELSIF paketstring.match('(ZDB-57-DVR|ZDB-57-DSG|ZDB-57-DFS)');
-        online_access = 'g';
-	online_text   = 'E-Book im Volltext';
-      ELSIF paketstring.match('(ZDB-185-STD|ZDB-185-SDI)');
-        online_access = 'y';
-	online_text   = 'Dossier im Volltext';
-      ELSIF paketstring.match('(ZDB-101-VTB)');
-        online_access = 'y';
-	online_text   = 'Video';
-      END;
-      
-      normdata.${'T4120'} = [{
-	  mult  = 1
-	  subfield = online_access
-	  content = resolver_url
-      }];
-
-    END;
-  END;
-
-
   # Provenienzen vorhanden?
   have_provenance_for = {};
 
@@ -320,8 +231,6 @@
       multiple_fulltexts = 1; 
   END;
 
-  multiple_fulltexts = 0;
-
   fulltext  = fulltext.replace('%26','&');  
   toc       = normdata.${'T4110'}.first.content ;
 
@@ -499,6 +408,9 @@ Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es au
   </div>
 
 [% IF multiple_fulltexts %]
+[%-
+    normdata        = record.get_fields ;
+-%]
 	    <div class="pe-1 pb-1">
               <div class="dropdown">
                 <button class="btn btn-primary text-nowrap dropdown-toggle" aria-described-by="[% msg.maketext("Volltext aufrufen") %]" title="[% msg.maketext("Volltext") %]" type="button" id="fulltextMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -542,7 +454,7 @@ Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es au
     END;
 
 -%]
-                  <li><a class="dropdown-item" target="_blank" href="[% fulltext_url %]" title="[% fulltext_tooltip %]"><img class="ob-fulltext_status" src="[% fulltext_icon %]" alt="[% msg.maketext("Volltext-Icon") %]"/>[% fulltext_desc %]</a></li>
+                  <li><a class="dropdown-item" target="_blank" href="[% fulltext_url %]" title="[% fulltext_tooltip %]"><img class="ob-fulltext_status pe-1" style="padding-top:0px;"src="[% fulltext_icon %]" alt="[% msg.maketext("Volltext-Icon") %]"/>[% fulltext_desc %]</a></li>
 [%   END %]		  
                </ul>
              </div>

@@ -27,7 +27,7 @@
 [% IF current_date >= activate_from_date && current_date <= activate_to_date %]
 <div class="alert alert-info mt-5">
 <p>
-[% msg.maketext("Magazinbestellungen, die nach dem 19. Dezember eingehen, werden erst ab dem 5. Januar bearbeitet.") %]
+[% msg.maketext("Magazinbestellungen, die ab dem 19. Dezember eingehen, werden erst ab dem 5. Januar bearbeitet.") %]
 </p>
 </div>
 [% END %]

@@ -209,11 +209,8 @@ sub get_titles_record {
 	$logger->debug("Response: ".$response->body);
     }
 
-    my $quickfix_fields_ref = $self->_get_titles_record_quickfix_xml($arg_ref);
-    
     if ($logger->is_debug){
 	$logger->debug("Got JSON fields: ".YAML::Dump($json_ref));
-	$logger->debug("Got quickfix XML fields: ".YAML::Dump($quickfix_fields_ref));
     }
     
     my $traffic_light              = $json_ref->{traffic_light};
@@ -243,16 +240,12 @@ sub get_titles_record {
     elsif ($is_free){
 	$access_type = 'g';
     }
-
-    if (defined $json_ref->{types} && !@{$json_ref->{types}} && defined $quickfix_fields_ref->{types} && @{$quickfix_fields_ref->{types}}){
-	$json_ref->{types} = $quickfix_fields_ref->{types};
-    }
     
     if (defined $json_ref->{types} && ref $json_ref->{types} eq "ARRAY"){
 	my $mult = 1;
 	foreach my $db_type_ref (@{$json_ref->{types}}){
-	    my $dbtype       =  $db_type_ref->{desc};
-	    my $dbtype_short =  $db_type_ref->{desc_short}; 
+	    my $dbtype       =  $db_type_ref->{description};
+	    my $dbtype_short =  $db_type_ref->{title}; 
 	    
 	    $record->set_field({field => 'T0517', subfield => '', mult => $mult, content => $dbtype}) if ($dbtype);
 	    $record->set_field({field => 'T0800', subfield => '', mult => $mult++, content => $dbtype_short}) if ($dbtype_short);
@@ -286,8 +279,6 @@ sub get_titles_record {
     my @publication_forms = ();
     my @local_licenseinfo = ();
 
-#    push @externalNotes, $quickfix_fields_ref->{hints} if ($quickfix_fields_ref->{hints} && $quickfix_fields_ref->{hints} =~m/\w/);
-    
     push @externalNotes, $remarks if ($remarks && $remarks =~m/\w/);
 
     if ($traffic_light ne "red" && defined $json_ref->{licenses} && ref $json_ref->{licenses} eq "ARRAY"){
@@ -355,26 +346,18 @@ sub get_titles_record {
 	}
     }
 
-    if (defined $json_ref->{subjects} && !@{$json_ref->{subjects}} && defined $quickfix_fields_ref->{subjects} && @{$quickfix_fields_ref->{subjects}}){
-	$json_ref->{subjects} = $quickfix_fields_ref->{subjects};
-    }
-    
     if (defined $json_ref->{subjects} && ref $json_ref->{subjects} eq "ARRAY"){
 	my $mult=1;
 	foreach my $subject_ref (@{$json_ref->{subjects}}){
-	    $record->set_field({field => 'T0700', subfield => '', mult => $mult, content => $subject_ref->{title}, id => $subject_ref->{id}});
+	    $record->set_field({field => 'T0700', subfield => '', mult => $mult, content => $subject_ref->{title}, id => $subject_ref->{title}});
 	    $mult++;
 	}
     }
 
-    if (defined $json_ref->{keywords} && !@{$json_ref->{keywords}} && defined $quickfix_fields_ref->{keywords} && @{$quickfix_fields_ref->{keywords}}){
-	$json_ref->{keywords} = $quickfix_fields_ref->{keywords};
-    }
-	
     if (defined $json_ref->{keywords} && ref $json_ref->{keywords} eq "ARRAY"){
 	my $mult=1;
-	foreach my $keyword (@{$json_ref->{keywords}}){
-	    $record->set_field({field => 'T0710', subfield => '', mult => $mult, content => $keyword});
+	foreach my $keyword_ref (@{$json_ref->{keywords}}){
+	    $record->set_field({field => 'T0710', subfield => '', mult => $mult, content => $keyword_ref->{title}});
 	    $mult++;
 	}
     }
@@ -423,9 +406,6 @@ sub get_titles_record {
     # Gesamtresponse in dbisjson_source
     $record->set_field({field => 'dbisjson_source', subfield => '', mult => 1, content => $json_ref});
 
-    # Gesamtresponse XML in dbisxml_source
-    $record->set_field({field => 'dbisxml_source', subfield => '', mult => 1, content => $quickfix_fields_ref->{dbisxml_source}}) if ($quickfix_fields_ref->{dbisxml_source});
-
     $record->set_holding([]);
     $record->set_circulation([]);
 
@@ -434,167 +414,6 @@ sub get_titles_record {
     }
     
     return $record;
-}
-
-sub _get_titles_record_quickfix_xml {
-    my ($self,$arg_ref) = @_;
-
-    # Set defaults
-    my $id       = exists $arg_ref->{id}
-    ? $arg_ref->{id}        : '';
-
-    my $database = exists $arg_ref->{database}
-        ? $arg_ref->{database}  : 'dbis';
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = $self->get_config;
-    my $ua     = $self->get_client;
-
-    my $dbis_base = $config->{'dbis'}{'baseurl'};
-    
-    my $url = $dbis_base."detail.php?titel_id=$id&bib_id=".((defined $self->{bibid})?$self->{bibid}:"")."&xmloutput=1";
-
-    my $fields_ref = {};
-        
-    my $memc_key = "dbis:title:$url";
-
-    my $memc = $config->get_memc;
-    
-    if ($memc){
-        my $fields_ref = $memc->get($memc_key);
-
-	if ($fields_ref){
-	    if ($logger->is_debug){
-		$logger->debug("Got fields for key $memc_key from memcached");
-	    }
-
-	    return $fields_ref;
-	}
-    }
-    
-    $logger->debug("Request: $url");
-
-    my $atime = new Benchmark;
-    
-    my $response = $ua->get($url)->result;
-
-    my $btime      = new Benchmark;
-    my $timeall    = timediff($btime,$atime);
-    my $resulttime = timestr($timeall,"nop");
-    $resulttime    =~s/(\d+\.\d+) .*/$1/;
-    $resulttime = $resulttime * 1000.0; # to ms
-    
-    if ($resulttime > $config->{'dbis'}{'api_logging_threshold'}){
-	$logger->error("DBIS API call $url took $resulttime ms");
-    }
-    
-    my $xmlresponse = "";
-    
-    if ($response->is_success){
-	$xmlresponse = $response->body;
-    }
-    else {        
-	$logger->info($response->code . ' - ' . $response->message);
-	return $fields_ref;
-    }
-
-    if ($logger->is_debug){
-	$logger->debug("Response: ".$response->body);
-    }
-
-    $xmlresponse =~s/^.*?<\?xml/<\?xml/ms;
-    
-    my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($xmlresponse);
-    my $root   = $tree->getDocumentElement;
-
-    # Zugriffstatus
-    #
-    # '' : Keine Ampel
-    # ' ': Unbestimmt g oder y oder r
-    # 'f': Unbestimmt, aber Volltext Zugriff g oder y (fulltext)
-    # 'g': Freier Zugriff (green)
-    # 'y': Lizensierter Zugriff (yellow)
-    # 'l': Unbestimmt Eingeschraenkter Zugriff y oder r (limited)
-    # 'r': Kein Zugriff (red)
-    
-    my $type_mapping_ref = {
-        'access_0'    => 'g', # green
-        'access_2'    => 'y', # yellow
-        'access_3'    => 'y', # yellow
-        'access_5'    => 'l', # yellow red
-        'access_500'  => 'n', # national license
-    };
-    
-    my $db_type_ref = [];
-    my @db_type_nodes = $root->findnodes('/dbis_page/details/db_type_infos/db_type_info');
-    my $mult = 1;
-    foreach my $db_type_node (@db_type_nodes){
-        my $this_db_type_ref = {};
-
-        $this_db_type_ref->{desc}       = $db_type_node->findvalue('db_type_long_text');
-        $this_db_type_ref->{desc_short} = $db_type_node->findvalue('db_type');
-        $this_db_type_ref->{desc}=~s/\|/<br\/>/g;
-	
-        push @$db_type_ref, $this_db_type_ref;
-    }
-
-    $fields_ref->{types} = $db_type_ref;
-    
-    my @title_nodes = $root->findnodes('/dbis_page/details/titles/title');
-
-    my $title_ref = {};
-    $title_ref->{other} = [];
-
-    foreach my $this_node (@title_nodes){
-        $title_ref->{main}     =  $this_node->textContent if ($this_node->findvalue('@main') eq "Y");
-        push @{$title_ref->{other}}, $this_node->textContent if ($this_node->findvalue('@main') eq "N");
-    }
-
-    $fields_ref->{title} = $title_ref;
-    
-    $fields_ref->{hints}   =  $root->findvalue('/dbis_page/details/hints');
-    $fields_ref->{content} =  $root->findvalue('/dbis_page/details/content');
-    $fields_ref->{content_eng} =  $root->findvalue('/dbis_page/details/content_eng');
-    $fields_ref->{instruction} =  $root->findvalue('/dbis_page/details/instruction');
-    $fields_ref->{publisher} =  $root->findvalue('/dbis_page/details/publisher');
-    $fields_ref->{report_periods} =  $root->findvalue('/dbis_page/details/report_periods');
-    $fields_ref->{appearence} =  $root->findvalue('/dbis_page/details/appearence');
-    $fields_ref->{isbn} =  $root->findvalue('/dbis_page/details/isbn');
-    $fields_ref->{year} =  $root->findvalue('/dbis_page/details/year');
-    $fields_ref->{remarks} = $root->findvalue('/dbis_page/details/remarks');
-
-    my @subjects_nodes =  $root->findnodes('/dbis_page/details/subjects/subject');
-
-    my $subjects_ref = [];
-
-    foreach my $subject_node (@subjects_nodes){
-        push @{$subjects_ref}, {
-	    title => $subject_node->textContent
-	};
-    }
-
-    $fields_ref->{subjects} = $subjects_ref;
-    
-    my @keywords_nodes =  $root->findnodes('/dbis_page/details/keywords/keyword');
-
-    my $keywords_ref = [];
-
-    foreach my $keyword_node (@keywords_nodes){
-        push @{$keywords_ref}, $keyword_node->textContent;
-    }
-
-    $fields_ref->{keywords} = $keywords_ref;
-
-    $fields_ref->{dbisxml_source} = $xmlresponse;
-    
-    if ($memc){
-	$memc->set($memc_key,$fields_ref,$config->{memcached_expiration}{'dbis:title'});
-    }
-    
-    return $fields_ref;
 }
 
 sub get_classifications {

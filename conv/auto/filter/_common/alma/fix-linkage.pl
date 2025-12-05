@@ -43,6 +43,11 @@ while (<TITLE>){
 	    }
 	}
     }
+    
+    # Vorhandene NZ-MMSID's merken
+    if ($titleid =~m/6441$/){
+	$linkid2mmsid{$titleid} = $titleid;
+    }
 }
 
 close(TITLE);
@@ -60,11 +65,11 @@ while (<>){
 		if ($item_ref->{'subfield'} eq "w"){
 		    my $linkid = $item_ref->{'content'};
 		    
-		    # MMSIDs als linkid wollen wir, also ignorieren
-		    next if ($linkid =~m/^\d+$/);
+		    # IZ-MMSIDs als linkid passen immer, also ignorieren
+		    next if ($linkid =~m/^\d+6476$/);
 		    
-		    # Eingrenzung auf ZDB und hbz
-		    unless ($linkid =~m/(DE-600|DE-605)/) {
+		    # Eingrenzung auf ZDB, hbz und NZ-MMSID's
+		    unless ($linkid =~m/(DE-600|DE-605|6441$)/) {
 			print STDERR "### uni: Fremd-ID $linkid nicht unterstuetzt bei MMSID $titleid\n";
 			next;
 		    }
@@ -74,6 +79,7 @@ while (<>){
 			$item_ref->{'content'} = $linkid2mmsid{$linkid};
 		    }
 		    else {
+			$item_ref->{'content'} = "none:".$item_ref->{'content'};
 			print STDERR "### uni: Fremd-ID $linkid nicht vorhanden bei MMSID $titleid\n";
 		    }
 		}

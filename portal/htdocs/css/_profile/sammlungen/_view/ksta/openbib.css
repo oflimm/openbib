@@ -301,8 +301,8 @@
     
     #ob-startpage .landing-page-img {
 	padding-bottom: 40px;
-	background:url('/images/openbib/views/kloster/startseite/startbild-1000px.jpg') left 100% no-repeat;
-        background-position: 10% 30%;
+	background:url('/images/openbib/views/ksta/frontpage.png') left 100% no-repeat;
+        background-position: 10% 5%;
 	background-size: cover;
 	height: 500px !important;
 	border-bottom-style: solid;

@@ -210,6 +210,17 @@
 </td></tr>
 [% END %]
 
+[% IF gnd.usingInstructions %]
+<tr><th class="ob-field">[% msg.maketext("Erläuterungen") %]</th><td>
+[% instructions = [];
+   FOREACH instruction IN gnd.usingInstructions;
+     instructions.push(instruction);
+   END;
+%]
+[% instructions.join(' <br/> ') %]
+</td></tr>
+[% END %]
+
 </table>
 </div>
 

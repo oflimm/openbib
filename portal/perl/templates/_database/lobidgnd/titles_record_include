@@ -58,6 +58,8 @@
 # msg.maketext("Früherer Name")
 # msg.maketext("Späterer Name")
 # msg.maketext("Zeitweiser Name")
+# msg.maketext("Erläuterungen")
+
 -%]
 
 <tr><th class="ob-field">[% msg.maketext("GND ID") %]</th><td><a class="exturl" target="_blank" href="[% gnd.id %]">[% gnd.gndIdentifier %]</a></td></tr>
@@ -207,6 +209,17 @@
    END;
 %]
 [% relatedterms.join(' | ') %]
+</td></tr>
+[% END %]
+
+[% IF gnd.usingInstructions %]
+<tr><th class="ob-field">[% msg.maketext("Erläuterungen") %]</th><td>
+[% instructions = [];
+   FOREACH instruction IN gnd.usingInstructions;
+     instructions.push(instruction);
+   END;
+%]
+[% instructions.join(' <br/> ') %]
 </td></tr>
 [% END %]
 

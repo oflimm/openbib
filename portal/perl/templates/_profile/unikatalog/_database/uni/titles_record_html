@@ -397,7 +397,7 @@ Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es au
 </div>
 [% ELSIF in_zeitpunktnrw %]
 <div class="alert alert-info">
-Open Access. Im Internet weltweit frei verfügbar im Zeitschriftenportal <a class="exturl" target="_blank" href="https://zeitpunkt.nrw/">zeit.punktNRW</a>. Den spezifischen Link zu dieser Zeitschrift dort finden Sie in dieser <a class="inturl" href="[% is_zeitpunktnrw %]">Katalogaufnahme.</a>
+Open Access. Im Internet weltweit frei verfügbar im Zeitschriftenportal <a class="exturl" target="_blank" href="https://zeitpunkt.nrw/">zeit.punktNRW</a>. Den Volltext-Link zu dieser Zeitschrift dort finden Sie in dieser <a class="inturl" href="[% is_zeitpunktnrw %]">Katalogaufnahme.</a>
 </div>
 [% END %]
 

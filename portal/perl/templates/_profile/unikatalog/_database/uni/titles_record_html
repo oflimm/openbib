@@ -395,6 +395,10 @@ Sie ermöglichen Studierenden, Wissenschaftler:innen und wissenschaftlich intere
 Neben deutschlandweit frei zugänglichen elektronischen Publikationen gibt es auch Angebote, für die sich Einzelpersonen zur Nutzung registrieren können: <a class="exturl" href="https://www.nationallizenzen.de/ind_inform_registration">Infos zur Registrierung und Anmeldung von Privatpersonen</a>
 </p>
 </div>
+[% ELSIF in_zeitpunktnrw %]
+<div class="alert alert-info">
+Open Access. Im Internet weltweit frei verfügbar im Zeitschriftenportal <a class="exturl" target="_blank" href="https://zeitpunkt.nrw/">zeit.punktNRW</a>. Den spezifischen Link zu dieser Zeitschrift dort finden Sie in dieser <a class="inturl" href="[% is_zeitpunktnrw %]">Katalogaufnahme.</a>
+</div>
 [% END %]
 
 <div class="d-flex flex-wrap ob-fulltitle_actions mt-4">

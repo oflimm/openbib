@@ -77,7 +77,7 @@
 	</li>
         <li class="nav-item">
 	  <a class="nav-link text-black" href="[% path_prefix %]/[% config.get('search_history_loc') %].html?l=[% lang %]">
-            [% msg.maketext("Suchhistorie") %]
+            <i class="fas fa-search"></i> [% msg.maketext("Suchhistorie") %]
           </a>
 	</li>
         

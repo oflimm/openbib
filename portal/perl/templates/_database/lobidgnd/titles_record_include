@@ -19,6 +19,38 @@
 
    gnd = record.get_fields.${'lobid_source'}.first.content;
 
+   discriminatory_gnd_term = {
+     'Australneger' = 1
+     'Australnegerin' = 1
+     'Bondelswart-Hottentotten' = 1
+     'Buschleute' = 1
+     'Buschmänner' = 1
+     'Buschneger' = 1
+     'Halbblut' = 1
+     'Hottentotten' = 1
+     'Kaffern' = 1
+     'Klippkaffern' = 1
+     'Mensch' = 1
+     'Menschenrasse' = 1
+     'Menschenrassen' = 1
+     'Mischling' = 1
+     'Mohr' = 1
+     'Neger' = 1
+     'Negerbild' = 1
+     'Negerin' = 1
+     'Nickneger' = 1
+     'Schluckneger' = 1
+     'Schwarze Rasse' = 1
+     'Zigeunerarabisch' = 1
+     'Zigeunergriechisch' = 1
+     'Zigeunerisch' = 1
+     'Zigeuneritalienisch' = 1
+     'Zigeunerrussisch' = 1
+     'Zigeunerserbisch' = 1
+     'Zigeunerspanisch' = 1
+     'Zigeunersprache' = 1
+   };
+
 #   USE dumper;dumper.dump(gnd);
 -%]
 
@@ -80,7 +112,17 @@
 
 [% IF gnd.variantName %]
 <tr><th class="ob-field">[% msg.maketext("Andere Namen") %]</th><td>
-[% gnd.variantName.join(' | ') %]
+<ul>
+[%-
+    remark = msg.maketext("Diskriminierender Begriff, zu Retrievalzwecken als Quasisynonym beibehalten");
+    FOREACH term IN gnd.variantName;
+      IF discriminatory_gnd_term.${term};
+        term = "<i class=\"fas fa-ban text-danger\"></i> ${term} (${remark})";
+      END;
+-%]
+<li>[% term %]</li>
+[%  END %]
+</ul>
 </td></tr>
 [% END %]
 

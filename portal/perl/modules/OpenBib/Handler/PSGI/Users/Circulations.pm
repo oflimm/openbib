@@ -34,6 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Crypt::JWT qw(decode_jwt encode_jwt);
 use Email::Valid;
 use DBI;
 use Digest::MD5;
@@ -82,8 +83,6 @@ sub show_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-
-
     # Dispatched Args
     my $view           = $self->param('view');
     my $userid         = $self->param('userid');
@@ -99,6 +98,25 @@ sub show_collection {
     my $stylesheet     = $self->param('stylesheet');
     my $useragent      = $self->param('useragent');
     my $path_prefix    = $self->param('path_prefix');
+
+    # CGI Args for payment status
+    my $jwt            = $query->param('jwt');
+
+    my $payment_ref    = $config->get('payment');
+
+    my $payment_decoding_error = 0;
+    
+    my $payment_result_ref = {};
+
+    if ($jwt){
+	eval {
+	    $payment_result_ref = decode_jwt(token => $jwt, key => $payment_ref->{secret}, accepted_alg => 'HS256');
+	};
+	
+	if ($@){
+	    $payment_decoding_error = 1;
+	}
+    }
     
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
@@ -139,6 +157,10 @@ sub show_collection {
     
     # TT-Data erzeugen
     my $ttdata={
+	jwt                    => $jwt,
+	payment_decoding_error => $payment_decoding_error,
+	payment_result         => $payment_result_ref,
+	
         authenticator => $authenticator,
         loginname  => $loginname,
         password   => $password,

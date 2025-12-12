@@ -19,6 +19,32 @@
 </div>
 [% END %]
 
+[% IF jwt %]
+<div class="card">
+<div class="card-header">[% msg.maketext("Elektronische Bezahlung") %]</div>
+<div class="card-body">
+[%   IF payment_decoding_error %]
+<div class="alert alert-danger mt-2 mb-3 pt-4">
+<h2>[% msg.maketext("Die Signierung der Antwort vom Zahlungsdienstleister ist nicht korrekt.") %]</h2>
+</div>
+[%   ELSIF payment_result.code.match('200') %]
+<div class="alert alert-success mt-2 mb-3 pt-4">
+<h2>[% msg.maketext("Elektronische Bezahlung erfolgreich") %]</h2>
+<p>
+[% payment_result.message %]
+</p>
+</div>
+[%   ELSIF payment_result.code.match('^(303|500|501)$') %]
+<div class="alert alert-warning mt-2 mb-3 pt-4">
+<h2>[% msg.maketext("Elektronische Bezahlung NICHT erfolgreich!") %]</h2>
+<p>
+[% payment_result.message %]
+</p>
+</div>
+[%   END %]
+[% END %]
+</div>
+
 [% IF layout_param.always_portrait %]
 <style>
 @media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {

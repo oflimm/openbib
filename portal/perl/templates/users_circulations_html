@@ -25,7 +25,8 @@
 <div class="card-body">
 [%   IF payment_decoding_error %]
 <div class="alert alert-danger mt-2 mb-3 pt-4">
-<h2>[% msg.maketext("Die Signierung der Antwort vom Zahlungsdienstleister ist nicht korrekt.") %]</h2>
+<h2>[% msg.maketext("Fehler") %]</h2>
+<p>[% msg.maketext("Die Signierung der Antwort vom Zahlungsdienstleister ist nicht korrekt.") %]</p>
 </div>
 [%   ELSIF payment_result.code.match('200') %]
 <div class="alert alert-success mt-2 mb-3 pt-4">

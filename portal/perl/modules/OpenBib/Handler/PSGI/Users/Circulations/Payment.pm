@@ -92,20 +92,16 @@ sub show_collection {
     
     my $external_id  = $userinfo_ref->{external_id};
 
-    my $expiration_date = ParseDateDelta("in 5 minutes");
-    my $expiration_timestamp = UnixDate($expiration_date,"%Y-%m-%d %H:%M:00");
-
     my $return_url = "https://$servername$path_prefix/$config->{users_loc}/id/$user->{ID}/circulations.html?l=$lang";
     
     my $payload = {
 	language    => $lang,
-	exp         => $expiration_timestamp,
 	user        => $external_id,
 	return_url  => $return_url,
 	institution => $payment_ref->{institution}
     };
        
-    my $jwt =  encode_jwt(payload => $payload, alg =>'HS256', key => $payment_ref->{secret});
+    my $jwt =  encode_jwt(payload => $payload, alg =>'HS256', key => $payment_ref->{secret}, auto_iat => 1, relative_exp => 300, relative_nbf => 0);
 
     my $payment_url = $payment_ref->{base_url}."?apikey=$payment_ref->{apikey}&jwt=$jwt";
 

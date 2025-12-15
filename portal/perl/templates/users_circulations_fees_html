@@ -62,9 +62,18 @@
 <p>[% msg.maketext("Gebühren gesamt:") %] <span style="color:red;font-size: 1.2em;">[% fees.amount %]</span></p>
 [% END %]
 
-<div class="alert alert-info mt-2 mb-2">
+<div class="alert alert-info">
+<p>
 [% msg.maketext("So können Sie bei uns bezahlen") %]: <a class="exturl" href="[%cms_links.bezahlen %]" target="_blank">[% msg.maketext("Gebühren und Preise") %]</a>
+</p>
+[% username = user.get_username %]
+[% IF fees.amount && config.get('payment_testuser').${username} && NOT disable_payment %]
+<p>
+[% msg.maketext("Sie können auch direkt elektronisch bezahlen.") %]
+</p>
+<a class="btn btn-primary" href="[% path_prefix %]/[% config.get("users_loc") %]/id/[% user.ID %]/[% config.get("circulations_loc") %]/id/payment.html?l=[% lang %]">[% msg.maketext("Elektronisch bezahlen") %]</a>
 </div>
+[% END %]
 
 <!-- Todo: epc QR-Code fuer automatische Uebernahme der Zahlungsinformationen in Ueberweisung -->
 

@@ -41,6 +41,7 @@
                 #'Jahr', # msg.maketext("Jahr") T260c
                 'Erscheinungsverlauf', # msg.maketext("Erscheinungsverlauf") Erscheinungsverlauf
                 'Erscheinungsweise', # msg.maketext("Erscheinungsweise") Erscheinungsweise
+                'Digitale Ausgabe', # msg.maketext("Digitale Ausgabe") Digitale Ausgabe
                 'T0591', # msg.maketext("T0591") Verfasser Quelle
                 'T0594', # msg.maketext("T0594") ErschOrt Quelle
                 'T0595', # msg.maketext("T0595") ErschJahr Quelle

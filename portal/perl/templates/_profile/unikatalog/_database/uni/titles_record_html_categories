@@ -24,142 +24,6 @@
    normdata = record.to_custom_field_scheme_1;
 
    #USE dumper;dumper.dump(normdata);
-
-   in_zeitpunktnrw = 0;
-
-   zeitpunktnrw_mmsids = {
-    '990180234090206441' = 1
-    '990182324240206441' = 1
-    '990182326040206441' = 1
-    '990182326170206441' = 1
-    '990182512350206441' = 1
-    '990183053950206441' = 1
-    '990183054950206441' = 1
-    '990183054960206441' = 1
-    '990183057120206441' = 1
-    '990183157580206441' = 1
-    '990183157990206441' = 1
-    '990189397950206441' = 1
-    '990189398630206441' = 1
-    '990189398710206441' = 1
-    '990189402300206441' = 1
-    '990194143500206441' = 1
-    '990195302080206441' = 1
-    '990197037990206441' = 1
-    '990197533240206441' = 1
-    '990197533470206441' = 1
-    '990198204580206441' = 1
-    '990202397750206441' = 1
-    '990202575800206441' = 1
-    '990202620770206441' = 1
-    '990202637510206441' = 1
-    '990204439280206441' = 1
-    '990206042930206441' = 1
-    '990206042980206441' = 1
-    '990206043000206441' = 1
-    '990206043190206441' = 1
-    '990206097630206441' = 1
-    '990206550380206441' = 1
-    '990206601000206441' = 1
-    '990206740070206441' = 1
-    '990206740200206441' = 1
-    '990206747470206441' = 1
-    '990206903820206441' = 1
-    '990208468510206441' = 1
-    '990209332900206441' = 1
-    '990209370850206441' = 1
-    '990209751160206441' = 1
-    '990209766460206441' = 1
-    '990210047700206441' = 1
-    '990210459730206441' = 1
-    '990210494850206441' = 1
-    '990210495120206441' = 1
-    '990218940230206441' = 1
-    '990219078040206441' = 1
-    '990219078330206441' = 1
-    '990220496260206441' = 1
-    '990223776200206441' = 1
-    '990223776470206441' = 1
-    '990223776500206441' = 1
-    '990223805720206441' = 1
-    '990223805990206441' = 1
-    '990223827840206441' = 1
-    '990223827990206441' = 1
-    '990223858710206441' = 1
-    '990223858730206441' = 1
-    '990223858750206441' = 1
-    '990223916460206441' = 1
-    '990223916510206441' = 1
-    '990223981250206441' = 1
-    '990223995960206441' = 1
-    '990224031000206441' = 1
-    '990225135230206441' = 1
-    '990225165270206441' = 1
-    '990225208040206441' = 1
-    '990225208050206441' = 1
-    '990225208060206441' = 1
-    '990225208100206441' = 1
-    '990225208110206441' = 1
-    '990225208160206441' = 1
-    '990225985030206441' = 1
-    '990227083610206441' = 1
-    '990227109160206441' = 1
-    '990227140170206441' = 1
-    '990227140230206441' = 1
-    '990228154230206441' = 1
-    '990228599990206441' = 1
-    '990363331080206441' = 1
-    '990363595330206441' = 1
-    '990363595890206441' = 1
-    '990363596050206441' = 1
-    '990363596710206441' = 1
-    '990363596810206441' = 1
-    '990363605360206441' = 1
-    '990363605370206441' = 1
-    '990363605410206441' = 1
-    '990363963240206441' = 1
-    '990364528090206441' = 1
-    '990364679110206441' = 1
-    '990366228730206441' = 1
-    '990366229430206441' = 1
-    '990366229440206441' = 1
-    '990366229550206441' = 1
-    '990366649840206441' = 1
-    '990366650290206441' = 1
-    '990368104530206441' = 1
-    '990368104570206441' = 1
-    '990368123950206441' = 1
-    '990368123960206441' = 1
-    '990368124560206441' = 1
-    '990368615190206441' = 1
-    '990368638280206441' = 1
-    '990368639480206441' = 1
-    '990370597900206441' = 1
-    '990370598240206441' = 1
-    '990370598420206441' = 1
-    '990370598430206441' = 1
-    '99370773718306441' = 1
-    '99370774945206441' = 1
-    '99370776979906441' = 1
-    '99371078821306441' = 1
-    '99371078823406441' = 1
-    '99371657150506441' = 1
-    '99371661860706441' = 1
-    '99371769153606441' = 1
-    '99371770375406441' = 1
-    '99371806239906441' = 1
-    '99371806242406441' = 1
-    '99371820046906441' = 1
-    '99373127351606441' = 1
-    '99373330168206441' = 1
-    '99373746520606441' = 1
-    '99374090345306441' = 1
-    '99374148909006441' = 1
-    '99374148914206441' = 1
-    '99375061151206441' = 1
-    '99375067876706441' = 1
-    '99375681328506441' = 1
-   };
    
    catalog_has_authorities = config.get('source_systems').${config.get_system_of_db(record.database)}.has_authorities;
 -%]
@@ -1076,8 +940,9 @@ FOREACH field IN normdata;
 
          rswkswt_done.${searchterm} = 1;
 
+
     CASE [ "T0770" "T0772" "T0776" "T0780" "T0785"];    
-         content = thisfield.${'i'};
+         content   = thisfield.${'i'};
          thistitle = thisfield.${'t'};
          thisinfo  = thisfield.${'n'};
 	 thisisbn  = thisfield.${'z'};
@@ -1104,6 +969,12 @@ FOREACH field IN normdata;
 	 
          fullcontentstring = fullcontent.join(' ');
 
+	 digital_reproduction = 0;
+
+         IF content.match("Elektronische Reproduktion") && NOT content.match('Elektronische Reproduktion von');
+	   digital_reproduction = 1;
+	 END;
+	 
          # ggf. verlinken
          IF fullcontentstring ;
 	  IF thisid.match('(6441|6476)$');
@@ -1115,9 +986,6 @@ FOREACH field IN normdata;
 
 	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
 
-            IF zeitpunktnrw_mmsids.${thisid};
-	      in_zeitpunktnrw = localurl;
-	    END;
 	  ELSIF thisisbn ;
 	    # thisid = thisid.replace('\(.+?\)','');
             searchterm    = thisisbn;
@@ -1134,20 +1002,17 @@ FOREACH field IN normdata;
             localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
 
 	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
-	  ELSIF thiszdbid == '0' ; # Disable
-	    # thisid = thisid.replace('\(.+?\)','');
-            searchterm    = thiszdbid;
-            searchprefix  = config.get('searchfield').zdbid.prefix;
-
-            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
-
-	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
 	  END;
 
           content = "${content} ${fullcontentstring}";
          END; 
-        
-         IF content ;
+
+         IF digital_reproduction && content ;
+           IF NOT content_map.${'Digitale Ausgabe'} ;
+	      content_map.${'Digitale Ausgabe'} = [];
+	   END;
+           content_map.${'Digitale Ausgabe'}.push(content);
+         ELSIF content ;
            IF NOT content_map.${'Hinweis'} ;
 	      content_map.${'Hinweis'} = [];
 	   END;
@@ -1639,7 +1504,8 @@ display_types = {
    'Schlagwort'        => 'list',
    'Hinweis'           => 'list',
    'Enthaltener Titel' => 'list',
-   'Sammlungs-Portal'  => 'list',      
+   'Sammlungs-Portal'  => 'list',
+   'Digitale Ausgabe'   => 'list',
 };
 
 # USE dumper;dumper.dump(content_map);dumper.dump(singular_normdata);dumper.dump(record_type);

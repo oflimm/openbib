@@ -23,5 +23,5 @@
 </p>
 </div>
 
-<a class="btn btn-primary mb-3 mt-3" href="[% payment_url %]" target="_blank">[% msg.maketext("Zum Zahlungsdienstleister") %]</a>
+<a class="btn btn-primary mb-3 mt-3" href="[% payment_url %]">[% msg.maketext("Zum Zahlungsdienstleister") %]</a>
 

@@ -100,7 +100,7 @@ sub show_collection {
     my $path_prefix    = $self->param('path_prefix');
 
     # CGI Args for payment status
-    my $jwt            = $query->param('jwt');
+    my $jwt            = $query->param('bibpay_jwt');
 
     my $payment_ref    = $config->get('payment');
 

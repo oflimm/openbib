@@ -671,10 +671,10 @@ FOREACH field IN normdata;
 	 END;
 
          IF content;
-           IF NOT content_map.${'Hinweis'} ;
-	     content_map.${'Hinweis'} = [];
+           IF NOT content_map.${'Vorgänger'} ;
+	     content_map.${'Vorgänger'} = [];
 	   END;
-           content_map.${'Hinweis'}.push(content);
+           content_map.${'Vorgänger'}.push(content);
 	 END;
 
     CASE "T0250"; # Auflage
@@ -803,7 +803,17 @@ FOREACH field IN normdata;
            content_map.${'Gesamttitel'}.push(content);
 	 END;
 
-    CASE [ "T0500" "T0555" "T0504" "T0530" "T0263" "T0546"];    
+    CASE [ "T0530" ];    
+         content = thisfield.${'a'};
+
+         IF content ;
+           IF NOT content_map.${'Andere Ausgaben'} ;
+	      content_map.${'Andere Ausgaben'} = [];
+	   END;
+           content_map.${'Andere Ausgaben'}.push(content);
+	 END;
+
+    CASE [ "T0500" "T0555" "T0504" "T0263" "T0546"];    
          content = thisfield.${'a'};
 
          IF content ;
@@ -941,7 +951,7 @@ FOREACH field IN normdata;
          rswkswt_done.${searchterm} = 1;
 
 
-    CASE [ "T0770" "T0772" "T0776" "T0780" "T0785"];    
+    CASE [ "T0776" ];    
          content   = thisfield.${'i'};
          thistitle = thisfield.${'t'};
          thisinfo  = thisfield.${'n'};
@@ -969,12 +979,58 @@ FOREACH field IN normdata;
 	 
          fullcontentstring = fullcontent.join(' ');
 
-	 digital_reproduction = 0;
+         # ggf. verlinken
+         IF fullcontentstring ;
+	  IF thisid.match('(6441|6476)$');
+	    # thisid = thisid.replace('\(.+?\)','');
+            searchterm    = thisid;
+            searchprefix  = config.get('searchfield').id.prefix;
 
-         IF content.match("Elektronische Reproduktion") && NOT content.match('Elektronische Reproduktion von');
-	   digital_reproduction = 1;
+            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+
+	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
+
+	  END;
+
+          content = "${content} ${fullcontentstring}";
+         END; 
+
+         IF content ;
+           IF NOT content_map.${'Andere Ausgaben'} ;
+	      content_map.${'Andere Ausgaben'} = [];
+	   END;
+           content_map.${'Andere Ausgaben'}.push(content);
 	 END;
+
+
+    CASE [ "T0770" "T0772" "T0785"];    
+         content   = thisfield.${'i'};
+         thistitle = thisfield.${'t'};
+         thisinfo  = thisfield.${'n'};
+	 thisisbn  = thisfield.${'z'};
+	 thisissn  = thisfield.${'x'};	 
+         thisid    = thisfield.${'w'};
+
+         fullcontent = [];
+	 IF thisinfo ;
+	    fullcontent.push(thisinfo);
+	 END;
+
+         IF thistitle ;
+	    IF thisinfo ;
+	      thistitle = "(${thistitle})";
+	    END;
+	    fullcontent.push(thistitle);
+	 END ;
+
+         thiszdbid = "";
+
+         IF thisid.match('\(DE-600\)');
+            thiszdbid = thisid.replace('\(DE-600\)','');
+         END;
 	 
+         fullcontentstring = fullcontent.join(' ');
+
          # ggf. verlinken
          IF fullcontentstring ;
 	  IF thisid.match('(6441|6476)$');
@@ -1007,18 +1063,114 @@ FOREACH field IN normdata;
           content = "${content} ${fullcontentstring}";
          END; 
 
-         IF digital_reproduction && content ;
-           IF NOT content_map.${'Digitale Ausgabe'} ;
-	      content_map.${'Digitale Ausgabe'} = [];
-	   END;
-           content_map.${'Digitale Ausgabe'}.push(content);
-         ELSIF content ;
+         IF content ;
            IF NOT content_map.${'Hinweis'} ;
 	      content_map.${'Hinweis'} = [];
 	   END;
            content_map.${'Hinweis'}.push(content);
 	 END;
 
+    CASE [ "T0780" ];    
+         content   = thisfield.${'i'};
+         thistitle = thisfield.${'t'};
+         thisinfo  = thisfield.${'n'};
+	 thisisbn  = thisfield.${'z'};
+	 thisissn  = thisfield.${'x'};	 
+         thisid    = thisfield.${'w'};
+
+         fullcontent = [];
+	 IF thisinfo ;
+	    fullcontent.push(thisinfo);
+	 END;
+
+         IF thistitle ;
+	    IF thisinfo ;
+	      thistitle = "(${thistitle})";
+	    END;
+	    fullcontent.push(thistitle);
+	 END ;
+
+         thiszdbid = "";
+
+         IF thisid.match('\(DE-600\)');
+            thiszdbid = thisid.replace('\(DE-600\)','');
+         END;
+	 
+         fullcontentstring = fullcontent.join(' ');
+
+         # ggf. verlinken
+         IF fullcontentstring ;
+	  IF thisid.match('(6441|6476)$');
+	    # thisid = thisid.replace('\(.+?\)','');
+            searchterm    = thisid;
+            searchprefix  = config.get('searchfield').id.prefix;
+
+            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+
+	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
+
+	  END;
+
+          content = "${content} ${fullcontentstring}";
+         END; 
+
+         IF content ;
+           IF NOT content_map.${'Vorgänger'} ;
+	      content_map.${'Vorgänger'} = [];
+	   END;
+           content_map.${'Vorgänger'}.push(content);
+	 END;
+
+    CASE [ "T0785" ];    
+         content   = thisfield.${'i'};
+         thistitle = thisfield.${'t'};
+         thisinfo  = thisfield.${'n'};
+	 thisisbn  = thisfield.${'z'};
+	 thisissn  = thisfield.${'x'};	 
+         thisid    = thisfield.${'w'};
+
+         fullcontent = [];
+	 IF thisinfo ;
+	    fullcontent.push(thisinfo);
+	 END;
+
+         IF thistitle ;
+	    IF thisinfo ;
+	      thistitle = "(${thistitle})";
+	    END;
+	    fullcontent.push(thistitle);
+	 END ;
+
+         thiszdbid = "";
+
+         IF thisid.match('\(DE-600\)');
+            thiszdbid = thisid.replace('\(DE-600\)','');
+         END;
+	 
+         fullcontentstring = fullcontent.join(' ');
+
+         # ggf. verlinken
+         IF fullcontentstring ;
+	  IF thisid.match('(6441|6476)$');
+	    # thisid = thisid.replace('\(.+?\)','');
+            searchterm    = thisid;
+            searchprefix  = config.get('searchfield').id.prefix;
+
+            localurl  = "${path_prefix}/${config.get('search_loc')}.html?${request_base}profile=${searchprofileid_of_database};${searchprefix}=${searchterm}";
+
+	    fullcontentstring = "<a href=\"${localurl}\" class=\"inturl\">${fullcontentstring}</a>";
+
+	  END;
+
+          content = "${content} ${fullcontentstring}";
+         END; 
+
+         IF content ;
+           IF NOT content_map.${'Nachfolger'} ;
+	      content_map.${'Nachfolger'} = [];
+	   END;
+           content_map.${'Nachfolger'}.push(content);
+	 END;
 
     CASE [ "T0773" ];    
          thisinfo  = thisfield.${'p'};
@@ -1500,12 +1652,14 @@ FOREACH field IN singular_normdata;
 END;
 
 display_types = {
-   'URL'               => 'list',
-   'Schlagwort'        => 'list',
-   'Hinweis'           => 'list',
-   'Enthaltener Titel' => 'list',
-   'Sammlungs-Portal'  => 'list',
-   'Digitale Ausgabe'   => 'list',
+   'URL'                  => 'list',
+   'Schlagwort'           => 'list',
+   'Hinweis'              => 'list',
+   'Enthaltener Titel'    => 'list',
+   'Sammlungs-Portal'     => 'list',
+   'Andere Ausgaben'      => 'list',
+   'Vorgänger'            => 'list',
+   'Nachfolger'           => 'list',
 };
 
 # USE dumper;dumper.dump(content_map);dumper.dump(singular_normdata);dumper.dump(record_type);

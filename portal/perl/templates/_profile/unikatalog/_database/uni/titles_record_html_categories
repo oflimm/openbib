@@ -981,7 +981,7 @@ FOREACH field IN normdata;
 
          # ggf. verlinken
          IF fullcontentstring ;
-	  IF thisid.match('(6441|6476)$');
+	  IF thisid.match('^\d+?(6441|6476)$');
 	    # thisid = thisid.replace('\(.+?\)','');
             searchterm    = thisid;
             searchprefix  = config.get('searchfield').id.prefix;
@@ -1033,7 +1033,7 @@ FOREACH field IN normdata;
 
          # ggf. verlinken
          IF fullcontentstring ;
-	  IF thisid.match('(6441|6476)$');
+	  IF thisid.match('^\d+?(6441|6476)$');
 	    # thisid = thisid.replace('\(.+?\)','');
             searchterm    = thisid;
             searchprefix  = config.get('searchfield').id.prefix;
@@ -1100,7 +1100,7 @@ FOREACH field IN normdata;
 
          # ggf. verlinken
          IF fullcontentstring ;
-	  IF thisid.match('(6441|6476)$');
+	  IF thisid.match('^\d+?(6441|6476)$');
 	    # thisid = thisid.replace('\(.+?\)','');
             searchterm    = thisid;
             searchprefix  = config.get('searchfield').id.prefix;
@@ -1151,7 +1151,7 @@ FOREACH field IN normdata;
 
          # ggf. verlinken
          IF fullcontentstring ;
-	  IF thisid.match('(6441|6476)$');
+	  IF thisid.match('^\d+?(6441|6476)$');
 	    # thisid = thisid.replace('\(.+?\)','');
             searchterm    = thisid;
             searchprefix  = config.get('searchfield').id.prefix;

@@ -272,6 +272,19 @@
       fulltext_desc = msg.maketext("Unbekannter Zugang");;
     END;
 
+    # Bei fehlendem Volltextlink ggf. anreichern ueber E4120
+    IF NOT fulltext && normdata.${'E4120'};
+      fulltext  = normdata.${'E4120'}.first.content;
+      IF normdata.${'E4120'}.first.subfield == "g" ;
+        fulltext_availability = "lawngreen";
+        fulltext_icon = config.get('ezb_green_img');
+        fulltext_desc = msg.maketext("Volltext mit freiem Zugang");;
+      ELSIF normdata.${'E4120'}.first.subfield == "y" ;
+        fulltext_availability = "yellow";
+        fulltext_icon = config.get('ezb_yellow_img');
+        fulltext_desc = msg.maketext("Zugriff nur im Netz der Universität zu Köln bzw. für autorisierte Benutzer möglich");
+      END;
+    END;
 
 -%]
 

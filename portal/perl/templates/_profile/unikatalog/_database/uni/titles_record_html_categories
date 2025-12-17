@@ -229,6 +229,24 @@ FOREACH item IN normdata.${'T4120'} ;
    END;
 END;
 
+#USE dumper;dumper.dump(normdata.${'E4120'});
+
+IF NOT normdata.${'T4120'} ;
+  FOREACH item IN normdata.${'E4120'} ;
+    IF item.subfield == 'g' ;
+      is_licensed = 0;
+      is_oa = 1 ;
+      LAST ;
+    ELSIF item.subfield == 'y';
+      is_licensed = 1;
+      LAST ;
+    ELSIF item.${'n'};
+      is_national = 1;
+      LAST ;
+    END;
+  END;
+END;
+
 is_bindeeinheit = 0;
 
 binding_units = [];

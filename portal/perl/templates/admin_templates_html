@@ -78,7 +78,7 @@
 <div class="table-responsive">
 <table class="table table-striped ">
 <thead>
-<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Sprache") %]</th><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("View") %]</th><th></th><th></th></tr>
+<tr><th>[% msg.maketext("Id") %]</th><th>[% msg.maketext("Sprache") %]</th><th>[% msg.maketext("Name") %]</th><th>[% msg.maketext("View") %]</th><th>[% msg.maketext("Freigabe") %]</th><th></th><th></th></tr>
 </thead>
 <tbody>
 [% FOREACH templateinfo IN templateinfos.all %]
@@ -93,6 +93,21 @@
 [%   END %]
 </td>
 <td>[% templateinfo.viewid.viewname %]: [% templateinfo.viewid.description %]</td>
+<td>
+[%-
+
+    template_users = config.get_users_of_template(templateinfo.id);
+    
+-%]
+[%# USE dumper;dumper.dump(template_users)%]
+[% IF template_users.size > 0 %]
+<ul>
+[%   FOREACH thisuser IN template_users %]
+<li><a class="inturl" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('users_loc') %]/id/[% thisuser.id %]">[% thisuser.username %]</a></li>
+[%   END %]
+</ul>
+[% END %]
+</td>
 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><form method="post" action="[% path_prefix %]/[% config.get('templates_loc') %]/id/[% templateinfo.id %]"><input type="hidden" name="_method" value="DELETE"/><input type="hidden" name="confirm" value="1"/><button class="btn btn-primary mb-2" type="submit">[% msg.maketext("L&ouml;schen") %]</button></form></td></tr>
 [% END %]
 </tbody>

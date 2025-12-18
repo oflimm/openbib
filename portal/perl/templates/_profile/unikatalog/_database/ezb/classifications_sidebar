@@ -13,6 +13,7 @@
 <input type="hidden" name="l"         value="[% lang %]" />
 <input type="hidden" name="sm"        value="seq" />
 <input type="hidden" name="page"      value="1" />
+<input type="hidden" name="st"        value="5" />
 <input type="hidden" name="num"       value="20" />
 
 [% classification_name = searchquery.get_searchfield('classification').val %]

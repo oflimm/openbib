@@ -19,7 +19,7 @@
 [% msg.maketext("Sie können Ihre Gebühren elektronisch über den Zahlungsdienstleister PayOne der Universität zu Köln begleichen. Dort stehen Ihnen - ggf. abhängig von dem zu zahlenden Betrag - verschiedene Zahlungsmethoden zur Verfügung.") %]
 </p>
 <p>
-[% msg.maketext("Nach Abschluß des Zahlungsvorgangs werden Sie auf die Übersichtsseite Ihres Bibliothekskontos hier zurück geleitet.") %]
+[% msg.maketext("Nach Abschluß des Zahlungsvorgangs springen Sie zurück in den Universitätskatalog und gelangen dort nach einer erneuten Authentifizierung wieder zur Übersichtsseite Ihres Bibliothekskontos.") %]
 </p>
 </div>
 

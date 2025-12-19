@@ -96,6 +96,105 @@ sub new {
     return $self;
 }
 
+sub wipe_secrets {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config_secrets_ref = {
+	'mojo' => {
+	    'secrets' => 1,
+	},
+	'pgdbpasswd' => 1,
+	'dbpasswd' => 1,
+	'systemdbpasswd' => 1,
+	'enrichmntdbpasswd' => 1,
+	'statisticsdbpasswd' => 1,
+	'haproxy' => {
+	    'password' => 1,
+	},
+	'anon_hashkey' => 1,
+	'redis' => {
+	    'password' => 1,
+	},
+	'upload_provenances' => {
+	    'password' => 1,
+	},
+	'testuser' => {
+	    'password' => 1,
+	},
+	'payment' => {
+	    'secret' => 1,
+	    'apikey' => 1,
+	},
+	'usbauth_masterpass' => 1,
+	'sisauth' => {
+	    'proxy_pw' => 1,
+	},
+	'sis' => {
+	    'api_password' => 1,
+	},
+	'alma' => {
+	    'api_key' => 1,
+	    'webhook_secret' => 1,
+	},
+	'authenticator' => {
+	    'ldap' => {
+		'adub' => {
+		    'proxy_pw' => 1,
+		},
+	    },
+	},
+	'elasticsearch' => {
+	    'userinfo' => 1,
+	},
+	'eds' => {
+	    'default_user' => 1,
+	    'default_password' => 1,
+	},
+	'adminpasswd' => 1,
+	'unpaywall_user' => 1,
+	'covers' => {
+	    'vlb' => {
+		'api_user' => 1,
+		'api_token' => 1,
+	    },
+	},
+	'bibsonomy_api_user' => 1,
+	'bibsonomy_api_key' => 1,
+	'journaltocs_api_user' => 1,
+	'librarything_api_key' => 1,
+	'recaptcha_user' => 1,
+	'recaptcha_public_key' => 1,
+	'recaptcha_private_key' => 1,
+	'rezensionen_online_key' => 1,	    
+    };
+
+    my $fake_password = "xeeb9uL1the0aengohbohx7EeZohmahci1eibeis";
+
+    foreach my $key (keys %{$config_secrets_ref}){
+	if (ref $config_secrets_ref->{$key} eq 'HASH'){
+	    foreach my $subkey (keys %{$config_secrets_ref->{$key}}){
+		$logger->debug("2nd ".ref $config_secrets_ref->{$key}{$subkey});	    
+		if (ref $config_secrets_ref->{$key}{$subkey} eq 'HASH'){
+		    foreach my $subsubkey (keys %{$config_secrets_ref->{$key}{$subkey}}){
+			$self->{$key}{$subkey}{$subsubkey} = $fake_password;
+		    }
+		}
+		else {
+		    $self->{$key}{$subkey} = $fake_password;
+		}
+	    }
+	}	
+	else {
+	    $self->{$key} = $fake_password;
+	}
+    }
+    
+    return $self;
+}
+
 sub get_schema {
     my $self = shift;
 
@@ -6250,7 +6349,7 @@ sub get_scopes {
 
     return sort keys %$scopes_ref;
 }
-
+	  
 sub new_authtoken {
     my ($self,$arg_ref)=@_;
 

@@ -1231,7 +1231,7 @@ sub add_default_ttdata {
     $ttdata->{'representation'} = $representation;
     $ttdata->{'content_type'}   = $content_type;
     $ttdata->{'session'}        = $session;
-    $ttdata->{'config'}         = $config;
+    $ttdata->{'config'}         = $config->wipe_secrets;
     $ttdata->{'qopts'}          = $queryoptions;
     $ttdata->{'user'}           = $user;
     $ttdata->{'statistics'}     = $statistics;

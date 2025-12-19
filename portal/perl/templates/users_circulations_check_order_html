@@ -19,18 +19,15 @@
   # date/time based activation of alerts
   USE date ; # Seconds since epoch
   current_date       = date.now ;
-  activate_from_date = date.format('2024/12/19 00:00:00', format => '%s'); # YYYY/MM/DD HH:MM:SS
-  activate_to_date   = date.format('2025/01/06 00:00:00', format => '%s');
+  activate_from_date = date.format('2025/12/19 00:00:00', format => '%s'); # YYYY/MM/DD HH:MM:SS
+  activate_to_date   = date.format('2026/01/05 00:00:00', format => '%s');
   
 %]
 
 [% IF current_date >= activate_from_date && current_date <= activate_to_date %]
 <div class="alert alert-info mt-5">
 <p>
-[% msg.maketext("Magazinbestellungen, die nach dem 19. Dezember eingehen, werden erst ab dem 2.01.25 bearbeitet.") %]
-</p>
-<p>
-[% msg.maketext("Bestellungen für den Lesesaal Histrorische Sammlungen erst am 6.1.2025.") %]
+[% msg.maketext("Magazinbestellungen, die ab dem 19. Dezember eingehen, werden erst ab dem 5. Januar bearbeitet.") %]
 </p>
 </div>
 [% END %]

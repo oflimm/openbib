@@ -1,0 +1,27 @@
+[%#-
+#######################################################################
+#
+# Templatename: users_circulations_payment_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller gemahnten Medien
+#
+#######################################################################
+-%]
+
+[%# USE dumper;dumper.dump(payload)%]
+
+<div class="alert alert-info">
+<p>
+[% msg.maketext("Sie können Ihre Gebühren elektronisch über den Zahlungsdienstleister PayOne der Universität zu Köln begleichen. Dort stehen Ihnen - ggf. abhängig von dem zu zahlenden Betrag - verschiedene Zahlungsmethoden zur Verfügung.") %]
+</p>
+<p>
+[% msg.maketext("Nach Abschluß des Zahlungsvorgangs springen Sie zurück in den Universitätskatalog und gelangen dort nach einer erneuten Authentifizierung wieder zur Übersichtsseite Ihres Bibliothekskontos.") %]
+</p>
+</div>
+
+<a class="btn btn-primary mb-3 mt-3" href="[% payment_url %]">[% msg.maketext("Zum Zahlungsdienstleister") %]</a>
+

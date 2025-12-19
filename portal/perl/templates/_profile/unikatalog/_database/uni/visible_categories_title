@@ -31,6 +31,9 @@
                 'T0424', # msg.maketext("T0424") ErschJahr/Ansetzung
                 'Erscheinungsverlauf', # msg.maketext("Erscheinungsverlauf") Erscheinungsverlauf
                 'Erscheinungsweise', # msg.maketext("Erscheinungsweise") Erscheinungsweise
+                'Andere Ausgaben', # msg.maketext("Andere Ausgaben") Andere Ausgaben
+		'Vorgänger', # msg.maketext("Vorgänger") Vorgänger
+		'Nachfolger', # msg.maketext("Nachfolger") Nachfolger
                 'T0591', # msg.maketext("T0591") Verfasser Quelle
                 'T0594', # msg.maketext("T0594") ErschOrt Quelle
                 'T0595', # msg.maketext("T0595") ErschJahr Quelle

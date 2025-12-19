@@ -6,6 +6,22 @@ local_ip: 127.0.0.1
 
 postgresql_version: '111200' # 11.12.0
 
+mojo:
+  secrets: # Mojo App Secret
+    - TopSecret
+  hypnotoad: # Hypnotoad Config
+    listen:
+      - 'http://[::]:8008'
+    worker: 15
+    proxy: 1
+    pid_file: '/var/log/openbib/hypnotoad.pid'
+  cookie:
+    name: 'usb_koeln'
+    expiration: 86400
+    samesite: 'Strict'
+
+runmode_logging_threshold: 5000 # log runmode calls longer than this (ms)
+
 # Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
 dbimodule: Pg
 pgdbhost: localhost
@@ -73,11 +89,21 @@ newsflash: 1
 # Preislimit fuer Neuanschaffungen durch PDA 
 pda_limit_cent: 100
 
+# Default Session Timeout (See: Date::Manip) in seconds
+default_session_expiration: 21600 # '6hours'
+max_session_expiration: '2days'
+
 # Sollen Performance-Benchmarks durchgefuehrt werden
 benchmark: 0
 
-# Einstellungen fuer Memcached
+anon_hashkey: 'TopSecret'
 
+# Einstellungen fuer Redis
+redis:
+  server: '127.0.0.1:6379'
+  passord: 'TopSecret'
+
+# Einstellungen fuer Memcached
 memcached:
   servers:
      - address: '127.0.0.1:11211'
@@ -119,12 +145,64 @@ memcached_expiration:
   'ezb:title': 3600
   'ezb:search': 3600
 
+testuser:
+   username: "abc123#A"
+   userid: "abc123"
+   password: "TopSecret"
+
+campusgis_testuser:
+  'admin': 1
+  'abc123#A': 1 # User1
+  
+# Konfiguration ILS-Anbindung
+cache_external_password_for_ugc_migration: 0
+
+ils_barcode_regexp: '^[A-Z9]\d\d\d\d\d\d\d\d\#[A-Z0-9]$'
+email_regexp: '^[-a-zA-Z0-9@._]+$'
+
 # Parameter fuer USBWS ILS-Anbindung
 
 usbws_url: ''
 usbwsmail_url: ''
 usbauth_url: ''
 usbauth_masterpass: ''
+
+# SIS
+# SIS Authentication for ALMA via LDAP 
+sisauth:  
+  hostname: 'foo.bar'
+  basedn: 'ou=People,dc=foo,dc=bar'
+  match_user: '(userNumber=USER_NAME)'
+  proxy_binddn: 'cn=reader,dc=ub,dc=uni-koeln,dc=de'
+  proxy_pw: 'TopSecret'
+  port: '636'
+  scheme: 'ldaps'
+  verify: 'none'
+  timeout: '1500'
+  onerror: 'undef'
+  cafile: '/opt/openbib/conf/CA.pem'
+
+# SIS API for ALMA via fastAPI
+sis:
+  api_authurl: 'https://foo.bar/v1/apilogin'  
+  api_baseurl: 'https://foo.bar/vi/Api'
+  api_user: 'openbib'
+  api_password: 'TopSecret'
+  
+alma: # Section alma API/webhook/SRU
+  api_baseurl: 'https://api-eu.hosted.exlibrisgroup.com/almaws/v1'
+  api_key: 'TopSecret'
+  webhook_secret: 'TopSecret'
+  api_timeout: 5
+  api_logging_threshold: 3000 # log api calls longer than this (ms)
+  
+  sru_baseurl: 'https://hbz-ubk.alma.exlibrisgroup.com/view/sru/49HBZ_UBK'
+  listitem_status: 'sru' # sru | leer : Methode zur Bestimmung des Medienstatus in Trefferliste. default: leer = via Alma API
+  sru_timeout: 20
+  sru_logging_threshold: 5000 # log sru calls longer than this (ms)
+  
+retro_url:
+  'inst219': 'https://foo.bar/xxx'
 
 # Local networks/IP ranges to recognize access to licensed media
 local_networks:
@@ -133,7 +211,6 @@ local_networks:
 youtube_api_key: ''
 
 # Authentifizierungs-Targets
-
 authenticator:
   ldap:
     ad1:

@@ -5378,14 +5378,24 @@ sub from_hash {
 sub record_exists {
     my ($self) = @_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
     my @categories = grep { /^[PCTX]/ } keys %{$self->{_fields}};
 
-    return 0 if (!@categories);
+    if (!@categories){
+	$logger->fatal("record_exists PCTX-Check ".$self->{database}."/".$self->{id}.": false - Fields: ".YAML::Dump($self->{_fields}));
+	return 0 ;
+    }
     
     my $record_exists = 0;
     
     foreach my $field (@categories){
 	$record_exists = 1 if (@{$self->{_fields}{$field}});
+    }
+
+    if (!$record_exists){
+	$logger->fatal("record_exists Field-Check ".$self->{database}."/".$self->{id}.": false - Fields: ".YAML::Dump($self->{_fields}));
     }
     
     return $record_exists;

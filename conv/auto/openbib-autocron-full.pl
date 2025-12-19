@@ -643,7 +643,8 @@ sub threadC {
    
     # instzs wurde in eigenes Steuerscript ausgelagert, da die Lieferung des hbz erst Montag morgen erfolgt 
 
-#    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['zbmed'] });
+    # OMP/OJS via OAI DC -> CSV
+    autoconvert({ updatemaster => $updatemaster, sync => 1, databases => ['omp_esr','omp_map','ojs_aaeo','ojs_genderforum','ojs_ijrld','ojs_jbla','ojs_jnrd','ojs_kon','ojs_krimoj','ojs_mathematica_didactica','ojs_midu','ojs_the_mouth','ojs_nec','ojs_philsym','ojs_phidi','ojs_phai','ojs_rlit','ojs_zerl','ojs_zfkm'] });
 
     # autoconvert({ updatemaster => $updatemaster, denylist => $denylist_ref, sync => 1, databases => ['usbweb'] });
     

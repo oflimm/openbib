@@ -25,6 +25,9 @@
 <tr><th>[% msg.maketext("Einfache Recherche") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 1, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
 <tr><th>[% msg.maketext("Komplexe Recherche") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 2, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
 <tr><th>[% msg.maketext("Externer Suchschlitz") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 3, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("DBIS Suchschlitz") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 4, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("EZB Suchschlitz") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 5, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
+<tr><th>[% msg.maketext("Undefiniert") %]</th><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => undef, from => "${year}${month}01", to => "${year}${month}${days_in_month(year,month)}" }) %][% ret.number %]</b></td></tr>
 </table>
 </div>
 

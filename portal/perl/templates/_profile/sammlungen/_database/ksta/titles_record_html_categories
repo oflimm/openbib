@@ -14,7 +14,7 @@
 -%]
 [%-
 
-   s3_base_url = "https://testsite3.ub.uni-koeln.de/ksta/";
+   s3_base_url = "https://digital.ub.uni-koeln.de/ksta/";
 
 -%]
 [% IF format == "full" %]

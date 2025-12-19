@@ -227,6 +227,12 @@ sub send_search_request {
     my $num               = $queryoptions->get_option('num');
 
     my $from              = ($page - 1)*$num;
+
+    my ($atime,$timeall);
+  
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
     
     my $url = $config->get('eds')->{'search_url'};
 
@@ -1122,7 +1128,7 @@ sub search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my ($atime,$btime,$timeall);
+    my ($atime,$timeall);
 
     my $config=$self->get_config;
     
@@ -1536,7 +1542,7 @@ sub process_matches {
     foreach my $match (@{$json_result_ref->{SearchResult}{Data}{Records}}){
 	my $fields_ref = {};
 
-	my ($atime,$btime,$timeall);
+	my ($atime,$timeall);
 	
 	if ($config->{benchmark}) {
 	    $atime=new Benchmark;

@@ -34,6 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Crypt::JWT qw(decode_jwt encode_jwt);
 use Email::Valid;
 use DBI;
 use Digest::MD5;
@@ -77,6 +78,25 @@ sub show_collection {
     my $stylesheet     = $self->stash('stylesheet');
     my $useragent      = $self->stash('useragent');
     my $path_prefix    = $self->stash('path_prefix');
+
+    # CGI Args for payment status
+    my $jwt            = $r->param('bibpay_jwt');
+
+    my $payment_ref    = $config->get('payment');
+
+    my $payment_decoding_error = 0;
+    
+    my $payment_result_ref = {};
+
+    if ($jwt){
+	eval {
+	    $payment_result_ref = decode_jwt(token => $jwt, key => $payment_ref->{secret}, accepted_alg => 'HS256');
+	};
+	
+	if ($@){
+	    $payment_decoding_error = 1;
+	}
+    }
     
     my $sessionauthenticator = $user->get_targetdb_of_session($session->{ID});
 
@@ -117,6 +137,10 @@ sub show_collection {
     
     # TT-Data erzeugen
     my $ttdata={
+	jwt                    => $jwt,
+	payment_decoding_error => $payment_decoding_error,
+	payment_result         => $payment_result_ref,
+	
         authenticator => $authenticator,
         loginname  => $loginname,
         password   => $password,

@@ -97,11 +97,13 @@ sub process_file {
 
 	my $slurped_file = read_file($item_fullpath);
 
-	my ($title)            = $slurped_file =~m{<HTI>(.+?)</HTI>};
+	my ($title)            = $slurped_file =~m{<HTI>(.+?)</HTI>};	
 	my ($dtitle)           = $slurped_file =~m{<DTI>(.+?)</DTI>};
 	my ($subtitle)         = $slurped_file =~m{<UTI>(.+?)</UTI>};
+	my ($rubriktitle)      = $slurped_file =~m{<GTI>(.+?)</GTI>};	
 	my ($body)             = $slurped_file =~m{<body>(.+?)</BODY>}ism;
 	my ($pdfpage_filename) = $slurped_file =~m{<pdfFile>(.+?)</pdfFile>};
+	my ($encoding)         = $slurped_file =~m{<\?xml version="1.0" encoding="(.+?)"\?>};
 
 	my ($page) = $pdfpage_filename =~m{_A_\d\d-\d\d-\d\d\d\d_N_\d+_(\d+)};
 	
@@ -109,20 +111,25 @@ sub process_file {
 	
 	my ($publication_date) = $slurped_file =~m{<publicationDate>(.+?)</publicationDate>};
 	
-	my $enc = find_encoding("iso-8859-1");
+	my $enc = find_encoding($encoding);
 
 	push @{$title_ref->{fields}{'4410'}}, {
 	    mult     => 1,
 	    subfield => '',
 	    content  => 'Artikel',
 	};
+
+	if ($dtitle){
+	    my $mult = ++$multcount_ref->{'0310'};
+
+	    push @{$title_ref->{fields}{'0310'}}, {
+		mult       => $mult,
+		subfield   => '',
+		content    => $enc->decode($dtitle),
+	    };
+	}
 	
 	if ($title){
-
-	    if ($dtitle){
-		$title = $dtitle." ".$title;
-	    }
-	    
 	    my $mult = ++$multcount_ref->{'0331'};
 
 	    push @{$title_ref->{fields}{'0331'}}, {
@@ -142,6 +149,16 @@ sub process_file {
 	    };
 	}
 
+	if ($rubriktitle){
+	    my $mult = ++$multcount_ref->{'0451'};
+
+	    push @{$title_ref->{fields}{'0451'}}, {
+		mult       => $mult,
+		subfield   => '',
+		content    => $enc->decode($rubriktitle),
+	    };
+	}
+	
 	if ($page){
 	    $page =~s/^0+//;
 	    
@@ -172,19 +189,13 @@ sub process_file {
 	}
 	
 	if ($pdf_filename){
-	    my $mult = ++$multcount_ref->{'0662'};
+	    my $mult = ++$multcount_ref->{'4120'};
 
-	    push @{$title_ref->{fields}{'0662'}}, {
+	    push @{$title_ref->{fields}{'4120'}}, {
 		mult     => $mult,
-		subfield => '',
+		subfield => 'y',
 		content  => $pdf_filename,
 	    };
-
-	    push @{$title_ref->{fields}{'0663'}}, {
-		mult     => $mult,
-		subfield => '',
-		content  => "Zum PDF der Gesamtausgabe",
-	    };	
 	}
 
 	if ($year){
@@ -231,16 +242,20 @@ sub process_file {
 	my ($image_path,$image_dir) = $item_path =~m{^(.+?)/([^/]+?)/_ILLUSTRATIONEN};
 
 	$image_path =~s/^.+?KoelnerStadtAnzeiger_J_/KoelnerStadtAnzeiger_J_/; 
+
+	my $pdf_filename = $image_path."/".$image_dir."/".$image_dir.".pdf";
 	
 	my ($day,$month,$year,$issue) = $item_path =~m/_A_(\d+)-(\d+)-(\d\d\d\d)_N_(\d+)\//;
 
 	my $slurped_file = read_file($item_fullpath);
 
-	my ($title) = $slurped_file =~m{<captionText>(.+?)</captionText>};
+	my ($title)              = $slurped_file =~m{<captionText>(.+?)</captionText>};
 	my ($imagepage_filename) = $slurped_file =~m{<illustrationFile>(.+?)</illustrationFile>};
-	my ($pdfpage_filename) = $slurped_file =~m{<pdfFile>(.+?)</pdfFile>};
+	my ($pdfpage_filename)   = $slurped_file =~m{<pdfFile>(.+?)</pdfFile>};
+	my ($encoding)           = $slurped_file =~m{<\?xml version="1.0" encoding="(.+?)"\?>};
 
 	my ($page) = $pdfpage_filename =~m{_A_\d\d-\d\d-\d\d\d\d_N_\d+_(\d+)};
+
 	
 	$pdfpage_filename = $image_path."/".$image_dir."/".$pdfpage_filename;
 
@@ -248,9 +263,9 @@ sub process_file {
 	
 	my ($publication_date) = $slurped_file =~m{<publicationDate>(.+?)</publicationDate>};
 
-	next if ($title =~m/Untitled/i);
-	
-	my $enc = find_encoding("iso-8859-1");
+	#next if ($title =~m/Untitled/i);
+
+	my $enc = find_encoding($encoding);
 
 	push @{$title_ref->{fields}{'4410'}}, {
 	    mult     => 1,
@@ -311,6 +326,16 @@ sub process_file {
 		subfield => '',
 		content  => "Zum PDF der Seite des Artikels",
 	    };	
+	}
+
+	if ($pdf_filename){
+	    my $mult = ++$multcount_ref->{'4120'};
+
+	    push @{$title_ref->{fields}{'4120'}}, {
+		mult     => $mult,
+		subfield => 'y',
+		content  => $pdf_filename,
+	    };
 	}
 	
 	if ($year){

@@ -373,7 +373,11 @@ sub load_full_title_record {
                     result_class => 'DBIx::Class::ResultClass::HashRefInflator',
                 }
             );
-            
+
+	    unless ($title_fields){
+		$logger->fatal("Title-ID $id doesn't exist in PSQL-DB ".$self->{database});
+	    }
+	    
             while (my $item = $title_fields->next){
                 my $field    = "T".sprintf "%04d",$item->{thisfield};
                 my $subfield =                    $item->{thissubfield};

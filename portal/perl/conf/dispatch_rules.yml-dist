@@ -3456,6 +3456,16 @@
    runmode: 'delete_record'
    args:
      'restrict_db_to_view': 0
+- # users/circulations_loc:
+   module: 'OpenBib::Handler::PSGI::Users::Circulations::Payment'
+   rule: '/portal/:view/users/id/:userid/circulations/id/payment[get]'
+   runmode: 'show_collection'
+   representations:
+     - none
+     - html
+     - include
+   args:
+     'restrict_db_to_view': 0
 
 #####################################################################
 # Admin User Rights Roles-Resource/Repraesentation

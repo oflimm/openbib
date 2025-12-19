@@ -152,7 +152,7 @@
 </td>
 [% END %]
 <td>
-[% provenance.${'T4309'}.${'a'} %]
+<a class="inturl" href="[% path_prefix %]/[% config.get('search_loc') %].html?l=[% lang %]&[% config.get('searchfield').markstring.prefix %]=[% uri_escape(provenance.${'T4309'}.${'a'}) %]">[% provenance.${'T4309'}.${'a'} %]</a>
 </td>
 [% IF has_4314 %]
 <td>

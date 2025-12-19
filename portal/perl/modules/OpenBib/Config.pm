@@ -3553,6 +3553,40 @@ sub get_templateinfo_overview {
     return $object;
 }
 
+sub get_users_of_template {
+    my $self       = shift;
+    my $templateid = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $users_ref = [];
+    my $templateusers = $self->get_templateinfo->search(
+        {
+            'me.id' => $templateid,
+        },
+        {
+            select => ['userid.username','userid.id'],
+            as => ['thisusername','thisid'],
+            join => ['user_templates',{'user_templates' => 'userid'}],
+            group_by => ['userid.username','userid.id'],
+            order_by => ['userid.username ASC'],
+	    result_class => 'DBIx::Class::ResultClass::HashRefInflator', 
+        }
+    );
+
+    if ($templateusers){
+       while (my $thisuser = $templateusers->next()){
+           push @{$users_ref}, {
+              id       => $thisuser->{thisid},
+              username => $thisuser->{thisusername},
+           } if (defined $thisuser->{thisusername} && $thisuser->{thisusername});
+       }
+    }   
+
+    return $users_ref;
+}
+
 sub get_templateinforevision_overview {
     my $self       = shift;
     my $templateid = shift;

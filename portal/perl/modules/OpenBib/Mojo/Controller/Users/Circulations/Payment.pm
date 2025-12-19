@@ -70,18 +70,17 @@ sub show_collection {
     my $userid         = $self->param('userid');
     
     # Shared Args
-    my $query          = $self->query();
-    my $r              = $self->param('r');
-    my $config         = $self->param('config');    
-    my $session        = $self->param('session');
-    my $user           = $self->param('user');
-    my $msg            = $self->param('msg');
-    my $queryoptions   = $self->param('qopts');
-    my $stylesheet     = $self->param('stylesheet');    
-    my $useragent      = $self->param('useragent');
-    my $path_prefix    = $self->param('path_prefix');
-    my $lang           = $self->param('lang');
-    my $servername     = $self->param('servername');
+    my $r              = $self->stash('r');
+    my $config         = $self->stash('config');    
+    my $session        = $self->stash('session');
+    my $user           = $self->stash('user');
+    my $msg            = $self->stash('msg');
+    my $queryoptions   = $self->stash('qopts');
+    my $stylesheet     = $self->stash('stylesheet');    
+    my $useragent      = $self->stash('useragent');
+    my $path_prefix    = $self->stash('path_prefix');
+    my $lang           = $self->stash('lang');
+    my $servername     = $self->stash('servername');
    
     if (!$self->authorization_successful || $userid ne $user->{ID}){
 	return $self->print_warning($msg->maketext("Sie muessen sich authentifizieren"));

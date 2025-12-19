@@ -3893,6 +3893,16 @@
    action: 'delete_record'
    args:
      'restrict_db_to_view': 0
+- # users/circulations_loc:
+   controller: 'Users::Circulations::Payment'
+   rule: '/portal/:view/users/id/:userid/circulations/id/payment'
+   method: 'GET'
+   action: 'show_collection'
+   representations:
+     - none
+     - html
+   args:
+     'restrict_db_to_view': 0
 
 #####################################################################
 # Admin User Rights Roles-Resource/Repraesentation

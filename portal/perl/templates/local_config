@@ -466,7 +466,7 @@
 
    campusgis_url = "https://maps.uni-koeln.de/";
 
-   alma_disable_suggestions     = msg.maketext("Ab dem 15.12.2025 können keine Anschaffungsvorschläge mehr entgegengenommen werden, dies ist wieder ab dem 05.01.2026 möglich. Wir bitten um Verständnis.") # Keine Anschaffungsvorschlaege
+   alma_disable_suggestions     = 0; # msg.maketext("Ab dem 15.12.2025 können keine Anschaffungsvorschläge mehr entgegengenommen werden, dies ist wieder ab dem 05.01.2026 möglich. Wir bitten um Verständnis.") # Keine Anschaffungsvorschlaege
    alma_disable_ill_books       = 0; # Keine Buecherfernleihe
    alma_disable_librarycard     = 1; # Keine Online-Anmeldung
    alma_disable_uccard          = 1; # Keine UCCard Freischaltung

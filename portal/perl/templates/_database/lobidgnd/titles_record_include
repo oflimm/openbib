@@ -354,7 +354,7 @@
 <div class="table-responsive">
 <table class="table table-striped ob-normdata_fields">
 [% IF view == 'kubikoeln' %]
-<tr><th class="ob-field">European-art.net (EAN)</th><td><a href="https://european-art.net/database?search=[% gnd.preferredName.replace('"','%22') %]" class="exturl" target="_blank">https://european-art.net/database?search=[% gnd.preferredName.replace('"','%22') %]</a></td></tr>
+<tr><th class="ob-field">European-art.net (EAN)</th><td><a href="https://european-art.net/database?search=[% gnd.preferredName | uri %]" class="exturl" target="_blank">https://european-art.net/database?search=[% gnd.preferredName | uri %]</a></td></tr>
 [% END %]
 [% FOREACH item IN gnd.sameAs %]
 [%-   name = item.collection.name ;

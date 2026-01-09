@@ -42,6 +42,8 @@ use YAML::Syck;
 
 use OpenBib::Config;
 
+$SIG{'PIPE'} = 'IGNORE'; # Prevent SSL problem, see: https://metacpan.org/pod/Net::AMQP::RabbitMQ#connect(-%24hostname%2C-%24options-)
+
 sub new {
     my $class   = shift;
     my $arg_ref = shift;
@@ -57,8 +59,15 @@ sub new {
 
     my $mqconfig = $config->get('rabbitmq');
     
+    my $mq = Net::AMQP::RabbitMQ->new();
+
+    $mq->connect($mqconfig->{server}, { user => $mqconfig->{user}, password => $mqconfig->{password} });
+
+    $mq->channel_open(1);
+    
     $self->{_config} = $config;
     $self->{_mqconfig} = $mqconfig;
+    $self->{_mq} = $mq;
     
     return $self;
 }
@@ -78,13 +87,7 @@ sub submit_job {
 
     my $logger = get_logger();
     
-    my $mqconfig = $self->get_mqconfig;
-
-    my $mq = Net::AMQP::RabbitMQ->new();
-
-    $mq->connect($mqconfig->{server}, { user => $mqconfig->{user}, password => $mqconfig->{password} });
-
-    $mq->channel_open(1);
+    my $mq = $self->get_mq;
 
     $mq->queue_declare(1, $queue);
     
@@ -113,7 +116,7 @@ sub submit_job {
 	delivery_mode  => 2,
 		 });
 
-    $mq->disconnect();
+#    $mq->disconnect();
     
     my $response_ref = {
 	submitted      => 1,
@@ -141,19 +144,13 @@ sub wait_for_job {
 
     my $logger = get_logger();
     
-    my $mqconfig = $self->get_mqconfig;
-    
-    my $mq = Net::AMQP::RabbitMQ->new();
-
-    $mq->connect($mqconfig->{server}, { user => $mqconfig->{user}, password => $mqconfig->{password} });
-
-    $mq->channel_open(1);
+    my $mq = $self->get_mq;
 
     $mq->queue_declare(1, $queue);
     
     $mq->basic_qos(1, {prefetch_count => 1});
     
-    $mq->consume(1, $queue);
+    $mq->consume(1, $queue, {no_ack => 0});
 
     $logger->info("Waiting for payloads");
 
@@ -178,13 +175,15 @@ sub wait_for_job {
 
 	    $correlation_id = $received->{props}{correlation_id};
 	    $callback_queue = $received->{props}{reply_to};
-	    
+
+	    $mq->ack(1, $received->{delivery_tag});
+		
 	    $logger->info("Received payload ".YAML::Dump($received_json_ref));
 	    last;
 	}
     }
 
-    $mq->disconnect();
+#    $mq->disconnect();
 
     return {
 	correlation_id => $correlation_id,
@@ -203,30 +202,34 @@ sub check_for_job {
     my $queue           = exists $arg_ref->{queue}
         ? $arg_ref->{queue}               : undef;
 
+    my $correlation_id  = exists $arg_ref->{correlation_id}
+        ? $arg_ref->{correlation_id}      : undef;
+    
     my $logger = get_logger();
     
-    my $mqconfig = $self->get_mqconfig;
-    
-    my $mq = Net::AMQP::RabbitMQ->new();
-
-    $mq->connect($mqconfig->{server}, { user => $mqconfig->{user}, password => $mqconfig->{password} });
-
-    $mq->channel_open(1);
-
-    $mq->queue_declare(1, $queue);
+    my $mq = $self->get_mq;
     
     $mq->basic_qos(1, {prefetch_count => 1});
-    
+
+    my $response_ref = { consumed => 0 };
+
+    unless ($mq->get(1, $queue, { no_ack => 1})){   
+	return $response_ref;
+    }
+
+    $logger->info("");
     $mq->consume(1, $queue);
-
-    $logger->info("Waiting for payloads");
-
+    
+    $logger->info("Queue $queue can be consumed");
+    
     my $received_json_ref = { };
-    my $correlation_id;
+    
     my $callback_queue;
     
     my $received = $mq->recv(0);
 
+    $logger->info("Received ".YAML::Dump($received));
+    
     if ($received){	
 	eval {
 	    $received_json_ref = decode_json($received->{body});
@@ -237,26 +240,25 @@ sub check_for_job {
 	    last;
 	}
 	
-	$received_json_ref->{consumed} = 1;
-	
-	$correlation_id = $received->{props}{correlation_id};
 	$callback_queue = $received->{props}{reply_to};
 	
 	$logger->info("Received payload ".YAML::Dump($received_json_ref));
-	
-	$mq->disconnect();
-	
-	return {
-	    consumed       => 1,
-	    correlation_id => $correlation_id,
-	    callback_queue => $callback_queue,
-	    payload        => $received_json_ref,
-	};
-    }
 
-    return {
-	consumed => 0,
-    };
+	if ($correlation_id eq $received->{props}{correlation_id}) {
+	    $response_ref = {
+		consumed       => 1,
+		correlation_id => $correlation_id,
+		callback_queue => $callback_queue,
+		payload        => $received_json_ref,
+	    };
+
+	    #$mq->ack(1, $received->{delivery_tag});
+	    	    
+	    return $response_ref;
+	}	
+    }
+    
+    return $response_ref;
 }
 
 sub return_result {
@@ -270,17 +272,11 @@ sub return_result {
         ? $arg_ref->{payload}             : {};
 
     my $correlation_id = exists $arg_ref->{correlation_id}
-        ? $arg_ref->{correlation_id}      : {};
+        ? $arg_ref->{correlation_id}      : undef;
 
     my $logger = get_logger();
     
-    my $mqconfig = $self->get_mqconfig;
-
-    my $mq = Net::AMQP::RabbitMQ->new();
-
-    $mq->connect($mqconfig->{server}, { user => $mqconfig->{user}, password => $mqconfig->{password} });
-
-    $mq->channel_open(1);
+    my $mq = $self->get_mq;
 
     $mq->publish(
 	1,
@@ -293,7 +289,7 @@ sub return_result {
 	},
 	);
     
-    $mq->disconnect();
+#    $mq->disconnect();
 
     return;
 }
@@ -308,6 +304,18 @@ sub get_mqconfig {
     my $self = shift;
 
     return $self->{_mqconfig};
+}
+
+sub get_mq {
+    my $self = shift;
+
+    return $self->{_mq};
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    $self->get_mq->disconnect();
 }
 
 1;

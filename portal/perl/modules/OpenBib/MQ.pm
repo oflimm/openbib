@@ -234,7 +234,7 @@ sub get_result {
 
     my $memc_key = "mq:$queue:$job_id";
 
-    $$logger->debug("Hole Ergebnis fuer $memc_key");
+    $logger->debug("Hole Ergebnis fuer $memc_key");
     
     if ($config->{memc}){
 	return $config->{memc}->get($memc_key) if ($config->{memc}->get($memc_key));
@@ -266,9 +266,9 @@ sub set_result {
     my $memc_key = "mq:$queue:$job_id";
 
     if ($config->{memc}){
-	$$logger->debug("Setting result for $memc_key: ".YAML::Dump($payload_ref));
+	$logger->debug("Setting result for $memc_key: ".YAML::Dump($payload_ref));
 	
-	$config->{memc}->set($memc_key,$payload_ref,$self->{memcached_expiration}{$memc_key});
+	$config->{memc}->set($memc_key,$payload_ref,$config->{memcached_expiration}{$memc_key});
     }
     else {
 	$logger->fatal("Keine Verbindung zu Memecached");

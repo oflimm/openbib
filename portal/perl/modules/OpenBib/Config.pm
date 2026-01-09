@@ -171,6 +171,8 @@ sub wipe_secrets {
 	'rezensionen_online_key' => 1,	    
     };
 
+    my $wiped_config = new OpenBib::Config;
+    
     my $fake_password = "xeeb9uL1the0aengohbohx7EeZohmahci1eibeis";
 
     foreach my $key (keys %{$config_secrets_ref}){
@@ -179,20 +181,20 @@ sub wipe_secrets {
 		$logger->debug("2nd ".ref $config_secrets_ref->{$key}{$subkey});	    
 		if (ref $config_secrets_ref->{$key}{$subkey} eq 'HASH'){
 		    foreach my $subsubkey (keys %{$config_secrets_ref->{$key}{$subkey}}){
-			$self->{$key}{$subkey}{$subsubkey} = $fake_password;
+			$wiped_config->{$key}{$subkey}{$subsubkey} = $fake_password;
 		    }
 		}
 		else {
-		    $self->{$key}{$subkey} = $fake_password;
+		    $wiped_config->{$key}{$subkey} = $fake_password;
 		}
 	    }
 	}	
 	else {
-	    $self->{$key} = $fake_password;
+	    $wiped_config->{$key} = $fake_password;
 	}
     }
     
-    return $self;
+    return $wiped_config;
 }
 
 sub get_schema {

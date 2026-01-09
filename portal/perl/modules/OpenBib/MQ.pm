@@ -87,6 +87,17 @@ sub submit_job {
         ? $arg_ref->{job_id}              : undef;
 
     my $logger = get_logger();
+
+    # Job cached? No Message
+    if ($self->job_processed({ queue => $queue, job_id => $job_id})){
+	my $response_ref = {
+	    submitted => 1,
+	    queue     => $queue,
+	    job_id    => $job_id,
+	};
+        
+	return $response_ref;
+    }
     
     my $mq = $self->get_mq;
 
@@ -109,16 +120,20 @@ sub submit_job {
 	    submitted => 0,
 	};
     }
-    
-    $mq->publish(1, $queue, encode_json($payload_ref));
-    
-    my $response_ref = {
-	submitted => 1,
-	queue     => $queue,
-	job_id    => $job_id,
+
+    eval {
+	$mq->publish(1, $queue, encode_json($payload_ref));
     };
+
+    unless ($@){
+	my $response_ref = {
+	    submitted => 1,
+	    queue     => $queue,
+	    job_id    => $job_id,
+	};
         
-    return $response_ref;
+	return $response_ref;
+    }    
 }
 
 sub consume_job {
@@ -135,12 +150,14 @@ sub consume_job {
     
     my $mq = $self->get_mq;
 
-    $mq->queue_declare(1, $queue, {durable => 1});
+    $mq->queue_declare(1, $queue);
     
     $mq->basic_qos(1, {prefetch_count => 1});
 
     $mq->consume(1, $queue, {no_ack => 0});
 
+    my $response_ref = { consumed => 0 };
+    
     while (1) {
 	my $received = $mq->recv(0);
 
@@ -156,10 +173,10 @@ sub consume_job {
 		last;
 	    }
 	
-	    $logger->info("Received payload ".YAML::Dump($received_json_ref));
+	    $logger->debug("Received payload ".YAML::Dump($received_json_ref));
 
 	    if ($received_json_ref->{meta}{job_id}){
-		my $response_ref = {
+		$response_ref = {
 		    consumed       => 1,
 		    job_id         => $received_json_ref->{meta}{job_id},
 		    payload        => $received_json_ref,
@@ -167,10 +184,12 @@ sub consume_job {
 		
 		$mq->ack(1, $received->{delivery_tag});
 
-		return $response_ref;
+		last;
 	    }
 	}
     }
+
+    return $response_ref;
 }
 
 sub job_processed {
@@ -215,6 +234,8 @@ sub get_result {
 
     my $memc_key = "mq:$queue:$job_id";
 
+    $$logger->debug("Hole Ergebnis fuer $memc_key");
+    
     if ($config->{memc}){
 	return $config->{memc}->get($memc_key) if ($config->{memc}->get($memc_key));
     }
@@ -229,10 +250,10 @@ sub set_result {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $queue           = exists $arg_ref->{queue}
+    my $queue       = exists $arg_ref->{queue}
         ? $arg_ref->{queue}               : undef;
 
-    my $job_id          = exists $arg_ref->{job_id}
+    my $job_id      = exists $arg_ref->{job_id}
         ? $arg_ref->{job_id}              : undef;
 
     my $payload_ref = exists $arg_ref->{payload}
@@ -245,6 +266,8 @@ sub set_result {
     my $memc_key = "mq:$queue:$job_id";
 
     if ($config->{memc}){
+	$$logger->debug("Setting result for $memc_key: ".YAML::Dump($payload_ref));
+	
 	$config->{memc}->set($memc_key,$payload_ref,$self->{memcached_expiration}{$memc_key});
     }
     else {

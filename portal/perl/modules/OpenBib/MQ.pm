@@ -32,6 +32,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Cache::Memcached::Fast;
 use Encode qw/decode_utf8 encode_utf8/;
 use JSON::XS qw/encode_json decode_json/;
 use Log::Log4perl qw(get_logger :levels);
@@ -76,27 +77,26 @@ sub submit_job {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $session     = exists $arg_ref->{session}
-        ? $arg_ref->{session}             : undef;
-
     my $queue      = exists $arg_ref->{queue}
         ? $arg_ref->{queue}               : undef;
 
     my $payload_ref = exists $arg_ref->{payload}
         ? $arg_ref->{payload}             : {};
 
+    my $job_id          = exists $arg_ref->{job_id}
+        ? $arg_ref->{job_id}              : undef;
+
     my $logger = get_logger();
     
     my $mq = $self->get_mq;
 
     $mq->queue_declare(1, $queue);
-    
-    $mq->basic_qos(1, {prefetch_count => 1});
-    
-    my $callback_queue = $mq->queue_declare(1, '', {exclusive => 1});
 
-    my $correlation_id = UUID::Tiny::create_uuid_as_string(UUID::Tiny::UUID_V4);
-
+    # Add job_id
+    $payload_ref->{meta} = {
+	job_id => $job_id,
+    };
+    
     my $encoded_payload_ref = {};
 
     eval {
@@ -110,58 +110,43 @@ sub submit_job {
 	};
     }
     
-    $mq->publish(1, $queue, encode_json($payload_ref), undef, {
-	reply_to       => $callback_queue,
-	correlation_id => $correlation_id,
-	delivery_mode  => 2,
-		 });
-
-#    $mq->disconnect();
+    $mq->publish(1, $queue, encode_json($payload_ref));
     
     my $response_ref = {
-	submitted      => 1,
-	queue          => $queue,
-	callback_queue => $callback_queue,
-	correlation_id => $correlation_id,
+	submitted => 1,
+	queue     => $queue,
+	job_id    => $job_id,
     };
-    
-    if ($session){	
-	$session->set_datacache_by_key("mq_$queue",$response_ref);
-    }
-    
+        
     return $response_ref;
 }
 
-sub wait_for_job {
+sub consume_job {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $session         = exists $arg_ref->{session}
+    my $session     = exists $arg_ref->{session}
         ? $arg_ref->{session}             : undef;
 
-    my $queue           = exists $arg_ref->{queue}
+    my $queue      = exists $arg_ref->{queue}
         ? $arg_ref->{queue}               : undef;
 
     my $logger = get_logger();
     
     my $mq = $self->get_mq;
 
-    $mq->queue_declare(1, $queue);
+    $mq->queue_declare(1, $queue, {durable => 1});
     
     $mq->basic_qos(1, {prefetch_count => 1});
-    
+
     $mq->consume(1, $queue, {no_ack => 0});
 
-    $logger->info("Waiting for payloads");
-
-    my $received_json_ref = { consumed => 0 };
-    my $correlation_id;
-    my $callback_queue;
-    
     while (1) {
 	my $received = $mq->recv(0);
 
-	if ($received){	
+	if ($received){
+	    my $received_json_ref;
+	    
 	    eval {
 		$received_json_ref = decode_json($received->{body});
 	    };
@@ -170,29 +155,25 @@ sub wait_for_job {
 		$logger->error($@);
 		last;
 	    }
-	    
-	    $received_json_ref->{consumed} = 1;
-
-	    $correlation_id = $received->{props}{correlation_id};
-	    $callback_queue = $received->{props}{reply_to};
-
-	    $mq->ack(1, $received->{delivery_tag});
-		
+	
 	    $logger->info("Received payload ".YAML::Dump($received_json_ref));
-	    last;
+
+	    if ($received_json_ref->{meta}{job_id}){
+		my $response_ref = {
+		    consumed       => 1,
+		    job_id         => $received_json_ref->{meta}{job_id},
+		    payload        => $received_json_ref,
+		};
+		
+		$mq->ack(1, $received->{delivery_tag});
+
+		return $response_ref;
+	    }
 	}
     }
-
-#    $mq->disconnect();
-
-    return {
-	correlation_id => $correlation_id,
-	callback_queue => $callback_queue,
-	payload        => $received_json_ref,
-    };
 }
 
-sub check_for_job {
+sub job_processed {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
@@ -202,98 +183,77 @@ sub check_for_job {
     my $queue           = exists $arg_ref->{queue}
         ? $arg_ref->{queue}               : undef;
 
-    my $correlation_id  = exists $arg_ref->{correlation_id}
-        ? $arg_ref->{correlation_id}      : undef;
+    my $job_id          = exists $arg_ref->{job_id}
+        ? $arg_ref->{job_id}              : undef;
     
     my $logger = get_logger();
     
-    my $mq = $self->get_mq;
-    
-    $mq->basic_qos(1, {prefetch_count => 1});
+    my $config = $self->get_config;
 
-    my $response_ref = { consumed => 0 };
+    my $memc_key = "mq:$queue:$job_id";
 
-    unless ($mq->get(1, $queue, { no_ack => 1})){   
-	return $response_ref;
+    if ($config->{memc} && $config->{memc}->get($memc_key)){
+	return 1;
     }
 
-    $logger->info("");
-    $mq->consume(1, $queue);
-    
-    $logger->info("Queue $queue can be consumed");
-    
-    my $received_json_ref = { };
-    
-    my $callback_queue;
-    
-    my $received = $mq->recv(0);
-
-    $logger->info("Received ".YAML::Dump($received));
-    
-    if ($received){	
-	eval {
-	    $received_json_ref = decode_json($received->{body});
-	};
-	
-	if ($@){
-	    $logger->error($@);
-	    last;
-	}
-	
-	$callback_queue = $received->{props}{reply_to};
-	
-	$logger->info("Received payload ".YAML::Dump($received_json_ref));
-
-	if ($correlation_id eq $received->{props}{correlation_id}) {
-	    $response_ref = {
-		consumed       => 1,
-		correlation_id => $correlation_id,
-		callback_queue => $callback_queue,
-		payload        => $received_json_ref,
-	    };
-
-	    #$mq->ack(1, $received->{delivery_tag});
-	    	    
-	    return $response_ref;
-	}	
-    }
-    
-    return $response_ref;
+    return 0;
 }
 
-sub return_result {
+sub get_result {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $callback_queue = exists $arg_ref->{callback_queue}
-        ? $arg_ref->{callback_queue}      : undef;
+    my $queue           = exists $arg_ref->{queue}
+        ? $arg_ref->{queue}               : undef;
 
-    my $payload_ref    = exists $arg_ref->{payload}
-        ? $arg_ref->{payload}             : {};
-
-    my $correlation_id = exists $arg_ref->{correlation_id}
-        ? $arg_ref->{correlation_id}      : undef;
+    my $job_id          = exists $arg_ref->{job_id}
+        ? $arg_ref->{job_id}              : undef;
 
     my $logger = get_logger();
-    
-    my $mq = $self->get_mq;
 
-    $mq->publish(
-	1,
-	$callback_queue,
-	encode_utf8(encode_json($payload_ref)),
-	undef,
-	{
-	    correlation_id => $correlation_id,
-	    delivery_mode => 2,
-	},
-	);
-    
-#    $mq->disconnect();
+    my $config = $self->get_config;
+
+    my $memc_key = "mq:$queue:$job_id";
+
+    if ($config->{memc}){
+	return $config->{memc}->get($memc_key) if ($config->{memc}->get($memc_key));
+    }
+    else {
+	$logger->fatal("Keine Verbindung zu Memecached");
+    }
 
     return;
 }
+
+sub set_result {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $queue           = exists $arg_ref->{queue}
+        ? $arg_ref->{queue}               : undef;
+
+    my $job_id          = exists $arg_ref->{job_id}
+        ? $arg_ref->{job_id}              : undef;
+
+    my $payload_ref = exists $arg_ref->{payload}
+        ? $arg_ref->{payload}             : {};
     
+    my $logger = get_logger();
+
+    my $config = $self->get_config;
+
+    my $memc_key = "mq:$queue:$job_id";
+
+    if ($config->{memc}){
+	$config->{memc}->set($memc_key,$payload_ref,$self->{memcached_expiration}{$memc_key});
+    }
+    else {
+	$logger->fatal("Keine Verbindung zu Memecached");
+    }
+
+    return;
+}
+
 sub get_config {
     my $self = shift;
 

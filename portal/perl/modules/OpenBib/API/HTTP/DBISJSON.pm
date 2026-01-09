@@ -262,6 +262,7 @@ sub get_titles_record {
     my $issn           = (defined $json_ref->{isbn_issn} && length $json_ref->{isbn_issn} <= 9)?$json_ref->{isbn_issn}:'';
     my $year           = ''; # wird noch nicht geliefert
     my $remarks        = $json_ref->{note};
+    my $local_remarks  = $json_ref->{local_note};
 
     $record->set_field({field => 'T0331', subfield => '', mult => 1, content => $title}) if ($title);
 
@@ -280,6 +281,7 @@ sub get_titles_record {
     my @local_licenseinfo = ();
 
     push @externalNotes, $remarks if ($remarks && $remarks =~m/\w/);
+    push @externalNotes, $local_remarks if ($local_remarks && $local_remarks =~m/\w/);    
 
     if ($traffic_light ne "red" && defined $json_ref->{licenses} && ref $json_ref->{licenses} eq "ARRAY"){
 	

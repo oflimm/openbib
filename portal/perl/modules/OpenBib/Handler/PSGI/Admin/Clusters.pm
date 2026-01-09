@@ -152,19 +152,18 @@ sub show_record_consistency {
 
     if ($refresh){
 	if ($mq->job_processed({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"})){
-	    my $result_ref = $mq->get_result({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"});
-	    $cluster_differences_ref = $result_ref->{payload};
+	    $cluster_differences_ref = $mq->get_result({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"});
 	    $refresh = 0;
 	}
     }
     else {
 	# Send Message to task queue referencing a callback queue and correlation id
 	my $result_ref = $mq->submit_job({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid" , payload => { id => $clusterid }});
-
+	
 	unless ($result_ref->{submitted}){
 	    $logger->fatal("Unable to submitt task");
 	}
-
+	
 	if ($mq->job_processed({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"})){
 	    $cluster_differences_ref = $mq->get_result({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"});
 	    $refresh = 0;

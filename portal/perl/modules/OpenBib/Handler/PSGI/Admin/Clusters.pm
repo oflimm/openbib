@@ -157,7 +157,7 @@ sub show_record_consistency {
 	}
     }
     else {
-	# Send Message to task queue referencing a callback queue and correlation id
+	# Send Message to task queue referencing a job id
 	my $result_ref = $mq->submit_job({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid" , payload => { id => $clusterid }});
 	
 	unless ($result_ref->{submitted}){

@@ -109,7 +109,11 @@
    <!-- Begin: Maincontent -->
     <div  [% IF layout_param.css_id %]id="[% layout_param.css_id %]" [% END %]>
       <div id="ob-maincontent" >
+[% IF refresh %]
+<a href="[% url %]&refresh=[% refresh %]">[% msg.maketext("Aktualisieren") %]</a>
+[% ELSE %]
         [% PROCESS common/subtemplate name=layout_param.main_template %]
+[% END %]    
       </div>
     </div>
     <!-- End: Maincontent -->      

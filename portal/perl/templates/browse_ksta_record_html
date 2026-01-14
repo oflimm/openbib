@@ -37,7 +37,7 @@
 
 <h3>Kölner Stadtanzeiger [% msg.maketext("Jahrgang") %] [% sysid %]</h3>
 
-<h4>Jahrgänge</h4>
+<h4>[% msg.maketext("Jahrgänge") %]</h4>
 
 <ul class="list-group pb-3">
 <li class="list-group-item"><a class="fas fa-list pe-2"></i> <a class="" href="[% path_prefix %]/[% config.get('browse_loc') %]/ksta.html?l=[% lang %]">[% msg.maketext("Übersicht") %]</a></li>
@@ -47,7 +47,7 @@
 </ul>
 
 [% IF ksta %]
-<h4>[% msg.maketext("Ausgaben") %]</h4>
+<h4>[% msg.maketext("Ausgabe") %]</h4>
 [%# USE dumper;dumper.dump(ksta) %]
 <div class="table-responsive mt-3">
 <table class="table table-striped ">

@@ -103,6 +103,12 @@ redis:
   server: '127.0.0.1:6379'
   passord: 'TopSecret'
 
+# Einstellungen fuer RabbitMQ
+rabbitmq:
+  server: '127.0.0.1'
+  user: 'abc'
+  password: 'TopSecret'
+
 # Einstellungen fuer Memcached
 memcached:
   servers:
@@ -144,6 +150,8 @@ memcached_expiration:
   'ezb:classifications': 3600
   'ezb:title': 3600
   'ezb:search': 3600
+  'mq:task_clusters:cluster_consistency_1': 3600
+  'mq:task_clusters:cluster_consistency_2': 3600
 
 testuser:
    username: "abc123#A"

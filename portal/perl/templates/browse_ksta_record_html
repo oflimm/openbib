@@ -35,7 +35,7 @@
   ksta_desc = config.get_description_of_classification(type => 'ksta', names => all_ksta );
 -%]
 
-<h3>Kölner Stadtanzeiger Jahrgang [% sysid %]</h3>
+<h3>Kölner Stadtanzeiger [% msg.maketext("Jahrgang") %] [% sysid %]</h3>
 
 <h4>Jahrgänge</h4>
 
@@ -47,7 +47,7 @@
 </ul>
 
 [% IF ksta %]
-<h4>Ausgaben</h4>
+<h4>[% msg.maketext("Ausgaben") %]</h4>
 [%# USE dumper;dumper.dump(ksta) %]
 <div class="table-responsive mt-3">
 <table class="table table-striped ">

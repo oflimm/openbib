@@ -2,7 +2,7 @@
 #
 #  OpenBib::Mojo::Controller::Admin::Clusters
 #
-#  Dieses File ist (C) 2004-2015 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2026 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -35,17 +35,16 @@ no warnings 'redefine';
 use utf8;
 
 use Date::Manip qw/ParseDate UnixDate/;
-use DBI;
-use Digest::MD5;
 use Encode qw/decode_utf8 encode_utf8/;
+use JSON::XS qw/encode_json decode_json/;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
-use SOAP::Lite;
 use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::MQ;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::Statistics;
@@ -114,7 +113,8 @@ sub show_record_consistency {
     # Dispatches Args
     my $view             = $self->param('view');
     my $clusterid        = $self->param('clusterid');
-
+    my $refresh          = $self->param('refresh') || 0; # != 0: Correlation ID
+    
     # Shared Args
     my $config           = $self->stash('config');
 
@@ -124,9 +124,38 @@ sub show_record_consistency {
 
     my $clusterinfo_ref = $config->get_clusterinfo->search_rs({ id => $clusterid })->single();
     
+    my $cluster_differences_ref = [];    
+
+    my $mq = new OpenBib::MQ({ config => $config });
+
+    if ($refresh){
+	if ($mq->job_processed({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"})){
+	    $cluster_differences_ref = $mq->get_result({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"});
+	    $refresh = 0;
+	}
+    }
+    else {
+	# Send Message to task queue referencing a job id
+	my $result_ref = $mq->submit_job({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid" , payload => { id => $clusterid }});
+	
+	unless ($result_ref->{submitted}){
+	    $logger->fatal("Unable to submitt task");
+	}
+	
+	if ($mq->job_processed({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"})){
+	    $cluster_differences_ref = $mq->get_result({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"});
+	    $refresh = 0;
+	}
+	else {
+	    $refresh = 1;
+	}	
+    }
+    
     my $ttdata = {
+	refresh       => $refresh,
         clusterid     => $clusterid,
         clusterinfo   => $clusterinfo_ref,
+	differences   => $cluster_differences_ref,
     };
     
     return $self->print_page($config->{tt_admin_clusters_record_consistency_tname},$ttdata);

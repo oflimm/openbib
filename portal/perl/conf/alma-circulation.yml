@@ -6,7 +6,7 @@
 #   '123-ABC':             # location code = storage_id (ehemals Abteilungsbeschreibung)
 #     'order': 1           # order = bestellbar, wenn am Ort = Bestellbutton
 #     'loan': 0            # loan  = generell vor Ort Ausleihbar, wenn am Ort = kein Bestellbutton, nur Statusanzeige
-#     'reservation': 1     # reservation = vormerkbar, wenn nicht am Ort = Vormerkbutton
+#     'reservation': 1     # reservation = vormerkbar, wenn nicht am Ort = Vormerkbutton oder wenn bereits bestellt
 #     'pickup_locations':  # Reihenfolge der moeglichen Ausgabeorte mit ID und Beschreibungstext fuer die Ausgabe
 #       - type: 'LIBRARY'  # Alma-Types: LIBRARY, CIRCULATION_DESK, INSTITUTION, USER_HOME_ADDRESS, USER_WORK_ADDRESS
 #         id: 'Abholregal' # Entsprechend der Definiton der Circulation Desks fuer 123 in Alma

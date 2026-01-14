@@ -362,7 +362,7 @@ sub log_event {
     #  12 => Koerperschafts-Normdatenanzeige
     #  13 => Notations-Normdatenanzeige
     #  14 => Schlagwort-Normdatenanzeige
-    #  20 => Rechercheart (einfach=1,komplex=2,...)
+    #  20 => Rechercheart (einfach=1,komplex=2,extern=3,dbis=4,ezb=5)
     #  21 => Recherche-Backend (sql,xapian,z3950)
     #  22 => Recherche-Einstieg ueber Connector (1=DigiBib)
     #  23 => Recherche-Profil

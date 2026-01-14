@@ -47,7 +47,7 @@
 </ul>
 
 [% IF ksta %]
-<h4>[% msg.maketext("Ausgabe") %]</h4>
+<h4>[% msg.maketext("Ausgaben") %]</h4>
 [%# USE dumper;dumper.dump(ksta) %]
 <div class="table-responsive mt-3">
 <table class="table table-striped ">

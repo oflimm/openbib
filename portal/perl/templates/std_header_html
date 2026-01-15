@@ -16,8 +16,8 @@
 <html lang="[% lang %]" class="js">
   <head>
     <meta charset="utf-8"/>
-[% IF refresh %]
-    <meta http-equiv="refresh" content="5">
+[% IF refresh_url %]
+    <meta http-equiv="refresh" content="10; url=[% refresh_url %]">
 [% END %]    
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="htmx-config" content='{"historyCacheSize":"5"}'>

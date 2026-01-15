@@ -109,8 +109,33 @@
    <!-- Begin: Maincontent -->
     <div  [% IF layout_param.css_id %]id="[% layout_param.css_id %]" [% END %]>
       <div id="ob-maincontent" >
-[% IF refresh %]
-<a href="[% url %]&refresh=[% refresh %]">[% msg.maketext("Aktualisieren") %]</a>
+[% IF refresh_url %]
+        <div class="text-center">
+          <img src="/images/openbib/uni-siegel-spinner.png" class="uzk-spinner" alt="[% msg.maketext("Lade-Animation mit UzK Logo") %]"/>
+          <p>
+            <a href="[% refresh_url %]">[% msg.maketext("Aktualisieren") %]</a>
+	  </p>
+        </div>
+
+<!-- See: https://loading.io/css/ CC0 -->
+<style>
+
+@keyframes uzk-spinner {
+    from { transform: rotate(0deg) }
+    to { transform: rotate(360deg) }
+}
+
+.uzk-spinner {
+    width: 100px;
+    height: 100px;
+    animation-name: uzk-spinner;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    /* linear | ease | ease-in | ease-out | ease-in-out */
+    animation-timing-function: linear;
+}
+</style>
+	
 [% ELSE %]
         [% PROCESS common/subtemplate name=layout_param.main_template %]
 [% END %]    

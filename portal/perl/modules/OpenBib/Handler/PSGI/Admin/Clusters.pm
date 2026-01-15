@@ -151,12 +151,18 @@ sub show_record_consistency {
     my $mq = new OpenBib::MQ({ config => $config });
 
     if ($refresh){
+	$logger->debug("Refresh: Job processed?");
 	if ($mq->job_processed({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"})){
 	    $cluster_differences_ref = $mq->get_result({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"});
 	    $refresh = 0;
+	    if ($logger->is_debug){
+		$logger->debug("Refresh: Job IS processed");
+		$logger->debug("Refresh: Job result data: ".YAML::Dump($cluster_differences_ref));
+	    }
 	}
     }
     else {
+	$logger->debug("Initial request: Submit Job");
 	# Send Message to task queue referencing a job id
 	my $result_ref = $mq->submit_job({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid" , payload => { id => $clusterid }});
 	
@@ -166,12 +172,18 @@ sub show_record_consistency {
 	
 	if ($mq->job_processed({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"})){
 	    $cluster_differences_ref = $mq->get_result({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"});
+	    if ($logger->is_debug){
+	    $logger->debug("Job is already processed");
+	    $logger->debug("Job result data: ".YAML::Dump($cluster_differences_ref));
+	    }
 	    $refresh = 0;
 	}
 	else {
 	    $refresh = 1;
 	}	
     }
+
+    $logger->debug("Template: refresh = $refresh");
     
     my $ttdata = {
 	refresh       => $refresh,

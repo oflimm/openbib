@@ -11,8 +11,7 @@
 #
 #######################################################################
 -%]
-
-[% differences = config.check_cluster_consistency(clusterinfo.id) ;
+[% 
 
    IF differences ;
 

@@ -154,7 +154,7 @@ sub consume_job {
     
     $mq->basic_qos(1, {prefetch_count => 1});
 
-    $mq->consume(1, $queue, {no_ack => 0});
+    $mq->consume(1, $queue, {no_ack => 1});
 
     my $response_ref = { consumed => 0 };
     
@@ -182,7 +182,7 @@ sub consume_job {
 		    payload        => $received_json_ref,
 		};
 		
-		$mq->ack(1, $received->{delivery_tag});
+		#$mq->ack(1, $received->{delivery_tag});
 
 		last;
 	    }

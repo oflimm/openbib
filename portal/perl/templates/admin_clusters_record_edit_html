@@ -53,6 +53,11 @@
 &nbsp;&nbsp;&nbsp;
 
 <a class="btn btn-primary mb-2" role="button" href="[% path_prefix %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]?_method=DELETE;confirm=1">[% msg.maketext("Löschen") %]</a>
+
+&nbsp;&nbsp;&nbsp;
+
 [%- END -%]
+
+<a class="btn btn-primary mb-2" role="button" href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('clusters_loc') %]/id/[% clusterinfo.id %]/consistency.html?l=[% lang %]">[% msg.maketext("Katalog-Konsistenz") %]</a>
 
 </form>

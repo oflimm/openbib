@@ -34,6 +34,7 @@ Titel auf [% config.get_serverinfo_description(serverid) %]
 </thead>
 <tbody>
 [% FOREACH thisdb IN differences %]
+[%   NEXT IF NOT thisdb.server %]
 <tr>
 <td><a href="[% path_prefix %]/[% config.get('admin_loc') %]/[% config.get('databases_loc') %]/id/[% thisdb.dbname %]/updates.html?l=[% lang %]">[% thisdb.dbname %]</a></td>
 [% FOREACH serverid IN serverids %]
@@ -45,6 +46,6 @@ Titel auf [% config.get_serverinfo_description(serverid) %]
 </table>
 </div>
 [%
-#     USE dumper;dumper.dump(differences);
+     # USE dumper;dumper.dump(differences);
    END;
 %]

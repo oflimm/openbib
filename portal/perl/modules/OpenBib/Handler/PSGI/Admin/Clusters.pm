@@ -139,6 +139,8 @@ sub show_record_consistency {
     
     # Shared Args
     my $config           = $self->param('config');
+    my $lang             = $self->param('lang');
+    my $path_prefix      = $self->param('path_prefix');
 
     if (!$self->authorization_successful('right_update')){
         return $self->print_authorization_error();
@@ -183,10 +185,14 @@ sub show_record_consistency {
 	}	
     }
 
-    $logger->debug("Template: refresh = $refresh");
+    if ($refresh){
+	sleep 5;
+	$self->redirect("$path_prefix/$config->{admin_loc}/$config->{clusters_loc}/id/$clusterid/consistency.html?l=$lang&refresh=1");
+	return;
+    }
     
     my $ttdata = {
-	refresh       => $refresh,
+	#refresh       => $refresh,
         clusterid     => $clusterid,
         clusterinfo   => $clusterinfo_ref,
 	differences   => $cluster_differences_ref,

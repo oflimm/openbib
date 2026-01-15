@@ -92,12 +92,16 @@ while (1) {
 	$logger->info("Received payload for jobid $jobid and clusterid $clusterid-> ".YAML::Dump($received_json_ref));
 	
 	my $result_ref = $config->check_cluster_consistency($clusterid);
+
+	$logger->info("Jobid $jobid processed");
 	
 	if ($logger->is_info){
 	    $logger->debug("Result is: ".YAML::Dump($result_ref));
 	}
 	
 	$mq->set_result({ queue => 'task_clusters', job_id => $jobid, payload => $result_ref });
+	
+	$logger->info("Jobid $jobid stored in memcached");
     }
 }
 

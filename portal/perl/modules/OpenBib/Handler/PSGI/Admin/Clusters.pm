@@ -185,14 +185,14 @@ sub show_record_consistency {
 	}	
     }
 
+    my $refresh_url = "";
+    
     if ($refresh){
-	sleep 5;
-	$self->redirect("$path_prefix/$config->{admin_loc}/$config->{clusters_loc}/id/$clusterid/consistency.html?l=$lang&refresh=1");
-	return;
+	$refresh_url = "$path_prefix/$config->{admin_loc}/$config->{clusters_loc}/id/$clusterid/consistency.html?l=$lang&refresh=1";
     }
     
     my $ttdata = {
-	#refresh       => $refresh,
+	refresh_url   => $refresh_url,
         clusterid     => $clusterid,
         clusterinfo   => $clusterinfo_ref,
 	differences   => $cluster_differences_ref,

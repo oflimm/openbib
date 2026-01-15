@@ -1,0 +1,15 @@
+[Unit]
+Description=OpenBib Message Queue Processing Daemon
+ 
+[Service]
+Type=forking
+User=openbib
+Group=openbib
+ExecStart=/opt/openbib/bin/mq_processing_daemon.pl start
+ExecStop=/opt/openbib/bin/mq_processing_daemon.pl stop
+ExecReload=/opt/openbib/bin/mq_processing_daemon.pl restart
+Restart=always
+Nice=19
+ 
+[Install]
+WantedBy=multi-user.target

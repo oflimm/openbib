@@ -154,8 +154,8 @@ sub show_record_consistency {
 
     if ($refresh){
 	$logger->debug("Refresh: Job processed?");
-	if ($mq->job_processed({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"})){
-	    $cluster_differences_ref = $mq->get_result({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"});
+	if ($mq->job_processed({ queue => 'task_clusters', job_id => "cluster_consistency:$clusterid"})){
+	    $cluster_differences_ref = $mq->get_result({ queue => 'task_clusters', job_id => "cluster_consistency:$clusterid"});
 	    $refresh = 0;
 	    if ($logger->is_debug){
 		$logger->debug("Refresh: Job IS processed");
@@ -166,14 +166,14 @@ sub show_record_consistency {
     else {
 	$logger->debug("Initial request: Submit Job");
 	# Send Message to task queue referencing a job id
-	my $result_ref = $mq->submit_job({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid" , payload => { id => $clusterid }});
+	my $result_ref = $mq->submit_job({ queue => 'task_clusters', job_id => "cluster_consistency:$clusterid", payload => { task => 'cluster_consistency', id => $clusterid }});
 	
 	unless ($result_ref->{submitted}){
 	    $logger->fatal("Unable to submitt task");
 	}
 	
-	if ($mq->job_processed({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"})){
-	    $cluster_differences_ref = $mq->get_result({ queue => 'task_clusters', job_id => "cluster_consistency_$clusterid"});
+	if ($mq->job_processed({ queue => 'task_clusters', job_id => "cluster_consistency:$clusterid"})){
+	    $cluster_differences_ref = $mq->get_result({ queue => 'task_clusters', job_id => "cluster_consistency:$clusterid"});
 	    if ($logger->is_debug){
 	    $logger->debug("Job is already processed");
 	    $logger->debug("Job result data: ".YAML::Dump($cluster_differences_ref));

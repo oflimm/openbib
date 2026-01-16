@@ -256,6 +256,9 @@ sub set_result {
     my $job_id      = exists $arg_ref->{job_id}
         ? $arg_ref->{job_id}              : undef;
 
+    my $task        = exists $arg_ref->{task}
+        ? $arg_ref->{task}                : undef;
+
     my $payload_ref = exists $arg_ref->{payload}
         ? $arg_ref->{payload}             : {};
     
@@ -266,9 +269,11 @@ sub set_result {
     my $memc_key = "mq:$queue:$job_id";
 
     if ($config->{memc}){
-	$logger->debug("Setting result for $memc_key: ".YAML::Dump($payload_ref));
+	my $memc_expiration = "mq:$queue:$task";
 	
-	$config->{memc}->set($memc_key,$payload_ref,$config->{memcached_expiration}{$memc_key});
+	$logger->debug("Setting result for $memc_key with expiration $memc_expiration: ".YAML::Dump($payload_ref));
+	
+	$config->{memc}->set($memc_key,$payload_ref,$config->{memcached_expiration}{$memc_expiration});
     }
     else {
 	$logger->fatal("Keine Verbindung zu Memecached");

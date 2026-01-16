@@ -86,23 +86,26 @@ while (1) {
     my $received_json_ref = $mq->consume_job({ queue => 'task_clusters'});    
     
     my $clusterid = $received_json_ref->{payload}{id};
+    my $task      = $received_json_ref->{payload}{task};
     my $jobid     = $received_json_ref->{job_id};
 
-    if ($clusterid && $jobid){
-	$logger->info("Received payload for jobid $jobid and clusterid $clusterid-> ".YAML::Dump($received_json_ref));
-	
-	my $result_ref = $config->check_cluster_consistency($clusterid);
-
-	$logger->info("Jobid $jobid processed");
-	
-	if ($logger->is_info){
-	    $logger->debug("Result is: ".YAML::Dump($result_ref));
-	}
-	
-	$mq->set_result({ queue => 'task_clusters', job_id => $jobid, payload => $result_ref });
-	
-	$logger->info("Jobid $jobid stored in memcached");
+    if ($task eq "cluster_consistency")
+	if ($clusterid && $jobid){
+	    $logger->info("Received payload for jobid $jobid and clusterid $clusterid-> ".YAML::Dump($received_json_ref));
+	    
+	    my $result_ref = $config->check_cluster_consistency($clusterid);
+	    
+	    $logger->info("Jobid $jobid processed");
+	    
+	    if ($logger->is_info){
+		$logger->debug("Result is: ".YAML::Dump($result_ref));
+	    }
+	    
+	    $mq->set_result({ queue => 'task_clusters', job_id => $jobid, task => $task, payload => $result_ref });
+	    
+	    $logger->info("Jobid $jobid stored in memcached");
     }
+}
 }
 
 sub print_help {
